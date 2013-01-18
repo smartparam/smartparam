@@ -1,0 +1,66 @@
+package org.smartparam.engine.core.engine;
+
+import org.smartparam.engine.core.engine.FunctionProviderImpl;
+import org.junit.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import org.smartparam.engine.core.cache.FunctionCache;
+import org.smartparam.engine.core.exception.ParamDefinitionException;
+import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.loader.FunctionLoader;
+import org.smartparam.engine.model.Function;
+
+/**
+ * @author Przemek Hertel
+ */
+public class FunctionProviderImplTest {
+
+    @Test
+    public void testGetFunction() {
+        
+        // zaleznosci
+        Function fun1 = new Function();
+        FunctionLoader loader = mock(FunctionLoader.class);
+        FunctionCache cache = mock(FunctionCache.class);
+
+        // konfiguracja zaleznosci
+        when(loader.load("fun1")).thenReturn(fun1);
+        when(cache.get("fun1")).thenReturn(null, fun1);
+
+        // utworzenie testowanego obiektu
+        FunctionProviderImpl fp = new FunctionProviderImpl();
+        fp.setCache(cache);
+        fp.setLoader(loader);
+
+        // test
+        assertSame(fun1, fp.getFunction("fun1"));       // fizyczne wczytanie przez loader
+        assertSame(fun1, fp.getFunction("fun1"));       // uzycie cache'a
+    }
+
+    @Test
+    public void testGetFunction__unknownFunction() {
+
+        // konfiguracja zaleznosci
+        FunctionLoader loader = mock(FunctionLoader.class);
+        when(loader.load("fun2")).thenReturn(null);
+
+        FunctionCache cache = mock(FunctionCache.class);
+        when(cache.get("fun2")).thenReturn(null);
+
+        // utworzenie testowanego obiektu
+        FunctionProviderImpl fp = new FunctionProviderImpl();
+        fp.setCache(cache);
+        fp.setLoader(loader);
+
+        // test
+        try {
+            fp.getFunction("fun2");
+            fail();
+        }
+        catch(ParamDefinitionException e) {
+            assertEquals(ParamException.ErrorCode.UNKNOWN_FUNCTION, e.getErrorCode());
+        }
+
+    }
+
+}

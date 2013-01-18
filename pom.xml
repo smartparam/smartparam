@@ -2,13 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
+    <artifactId>smartparam</artifactId>
     <groupId>org.smartparam</groupId>
-    <artifactId>smart-param</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     
     <packaging>pom</packaging>
     
-    <name>smart-param</name>
+    <name>smartparam</name>
     <description></description>
     
     <inceptionYear>2012</inceptionYear>
@@ -22,7 +22,7 @@
     </properties>
     
     <modules>
-        <module>smart-param-engine</module>
+        <module>smartparam-engine</module>
     </modules>
     
     <dependencyManagement>
