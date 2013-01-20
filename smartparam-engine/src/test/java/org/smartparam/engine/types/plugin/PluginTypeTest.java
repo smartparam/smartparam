@@ -1,11 +1,11 @@
 package org.smartparam.engine.types.plugin;
 
-import org.smartparam.engine.types.plugin.PluginType;
-import org.smartparam.engine.types.plugin.PluginHolder;
 import java.util.Date;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.smartparam.engine.mockBuilders.FunctionMockBuilder;
 import org.smartparam.engine.model.Function;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Przemek Hertel
@@ -56,8 +56,7 @@ public class PluginTypeTest {
     public void testConvert() {
 
         // zaleznosci
-        Function f = new Function();
-        f.setName("f.calc");
+        Function f = FunctionMockBuilder.function().withName("f.calc").get();
 
         // przypadki testowe: [argument (Object)][oczekiwana wartosc holdera (String)]
         Object[][] testCases = {

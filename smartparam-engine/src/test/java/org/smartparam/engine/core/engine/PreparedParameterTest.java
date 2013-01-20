@@ -1,8 +1,5 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.engine.PreparedLevel;
-import org.smartparam.engine.core.engine.PreparedEntry;
-import org.smartparam.engine.core.engine.PreparedParameter;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.index.LevelIndex;
@@ -15,25 +12,11 @@ import org.smartparam.engine.types.number.NumberType;
  */
 public class PreparedParameterTest {
 
-    PreparedParameter pp;
+    private PreparedParameter pp;
 
     @Before
     public void init() {
         pp = new PreparedParameter();
-    }
-
-    @Test
-    public void testId() {
-
-        // konfiguracja testu
-        int expectedId = 123456;
-
-        // test
-        pp.setId(expectedId);
-        int result = pp.getId();
-
-        // sprawdzenie wynikow testu
-        assertEquals(expectedId, result);
     }
 
     @Test

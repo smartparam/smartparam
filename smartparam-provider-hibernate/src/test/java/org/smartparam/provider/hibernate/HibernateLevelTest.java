@@ -1,8 +1,5 @@
-package org.smartparam.engine.model;
+package org.smartparam.provider.hibernate;
 
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Function;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -10,19 +7,19 @@ import org.junit.Before;
 /**
  * @author Przemek Hertel
  */
-public class LevelTest {
+public class HibernateLevelTest {
 
-    private Level level;
+    private HibernateLevel level;
 
     @Before
     public void before() {
-        level = new Level();
+        level = new HibernateLevel();
     }
 
     public void testConstructor__type() {
 
         // uzycie konstruktora
-        level = new Level("number");
+        level = new HibernateLevel("number");
 
         // weryfikacja
         assertEquals("number", level.getType());
@@ -46,7 +43,7 @@ public class LevelTest {
     public void testParameter() {
 
         // test
-        Parameter p = new Parameter();
+        HibernateParameter p = new HibernateParameter();
         level.setParameter(p);
 
         // weryfikacja
@@ -66,7 +63,7 @@ public class LevelTest {
     @Test
     public void testLevelCrator() {
         // test
-        Function lc = new Function();
+        HibernateFunction lc = new HibernateFunction();
         level.setLevelCreator(lc);
 
         // weryfikacja
@@ -116,7 +113,7 @@ public class LevelTest {
     @Test
     public void testValidator() {
         // test
-        Function v = new Function();
+        HibernateFunction v = new HibernateFunction();
         level.setValidator(v);
 
         // weryfikacja
@@ -158,9 +155,9 @@ public class LevelTest {
         level.setId(123);
         level.setType("string");
         level.setMatcherCode("between");
-        level.setLevelCreator(new Function());
+        level.setLevelCreator(new HibernateFunction());
         level.getLevelCreator().setName("level.creator");
-        level.setValidator(new Function());
+        level.setValidator(new HibernateFunction());
         level.getValidator().setName("validator");
 
         // oczekiwany wynik dla wypelnionego

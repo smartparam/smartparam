@@ -1,14 +1,9 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.engine.PreparedLevel;
-import org.smartparam.engine.core.engine.PreparedEntry;
-import org.smartparam.engine.core.engine.ParamProvider;
-import org.smartparam.engine.core.engine.PreparedParameter;
-import org.smartparam.engine.core.engine.FunctionProvider;
-import org.smartparam.engine.core.engine.ParamEngine;
-import org.smartparam.engine.core.engine.ParamProviderImpl;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -24,11 +19,13 @@ import org.smartparam.engine.core.function.JavaFunctionInvoker;
 import org.smartparam.engine.core.loader.ParamLoader;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.mockBuilders.FunctionMockBuilder;
+import org.smartparam.engine.mockBuilders.ParameterEntryMockBuilder;
+import org.smartparam.engine.mockBuilders.ParameterMockBuilder;
 import org.smartparam.engine.model.Function;
 import org.smartparam.engine.model.FunctionImpl;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.functions.JavaFunction;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.number.NumberHolder;
@@ -46,7 +43,7 @@ public class ParamEngineTest {
 
     @Before
     public void init() {
-        levelCreator = new Function();
+        levelCreator = mock(Function.class);
     }
 
     @Test
@@ -91,8 +88,8 @@ public class ParamEngineTest {
         // obiekty pomocnicze
         ParamContext ctx = new DefaultContext();
         FunctionImpl fimpl = mock(FunctionImpl.class);
-        Function f = new Function();
-        f.setImplementation(fimpl);
+        Function f = mock(Function.class);
+        when(f.getImplementation()).thenReturn(fimpl);
 
         // zaleznosci
         InvokerProvider invokerProvider = mock(InvokerProvider.class);
@@ -159,8 +156,8 @@ public class ParamEngineTest {
         // obiekty pomocnicze
         ParamContext ctx = new DefaultContext();
         FunctionImpl fimpl = mock(FunctionImpl.class);
-        Function f = new Function();
-        f.setImplementation(fimpl);
+        Function f = mock(Function.class);
+        when(f.getImplementation()).thenReturn(fimpl);
 
         // zaleznosci
         InvokerProvider invokerProvider = mock(InvokerProvider.class);
@@ -255,7 +252,7 @@ public class ParamEngineTest {
 
         // obiekty pomocnicze
         FunctionImpl fimpl = mock(FunctionImpl.class);
-        levelCreator.setImplementation(fimpl);
+        when(levelCreator.getImplementation()).thenReturn(fimpl);
 
         StringType strType = new StringType();
         IntegerType intType = new IntegerType();
@@ -314,14 +311,13 @@ public class ParamEngineTest {
         FunctionImpl fimpl = mock(FunctionImpl.class);
         FunctionImpl fimplPlug = mock(FunctionImpl.class);
         ParamContext ctx = new DefaultContext();
-        Function fPlug = new Function();
-        fPlug.setImplementation(fimplPlug);
+        Function fPlug = mock(Function.class);
+        when(fPlug.getImplementation()).thenReturn(fimplPlug);
 
         // dane testowe
-        Parameter par = new Parameter();
-        par.setName("par");
-        par.setType("plugin");
-        par.addEntry(new ParameterEntry("", "plugin.fun"));
+        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
+        entries.add(ParameterEntryMockBuilder.parameterEntry("", "plugin.fun"));
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("plugin").withEntries(entries).get();
 
         TypeProvider tp = new TypeProvider();
         tp.registerType("plugin", new PluginType());
@@ -359,7 +355,7 @@ public class ParamEngineTest {
         assertEquals(new Integer(99), result);
 
         // test 2
-        par.setType("string");
+        par = ParameterMockBuilder.parameter().withName("par").withType("plugin").withEntries(entries).get();
         result = engine.call("par", ctx, 1, 2);
 
         // weryfikacja 2
@@ -395,8 +391,7 @@ public class ParamEngineTest {
 
         // zaleznosci
         InvokerProvider ip = new InvokerProvider();
-        Function f = new Function();
-        f.setImplementation(new JavaFunction());
+        Function f = FunctionMockBuilder.function().withJavaImplementation(this.getClass(), null).get();
 
         // konfiguracja
         ParamEngine engine = new ParamEngine();
@@ -419,8 +414,7 @@ public class ParamEngineTest {
         InvokerProvider ip = new InvokerProvider();
         ip.registerInvoker("java", javaInvoker);
 
-        Function f = new Function();
-        f.setImplementation(new JavaFunction(this.getClass(), "badMethod"));
+        Function f = FunctionMockBuilder.function().withJavaImplementation(this.getClass(), "badMethod").get();
 
         // konfiguracja
         ParamEngine engine = new ParamEngine();

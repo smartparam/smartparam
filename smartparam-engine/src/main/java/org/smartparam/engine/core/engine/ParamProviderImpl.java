@@ -3,16 +3,16 @@ package org.smartparam.engine.core.engine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
-import org.smartparam.engine.core.loader.ParamLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.config.MatcherProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
+import org.smartparam.engine.core.exception.ParamException.ErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.loader.ParamLoader;
 import org.smartparam.engine.core.type.AbstractType;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
@@ -93,9 +93,7 @@ public class ParamProviderImpl implements ParamProvider {
         /*
          * przygotowanie podstawowej konfiguracji parametru
          */
-
         PreparedParameter pp = new PreparedParameter();
-        pp.setId(p.getId());
         pp.setName(p.getName());
         pp.setMultivalue(p.isMultivalue());
         pp.setInputLevelsCount(p.getInputLevels());
@@ -124,7 +122,7 @@ public class ParamProviderImpl implements ParamProvider {
         Matcher[] matchers = new Matcher[levelCount];
 
         for (int i = 0; i < levelCount; i++) {
-            Level lev = p.getLevels().get(i);
+            Level lev = p.getLevel(i);
 
             AbstractType<?> type = null;
             if (lev.getType() != null) {

@@ -1,9 +1,10 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.engine.PreparedEntry;
 import org.junit.*;
-import static org.junit.Assert.*;
 import org.smartparam.engine.model.Function;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Przemek Hertel
@@ -34,7 +35,7 @@ public class PreparedEntryTest {
     public void testFunction() {
 
         // zaleznosci
-        Function f = new Function();
+        Function f = mock(Function.class);
 
         // test
         pe.setFunction(f);

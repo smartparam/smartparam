@@ -15,7 +15,6 @@ import org.smartparam.engine.model.FunctionImpl;
 public class InvokerProvider {
 
     private final Logger logger = LoggerFactory.getLogger(ParamEngine.class);
-
     private Map<String, FunctionInvoker<?>> invokers = new HashMap<String, FunctionInvoker<?>>();
 
     public <T extends FunctionImpl> void registerInvoker(String implCode, FunctionInvoker<T> invoker) {
@@ -25,7 +24,7 @@ public class InvokerProvider {
 
     @SuppressWarnings("unchecked")
     public <T extends FunctionImpl> FunctionInvoker<T> getInvoker(T function) {
-        return (FunctionInvoker<T>) invokers.get(function.getImplCode());
+        return (FunctionInvoker<T>) invokers.get(function.getTypeCode());
     }
 
     public void setInvokers(Map<String, FunctionInvoker<?>> map) {

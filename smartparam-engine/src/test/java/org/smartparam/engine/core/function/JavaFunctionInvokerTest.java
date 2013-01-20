@@ -1,11 +1,9 @@
 package org.smartparam.engine.core.function;
 
-import org.smartparam.engine.core.function.JavaFunctionInvoker;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.DefaultContext;
@@ -14,6 +12,10 @@ import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.core.exception.ParamException;
 import org.smartparam.engine.model.functions.JavaFunction;
 import org.smartparam.engine.util.EngineUtil;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Przemek Hertel
@@ -337,7 +339,11 @@ public class JavaFunctionInvokerTest {
     }
 
     private JavaFunction f(Class<?> clazz, String methodName) {
-        return new JavaFunction(clazz, methodName);
+        JavaFunction function = mock(JavaFunction.class);
+        when(function.getClassName()).thenReturn(clazz.getName());
+        when(function.getMethodName()).thenReturn(methodName);
+
+        return function;
     }
 
     public String method1(int i) {

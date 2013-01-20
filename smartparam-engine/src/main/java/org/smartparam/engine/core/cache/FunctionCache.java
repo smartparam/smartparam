@@ -26,6 +26,7 @@ public interface FunctionCache {
      * jesli nie ma w cache'u takiej funkcji.
      *
      * @param functionName nazwa funkcji
+     *
      * @return funkcja pobrana z cache'a
      */
     Function get(String functionName);

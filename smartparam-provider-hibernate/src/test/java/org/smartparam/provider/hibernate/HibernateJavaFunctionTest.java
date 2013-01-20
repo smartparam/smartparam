@@ -1,27 +1,29 @@
-package org.smartparam.engine.model.functions;
+package org.smartparam.provider.hibernate;
 
-import org.smartparam.engine.model.functions.JavaFunction;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Test;
+import org.smartparam.engine.model.functions.JavaFunction;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Przemek Hertel
  */
-public class JavaFunctionTest {
+public class HibernateJavaFunctionTest {
 
-    JavaFunction f;
+    private HibernateJavaFunction f;
 
     @Before
     public void init() {
-        f = new JavaFunction();
+        f = new HibernateJavaFunction();
     }
 
     @Test
     public void testConstructor() {
 
         // stworzenie obiektu
-        JavaFunction f = new JavaFunction();
+        JavaFunction f = new HibernateJavaFunction();
 
         // weryfikacja
         assertNull(f.getClassName());
@@ -36,7 +38,7 @@ public class JavaFunctionTest {
         String methodName = "testConstructor2";
 
         // stworzenie obiektu
-        JavaFunction f = new JavaFunction(className, methodName);
+        JavaFunction f = new HibernateJavaFunction(className, methodName);
 
         // weryfikacja
         assertEquals(className, f.getClassName());
@@ -51,7 +53,7 @@ public class JavaFunctionTest {
         String methodName = "testConstructor3";
 
         // stworzenie obiektu
-        JavaFunction f = new JavaFunction(clazz, methodName);
+        JavaFunction f = new HibernateJavaFunction(clazz, methodName);
 
         // weryfikacja
         assertEquals(clazz.getName(), f.getClassName());
@@ -60,7 +62,7 @@ public class JavaFunctionTest {
 
     @Test
     public void testGetImplCode() {
-        assertEquals("java", f.getImplCode());
+        assertEquals("java", f.getTypeCode());
     }
 
     @Test

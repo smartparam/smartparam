@@ -1,21 +1,24 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.engine.PreparedLevel;
 import org.junit.*;
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.model.Function;
 import org.smartparam.engine.types.integer.IntegerType;
+
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Przemek Hertel
  */
 public class PreparedLevelTest {
 
-    IntegerType type = new IntegerType();
-    Matcher matcher = mock(Matcher.class);
-    Function levelCreator = new Function();
+    private IntegerType type = new IntegerType();
+
+    private Matcher matcher = mock(Matcher.class);
+
+    private Function levelCreator = mock(Function.class);
 
     @Test
     public void testConstructor() {

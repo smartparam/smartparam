@@ -1,4 +1,4 @@
-package org.smartparam.engine.model;
+package org.smartparam.provider.hibernate;
 
 import java.io.Serializable;
 

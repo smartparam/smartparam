@@ -1,23 +1,22 @@
-package org.smartparam.engine.model;
+package org.smartparam.provider.hibernate;
 
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.ParameterEntry;
 import java.util.*;
-import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.Test;
+import org.smartparam.engine.model.Level;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Przemek Hertel
  */
-public class ParameterTest {
+public class HibernateParameterTest {
 
-    Parameter par;
+    private HibernateParameter par;
 
     @Before
     public void init() {
-        par = new Parameter();
+        par = new HibernateParameter();
     }
 
     @Test
@@ -114,7 +113,7 @@ public class ParameterTest {
     @Test
     public void testArraySeparator() {
 
-        assertEquals(Parameter.DEFAULT_ARRAY_SEPARATOR, par.getArraySeparator());
+        assertEquals(HibernateParameter.DEFAULT_ARRAY_SEPARATOR, par.getArraySeparator());
 
         par.setArraySeparator(',');
         assertEquals(',', par.getArraySeparator());
@@ -146,7 +145,7 @@ public class ParameterTest {
     public void testSetLevels() {
 
         // konfiguracja testu
-        List<Level> list = new ArrayList<Level>();
+        List<HibernateLevel> list = new ArrayList<HibernateLevel>();
         list.add(l("L1", 0));
         list.add(l("L2", 3));
         list.add(l("L3", 0));
@@ -175,9 +174,9 @@ public class ParameterTest {
     public void testAddLevel() {
 
         // konfiguracja zaleznosci
-        Level l1 = l("L1", 0);
-        Level l2 = l("L2", 0);
-        Level l3 = l("L3", 0);
+        HibernateLevel l1 = l("L1", 0);
+        HibernateLevel l2 = l("L2", 0);
+        HibernateLevel l3 = l("L3", 0);
 
         // test
         par.addLevel(l1);
@@ -193,8 +192,8 @@ public class ParameterTest {
     public void testGetLevelCount() {
 
         // konfiguracja zaleznosci
-        Level l1 = l("L1", 0);
-        Level l2 = l("L2", 0);
+        HibernateLevel l1 = l("L1", 0);
+        HibernateLevel l2 = l("L2", 0);
 
         // test 1
         assertEquals(0, par.getLevelCount());
@@ -209,7 +208,7 @@ public class ParameterTest {
     public void testSetEntries() {
 
         // konfiguracja testu
-        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
+        Set<HibernateParameterEntry> entries = new HashSet<HibernateParameterEntry>();
 
         // test
         par.setEntries(entries);
@@ -222,9 +221,9 @@ public class ParameterTest {
     public void testAddEntries() {
 
         // konfiguracja zaleznosci
-        ParameterEntry pe1 = new ParameterEntry("A;1", "value1");
-        ParameterEntry pe2 = new ParameterEntry("A;2", "value2");
-        ParameterEntry pe3 = new ParameterEntry("A;3", "value3");
+        HibernateParameterEntry pe1 = new HibernateParameterEntry("A;1", "value1");
+        HibernateParameterEntry pe2 = new HibernateParameterEntry("A;2", "value2");
+        HibernateParameterEntry pe3 = new HibernateParameterEntry("A;3", "value3");
 
         // test
         par.addEntries(Arrays.asList(pe1, pe2, pe3));
@@ -239,7 +238,7 @@ public class ParameterTest {
     public void testToString() {
 
         // konfiguracja testu
-        Parameter[] tests = {
+        HibernateParameter[] tests = {
             par(11, "par.a", "string", 4, 0, false, false, false, false, true),
             par(22, "par.b", "number", 4, 2, true, false, true, false, false),
             par(33, "par.c", "number", 4, 3, true, true, true, true, false)
@@ -254,7 +253,7 @@ public class ParameterTest {
 
         // test
         for (int i = 0; i < tests.length; i++) {
-            Parameter par = tests[i];
+            HibernateParameter par = tests[i];
             String expectedResult = expected[i];
 
             String result = par.toString();
@@ -262,15 +261,15 @@ public class ParameterTest {
         }
     }
 
-    private Parameter par(int id, String name, String type, int levels, int inputLevels,
+    private HibernateParameter par(int id, String name, String type, int levels, int inputLevels,
             boolean nullable, boolean multivalue, boolean array, boolean archive, boolean cacheable) {
 
-        Parameter p = new Parameter();
+        HibernateParameter p = new HibernateParameter();
         p.setId(id);
         p.setName(name);
         p.setType(type);
         for (int i = 0; i < levels; ++i) {
-            p.addLevel(new Level());
+            p.addLevel(new HibernateLevel());
         }
         p.setInputLevels(inputLevels);
 
@@ -288,8 +287,8 @@ public class ParameterTest {
         assertEquals(expectedLabel, l.getLabel());
     }
 
-    private Level l(String label, int orderNo) {
-        Level l = new Level();
+    private HibernateLevel l(String label, int orderNo) {
+        HibernateLevel l = new HibernateLevel();
         l.setLabel(label);
         l.setOrderNo(orderNo);
         return l;

@@ -46,7 +46,7 @@ public class JavaFunctionInvoker extends CoreJavaInvoker implements FunctionInvo
      * {@inheritDoc}
      *
      * @throws ParamException jesli wywolanie zostanie przerwane przez jakikolwiek wyjatek,
-     * kod bledu: {@link org.smartparam.engine.core.exception.ParamException.ErrorCode#FUNCTION_INVOKE_ERROR}
+     *                        kod bledu: {@link org.smartparam.engine.core.exception.ParamException.ErrorCode#FUNCTION_INVOKE_ERROR}
      */
     @Override
     public Object invoke(JavaFunction function, ParamContext ctx) {
@@ -57,7 +57,7 @@ public class JavaFunctionInvoker extends CoreJavaInvoker implements FunctionInvo
      * {@inheritDoc}
      *
      * @throws ParamException jesli wywolanie zostanie przerwane przez jakikolwiek wyjatek,
-     * kod bledu: {@link org.smartparam.engine.core.exception.ParamException.ErrorCode#FUNCTION_INVOKE_ERROR}
+     *                        kod bledu: {@link org.smartparam.engine.core.exception.ParamException.ErrorCode#FUNCTION_INVOKE_ERROR}
      */
     @Override
     public Object invoke(JavaFunction function, Object... args) {
@@ -80,7 +80,7 @@ public class JavaFunctionInvoker extends CoreJavaInvoker implements FunctionInvo
      * @return obiekt zwrocony przez funkcje
      *
      * @throws ParamException jesli wywolanie zostanie przerwane przez jakikolwiek wyjatek,
-     * kod bledu: {@link org.smartparam.engine.core.exception.ParamException.ErrorCode#FUNCTION_INVOKE_ERROR}
+     *                        kod bledu: {@link org.smartparam.engine.core.exception.ParamException.ErrorCode#FUNCTION_INVOKE_ERROR}
      */
     Object call(JavaFunction f, Object... args) {
         Class<?> clazz = findClass(f.getClassName());

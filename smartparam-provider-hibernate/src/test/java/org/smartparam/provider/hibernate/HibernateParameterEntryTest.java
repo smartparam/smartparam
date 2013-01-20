@@ -1,44 +1,44 @@
-package org.smartparam.engine.model;
+package org.smartparam.provider.hibernate;
 
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.Function;
-import org.smartparam.engine.model.ParameterEntry;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
+import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.Parameter;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Przemek Hertel
  */
-public class ParameterEntryTest {
+public class HibernateParameterEntryTest {
 
     @Test
     public void testConstructors() {
 
         // obiekty pomocnicze
-        Function f1 = new Function();
-        Function f2 = new Function();
+        HibernateFunction f1 = new HibernateFunction();
+        HibernateFunction f2 = new HibernateFunction();
 
         // obiekty stworzone przez rozne konstruktory
-        ParameterEntry[] tests = {
-            new ParameterEntry(),
-            new ParameterEntry(new String[]{}, "value", null),
-            new ParameterEntry(new String[]{"1", "2"}, "value", f1),
-            new ParameterEntry(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}, null, f2),
-            new ParameterEntry("1", "2", "3"),
-            new ParameterEntry("1", "2", "3", "4", "5", "6", "7", "8"),
-            new ParameterEntry("1", "2", "3", "4", "5", "6", "7", "8", "9"),
-            new ParameterEntry("1;2;3", f1),
-            new ParameterEntry("1;2;3;4;5;6;7;8;9;10;11", f1),
-            new ParameterEntry("", "val"),
-            new ParameterEntry("1;2;3;4", "val"),
-            new ParameterEntry(new String[]{}, "v"),
-            new ParameterEntry(new String[]{"A"}, "v"),
-            new ParameterEntry("a;b;;;e;f;g;h;i", null, f1),
-            new ParameterEntry(new String[]{"X", "Y"}, "V", f1)
+        HibernateParameterEntry[] tests = {
+            new HibernateParameterEntry(),
+            new HibernateParameterEntry(new String[]{}, "value", null),
+            new HibernateParameterEntry(new String[]{"1", "2"}, "value", f1),
+            new HibernateParameterEntry(new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}, null, f2),
+            new HibernateParameterEntry("1", "2", "3"),
+            new HibernateParameterEntry("1", "2", "3", "4", "5", "6", "7", "8"),
+            new HibernateParameterEntry("1", "2", "3", "4", "5", "6", "7", "8", "9"),
+            new HibernateParameterEntry("1;2;3", f1),
+            new HibernateParameterEntry("1;2;3;4;5;6;7;8;9;10;11", f1),
+            new HibernateParameterEntry("", "val"),
+            new HibernateParameterEntry("1;2;3;4", "val"),
+            new HibernateParameterEntry(new String[]{}, "v"),
+            new HibernateParameterEntry(new String[]{"A"}, "v"),
+            new HibernateParameterEntry("a;b;;;e;f;g;h;i", null, f1),
+            new HibernateParameterEntry(new String[]{"X", "Y"}, "V", f1)
         };
 
-        // oczekiwana zawartosc obiektow ParameterEntry:
+        // oczekiwana zawartosc obiektow HibernateParameterEntry:
         // [tablica leveli] [value] [function]
         Object[][] expectations = {
             new Object[]{new String[0], null, null},
@@ -60,7 +60,7 @@ public class ParameterEntryTest {
 
         // wykonanie testow
         for (int i = 0; i < tests.length; i++) {
-            ParameterEntry pe = tests[i];
+            HibernateParameterEntry pe = tests[i];
             Object[] expected = expectations[i];
 
             String[] expectedLevels = (String[]) expected[0];
@@ -78,7 +78,7 @@ public class ParameterEntryTest {
     public void testGetLevels() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry("1;2;3;4;5;6;7;8;9;10;11;12;13;14", "value");
+        HibernateParameterEntry pe = new HibernateParameterEntry("1;2;3;4;5;6;7;8;9;10;11;12;13;14", "value");
 
         // przypadki testowe
         Object[][] tests = {
@@ -104,7 +104,7 @@ public class ParameterEntryTest {
     public void testGetLevel() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry("1;2;3;4;5;6;7;8;9", "value");
+        HibernateParameterEntry pe = new HibernateParameterEntry("1;2;3;4;5;6;7;8;9", "value");
 
         // weryfikacja
         assertEquals(null, pe.getLevel(0));
@@ -122,7 +122,7 @@ public class ParameterEntryTest {
     public void testSetLevel__scenario1() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
 
         // scenariusz
         pe.setLevel1("1");
@@ -147,7 +147,7 @@ public class ParameterEntryTest {
     public void testSetLevel__scenario2() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
 
         // scenariusz
         pe.setLevel1("1");
@@ -171,7 +171,7 @@ public class ParameterEntryTest {
     public void testSetLevel__scenario3() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
 
         // scenariusz
         pe.setLevel8("8");
@@ -184,7 +184,7 @@ public class ParameterEntryTest {
     public void testSetLevel__illegalArgument() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
 
         // test
         pe.setLevel(-1, "A");
@@ -194,7 +194,7 @@ public class ParameterEntryTest {
     public void testSetLevels() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
 
         // test
         pe.setLevels(null);
@@ -213,7 +213,7 @@ public class ParameterEntryTest {
     public void testGetLevel__scenario1() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry("1;2;3;4;5;6;7;8", "value");
+        HibernateParameterEntry pe = new HibernateParameterEntry("1;2;3;4;5;6;7;8", "value");
 
         // weryfikacja
         assertEquals("1", pe.getLevel1());
@@ -230,7 +230,7 @@ public class ParameterEntryTest {
     public void testGetLevel__scenario2() {
 
         // przygotowanie obiektu
-        ParameterEntry pe = new ParameterEntry("1;2;3;4;5;6;7;8;9;10", "value");
+        HibernateParameterEntry pe = new HibernateParameterEntry("1;2;3;4;5;6;7;8;9;10", "value");
 
         // weryfikacja
         assertEquals("1", pe.getLevel1());
@@ -246,7 +246,7 @@ public class ParameterEntryTest {
     @Test
     public void testId() {
         // konfiguracja testu
-        ParameterEntry pe = new ParameterEntry();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
         int expectedValue = 1234567;
 
         // test
@@ -260,7 +260,7 @@ public class ParameterEntryTest {
     @Test
     public void testValue() {
         // konfiguracja testu
-        ParameterEntry pe = new ParameterEntry();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
         String expectedValue = "value";
 
         // test
@@ -274,8 +274,8 @@ public class ParameterEntryTest {
     @Test
     public void testFunction() {
         // konfiguracja testu
-        ParameterEntry pe = new ParameterEntry();
-        Function expectedValue = new Function();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
+        HibernateFunction expectedValue = new HibernateFunction();
 
         // test
         pe.setFunction(expectedValue);
@@ -288,8 +288,8 @@ public class ParameterEntryTest {
     @Test
     public void testParameter() {
         // konfiguracja testu
-        ParameterEntry pe = new ParameterEntry();
-        Parameter expectedValue = new Parameter();
+        HibernateParameterEntry pe = new HibernateParameterEntry();
+        HibernateParameter expectedValue = new HibernateParameter();
 
         // test
         pe.setParameter(expectedValue);
@@ -303,14 +303,14 @@ public class ParameterEntryTest {
     public void testToString() {
 
         // zaleznosci
-        Function f = new Function();
+        HibernateFunction f = new HibernateFunction();
         f.setName("fun1");
 
         // konfiguracja testu
-        ParameterEntry[] tests = {
-            new ParameterEntry("", null, null),
-            new ParameterEntry("A", "value1", null),
-            new ParameterEntry("A;B;C;D", "value2", f)
+        HibernateParameterEntry[] tests = {
+            new HibernateParameterEntry("", null, null),
+            new HibernateParameterEntry("A", "value1", null),
+            new HibernateParameterEntry("A;B;C;D", "value2", f)
         };
 
         // oczekiwane wyniki
@@ -322,7 +322,7 @@ public class ParameterEntryTest {
 
         // test
         for (int i = 0; i < expected.length; i++) {
-            ParameterEntry pe = tests[i];
+            HibernateParameterEntry pe = tests[i];
             String expectedResult = expected[i];
 
             String result = pe.toString();

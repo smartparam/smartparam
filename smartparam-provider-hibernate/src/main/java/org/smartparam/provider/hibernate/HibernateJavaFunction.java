@@ -1,28 +1,21 @@
-package org.smartparam.engine.model.functions;
+package org.smartparam.provider.hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import org.smartparam.engine.model.FunctionImpl;
+import org.smartparam.engine.model.functions.JavaFunction;
 import org.smartparam.engine.util.Formatter;
 
 /**
- * Implementacja funkcji (z repozytorium funkcji modulu parametrycznego) oparta na metodzie dowolnego beana springowego.
- * <p>
- *
- * Definicja tej funkcji sklada sie z:
- * <ol>
- * <li><tt>beanName</tt> - nazwa beana springowego
- * <li><tt>methodName</tt> - nazwa metody o dostepie <b>publicznym</b>, metoda moze byc zarowno instancyjna jak i statyczna
- * </ol>
  *
  * @author Przemek Hertel
- * @since 1.0.0
+ * @author Adam Dubiel
+ * @since 0.1.0
  */
 @Entity
-@DiscriminatorValue("spring")
-public class SpringFunction extends FunctionImpl {
+@DiscriminatorValue("java")
+public class HibernateJavaFunction extends HibernateFunctionImpl implements JavaFunction {
 
     /**
      * SUID.
@@ -30,9 +23,9 @@ public class SpringFunction extends FunctionImpl {
     static final long serialVersionUID = 1L;
 
     /**
-     * Nazwa beana springowego.
+     * Pelnopakietowa nazwa klasy.
      */
-    private String beanName;
+    private String className;
 
     /**
      * Nazwa metody. Metoda moze byc zarowno instancyjna jak i statyczna.
@@ -43,57 +36,63 @@ public class SpringFunction extends FunctionImpl {
     /**
      * Konstruktor domyslny.
      */
-    public SpringFunction() {
+    public HibernateJavaFunction() {
     }
 
     /**
      * Konstruktor inicjalizujacy pola klasy.
      *
-     * @param beanName   nazwa beana
+     * @param className  nazwa klasy
      * @param methodName nazwa metody
      */
-    public SpringFunction(String beanName, String methodName) {
-        this.beanName = beanName;
+    public HibernateJavaFunction(String className, String methodName) {
+        this.className = className;
         this.methodName = methodName;
+    }
+
+    /**
+     * Konstruktor inicjalizujacy pola klasy.
+     *
+     * @param clazz      klasa
+     * @param methodName nazwa metody
+     */
+    public HibernateJavaFunction(Class<?> clazz, String methodName) {
+        this(clazz.getName(), methodName);
     }
 
     /**
      * Kod jednozancznie identyfikujacy rodzaj funkcji.
      * Uzywany przez {@link org.smartparam.engine.core.config.InvokerProvider}.
      *
-     * @return kod <tt>spring</tt>
+     * @return kod <tt>java</tt>
      */
     @Override
     @Transient
-    public String getImplCode() {
-        return "spring";
+    public String getTypeCode() {
+        return "java";
     }
 
     /**
-     * Getter dla beanName.
-     *
-     * @return nazwa beana springowego
+     * @return pelnopakietowa nazwa klasy
      */
     @Column
-    public String getBeanName() {
-        return beanName;
+    public String getClassName() {
+        return className;
     }
 
     /**
-     * Setter dla beanName.
+     * Setter dla className.
      *
-     * @param beanName nazwa beana
+     * @param className pelnopakietowa nazwa klasy
      */
-    public void setBeanName(String beanName) {
-        this.beanName = beanName;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     /**
-     * Getter dla methodName.
-     *
      * @return nazwa metody
      */
-    @Column
+    @Column(length = MEDIUM_COLUMN_LENGTH)
     public String getMethodName() {
         return methodName;
     }
@@ -110,8 +109,8 @@ public class SpringFunction extends FunctionImpl {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(Formatter.INITIAL_STR_LEN_128);
-        sb.append("SpringFunction#").append(getId());
-        sb.append("[bean=").append(beanName);
+        sb.append("JavaFunction#").append(getId());
+        sb.append("[class=").append(className);
         sb.append(", method=").append(methodName);
         sb.append(']');
         return sb.toString();

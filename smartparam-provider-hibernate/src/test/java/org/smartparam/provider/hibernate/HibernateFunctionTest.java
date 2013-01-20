@@ -1,22 +1,21 @@
-package org.smartparam.engine.model;
+package org.smartparam.provider.hibernate;
 
-import org.smartparam.engine.model.FunctionImpl;
-import org.smartparam.engine.model.Function;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Przemek Hertel
  */
-public class FunctionTest {
+public class HibernateFunctionTest {
 
-    private Function f;
+    private HibernateFunction f;
 
     @Before
     public void init() {
-        f = new Function();
+        f = new HibernateFunction();
     }
 
     @Test
@@ -104,7 +103,7 @@ public class FunctionTest {
         assertNull(f.getImplementation());
 
         // zaleznosci
-        FunctionImpl impl = mock(FunctionImpl.class);
+        HibernateFunctionImpl impl = mock(HibernateFunctionImpl.class);
 
         // test
         f.setImplementation(impl);

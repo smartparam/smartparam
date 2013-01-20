@@ -1,12 +1,12 @@
 package org.smartparam.engine.assemblers;
 
-import org.smartparam.engine.assemblers.GenericEnumAssembler;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.string.StringHolder;
+
+import static org.junit.Assert.assertSame;
 
 /**
  * @author Przemek Hertel

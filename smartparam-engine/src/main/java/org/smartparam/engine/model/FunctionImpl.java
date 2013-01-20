@@ -1,34 +1,18 @@
 package org.smartparam.engine.model;
 
-import javax.persistence.*;
-
 /**
+ * Function implementation.
+ *
  * @author Przemek Hertel
+ * @author Adam Dubiel
+ * @since 0.1.0
  */
-@Entity
-@Inheritance
-@DiscriminatorColumn(name = "impl")
-@Table(name = "par_function_impl")
-public abstract class FunctionImpl implements ParamModelObject {
+public interface FunctionImpl {
 
     /**
-     * SUID.
+     * Returns type of implementation - links implementation with function provider.
+     *
+     * @return type of implementation
      */
-    private static final long serialVersionUID = 1L;
-
-    private int id;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_function_impl")
-    @SequenceGenerator(name = "seq_function_impl", sequenceName = "seq_function_impl")
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Transient
-    public abstract String getImplCode();
+    String getTypeCode();
 }

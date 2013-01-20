@@ -1,10 +1,11 @@
 package org.smartparam.engine.core.cache;
 
-import org.smartparam.engine.core.cache.MapFunctionCache;
-import org.smartparam.engine.core.cache.FunctionCache;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.smartparam.engine.model.Function;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Przemek Hertel
@@ -25,7 +26,7 @@ public class MapFunctionCacheTest {
     public void testPut() {
 
         // zaleznosci
-        Function f = new Function();
+        Function f = mock(Function.class);
         String fname = "fun.calc";
 
         // testowany obiekt
@@ -42,8 +43,8 @@ public class MapFunctionCacheTest {
     public void testInvalidate() {
 
         // zaleznosci
-        Function f1 = new Function();
-        Function f2 = new Function();
+        Function f1 = mock(Function.class);
+        Function f2 = mock(Function.class);
         String fname1 = "fun.calc.1";
         String fname2 = "fun.calc.2";
 
@@ -69,8 +70,8 @@ public class MapFunctionCacheTest {
     public void testInvalidate_all() {
 
         // zaleznosci
-        Function f1 = new Function();
-        Function f2 = new Function();
+        Function f1 = mock(Function.class);
+        Function f2 = mock(Function.class);
         String fname1 = "fun.calc.1";
         String fname2 = "fun.calc.2";
 

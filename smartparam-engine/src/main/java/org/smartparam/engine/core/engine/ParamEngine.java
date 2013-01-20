@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
 import org.smartparam.engine.core.config.AssemblerProvider;
 import org.smartparam.engine.core.config.InvokerProvider;
@@ -25,6 +24,7 @@ import org.smartparam.engine.model.FunctionImpl;
 import org.smartparam.engine.types.plugin.PluginHolder;
 import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.ParamHelper;
+import org.springframework.util.StringUtils;
 
 /**
  * in progress...

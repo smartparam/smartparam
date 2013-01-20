@@ -21,11 +21,6 @@ import org.smartparam.engine.core.type.AbstractType;
 public class PreparedParameter {
 
     /**
-     * Id parametru.
-     */
-    private int id;
-
-    /**
      * Unikalna nazwa parametru.
      */
     private String name;
@@ -74,24 +69,6 @@ public class PreparedParameter {
      * Znak separatora, jesli parametr typu <tt>array</tt>.
      */
     private char arraySeparator;
-
-    /**
-     * Zwraca id parametru.
-     *
-     * @return id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * Setter dla id parametru.
-     *
-     * @param id klucz glowny
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
 
     /**
      * Zwraca zbudowany indeks wyszukiwania.

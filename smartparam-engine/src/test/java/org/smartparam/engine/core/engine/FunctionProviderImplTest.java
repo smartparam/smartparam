@@ -1,14 +1,15 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.engine.FunctionProviderImpl;
 import org.junit.*;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.core.exception.ParamException;
 import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.model.Function;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Przemek Hertel
@@ -17,9 +18,9 @@ public class FunctionProviderImplTest {
 
     @Test
     public void testGetFunction() {
-        
+
         // zaleznosci
-        Function fun1 = new Function();
+        Function fun1 = mock(Function.class);
         FunctionLoader loader = mock(FunctionLoader.class);
         FunctionCache cache = mock(FunctionCache.class);
 
@@ -56,11 +57,9 @@ public class FunctionProviderImplTest {
         try {
             fp.getFunction("fun2");
             fail();
-        }
-        catch(ParamDefinitionException e) {
+        } catch (ParamDefinitionException e) {
             assertEquals(ParamException.ErrorCode.UNKNOWN_FUNCTION, e.getErrorCode());
         }
 
     }
-
 }
