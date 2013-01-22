@@ -1,6 +1,8 @@
 package org.smartparam.engine.mockBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.mockito.Mockito;
@@ -31,8 +33,16 @@ public class ParameterMockBuilder {
         when(parameter.getArraySeparator()).thenReturn(',');
     }
 
+    private ParameterMockBuilder(Parameter base) {
+        this.parameter = base;
+    }
+
     public static ParameterMockBuilder parameter() {
         return new ParameterMockBuilder();
+    }
+
+    public static ParameterMockBuilder parameter(Parameter base) {
+        return new ParameterMockBuilder(base);
     }
 
     public static Parameter parameter(String name, String type, boolean nullable, Set<ParameterEntry> entries) {
@@ -60,6 +70,12 @@ public class ParameterMockBuilder {
 
     public ParameterMockBuilder withEntries(Set<ParameterEntry> entries) {
         Mockito.doReturn(entries).when(parameter).getEntries();
+        return this;
+    }
+
+    public ParameterMockBuilder withEntries(ParameterEntry... entries) {
+        Set<ParameterEntry> entriesSet = new HashSet<ParameterEntry>(Arrays.asList(entries));
+        Mockito.doReturn(entriesSet).when(parameter).getEntries();
         return this;
     }
 
