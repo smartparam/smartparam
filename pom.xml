@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <artifactId>smartparam</artifactId>
     <groupId>org.smartparam</groupId>
     <version>0.1.0-SNAPSHOT</version>
-    
+
     <packaging>pom</packaging>
-    
+
     <name>smartparam</name>
     <description/>
-    
+
     <inceptionYear>2012</inceptionYear>
-    
+
     <contributors>
     </contributors>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.1.3.RELEASE</spring.version>
+        <spring.version>3.2.0.RELEASE</spring.version>
     </properties>
-    
+
     <modules>
         <module>smartparam-engine</module>
-    <module>smartparam-provider-hibernate</module>
-  </modules>
-    
+        <module>smartparam-provider-hibernate</module>
+        <module>smartparam-demo</module>
+    </modules>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -33,31 +34,19 @@
                 <artifactId>spring-context</artifactId>
                 <version>${spring.version}</version>
             </dependency>
-        
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>1.1.1.RELEASE</version>
-            </dependency>
-        
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-orm</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-        
+
             <dependency>
                 <groupId>rhino</groupId>
                 <artifactId>js</artifactId>
                 <version>1.7R2</version>
             </dependency>
-        
+
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>1.2.16</version>
             </dependency>
-        
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -69,13 +58,13 @@
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>1.6.4</version>
             </dependency>
-        
+
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.1</version>
             </dependency>
-        
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -91,5 +80,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
 </project>

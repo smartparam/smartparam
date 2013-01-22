@@ -1,5 +1,6 @@
-package org.smartparam.provider.hibernate;
+package org.smartparam.provider.hibernate.model;
 
+import org.smartparam.provider.hibernate.model.HibernateJavaFunction;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.functions.JavaFunction;

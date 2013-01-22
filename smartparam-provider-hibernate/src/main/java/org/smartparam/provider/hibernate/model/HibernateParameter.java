@@ -1,4 +1,4 @@
-package org.smartparam.provider.hibernate;
+package org.smartparam.provider.hibernate.model;
 
 import java.util.*;
 import javax.persistence.CascadeType;
@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.SequenceGenerator;
@@ -18,12 +19,15 @@ import org.smartparam.engine.model.Parameter;
 
 @Entity
 @Table(name = "par_parameter")
+@NamedQuery(name=HibernateParameter.LOAD_PARAMETER_QUERY, query="from HibernateParameter where name = :name")
 public class HibernateParameter implements Parameter, ParamModelObject {
 
     /**
      * SUID.
      */
     private static final long serialVersionUID = 1L;
+
+    public static final String LOAD_PARAMETER_QUERY = "loadParameter";
 
     /**
      * Domyslny separator wartosci w komorkach typu tablicowego.

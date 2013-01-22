@@ -1,4 +1,4 @@
-package org.smartparam.provider.hibernate;
+package org.smartparam.provider.hibernate.model;
 
 import javax.persistence.*;
 import org.smartparam.engine.model.FunctionImpl;

@@ -1,5 +1,8 @@
-package org.smartparam.provider.hibernate;
+package org.smartparam.provider.hibernate.model;
 
+import org.smartparam.provider.hibernate.model.HibernateParameter;
+import org.smartparam.provider.hibernate.model.HibernateLevel;
+import org.smartparam.provider.hibernate.model.HibernateParameterEntry;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;

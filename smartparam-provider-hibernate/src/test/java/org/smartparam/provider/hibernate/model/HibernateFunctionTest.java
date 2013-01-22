@@ -1,5 +1,7 @@
-package org.smartparam.provider.hibernate;
+package org.smartparam.provider.hibernate.model;
 
+import org.smartparam.provider.hibernate.model.HibernateFunctionImpl;
+import org.smartparam.provider.hibernate.model.HibernateFunction;
 import org.junit.Before;
 import org.junit.Test;
 

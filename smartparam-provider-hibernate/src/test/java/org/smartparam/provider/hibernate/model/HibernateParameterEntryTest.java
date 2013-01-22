@@ -1,5 +1,8 @@
-package org.smartparam.provider.hibernate;
+package org.smartparam.provider.hibernate.model;
 
+import org.smartparam.provider.hibernate.model.HibernateParameter;
+import org.smartparam.provider.hibernate.model.HibernateParameterEntry;
+import org.smartparam.provider.hibernate.model.HibernateFunction;
 import org.junit.Test;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.model.Function;
