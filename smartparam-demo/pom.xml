@@ -18,6 +18,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <spring.version>3.2.0.RELEASE</spring.version>
+        <hibernate.version>4.1.9.Final</hibernate.version>
+
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
@@ -31,7 +33,7 @@
 
         <dependency>
             <groupId>org.smartparam</groupId>
-            <artifactId>smartparam-provider-hibernate</artifactId>
+            <artifactId>smartparam-provider-jpa</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -48,10 +50,48 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.11</version>
         </dependency>
+
+        <!-- DATABASE -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.1-901.jdbc4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+
 
         <!-- JEE -->
         <dependency>

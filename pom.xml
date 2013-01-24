@@ -23,7 +23,7 @@
 
     <modules>
         <module>smartparam-engine</module>
-        <module>smartparam-provider-hibernate</module>
+        <module>smartparam-provider-jpa</module>
         <module>smartparam-demo</module>
     </modules>
 
