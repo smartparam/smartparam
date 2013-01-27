@@ -2,7 +2,7 @@ package org.smartparam.engine.types.plugin;
 
 import org.smartparam.engine.core.type.AbstractType;
 import org.smartparam.engine.model.Function;
-import org.springframework.util.StringUtils;
+import org.smartparam.engine.util.EngineUtil;
 
 /**
  * Klasa definiuje typ, ktorego wartosciami sa poszczegolne pluginy.
@@ -37,7 +37,7 @@ public class PluginType extends AbstractType<PluginHolder> {
      */
     @Override
     public PluginHolder decode(String text) {
-        String functionName = StringUtils.hasText(text) ? text : null;
+        String functionName = EngineUtil.hasText(text) ? text : null;
         return new PluginHolder(functionName);
     }
 

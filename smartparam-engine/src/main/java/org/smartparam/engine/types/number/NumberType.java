@@ -2,8 +2,8 @@ package org.smartparam.engine.types.number;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import org.springframework.util.StringUtils;
 import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.util.EngineUtil;
 
 /**
  * Klasa definiuje typ liczbowy.
@@ -22,6 +22,7 @@ public class NumberType extends AbstractType<NumberHolder> {
      * Zamienia obiekt holdera na <tt>String</tt>.
      *
      * @param holder obiekt holdera
+     *
      * @return stringowa reprezentacja holdera lub null, jesli wartosc holdera jest null
      */
     @Override
@@ -37,12 +38,14 @@ public class NumberType extends AbstractType<NumberHolder> {
      * jest na <tt>NumberHolder(null)</tt>.
      *
      * @param text string reprezentujacy liczbe
+     *
      * @return obiekt holdera
+     *
      * @throws NumberFormatException jesli string nie reprezentuje liczby typu {@link BigDecimal}
      */
     @Override
     public NumberHolder decode(String text) {
-        BigDecimal value = StringUtils.hasText(text) ? parse(text) : null;
+        BigDecimal value = EngineUtil.hasText(text) ? parse(text) : null;
         return new NumberHolder(value);
     }
 
@@ -83,6 +86,6 @@ public class NumberType extends AbstractType<NumberHolder> {
     }
 
     private BigDecimal parse(String str) {
-        return new BigDecimal(StringUtils.trimAllWhitespace(str).replace(',', '.'));
+        return new BigDecimal(EngineUtil.trimAllWhitespace(str).replace(',', '.'));
     }
 }

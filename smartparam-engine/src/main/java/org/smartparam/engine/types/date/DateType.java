@@ -3,8 +3,8 @@ package org.smartparam.engine.types.date;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import org.springframework.util.StringUtils;
 import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.util.EngineUtil;
 
 /**
  * @author Przemek Hertel
@@ -21,7 +21,7 @@ public class DateType extends AbstractType<DateHolder> {
 
     @Override
     public DateHolder decode(String text) {
-        Date date = StringUtils.hasText(text) ? guess(text) : null;
+        Date date = EngineUtil.hasText(text) ? guess(text) : null;
         return new DateHolder(date);
     }
 

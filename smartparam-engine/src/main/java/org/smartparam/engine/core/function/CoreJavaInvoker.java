@@ -81,7 +81,7 @@ public abstract class CoreJavaInvoker {
      * @throws ParamDefinitionException jesli w klasie <tt>clazz</tt> nie ma metody o podanej nazwie
      * lub pasujacej do przekazanych argumentow, kod wyjatku to {@link ErrorCode#FUNCTION_INVOKE_ERROR}
      */
-    Method findMethod(Class<?> clazz, String methodName, Object... args) {
+    protected Method findMethod(Class<?> clazz, String methodName, Object... args) {
 
         String key = createMethodKey(clazz, methodName, args);
         Method m = methodMap.get(key);
@@ -113,7 +113,7 @@ public abstract class CoreJavaInvoker {
      * @throws ParamDefinitionException jesli w klasie <tt>clazz</tt> nie ma metody o podanej nazwie
      * lub pasujacej do przekazanych argumentow, kod wyjatku to {@link ErrorCode#FUNCTION_INVOKE_ERROR}
      */
-    Method loadMethod(Class<?> clazz, String methodName, Object... args) {
+    protected Method loadMethod(Class<?> clazz, String methodName, Object... args) {
 
         Class<?>[] argTypes = new Class<?>[args.length];
         for (int i = 0; i < args.length; ++i) {
@@ -161,7 +161,7 @@ public abstract class CoreJavaInvoker {
      *
      * @return cache metod
      */
-    Map<String, Method> getMethodMap() {
+    protected Map<String, Method> getMethodMap() {
         return methodMap;
     }
 }

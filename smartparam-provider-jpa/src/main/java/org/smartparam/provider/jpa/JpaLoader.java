@@ -13,11 +13,14 @@ import org.smartparam.provider.jpa.model.JpaParameter;
 import org.smartparam.provider.jpa.model.JpaParameterEntry;
 
 /**
+ * Loads parameters using provided connection.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  * @since 0.1.0
  */
 public class JpaLoader implements ParamLoader {
+
+    private static final int FIND_ENTRIES_QUERY_LENGTH = 100;
 
     private EntityManager entityManager;
 
@@ -34,7 +37,7 @@ public class JpaLoader implements ParamLoader {
     @Override
     public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(FIND_ENTRIES_QUERY_LENGTH);
         sb.append(" select pe from JpaParameterEntry pe");
         sb.append(" where pe.parameter.name = ?");
         for (int i = 0; i < levelValues.length; i++) {

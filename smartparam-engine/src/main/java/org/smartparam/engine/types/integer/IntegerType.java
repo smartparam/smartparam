@@ -1,7 +1,7 @@
 package org.smartparam.engine.types.integer;
 
-import org.springframework.util.StringUtils;
 import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.util.EngineUtil;
 
 /**
  * Klasa definiuje typ calkowitoliczbowy, ktory moze zostac wlaczony
@@ -44,7 +44,7 @@ public class IntegerType extends AbstractType<IntegerHolder> {
      */
     @Override
     public IntegerHolder decode(String text) {
-        Long value = StringUtils.hasText(text) ? Long.valueOf(text.trim()) : null;
+        Long value = EngineUtil.hasText(text) ? Long.valueOf(text.trim()) : null;
         return new IntegerHolder(value);
     }
 

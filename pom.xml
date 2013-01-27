@@ -18,23 +18,17 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.2.0.RELEASE</spring.version>
     </properties>
 
     <modules>
         <module>smartparam-engine</module>
         <module>smartparam-provider-jpa</module>
         <module>smartparam-demo</module>
+        <module>smartparam-spring</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>rhino</groupId>
                 <artifactId>js</artifactId>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+    <bean id="paramEngine" class="org.smartparam.engine.core.engine.ParamEngine">
+        <property name="paramProvider" ref="paramProvider" />
+        <property name="assemblerProvider" ref="assemblerProvider" />
+    </bean>
+
+    <bean id="paramProvider" class="org.smartparam.engine.core.engine.ParamProviderImpl">
+        <property name="typeProvider" ref="typeProvider" />
+        <property name="cache" ref="paramCache" />
+    </bean>
+
+    <bean id="paramCache" class="org.smartparam.engine.core.cache.MapParamCache" />
+
+    <bean id="typeProvider" class="org.smartparam.engine.core.config.TypeProvider">
+        <property name="typeMap">
+            <map>
+                <entry key="string" value-ref="stringType" />
+                <entry key="integer" value-ref="integerType" />
+                <entry key="number" value-ref="numberType" />
+                <entry key="plugin" value-ref="pluginType" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="stringType" class="org.smartparam.engine.types.string.StringType" />
+    <bean id="integerType" class="org.smartparam.engine.types.integer.IntegerType" />
+    <bean id="numberType" class="org.smartparam.engine.types.number.NumberType" />
+    <bean id="pluginType" class="org.smartparam.engine.types.plugin.PluginType" />
+
+    <bean id="invokerProvider" class="org.smartparam.engine.core.config.InvokerProvider">
+        <property name="invokers">
+            <map>
+                <entry key="java" value-ref="javaFunctionInvoker" />
+                <entry key="spring" value-ref="springFunctionInvoker" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="javaFunctionInvoker" class="org.smartparam.engine.core.function.JavaFunctionInvoker" />
+    <bean id="springFunctionInvoker" class="org.smartparam.spring.function.SpringFunctionInvoker" />
+
+    <bean id="assemblerProvider" class="org.smartparam.engine.core.config.AssemblerProvider">
+        <property name="assemblerObjects">
+            <list>
+                <bean class="org.smartparam.engine.assemblers.GenericEnumAssembler" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="matcherProvider" class="org.smartparam.engine.core.config.MatcherProvider">
+        <property name="matcherMap">
+            <map>
+                <entry key="between/ie" value-ref="betweenMatcherIE" />
+                <entry key="between/ii" value-ref="betweenMatcherII" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="betweenMatcherIE" class="org.smartparam.engine.matchers.BetweenMatcher">
+        <property name="lowerInclusive" value="true" />
+        <property name="upperInclusive" value="false" />
+    </bean>
+
+    <bean id="betweenMatcherII" class="org.smartparam.engine.matchers.BetweenMatcher">
+        <property name="lowerInclusive" value="true" />
+        <property name="upperInclusive" value="true" />
+    </bean>
+
+</beans>

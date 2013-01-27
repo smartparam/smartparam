@@ -2,6 +2,7 @@ package org.smartparam.engine.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Klasa zawiera metody pomocnicze i narzedziowe wykorzystywane przez silnik.
@@ -15,6 +16,10 @@ import java.util.List;
  */
 public abstract class EngineUtil {
 
+    public static boolean hasText(String text) {
+        return StringUtils.isNotBlank(text);
+    }
+
     /**
      * Splituje podany string i zwraca tablice tokenow. Separatorem jest
      * pojedynczy znak <tt>delim</tt>. Zwraca maksymalnie <tt>max</tt>
@@ -27,6 +32,7 @@ public abstract class EngineUtil {
      * @param str       wejsciowy string
      * @param delim     znak traktowany jako separator
      * @param maxTokens maksymalna liczba tokenow, wartosc -1 zwraca tablice wszystkich tokenow (bez ograniczen)
+     *
      * @return tablica tokenow, nigdy nie zwraca nulla
      */
     public static String[] split(final String str, final char delim, final int maxTokens) {
@@ -69,6 +75,7 @@ public abstract class EngineUtil {
      * @see #split(String, char, int)
      * @param str   wejsciowy string
      * @param delim znak traktowany jako separator
+     *
      * @return tablica wszystkich tokenow, nigdy nie zwraca nulla
      */
     public static String[] split(final String str, final char delim) {
@@ -100,5 +107,9 @@ public abstract class EngineUtil {
             }
         }
         return result;
+    }
+
+    public static String trimAllWhitespace(final String str) {
+        return StringUtils.deleteWhitespace(str);
     }
 }

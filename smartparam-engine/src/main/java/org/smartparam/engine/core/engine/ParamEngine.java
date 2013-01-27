@@ -24,7 +24,6 @@ import org.smartparam.engine.model.FunctionImpl;
 import org.smartparam.engine.types.plugin.PluginHolder;
 import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.ParamHelper;
-import org.springframework.util.StringUtils;
 
 /**
  * in progress...
@@ -436,7 +435,7 @@ public class ParamEngine {
      */
     AbstractHolder[] evaluateStringAsArray(String value, AbstractType<?> type, char separator) {
 
-        if (StringUtils.hasText(value)) {
+        if (EngineUtil.hasText(value)) {
             String[] tokens = EngineUtil.split(value, separator);
             AbstractHolder[] array = type.newArray(tokens.length);
             for (int i = 0; i < tokens.length; i++) {
