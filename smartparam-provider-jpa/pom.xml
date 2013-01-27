@@ -24,7 +24,7 @@
             <version>${project.version}</version>
         </dependency>
 
-        <!-- JPA 2.0 (provided by hibernate) -->
+        <!-- JPA 2.0 (provided by Hibernate) -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>

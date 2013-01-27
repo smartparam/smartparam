@@ -15,7 +15,7 @@ import org.smartparam.engine.util.EngineUtil;
  * @since 1.0.0
  */
 @Entity
-@Table(name = "smartpar_parameter_entry")
+@Table(name = "smartparam_parameter_entry")
 public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
 
     /**
@@ -254,7 +254,6 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
      *
      * @return value
      */
-    @Lob
     public String getValue() {
         return value;
     }

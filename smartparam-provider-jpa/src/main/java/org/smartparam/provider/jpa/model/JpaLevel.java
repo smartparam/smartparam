@@ -18,7 +18,7 @@ import org.smartparam.engine.model.Level;
  * @since 1.0.0
  */
 @Entity
-@Table(name = "smartpar_level")
+@Table(name = "smartparam_level")
 public class JpaLevel implements Level, JpaModelObject {
 
     /**

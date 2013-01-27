@@ -18,7 +18,7 @@ import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 
 @Entity
-@Table(name = "smartpar_parameter")
+@Table(name = "smartparam_parameter")
 @NamedQuery(name=JpaParameter.LOAD_PARAMETER_QUERY, query="from JpaParameter where name = :name")
 public class JpaParameter implements Parameter, JpaModelObject {
 
@@ -27,7 +27,10 @@ public class JpaParameter implements Parameter, JpaModelObject {
      */
     private static final long serialVersionUID = 1L;
 
-    public static final String LOAD_PARAMETER_QUERY = "loadParameter";
+    /**
+     * Identifier of named query fetching parameter using its name.
+     */
+    public static final String LOAD_PARAMETER_QUERY = "smartparamLoadParameter";
 
     /**
      * Domyslny separator wartosci w komorkach typu tablicowego.

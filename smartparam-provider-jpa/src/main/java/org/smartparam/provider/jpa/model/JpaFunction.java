@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.smartparam.engine.model.Function;
@@ -16,11 +17,23 @@ import org.smartparam.engine.model.Function;
  * JPA data source based function implementation.
  *
  * @author Przemek Hertel
+ * @author Adam Dubiel
  * @since 0.1.0
  */
 @Entity
-@Table(name = "smartpar_function")
+@Table(name = "smartparam_function")
+@NamedQuery(name=JpaFunction.LOAD_FUNCTION_QUERY, query="from JpaFunction where name = :name")
 public class JpaFunction implements Function, JpaModelObject {
+
+    /**
+     * Approximate length of toString() output, string buffer initial capacity.
+     */
+    private static final int TO_STRING_APPROX_LENGTH = 40;
+
+    /**
+     * Identifier of named query fetching function using its name.
+     */
+    public static final String LOAD_FUNCTION_QUERY = "smartparamLoadFunction";
 
     /**
      * SUID.
@@ -28,45 +41,44 @@ public class JpaFunction implements Function, JpaModelObject {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Id funkcji.
+     * Function database id.
      */
     private int id;
 
     /**
-     * Unikalna nazwa funkcji.
+     * Unique function name.
      */
     private String name;
 
     /**
-     * Opcjonalny typ funkcji zgodny z systemem typow silnika:
-     * {@link org.smartparam.engine.core.config.TypeProvider}
+     * Optional function type matching {@link org.smartparam.engine.core.config.TypeProvider} type.
      */
     private String type;
 
     /**
-     * Flaga, czy funkcja moze byc uzywana do zwracania daty wybierajacej wersje.
+     * Is function returning parameter versioning date.
      */
     private boolean versionSelector;
 
     /**
-     * Flaga, czy funkcja moze byc uzywana do dynamicznego okreslania wartosci poziomu.
+     * Is function a level creator (dynamic level value evaluator).
      */
     private boolean levelCreator;
 
     /**
-     * Flaga, czy funkcja jest pluginowa, czyli ogolnego przeznaczenia.
+     * Is this a plugin function.
      */
     private boolean plugin;
 
     /**
-     * Konkretna implementacja funkcji.
+     * Function implementation.
      */
     private JpaFunctionImpl implementation;
 
     /**
-     * Getter dla id.
+     * Id getter.
      *
-     * @return identyfikator
+     * @return id
      */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_sp_function")
@@ -76,131 +88,108 @@ public class JpaFunction implements Function, JpaModelObject {
     }
 
     /**
-     * Setter dla id.
+     * Id setter.
      *
-     * @param id identyfikator
+     * @param id id
      */
     public void setId(int id) {
         this.id = id;
     }
 
-    /**
-     * Getter dla levelCreator.
-     *
-     * @return czy funkcja jest level-creatorem
-     */
+    @Override
     @Column
     public boolean isLevelCreator() {
         return levelCreator;
     }
 
     /**
-     * Setter dla levelCreator.
+     * Level creator setter.
      *
-     * @param levelCreator wartosc flagi
+     * @param levelCreator is level creator
      */
     public void setLevelCreator(boolean levelCreator) {
         this.levelCreator = levelCreator;
     }
 
-    /**
-     * Getter dla nazwy funkcji.
-     *
-     * @return unikalna (w ramach repozytorium) nazwa funkcji
-     */
+    @Override
     @Column(unique = true)
     public String getName() {
         return name;
     }
 
     /**
-     * Setter dla nazwy funkcji.
+     * Name setter.
      *
-     * @param name unikalna (w ramach repozytorium) nazwa funkcji
+     * @param name unique name
      */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Getter dla typu zwracanego.
-     *
-     * @return kod typu
-     */
+    @Override
     @Column(length = SHORT_COLUMN_LENGTH)
     public String getType() {
         return type;
     }
 
     /**
-     * Setter dla typu zwracanego.
+     * Function type setter.
      *
-     * @param type kod typu
+     * @param type type
      */
     public void setType(String type) {
         this.type = type;
     }
 
-    /**
-     * Czy funkcja moze pelnic role version-selectora.
-     *
-     * @return wartosc flagi
-     */
+    @Override
     @Column
     public boolean isVersionSelector() {
         return versionSelector;
     }
 
     /**
-     * Setter dla flagi versionSelector.
+     * Is function a version selector.
      *
-     * @param versionSelector wartosc flagi
+     * @param versionSelector is version selector
      */
     public void setVersionSelector(boolean versionSelector) {
         this.versionSelector = versionSelector;
     }
 
-    /**
-     * Czy funkcja jest pluginowa.
-     *
-     * @return wartosc flagi
-     */
+    @Override
     @Column
     public boolean isPlugin() {
         return plugin;
     }
 
     /**
-     * Setter dla flagi plugin.
+     * Is plugin function.
      *
-     * @param plugin wartosc flagi
+     * @param plugin is plugin function
      */
     public void setPlugin(boolean plugin) {
         this.plugin = plugin;
     }
 
-    /**
-     * Getter dla obiektu implementujacego funkcje.
-     *
-     * @return obiekt implementujacy
-     */
+    @Override
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
     public JpaFunctionImpl getImplementation() {
         return implementation;
     }
 
     /**
-     * Setter dla obiektu implementujacego funkcje.
+     * Implementation setter.
      *
-     * @param implementation implementacja
+     * @param implementation implementation
      */
     public void setImplementation(JpaFunctionImpl implementation) {
         this.implementation = implementation;
     }
 
     /**
-     * Dokleja do bufora informacje o flagach, jesli tylko
-     * funkcja posiada ktoras z flag.
+     * Used by {@link #toString()}, appends flag values.
+     *
+     * @param sb string builder to append to
      */
     private void appendFlags(StringBuilder sb) {
         if (isVersionSelector() || isLevelCreator() || isPlugin()) {
@@ -219,7 +208,7 @@ public class JpaFunction implements Function, JpaModelObject {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(TO_STRING_APPROX_LENGTH);
 
         sb.append("Function#").append(id);
         sb.append("[name=").append(name);

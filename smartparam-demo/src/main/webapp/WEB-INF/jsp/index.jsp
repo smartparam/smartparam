@@ -9,5 +9,6 @@
     </head>
     <body>
         <h1>Hello SmartParam!</h1>
+        <h2>sample parameter value for input [input1] = ${output}</h2>
     </body>
 </html>

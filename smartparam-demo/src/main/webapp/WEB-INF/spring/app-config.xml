@@ -34,4 +34,69 @@
         </property>-->
     </bean>
 
+    <bean id="paramEngine" class="org.smartparam.engine.core.engine.ParamEngine">
+        <property name="paramProvider" ref="paramProvider" />
+        <property name="functionProvider" ref="functionProvider" />
+        <property name="invokerProvider" ref="invokerProvider" />
+        <property name="assemblerProvider" ref="assemblerProvider" />
+    </bean>
+
+    <bean id="paramProvider" class="org.smartparam.engine.core.engine.ParamProviderImpl">
+        <property name="matcherProvider" ref="matcherProvider" />
+        <property name="typeProvider" ref="typeProvider" />
+        <property name="loader" ref="smartparamLoader" />
+        <property name="cache" ref="paramCache" />
+    </bean>
+
+    <bean id="functionProvider" class="org.smartparam.engine.core.engine.FunctionProviderImpl">
+        <property name="loader" ref="smartparamFunctionLoader"/>
+        <property name="cache" ref="functionCache" />
+    </bean>
+
+    <bean id="paramCache" class="org.smartparam.engine.core.cache.MapParamCache" />
+    <bean id="functionCache" class="org.smartparam.engine.core.cache.MapFunctionCache" />
+
+    <bean id="typeProvider" class="org.smartparam.engine.core.config.TypeProvider">
+        <property name="typeMap">
+            <map>
+                <entry key="string" value-ref="stringType" />
+                <entry key="integer" value-ref="integerType" />
+                <entry key="number" value-ref="numberType" />
+                <entry key="date" value-ref="dateType" />
+                <entry key="plugin" value-ref="pluginType" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="stringType" class="org.smartparam.engine.types.string.StringType" />
+    <bean id="integerType" class="org.smartparam.engine.types.integer.IntegerType" />
+    <bean id="numberType" class="org.smartparam.engine.types.number.NumberType" />
+    <bean id="dateType" class="org.smartparam.engine.types.date.DateType" />
+    <bean id="pluginType" class="org.smartparam.engine.types.plugin.PluginType" />
+
+    <bean id="invokerProvider" class="org.smartparam.engine.core.config.InvokerProvider">
+        <property name="invokers">
+            <map>
+                <entry key="java" value-ref="javaFunctionInvoker" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="javaFunctionInvoker" class="org.smartparam.engine.core.function.JavaFunctionInvoker" />
+
+    <bean id="assemblerProvider" class="org.smartparam.engine.core.config.AssemblerProvider">
+        <property name="assemblerObjects">
+            <list>
+                <bean class="org.smartparam.engine.assemblers.GenericEnumAssembler" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="matcherProvider" class="org.smartparam.engine.core.config.MatcherProvider">
+        <property name="matcherMap">
+            <map>
+            </map>
+        </property>
+    </bean>
+
 </beans>
