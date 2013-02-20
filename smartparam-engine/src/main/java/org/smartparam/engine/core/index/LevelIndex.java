@@ -9,18 +9,18 @@ import org.smartparam.engine.util.Formatter;
  * Podstawowa struktura danych pozwalajaca na efektywne wyszukiwanie
  * wartosci parametru dla zadanych wartosci poziomow. Ma zastosowanie
  * do parametrow przechowywanych w pamieci, czyli dla wiekszosci.
- * 
+ * #ad widze ta zmiane
  * <p>
  * Struktura reprezentuje macierz parametru w postaci drzewa
  * o wysokosci rownej liczbie poziomow zdefiniowanych w parametrze.
- * 
+ *
  * <p>
  * Wyszukiwanie wartosci parametru dla zadanych wartosci levelow (poziomow)
  * jest realizowane przez rekurencyjny algorytm z powrotami.
  * Algorytm uwzglednia istnienie symbolu specjalnego (gwiazdki)
  * w macierzy parametru. Symbol ten oznacza dopasowanie dowolnej wartosci
  * poziomu, jednak sprawdzany jest dopiero, jesli zawiedzie jawne dopasowanie.
- * 
+ *
  * <p>
  * Dla przykladu wezmy parametr o 3 poziomach i wartosci typu Integer.
  * Macierz parametru sklada sie z 6 wierszy i 3 kolumn. Kazdy wiersz
