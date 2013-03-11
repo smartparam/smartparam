@@ -55,7 +55,8 @@ public interface Parameter {
      *
      * @return description
      */
-    String getDescription();
+//    String getDescription();
+//TODO #ph remove getDescription from interface
 
     /**
      * Returns parameter return type (for single-value parameters).
@@ -79,6 +80,7 @@ public interface Parameter {
      * @return sorted level value resolver list
      */
     Level getLevel(int levelNumber);
+    //TODO #ph remove from interface and from impl ParProvImpl
 
     /**
      * Returns number of levels (level list length).
@@ -86,6 +88,7 @@ public interface Parameter {
      * @return number of parameter levels
      */
     int getLevelCount();
+    //TODO #ph remove from interface
 
     /**
      * Returns number of input levels (k). Meaningful only for
@@ -109,6 +112,7 @@ public interface Parameter {
      * @return is archive
      */
     boolean isArchive();
+    //TODO #ph maybe remove isArchive?
 
     /**
      * Should parameter return value be treated as an array of values.

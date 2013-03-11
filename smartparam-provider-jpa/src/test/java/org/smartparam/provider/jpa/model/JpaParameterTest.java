@@ -1,8 +1,5 @@
 package org.smartparam.provider.jpa.model;
 
-import org.smartparam.provider.jpa.model.JpaParameter;
-import org.smartparam.provider.jpa.model.JpaLevel;
-import org.smartparam.provider.jpa.model.JpaParameterEntry;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;

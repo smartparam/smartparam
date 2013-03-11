@@ -14,7 +14,8 @@ public interface Level {
      *
      * @return parameter owning this level
      */
-    Parameter getParameter();
+//    Parameter getParameter();
+//TODO #ph 0 clean    
 
     /**
      * Returns short description of level.
@@ -28,7 +29,8 @@ public interface Level {
      *
      * @return label key
      */
-    String getLabelKey();
+//    String getLabelKey();
+//TODO #ph 0 clean    
 
     /**
      * Position of level in parameter level array.
@@ -70,5 +72,6 @@ public interface Level {
      *
      * @return function to validate contents of level
      */
-    Function getValidator();
+    //Function getValidator();
+    //TODO #ph remove from interface
 }

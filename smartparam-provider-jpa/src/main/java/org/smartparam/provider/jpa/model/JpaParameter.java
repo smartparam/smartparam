@@ -160,7 +160,6 @@ public class JpaParameter implements Parameter, JpaModelObject {
      * @return description
      */
     @Column(length = LONG_COLUMN_LENGTH)
-    @Override
     public String getDescription() {
         return description;
     }
