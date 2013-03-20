@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
@@ -37,7 +39,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         try {
             ps = conn.prepareStatement(
                     " select id, label, type, input_levels, multivalue, cacheable, nullable, array_flag, array_separator"
-                    + " from ecs_param"
+                    + " from smartparam_param"
                     + " where name = ?");
 
             ps.setString(1, parameterName);
@@ -87,16 +89,131 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         return p;
     }
 
+    private JdbcParameterLevel readJdbcParameterLevel(ResultSet rs, int parameterId) throws SQLException {
+        JdbcParameterLevel level = new JdbcParameterLevel();
+        level.setId(rs.getInt("id"));
+        level.setParameterId(parameterId);
+        level.setOrderNo(rs.getInt("order_no"));
+        level.setLabel(rs.getString("label"));
+        level.setType(rs.getString("type"));
+        level.setMatcher(rs.getString("matcher"));
+        level.setArray(rs.getBoolean("array_flag"));
+        //level.setLevelCreatorId(rs.getInt("level_creator_id"));
+        return level;
+    }
+
+    private JdbcParameterEntry readJdbcParameterEntry(ResultSet rs, int parameterId) throws SQLException {
+        JdbcParameterEntry e = new JdbcParameterEntry();
+        e.setId(rs.getInt("id"));
+        e.setParameterId(parameterId);
+        e.setLevels(
+                new String[] {
+                    rs.getString("level1"),
+                    rs.getString("level2"),
+                    rs.getString("level3"),
+                    rs.getString("level4"),
+                    rs.getString("level5"),
+                    rs.getString("level6"),
+                    rs.getString("level7"),
+                    rs.getString("level8")
+                });
+        e.setValue(rs.getString("value"));
+        return e;
+    }
+
     private char toChar(String str) {
         return str != null && str.length() > 0 ? str.charAt(0) : ',';
     }
 
     public List<JdbcParameterLevel> getParameterLevels(int parameterId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        List<JdbcParameterLevel> result = new ArrayList<JdbcParameterLevel>();
+
+        Connection conn = getConnection();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(
+                    " select id, order_no, label, type, matcher, array_flag, level_creator_id"
+                    + " from smartparam_level"
+                    + " where param_id = ?");
+
+            ps.setInt(1, parameterId);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                result.add(readJdbcParameterLevel(rs, parameterId));
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch parameter levels", e);
+            //TODO #ph own hierarchy
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                logger.error("Failed to cleanup resources", ex);
+            }
+        }
     }
 
     public Set<JdbcParameterEntry> getParameterEntries(int parameterId) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        Set<JdbcParameterEntry> result = new HashSet<JdbcParameterEntry>();
+
+        Connection conn = getConnection();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement(""
+                    + " select id, level1, level2, level3, level4, level5, level6, level7, level8, value"
+                    + " from smartparam_entry"
+                    + " where param_id = ?");
+
+            ps.setInt(1, parameterId);
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                result.add(readJdbcParameterEntry(rs, parameterId));
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch parameter levels", e);
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                logger.error("Failed to cleanup resources", ex);
+            }
+        }
     }
 
     private Connection getConnection() {
@@ -106,6 +223,20 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to obtain connection from datasource", e);
             //TODO #ph [provider-jdbc] exception hierarchy
+        }
+    }
+
+    //TODO #ph [provider-jdbc] implement jdbc spring-like abstraction layer
+    /**
+     * Close the given JDBC ResultSet and ignore any thrown exception.
+     */
+    public void closeResultSet(ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (Throwable ex) {
+                logger.trace("Failed to close JDBC ResultSet", ex);
+            }
         }
     }
 }

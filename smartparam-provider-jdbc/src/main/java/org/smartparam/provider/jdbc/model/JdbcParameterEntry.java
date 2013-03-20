@@ -42,8 +42,8 @@ public class JdbcParameterEntry implements ParameterEntry {
 
     @Override
     public Function getFunction() {
-        throw new UnsupportedOperationException("Not supported yet.");
         //TODO #ph fix: change interface to getFunction:string
+        return null;
     }
 
     public int getId() {

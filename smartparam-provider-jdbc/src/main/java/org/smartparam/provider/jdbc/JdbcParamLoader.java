@@ -5,10 +5,15 @@
 package org.smartparam.provider.jdbc;
 
 import java.util.List;
+import java.util.Set;
 import javax.sql.DataSource;
 import org.smartparam.engine.core.loader.ParamLoader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.provider.jdbc.dao.JdbcProviderDAO;
+import org.smartparam.provider.jdbc.model.JdbcParameter;
+import org.smartparam.provider.jdbc.model.JdbcParameterEntry;
+import org.smartparam.provider.jdbc.model.JdbcParameterLevel;
 
 /**
  * @author Przemek Hertel
@@ -20,6 +25,8 @@ public class JdbcParamLoader implements ParamLoader {
      * JDBC DataSource to obtain connections from.
      */
     private DataSource dataSource;
+    
+    private JdbcProviderDAO dao;
 
     /**
      * This variable will be used to set the fetchSize property on jdbc statements.
@@ -32,7 +39,14 @@ public class JdbcParamLoader implements ParamLoader {
 
     @Override
     public Parameter load(String parameterName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        JdbcParameter p = dao.getParameter(parameterName);
+        List<JdbcParameterLevel> levels = dao.getParameterLevels(p.getId());
+        Set<JdbcParameterEntry> entries = dao.getParameterEntries(p.getId());
+        
+        p.setLevels(levels);
+        p.setEntries(entries);
+        
+        return p;
     }
 
     public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
@@ -54,4 +68,9 @@ public class JdbcParamLoader implements ParamLoader {
     public void setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
     }
+
+    public void setJdbcProviderDao(JdbcProviderDAO dao) {
+        this.dao = dao;
+    }
+    
 }

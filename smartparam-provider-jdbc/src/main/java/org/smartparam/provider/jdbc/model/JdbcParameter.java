@@ -5,7 +5,6 @@ import java.util.Set;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
 
 /**
  * @author Przemek Hertel

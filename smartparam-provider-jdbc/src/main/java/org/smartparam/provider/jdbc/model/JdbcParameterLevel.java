@@ -35,7 +35,7 @@ public class JdbcParameterLevel implements Level {
 
     @Override
     public Function getLevelCreator() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
         //TODO #ph fix
     }
 
