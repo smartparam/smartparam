@@ -10,14 +10,14 @@
         <property name="assemblerProvider" ref="assemblerProvider" />
     </bean>
 
-    <bean id="paramProvider" class="org.smartparam.engine.core.engine.ParamProviderImpl">
+    <bean id="paramProvider" class="org.smartparam.engine.core.engine.SmartParamPreparer">
         <property name="typeProvider" ref="typeProvider" />
         <property name="cache" ref="paramCache" />
     </bean>
 
     <bean id="paramCache" class="org.smartparam.engine.core.cache.MapParamCache" />
 
-    <bean id="typeProvider" class="org.smartparam.engine.core.config.TypeProvider">
+    <bean id="typeProvider" class="org.smartparam.engine.core.config.SmartTypeProvider">
         <property name="typeMap">
             <map>
                 <entry key="string" value-ref="stringType" />

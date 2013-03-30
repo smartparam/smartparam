@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class PackageList implements Iterable<String> {
 
-    private List<String> packages;
+    private List<String> packages = null;
 
     private void createIfNull() {
         if (packages == null) {

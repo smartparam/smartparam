@@ -68,18 +68,7 @@
         </property>
     </bean>-->
 
-    <bean id="typeProvider" class="org.smartparam.engine.core.config.AnnotatedTypeProvider">
-        <property name="packagesToScan">
-            <list>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="stringType" class="org.smartparam.engine.types.string.StringType" />
-    <bean id="integerType" class="org.smartparam.engine.types.integer.IntegerType" />
-    <bean id="numberType" class="org.smartparam.engine.types.number.NumberType" />
-    <bean id="dateType" class="org.smartparam.engine.types.date.DateType" />
-    <bean id="pluginType" class="org.smartparam.engine.types.plugin.PluginType" />
+    <bean id="typeProvider" class="org.smartparam.engine.core.config.AnnotatedTypeProvider"/>
 
     <bean id="invokerProvider" class="org.smartparam.engine.core.config.InvokerProvider">
         <property name="invokers">

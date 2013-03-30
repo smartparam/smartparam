@@ -29,7 +29,7 @@ import org.smartparam.engine.core.exception.SmartParamErrorCode;
 /**
  * @author Przemek Hertel
  */
-public class ParamProviderImplTest {
+public class SmartParamPreparerTest {
 
     private ParamCache cache;
 
