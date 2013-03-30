@@ -1,11 +1,11 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.engine.MultiValue;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.date.DateHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
@@ -63,8 +63,8 @@ public class MultiValueTest {
             } catch (ParamException e) {
                 System.out.println("OK: " + e.getMessage());
                 assertTrue(
-                        e.getErrorCode() == ParamException.ErrorCode.INDEX_OUT_OF_BOUNDS
-                        || e.getErrorCode() == ParamException.ErrorCode.GETTING_WRONG_TYPE);
+                        e.getErrorCode() == SmartParamErrorCode.INDEX_OUT_OF_BOUNDS
+                        || e.getErrorCode() == SmartParamErrorCode.GETTING_WRONG_TYPE);
             }
         }
     }
@@ -196,7 +196,7 @@ public class MultiValueTest {
                 fail();
 
             } catch (ParamException e) {
-                assertEquals(ParamException.ErrorCode.GETTING_WRONG_TYPE, e.getErrorCode());
+                assertEquals(SmartParamErrorCode.GETTING_WRONG_TYPE, e.getErrorCode());
             }
         }
     }
@@ -244,8 +244,8 @@ public class MultiValueTest {
             } catch (ParamException e) {
                 System.out.println("OK: " + e.getMessage());
                 assertTrue(
-                        e.getErrorCode() == ParamException.ErrorCode.INDEX_OUT_OF_BOUNDS
-                        || e.getErrorCode() == ParamException.ErrorCode.GETTING_WRONG_TYPE);
+                        e.getErrorCode() == SmartParamErrorCode.INDEX_OUT_OF_BOUNDS
+                        || e.getErrorCode() == SmartParamErrorCode.GETTING_WRONG_TYPE);
             }
         }
     }

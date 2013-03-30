@@ -1,6 +1,5 @@
 package org.smartparam.engine.util;
 
-import org.smartparam.engine.util.ParamHelper;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +7,7 @@ import java.util.Collection;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.AbstractType;
 import org.smartparam.engine.types.integer.IntegerHolder;
@@ -53,7 +53,7 @@ public class ParamHelperTest {
                 ParamHelper.decode(type, text);
                 fail();
             } catch (ParamException e) {
-                assertEquals(ParamException.ErrorCode.TYPE_DECODING_FAILURE, e.getErrorCode());
+                assertEquals(SmartParamErrorCode.TYPE_DECODING_FAILURE, e.getErrorCode());
             }
         }
     }
@@ -92,7 +92,7 @@ public class ParamHelperTest {
                 ParamHelper.convert(type, obj);
                 fail();
             } catch (ParamException e) {
-                assertEquals(ParamException.ErrorCode.TYPE_CONVERSION_FAILURE, e.getErrorCode());
+                assertEquals(SmartParamErrorCode.TYPE_CONVERSION_FAILURE, e.getErrorCode());
             }
         }
     }

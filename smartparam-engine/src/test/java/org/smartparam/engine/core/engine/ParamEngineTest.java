@@ -10,10 +10,12 @@ import static org.mockito.Mockito.*;
 import org.slf4j.Logger;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.config.InvokerProvider;
+import org.smartparam.engine.core.config.SmartTypeProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.JavaFunctionInvoker;
 import org.smartparam.engine.core.loader.ParamLoader;
@@ -319,14 +321,14 @@ public class ParamEngineTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("", "plugin.fun"));
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("plugin").withEntries(entries).get();
 
-        TypeProvider tp = new TypeProvider();
+        TypeProvider tp = new SmartTypeProvider();
         tp.registerType("plugin", new PluginType());
         tp.registerType("string", new StringType());
 
         ParamLoader loader = mock(ParamLoader.class);
         when(loader.load("par")).thenReturn(par);
 
-        ParamProviderImpl provider = new ParamProviderImpl();
+        SmartParamPreparer provider = new SmartParamPreparer();
         provider.setTypeProvider(tp);
         provider.setLoader(loader);
         provider.setCache(new MapParamCache());
@@ -402,7 +404,7 @@ public class ParamEngineTest {
             engine.invokeFunction(f, 1, 2, 3);
             fail();
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.UNDEFINED_FUNCTION_INVOKER, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.UNDEFINED_FUNCTION_INVOKER, e.getErrorCode());
         }
     }
 
@@ -425,7 +427,7 @@ public class ParamEngineTest {
             engine.invokeFunction(f, 13);
             fail();
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
         }
     }
 
@@ -456,7 +458,7 @@ public class ParamEngineTest {
     public void testGetPreparedParameter() {
 
         // zaleznosci
-        ParamProvider paramProvider = mock(ParamProvider.class);
+        ParamPreparer paramProvider = mock(ParamPreparer.class);
 
         // konfiguracja zaleznosci
         when(paramProvider.getPreparedParameter("par")).thenReturn(null);
@@ -470,7 +472,7 @@ public class ParamEngineTest {
             engine.getValue("par", new DefaultContext());
             fail();
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.UNKNOWN_PARAMETER, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.UNKNOWN_PARAMETER, e.getErrorCode());
         }
     }
 

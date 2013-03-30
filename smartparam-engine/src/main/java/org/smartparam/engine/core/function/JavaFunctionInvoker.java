@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.model.functions.JavaFunction;
 import org.smartparam.engine.util.Printer;
 
@@ -131,7 +132,7 @@ public class JavaFunctionInvoker extends CoreJavaInvoker implements FunctionInvo
 
         } catch (ClassNotFoundException e) {
             throw new ParamDefinitionException(
-                    ParamException.ErrorCode.FUNCTION_INVOKE_ERROR, e,
+                    SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e,
                     "Unable to load defined java class: " + className);
         }
     }
@@ -168,7 +169,7 @@ public class JavaFunctionInvoker extends CoreJavaInvoker implements FunctionInvo
         } catch (Exception e) {
             logger.error("", e);
             throw new ParamDefinitionException(
-                    ParamException.ErrorCode.FUNCTION_INVOKE_ERROR, e,
+                    SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e,
                     "Error instantiating class: " + clazz + ", msg=" + e.getMessage());
         }
     }

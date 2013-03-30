@@ -4,7 +4,7 @@ import java.util.Arrays;
 import javax.persistence.*;
 import org.apache.commons.lang3.StringUtils;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.util.EngineUtil;
 
@@ -224,7 +224,7 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
         ensureLevelCapacity(k);
 
         if (k <= 0) {
-            throw new ParamDefinitionException(ErrorCode.INDEX_OUT_OF_BOUNDS, "Setting illegal level position: " + k);
+            throw new ParamDefinitionException(SmartParamErrorCode.INDEX_OUT_OF_BOUNDS, "Setting illegal level position: " + k);
         }
 
         levels[k - 1] = pattern;

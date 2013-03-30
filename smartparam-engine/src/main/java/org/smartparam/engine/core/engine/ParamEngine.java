@@ -13,8 +13,8 @@ import org.smartparam.engine.core.config.InvokerProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.ParamException;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
 import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.AbstractHolder;
@@ -35,7 +35,7 @@ public class ParamEngine {
 
     private Logger logger = LoggerFactory.getLogger(ParamEngine.class);
 
-    private ParamProvider paramProvider;
+    private ParamPreparer paramProvider;
 
     private FunctionProvider functionProvider;
 
@@ -82,7 +82,7 @@ public class ParamEngine {
 
         } else if (ctx.getResultClass() != resultClass) {
             throw new ParamUsageException(
-                    ErrorCode.ILLEGAL_API_USAGE,
+                    SmartParamErrorCode.ILLEGAL_API_USAGE,
                     "Passing resultClass different from ctx#resultClass: " + resultClass + " / " + ctx.getResultClass());
         }
 
@@ -101,7 +101,7 @@ public class ParamEngine {
 
         if (ctx.getResultClass() == null) {
             throw new ParamUsageException(
-                    ErrorCode.ILLEGAL_API_USAGE,
+                    SmartParamErrorCode.ILLEGAL_API_USAGE,
                     "Calling getResult() but there is no result class in param context");
         }
 
@@ -115,7 +115,7 @@ public class ParamEngine {
             ctx.setResultClass(resultClass);
         } else if (ctx.getResultClass() != resultClass) {
             throw new ParamUsageException(
-                    ErrorCode.ILLEGAL_API_USAGE,
+                    SmartParamErrorCode.ILLEGAL_API_USAGE,
                     "Passing resultClass different from ctx#resultClass: " + resultClass + " / " + ctx.getResultClass());
         }
 
@@ -139,7 +139,7 @@ public class ParamEngine {
 
         if (!param.isArray()) {
             throw new ParamUsageException(
-                    ErrorCode.ILLEGAL_API_USAGE,
+                    SmartParamErrorCode.ILLEGAL_API_USAGE,
                     "Calling getArray() for non-array parameter: " + paramName);
         }
 
@@ -170,7 +170,7 @@ public class ParamEngine {
 
         if (!param.isMultivalue()) {
             throw new ParamUsageException(
-                    ErrorCode.ILLEGAL_API_USAGE,
+                    SmartParamErrorCode.ILLEGAL_API_USAGE,
                     "Calling getMultiValue() for non-multivalue parameter: " + paramName);
         }
 
@@ -221,7 +221,7 @@ public class ParamEngine {
 
         if (!param.isMultivalue()) {
             throw new ParamUsageException(
-                    ErrorCode.ILLEGAL_API_USAGE,
+                    SmartParamErrorCode.ILLEGAL_API_USAGE,
                     "Calling getMultiRow() for non-multivalue parameter: " + paramName);
         }
 
@@ -462,7 +462,7 @@ public class ParamEngine {
 
             if (levelCreator == null) {
                 throw new ParamException(
-                        ErrorCode.UNDEFINED_LEVEL_CREATOR,
+                        SmartParamErrorCode.UNDEFINED_LEVEL_CREATOR,
                         "Level(" + (i + 1) + ") has no level-creator funtion, but function is needed to evaluate level value");
             }
 
@@ -492,13 +492,13 @@ public class ParamEngine {
         FunctionInvoker<FunctionImpl> invoker = invokerProvider.getInvoker(impl);
 
         if (invoker == null) {
-            throw new ParamException(ErrorCode.UNDEFINED_FUNCTION_INVOKER, "Undefined FunctionInvoker for: " + impl);
+            throw new ParamException(SmartParamErrorCode.UNDEFINED_FUNCTION_INVOKER, "Undefined FunctionInvoker for: " + impl);
         }
 
         try {
             return invoker.invoke(impl, args);
         } catch (RuntimeException e) {
-            throw new ParamException(ErrorCode.FUNCTION_INVOKE_ERROR, e, "Failed to invoke function: " + impl);
+            throw new ParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Failed to invoke function: " + impl);
         }
     }
 
@@ -509,7 +509,7 @@ public class ParamEngine {
             LevelIndex<PreparedEntry> index = param.getIndex();
             if (levelValues.length != index.getLevelCount()) {
                 throw new ParamUsageException(
-                        ErrorCode.ILLEGAL_LEVEL_VALUES,
+                        SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
                         "Illegal user-supplied levelValues array: levelCount=" + index.getLevelCount() + ", levelValues=" + levelValues.length);
             }
 
@@ -540,7 +540,7 @@ public class ParamEngine {
             LevelIndex<PreparedEntry> index = param.getIndex();
             if (levelValues.length != index.getLevelCount()) {
                 throw new ParamUsageException(
-                        ErrorCode.ILLEGAL_LEVEL_VALUES,
+                        SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
                         "Illegal user-supplied levelValues array: levelCount=" + index.getLevelCount() + ", levelValues=" + levelValues.length);
             }
 
@@ -568,12 +568,16 @@ public class ParamEngine {
         logger.trace("prepared parameter: {}", param);
 
         if (param == null) {
-            throw new ParamException(ErrorCode.UNKNOWN_PARAMETER, "parameter not found: " + paramName);
+            throw new ParamException(SmartParamErrorCode.UNKNOWN_PARAMETER, "parameter not found: " + paramName);
         }
         return param;
     }
 
-    public void setParamProvider(ParamProvider paramProvider) {
+    protected boolean hasParamProvider() {
+        return paramProvider != null;
+    }
+
+    public void setParamProvider(ParamPreparer paramProvider) {
         this.paramProvider = paramProvider;
     }
 
@@ -594,7 +598,7 @@ public class ParamEngine {
     private ParamException raiseValueNotFoundException(String paramName, ParamContext ctx) {
 
         return new ParamException(
-                ErrorCode.PARAM_VALUE_NOT_FOUND,
+                SmartParamErrorCode.PARAM_VALUE_NOT_FOUND,
                 "Value not found for parameter [" + paramName + "] and given context: " + ctx);
     }
 

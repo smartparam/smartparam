@@ -9,7 +9,7 @@ import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.config.MatcherProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.loader.ParamLoader;
@@ -31,9 +31,9 @@ import org.smartparam.engine.model.ParameterEntry;
  * </ol>
  *
  * @author Przemek Hertel
- * @since 1.0.0
+ * @since 0.1.0
  */
-public class ParamProviderImpl implements ParamProvider {
+public class SmartParamPreparer implements ParamPreparer {
 
     /**
      * Logger.
@@ -108,7 +108,7 @@ public class ParamProviderImpl implements ParamProvider {
 
         if (paramType == null && !p.isMultivalue()) {
             throw new ParamDefinitionException(
-                    ErrorCode.UNKNOWN_PARAM_TYPE,
+                    SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
                     "Parameter " + p.getName() + " has undefined param type: " + p.getType());
         }
 
@@ -130,7 +130,7 @@ public class ParamProviderImpl implements ParamProvider {
 
                 if (type == null) {
                     throw new ParamDefinitionException(
-                            ErrorCode.UNKNOWN_PARAM_TYPE,
+                            SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
                             "Parameter " + p.getName() + ": level(" + (i + 1) + ") has unknown type: " + lev.getType());
                 }
             }
@@ -141,7 +141,7 @@ public class ParamProviderImpl implements ParamProvider {
 
                 if (matcher == null) {
                     throw new ParamDefinitionException(
-                            ErrorCode.UNKNOWN_MATCHER,
+                            SmartParamErrorCode.UNKNOWN_MATCHER,
                             "Parameter " + p.getName() + ": level(" + (i + 1) + ") has unknown matcher: " + lev.getMatcherCode());
                 }
             }

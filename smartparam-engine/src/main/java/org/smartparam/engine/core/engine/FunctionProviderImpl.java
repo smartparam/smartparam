@@ -2,7 +2,7 @@ package org.smartparam.engine.core.engine;
 
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.model.Function;
 
@@ -36,7 +36,7 @@ public class FunctionProviderImpl implements FunctionProvider {
             f = loader.load(name);
 
             if (f == null) {
-                throw new ParamDefinitionException(ErrorCode.UNKNOWN_FUNCTION, "Unknown function: " + name);
+                throw new ParamDefinitionException(SmartParamErrorCode.UNKNOWN_FUNCTION, "Unknown function: " + name);
             }
 
             cache.put(name, f);

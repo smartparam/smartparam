@@ -8,7 +8,7 @@ import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.engine.ParamEngine;
-import org.smartparam.engine.core.engine.ParamProviderImpl;
+import org.smartparam.engine.core.engine.SmartParamPreparer;
 import org.smartparam.engine.core.loader.ParamLoader;
 import org.smartparam.engine.mockBuilders.LevelMockBuilder;
 import org.smartparam.engine.mockBuilders.ParameterEntryMockBuilder;
@@ -79,7 +79,7 @@ public class SpringConfigurationTest {
         // konfiguracja zaleznosci
         ParamLoader loader = mock(ParamLoader.class);
         when(loader.load("par")).thenReturn(par);
-        ParamProviderImpl paramProvider = ctx.getBean(ParamProviderImpl.class);
+        SmartParamPreparer paramProvider = ctx.getBean(SmartParamPreparer.class);
         paramProvider.setLoader(loader);
 
         // pobranie testowanego obiektu

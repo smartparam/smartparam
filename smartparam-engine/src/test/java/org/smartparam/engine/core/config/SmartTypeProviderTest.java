@@ -1,11 +1,11 @@
 package org.smartparam.engine.core.config;
 
-import org.smartparam.engine.core.config.TypeProvider;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractType;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;
@@ -13,7 +13,7 @@ import org.smartparam.engine.types.string.StringType;
 /**
  * @author Przemek Hertel
  */
-public class TypeProviderTest {
+public class SmartTypeProviderTest {
 
     private IntegerType intType;
     private StringType strType;
@@ -55,7 +55,7 @@ public class TypeProviderTest {
     public void testRegisterType() {
 
         // utworzenie testowanego obiektu
-        TypeProvider tp = new TypeProvider();
+        TypeProvider tp = new SmartTypeProvider();
         tp.registerType("int", intType);
         tp.registerType("str", strType);
         tp.registerType("chr", chrType);
@@ -74,7 +74,7 @@ public class TypeProviderTest {
         types.put("chr", chrType);
 
         // utworzenie testowanego obiektu
-        TypeProvider tp = new TypeProvider();
+        SmartTypeProvider tp = new SmartTypeProvider();
         tp.setTypeMap(types);
 
         // sprawdzenie wynikow testu
@@ -85,7 +85,7 @@ public class TypeProviderTest {
     public void testRegisterType__nonUniqueCode() {
 
         // utworzenie testowanego obiektu
-        TypeProvider tp = new TypeProvider();
+        TypeProvider tp = new SmartTypeProvider();
         tp.registerType("int", intType);
         tp.registerType("str", strType);
 
@@ -95,7 +95,7 @@ public class TypeProviderTest {
             fail();
         }
         catch(ParamException pe) {
-            assertEquals(ParamException.ErrorCode.NON_UNIQUE_TYPE_CODE, pe.getErrorCode());
+            assertEquals(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, pe.getErrorCode());
         }
     }
 }

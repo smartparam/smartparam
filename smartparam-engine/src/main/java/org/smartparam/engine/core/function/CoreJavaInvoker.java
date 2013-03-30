@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.core.exception.ParamException;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * Klasa bazowa dla FunctionInvokerow, ktore wykonuja funkcje bazujace na implementacji poprzez metode javy.
@@ -57,7 +57,7 @@ public abstract class CoreJavaInvoker {
             return m.invoke(instance, args);
         } catch (Exception e) {
             logger.error("", e);
-            throw new ParamException(ErrorCode.FUNCTION_INVOKE_ERROR, e, "Error invoking method: " + m);
+            throw new ParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Error invoking method: " + m);
         }
     }
 
@@ -124,7 +124,7 @@ public abstract class CoreJavaInvoker {
 
         if (m == null) {
             throw new ParamDefinitionException(
-                    ErrorCode.FUNCTION_INVOKE_ERROR,
+                    SmartParamErrorCode.FUNCTION_INVOKE_ERROR,
                     "Cannot find method: " + clazz.getName() + "." + methodName + " for args: " + Arrays.toString(argTypes));
         }
 

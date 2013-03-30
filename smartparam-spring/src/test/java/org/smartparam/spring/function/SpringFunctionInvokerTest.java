@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  *
@@ -136,7 +137,7 @@ public class SpringFunctionInvokerTest {
                 fail();
 
             } catch (ParamException e) {
-                assertEquals(ParamException.ErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
+                assertEquals(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
                 assertNotNull(e.getCause());
                 System.out.println("OK[" + i + "] : " + e.getCause());
             }

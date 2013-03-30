@@ -3,13 +3,13 @@ package org.smartparam.engine.core.engine;
 import org.junit.*;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
-import org.smartparam.engine.core.exception.ParamException;
 import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.model.Function;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * @author Przemek Hertel
@@ -58,7 +58,7 @@ public class FunctionProviderImplTest {
             fp.getFunction("fun2");
             fail();
         } catch (ParamDefinitionException e) {
-            assertEquals(ParamException.ErrorCode.UNKNOWN_FUNCTION, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.UNKNOWN_FUNCTION, e.getErrorCode());
         }
 
     }

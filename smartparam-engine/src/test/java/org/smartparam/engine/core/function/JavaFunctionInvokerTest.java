@@ -16,6 +16,7 @@ import org.smartparam.engine.util.EngineUtil;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * @author Przemek Hertel
@@ -269,7 +270,7 @@ public class JavaFunctionInvokerTest {
             inv.invoke(f, 5, 0);
             fail();
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
         }
     }
 

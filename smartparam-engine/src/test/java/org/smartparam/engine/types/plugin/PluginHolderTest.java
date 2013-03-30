@@ -1,11 +1,11 @@
 package org.smartparam.engine.types.plugin;
 
-import org.smartparam.engine.types.plugin.PluginHolder;
 import java.util.Arrays;
+import org.apache.log4j.spi.ErrorCode;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
 import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * @author Przemek Hertel
@@ -55,7 +55,7 @@ public class PluginHolderTest {
         try {
             h1.intValue();
         } catch (ParamUsageException e) {
-            assertEquals(ErrorCode.GETTING_WRONG_TYPE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.GETTING_WRONG_TYPE, e.getErrorCode());
         }
     }
 

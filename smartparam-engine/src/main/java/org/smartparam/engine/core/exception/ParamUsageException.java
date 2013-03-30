@@ -7,11 +7,11 @@ public class ParamUsageException extends ParamException {
     
     private static final long serialVersionUID = 1L;
     
-	public ParamUsageException(ErrorCode errorCode, String message) {
+	public ParamUsageException(SmartParamErrorCode errorCode, String message) {
 		super(errorCode, message);
 	}
 
-	public ParamUsageException(ErrorCode errorCode, Throwable t, String message) {
+	public ParamUsageException(SmartParamErrorCode errorCode, Throwable t, String message) {
 		super(errorCode, t, message);
 	}
 

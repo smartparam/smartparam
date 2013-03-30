@@ -18,6 +18,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
     <modules>
@@ -30,6 +31,8 @@
 
     <dependencyManagement>
         <dependencies>
+
+            <!-- do usuniecia -->
             <dependency>
                 <groupId>rhino</groupId>
                 <artifactId>js</artifactId>
@@ -42,6 +45,7 @@
                 <version>1.2.16</version>
             </dependency>
 
+            <!-- czy potrzebujemy slf? -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -52,6 +56,12 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>1.6.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>0.9.9-RC1</version>
             </dependency>
 
             <dependency>

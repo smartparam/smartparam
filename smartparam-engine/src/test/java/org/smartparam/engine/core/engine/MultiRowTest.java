@@ -1,12 +1,11 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.engine.MultiValue;
-import org.smartparam.engine.core.engine.MultiRow;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.number.NumberHolder;
@@ -116,7 +115,7 @@ public class MultiRowTest {
                 mr.getRow(k);
                 fail();
             } catch (ParamException e) {
-                assertEquals(ParamException.ErrorCode.INDEX_OUT_OF_BOUNDS, e.getErrorCode());
+                assertEquals(SmartParamErrorCode.INDEX_OUT_OF_BOUNDS, e.getErrorCode());
             }
         }
     }

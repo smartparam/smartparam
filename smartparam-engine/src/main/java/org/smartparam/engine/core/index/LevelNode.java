@@ -2,7 +2,7 @@ package org.smartparam.engine.core.index;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.type.AbstractType;
@@ -87,7 +87,7 @@ public class LevelNode<T> {
 
     private void ensureChildrenIsReady() {
         if (children == null) {
-            children = new HashMap<String, LevelNode<T>>(2, LOAD_FACTOR);
+            children = new LinkedHashMap<String, LevelNode<T>>(2, LOAD_FACTOR);
         }
     }
     private static final float LOAD_FACTOR = 0.8f;

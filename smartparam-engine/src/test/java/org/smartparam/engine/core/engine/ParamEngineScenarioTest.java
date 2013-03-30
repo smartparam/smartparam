@@ -14,11 +14,13 @@ import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.config.AssemblerProvider;
 import org.smartparam.engine.core.config.InvokerProvider;
+import org.smartparam.engine.core.config.SmartTypeProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.exception.ParamException;
 import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.JavaFunctionInvoker;
 import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.core.type.AbstractHolder;
@@ -45,7 +47,7 @@ public class ParamEngineScenarioTest {
 
     private ParamLoader loader;
 
-    private ParamProviderImpl paramProvider;
+    private SmartParamPreparer paramProvider;
 
     private AssemblerProvider assemblerProvider;
 
@@ -57,14 +59,14 @@ public class ParamEngineScenarioTest {
 
     @Before
     public void init() {
-        typeProvider = new TypeProvider();
+        typeProvider = new SmartTypeProvider();
         typeProvider.registerType("string", new StringType());
         typeProvider.registerType("integer", new IntegerType());
         typeProvider.registerType("plugin", new PluginType());
 
         loader = mock(ParamLoader.class);
 
-        paramProvider = new ParamProviderImpl();
+        paramProvider = new SmartParamPreparer();
         paramProvider.setTypeProvider(typeProvider);
         paramProvider.setLoader(loader);
         paramProvider.setCache(new MapParamCache());
@@ -227,7 +229,7 @@ public class ParamEngineScenarioTest {
         Object[] expected = {
             11,
             null,
-            new ParamException(ParamException.ErrorCode.PARAM_VALUE_NOT_FOUND, "")
+            new ParamException(SmartParamErrorCode.PARAM_VALUE_NOT_FOUND, "")
         };
 
         // test i weryfikacja
@@ -300,7 +302,7 @@ public class ParamEngineScenarioTest {
             } catch (ParamException e) {
 
                 assertTrue(expectedEx);     // wyjatek jest oczekiwany
-                assertEquals(ParamException.ErrorCode.PARAM_VALUE_NOT_FOUND, e.getErrorCode());
+                assertEquals(SmartParamErrorCode.PARAM_VALUE_NOT_FOUND, e.getErrorCode());
             }
         }
     }
@@ -345,7 +347,7 @@ public class ParamEngineScenarioTest {
             engine.getValue("par", "A", "B", "C", "D");
             fail();
         } catch (ParamUsageException e) {
-            assertEquals(ParamException.ErrorCode.ILLEGAL_LEVEL_VALUES, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES, e.getErrorCode());
         }
     }
 
@@ -528,7 +530,7 @@ public class ParamEngineScenarioTest {
             engine.getMultiValue("par", new DefaultContext());
             fail();
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
         }
     }
 
@@ -600,7 +602,7 @@ public class ParamEngineScenarioTest {
             engine.getResult("par", LetterType.class, new LevelValues("C").withResultClass(Integer.class));
             fail();
         } catch (ParamUsageException e) {
-            assertEquals(ParamException.ErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
         }
 
         // test 2 - brak resultClass w kontekscie
@@ -608,7 +610,7 @@ public class ParamEngineScenarioTest {
             engine.getResult("par", new LevelValues("C"));
             fail();
         } catch (ParamUsageException e) {
-            assertEquals(ParamException.ErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
         }
     }
 
@@ -679,7 +681,7 @@ public class ParamEngineScenarioTest {
             engine.getResultArray("par", LetterType.class, new LevelValues("A").withResultClass(Integer.class));
             fail();
         } catch (ParamUsageException e) {
-            assertEquals(ParamException.ErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
         }
     }
 
@@ -837,7 +839,7 @@ public class ParamEngineScenarioTest {
             fail();
 
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.PARAM_VALUE_NOT_FOUND, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.PARAM_VALUE_NOT_FOUND, e.getErrorCode());
         }
     }
 
@@ -863,7 +865,7 @@ public class ParamEngineScenarioTest {
             fail();
 
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
         }
     }
 
@@ -889,7 +891,7 @@ public class ParamEngineScenarioTest {
             fail();
 
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.ILLEGAL_LEVEL_VALUES, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES, e.getErrorCode());
         }
     }
 
@@ -997,7 +999,7 @@ public class ParamEngineScenarioTest {
             engine.getArray("par", new LevelValues("A"));
             fail();
         } catch (ParamUsageException e) {
-            assertEquals(ParamException.ErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
         }
     }
 
@@ -1021,7 +1023,7 @@ public class ParamEngineScenarioTest {
             engine.getArray("par", new LevelValues("NONEXISTING"));
             fail();
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.PARAM_VALUE_NOT_FOUND, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.PARAM_VALUE_NOT_FOUND, e.getErrorCode());
         }
     }
 
@@ -1136,7 +1138,7 @@ public class ParamEngineScenarioTest {
             engine.getValue("par", new DefaultContext());
             fail();
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.UNDEFINED_LEVEL_CREATOR, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.UNDEFINED_LEVEL_CREATOR, e.getErrorCode());
         }
     }
 

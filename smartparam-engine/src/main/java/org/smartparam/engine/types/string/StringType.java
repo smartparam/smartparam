@@ -1,5 +1,6 @@
 package org.smartparam.engine.types.string;
 
+import org.smartparam.engine.annotations.SmartParamType;
 import org.smartparam.engine.core.type.AbstractType;
 
 /**
@@ -11,6 +12,7 @@ import org.smartparam.engine.core.type.AbstractType;
  * @author Przemek Hertel
  * @since 1.0.0
  */
+@SmartParamType("string")
 public class StringType extends AbstractType<StringHolder> {
 
     /**

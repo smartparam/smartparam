@@ -1,6 +1,5 @@
 package org.smartparam.engine.core.assembler;
 
-import org.smartparam.engine.core.assembler.AssemblerMethod;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import org.junit.Test;
@@ -9,7 +8,7 @@ import org.smartparam.engine.core.context.DefaultContext;
 
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.ParamException;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.number.NumberHolder;
@@ -72,7 +71,7 @@ public class AssemblerMethodTest {
                 AssemblerMethod asm = new AssemblerMethod(this, m);
                 fail();
             } catch (ParamException e) {
-                assertEquals(ErrorCode.ILLEGAL_ASSEMBLER_DEFINITION, e.getErrorCode());
+                assertEquals(SmartParamErrorCode.ILLEGAL_ASSEMBLER_DEFINITION, e.getErrorCode());
             }
         }
     }
@@ -140,7 +139,7 @@ public class AssemblerMethodTest {
                 asm.assemble(new IntegerHolder(7L), new DefaultContext());
                 fail();
             } catch (ParamException e) {
-                assertEquals(ParamException.ErrorCode.ASSEMBLER_INVOKE_ERROR, e.getErrorCode());
+                assertEquals(SmartParamErrorCode.ASSEMBLER_INVOKE_ERROR, e.getErrorCode());
             }
         }
     }

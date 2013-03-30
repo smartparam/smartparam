@@ -1,12 +1,11 @@
 package org.smartparam.engine.core.context;
 
-import org.smartparam.engine.core.context.DefaultContext;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamException;
 import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * @author Przemek Hertel
@@ -124,7 +123,7 @@ public class DefaultContextTest {
             fail();
 
         } catch (ParamUsageException e) {
-            assertEquals(ParamException.ErrorCode.ERROR_FILLING_CONTEXT, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.ERROR_FILLING_CONTEXT, e.getErrorCode());
         }
     }
 

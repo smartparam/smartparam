@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.ParamException;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.CoreJavaInvoker;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.springframework.context.ApplicationContext;
@@ -97,7 +97,7 @@ public class SpringFunctionInvoker extends CoreJavaInvoker implements FunctionIn
 
         } catch (Exception e) {
             logger.error("", e);
-            throw new ParamException(ErrorCode.FUNCTION_INVOKE_ERROR, e, "Error invoking function: " + f);
+            throw new ParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Error invoking function: " + f);
         }
     }
 }

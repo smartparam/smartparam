@@ -23,6 +23,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.smartparam.engine.core.config.SmartTypeProvider;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * @author Przemek Hertel
@@ -37,9 +39,9 @@ public class ParamProviderImplTest {
 
     private Parameter p2;
 
-    private ParamProviderImpl instance;
+    private SmartParamPreparer instance;
 
-    private TypeProvider typeProvider = new TypeProvider();
+    private TypeProvider typeProvider = new SmartTypeProvider();
 
     private MatcherProvider matcherProvider = new MatcherProvider();
 
@@ -71,7 +73,7 @@ public class ParamProviderImplTest {
         when(loader.load("par3")).thenReturn(null);
         when(loader.findEntries(any(String.class), any(String[].class))).thenReturn(entries);
 
-        instance = new ParamProviderImpl();
+        instance = new SmartParamPreparer();
         instance.setCache(cache);
         instance.setLoader(loader);
         instance.setTypeProvider(typeProvider);
@@ -129,7 +131,7 @@ public class ParamProviderImplTest {
             fail();
 
         } catch (ParamException e) {
-            assertEquals(ParamException.ErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
         }
     }
 
@@ -260,7 +262,7 @@ public class ParamProviderImplTest {
             instance.getPreparedParameter("par2");
             fail();
         } catch (ParamDefinitionException e) {
-            assertEquals(ParamException.ErrorCode.UNKNOWN_MATCHER, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.UNKNOWN_MATCHER, e.getErrorCode());
         }
     }
 
@@ -300,7 +302,7 @@ public class ParamProviderImplTest {
             instance.getPreparedParameter("par2");
             fail();
         } catch (ParamDefinitionException e) {
-            assertEquals(ParamException.ErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
+            assertEquals(SmartParamErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
         }
     }
 

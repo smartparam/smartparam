@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.assembler.AssemblerAnnotationScanner;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
 import org.smartparam.engine.core.exception.ParamException;
-import org.smartparam.engine.core.exception.ParamException.ErrorCode;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.util.Printer;
 
 /**
@@ -112,7 +112,7 @@ public class AssemblerProvider {
         }
 
         // nie znaleziono pasujacego assemblera
-        throw new ParamException(ErrorCode.ASSEMBLER_NOT_FOUND, "matching assembler not found: source=" + source + ", target=" + target);
+        throw new ParamException(SmartParamErrorCode.ASSEMBLER_NOT_FOUND, "matching assembler not found: source=" + source + ", target=" + target);
     }
 
     /**

@@ -1,6 +1,5 @@
 package org.smartparam.engine.core.exception;
 
-import org.smartparam.engine.core.exception.ParamException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -41,7 +40,7 @@ public class ParamExceptionTest {
 
         // testy
         ParamException e1 = new ParamException("message");
-        ParamException e2 = new ParamException(ParamException.ErrorCode.UNKNOWN_FUNCTION, "message");
+        ParamException e2 = new ParamException(SmartParamErrorCode.UNKNOWN_FUNCTION, "message");
 
         // weryfikacja
         assertEquals("message", e1.getMessage());
