@@ -13,7 +13,7 @@ import org.smartparam.engine.assemblers.GenericEnumAssembler;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.config.AssemblerProvider;
-import org.smartparam.engine.core.config.InvokerProvider;
+import org.smartparam.engine.core.config.SmartInvokerProvider;
 import org.smartparam.engine.core.config.SmartTypeProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.context.DefaultContext;
@@ -51,7 +51,7 @@ public class ParamEngineScenarioTest {
 
     private AssemblerProvider assemblerProvider;
 
-    private InvokerProvider invokerProvider;
+    private SmartInvokerProvider invokerProvider;
 
     private ParamEngine engine;
 
@@ -71,7 +71,7 @@ public class ParamEngineScenarioTest {
         paramProvider.setLoader(loader);
         paramProvider.setCache(new MapParamCache());
 
-        invokerProvider = new InvokerProvider();
+        invokerProvider = new SmartInvokerProvider();
         invokerProvider.registerInvoker("java", new JavaFunctionInvoker());
 
         assemblerProvider = new AssemblerProvider();

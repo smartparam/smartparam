@@ -70,15 +70,7 @@
 
     <bean id="typeProvider" class="org.smartparam.engine.core.config.AnnotatedTypeProvider"/>
 
-    <bean id="invokerProvider" class="org.smartparam.engine.core.config.InvokerProvider">
-        <property name="invokers">
-            <map>
-                <entry key="java" value-ref="javaFunctionInvoker" />
-            </map>
-        </property>
-    </bean>
-
-    <bean id="javaFunctionInvoker" class="org.smartparam.engine.core.function.JavaFunctionInvoker" />
+    <bean id="invokerProvider" class="org.smartparam.engine.core.config.AnnotatedInvokerProvider"/>
 
     <bean id="assemblerProvider" class="org.smartparam.engine.core.config.AssemblerProvider">
         <property name="assemblerObjects">

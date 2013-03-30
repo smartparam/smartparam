@@ -33,7 +33,7 @@
     <bean id="numberType" class="org.smartparam.engine.types.number.NumberType" />
     <bean id="pluginType" class="org.smartparam.engine.types.plugin.PluginType" />
 
-    <bean id="invokerProvider" class="org.smartparam.engine.core.config.InvokerProvider">
+    <bean id="invokerProvider" class="org.smartparam.engine.core.config.SmartInvokerProvider">
         <property name="invokers">
             <map>
                 <entry key="java" value-ref="javaFunctionInvoker" />

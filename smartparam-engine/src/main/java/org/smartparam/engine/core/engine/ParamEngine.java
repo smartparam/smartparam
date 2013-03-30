@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
 import org.smartparam.engine.core.config.AssemblerProvider;
-import org.smartparam.engine.core.config.InvokerProvider;
+import org.smartparam.engine.core.config.SmartInvokerProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.ParamException;
@@ -39,7 +39,7 @@ public class ParamEngine {
 
     private FunctionProvider functionProvider;
 
-    private InvokerProvider invokerProvider;
+    private SmartInvokerProvider invokerProvider;
 
     private AssemblerProvider assemblerProvider;
 
@@ -585,7 +585,7 @@ public class ParamEngine {
         this.functionProvider = functionProvider;
     }
 
-    public void setInvokerProvider(InvokerProvider invokerProvider) {
+    public void setInvokerProvider(SmartInvokerProvider invokerProvider) {
         this.invokerProvider = invokerProvider;
     }
 

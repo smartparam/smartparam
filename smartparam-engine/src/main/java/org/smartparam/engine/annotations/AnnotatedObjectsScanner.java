@@ -68,7 +68,7 @@ public class AnnotatedObjectsScanner implements SmartParamConsts {
             return objectClass.getConstructor().newInstance();
         }
         catch(Exception exception) {
-            throw new ParamException(SmartParamErrorCode.NO_DEFAULT_CONSTRUCTOR, exception, "no default constructor found for class " + ClassUtils.getShortClassName(objectClass));
+            throw new ParamException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no default constructor found for class " + ClassUtils.getShortClassName(objectClass));
         }
     }
 }

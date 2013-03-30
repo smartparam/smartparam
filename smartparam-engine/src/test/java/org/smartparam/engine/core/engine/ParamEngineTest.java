@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.slf4j.Logger;
 import org.smartparam.engine.core.cache.MapParamCache;
-import org.smartparam.engine.core.config.InvokerProvider;
+import org.smartparam.engine.core.config.SmartInvokerProvider;
 import org.smartparam.engine.core.config.SmartTypeProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.context.DefaultContext;
@@ -94,7 +94,7 @@ public class ParamEngineTest {
         when(f.getImplementation()).thenReturn(fimpl);
 
         // zaleznosci
-        InvokerProvider invokerProvider = mock(InvokerProvider.class);
+        SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
         FunctionInvoker<FunctionImpl> functionInvoker = mock(FunctionInvoker.class);
 
         // konfiguracja zaleznosci
@@ -162,7 +162,7 @@ public class ParamEngineTest {
         when(f.getImplementation()).thenReturn(fimpl);
 
         // zaleznosci
-        InvokerProvider invokerProvider = mock(InvokerProvider.class);
+        SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
         @SuppressWarnings("unchecked")
         FunctionInvoker<FunctionImpl> functionInvoker = mock(FunctionInvoker.class);
 
@@ -262,7 +262,7 @@ public class ParamEngineTest {
         ParamContext ctx = new DefaultContext();
 
         // zaleznosci
-        InvokerProvider invokerProvider = mock(InvokerProvider.class);
+        SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
         FunctionInvoker<FunctionImpl> functionInvoker = mock(FunctionInvoker.class);
         Logger logger = mock(Logger.class);
 
@@ -334,7 +334,7 @@ public class ParamEngineTest {
         provider.setCache(new MapParamCache());
 
         // zaleznosci
-        InvokerProvider invokerProvider = mock(InvokerProvider.class);
+        SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
         FunctionInvoker<FunctionImpl> functionInvoker = mock(FunctionInvoker.class);
         FunctionProvider functionProvider = mock(FunctionProvider.class);
 
@@ -392,7 +392,7 @@ public class ParamEngineTest {
     public void testInvokeFunction__undefinedInvoker() {
 
         // zaleznosci
-        InvokerProvider ip = new InvokerProvider();
+        SmartInvokerProvider ip = new SmartInvokerProvider();
         Function f = FunctionMockBuilder.function().withJavaImplementation(this.getClass(), null).get();
 
         // konfiguracja
@@ -413,7 +413,7 @@ public class ParamEngineTest {
 
         // zaleznosci
         JavaFunctionInvoker javaInvoker = new JavaFunctionInvoker();
-        InvokerProvider ip = new InvokerProvider();
+        SmartInvokerProvider ip = new SmartInvokerProvider();
         ip.registerInvoker("java", javaInvoker);
 
         Function f = FunctionMockBuilder.function().withJavaImplementation(this.getClass(), "badMethod").get();

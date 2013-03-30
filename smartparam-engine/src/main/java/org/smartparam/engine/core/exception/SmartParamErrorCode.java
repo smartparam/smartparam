@@ -107,8 +107,8 @@ public enum SmartParamErrorCode {
     INDEX_OUT_OF_BOUNDS,
 
     /**
-     * No default constructor defined for annotated SmartParam object.
+     * Error while initializing SmartParam using annotation aware classes.
      */
-    NO_DEFAULT_CONSTRUCTOR;
+    ANNOTATION_INITIALIZER_ERROR;
 
 }
