@@ -12,9 +12,9 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SmartParamFunctionInvoker {
+public @interface SmartParamObjectInstance {
 
     String value();
 
-    SmartParamObjectInstance[] instances() default {};
+    String[] constructorArgs();
 }

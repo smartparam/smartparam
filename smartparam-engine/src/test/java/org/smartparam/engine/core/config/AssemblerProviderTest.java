@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.config;
 
-import org.smartparam.engine.core.config.AssemblerProvider;
+import org.smartparam.engine.core.config.SmartAssemblerProvider;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
@@ -42,7 +42,7 @@ public class AssemblerProviderTest {
         };
 
         // testowany obiekt
-        AssemblerProvider ap = new AssemblerProvider();
+        SmartAssemblerProvider ap = new SmartAssemblerProvider();
 
         // przygotowanie obiektu
         ap.registerAssemblerOwner(owner1);
@@ -86,7 +86,7 @@ public class AssemblerProviderTest {
         Object owner2 = new AssemblerOwner2();
 
         // testowany obiekt
-        AssemblerProvider ap = new AssemblerProvider();
+        SmartAssemblerProvider ap = new SmartAssemblerProvider();
         ap.registerAssemblerOwner(owner1);
         ap.registerAssemblerOwner(owner2);
 
@@ -132,9 +132,9 @@ public class AssemblerProviderTest {
         Object owner1 = new AssemblerOwner();
 
         // testowany obiekt
-        AssemblerProvider apObj = new AssemblerProvider();
+        SmartAssemblerProvider apObj = new SmartAssemblerProvider();
         apObj.registerAssemblerOwner(owner1);
-        AssemblerProvider ap = spy(apObj);
+        SmartAssemblerProvider ap = spy(apObj);
 
         // wykonanie testu - uzycie cache'a
         ap.findAssembler(IntegerHolder.class, String.class);      // miss -> lookupAssembler
@@ -153,7 +153,7 @@ public class AssemblerProviderTest {
     public void testFindAssembler__notFound() {
 
         // testowany obiekt
-        AssemblerProvider ap = new AssemblerProvider();
+        SmartAssemblerProvider ap = new SmartAssemblerProvider();
 
         // wykonanie testu - assembler nie zostanie znaleziony
         ap.findAssembler(StringHolder.class, String.class);
@@ -259,10 +259,10 @@ public class AssemblerProviderTest {
         Class<?> cls2 = String.class;
         Class<?> cls3 = Long.class;
 
-        AssemblerProvider.SignatureKey key1 = new AssemblerProvider.SignatureKey(cls1, cls2);
-        AssemblerProvider.SignatureKey key2 = new AssemblerProvider.SignatureKey(cls1, cls2);
-        AssemblerProvider.SignatureKey key3 = new AssemblerProvider.SignatureKey(cls1, cls3);
-        AssemblerProvider.SignatureKey key4 = new AssemblerProvider.SignatureKey(cls2, cls3);
+        SmartAssemblerProvider.SignatureKey key1 = new SmartAssemblerProvider.SignatureKey(cls1, cls2);
+        SmartAssemblerProvider.SignatureKey key2 = new SmartAssemblerProvider.SignatureKey(cls1, cls2);
+        SmartAssemblerProvider.SignatureKey key3 = new SmartAssemblerProvider.SignatureKey(cls1, cls3);
+        SmartAssemblerProvider.SignatureKey key4 = new SmartAssemblerProvider.SignatureKey(cls2, cls3);
         Object key5 = new Object();
 
         // testy

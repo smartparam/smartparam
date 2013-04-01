@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 import org.smartparam.engine.assemblers.GenericEnumAssembler;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
-import org.smartparam.engine.core.config.AssemblerProvider;
+import org.smartparam.engine.core.config.SmartAssemblerProvider;
 import org.smartparam.engine.core.config.SmartInvokerProvider;
 import org.smartparam.engine.core.config.SmartTypeProvider;
 import org.smartparam.engine.core.config.TypeProvider;
@@ -49,7 +49,7 @@ public class ParamEngineScenarioTest {
 
     private SmartParamPreparer paramProvider;
 
-    private AssemblerProvider assemblerProvider;
+    private SmartAssemblerProvider assemblerProvider;
 
     private SmartInvokerProvider invokerProvider;
 
@@ -74,7 +74,7 @@ public class ParamEngineScenarioTest {
         invokerProvider = new SmartInvokerProvider();
         invokerProvider.registerInvoker("java", new JavaFunctionInvoker());
 
-        assemblerProvider = new AssemblerProvider();
+        assemblerProvider = new SmartAssemblerProvider();
 
         functionLoader = mock(FunctionLoader.class);
 

@@ -6,7 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.config.MatcherProvider;
+import org.smartparam.engine.core.config.SmartMatcherProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -48,7 +48,7 @@ public class SmartParamPreparer implements ParamPreparer {
     /**
      * Dostep do systemu matcherow.
      */
-    private MatcherProvider matcherProvider;
+    private SmartMatcherProvider matcherProvider;
 
     /**
      * Loader parametrow.
@@ -224,7 +224,7 @@ public class SmartParamPreparer implements ParamPreparer {
         this.typeProvider = typeProvider;
     }
 
-    public void setMatcherProvider(MatcherProvider matcherProvider) {
+    public void setMatcherProvider(SmartMatcherProvider matcherProvider) {
         this.matcherProvider = matcherProvider;
     }
 }

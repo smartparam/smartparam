@@ -15,4 +15,6 @@ import java.lang.annotation.Target;
 public @interface SmartParamType {
 
     String value();
+
+    SmartParamObjectInstance[] instances() default {};
 }

@@ -8,11 +8,11 @@ import java.lang.annotation.Target;
 /**
  *
  * @author Adam Dubiel
- * @since 0.1.0
+ * @sicne 0.1.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SmartParamFunctionInvoker {
+public @interface SmartParamMatcher {
 
     String value();
 

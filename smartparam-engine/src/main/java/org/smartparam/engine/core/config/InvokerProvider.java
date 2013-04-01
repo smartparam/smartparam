@@ -10,7 +10,7 @@ import org.smartparam.engine.model.FunctionImpl;
  */
 public interface InvokerProvider {
 
-    public <T extends FunctionImpl> void registerInvoker(String implCode, FunctionInvoker<T> invoker);
+    <T extends FunctionImpl> void registerInvoker(String implCode, FunctionInvoker<T> invoker);
 
-    public <T extends FunctionImpl> FunctionInvoker<T> getInvoker(T function);
+    <T extends FunctionImpl> FunctionInvoker<T> getInvoker(T function);
 }

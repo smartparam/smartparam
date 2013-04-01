@@ -4,8 +4,14 @@
  */
 package org.smartparam.engine.core.config;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+import org.smartparam.engine.annotations.AnnotatedObjectsScanner;
+import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.ParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractType;
@@ -47,7 +53,7 @@ import org.smartparam.engine.core.type.AbstractType;
  *
  * @author Adam Dubiel
  */
-public class SmartTypeProvider implements TypeProvider {
+public class SmartTypeProvider extends AbstractProvider<AbstractType<?>> implements TypeProvider {
 
     /**
      * Przechowuje typu pod unikalnymi kodami.
@@ -76,6 +82,16 @@ public class SmartTypeProvider implements TypeProvider {
      */
     public AbstractType<?> getType(String code) {
         return typeMap.get(code);
+    }
+
+    @Override
+    protected Class<? extends Annotation> getAnnotationClass() {
+        return SmartParamType.class;
+    }
+
+    @Override
+    protected void handleRegistration(String objectCode, AbstractType<?> objectToRegister) {
+        registerType(objectCode, objectToRegister);
     }
 
     /**

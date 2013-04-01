@@ -1,5 +1,6 @@
 package org.smartparam.engine.matchers;
 
+import org.smartparam.engine.annotations.SmartParamMatcher;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.AbstractType;
@@ -7,6 +8,7 @@ import org.smartparam.engine.core.type.AbstractType;
 /**
  * @author Przemek Hertel
  */
+@SmartParamMatcher("eqMatcher")
 public class EqMatcher implements Matcher {
 
     private boolean caseSensitive = true;

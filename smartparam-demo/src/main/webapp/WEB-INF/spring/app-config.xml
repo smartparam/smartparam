@@ -56,34 +56,17 @@
     <bean id="paramCache" class="org.smartparam.engine.core.cache.MapParamCache" />
     <bean id="functionCache" class="org.smartparam.engine.core.cache.MapFunctionCache" />
 
-<!--    <bean id="typeProvider" class="org.smartparam.engine.core.config.SmartTypeProvider">
-        <property name="typeMap">
-            <map>
-                <entry key="string" value-ref="stringType" />
-                <entry key="integer" value-ref="integerType" />
-                <entry key="number" value-ref="numberType" />
-                <entry key="date" value-ref="dateType" />
-                <entry key="plugin" value-ref="pluginType" />
-            </map>
-        </property>
-    </bean>-->
+    <bean id="typeProvider" class="org.smartparam.engine.core.config.SmartTypeProvider"/>
 
-    <bean id="typeProvider" class="org.smartparam.engine.core.config.AnnotatedTypeProvider"/>
+    <bean id="invokerProvider" class="org.smartparam.engine.core.config.SmartInvokerProvider"/>
 
-    <bean id="invokerProvider" class="org.smartparam.engine.core.config.AnnotatedInvokerProvider"/>
+    <bean id="matcherProvider" class="org.smartparam.engine.core.config.SmartMatcherProvider"/>
 
-    <bean id="assemblerProvider" class="org.smartparam.engine.core.config.AssemblerProvider">
+    <bean id="assemblerProvider" class="org.smartparam.engine.core.config.SmartAssemblerProvider">
         <property name="assemblerObjects">
             <list>
                 <bean class="org.smartparam.engine.assemblers.GenericEnumAssembler" />
             </list>
-        </property>
-    </bean>
-
-    <bean id="matcherProvider" class="org.smartparam.engine.core.config.MatcherProvider">
-        <property name="matcherMap">
-            <map>
-            </map>
         </property>
     </bean>
 

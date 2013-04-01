@@ -1,5 +1,7 @@
 package org.smartparam.engine.matchers;
 
+import org.smartparam.engine.annotations.SmartParamMatcher;
+import org.smartparam.engine.annotations.SmartParamObjectInstance;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.AbstractType;
@@ -15,6 +17,10 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 1.0.0
  */
+@SmartParamMatcher(value = "", instances = {
+    @SmartParamObjectInstance(value = "between/ie", constructorArgs = { "true", "false" }),
+    @SmartParamObjectInstance(value = "between/ii", constructorArgs = { "true", "true" }),
+})
 public class BetweenMatcher implements Matcher {
 
     /**
@@ -43,12 +49,21 @@ public class BetweenMatcher implements Matcher {
     public BetweenMatcher() {
     }
 
+    public BetweenMatcher(String lowerInclusive, String upperInclusive) {
+        setLowerInclusive(Boolean.parseBoolean(lowerInclusive));
+        setUpperInclusive(Boolean.parseBoolean(upperInclusive));
+    }
+    
+    public BetweenMatcher(String lowerInclusive, String upperInclusive, String separators) {
+        this(Boolean.parseBoolean(lowerInclusive), Boolean.parseBoolean(upperInclusive), separators);
+    }
+
     /**
      * Konstruktor inicjalizujacy matcher.
      *
      * @param lowerInclusive przedzial wlacznie z dolnym ograniczeniem
      * @param upperInclusive przedzial wlacznie z gornym ograniczeniem
-     * @param separators     znaki separatora
+     * @param separators znaki separatora
      */
     public BetweenMatcher(boolean lowerInclusive, boolean upperInclusive, String separators) {
         setLowerInclusive(lowerInclusive);
@@ -75,8 +90,8 @@ public class BetweenMatcher implements Matcher {
     }
 
     /**
-     * Przeglada dostepne znaki separatorow w kolejnosci ich wystepowania w tablicy.
-     * Zwraca ten, ktory jako pierwszy zostal znaleziony we wzorcu.
+     * Przeglada dostepne znaki separatorow w kolejnosci ich wystepowania w
+     * tablicy. Zwraca ten, ktory jako pierwszy zostal znaleziony we wzorcu.
      *
      * @param pattern wzorzec
      * @return znak separatora, ktory zostanie zastosowany

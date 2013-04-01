@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.config;
 
-import org.smartparam.engine.core.config.MatcherProvider;
+import org.smartparam.engine.core.config.SmartMatcherProvider;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class MatcherProviderTest {
         map.put("B", m2);
 
         // obiekt testowany
-        MatcherProvider provider = new MatcherProvider();
+        SmartMatcherProvider provider = new SmartMatcherProvider();
 
         // test
         provider.setMatcherMap(map);
@@ -45,7 +45,7 @@ public class MatcherProviderTest {
         Matcher m2 = mock(Matcher.class);
 
         // obiekt testowany
-        MatcherProvider provider = new MatcherProvider();
+        SmartMatcherProvider provider = new SmartMatcherProvider();
 
         // test
         provider.registerMatcher("A", m1);

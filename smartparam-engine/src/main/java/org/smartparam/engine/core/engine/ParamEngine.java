@@ -8,7 +8,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
-import org.smartparam.engine.core.config.AssemblerProvider;
+import org.smartparam.engine.core.config.SmartAssemblerProvider;
 import org.smartparam.engine.core.config.SmartInvokerProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
@@ -41,7 +41,7 @@ public class ParamEngine {
 
     private SmartInvokerProvider invokerProvider;
 
-    private AssemblerProvider assemblerProvider;
+    private SmartAssemblerProvider assemblerProvider;
 
     public AbstractHolder getValue(String paramName, ParamContext ctx) {
 
@@ -589,7 +589,7 @@ public class ParamEngine {
         this.invokerProvider = invokerProvider;
     }
 
-    public void setAssemblerProvider(AssemblerProvider assemblerProvider) {
+    public void setAssemblerProvider(SmartAssemblerProvider assemblerProvider) {
         this.assemblerProvider = assemblerProvider;
     }
     //todo ph: par 0 bool type

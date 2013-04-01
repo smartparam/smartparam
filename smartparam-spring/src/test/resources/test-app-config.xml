@@ -45,7 +45,7 @@
     <bean id="javaFunctionInvoker" class="org.smartparam.engine.core.function.JavaFunctionInvoker" />
     <bean id="springFunctionInvoker" class="org.smartparam.spring.function.SpringFunctionInvoker" />
 
-    <bean id="assemblerProvider" class="org.smartparam.engine.core.config.AssemblerProvider">
+    <bean id="assemblerProvider" class="org.smartparam.engine.core.config.SmartAssemblerProvider">
         <property name="assemblerObjects">
             <list>
                 <bean class="org.smartparam.engine.assemblers.GenericEnumAssembler" />
@@ -53,7 +53,7 @@
         </property>
     </bean>
 
-    <bean id="matcherProvider" class="org.smartparam.engine.core.config.MatcherProvider">
+    <bean id="matcherProvider" class="org.smartparam.engine.core.config.SmartMatcherProvider">
         <property name="matcherMap">
             <map>
                 <entry key="between/ie" value-ref="betweenMatcherIE" />

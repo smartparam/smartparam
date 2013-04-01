@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.config.MatcherProvider;
+import org.smartparam.engine.core.config.SmartMatcherProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.core.exception.ParamException;
@@ -43,7 +43,7 @@ public class SmartParamPreparerTest {
 
     private TypeProvider typeProvider = new SmartTypeProvider();
 
-    private MatcherProvider matcherProvider = new MatcherProvider();
+    private SmartMatcherProvider matcherProvider = new SmartMatcherProvider();
 
     private StringType type = new StringType();
 

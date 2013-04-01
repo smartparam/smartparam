@@ -2,8 +2,8 @@ package org.smartparam.spring;
 
 import org.junit.*;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
-import org.smartparam.engine.core.config.AssemblerProvider;
-import org.smartparam.engine.core.config.MatcherProvider;
+import org.smartparam.engine.core.config.SmartAssemblerProvider;
+import org.smartparam.engine.core.config.SmartMatcherProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
@@ -57,7 +57,7 @@ public class SpringConfigurationTest {
     public void testAssemblerProvider() {
 
         // weryfikacja konfiguracji assemblerProvidera
-        AssemblerProvider asmProvider = ctx.getBean(AssemblerProvider.class);
+        SmartAssemblerProvider asmProvider = ctx.getBean(SmartAssemblerProvider.class);
 
         // odszukanie assemblera
         AssemblerMethod asm = asmProvider.findAssembler(StringHolder.class, NumberType.class);
@@ -110,7 +110,7 @@ public class SpringConfigurationTest {
 
     @Test
     public void testMatcherProvider() {
-        MatcherProvider provider = ctx.getBean(MatcherProvider.class);
+        SmartMatcherProvider provider = ctx.getBean(SmartMatcherProvider.class);
 
         Level level = LevelMockBuilder.level().withMatcherCode(MCode.BETWEEN_II.toString()).get();
 
