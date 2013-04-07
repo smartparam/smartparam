@@ -3,10 +3,14 @@ package org.smartparam.engine.core.engine;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.cache.ParamCache;
+import org.smartparam.engine.core.config.MatcherProvider;
 import org.smartparam.engine.core.config.SmartMatcherProvider;
+import org.smartparam.engine.core.config.SmartTypeProvider;
 import org.smartparam.engine.core.config.TypeProvider;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -19,14 +23,15 @@ import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 
 /**
- * Klasa dostarcza przygotowane parametry na podstawie nazwy.
- * Wykorzystuje cache, poniewaz przygotowanie parametru jest kosztowne.
+ * Klasa dostarcza przygotowane parametry na podstawie nazwy. Wykorzystuje
+ * cache, poniewaz przygotowanie parametru jest kosztowne.
  * <p>
  *
  * Przygotowanie parametru sklada sie z 3 glownych krokow:
  * <ol>
  * <li> wczytanie parametru przy pomocy <i>loadera</i> (np. z bazy danych),
- * <li> zamiana struktury Parameter/ParameterEntry na blizniacza strukture PreparedParameter/PreparedEntry,
+ * <li> zamiana struktury Parameter/ParameterEntry na blizniacza strukture
+ * PreparedParameter/PreparedEntry,
  * <li> zbudowanie indeksu wyszukiwania dla wczytanego parametru.
  * </ol>
  *
@@ -43,12 +48,12 @@ public class SmartParamPreparer implements ParamPreparer {
     /**
      * Dostep do systemu typow silnika.
      */
-    private TypeProvider typeProvider;
+    private TypeProvider typeProvider = null;
 
     /**
      * Dostep do systemu matcherow.
      */
-    private SmartMatcherProvider matcherProvider;
+    private MatcherProvider matcherProvider = null;
 
     /**
      * Loader parametrow.
@@ -59,6 +64,25 @@ public class SmartParamPreparer implements ParamPreparer {
      * Cache.
      */
     private ParamCache cache;
+
+    @PostConstruct
+    public void initializeProviders() {
+        if (matcherProvider == null) {
+            SmartMatcherProvider smartMatcherProvider = new SmartMatcherProvider();
+            smartMatcherProvider.scan();
+            matcherProvider = smartMatcherProvider;
+        }
+
+        if (typeProvider == null) {
+            SmartTypeProvider smartTypeProvider = new SmartTypeProvider();
+            smartTypeProvider.scan();
+            typeProvider = smartTypeProvider;
+        }
+
+        if (cache == null) {
+            cache = new MapParamCache();
+        }
+    }
 
     @Override
     public PreparedParameter getPreparedParameter(String paramName) {
@@ -81,8 +105,8 @@ public class SmartParamPreparer implements ParamPreparer {
     }
 
     /**
-     * Buduje przygotowany (skompilowany) parametr na podstawie
-     * wczytanego przez <tt>loader</tt> parametru <tt>p</tt>.
+     * Buduje przygotowany (skompilowany) parametr na podstawie wczytanego przez
+     * <tt>loader</tt> parametru <tt>p</tt>.
      *
      * @param p parametr wczytany przez loader
      *

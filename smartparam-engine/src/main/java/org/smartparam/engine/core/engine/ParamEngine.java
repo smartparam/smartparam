@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,8 @@ import org.smartparam.engine.core.exception.ParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.index.LevelIndex;
+import org.smartparam.engine.core.loader.FunctionLoader;
+import org.smartparam.engine.core.loader.ParamLoader;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.AbstractType;
 import org.smartparam.engine.model.Function;
@@ -35,13 +38,40 @@ public class ParamEngine {
 
     private Logger logger = LoggerFactory.getLogger(ParamEngine.class);
 
-    private ParamPreparer paramProvider;
+    private ParamPreparer paramProvider = null;
 
-    private FunctionProvider functionProvider;
+    private FunctionProvider functionProvider = null;
 
-    private SmartInvokerProvider invokerProvider;
+    private SmartInvokerProvider invokerProvider = null;
 
-    private SmartAssemblerProvider assemblerProvider;
+    private SmartAssemblerProvider assemblerProvider = null;
+
+    private ParamLoader paramLoader = null;
+
+    private FunctionLoader functionLoader = null;
+
+    @PostConstruct
+    public void initializeProviders() {
+        if (invokerProvider == null) {
+            SmartInvokerProvider smartInvokerProvider = new SmartInvokerProvider();
+            smartInvokerProvider.scan();
+            invokerProvider = smartInvokerProvider;
+        }
+
+        if (functionProvider == null) {
+            SmartFunctionProvider smartFunctionProvider = new SmartFunctionProvider();
+            smartFunctionProvider.setLoader(functionLoader);
+            smartFunctionProvider.initializeProviders();
+            functionProvider = smartFunctionProvider;
+        }
+
+        if (paramProvider == null) {
+            SmartParamPreparer smartParamPreparer = new SmartParamPreparer();
+            smartParamPreparer.setLoader(paramLoader);
+            smartParamPreparer.initializeProviders();
+            paramProvider = smartParamPreparer;
+        }
+    }
 
     public AbstractHolder getValue(String paramName, ParamContext ctx) {
 
@@ -318,19 +348,18 @@ public class ParamEngine {
     }
 
     /**
-     * Zwraca wartosc wiersza parametru.
-     * Wartosc pochodzi z:
+     * Zwraca wartosc wiersza parametru. Wartosc pochodzi z:
      * <ol>
      * <li> pola <tt>value</tt>,
      * <li> lub funkcji <tt>function</tt>, jesli <tt>value=null</tt>.
      * </ol>
      *
-     * Jesli <tt>value</tt> i <tt>function</tt> sa rowne <tt>null</tt>,
-     * zwracany jest <tt>null</tt> skonwetowany na typ <tt>type</tt>
+     * Jesli <tt>value</tt> i <tt>function</tt> sa rowne <tt>null</tt>, zwracany
+     * jest <tt>null</tt> skonwetowany na typ <tt>type</tt>
      * zgodnie z metoda <tt>convert</tt> danego typu.
      *
-     * @param pe   wiersz parametru
-     * @param ctx  kontekstu uzycia parametru
+     * @param pe wiersz parametru
+     * @param ctx kontekstu uzycia parametru
      * @param type typ parametru
      *
      * @return holder reprezentujacy wartosc parametru
@@ -351,8 +380,8 @@ public class ParamEngine {
     }
 
     /**
-     * Zwraca wartosc wiersza parametru jako <b>tablice</b> holderow odpowiedniego typu,
-     * na przyklad IntegerHolder[] czy NumberHolder[].
+     * Zwraca wartosc wiersza parametru jako <b>tablice</b> holderow
+     * odpowiedniego typu, na przyklad IntegerHolder[] czy NumberHolder[].
      * <p>
      * Wartosci zwracanej tablicy pochodza z:
      * <ol>
@@ -360,12 +389,12 @@ public class ParamEngine {
      * <li> lub funkcji <tt>function</tt>, jesli <tt>value=null</tt>.
      * </ol>
      *
-     * Jesli <tt>value</tt> i <tt>function</tt> sa rowne <tt>null</tt>,
-     * zwracana jest pusta tablica typu wynikajacego z <tt>type</tt>.
+     * Jesli <tt>value</tt> i <tt>function</tt> sa rowne <tt>null</tt>, zwracana
+     * jest pusta tablica typu wynikajacego z <tt>type</tt>.
      *
-     * @param pe        wiersz parametru
-     * @param ctx       kontekstu uzycia parametru
-     * @param type      typ parametru
+     * @param pe wiersz parametru
+     * @param ctx kontekstu uzycia parametru
+     * @param type typ parametru
      * @param separator znak separatora wartosci
      *
      * @return tablica holderow typu wynikajacego z <tt>type</tt>
@@ -417,19 +446,21 @@ public class ParamEngine {
     }
 
     /**
-     * Dekoduje zawartosc komorki <tt>value</tt> typu tablicowego (array)
-     * na tablice wartosci typu <tt>AbstractHolder[]</tt>.
+     * Dekoduje zawartosc komorki <tt>value</tt> typu tablicowego (array) na
+     * tablice wartosci typu <tt>AbstractHolder[]</tt>.
      *
      * Wartosc <tt>value</tt> moze pochodzic:
      * <ol>
      * <li> z komorki poziomu - w przypadku parametru typu <tt>multivalue</tt>
-     * <li> z wartosci w wierszu (ParameterEntry#value) - w przypadku parametru zwyklego
+     * <li> z wartosci w wierszu (ParameterEntry#value) - w przypadku parametru
+     * zwyklego
      * </ol>
      *
-     * Gdy wartosc jest pusta lub rowna null, zwraca pusta tablice typu wynikajacego z <tt>type</tt>.
+     * Gdy wartosc jest pusta lub rowna null, zwraca pusta tablice typu
+     * wynikajacego z <tt>type</tt>.
      *
-     * @param value     zawartosc komorki, ktora bedzie parsowana jako tablica
-     * @param type      typ zawartosci (typ parametru lub typ poziomu)
+     * @param value zawartosc komorki, ktora bedzie parsowana jako tablica
+     * @param type typ zawartosci (typ parametru lub typ poziomu)
      * @param separator znak separatora
      *
      * @return tablica zdekodowanych wartosci
@@ -573,10 +604,6 @@ public class ParamEngine {
         return param;
     }
 
-    protected boolean hasParamProvider() {
-        return paramProvider != null;
-    }
-
     public void setParamProvider(ParamPreparer paramProvider) {
         this.paramProvider = paramProvider;
     }
@@ -592,8 +619,16 @@ public class ParamEngine {
     public void setAssemblerProvider(SmartAssemblerProvider assemblerProvider) {
         this.assemblerProvider = assemblerProvider;
     }
-    //todo ph: par 0 bool type
 
+    public void setParamLoader(ParamLoader paramLoader) {
+        this.paramLoader = paramLoader;
+    }
+
+    public void setFunctionLoader(FunctionLoader functionLoader) {
+        this.functionLoader = functionLoader;
+    }
+
+    //todo ph: par 0 bool type
     //todo ph: par 3 lt, le, gt, ge matchers
     private ParamException raiseValueNotFoundException(String paramName, ParamContext ctx) {
 

@@ -1,6 +1,8 @@
 package org.smartparam.engine.core.engine;
 
+import javax.annotation.PostConstruct;
 import org.smartparam.engine.core.cache.FunctionCache;
+import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.exception.ParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.loader.FunctionLoader;
@@ -8,14 +10,14 @@ import org.smartparam.engine.model.Function;
 
 /**
  * Service Provider, ktory dostarcza funkcje z repozytorium o zadanej nazwie.
- * Pobiera funkcje przy pomocy loadera ({@link FunctionLoader}), ktorego zadaniem
- * jest fizyczne wczytani funkcji z bazy danych.
- * Wczytana funkcja jest cache'owana przy pomocy {@link FunctionCache}.
+ * Pobiera funkcje przy pomocy loadera ({@link FunctionLoader}), ktorego
+ * zadaniem jest fizyczne wczytani funkcji z bazy danych. Wczytana funkcja jest
+ * cache'owana przy pomocy {@link FunctionCache}.
  *
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class FunctionProviderImpl implements FunctionProvider {
+public class SmartFunctionProvider implements FunctionProvider {
 
     /**
      * Loader, ktory fizycznie wczytuje obiekt funkcji.
@@ -26,6 +28,13 @@ public class FunctionProviderImpl implements FunctionProvider {
      * Cache, w ktorym zapamietywana sa wczytane funkcje.
      */
     private FunctionCache cache = null;
+
+    @PostConstruct
+    public void initializeProviders() {
+        if (cache == null) {
+            cache = new MapFunctionCache();
+        }
+    }
 
     @Override
     public Function getFunction(String name) {

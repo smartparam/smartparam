@@ -6,12 +6,8 @@ package org.smartparam.engine.core.config;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import org.smartparam.engine.annotations.AnnotatedObjectsScanner;
 import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.ParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractType;

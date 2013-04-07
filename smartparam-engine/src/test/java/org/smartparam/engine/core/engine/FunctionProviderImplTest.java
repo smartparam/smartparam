@@ -29,7 +29,7 @@ public class FunctionProviderImplTest {
         when(cache.get("fun1")).thenReturn(null, fun1);
 
         // utworzenie testowanego obiektu
-        FunctionProviderImpl fp = new FunctionProviderImpl();
+        SmartFunctionProvider fp = new SmartFunctionProvider();
         fp.setCache(cache);
         fp.setLoader(loader);
 
@@ -49,7 +49,7 @@ public class FunctionProviderImplTest {
         when(cache.get("fun2")).thenReturn(null);
 
         // utworzenie testowanego obiektu
-        FunctionProviderImpl fp = new FunctionProviderImpl();
+        SmartFunctionProvider fp = new SmartFunctionProvider();
         fp.setCache(cache);
         fp.setLoader(loader);
 

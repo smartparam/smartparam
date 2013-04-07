@@ -35,32 +35,10 @@
     </bean>
 
     <bean id="paramEngine" class="org.smartparam.engine.core.engine.ParamEngine">
-        <property name="paramProvider" ref="paramProvider" />
-        <property name="functionProvider" ref="functionProvider" />
-        <property name="invokerProvider" ref="invokerProvider" />
+        <property name="paramLoader" ref="smartparamLoader" />
+        <property name="functionLoader" ref="smartparamFunctionLoader"/>
         <property name="assemblerProvider" ref="assemblerProvider" />
     </bean>
-
-    <bean id="paramProvider" class="org.smartparam.engine.core.engine.SmartParamPreparer">
-        <property name="matcherProvider" ref="matcherProvider" />
-        <property name="typeProvider" ref="typeProvider" />
-        <property name="loader" ref="smartparamLoader" />
-        <property name="cache" ref="paramCache" />
-    </bean>
-
-    <bean id="functionProvider" class="org.smartparam.engine.core.engine.FunctionProviderImpl">
-        <property name="loader" ref="smartparamFunctionLoader"/>
-        <property name="cache" ref="functionCache" />
-    </bean>
-
-    <bean id="paramCache" class="org.smartparam.engine.core.cache.MapParamCache" />
-    <bean id="functionCache" class="org.smartparam.engine.core.cache.MapFunctionCache" />
-
-    <bean id="typeProvider" class="org.smartparam.engine.core.config.SmartTypeProvider"/>
-
-    <bean id="invokerProvider" class="org.smartparam.engine.core.config.SmartInvokerProvider"/>
-
-    <bean id="matcherProvider" class="org.smartparam.engine.core.config.SmartMatcherProvider"/>
 
     <bean id="assemblerProvider" class="org.smartparam.engine.core.config.SmartAssemblerProvider">
         <property name="assemblerObjects">

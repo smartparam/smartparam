@@ -78,7 +78,7 @@ public class ParamEngineScenarioTest {
 
         functionLoader = mock(FunctionLoader.class);
 
-        FunctionProviderImpl fp = new FunctionProviderImpl();
+        SmartFunctionProvider fp = new SmartFunctionProvider();
         fp.setLoader(functionLoader);
         fp.setCache(new MapFunctionCache());
 
