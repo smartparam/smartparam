@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.assembler.AssemblerAnnotationScanner;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.util.Printer;
 
@@ -112,7 +112,7 @@ public class SmartAssemblerProvider implements AssemblerProvider {
         }
 
         // nie znaleziono pasujacego assemblera
-        throw new ParamException(SmartParamErrorCode.ASSEMBLER_NOT_FOUND, "matching assembler not found: source=" + source + ", target=" + target);
+        throw new SmartParamException(SmartParamErrorCode.ASSEMBLER_NOT_FOUND, "matching assembler not found: source=" + source + ", target=" + target);
     }
 
     /**

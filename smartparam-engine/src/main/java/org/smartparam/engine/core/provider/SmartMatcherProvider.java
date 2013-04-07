@@ -1,9 +1,10 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 import org.smartparam.engine.annotations.SmartParamMatcher;
+import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.index.Matcher;
 
 /**
@@ -21,6 +22,14 @@ public class SmartMatcherProvider extends AbstractProvider<Matcher> implements M
      * Mapuje kod matchera na obiekt matchera.
      */
     private Map<String, Matcher> matcherMap = new HashMap<String, Matcher>();
+
+    public SmartMatcherProvider() {
+        super();
+    }
+
+    public SmartMatcherProvider(boolean scanAnnotations, PackageList packagesToScan) {
+        super(scanAnnotations, packagesToScan);
+    }
 
     /**
      * Rejestruje matcher <tt>matcher</tt> pod kodem <tt>code</tt>. Rejestracja

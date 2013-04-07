@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 import org.smartparam.engine.core.context.DefaultContext;
 
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
@@ -70,7 +70,7 @@ public class AssemblerMethodTest {
             try {
                 AssemblerMethod asm = new AssemblerMethod(this, m);
                 fail();
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.ILLEGAL_ASSEMBLER_DEFINITION, e.getErrorCode());
             }
         }
@@ -138,7 +138,7 @@ public class AssemblerMethodTest {
             try {
                 asm.assemble(new IntegerHolder(7L), new DefaultContext());
                 fail();
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.ASSEMBLER_INVOKE_ERROR, e.getErrorCode());
             }
         }

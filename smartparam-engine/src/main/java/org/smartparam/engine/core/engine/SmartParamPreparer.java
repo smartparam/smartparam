@@ -6,13 +6,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.config.MatcherProvider;
-import org.smartparam.engine.core.config.SmartMatcherProvider;
-import org.smartparam.engine.core.config.SmartTypeProvider;
-import org.smartparam.engine.core.config.TypeProvider;
-import org.smartparam.engine.core.exception.ParamDefinitionException;
+import org.smartparam.engine.core.provider.MatcherProvider;
+import org.smartparam.engine.core.provider.SmartMatcherProvider;
+import org.smartparam.engine.core.provider.SmartTypeProvider;
+import org.smartparam.engine.core.provider.TypeProvider;
+import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.index.Matcher;
@@ -38,12 +39,12 @@ import org.smartparam.engine.model.ParameterEntry;
  * @author Przemek Hertel
  * @since 0.1.0
  */
-public class SmartParamPreparer implements ParamPreparer {
+public class SmartParamPreparer extends AbstractScanner implements ParamPreparer {
 
     /**
      * Logger.
      */
-    private final Logger logger = LoggerFactory.getLogger(ParamEngine.class);
+    private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
     /**
      * Dostep do systemu typow silnika.
@@ -65,16 +66,24 @@ public class SmartParamPreparer implements ParamPreparer {
      */
     private ParamCache cache;
 
+    public SmartParamPreparer() {
+        super();
+    }
+
+    public SmartParamPreparer(boolean scanAnnotations, PackageList packagesToScan) {
+        super(scanAnnotations, packagesToScan);
+    }
+
     @PostConstruct
     public void initializeProviders() {
         if (matcherProvider == null) {
-            SmartMatcherProvider smartMatcherProvider = new SmartMatcherProvider();
+            SmartMatcherProvider smartMatcherProvider = new SmartMatcherProvider(isScanAnnotations(), getPackagesToScan());
             smartMatcherProvider.scan();
             matcherProvider = smartMatcherProvider;
         }
 
         if (typeProvider == null) {
-            SmartTypeProvider smartTypeProvider = new SmartTypeProvider();
+            SmartTypeProvider smartTypeProvider = new SmartTypeProvider(isScanAnnotations(), getPackagesToScan());
             smartTypeProvider.scan();
             typeProvider = smartTypeProvider;
         }
@@ -131,7 +140,7 @@ public class SmartParamPreparer implements ParamPreparer {
         pp.setType(paramType);
 
         if (paramType == null && !p.isMultivalue()) {
-            throw new ParamDefinitionException(
+            throw new SmartParamDefinitionException(
                     SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
                     "Parameter " + p.getName() + " has undefined param type: " + p.getType());
         }
@@ -153,7 +162,7 @@ public class SmartParamPreparer implements ParamPreparer {
                 type = typeProvider.getType(lev.getType());
 
                 if (type == null) {
-                    throw new ParamDefinitionException(
+                    throw new SmartParamDefinitionException(
                             SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
                             "Parameter " + p.getName() + ": level(" + (i + 1) + ") has unknown type: " + lev.getType());
                 }
@@ -164,7 +173,7 @@ public class SmartParamPreparer implements ParamPreparer {
                 matcher = matcherProvider.getMatcher(lev.getMatcherCode());
 
                 if (matcher == null) {
-                    throw new ParamDefinitionException(
+                    throw new SmartParamDefinitionException(
                             SmartParamErrorCode.UNKNOWN_MATCHER,
                             "Parameter " + p.getName() + ": level(" + (i + 1) + ") has unknown matcher: " + lev.getMatcherCode());
                 }

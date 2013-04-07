@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
  * Test klasy przechowujacej wartosci dla typu NumberType.
@@ -112,17 +112,17 @@ public class NumberHolderTest {
         assertNull(h3.getString());
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testBooleanValue() {
         h1.booleanValue();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetBoolean() {
         h1.getBoolean();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetDate() {
         h1.getDate();
     }

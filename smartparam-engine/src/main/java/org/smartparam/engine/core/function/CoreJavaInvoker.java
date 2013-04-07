@@ -7,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.exception.ParamDefinitionException;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamDefinitionException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
@@ -57,7 +57,7 @@ public abstract class CoreJavaInvoker {
             return m.invoke(instance, args);
         } catch (Exception e) {
             logger.error("", e);
-            throw new ParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Error invoking method: " + m);
+            throw new SmartParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Error invoking method: " + m);
         }
     }
 
@@ -123,7 +123,7 @@ public abstract class CoreJavaInvoker {
         Method m = MethodUtils.getMatchingAccessibleMethod(clazz, methodName, argTypes);
 
         if (m == null) {
-            throw new ParamDefinitionException(
+            throw new SmartParamDefinitionException(
                     SmartParamErrorCode.FUNCTION_INVOKE_ERROR,
                     "Cannot find method: " + clazz.getName() + "." + methodName + " for args: " + Arrays.toString(argTypes));
         }

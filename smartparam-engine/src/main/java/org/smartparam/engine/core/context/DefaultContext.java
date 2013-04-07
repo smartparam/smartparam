@@ -10,7 +10,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
@@ -202,7 +202,7 @@ public class DefaultContext implements ParamContext {
 
         String k = lowercase(key);
         if (userContext.containsKey(k) && !allowOverwrite) {
-            throw new ParamUsageException(SmartParamErrorCode.ERROR_FILLING_CONTEXT,
+            throw new SmartParamUsageException(SmartParamErrorCode.ERROR_FILLING_CONTEXT,
                     "Trying to set duplicate key on userContext: key=" + key);
         }
 
@@ -290,7 +290,7 @@ public class DefaultContext implements ParamContext {
             return args[ix];
         }
 
-        throw new ParamUsageException(
+        throw new SmartParamUsageException(
                 SmartParamErrorCode.ERROR_FILLING_CONTEXT,
                 "args[" + ix + "] expected, but not found");
     }
@@ -365,7 +365,7 @@ public class DefaultContext implements ParamContext {
             setter.invoke(this, arg);
         } catch (Exception e) {
             logger.error("", e);
-            throw new ParamUsageException(
+            throw new SmartParamUsageException(
                     SmartParamErrorCode.ERROR_FILLING_CONTEXT, e,
                     "Unable to set arg on context, arg=" + arg + ", setter=" + setter);
         }

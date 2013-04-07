@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.AbstractType;
@@ -52,7 +52,7 @@ public class ParamHelperTest {
             try {
                 ParamHelper.decode(type, text);
                 fail();
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.TYPE_DECODING_FAILURE, e.getErrorCode());
             }
         }
@@ -91,7 +91,7 @@ public class ParamHelperTest {
             try {
                 ParamHelper.convert(type, obj);
                 fail();
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.TYPE_CONVERSION_FAILURE, e.getErrorCode());
             }
         }

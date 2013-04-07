@@ -10,7 +10,7 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.SmartParamConsts;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamInitializationException;
 
@@ -81,11 +81,11 @@ public class AnnotatedObjectsScanner<OBJECT> implements SmartParamConsts {
         return instantiatedObjects;
     }
 
-    private OBJECT instantiateWithDefault(Class<?> objectClass) throws ParamException {
+    private OBJECT instantiateWithDefault(Class<?> objectClass) throws SmartParamException {
         try {
             return (OBJECT) objectClass.getConstructor().newInstance();
         } catch (Exception exception) {
-            throw new ParamException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no default constructor "
+            throw new SmartParamException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no default constructor "
                     + "found for class " + ClassUtils.getShortClassName(objectClass));
         }
     }
@@ -105,7 +105,7 @@ public class AnnotatedObjectsScanner<OBJECT> implements SmartParamConsts {
 
             return (OBJECT) objectClass.getConstructor(constructorArgClasses).newInstance(constructorArgs);
         } catch (Exception exception) {
-            throw new ParamException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no String[" + constructorArgCount + "] constructor "
+            throw new SmartParamException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no String[" + constructorArgCount + "] constructor "
                     + "found for class " + ClassUtils.getShortClassName(objectClass));
         }
     }

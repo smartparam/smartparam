@@ -1,7 +1,7 @@
 -- tested on POSTGRES
 
 insert into smartparam_function_impl values('java', nextval('seq_sp_function_impl'), 'org.smartparam.demo.param.LevelFunction', 'demoModelObject');
-insert into smartparam_function values(nextval('seq_sp_function'), true, 'level.sample', false, 'string', false, 1);
+insert into smartparam_function values(nextval('seq_sp_function'), true, 'level.sample', false, 'demoType', false, 1);
 
 insert into smartparam_parameter values(nextval('seq_sp_parameter'), false, false, ',', true, 'Sample param description', 0, 'Sample param', false, 'sample', false, 'string');
 

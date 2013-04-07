@@ -3,7 +3,7 @@ package org.smartparam.engine.util;
 import java.lang.reflect.Array;
 import java.util.Collection;
 import org.apache.commons.lang3.ClassUtils;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.AbstractType;
@@ -19,7 +19,7 @@ public abstract class ParamHelper {
         try {
             return type.decode(text != null ? text.trim() : null);
         } catch (RuntimeException e) {
-            throw new ParamException(
+            throw new SmartParamException(
                     SmartParamErrorCode.TYPE_DECODING_FAILURE, e,
                     "Failed to decode text [" + text + "] into type [" + ClassUtils.getShortClassName(type, null) + "]");
         }
@@ -30,7 +30,7 @@ public abstract class ParamHelper {
         try {
             return type.convert(obj);
         } catch (RuntimeException e) {
-            throw new ParamException(
+            throw new SmartParamException(
                     SmartParamErrorCode.TYPE_CONVERSION_FAILURE, e,
                     "Failed to convert object [" + obj + "] into type [" + type.getClass() + "]");
         }

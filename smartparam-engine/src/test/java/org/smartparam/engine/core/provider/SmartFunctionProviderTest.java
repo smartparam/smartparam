@@ -1,8 +1,8 @@
-package org.smartparam.engine.core.engine;
+package org.smartparam.engine.core.provider;
 
 import org.junit.*;
 import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.exception.ParamDefinitionException;
+import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.model.Function;
 
@@ -14,7 +14,7 @@ import org.smartparam.engine.core.exception.SmartParamErrorCode;
 /**
  * @author Przemek Hertel
  */
-public class FunctionProviderImplTest {
+public class SmartFunctionProviderTest {
 
     @Test
     public void testGetFunction() {
@@ -57,7 +57,7 @@ public class FunctionProviderImplTest {
         try {
             fp.getFunction("fun2");
             fail();
-        } catch (ParamDefinitionException e) {
+        } catch (SmartParamDefinitionException e) {
             assertEquals(SmartParamErrorCode.UNKNOWN_FUNCTION, e.getErrorCode());
         }
 

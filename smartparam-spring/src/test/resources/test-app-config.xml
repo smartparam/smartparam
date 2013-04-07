@@ -5,7 +5,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
 
-    <bean id="paramEngine" class="org.smartparam.engine.core.engine.ParamEngine">
+    <bean id="paramEngine" class="org.smartparam.engine.core.engine.SmartParamEngine">
         <property name="paramProvider" ref="paramProvider" />
         <property name="assemblerProvider" ref="assemblerProvider" />
     </bean>
@@ -17,7 +17,7 @@
 
     <bean id="paramCache" class="org.smartparam.engine.core.cache.MapParamCache" />
 
-    <bean id="typeProvider" class="org.smartparam.engine.core.config.SmartTypeProvider">
+    <bean id="typeProvider" class="org.smartparam.engine.core.provider.SmartTypeProvider">
         <property name="typeMap">
             <map>
                 <entry key="string" value-ref="stringType" />
@@ -33,7 +33,7 @@
     <bean id="numberType" class="org.smartparam.engine.types.number.NumberType" />
     <bean id="pluginType" class="org.smartparam.engine.types.plugin.PluginType" />
 
-    <bean id="invokerProvider" class="org.smartparam.engine.core.config.SmartInvokerProvider">
+    <bean id="invokerProvider" class="org.smartparam.engine.core.provider.SmartInvokerProvider">
         <property name="invokers">
             <map>
                 <entry key="java" value-ref="javaFunctionInvoker" />
@@ -45,7 +45,7 @@
     <bean id="javaFunctionInvoker" class="org.smartparam.engine.core.function.JavaFunctionInvoker" />
     <bean id="springFunctionInvoker" class="org.smartparam.spring.function.SpringFunctionInvoker" />
 
-    <bean id="assemblerProvider" class="org.smartparam.engine.core.config.SmartAssemblerProvider">
+    <bean id="assemblerProvider" class="org.smartparam.engine.core.provider.SmartAssemblerProvider">
         <property name="assemblerObjects">
             <list>
                 <bean class="org.smartparam.engine.assemblers.GenericEnumAssembler" />
@@ -53,7 +53,7 @@
         </property>
     </bean>
 
-    <bean id="matcherProvider" class="org.smartparam.engine.core.config.SmartMatcherProvider">
+    <bean id="matcherProvider" class="org.smartparam.engine.core.provider.SmartMatcherProvider">
         <property name="matcherMap">
             <map>
                 <entry key="between/ie" value-ref="betweenMatcherIE" />

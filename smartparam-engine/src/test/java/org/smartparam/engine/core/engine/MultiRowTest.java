@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
@@ -114,7 +114,7 @@ public class MultiRowTest {
             try {
                 mr.getRow(k);
                 fail();
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.INDEX_OUT_OF_BOUNDS, e.getErrorCode());
             }
         }

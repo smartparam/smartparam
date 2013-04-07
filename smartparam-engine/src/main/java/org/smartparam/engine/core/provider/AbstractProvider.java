@@ -1,29 +1,33 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
 import java.lang.annotation.Annotation;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.smartparam.engine.annotations.AnnotatedObjectsScanner;
 import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.core.engine.AbstractScanner;
 
 /**
  *
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public abstract class AbstractProvider<REGISTERED_OBJECT> {
+public abstract class AbstractProvider<REGISTERED_OBJECT> extends AbstractScanner {
 
-    private boolean scanAnnotations = true;
+    public AbstractProvider() {
+        super();
+    }
 
-    private PackageList packagesToScan = new PackageList();
+    public AbstractProvider(boolean scanAnnotations, PackageList packagesToScan) {
+        super(scanAnnotations, packagesToScan);
+    }
 
     @PostConstruct
     public void scan() {
-        if (scanAnnotations) {
+        if (isScanAnnotations()) {
             AnnotatedObjectsScanner<REGISTERED_OBJECT> scanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>();
 
-            Map<String, REGISTERED_OBJECT> scannedTypes = scanner.getAnnotatedObjects(packagesToScan, getAnnotationClass());
+            Map<String, REGISTERED_OBJECT> scannedTypes = scanner.getAnnotatedObjects(getPackagesToScan(), getAnnotationClass());
             for (Map.Entry<String, REGISTERED_OBJECT> typeEntry : scannedTypes.entrySet()) {
                 handleRegistration(typeEntry.getKey(), typeEntry.getValue());
             }
@@ -33,12 +37,4 @@ public abstract class AbstractProvider<REGISTERED_OBJECT> {
     protected abstract Class<? extends Annotation> getAnnotationClass();
 
     protected abstract void handleRegistration(String objectCode, REGISTERED_OBJECT objectToRegister);
-
-    public void setScanAnnotations(boolean scanAnnotations) {
-        this.scanAnnotations = scanAnnotations;
-    }
-
-    public void setPackagesToScan(List<String> packagesToScan) {
-        this.packagesToScan.setPackages(packagesToScan);
-    }
 }

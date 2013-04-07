@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.engine;
+package org.smartparam.engine.core.provider;
 
 import org.smartparam.engine.model.Function;
 

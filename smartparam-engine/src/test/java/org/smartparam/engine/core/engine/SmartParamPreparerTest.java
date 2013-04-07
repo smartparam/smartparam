@@ -5,10 +5,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.config.SmartMatcherProvider;
-import org.smartparam.engine.core.config.TypeProvider;
-import org.smartparam.engine.core.exception.ParamDefinitionException;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.provider.SmartMatcherProvider;
+import org.smartparam.engine.core.provider.TypeProvider;
+import org.smartparam.engine.core.exception.SmartParamDefinitionException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.loader.ParamLoader;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.mockBuilders.LevelMockBuilder;
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.smartparam.engine.core.config.SmartTypeProvider;
+import org.smartparam.engine.core.provider.SmartTypeProvider;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
@@ -130,7 +130,7 @@ public class SmartParamPreparerTest {
             instance.getPreparedParameter("par2");
             fail();
 
-        } catch (ParamException e) {
+        } catch (SmartParamException e) {
             assertEquals(SmartParamErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
         }
     }
@@ -261,7 +261,7 @@ public class SmartParamPreparerTest {
         try {
             instance.getPreparedParameter("par2");
             fail();
-        } catch (ParamDefinitionException e) {
+        } catch (SmartParamDefinitionException e) {
             assertEquals(SmartParamErrorCode.UNKNOWN_MATCHER, e.getErrorCode());
         }
     }
@@ -301,7 +301,7 @@ public class SmartParamPreparerTest {
         try {
             instance.getPreparedParameter("par2");
             fail();
-        } catch (ParamDefinitionException e) {
+        } catch (SmartParamDefinitionException e) {
             assertEquals(SmartParamErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
         }
     }

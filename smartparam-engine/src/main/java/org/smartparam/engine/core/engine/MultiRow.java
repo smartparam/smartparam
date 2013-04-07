@@ -2,7 +2,7 @@ package org.smartparam.engine.core.engine;
 
 import java.util.Arrays;
 import java.util.List;
-import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.util.Formatter;
 import org.smartparam.engine.util.Printer;
@@ -85,7 +85,7 @@ public class MultiRow {
             return rows[k - 1];
         }
 
-        throw new ParamUsageException(
+        throw new SmartParamUsageException(
                 SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
                 "Getting element from non-existing position: " + k);
     }

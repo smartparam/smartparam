@@ -7,7 +7,7 @@ import java.security.PrivilegedAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 
@@ -103,7 +103,7 @@ public class AssemblerMethod {
             source = argTypes[0];
             passingContext = true;
         } else {
-            throw new ParamException(SmartParamErrorCode.ILLEGAL_ASSEMBLER_DEFINITION, "method: " + method);
+            throw new SmartParamException(SmartParamErrorCode.ILLEGAL_ASSEMBLER_DEFINITION, "method: " + method);
         }
 
         // udostepnienie metody, jesli nie jest publiczna
@@ -172,9 +172,9 @@ public class AssemblerMethod {
 
     }
 
-    private ParamException raiseAssembleException(Throwable cause) {
+    private SmartParamException raiseAssembleException(Throwable cause) {
         logger.error("failed to invoke assembler", cause);
-        return new ParamException(SmartParamErrorCode.ASSEMBLER_INVOKE_ERROR, cause, "failed to invoke assembler: " + this);
+        return new SmartParamException(SmartParamErrorCode.ASSEMBLER_INVOKE_ERROR, cause, "failed to invoke assembler: " + this);
     }
 
     /**

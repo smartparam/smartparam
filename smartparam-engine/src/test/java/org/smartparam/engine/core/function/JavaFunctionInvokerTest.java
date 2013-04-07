@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.exception.ParamDefinitionException;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamDefinitionException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.functions.JavaFunction;
 import org.smartparam.engine.util.EngineUtil;
 
@@ -88,7 +88,7 @@ public class JavaFunctionInvokerTest {
             try {
                 inv.findMethod(this.getClass(), methodName, args);
                 fail();
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 //ok
             }
         }
@@ -105,7 +105,7 @@ public class JavaFunctionInvokerTest {
         assertSame(this.getClass(), clazz);
     }
 
-    @Test(expected = ParamException.class)
+    @Test(expected = SmartParamException.class)
     public void testLoadClass__classNotFound() {
 
         // testowany obiekt
@@ -161,7 +161,7 @@ public class JavaFunctionInvokerTest {
         assertNotSame(this, obj);
     }
 
-    @Test(expected = ParamDefinitionException.class)
+    @Test(expected = SmartParamDefinitionException.class)
     public void testCreateInstance__cannotInstantiate() {
 
         // testowany obiekt
@@ -269,7 +269,7 @@ public class JavaFunctionInvokerTest {
         try {
             inv.invoke(f, 5, 0);
             fail();
-        } catch (ParamException e) {
+        } catch (SmartParamException e) {
             assertEquals(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
         }
     }

@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Przemek Hertel
  */
-public class ParamExceptionTest {
+public class SmartParamExceptionTest {
 
     @Test
     public void testConstrucor__throwable() {
@@ -16,7 +16,7 @@ public class ParamExceptionTest {
         Throwable t = mock(Exception.class);
 
         // test
-        ParamException e = new ParamException(t);
+        SmartParamException e = new SmartParamException(t);
 
         // weryfikacja
         assertSame(t, e.getCause());
@@ -29,7 +29,7 @@ public class ParamExceptionTest {
         String m = "message";
 
         // test
-        ParamException e = new ParamException(m);
+        SmartParamException e = new SmartParamException(m);
 
         // weryfikacja
         assertEquals(m, e.getMessage());
@@ -39,8 +39,8 @@ public class ParamExceptionTest {
     public void testGetMessage() {
 
         // testy
-        ParamException e1 = new ParamException("message");
-        ParamException e2 = new ParamException(SmartParamErrorCode.UNKNOWN_FUNCTION, "message");
+        SmartParamException e1 = new SmartParamException("message");
+        SmartParamException e2 = new SmartParamException(SmartParamErrorCode.UNKNOWN_FUNCTION, "message");
 
         // weryfikacja
         assertEquals("message", e1.getMessage());

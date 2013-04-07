@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
  * @author Przemek Hertel
@@ -49,37 +49,37 @@ public class DateHolderTest {
         assertFalse(h3.isNotNull());
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testLongValue() {
         h1.longValue();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testIntValue() {
         h2.intValue();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testDoubleValue() {
         h3.doubleValue();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetInteger() {
         h1.getInteger();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetLong() {
         h2.getLong();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetDouble() {
         h3.getDouble();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetBigDecimal() {
         h1.getBigDecimal();
     }
@@ -94,12 +94,12 @@ public class DateHolderTest {
         assertNull(h3.getString());
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testBooleanValue() {
         h1.booleanValue();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetBoolean() {
         h1.getBoolean();
     }

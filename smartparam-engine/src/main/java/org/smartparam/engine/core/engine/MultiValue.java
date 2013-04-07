@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import org.apache.commons.lang3.ClassUtils;
-import org.smartparam.engine.core.exception.ParamException;
-import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.util.Printer;
@@ -118,7 +118,7 @@ public class MultiValue {
             return (AbstractHolder) obj;
         }
 
-        throw new ParamException(
+        throw new SmartParamException(
                 SmartParamErrorCode.GETTING_WRONG_TYPE,
                 "Expecting AbstractHolder but found " + printClass(obj) + " at position " + k);
     }
@@ -222,7 +222,7 @@ public class MultiValue {
             return Enum.valueOf(enumClass, code);
 
         } catch (IllegalArgumentException e) {
-            throw new ParamException(SmartParamErrorCode.GETTING_WRONG_TYPE, e, "Requested enum has no such constant: " + code);
+            throw new SmartParamException(SmartParamErrorCode.GETTING_WRONG_TYPE, e, "Requested enum has no such constant: " + code);
         }
     }
 
@@ -246,7 +246,7 @@ public class MultiValue {
             return (AbstractHolder[]) obj;
         }
 
-        throw new ParamException(
+        throw new SmartParamException(
                 SmartParamErrorCode.GETTING_WRONG_TYPE,
                 "Expecting AbstractHolder[] but found " + printClass(obj) + " at position " + k);
     }
@@ -388,7 +388,7 @@ public class MultiValue {
         if (k >= 1 && k <= values.length) {
             return values[k - 1];
         }
-        throw new ParamUsageException(
+        throw new SmartParamUsageException(
                 SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
                 "Getting element from non-existing position: " + k);
     }

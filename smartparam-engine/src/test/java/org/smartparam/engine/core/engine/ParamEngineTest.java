@@ -1,5 +1,6 @@
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.provider.FunctionProvider;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,12 +10,12 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.slf4j.Logger;
 import org.smartparam.engine.core.cache.MapParamCache;
-import org.smartparam.engine.core.config.SmartInvokerProvider;
-import org.smartparam.engine.core.config.SmartTypeProvider;
-import org.smartparam.engine.core.config.TypeProvider;
+import org.smartparam.engine.core.provider.SmartInvokerProvider;
+import org.smartparam.engine.core.provider.SmartTypeProvider;
+import org.smartparam.engine.core.provider.TypeProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.JavaFunctionInvoker;
@@ -78,7 +79,7 @@ public class ParamEngineTest {
             AbstractType<?> type = types[i];
 
             AbstractHolder[] expected = (AbstractHolder[]) expectations[i];
-            AbstractHolder[] result = new ParamEngine().evaluateStringAsArray(value, type, ',');
+            AbstractHolder[] result = new SmartParamEngine().evaluateStringAsArray(value, type, ',');
             checkArrays(expected, result);
         }
     }
@@ -102,7 +103,7 @@ public class ParamEngineTest {
         when(invokerProvider.getInvoker(fimpl)).thenReturn(functionInvoker);
 
         // testowany obiekt
-        ParamEngine engine = new ParamEngine();
+        SmartParamEngine engine = new SmartParamEngine();
         engine.setInvokerProvider(invokerProvider);
 
         // dane testowe
@@ -222,7 +223,7 @@ public class ParamEngineTest {
         };
 
         // testowany obiekt
-        ParamEngine engine = new ParamEngine();
+        SmartParamEngine engine = new SmartParamEngine();
         engine.setInvokerProvider(invokerProvider);
 
         // testy
@@ -272,7 +273,7 @@ public class ParamEngineTest {
         when(logger.isDebugEnabled()).thenReturn(true, false, true, false);
 
         // testowany obiekt
-        ParamEngine engine = new ParamEngine();
+        SmartParamEngine engine = new SmartParamEngine();
         engine.setInvokerProvider(invokerProvider);
         engine.setLogger(logger);
 
@@ -345,7 +346,7 @@ public class ParamEngineTest {
         when(functionProvider.getFunction("plugin.fun")).thenReturn(fPlug);
 
         // testowany obiekt
-        ParamEngine engine = new ParamEngine();
+        SmartParamEngine engine = new SmartParamEngine();
         engine.setInvokerProvider(invokerProvider);
         engine.setParamProvider(provider);
         engine.setFunctionProvider(functionProvider);
@@ -382,7 +383,7 @@ public class ParamEngineTest {
         };
 
         // test
-        Object[] result = new ParamEngine().unwrap(array);
+        Object[] result = new SmartParamEngine().unwrap(array);
 
         // weryfikacja
         assertArrayEquals(expectedResult, result);
@@ -396,14 +397,14 @@ public class ParamEngineTest {
         Function f = FunctionMockBuilder.function().withJavaImplementation(this.getClass(), null).get();
 
         // konfiguracja
-        ParamEngine engine = new ParamEngine();
+        SmartParamEngine engine = new SmartParamEngine();
         engine.setInvokerProvider(ip);
 
         // test
         try {
             engine.invokeFunction(f, 1, 2, 3);
             fail();
-        } catch (ParamException e) {
+        } catch (SmartParamException e) {
             assertEquals(SmartParamErrorCode.UNDEFINED_FUNCTION_INVOKER, e.getErrorCode());
         }
     }
@@ -419,14 +420,14 @@ public class ParamEngineTest {
         Function f = FunctionMockBuilder.function().withJavaImplementation(this.getClass(), "badMethod").get();
 
         // konfiguracja
-        ParamEngine engine = new ParamEngine();
+        SmartParamEngine engine = new SmartParamEngine();
         engine.setInvokerProvider(ip);
 
         // test
         try {
             engine.invokeFunction(f, 13);
             fail();
-        } catch (ParamException e) {
+        } catch (SmartParamException e) {
             assertEquals(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
         }
     }
@@ -443,7 +444,7 @@ public class ParamEngineTest {
         when(logger2.isDebugEnabled()).thenReturn(true);
 
         // testowany obiekt
-        ParamEngine engine = new ParamEngine();
+        SmartParamEngine engine = new SmartParamEngine();
 
         // test 1
         engine.setLogger(logger1);
@@ -464,14 +465,14 @@ public class ParamEngineTest {
         when(paramProvider.getPreparedParameter("par")).thenReturn(null);
 
         // testowany obiekt
-        ParamEngine engine = new ParamEngine();
+        SmartParamEngine engine = new SmartParamEngine();
         engine.setParamProvider(paramProvider);
 
         // test
         try {
             engine.getValue("par", new DefaultContext());
             fail();
-        } catch (ParamException e) {
+        } catch (SmartParamException e) {
             assertEquals(SmartParamErrorCode.UNKNOWN_PARAMETER, e.getErrorCode());
         }
     }

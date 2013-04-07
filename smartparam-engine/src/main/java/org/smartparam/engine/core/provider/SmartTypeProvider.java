@@ -2,13 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractType;
 
@@ -56,6 +57,14 @@ public class SmartTypeProvider extends AbstractProvider<AbstractType<?>> impleme
      */
     private Map<String, AbstractType<?>> typeMap = new HashMap<String, AbstractType<?>>();
 
+    public SmartTypeProvider() {
+        super();
+    }
+
+    public SmartTypeProvider(boolean scanAnnotations, PackageList packagesToScan) {
+        super(scanAnnotations, packagesToScan);
+    }
+
     /**
      * Rejestruje podany typ i kojarzy go z podanym kodem.
      *
@@ -65,7 +74,7 @@ public class SmartTypeProvider extends AbstractProvider<AbstractType<?>> impleme
      */
     public void registerType(String code, AbstractType<?> type) {
         if (typeMap.containsKey(code)) {
-            throw new ParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "Such code is already registered: " + code);
+            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "Such code is already registered: " + code);
         }
         typeMap.put(code, type);
     }

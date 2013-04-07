@@ -4,7 +4,7 @@ import java.util.Arrays;
 import org.apache.log4j.spi.ErrorCode;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
@@ -56,22 +56,22 @@ public class StringHolderTest {
         // sprawdzenie wynikow testu - oczekiwany wyjatek typu: GETTING_WRONG_TYPE
         try {
             h1.intValue();
-        } catch (ParamUsageException e) {
+        } catch (SmartParamUsageException e) {
             assertEquals(SmartParamErrorCode.GETTING_WRONG_TYPE, e.getErrorCode());
         }
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testLongValue() {
         h1.longValue();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetLong() {
         h1.getLong();
     }
 
-    @Test(expected = ParamUsageException.class)
+    @Test(expected = SmartParamUsageException.class)
     public void testGetInteger() {
         h1.getInteger();
     }

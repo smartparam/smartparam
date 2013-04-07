@@ -1,6 +1,5 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
-import org.smartparam.engine.core.config.SmartMatcherProvider;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
@@ -11,7 +10,7 @@ import org.smartparam.engine.core.index.Matcher;
 /**
  * @author Przemek Hertel
  */
-public class MatcherProviderTest {
+public class SmartMatcherProviderTest {
 
     @Test
     public void testSetMatcherMap() {

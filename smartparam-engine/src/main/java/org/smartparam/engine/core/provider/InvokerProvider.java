@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.model.FunctionImpl;

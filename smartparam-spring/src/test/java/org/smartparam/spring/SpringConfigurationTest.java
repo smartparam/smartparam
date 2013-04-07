@@ -2,12 +2,12 @@ package org.smartparam.spring;
 
 import org.junit.*;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
-import org.smartparam.engine.core.config.SmartAssemblerProvider;
-import org.smartparam.engine.core.config.SmartMatcherProvider;
-import org.smartparam.engine.core.config.TypeProvider;
+import org.smartparam.engine.core.provider.SmartAssemblerProvider;
+import org.smartparam.engine.core.provider.SmartMatcherProvider;
+import org.smartparam.engine.core.provider.TypeProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
-import org.smartparam.engine.core.engine.ParamEngine;
+import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.engine.SmartParamPreparer;
 import org.smartparam.engine.core.loader.ParamLoader;
 import org.smartparam.engine.mockBuilders.LevelMockBuilder;
@@ -83,7 +83,7 @@ public class SpringConfigurationTest {
         paramProvider.setLoader(loader);
 
         // pobranie testowanego obiektu
-        ParamEngine engine = ctx.getBean(ParamEngine.class);
+        SmartParamEngine engine = ctx.getBean(SmartParamEngine.class);
 
         // sprawdzenie wynikow testu
         assertSame(NumberType.PESEL, engine.getResult("par", NumberType.class, new LevelValues("A")));

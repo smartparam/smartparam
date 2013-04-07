@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.date.DateHolder;
@@ -60,7 +60,7 @@ public class MultiValueTest {
             try {
                 mv.getValue(k);
                 fail();
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 System.out.println("OK: " + e.getMessage());
                 assertTrue(
                         e.getErrorCode() == SmartParamErrorCode.INDEX_OUT_OF_BOUNDS
@@ -195,7 +195,7 @@ public class MultiValueTest {
                 mv.getEnum(1, LetterType.class);
                 fail();
 
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.GETTING_WRONG_TYPE, e.getErrorCode());
             }
         }
@@ -241,7 +241,7 @@ public class MultiValueTest {
             try {
                 mv.getArray(k);
                 fail();
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 System.out.println("OK: " + e.getMessage());
                 assertTrue(
                         e.getErrorCode() == SmartParamErrorCode.INDEX_OUT_OF_BOUNDS

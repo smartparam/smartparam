@@ -1,9 +1,9 @@
-package org.smartparam.engine.core.engine;
+package org.smartparam.engine.core.provider;
 
 import javax.annotation.PostConstruct;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.MapFunctionCache;
-import org.smartparam.engine.core.exception.ParamDefinitionException;
+import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.model.Function;
@@ -45,7 +45,7 @@ public class SmartFunctionProvider implements FunctionProvider {
             f = loader.load(name);
 
             if (f == null) {
-                throw new ParamDefinitionException(SmartParamErrorCode.UNKNOWN_FUNCTION, "Unknown function: " + name);
+                throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_FUNCTION, "Unknown function: " + name);
             }
 
             cache.put(name, f);

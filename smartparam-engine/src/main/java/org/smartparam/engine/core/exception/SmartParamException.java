@@ -6,7 +6,7 @@ import org.apache.log4j.spi.ErrorCode;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class ParamException extends RuntimeException {
+public class SmartParamException extends RuntimeException {
 
     /**
      * SUID.
@@ -23,7 +23,7 @@ public class ParamException extends RuntimeException {
      *
      * @param t przyczyna wyjatku
      */
-    public ParamException(Throwable t) {
+    public SmartParamException(Throwable t) {
         super(t.getMessage(), t);
     }
 
@@ -32,7 +32,7 @@ public class ParamException extends RuntimeException {
      *
      * @param message komunikat o przyczynie wyjatku
      */
-    public ParamException(String message) {
+    public SmartParamException(String message) {
         super(message);
     }
 
@@ -42,7 +42,7 @@ public class ParamException extends RuntimeException {
      * @param errorCode kod bledu
      * @param message komunikat o przyczynie wyjatku
      */
-    public ParamException(SmartParamErrorCode errorCode, String message) {
+    public SmartParamException(SmartParamErrorCode errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }
@@ -54,7 +54,7 @@ public class ParamException extends RuntimeException {
      * @param t przyczyna wyjatku
      * @param message komunikat o przyczynie wyjatku
      */
-    public ParamException(SmartParamErrorCode errorCode, Throwable t, String message) {
+    public SmartParamException(SmartParamErrorCode errorCode, Throwable t, String message) {
         super(message, t);
         this.errorCode = errorCode;
     }

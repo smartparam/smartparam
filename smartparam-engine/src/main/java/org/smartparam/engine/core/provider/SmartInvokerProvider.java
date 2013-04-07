@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -6,7 +6,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
-import org.smartparam.engine.core.engine.ParamEngine;
+import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.model.FunctionImpl;
 
@@ -16,9 +17,17 @@ import org.smartparam.engine.model.FunctionImpl;
  */
 public class SmartInvokerProvider extends AbstractProvider<FunctionInvoker<?>> implements InvokerProvider {
 
-    private final Logger logger = LoggerFactory.getLogger(ParamEngine.class);
+    private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
     private Map<String, FunctionInvoker<?>> invokers = new HashMap<String, FunctionInvoker<?>>();
+
+    public SmartInvokerProvider() {
+        super();
+    }
+
+    public SmartInvokerProvider(boolean scanAnnotations, PackageList packagesToScan) {
+        super(scanAnnotations, packagesToScan);
+    }
 
     public <T extends FunctionImpl> void registerInvoker(String implCode, FunctionInvoker<T> invoker) {
         logger.info("registering function invoker: {} -> {}", implCode, invoker.getClass());

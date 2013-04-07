@@ -1,6 +1,6 @@
 package org.smartparam.demo.param;
 
-import org.smartparam.engine.core.engine.ParamEngine;
+import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class DemoParamServiceImpl implements DemoParamService {
 
     @Autowired
-    private ParamEngine paramEngine;
+    private SmartParamEngine paramEngine;
 
     @Override
     public AbstractHolder get(String paramName, DemoParamContext context) {

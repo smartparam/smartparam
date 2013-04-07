@@ -4,7 +4,7 @@ import org.smartparam.provider.jpa.model.JpaParameter;
 import org.smartparam.provider.jpa.model.JpaParameterEntry;
 import org.smartparam.provider.jpa.model.JpaFunction;
 import org.junit.Test;
-import org.smartparam.engine.core.exception.ParamDefinitionException;
+import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.model.Function;
 import org.smartparam.engine.model.Parameter;
 
@@ -183,7 +183,7 @@ public class JpaParameterEntryTest {
         assertArrayEquals(new String[]{null, null, null, null, null, null, null, "8"}, pe.getLevels());
     }
 
-    @Test(expected = ParamDefinitionException.class)
+    @Test(expected = SmartParamDefinitionException.class)
     public void testSetLevel__illegalArgument() {
 
         // przygotowanie obiektu

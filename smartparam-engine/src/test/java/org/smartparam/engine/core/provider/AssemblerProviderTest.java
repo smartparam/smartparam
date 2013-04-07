@@ -1,6 +1,6 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
-import org.smartparam.engine.core.config.SmartAssemblerProvider;
+import org.smartparam.engine.core.provider.SmartAssemblerProvider;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,7 +11,7 @@ import java.util.List;
 import org.smartparam.engine.core.assembler.Assembler;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.string.StringHolder;
@@ -149,7 +149,7 @@ public class AssemblerProviderTest {
         ap.logAssemblers();
     }
 
-    @Test(expected = ParamException.class)
+    @Test(expected = SmartParamException.class)
     public void testFindAssembler__notFound() {
 
         // testowany obiekt

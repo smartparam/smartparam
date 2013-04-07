@@ -3,7 +3,7 @@ package org.smartparam.engine.core.type;
 import java.math.BigDecimal;
 import java.util.Date;
 import org.apache.commons.lang3.ClassUtils;
-import org.smartparam.engine.core.exception.ParamUsageException;
+import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
@@ -183,8 +183,8 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      * @param t nazwa typu, ktory probuje pobrac uzytkownik
      * @return wyjatek ParamUsageException
      */
-    private ParamUsageException unexpectedUsage(String t) {
-        return new ParamUsageException(
+    private SmartParamUsageException unexpectedUsage(String t) {
+        return new SmartParamUsageException(
                 SmartParamErrorCode.GETTING_WRONG_TYPE,
                 "trying to get [" + t + "] value from " + this.getClass());
     }

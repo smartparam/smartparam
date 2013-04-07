@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.spring.mockBuilders.SpringFunctionMockBuilder;
 import org.springframework.beans.BeanInstantiationException;
 import org.springframework.context.ApplicationContext;
@@ -136,7 +136,7 @@ public class SpringFunctionInvokerTest {
                 invoker.invoke(f, args);
                 fail();
 
-            } catch (ParamException e) {
+            } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e.getErrorCode());
                 assertNotNull(e.getCause());
                 System.out.println("OK[" + i + "] : " + e.getCause());

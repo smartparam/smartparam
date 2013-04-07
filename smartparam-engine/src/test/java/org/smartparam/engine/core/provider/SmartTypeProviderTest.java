@@ -1,10 +1,10 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.*;
 import static org.junit.Assert.*;
-import org.smartparam.engine.core.exception.ParamException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractType;
 import org.smartparam.engine.types.integer.IntegerType;
@@ -16,8 +16,11 @@ import org.smartparam.engine.types.string.StringType;
 public class SmartTypeProviderTest {
 
     private IntegerType intType;
+
     private StringType strType;
+
     private StringType chrType;
+
     private Map<String, AbstractType<?>> cases;
 
     @Before
@@ -39,8 +42,8 @@ public class SmartTypeProviderTest {
     }
 
     /**
-     * Sprawdza zgodnosc typow otrzymywanych z providera
-     * z typami oczekiwanymi, skonfigurowanymi w mapie cases.
+     * Sprawdza zgodnosc typow otrzymywanych z providera z typami oczekiwanymi,
+     * skonfigurowanymi w mapie cases.
      */
     private void checkTypeProvider(TypeProvider tp) {
         for (Map.Entry<String, AbstractType<?>> e : cases.entrySet()) {
@@ -93,8 +96,7 @@ public class SmartTypeProviderTest {
         try {
             tp.registerType("int", new IntegerType());
             fail();
-        }
-        catch(ParamException pe) {
+        } catch (SmartParamException pe) {
             assertEquals(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, pe.getErrorCode());
         }
     }

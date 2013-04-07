@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.core.provider;
 
 import org.smartparam.engine.core.assembler.AssemblerMethod;
 
