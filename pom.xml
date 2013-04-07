@@ -27,7 +27,8 @@
         <module>smartparam-demo</module>
         <module>smartparam-spring</module>
         <module>smartparam-provider-jdbc</module>
-    </modules>
+    <module>smartparam-rhino</module>
+  </modules>
 
     <dependencyManagement>
         <dependencies>

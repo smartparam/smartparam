@@ -1,24 +1,38 @@
-package org.smartparam.engine.core.function;
+package org.smartparam.rhino.function;
 
+//import java.math.BigDecimal;
+//import java.util.HashMap;
+//import java.util.Map;
+//import org.apache.commons.lang3.StringUtils;
+import org.junit.Before;
 import org.junit.Test;
+//import org.mozilla.javascript.NativeArray;
+//import org.mozilla.javascript.NativeJavaObject;
+//import org.mozilla.javascript.Undefined;
+//import org.smartparam.engine.core.context.DefaultContext;
+//import org.smartparam.engine.core.context.ParamContext;
+//
+//import static org.mockito.Mockito.*;
+//import static org.junit.Assert.*;
 
 /**
- * FIXME #ad move to implementation project
  *
  * @author Przemek Hertel
  */
 public class RhinoFunctionInvokerTest {
 
+    RhinoFunctionInvoker invoker;
+
+    @Before
+    public void init() {
+        invoker = new RhinoFunctionInvoker();
+    }
+
     @Test
     public void noop() {
+
     }
-//    RhinoFunctionInvoker invoker;
-//
-//    @Before
-//    public void init() {
-//        invoker = new RhinoFunctionInvoker();
-//    }
-//
+
 //    @Test
 //    public void testInternalName() {
 //

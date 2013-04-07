@@ -36,7 +36,7 @@ package org.smartparam.provider.jpa.model;
  */
 //@Entity
 //@DiscriminatorValue("rhino")
-public class RhinoFunction { //extends HibernateFunctionImpl {
+public class JpaRhinoFunction { // extends HibernateFunctionImpl {
 //    /**
 //     * SUID.
 //     */
