@@ -34,23 +34,13 @@
         </property>-->
     </bean>
 
-    <bean id="paramEngine" class="org.smartparam.engine.core.engine.SmartParamEngine">
-        <property name="paramLoader" ref="smartparamLoader" />
-        <property name="functionLoader" ref="smartparamFunctionLoader"/>
-        <property name="assemblerProvider" ref="assemblerProvider"/>
+    <bean id="paramEngine" class="org.smartparam.engine.core.engine.BaseSmartParamEngine">
+        <property name="paramProvider" ref="smartParamProvider" />
+        <property name="functionLoader" ref="smartParamFunctionLoader"/>
         <property name="packagesToScan">
             <list>
                 <value>org.smartparam.demo.param</value>
             </list>
         </property>
     </bean>
-
-    <bean id="assemblerProvider" class="org.smartparam.engine.core.provider.SmartAssemblerProvider">
-        <property name="assemblerObjects">
-            <list>
-                <bean class="org.smartparam.engine.assemblers.GenericEnumAssembler" />
-            </list>
-        </property>
-    </bean>
-
 </beans>

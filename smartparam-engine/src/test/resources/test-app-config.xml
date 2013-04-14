@@ -6,11 +6,11 @@
 
 
     <bean id="paramEngine" class="org.smartparam.engine.core.engine.SmartParamEngine">
-        <property name="paramProvider" ref="paramProvider" />
+        <property name="paramPreparer" ref="paramPreparer" />
         <property name="assemblerProvider" ref="assemblerProvider" />
     </bean>
 
-    <bean id="paramProvider" class="org.smartparam.engine.core.engine.ParamProviderImpl">
+    <bean id="paramPreparer" class="org.smartparam.engine.core.engine.SmartParamPreparer">
         <property name="typeProvider" ref="typeProvider" />
         <property name="cache" ref="paramCache" />
     </bean>

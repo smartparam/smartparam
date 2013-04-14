@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.integer.IntegerType;
 
@@ -18,7 +18,7 @@ import org.smartparam.engine.types.integer.IntegerType;
  */
 public class ParamHelperTest {
 
-    private AbstractType<?> type = new IntegerType();
+    private Type<?> type = new IntegerType();
 
     @Test
     public void testDecode() {

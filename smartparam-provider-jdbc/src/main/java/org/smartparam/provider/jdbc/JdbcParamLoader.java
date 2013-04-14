@@ -7,7 +7,7 @@ package org.smartparam.provider.jdbc;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
-import org.smartparam.engine.core.loader.ParamLoader;
+import org.smartparam.engine.core.loader.ParamProvider;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.provider.jdbc.dao.JdbcProviderDAO;
@@ -19,7 +19,7 @@ import org.smartparam.provider.jdbc.model.JdbcParameterLevel;
  * @author Przemek Hertel
  * @since 0.1.0
  */
-public class JdbcParamLoader implements ParamLoader {
+public class JdbcParamLoader implements ParamProvider {
 
     /**
      * JDBC DataSource to obtain connections from.

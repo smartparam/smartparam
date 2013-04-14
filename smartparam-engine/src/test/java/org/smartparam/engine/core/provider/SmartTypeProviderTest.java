@@ -6,7 +6,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;
 
@@ -21,7 +21,7 @@ public class SmartTypeProviderTest {
 
     private StringType chrType;
 
-    private Map<String, AbstractType<?>> cases;
+    private Map<String, Type<?>> cases;
 
     @Before
     public void prepareUseCases() {
@@ -32,7 +32,7 @@ public class SmartTypeProviderTest {
         chrType = new StringType();
 
         // oczekiwane wyniki wyszukiwania
-        cases = new HashMap<String, AbstractType<?>>();
+        cases = new HashMap<String, Type<?>>();
         cases.put("int", intType);
         cases.put("str", strType);
         cases.put("chr", chrType);
@@ -46,10 +46,10 @@ public class SmartTypeProviderTest {
      * skonfigurowanymi w mapie cases.
      */
     private void checkTypeProvider(TypeProvider tp) {
-        for (Map.Entry<String, AbstractType<?>> e : cases.entrySet()) {
+        for (Map.Entry<String, Type<?>> e : cases.entrySet()) {
             String code = e.getKey();
-            AbstractType<?> expectedType = e.getValue();
-            AbstractType<?> actualType = tp.getType(code);
+            Type<?> expectedType = e.getValue();
+            Type<?> actualType = tp.getType(code);
             assertEquals(expectedType, actualType);
         }
     }
@@ -71,7 +71,7 @@ public class SmartTypeProviderTest {
     public void testSetTypeMap() {
 
         // przygotowanie zaleznosci
-        Map<String, AbstractType<?>> types = new HashMap<String, AbstractType<?>>();
+        Map<String, Type<?>> types = new HashMap<String, Type<?>>();
         types.put("int", intType);
         types.put("str", strType);
         types.put("chr", chrType);

@@ -2,7 +2,7 @@ package org.smartparam.engine.core.engine;
 
 import org.smartparam.engine.core.provider.SmartFunctionProvider;
 import java.util.ArrayList;
-import org.smartparam.engine.core.loader.ParamLoader;
+import org.smartparam.engine.core.loader.ParamProvider;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +46,7 @@ public class ParamEngineScenarioTest {
 
     private TypeProvider typeProvider;
 
-    private ParamLoader loader;
+    private ParamProvider loader;
 
     private SmartParamPreparer paramProvider;
 
@@ -65,7 +65,7 @@ public class ParamEngineScenarioTest {
         typeProvider.registerType("integer", new IntegerType());
         typeProvider.registerType("plugin", new PluginType());
 
-        loader = mock(ParamLoader.class);
+        loader = mock(ParamProvider.class);
 
         paramProvider = new SmartParamPreparer();
         paramProvider.setTypeProvider(typeProvider);
@@ -84,7 +84,7 @@ public class ParamEngineScenarioTest {
         fp.setCache(new MapFunctionCache());
 
         engine = new SmartParamEngine();
-        engine.setParamProvider(paramProvider);
+        engine.setParamPreparer(paramProvider);
         engine.setInvokerProvider(invokerProvider);
         engine.setAssemblerProvider(assemblerProvider);
         engine.setFunctionProvider(fp);

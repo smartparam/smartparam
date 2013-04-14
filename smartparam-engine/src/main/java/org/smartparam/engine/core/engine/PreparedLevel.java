@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.engine;
 
 import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Function;
 
 /**
@@ -28,7 +28,7 @@ public class PreparedLevel {
      * Typ wartosci dla tego poziomu (zgodny z systemem typow silnika).
      * Musi byc <tt>not null</tt> jesli uzywamy niestandardowego matchera dla tego poziomu.
      */
-    private AbstractType<?> type;
+    private Type<?> type;
 
     /**
      * Flaga oznaczajaca, czy zawartosc tego poziomu moze byc traktowana jako tablica wartosci.
@@ -53,7 +53,7 @@ public class PreparedLevel {
      * @param matcher      matcher
      * @param levelCreator funkcja levelCreatora
      */
-    public PreparedLevel(AbstractType<?> type, boolean array, Matcher matcher, Function levelCreator) {
+    public PreparedLevel(Type<?> type, boolean array, Matcher matcher, Function levelCreator) {
         this.type = type;
         this.array = array;
         this.matcher = matcher;
@@ -83,7 +83,7 @@ public class PreparedLevel {
      *
      * @return typ poziomu
      */
-    public AbstractType<?> getType() {
+    public Type<?> getType() {
         return type;
     }
 

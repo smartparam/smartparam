@@ -19,9 +19,9 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.JavaFunctionInvoker;
-import org.smartparam.engine.core.loader.ParamLoader;
+import org.smartparam.engine.core.loader.ParamProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.test.builder.FunctionMockBuilder;
 import org.smartparam.engine.test.builder.ParameterEntryMockBuilder;
 import org.smartparam.engine.test.builder.ParameterMockBuilder;
@@ -60,7 +60,7 @@ public class ParamEngineTest {
         };
 
         // types[i] - typ parametru
-        AbstractType<?>[] types = {
+        Type<?>[] types = {
             new StringType(),
             new IntegerType(),
             new IntegerType()
@@ -76,7 +76,7 @@ public class ParamEngineTest {
         // wykonanie testow
         for (int i = 0; i < values.length; i++) {
             String value = values[i];
-            AbstractType<?> type = types[i];
+            Type<?> type = types[i];
 
             AbstractHolder[] expected = (AbstractHolder[]) expectations[i];
             AbstractHolder[] result = new SmartParamEngine().evaluateStringAsArray(value, type, ',');
@@ -118,7 +118,7 @@ public class ParamEngineTest {
         };
 
         // typy parametrow
-        AbstractType<?>[] types = {
+        Type<?>[] types = {
             new StringType(),
             new IntegerType(),
             new NumberType(),
@@ -142,7 +142,7 @@ public class ParamEngineTest {
         // testy
         for (int i = 0; i < tests.length; i++) {
             PreparedEntry pe = tests[i];
-            AbstractType<?> type = types[i];
+            Type<?> type = types[i];
             AbstractHolder expectedValue = expectedValues[i];
 
             // test
@@ -195,7 +195,7 @@ public class ParamEngineTest {
         };
 
         // typy parametrow
-        AbstractType<?>[] types = {
+        Type<?>[] types = {
             new StringType(),
             new IntegerType(),
             new NumberType(),
@@ -229,7 +229,7 @@ public class ParamEngineTest {
         // testy
         for (int i = 0; i < tests.length; i++) {
             PreparedEntry pe = tests[i];
-            AbstractType<?> type = types[i];
+            Type<?> type = types[i];
             AbstractHolder[] expectedArray = expectedValues[i];
 
             // test
@@ -326,7 +326,7 @@ public class ParamEngineTest {
         tp.registerType("plugin", new PluginType());
         tp.registerType("string", new StringType());
 
-        ParamLoader loader = mock(ParamLoader.class);
+        ParamProvider loader = mock(ParamProvider.class);
         when(loader.load("par")).thenReturn(par);
 
         SmartParamPreparer provider = new SmartParamPreparer();
@@ -348,7 +348,7 @@ public class ParamEngineTest {
         // testowany obiekt
         SmartParamEngine engine = new SmartParamEngine();
         engine.setInvokerProvider(invokerProvider);
-        engine.setParamProvider(provider);
+        engine.setParamPreparer(provider);
         engine.setFunctionProvider(functionProvider);
 
         // test
@@ -466,7 +466,7 @@ public class ParamEngineTest {
 
         // testowany obiekt
         SmartParamEngine engine = new SmartParamEngine();
-        engine.setParamProvider(paramProvider);
+        engine.setParamPreparer(paramProvider);
 
         // test
         try {
@@ -490,7 +490,7 @@ public class ParamEngineTest {
         return pp;
     }
 
-    private PreparedLevel pl(AbstractType<?> type) {
+    private PreparedLevel pl(Type<?> type) {
         return new PreparedLevel(type, false, null, levelCreator);
     }
 

@@ -2,10 +2,10 @@ package org.smartparam.engine.core.index;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.Formatter;
 
 /**
@@ -87,7 +87,7 @@ public class LevelNode<T> {
 
     private void ensureChildrenIsReady() {
         if (children == null) {
-            children = new LinkedHashMap<String, LevelNode<T>>(2, LOAD_FACTOR);
+            children = new HashMap<String, LevelNode<T>>(2, LOAD_FACTOR);
         }
     }
     private static final float LOAD_FACTOR = 0.8f;
@@ -112,7 +112,7 @@ public class LevelNode<T> {
         //szukamy wezla-dziecka dla wartosci levelVal
 
         Matcher matcher = index.getMatcher(depth);
-        AbstractType<?> type = index.getType(depth);
+        Type<?> type = index.getType(depth);
 
         LevelNode<T> child = null;
 
@@ -140,7 +140,7 @@ public class LevelNode<T> {
         return null;
     }
 
-    private LevelNode<T> match(String val, Matcher matcher, AbstractType<?> type) {
+    private LevelNode<T> match(String val, Matcher matcher, Type<?> type) {
         for (Map.Entry<String, LevelNode<T>> e : children.entrySet()) {
             String pattern = e.getKey();
             if (matcher.matches(val, pattern, type)) {

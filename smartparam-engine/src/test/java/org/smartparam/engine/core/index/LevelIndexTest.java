@@ -10,7 +10,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.EqMatcher;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;
 import org.smartparam.engine.util.EngineUtil;
@@ -36,7 +36,7 @@ public class LevelIndexTest {
         Matcher m1 = new EqMatcher();
         Matcher m2 = new BetweenMatcher();
 
-        AbstractType<?>[] types = {t1, t2};
+        Type<?>[] types = {t1, t2};
         Matcher[] matchers = {m1, m2};
 
         // utworzenie testowanego obiektu
@@ -60,7 +60,7 @@ public class LevelIndexTest {
         StringType t1 = new StringType();
         IntegerType t2 = new IntegerType();
 
-        AbstractType<?>[] types = {t1, t2};
+        Type<?>[] types = {t1, t2};
 
         // utworzenie testowanego obiektu
         LevelIndex<Integer> index = new LevelIndex<Integer>(2, types, (Matcher[]) null);
@@ -86,7 +86,7 @@ public class LevelIndexTest {
         IntegerType t2 = new IntegerType();
         Matcher m1 = new EqMatcher();
 
-        AbstractType<?>[] types = {t1, t2};
+        Type<?>[] types = {t1, t2};
 
         // utworzenie testowanego obiektu
         // 3 poziomy, 2 typy, 1 matcher
@@ -115,7 +115,7 @@ public class LevelIndexTest {
 
         // sprawdzenie wynikow testu
         assertEquals(2, index.getLevelCount());
-        assertArrayEquals(new AbstractType<?>[]{null, null}, index.getTypes());
+        assertArrayEquals(new Type<?>[]{null, null}, index.getTypes());
         assertArrayEquals(new Matcher[]{null, null}, index.getMatchers());
     }
 
@@ -127,7 +127,7 @@ public class LevelIndexTest {
 
         // konfiguracja zaleznosci
         StringType t1 = new StringType();
-        AbstractType<?>[] types = {t1};
+        Type<?>[] types = {t1};
 
         // utworzenie testowanego obiektu
         LevelIndex<Long> index = new LevelIndex<Long>(types);     // 1 poziom, 1 typ, domyslny matcher
@@ -292,7 +292,7 @@ public class LevelIndexTest {
         IntegerType t2 = new IntegerType();
 
         // utworzenie testowanego obiektu
-        LevelIndex<Integer> ix = new LevelIndex<Integer>(2, new AbstractType<?>[]{t1, t2}, m1, m2);
+        LevelIndex<Integer> ix = new LevelIndex<Integer>(2, new Type<?>[]{t1, t2}, m1, m2);
 
         ix.add("A;1:5", 15);
         ix.add("A;5:12", 512);
@@ -319,10 +319,12 @@ public class LevelIndexTest {
         index.add("B;*", 33);
 
         // oczekiwany wynik
-        String expected = ""
-                + "path : " + Formatter.NL
+        String expectedPrefix = ""
+                + "path : " + Formatter.NL;
+        String expectedForA = ""
                 + "    path : /A" + Formatter.NL
-                + "        path : /A/X   (leaf=[11])" + Formatter.NL
+                + "        path : /A/X   (leaf=[11])" + Formatter.NL;
+        String expectedForB = ""
                 + "    path : /B" + Formatter.NL
                 + "        path : /B/X   (leaf=[22])" + Formatter.NL
                 + "        path : /B/*   (leaf=[33])" + Formatter.NL;
@@ -331,7 +333,9 @@ public class LevelIndexTest {
         String result = index.printTree();
 
         // weryfikacja
-        assertEquals(expected, result);
+        assertTrue(result.startsWith(expectedPrefix));
+        assertTrue(result.contains(expectedForA));
+        assertTrue(result.contains(expectedForB));
     }
 
     @Test

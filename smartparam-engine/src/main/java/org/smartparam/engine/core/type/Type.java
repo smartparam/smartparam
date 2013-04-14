@@ -28,7 +28,7 @@ package org.smartparam.engine.core.type;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public abstract class AbstractType<T extends AbstractHolder> {
+public interface Type<T extends AbstractHolder> {
 
     /**
      * Zamienia wartosc typu {@code holder} na string.

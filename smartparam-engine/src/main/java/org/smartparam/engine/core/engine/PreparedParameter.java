@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.engine;
 
 import org.smartparam.engine.core.index.LevelIndex;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 
 /**
  * Przetworzony (skompilowany) parametr.
@@ -28,7 +28,7 @@ public class PreparedParameter {
     /**
      * Typ parametru.
      */
-    private AbstractType<?> type;
+    private Type<?> type;
 
     /**
      * Definicje poziomow.
@@ -129,7 +129,7 @@ public class PreparedParameter {
      *
      * @return typ parametru
      */
-    public AbstractType<?> getType() {
+    public Type<?> getType() {
         return type;
     }
 
@@ -138,7 +138,7 @@ public class PreparedParameter {
      *
      * @param type kod typu
      */
-    public void setType(AbstractType<?> type) {
+    public void setType(Type<?> type) {
         this.type = type;
     }
 

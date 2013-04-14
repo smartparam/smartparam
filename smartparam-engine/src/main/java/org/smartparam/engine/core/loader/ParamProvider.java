@@ -7,7 +7,7 @@ import org.smartparam.engine.model.ParameterEntry;
 /**
  * @author Przemek Hertel
  */
-public interface ParamLoader {
+public interface ParamProvider {
 
     Parameter load(String parameterName);
 

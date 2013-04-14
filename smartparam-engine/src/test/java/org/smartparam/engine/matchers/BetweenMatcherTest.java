@@ -4,7 +4,7 @@ import org.smartparam.engine.matchers.BetweenMatcher;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;
 
@@ -87,7 +87,7 @@ public class BetweenMatcherTest {
             String pattern = (String) test[0];
             String value = (String) test[1];
             Matcher matcher = (Matcher) test[2];
-            AbstractType<?> type = (AbstractType<?>) test[3];
+            Type<?> type = (Type<?>) test[3];
             boolean expectedResult = (Boolean) test[4];
 
             // test

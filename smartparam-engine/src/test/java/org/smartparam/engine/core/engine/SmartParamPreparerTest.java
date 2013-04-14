@@ -9,7 +9,7 @@ import org.smartparam.engine.core.provider.SmartMatcherProvider;
 import org.smartparam.engine.core.provider.TypeProvider;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.loader.ParamLoader;
+import org.smartparam.engine.core.loader.ParamProvider;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.test.builder.LevelMockBuilder;
 import org.smartparam.engine.test.builder.ParameterEntryMockBuilder;
@@ -33,7 +33,7 @@ public class SmartParamPreparerTest {
 
     private ParamCache cache;
 
-    private ParamLoader loader;
+    private ParamProvider loader;
 
     private PreparedParameter pp1;
 
@@ -68,7 +68,7 @@ public class SmartParamPreparerTest {
         when(cache.get("par1")).thenReturn(pp1);
         when(cache.get("par2")).thenReturn(null);
 
-        loader = mock(ParamLoader.class);
+        loader = mock(ParamProvider.class);
         when(loader.load("par2")).thenReturn(p2);
         when(loader.load("par3")).thenReturn(null);
         when(loader.findEntries(any(String.class), any(String[].class))).thenReturn(entries);

@@ -20,10 +20,10 @@ import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.index.LevelIndex;
-import org.smartparam.engine.core.loader.FunctionLoader;
-import org.smartparam.engine.core.loader.ParamLoader;
+import org.smartparam.engine.core.provider.AssemblerProvider;
+import org.smartparam.engine.core.provider.InvokerProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Function;
 import org.smartparam.engine.model.FunctionImpl;
 import org.smartparam.engine.types.plugin.PluginHolder;
@@ -36,21 +36,17 @@ import org.smartparam.engine.util.ParamHelper;
  * @author Przemek Hertel
  * @since 0.1.0
  */
-public class SmartParamEngine extends AbstractScanner {
+public class SmartParamEngine extends AbstractScanner implements ParamEngine {
 
     private Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
-    private ParamPreparer paramProvider = null;
+    private ParamPreparer paramPreparer = null;
 
     private FunctionProvider functionProvider = null;
 
-    private SmartInvokerProvider invokerProvider = null;
+    private InvokerProvider invokerProvider = null;
 
-    private SmartAssemblerProvider assemblerProvider = null;
-
-    private ParamLoader paramLoader = null;
-
-    private FunctionLoader functionLoader = null;
+    private AssemblerProvider assemblerProvider = null;
 
     @PostConstruct
     public void initializeProviders() {
@@ -59,22 +55,9 @@ public class SmartParamEngine extends AbstractScanner {
             smartInvokerProvider.scan();
             invokerProvider = smartInvokerProvider;
         }
-
-        if (functionProvider == null) {
-            SmartFunctionProvider smartFunctionProvider = new SmartFunctionProvider();
-            smartFunctionProvider.setLoader(functionLoader);
-            smartFunctionProvider.initializeProviders();
-            functionProvider = smartFunctionProvider;
-        }
-
-        if (paramProvider == null) {
-            SmartParamPreparer smartParamPreparer = new SmartParamPreparer(isScanAnnotations(), getPackagesToScan());
-            smartParamPreparer.setLoader(paramLoader);
-            smartParamPreparer.initializeProviders();
-            paramProvider = smartParamPreparer;
-        }
     }
 
+    @Override
     public AbstractHolder getValue(String paramName, ParamContext ctx) {
 
         logger.debug("enter getValue[{}], ctx={}", paramName, ctx);
@@ -99,6 +82,7 @@ public class SmartParamEngine extends AbstractScanner {
         return result;
     }
 
+    @Override
     public AbstractHolder getValue(String paramName, Object... levelValues) {
         DefaultContext ctx = new DefaultContext();
         ctx.setLevelValues(levelValues);
@@ -163,6 +147,7 @@ public class SmartParamEngine extends AbstractScanner {
         return result;
     }
 
+    @Override
     public AbstractHolder[] getArray(String paramName, ParamContext ctx) {
 
         logger.debug("enter getArray[{}], ctx={}", paramName, ctx);
@@ -177,7 +162,7 @@ public class SmartParamEngine extends AbstractScanner {
 
         PreparedEntry pe = findParameterEntry(param, ctx);
 
-        AbstractType<?> type = param.getType();
+        Type<?> type = param.getType();
         AbstractHolder[] result;
 
         if (pe != null) {
@@ -194,6 +179,7 @@ public class SmartParamEngine extends AbstractScanner {
         return result;
     }
 
+    @Override
     public MultiValue getMultiValue(String paramName, ParamContext ctx) {
 
         logger.debug("enter getMultiValue[{}], ctx={}", paramName, ctx);
@@ -227,7 +213,7 @@ public class SmartParamEngine extends AbstractScanner {
             String cellText = pe.getLevel(inputLevels + i + 1);
             PreparedLevel level = levels[inputLevels + i];
 
-            AbstractType<?> cellType = level.getType();
+            Type<?> cellType = level.getType();
             Object cellValue;
 
             if (level.isArray()) {
@@ -245,6 +231,7 @@ public class SmartParamEngine extends AbstractScanner {
         return result;
     }
 
+    @Override
     public MultiRow getMultiRow(String paramName, ParamContext ctx) {
 
         logger.debug("enter getMultiRow[{}], ctx={}", paramName, ctx);
@@ -285,7 +272,7 @@ public class SmartParamEngine extends AbstractScanner {
                 String cellText = pe.getLevel(k + j + 1);
                 PreparedLevel level = levels[k + j];
 
-                AbstractType<?> cellType = level.getType();
+                Type<?> cellType = level.getType();
                 Object cellValue;
 
                 if (level.isArray()) {
@@ -312,6 +299,7 @@ public class SmartParamEngine extends AbstractScanner {
         return result;
     }
 
+    @Override
     public Object callFunction(String functionName, Object... args) {
         if (logger.isDebugEnabled()) {
             logger.debug("calling function [{}] with args: {}", functionName, classNames(args));
@@ -333,6 +321,7 @@ public class SmartParamEngine extends AbstractScanner {
         return names;
     }
 
+    @Override
     public Object call(String paramName, ParamContext ctx, Object... args) {
         AbstractHolder holder = getValue(paramName, ctx);
 
@@ -366,7 +355,7 @@ public class SmartParamEngine extends AbstractScanner {
      *
      * @return holder reprezentujacy wartosc parametru
      */
-    AbstractHolder evaluateParameterEntry(PreparedEntry pe, ParamContext ctx, AbstractType<?> type) {
+    AbstractHolder evaluateParameterEntry(PreparedEntry pe, ParamContext ctx, Type<?> type) {
 
         String v = pe.getValue();
         if (v != null) {
@@ -401,7 +390,7 @@ public class SmartParamEngine extends AbstractScanner {
      *
      * @return tablica holderow typu wynikajacego z <tt>type</tt>
      */
-    AbstractHolder[] evaluateParameterEntryAsArray(PreparedEntry pe, ParamContext ctx, AbstractType<?> type, char separator) {
+    AbstractHolder[] evaluateParameterEntryAsArray(PreparedEntry pe, ParamContext ctx, Type<?> type, char separator) {
         String v = pe.getValue();
         if (v != null) {
             return evaluateStringAsArray(v, type, separator);
@@ -467,7 +456,7 @@ public class SmartParamEngine extends AbstractScanner {
      *
      * @return tablica zdekodowanych wartosci
      */
-    AbstractHolder[] evaluateStringAsArray(String value, AbstractType<?> type, char separator) {
+    AbstractHolder[] evaluateStringAsArray(String value, Type<?> type, char separator) {
 
         if (EngineUtil.hasText(value)) {
             String[] tokens = EngineUtil.split(value, separator);
@@ -550,7 +539,7 @@ public class SmartParamEngine extends AbstractScanner {
 
         } else {
 
-            List<PreparedEntry> entries = paramProvider.findEntries(param.getName(), levelValues);
+            List<PreparedEntry> entries = paramPreparer.findEntries(param.getName(), levelValues);
             return entries.isEmpty() ? null : entries.get(0);
         }
     }
@@ -581,7 +570,7 @@ public class SmartParamEngine extends AbstractScanner {
 
         } else {
 
-            entries = paramProvider.findEntries(param.getName(), levelValues);
+            entries = paramPreparer.findEntries(param.getName(), levelValues);
         }
 
         return entries != null ? entries.toArray(new PreparedEntry[entries.size()]) : new PreparedEntry[0];
@@ -597,7 +586,7 @@ public class SmartParamEngine extends AbstractScanner {
     }
 
     private PreparedParameter getPreparedParameter(String paramName) {
-        PreparedParameter param = paramProvider.getPreparedParameter(paramName);
+        PreparedParameter param = paramPreparer.getPreparedParameter(paramName);
         logger.trace("prepared parameter: {}", param);
 
         if (param == null) {
@@ -606,8 +595,16 @@ public class SmartParamEngine extends AbstractScanner {
         return param;
     }
 
-    public void setParamProvider(ParamPreparer paramProvider) {
-        this.paramProvider = paramProvider;
+    protected boolean hasParamPreparer() {
+        return paramPreparer != null;
+    }
+
+    protected boolean hasFunctionProvider() {
+        return functionProvider != null;
+    }
+
+    public void setParamPreparer(ParamPreparer paramPreparer) {
+        this.paramPreparer = paramPreparer;
     }
 
     public void setFunctionProvider(FunctionProvider functionProvider) {
@@ -620,14 +617,6 @@ public class SmartParamEngine extends AbstractScanner {
 
     public void setAssemblerProvider(SmartAssemblerProvider assemblerProvider) {
         this.assemblerProvider = assemblerProvider;
-    }
-
-    public void setParamLoader(ParamLoader paramLoader) {
-        this.paramLoader = paramLoader;
-    }
-
-    public void setFunctionLoader(FunctionLoader functionLoader) {
-        this.functionLoader = functionLoader;
     }
 
     //todo ph: par 0 bool type

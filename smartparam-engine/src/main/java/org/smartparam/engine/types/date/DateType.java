@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 
 /**
@@ -12,7 +12,7 @@ import org.smartparam.engine.util.EngineUtil;
  * @since 1.0.0
  */
 @SmartParamType("date")
-public class DateType extends AbstractType<DateHolder> {
+public class DateType implements Type<DateHolder> {
 
     private static String defaultOutputPattern = "dd-MM-yyyy";
 

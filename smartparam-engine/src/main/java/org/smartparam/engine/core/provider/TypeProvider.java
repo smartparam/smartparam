@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.provider;
 
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 
 /**
  *
@@ -10,7 +10,7 @@ import org.smartparam.engine.core.type.AbstractType;
  */
 public interface TypeProvider {
 
-    public void registerType(String code, AbstractType<?> type);
+    public void registerType(String code, Type<?> type);
 
-    public AbstractType<?> getType(String code);
+    public Type<?> getType(String code);
 }

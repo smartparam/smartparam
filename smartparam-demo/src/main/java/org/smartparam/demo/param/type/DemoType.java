@@ -1,7 +1,7 @@
 package org.smartparam.demo.param.type;
 
 import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 
 /**
  *
@@ -9,7 +9,7 @@ import org.smartparam.engine.core.type.AbstractType;
  * @since 0.1.0
  */
 @SmartParamType("demoType")
-public class DemoType extends AbstractType<DemoTypeHolder> {
+public class DemoType implements Type<DemoTypeHolder> {
 
     @Override
     public String encode(DemoTypeHolder holder) {

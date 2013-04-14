@@ -17,8 +17,8 @@ import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.loader.ParamLoader;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.loader.ParamProvider;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -59,7 +59,7 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
     /**
      * Loader parametrow.
      */
-    private ParamLoader loader;
+    private ParamProvider loader;
 
     /**
      * Cache.
@@ -136,7 +136,7 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
         pp.setArraySeparator(p.getArraySeparator());
 
         // typ parametru jest wymagany dla parametrow single-value (czyli standardowych)
-        AbstractType<?> paramType = typeProvider.getType(p.getType());
+        Type<?> paramType = typeProvider.getType(p.getType());
         pp.setType(paramType);
 
         if (paramType == null && !p.isMultivalue()) {
@@ -151,13 +151,13 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
 
         int levelCount = p.getLevelCount();
         PreparedLevel[] levels = new PreparedLevel[levelCount];
-        AbstractType<?>[] types = new AbstractType<?>[levelCount];
+        Type<?>[] types = new Type<?>[levelCount];
         Matcher[] matchers = new Matcher[levelCount];
 
         for (int i = 0; i < levelCount; i++) {
             Level lev = p.getLevel(i);
 
-            AbstractType<?> type = null;
+            Type<?> type = null;
             if (lev.getType() != null) {
                 type = typeProvider.getType(lev.getType());
 
@@ -197,9 +197,9 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
     }
 
     //todo ph: par 0 clean
-    private void buildIndex(Parameter p, PreparedParameter pp, AbstractType<?>[] types, Matcher[] matchers) {
+    private void buildIndex(Parameter p, PreparedParameter pp, Type<?>[] types, Matcher[] matchers) {
 
-        AbstractType<?>[] ktypes = types;
+        Type<?>[] ktypes = types;
         Matcher[] kmatchers = matchers;
         int k;
 
@@ -249,7 +249,7 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
         this.cache = cache;
     }
 
-    public void setLoader(ParamLoader loader) {
+    public void setLoader(ParamProvider loader) {
         this.loader = loader;
     }
 

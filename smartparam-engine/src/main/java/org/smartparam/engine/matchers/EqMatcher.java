@@ -3,7 +3,7 @@ package org.smartparam.engine.matchers;
 import org.smartparam.engine.annotations.SmartParamMatcher;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 
 /**
  * @author Przemek Hertel
@@ -21,7 +21,7 @@ public class EqMatcher implements Matcher {
     }
 
     @Override
-    public <T extends AbstractHolder> boolean matches(String value, String pattern, AbstractType<T> type) {
+    public <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type) {
         if(value != null) {
             return caseSensitive ? value.equals(pattern) : value.equalsIgnoreCase(pattern);
         }

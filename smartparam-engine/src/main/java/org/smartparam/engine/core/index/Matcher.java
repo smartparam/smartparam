@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.index;
 
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 
 /**
  * Kontrakt, ktory spelnia kazdy <i>matcher</i> zarejestrowany
@@ -28,5 +28,5 @@ public interface Matcher {
      *
      * @return zwraca <tt>true</tt>, jesli value pasuje do wzorca, <tt>false</tt> w przeciwnym przypadku
      */
-    <T extends AbstractHolder> boolean matches(String value, String pattern, AbstractType<T> type);
+    <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type);
 }

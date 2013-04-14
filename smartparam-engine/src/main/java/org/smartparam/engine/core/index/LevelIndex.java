@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.index;
 
 import java.util.List;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.Formatter;
 
@@ -102,7 +102,7 @@ public class LevelIndex<T> {
      * Element types[i] jest typem dla poziomu <tt>i+1</tt>.
      * Element types[i] moze byc null, jesli dla danego poziomu typ nie jest okreslony.
      */
-    private AbstractType<?>[] types;
+    private Type<?>[] types;
 
     /**
      * Tworzy pusty index (bez drzewa) zainicjalizowany metadanymi.
@@ -113,9 +113,9 @@ public class LevelIndex<T> {
      * @param types      typy dla kolejnych poziomow, tablica moze byc krotsza od levelCount, moze zawierac nulle
      * @param matchers   matchery dla kolejnych poziomow, tablica moze byc krotsza, moze zawierac nulle
      */
-    public LevelIndex(int levelCount, AbstractType<?>[] types, Matcher... matchers) {
+    public LevelIndex(int levelCount, Type<?>[] types, Matcher... matchers) {
         this.levelCount = levelCount;
-        this.types = new AbstractType<?>[levelCount];
+        this.types = new Type<?>[levelCount];
         this.matchers = new Matcher[levelCount];
 
         if (types != null) {
@@ -144,7 +144,7 @@ public class LevelIndex<T> {
      *
      * @param types typy dla kolejnych poziomow
      */
-    public LevelIndex(AbstractType<?>[] types) {
+    public LevelIndex(Type<?>[] types) {
         this(types.length, types);
     }
 
@@ -243,7 +243,7 @@ public class LevelIndex<T> {
      * Dlugosc tablicy jest zawsze rowna {@link #getLevelCount()}.
      * Nie jest czescia publiczengo API.
      */
-    AbstractType<?>[] getTypes() {
+    Type<?>[] getTypes() {
         return types;
     }
 
@@ -263,7 +263,7 @@ public class LevelIndex<T> {
      * @param depth glebokosc numerowana od 0, czyli numer poziomu - 1
      * @return typ dla zadanej glebokosci
      */
-    public AbstractType<?> getType(int depth) {
+    public Type<?> getType(int depth) {
         return types[depth];
     }
 

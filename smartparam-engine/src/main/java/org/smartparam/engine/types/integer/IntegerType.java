@@ -1,7 +1,7 @@
 package org.smartparam.engine.types.integer;
 
 import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 
 /**
@@ -19,7 +19,7 @@ import org.smartparam.engine.util.EngineUtil;
  * @since 1.0.0
  */
 @SmartParamType("integer")
-public class IntegerType extends AbstractType<IntegerHolder> {
+public class IntegerType implements Type<IntegerHolder> {
 
     /**
      * Zamienia obiekt holdera na <tt>String</tt>.

@@ -1,7 +1,7 @@
 package org.smartparam.engine.types.plugin;
 
 import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Function;
 import org.smartparam.engine.util.EngineUtil;
 
@@ -13,7 +13,7 @@ import org.smartparam.engine.util.EngineUtil;
  * @since 1.0.0
  */
 @SmartParamType("plugin")
-public class PluginType extends AbstractType<PluginHolder> {
+public class PluginType implements Type<PluginHolder> {
 
     /**
      * Zamienia obiekt holdera na <tt>String</tt>.

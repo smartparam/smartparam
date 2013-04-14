@@ -1,7 +1,7 @@
 package org.smartparam.engine.types.string;
 
 import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 
 /**
  * Klasa definiuje typ stringowy, ktory moze zostac wlaczony
@@ -13,7 +13,7 @@ import org.smartparam.engine.core.type.AbstractType;
  * @since 1.0.0
  */
 @SmartParamType("string")
-public class StringType extends AbstractType<StringHolder> {
+public class StringType implements Type<StringHolder> {
 
     /**
      * Zamienia obiekt holdera na <tt>String</tt>.

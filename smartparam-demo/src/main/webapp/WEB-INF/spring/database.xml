@@ -26,11 +26,11 @@
         <property name="maxActive" value="10" />
     </bean>
 
-    <bean id="smartparamLoader" class="org.smartparam.provider.jpa.JpaLoader">
+    <bean id="smartParamProvider" class="org.smartparam.provider.jpa.JpaLoader">
         <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <bean id="smartparamFunctionLoader" class="org.smartparam.provider.jpa.JpaFunctionLoader">
+    <bean id="smartParamFunctionLoader" class="org.smartparam.provider.jpa.JpaFunctionLoader">
         <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 

@@ -140,13 +140,13 @@ public class LevelNodeTest {
             nodeX
         };
 
-        // oczekiwane wyniki
+        // oczekiwane wyniki w fromie regexp (ze wzgledu na zmienna kolejnosc w [0])
         String[] expected = {
-            "LevelNode[level=null, path=, children=[A, E]]",
-            "LevelNode[level=A, path=/A, children=[B]]",
-            "LevelNode[level=B, path=/A/B, leaf=[33]]",
-            "LevelNode[level=E, path=/E, children=null]",
-            "LevelNode[level=*, path=/E/*, leaf=[99]]",
+            "LevelNode\\[level=null, path=, children=\\[(A, E|E, A)\\]\\]",
+            "LevelNode\\[level=A, path=\\/A, children=\\[B\\]\\]",
+            "LevelNode\\[level=B, path=\\/A\\/B, leaf=\\[33\\]\\]",
+            "LevelNode\\[level=E, path=\\/E, children=null\\]",
+            "LevelNode\\[level=\\*, path=\\/E\\/\\*, leaf=\\[99\\]\\]",
         };
 
         // test
@@ -156,7 +156,7 @@ public class LevelNodeTest {
 
             String result = node.toString();
             System.out.println("node = " + result);
-            assertEquals(expectedToString, result);
+            assertTrue(result.matches(expectedToString));
         }
     }
 

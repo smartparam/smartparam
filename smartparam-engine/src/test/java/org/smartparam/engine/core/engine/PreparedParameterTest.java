@@ -3,7 +3,7 @@ package org.smartparam.engine.core.engine;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.index.LevelIndex;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.number.NumberType;
 
@@ -37,11 +37,11 @@ public class PreparedParameterTest {
     public void testType() {
 
         // konfiguracja testu
-        AbstractType<?> type = new NumberType();
+        Type<?> type = new NumberType();
 
         // test
         pp.setType(type);
-        AbstractType<?> result = pp.getType();
+        Type<?> result = pp.getType();
 
         // sprawdzenie wynikow testu
         assertSame(type, result);

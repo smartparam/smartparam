@@ -6,7 +6,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 
 /**
  * @author Przemek Hertel
@@ -15,7 +15,7 @@ import org.smartparam.engine.core.type.AbstractType;
 public abstract class ParamHelper {
 
     //t
-    public static AbstractHolder decode(AbstractType<?> type, String text) {
+    public static AbstractHolder decode(Type<?> type, String text) {
         try {
             return type.decode(text != null ? text.trim() : null);
         } catch (RuntimeException e) {
@@ -26,7 +26,7 @@ public abstract class ParamHelper {
     }
 
     //t
-    public static AbstractHolder convert(AbstractType<?> type, Object obj) {
+    public static AbstractHolder convert(Type<?> type, Object obj) {
         try {
             return type.convert(obj);
         } catch (RuntimeException e) {
@@ -37,7 +37,7 @@ public abstract class ParamHelper {
     }
 
     //t
-    public static AbstractHolder[] convert(AbstractType<?> type, Object[] array) {
+    public static AbstractHolder[] convert(Type<?> type, Object[] array) {
         AbstractHolder[] result = type.newArray(array.length);
         for (int i = 0; i < result.length; i++) {
             result[i] = convert(type, array[i]);
@@ -45,7 +45,7 @@ public abstract class ParamHelper {
         return result;
     }
 
-    public static AbstractHolder[] convertNonObjectArray(AbstractType<?> type, Object array) {
+    public static AbstractHolder[] convertNonObjectArray(Type<?> type, Object array) {
         int arrayLen = Array.getLength(array);
         AbstractHolder[] result = type.newArray(arrayLen);
         for (int i = 0; i < result.length; i++) {
@@ -55,7 +55,7 @@ public abstract class ParamHelper {
     }
 
     //t
-    public static AbstractHolder[] convert(AbstractType<?> type, Collection<?> coll) {
+    public static AbstractHolder[] convert(Type<?> type, Collection<?> coll) {
         return convert(type, coll.toArray());
     }
 }

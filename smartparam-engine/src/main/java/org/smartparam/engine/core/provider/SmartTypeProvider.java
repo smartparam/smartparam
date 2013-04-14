@@ -11,7 +11,7 @@ import org.smartparam.engine.annotations.SmartParamType;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.type.AbstractType;
+import org.smartparam.engine.core.type.Type;
 
 /**
  * Klasa zapewnia dostep do systemu typow silnika. Jednoczesnie jest to
@@ -50,12 +50,12 @@ import org.smartparam.engine.core.type.AbstractType;
  *
  * @author Adam Dubiel
  */
-public class SmartTypeProvider extends AbstractProvider<AbstractType<?>> implements TypeProvider {
+public class SmartTypeProvider extends AbstractProvider<Type<?>> implements TypeProvider {
 
     /**
      * Przechowuje typu pod unikalnymi kodami.
      */
-    private Map<String, AbstractType<?>> typeMap = new HashMap<String, AbstractType<?>>();
+    private Map<String, Type<?>> typeMap = new HashMap<String, Type<?>>();
 
     public SmartTypeProvider() {
         super();
@@ -72,7 +72,7 @@ public class SmartTypeProvider extends AbstractProvider<AbstractType<?>> impleme
      * @param type typ rejestrowany pod podanym kodem
      * @throws ParamException jesli podany [code] jest juz zarejestrowany
      */
-    public void registerType(String code, AbstractType<?> type) {
+    public void registerType(String code, Type<?> type) {
         if (typeMap.containsKey(code)) {
             throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "Such code is already registered: " + code);
         }
@@ -85,7 +85,7 @@ public class SmartTypeProvider extends AbstractProvider<AbstractType<?>> impleme
      * @param code kod typu
      * @return typ zarejestrowany pod tym kodem
      */
-    public AbstractType<?> getType(String code) {
+    public Type<?> getType(String code) {
         return typeMap.get(code);
     }
 
@@ -95,7 +95,7 @@ public class SmartTypeProvider extends AbstractProvider<AbstractType<?>> impleme
     }
 
     @Override
-    protected void handleRegistration(String objectCode, AbstractType<?> objectToRegister) {
+    protected void handleRegistration(String objectCode, Type<?> objectToRegister) {
         registerType(objectCode, objectToRegister);
     }
 
@@ -104,7 +104,7 @@ public class SmartTypeProvider extends AbstractProvider<AbstractType<?>> impleme
      *
      * @param typeMap mapa
      */
-    public void setTypeMap(Map<String, AbstractType<?>> typeMap) {
+    public void setTypeMap(Map<String, Type<?>> typeMap) {
         this.typeMap = typeMap;
     }
 }
