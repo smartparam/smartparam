@@ -1,4 +1,4 @@
-package org.smartparam.engine.mockBuilders;
+package org.smartparam.engine.test.builder;
 
 import org.smartparam.engine.model.Function;
 import org.smartparam.engine.model.functions.JavaFunction;

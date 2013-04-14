@@ -2,7 +2,7 @@ package org.smartparam.engine.types.plugin;
 
 import java.util.Date;
 import org.junit.Test;
-import org.smartparam.engine.mockBuilders.FunctionMockBuilder;
+import org.smartparam.engine.test.builder.FunctionMockBuilder;
 import org.smartparam.engine.model.Function;
 
 import static org.junit.Assert.*;

@@ -1,4 +1,4 @@
-package org.smartparam.engine.mockBuilders;
+package org.smartparam.engine.test.builder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
