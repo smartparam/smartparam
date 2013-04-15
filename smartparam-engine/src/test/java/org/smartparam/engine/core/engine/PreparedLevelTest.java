@@ -2,7 +2,7 @@ package org.smartparam.engine.core.engine;
 
 import org.junit.*;
 import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.types.integer.IntegerType;
 
 import static org.junit.Assert.assertSame;

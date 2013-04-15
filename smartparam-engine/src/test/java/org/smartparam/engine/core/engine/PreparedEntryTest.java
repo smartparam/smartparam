@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.engine;
 
 import org.junit.*;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;

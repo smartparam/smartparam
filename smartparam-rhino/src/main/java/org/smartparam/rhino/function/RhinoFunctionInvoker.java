@@ -14,14 +14,14 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.function.FunctionInvoker;
+import org.smartparam.engine.core.function.OldFunctionInvoker;
 
 /**
  *
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class RhinoFunctionInvoker implements FunctionInvoker<RhinoFunction> {
+public class RhinoFunctionInvoker implements OldFunctionInvoker<RhinoFunction> {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

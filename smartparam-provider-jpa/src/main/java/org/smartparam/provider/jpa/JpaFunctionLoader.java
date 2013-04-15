@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import org.smartparam.engine.core.loader.FunctionLoader;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.provider.jpa.model.JpaFunction;
 
 /**

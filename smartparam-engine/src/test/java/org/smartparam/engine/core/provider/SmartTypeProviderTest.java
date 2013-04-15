@@ -1,5 +1,7 @@
 package org.smartparam.engine.core.provider;
 
+import org.smartparam.engine.core.repository.TypeRepository;
+import org.smartparam.engine.core.repository.SmartTypeRepository;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.*;
@@ -45,7 +47,7 @@ public class SmartTypeProviderTest {
      * Sprawdza zgodnosc typow otrzymywanych z providera z typami oczekiwanymi,
      * skonfigurowanymi w mapie cases.
      */
-    private void checkTypeProvider(TypeProvider tp) {
+    private void checkTypeProvider(TypeRepository tp) {
         for (Map.Entry<String, Type<?>> e : cases.entrySet()) {
             String code = e.getKey();
             Type<?> expectedType = e.getValue();
@@ -58,7 +60,7 @@ public class SmartTypeProviderTest {
     public void testRegisterType() {
 
         // utworzenie testowanego obiektu
-        TypeProvider tp = new SmartTypeProvider();
+        TypeRepository tp = new SmartTypeRepository();
         tp.registerType("int", intType);
         tp.registerType("str", strType);
         tp.registerType("chr", chrType);
@@ -77,7 +79,7 @@ public class SmartTypeProviderTest {
         types.put("chr", chrType);
 
         // utworzenie testowanego obiektu
-        SmartTypeProvider tp = new SmartTypeProvider();
+        SmartTypeRepository tp = new SmartTypeRepository();
         tp.setTypeMap(types);
 
         // sprawdzenie wynikow testu
@@ -88,7 +90,7 @@ public class SmartTypeProviderTest {
     public void testRegisterType__nonUniqueCode() {
 
         // utworzenie testowanego obiektu
-        TypeProvider tp = new SmartTypeProvider();
+        TypeRepository tp = new SmartTypeRepository();
         tp.registerType("int", intType);
         tp.registerType("str", strType);
 

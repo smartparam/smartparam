@@ -5,7 +5,7 @@ import org.smartparam.provider.jpa.model.JpaParameterEntry;
 import org.smartparam.provider.jpa.model.JpaFunction;
 import org.junit.Test;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.Parameter;
 
 import static org.junit.Assert.*;

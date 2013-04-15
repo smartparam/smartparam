@@ -2,7 +2,7 @@ package org.smartparam.provider.jdbc.model;
 
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.provider.TypeProvider;
+import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 

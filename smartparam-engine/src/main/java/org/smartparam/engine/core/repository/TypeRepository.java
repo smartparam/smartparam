@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.provider;
+package org.smartparam.engine.core.repository;
 
 import org.smartparam.engine.core.type.Type;
 
@@ -8,7 +8,7 @@ import org.smartparam.engine.core.type.Type;
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public interface TypeProvider {
+public interface TypeRepository {
 
     public void registerType(String code, Type<?> type);
 

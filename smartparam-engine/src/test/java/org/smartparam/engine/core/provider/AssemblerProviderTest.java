@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.provider;
 
-import org.smartparam.engine.core.provider.SmartAssemblerProvider;
+import org.smartparam.engine.core.repository.SmartAssemblerProvider;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;

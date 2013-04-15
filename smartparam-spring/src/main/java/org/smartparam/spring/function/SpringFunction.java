@@ -1,6 +1,6 @@
 package org.smartparam.spring.function;
 
-import org.smartparam.engine.model.FunctionImpl;
+import org.smartparam.engine.model.function.FunctionImpl;
 
 /**
  * Function repository type for plugins stored inside spring beans.

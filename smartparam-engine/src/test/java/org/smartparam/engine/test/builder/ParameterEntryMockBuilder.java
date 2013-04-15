@@ -1,7 +1,7 @@
 package org.smartparam.engine.test.builder;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.util.EngineUtil;
 

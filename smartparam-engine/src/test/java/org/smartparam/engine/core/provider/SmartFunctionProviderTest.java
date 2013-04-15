@@ -1,10 +1,11 @@
 package org.smartparam.engine.core.provider;
 
+import org.smartparam.engine.core.service.SmartFunctionManager;
 import org.junit.*;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.loader.FunctionLoader;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -29,7 +30,7 @@ public class SmartFunctionProviderTest {
         when(cache.get("fun1")).thenReturn(null, fun1);
 
         // utworzenie testowanego obiektu
-        SmartFunctionProvider fp = new SmartFunctionProvider();
+        SmartFunctionManager fp = new SmartFunctionManager();
         fp.setCache(cache);
         fp.setLoader(loader);
 
@@ -49,7 +50,7 @@ public class SmartFunctionProviderTest {
         when(cache.get("fun2")).thenReturn(null);
 
         // utworzenie testowanego obiektu
-        SmartFunctionProvider fp = new SmartFunctionProvider();
+        SmartFunctionManager fp = new SmartFunctionManager();
         fp.setCache(cache);
         fp.setLoader(loader);
 

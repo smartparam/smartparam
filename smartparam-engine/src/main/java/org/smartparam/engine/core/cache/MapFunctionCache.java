@@ -2,12 +2,12 @@ package org.smartparam.engine.core.cache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 
 /**
  * Implementacja {@link FunctionCache} oparata na wspolbieznej wersji HashMapy.
- * Funkcje zapisane w tym cache'u sie nie przedawniaja az do wywolania
- * metody {@link #invalidate(java.lang.String)}.
+ * Funkcje zapisane w tym cache'u sie nie przedawniaja az do wywolania metody
+ * {@link #invalidate(java.lang.String)}.
  *
  * @author Przemek Hertel
  * @since 1.0.0
@@ -22,6 +22,10 @@ public class MapFunctionCache implements FunctionCache {
     @Override
     public void put(String functionName, Function function) {
         map.put(functionName, function);
+    }
+
+    public void putAll(Map<String, Function> functions) {
+        map.putAll(map);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package org.smartparam.rhino.function;
 
-import org.smartparam.engine.model.FunctionImpl;
+import org.smartparam.engine.model.function.FunctionImpl;
 
 /**
  *

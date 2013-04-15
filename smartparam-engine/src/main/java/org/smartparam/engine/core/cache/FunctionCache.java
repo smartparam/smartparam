@@ -1,6 +1,7 @@
 package org.smartparam.engine.core.cache;
 
-import org.smartparam.engine.model.Function;
+import java.util.Map;
+import org.smartparam.engine.model.function.Function;
 
 /**
  * Kontrakt zapewniajacy cache'owanie obiektow funkcji z repozytorium.
@@ -20,6 +21,8 @@ public interface FunctionCache {
      * @param function     funkcja z repozytorium
      */
     void put(String functionName, Function function);
+
+    void putAll(Map<String, Function> functions);
 
     /**
      * Zwraca funkcje o nazwie <tt>functionName</tt> lub <tt>null</tt>,

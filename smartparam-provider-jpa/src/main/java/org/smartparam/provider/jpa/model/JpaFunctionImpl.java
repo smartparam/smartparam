@@ -1,7 +1,7 @@
 package org.smartparam.provider.jpa.model;
 
 import javax.persistence.*;
-import org.smartparam.engine.model.FunctionImpl;
+import org.smartparam.engine.model.function.FunctionImpl;
 
 /**
  * Base class for all function implementations, extending classes

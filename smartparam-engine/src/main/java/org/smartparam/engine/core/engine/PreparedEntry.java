@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.engine;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 
 /**
  * @author Przemek Hertel

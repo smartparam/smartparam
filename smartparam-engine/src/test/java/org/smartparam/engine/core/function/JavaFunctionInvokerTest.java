@@ -10,7 +10,7 @@ import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.model.functions.JavaFunction;
+import org.smartparam.engine.model.function.JavaFunction;
 import org.smartparam.engine.util.EngineUtil;
 
 import static org.junit.Assert.*;
@@ -43,7 +43,7 @@ public class JavaFunctionInvokerTest {
         };
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testow
         for (Object[] call : callCases) {
@@ -77,7 +77,7 @@ public class JavaFunctionInvokerTest {
         };
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testow
         for (Object[] call : callCases) {
@@ -98,7 +98,7 @@ public class JavaFunctionInvokerTest {
     public void testLoadClass() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         Class<?> clazz = inv.loadClass("org.smartparam.engine.core.function.JavaFunctionInvokerTest");
@@ -109,7 +109,7 @@ public class JavaFunctionInvokerTest {
     public void testLoadClass__classNotFound() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         inv.loadClass("nonexisting.package.NonExistingClass");
@@ -119,7 +119,7 @@ public class JavaFunctionInvokerTest {
     public void testFindMethod() throws Exception {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         assertTrue(inv.getMethodMap().isEmpty());                       // cache metod jest pusty
@@ -136,7 +136,7 @@ public class JavaFunctionInvokerTest {
     public void testFindClass() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         assertTrue(inv.getClassMap().isEmpty());                        // cache klas jest pusty
@@ -153,7 +153,7 @@ public class JavaFunctionInvokerTest {
     public void testCreateInstance() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         Object obj = inv.createInstance(this.getClass());
@@ -165,7 +165,7 @@ public class JavaFunctionInvokerTest {
     public void testCreateInstance__cannotInstantiate() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         inv.createInstance(NoDefaultContstructorClass.class);
@@ -175,7 +175,7 @@ public class JavaFunctionInvokerTest {
     public void testFindInstance() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         assertEquals(0, inv.getInstanceMap().size());                       // cache instancji pusty
@@ -192,7 +192,7 @@ public class JavaFunctionInvokerTest {
     @Test
     public void testInvoke__nonstatic() {
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         Method m = inv.findMethod(this.getClass(), "method3", "AA");
@@ -205,7 +205,7 @@ public class JavaFunctionInvokerTest {
     @Test
     public void testInvoke__static() {
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testu
         Method m = inv.findMethod(this.getClass(), "method4", "BB");
@@ -232,7 +232,7 @@ public class JavaFunctionInvokerTest {
         };
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // wykonanie testow
         for (Object[] call : callCases) {
@@ -260,7 +260,7 @@ public class JavaFunctionInvokerTest {
     public void testInvoke__invokeError() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // funkcja
         JavaFunction f = f(this.getClass(), "div");
@@ -283,7 +283,7 @@ public class JavaFunctionInvokerTest {
     public void testCachePerformance() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // 1000-krotne uzycie metody loadMethod (nie uzywa cache'a)
         long t = System.nanoTime();
@@ -309,7 +309,7 @@ public class JavaFunctionInvokerTest {
     public void testDumpStatistics() {
 
         // testowany obiekt
-        JavaFunctionInvoker inv = new JavaFunctionInvoker();
+        JavaFunctionRepository inv = new JavaFunctionRepository();
 
         // przygotowanie obiektu (wypelnienie cache'y)
         inv.invoke(f(this.getClass(), "method1"), 10);

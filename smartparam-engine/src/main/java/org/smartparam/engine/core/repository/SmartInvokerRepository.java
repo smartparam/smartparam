@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.provider;
+package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -9,34 +9,40 @@ import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.function.FunctionInvoker;
-import org.smartparam.engine.model.FunctionImpl;
+import org.smartparam.engine.model.function.Function;
 
 /**
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class SmartInvokerProvider extends AbstractProvider<FunctionInvoker<?>> implements InvokerProvider {
+public class SmartInvokerRepository extends AbstractRepository<FunctionInvoker<?>> implements InvokerRepository {
 
     private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
     private Map<String, FunctionInvoker<?>> invokers = new HashMap<String, FunctionInvoker<?>>();
 
-    public SmartInvokerProvider() {
+    public SmartInvokerRepository() {
         super();
     }
 
-    public SmartInvokerProvider(boolean scanAnnotations, PackageList packagesToScan) {
+    public SmartInvokerRepository(boolean scanAnnotations, PackageList packagesToScan) {
         super(scanAnnotations, packagesToScan);
     }
 
-    public <T extends FunctionImpl> void registerInvoker(String implCode, FunctionInvoker<T> invoker) {
+    public static SmartInvokerRepository createAndInitialize() {
+        SmartInvokerRepository invokerRepository = new SmartInvokerRepository();
+        invokerRepository.scan();
+        return invokerRepository;
+    }
+
+    public <T extends Function> void registerInvoker(String implCode, FunctionInvoker<T> invoker) {
         logger.info("registering function invoker: {} -> {}", implCode, invoker.getClass());
         invokers.put(implCode, invoker);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends FunctionImpl> FunctionInvoker<T> getInvoker(T function) {
-        return (FunctionInvoker<T>) invokers.get(function.getTypeCode());
+    public <T extends Function> FunctionInvoker<T> getInvoker(T function) {
+        return (FunctionInvoker<T>) invokers.get(function.getType());
     }
 
     @Override
@@ -52,7 +58,7 @@ public class SmartInvokerProvider extends AbstractProvider<FunctionInvoker<?>> i
     public void setInvokers(Map<String, FunctionInvoker<?>> map) {
         for (Map.Entry<String, FunctionInvoker<?>> e : map.entrySet()) {
             String implCode = e.getKey();
-            FunctionInvoker<? extends FunctionImpl> invoker = e.getValue();
+            FunctionInvoker<? extends Function> invoker = e.getValue();
             registerInvoker(implCode, invoker);
         }
     }

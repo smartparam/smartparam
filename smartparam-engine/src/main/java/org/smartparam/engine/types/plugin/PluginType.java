@@ -2,7 +2,7 @@ package org.smartparam.engine.types.plugin;
 
 import org.smartparam.engine.annotations.SmartParamType;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.util.EngineUtil;
 
 /**

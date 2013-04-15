@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.provider.SmartFunctionProvider;
+import org.smartparam.engine.core.service.SmartFunctionManager;
 import java.util.ArrayList;
 import org.smartparam.engine.core.loader.ParamProvider;
 import java.util.Arrays;
@@ -13,23 +13,23 @@ import static org.mockito.Mockito.*;
 import org.smartparam.engine.assemblers.GenericEnumAssembler;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
-import org.smartparam.engine.core.provider.SmartAssemblerProvider;
-import org.smartparam.engine.core.provider.SmartInvokerProvider;
-import org.smartparam.engine.core.provider.SmartTypeProvider;
-import org.smartparam.engine.core.provider.TypeProvider;
+import org.smartparam.engine.core.repository.SmartAssemblerProvider;
+import org.smartparam.engine.core.repository.SmartInvokerRepository;
+import org.smartparam.engine.core.repository.SmartTypeRepository;
+import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.function.JavaFunctionInvoker;
+import org.smartparam.engine.core.function.JavaFunctionRepository;
 import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.test.builder.FunctionMockBuilder;
 import org.smartparam.engine.test.builder.LevelMockBuilder;
 import org.smartparam.engine.test.builder.ParameterEntryMockBuilder;
 import org.smartparam.engine.test.builder.ParameterMockBuilder;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -44,7 +44,7 @@ import org.smartparam.engine.types.string.StringType;
  */
 public class ParamEngineScenarioTest {
 
-    private TypeProvider typeProvider;
+    private TypeRepository typeProvider;
 
     private ParamProvider loader;
 
@@ -52,7 +52,7 @@ public class ParamEngineScenarioTest {
 
     private SmartAssemblerProvider assemblerProvider;
 
-    private SmartInvokerProvider invokerProvider;
+    private SmartInvokerRepository invokerProvider;
 
     private SmartParamEngine engine;
 
@@ -60,7 +60,7 @@ public class ParamEngineScenarioTest {
 
     @Before
     public void init() {
-        typeProvider = new SmartTypeProvider();
+        typeProvider = new SmartTypeRepository();
         typeProvider.registerType("string", new StringType());
         typeProvider.registerType("integer", new IntegerType());
         typeProvider.registerType("plugin", new PluginType());
@@ -72,14 +72,14 @@ public class ParamEngineScenarioTest {
         paramProvider.setLoader(loader);
         paramProvider.setCache(new MapParamCache());
 
-        invokerProvider = new SmartInvokerProvider();
-        invokerProvider.registerInvoker("java", new JavaFunctionInvoker());
+        invokerProvider = new SmartInvokerRepository();
+        invokerProvider.registerInvoker("java", new JavaFunctionRepository());
 
         assemblerProvider = new SmartAssemblerProvider();
 
         functionLoader = mock(FunctionLoader.class);
 
-        SmartFunctionProvider fp = new SmartFunctionProvider();
+        SmartFunctionManager fp = new SmartFunctionManager();
         fp.setLoader(functionLoader);
         fp.setCache(new MapFunctionCache());
 

@@ -19,6 +19,11 @@ public class PackageList implements Iterable<String> {
         }
     }
 
+    public void addPackage(String packageName) {
+        createIfNull();
+        packages.add(packageName);
+    }
+
     public List<String> getPackages() {
         createIfNull();
         return packages;

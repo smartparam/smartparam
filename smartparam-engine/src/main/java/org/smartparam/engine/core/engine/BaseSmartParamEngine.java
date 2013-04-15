@@ -1,9 +1,8 @@
 package org.smartparam.engine.core.engine;
 
 import javax.annotation.PostConstruct;
-import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.core.loader.ParamProvider;
-import org.smartparam.engine.core.provider.SmartFunctionProvider;
+import org.smartparam.engine.core.service.SmartFunctionManager;
 
 /**
  *
@@ -13,18 +12,14 @@ public class BaseSmartParamEngine extends SmartParamEngine {
 
     private ParamProvider paramProvider = null;
 
-    private FunctionLoader functionLoader = null;
-
     @PostConstruct
-    @Override
+    //@Override
     public void initializeProviders() {
-        super.initializeProviders();
+        //super.initializeProviders();
 
-        if (!hasFunctionProvider()) {
-            SmartFunctionProvider smartFunctionProvider = new SmartFunctionProvider();
-            smartFunctionProvider.setLoader(functionLoader);
-            smartFunctionProvider.initializeProviders();
-            setFunctionProvider(smartFunctionProvider);
+        if (!hasFunctionManager()) {
+            SmartFunctionManager functionManager = SmartFunctionManager.createAndInitialize();
+            setFunctionManager(functionManager);
         }
 
         if (!hasParamPreparer()) {
@@ -37,9 +32,5 @@ public class BaseSmartParamEngine extends SmartParamEngine {
 
     public void setParamProvider(ParamProvider paramProvider) {
         this.paramProvider = paramProvider;
-    }
-
-    public void setFunctionLoader(FunctionLoader functionLoader) {
-        this.functionLoader = functionLoader;
     }
 }

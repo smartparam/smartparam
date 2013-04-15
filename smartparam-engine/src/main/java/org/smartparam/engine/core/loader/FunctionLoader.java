@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.loader;
 
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 
 /**
  * @author Przemek Hertel

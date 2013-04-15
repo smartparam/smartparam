@@ -1,5 +1,7 @@
 package org.smartparam.engine.model;
 
+import org.smartparam.engine.model.function.Function;
+
 /**
  * Klasa reprezenuje definicje poziomu na poziomie parametru.
  *

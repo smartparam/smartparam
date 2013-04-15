@@ -3,7 +3,7 @@ package org.smartparam.provider.jpa.model;
 import org.smartparam.provider.jpa.model.JpaJavaFunction;
 import org.junit.Before;
 import org.junit.Test;
-import org.smartparam.engine.model.functions.JavaFunction;
+import org.smartparam.engine.model.function.JavaFunction;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;

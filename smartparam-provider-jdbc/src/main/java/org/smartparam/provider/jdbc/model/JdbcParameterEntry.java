@@ -1,7 +1,7 @@
 package org.smartparam.provider.jdbc.model;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.ParameterEntry;
 
 /**

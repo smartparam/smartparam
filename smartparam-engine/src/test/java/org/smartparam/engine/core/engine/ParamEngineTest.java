@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.provider.FunctionProvider;
+import org.smartparam.engine.core.service.FunctionManager;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,23 +10,23 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.slf4j.Logger;
 import org.smartparam.engine.core.cache.MapParamCache;
-import org.smartparam.engine.core.provider.SmartInvokerProvider;
-import org.smartparam.engine.core.provider.SmartTypeProvider;
-import org.smartparam.engine.core.provider.TypeProvider;
+import org.smartparam.engine.core.repository.SmartInvokerRepository;
+import org.smartparam.engine.core.repository.SmartTypeRepository;
+import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.function.FunctionInvoker;
-import org.smartparam.engine.core.function.JavaFunctionInvoker;
+import org.smartparam.engine.core.function.OldFunctionInvoker;
+import org.smartparam.engine.core.function.JavaFunctionRepository;
 import org.smartparam.engine.core.loader.ParamProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.test.builder.FunctionMockBuilder;
 import org.smartparam.engine.test.builder.ParameterEntryMockBuilder;
 import org.smartparam.engine.test.builder.ParameterMockBuilder;
-import org.smartparam.engine.model.Function;
-import org.smartparam.engine.model.FunctionImpl;
+import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.model.function.FunctionImpl;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.types.integer.IntegerHolder;
@@ -95,8 +95,8 @@ public class ParamEngineTest {
         when(f.getImplementation()).thenReturn(fimpl);
 
         // zaleznosci
-        SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
-        FunctionInvoker<FunctionImpl> functionInvoker = mock(FunctionInvoker.class);
+        SmartInvokerRepository invokerProvider = mock(SmartInvokerRepository.class);
+        OldFunctionInvoker<FunctionImpl> functionInvoker = mock(OldFunctionInvoker.class);
 
         // konfiguracja zaleznosci
         when(functionInvoker.invoke(fimpl, new Object[]{ctx})).thenReturn("str", 200, BigDecimal.TEN);
@@ -163,9 +163,9 @@ public class ParamEngineTest {
         when(f.getImplementation()).thenReturn(fimpl);
 
         // zaleznosci
-        SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
+        SmartInvokerRepository invokerProvider = mock(SmartInvokerRepository.class);
         @SuppressWarnings("unchecked")
-        FunctionInvoker<FunctionImpl> functionInvoker = mock(FunctionInvoker.class);
+        OldFunctionInvoker<FunctionImpl> functionInvoker = mock(OldFunctionInvoker.class);
 
         Object[] ret = {
             " A, B ",
@@ -263,8 +263,8 @@ public class ParamEngineTest {
         ParamContext ctx = new DefaultContext();
 
         // zaleznosci
-        SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
-        FunctionInvoker<FunctionImpl> functionInvoker = mock(FunctionInvoker.class);
+        SmartInvokerRepository invokerProvider = mock(SmartInvokerRepository.class);
+        OldFunctionInvoker<FunctionImpl> functionInvoker = mock(OldFunctionInvoker.class);
         Logger logger = mock(Logger.class);
 
         // konfiguracja zaleznosci
@@ -322,7 +322,7 @@ public class ParamEngineTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("", "plugin.fun"));
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("plugin").withEntries(entries).get();
 
-        TypeProvider tp = new SmartTypeProvider();
+        TypeRepository tp = new SmartTypeRepository();
         tp.registerType("plugin", new PluginType());
         tp.registerType("string", new StringType());
 
@@ -335,9 +335,9 @@ public class ParamEngineTest {
         provider.setCache(new MapParamCache());
 
         // zaleznosci
-        SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
-        FunctionInvoker<FunctionImpl> functionInvoker = mock(FunctionInvoker.class);
-        FunctionProvider functionProvider = mock(FunctionProvider.class);
+        SmartInvokerRepository invokerProvider = mock(SmartInvokerRepository.class);
+        OldFunctionInvoker<FunctionImpl> functionInvoker = mock(OldFunctionInvoker.class);
+        FunctionManager functionProvider = mock(FunctionManager.class);
 
         // konfiguracja zaleznosci
         when(functionInvoker.invoke(fimpl, new Object[]{ctx})).thenReturn("plugin.fun");
@@ -393,7 +393,7 @@ public class ParamEngineTest {
     public void testInvokeFunction__undefinedInvoker() {
 
         // zaleznosci
-        SmartInvokerProvider ip = new SmartInvokerProvider();
+        SmartInvokerRepository ip = new SmartInvokerRepository();
         Function f = FunctionMockBuilder.function().withJavaImplementation(this.getClass(), null).get();
 
         // konfiguracja
@@ -413,8 +413,8 @@ public class ParamEngineTest {
     public void testInvokeFunction__invokeException() {
 
         // zaleznosci
-        JavaFunctionInvoker javaInvoker = new JavaFunctionInvoker();
-        SmartInvokerProvider ip = new SmartInvokerProvider();
+        JavaFunctionRepository javaInvoker = new JavaFunctionRepository();
+        SmartInvokerRepository ip = new SmartInvokerRepository();
         ip.registerInvoker("java", javaInvoker);
 
         Function f = FunctionMockBuilder.function().withJavaImplementation(this.getClass(), "badMethod").get();

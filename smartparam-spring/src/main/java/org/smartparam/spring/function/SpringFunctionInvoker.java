@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.function.CoreJavaInvoker;
-import org.smartparam.engine.core.function.FunctionInvoker;
+import org.smartparam.engine.core.function.AbstractJavaFunctionRepository;
+import org.smartparam.engine.core.function.OldFunctionInvoker;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -26,7 +26,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class SpringFunctionInvoker extends CoreJavaInvoker implements FunctionInvoker<SpringFunction>, ApplicationContextAware {
+public class SpringFunctionInvoker extends AbstractJavaFunctionRepository implements OldFunctionInvoker<SpringFunction>, ApplicationContextAware {
 
     /**
      * Logger.

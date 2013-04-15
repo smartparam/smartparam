@@ -2,7 +2,7 @@ package org.smartparam.engine.core.engine;
 
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 
 /**
  * Przetworzony (skompilowany) poziom parametru.

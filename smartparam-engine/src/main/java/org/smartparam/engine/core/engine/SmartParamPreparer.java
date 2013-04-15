@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.provider.MatcherProvider;
-import org.smartparam.engine.core.provider.SmartMatcherProvider;
-import org.smartparam.engine.core.provider.SmartTypeProvider;
-import org.smartparam.engine.core.provider.TypeProvider;
+import org.smartparam.engine.core.repository.MatcherRepository;
+import org.smartparam.engine.core.repository.SmartMatcherRepository;
+import org.smartparam.engine.core.repository.SmartTypeRepository;
+import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
@@ -49,12 +49,12 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
     /**
      * Dostep do systemu typow silnika.
      */
-    private TypeProvider typeProvider = null;
+    private TypeRepository typeProvider = null;
 
     /**
      * Dostep do systemu matcherow.
      */
-    private MatcherProvider matcherProvider = null;
+    private MatcherRepository matcherProvider = null;
 
     /**
      * Loader parametrow.
@@ -77,13 +77,13 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
     @PostConstruct
     public void initializeProviders() {
         if (matcherProvider == null) {
-            SmartMatcherProvider smartMatcherProvider = new SmartMatcherProvider(isScanAnnotations(), getPackagesToScan());
+            SmartMatcherRepository smartMatcherProvider = new SmartMatcherRepository(isScanAnnotations(), getPackagesToScan());
             smartMatcherProvider.scan();
             matcherProvider = smartMatcherProvider;
         }
 
         if (typeProvider == null) {
-            SmartTypeProvider smartTypeProvider = new SmartTypeProvider(isScanAnnotations(), getPackagesToScan());
+            SmartTypeRepository smartTypeProvider = new SmartTypeRepository(isScanAnnotations(), getPackagesToScan());
             smartTypeProvider.scan();
             typeProvider = smartTypeProvider;
         }
@@ -253,11 +253,11 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
         this.loader = loader;
     }
 
-    public void setTypeProvider(TypeProvider typeProvider) {
+    public void setTypeProvider(TypeRepository typeProvider) {
         this.typeProvider = typeProvider;
     }
 
-    public void setMatcherProvider(SmartMatcherProvider matcherProvider) {
+    public void setMatcherProvider(SmartMatcherRepository matcherProvider) {
         this.matcherProvider = matcherProvider;
     }
 }

@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.provider;
+package org.smartparam.engine.core.repository;
 
 import org.smartparam.engine.core.index.Matcher;
 
@@ -7,7 +7,7 @@ import org.smartparam.engine.core.index.Matcher;
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public interface MatcherProvider {
+public interface MatcherRepository {
 
     void registerMatcher(String code, Matcher matcher);
 

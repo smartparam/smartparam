@@ -1,7 +1,7 @@
 package org.smartparam.engine.test.builder;
 
-import org.smartparam.engine.model.Function;
-import org.smartparam.engine.model.functions.JavaFunction;
+import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.model.function.JavaFunction;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

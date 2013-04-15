@@ -1,6 +1,6 @@
 package org.smartparam.spring.mockBuilders;
 
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.spring.function.SpringFunction;
 
 import static org.mockito.Mockito.mock;

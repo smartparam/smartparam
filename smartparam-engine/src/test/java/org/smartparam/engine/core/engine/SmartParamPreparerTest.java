@@ -5,8 +5,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.provider.SmartMatcherProvider;
-import org.smartparam.engine.core.provider.TypeProvider;
+import org.smartparam.engine.core.repository.SmartMatcherRepository;
+import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.loader.ParamProvider;
@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.smartparam.engine.core.provider.SmartTypeProvider;
+import org.smartparam.engine.core.repository.SmartTypeRepository;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
@@ -41,9 +41,9 @@ public class SmartParamPreparerTest {
 
     private SmartParamPreparer instance;
 
-    private TypeProvider typeProvider = new SmartTypeProvider();
+    private TypeRepository typeProvider = new SmartTypeRepository();
 
-    private SmartMatcherProvider matcherProvider = new SmartMatcherProvider();
+    private SmartMatcherRepository matcherProvider = new SmartMatcherRepository();
 
     private StringType type = new StringType();
 

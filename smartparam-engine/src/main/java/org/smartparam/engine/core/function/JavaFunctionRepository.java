@@ -1,0 +1,33 @@
+package org.smartparam.engine.core.function;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
+import org.smartparam.engine.annotations.SmartParamJavaPlugin;
+import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.model.function.JavaFunction;
+
+/**
+ *
+ * @author Adam Dubiel <dubiel.adam@gmail.com>
+ */
+@SmartParamFunctionInvoker("java")
+public class JavaFunctionRepository extends AbstractJavaFunctionRepository<JavaFunction> implements FunctionRepository {
+
+    public Function loadFunction(String functionName) {
+        throw new IllegalStateException("API method unavailable!");
+    }
+
+    public FunctionRepositoryCapabilities repositoryCapabilities() {
+        return FunctionRepositoryCapabilities.BATCH;
+    }
+
+    @Override
+    protected Class<? extends Annotation> annotationClass() {
+        return SmartParamJavaPlugin.class;
+    }
+
+    protected JavaFunction createFunction(String functionName, Method method) {
+        return new JavaFunction(functionName, "java", method);
+    }
+}

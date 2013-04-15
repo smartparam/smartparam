@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.smartparam.engine.core.provider;
+package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -50,18 +50,18 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class SmartTypeProvider extends AbstractProvider<Type<?>> implements TypeProvider {
+public class SmartTypeRepository extends AbstractRepository<Type<?>> implements TypeRepository {
 
     /**
      * Przechowuje typu pod unikalnymi kodami.
      */
     private Map<String, Type<?>> typeMap = new HashMap<String, Type<?>>();
 
-    public SmartTypeProvider() {
+    public SmartTypeRepository() {
         super();
     }
 
-    public SmartTypeProvider(boolean scanAnnotations, PackageList packagesToScan) {
+    public SmartTypeRepository(boolean scanAnnotations, PackageList packagesToScan) {
         super(scanAnnotations, packagesToScan);
     }
 

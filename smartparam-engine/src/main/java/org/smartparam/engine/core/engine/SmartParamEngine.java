@@ -1,31 +1,25 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.provider.SmartFunctionProvider;
-import org.smartparam.engine.core.provider.FunctionProvider;
+import org.smartparam.engine.core.service.FunctionManager;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
-import org.smartparam.engine.core.provider.SmartAssemblerProvider;
-import org.smartparam.engine.core.provider.SmartInvokerProvider;
+import org.smartparam.engine.core.repository.SmartAssemblerProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.index.LevelIndex;
-import org.smartparam.engine.core.provider.AssemblerProvider;
-import org.smartparam.engine.core.provider.InvokerProvider;
+import org.smartparam.engine.core.repository.AssemblerProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.model.Function;
-import org.smartparam.engine.model.FunctionImpl;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.types.plugin.PluginHolder;
 import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.ParamHelper;
@@ -42,20 +36,9 @@ public class SmartParamEngine extends AbstractScanner implements ParamEngine {
 
     private ParamPreparer paramPreparer = null;
 
-    private FunctionProvider functionProvider = null;
+    private FunctionManager functionManager = null;
 
-    private InvokerProvider invokerProvider = null;
-
-    private AssemblerProvider assemblerProvider = null;
-
-    @PostConstruct
-    public void initializeProviders() {
-        if (invokerProvider == null) {
-            SmartInvokerProvider smartInvokerProvider = new SmartInvokerProvider(isScanAnnotations(), getPackagesToScan());
-            smartInvokerProvider.scan();
-            invokerProvider = smartInvokerProvider;
-        }
-    }
+    private AssemblerProvider assemblerProvider;
 
     @Override
     public AbstractHolder getValue(String paramName, ParamContext ctx) {
@@ -305,9 +288,7 @@ public class SmartParamEngine extends AbstractScanner implements ParamEngine {
             logger.debug("calling function [{}] with args: {}", functionName, classNames(args));
         }
 
-        Function function = functionProvider.getFunction(functionName);
-
-        Object result = invokeFunction(function, args);
+        Object result = functionManager.invokeFunction(functionName, args);
 
         logger.debug("function result: {}", result);
         return result;
@@ -363,7 +344,7 @@ public class SmartParamEngine extends AbstractScanner implements ParamEngine {
         }
 
         if (pe.getFunction() != null) {
-            Object result = invokeFunction(pe.getFunction(), ctx);
+            Object result = functionManager.invokeFunction(pe.getFunction(), ctx);
             return ParamHelper.convert(type, result);
         }
 
@@ -397,7 +378,7 @@ public class SmartParamEngine extends AbstractScanner implements ParamEngine {
         }
 
         if (pe.getFunction() != null) {
-            Object result = invokeFunction(pe.getFunction(), ctx);
+            Object result = functionManager.invokeFunction(pe.getFunction(), ctx);
 
             // funkcja zwrocila null - zamieniamy na pusta tablice odpowiedniego typu
             if (result == null) {
@@ -488,7 +469,7 @@ public class SmartParamEngine extends AbstractScanner implements ParamEngine {
                         "Level(" + (i + 1) + ") has no level-creator funtion, but function is needed to evaluate level value");
             }
 
-            Object result = invokeFunction(levelCreator, ctx);
+            Object result = functionManager.invokeFunction(levelCreator, ctx);
             logger.trace("L{}: evaluated: {}", i + 1, result);
 
             if (result == null) {
@@ -507,21 +488,6 @@ public class SmartParamEngine extends AbstractScanner implements ParamEngine {
         }
 
         ctx.setLevelValues(values);
-    }
-
-    Object invokeFunction(Function f, Object... args) {
-        FunctionImpl impl = f.getImplementation();
-        FunctionInvoker<FunctionImpl> invoker = invokerProvider.getInvoker(impl);
-
-        if (invoker == null) {
-            throw new SmartParamException(SmartParamErrorCode.UNDEFINED_FUNCTION_INVOKER, "Undefined FunctionInvoker for: " + impl);
-        }
-
-        try {
-            return invoker.invoke(impl, args);
-        } catch (RuntimeException e) {
-            throw new SmartParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Failed to invoke function: " + impl);
-        }
     }
 
     private PreparedEntry findParameterEntry(PreparedParameter param, String[] levelValues) {
@@ -599,20 +565,16 @@ public class SmartParamEngine extends AbstractScanner implements ParamEngine {
         return paramPreparer != null;
     }
 
-    protected boolean hasFunctionProvider() {
-        return functionProvider != null;
+    protected boolean hasFunctionManager() {
+        return functionManager != null;
     }
 
     public void setParamPreparer(ParamPreparer paramPreparer) {
         this.paramPreparer = paramPreparer;
     }
 
-    public void setFunctionProvider(FunctionProvider functionProvider) {
-        this.functionProvider = functionProvider;
-    }
-
-    public void setInvokerProvider(SmartInvokerProvider invokerProvider) {
-        this.invokerProvider = invokerProvider;
+    public void setFunctionManager(FunctionManager functionManager) {
+        this.functionManager = functionManager;
     }
 
     public void setAssemblerProvider(SmartAssemblerProvider assemblerProvider) {

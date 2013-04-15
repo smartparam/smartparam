@@ -1,4 +1,4 @@
-package org.smartparam.engine.model;
+package org.smartparam.engine.model.function;
 
 /**
  * Function implementation.

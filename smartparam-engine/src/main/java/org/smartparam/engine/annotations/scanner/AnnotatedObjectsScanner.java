@@ -1,4 +1,4 @@
-package org.smartparam.engine.annotations;
+package org.smartparam.engine.annotations.scanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -6,46 +6,28 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.ClassUtils;
 import org.reflections.Reflections;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
+import org.smartparam.engine.annotations.SmartParamObjectInstance;
 import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.bean.SmartParamConsts;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamInitializationException;
 
 /**
  *
+ * @param <OBJECT> 
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public class AnnotatedObjectsScanner<OBJECT> implements SmartParamConsts {
-
-    private final static String VALUE_METHOD_NAME = "value";
+public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
 
     private final static String INSTANCES_METHOD_NAME = "instances";
 
-    public Map<String, OBJECT> getAnnotatedObjects(PackageList packagesToScan, Class<? extends Annotation> annotationClass) {
-        Map<String, OBJECT> objects = instantiateObjectsFromAnotations(getReflectionsForDefaultPackage(), annotationClass);
-        Map<String, OBJECT> userObjects = instantiateObjectsFromAnotations(getReflectionsForPackages(packagesToScan), annotationClass);
+    private final static String VALUES_METHOD_NAME = "values";
 
-        // override defaults
-        objects.putAll(userObjects);
+    public Map<String, OBJECT> getAnnotatedObjects(PackageList packagesToScan, Class<? extends Annotation> annotationClass) {
+        Map<String, OBJECT> objects = instantiateObjectsFromAnotations(getReflectionsForPackages(packagesToScan), annotationClass);
 
         return objects;
-    }
-
-    private Reflections getReflectionsForPackages(PackageList packageList) {
-        ConfigurationBuilder builder = new ConfigurationBuilder();
-        for (String packageStem : packageList) {
-            builder.addUrls(ClasspathHelper.forPackage(packageStem));
-        }
-
-        return builder.build();
-    }
-
-    private Reflections getReflectionsForDefaultPackage() {
-        return new Reflections(BASE_PACKAGE_PREFIX);
     }
 
     private Map<String, OBJECT> instantiateObjectsFromAnotations(Reflections reflections, Class<? extends Annotation> annotationClass) {
@@ -64,15 +46,18 @@ public class AnnotatedObjectsScanner<OBJECT> implements SmartParamConsts {
         Map<String, OBJECT> instantiatedObjects = new HashMap<String, OBJECT>();
         SmartParamObjectInstance[] instanceDescriptors = extractInstanceDescriptors(annotation);
 
-        String objectIdentifier;
         OBJECT object;
         if (instanceDescriptors.length == 0) {
-            objectIdentifier = extractObjectIdentifier(annotation);
+            String[] objectIdentifiers = extractIdentifiers(annotation);
             object = instantiateWithDefault(objectClass);
-            instantiatedObjects.put(objectIdentifier, object);
+
+            for (String objectIdentifier : objectIdentifiers) {
+                instantiatedObjects.put(objectIdentifier, object);
+            }
         } else {
+            String objectIdentifier;
             for (SmartParamObjectInstance instanceDescriptor : instanceDescriptors) {
-                objectIdentifier = extractObjectIdentifier(instanceDescriptor);
+                objectIdentifier = extractValue(instanceDescriptor);
                 object = instantiateUsingObjectDescriptor(objectClass, instanceDescriptor);
                 instantiatedObjects.put(objectIdentifier, object);
             }
@@ -81,15 +66,17 @@ public class AnnotatedObjectsScanner<OBJECT> implements SmartParamConsts {
         return instantiatedObjects;
     }
 
+    @SuppressWarnings("unchecked")
     private OBJECT instantiateWithDefault(Class<?> objectClass) throws SmartParamException {
         try {
-            return (OBJECT) objectClass.getConstructor().newInstance();
+            return (OBJECT) objectClass.newInstance();
         } catch (Exception exception) {
             throw new SmartParamException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no default constructor "
                     + "found for class " + ClassUtils.getShortClassName(objectClass));
         }
     }
 
+    @SuppressWarnings("unchecked")
     private OBJECT instantiateUsingObjectDescriptor(Class<?> objectClass, SmartParamObjectInstance objectDescriptor) {
         int constructorArgCount = objectDescriptor.constructorArgs().length;
         try {
@@ -97,7 +84,7 @@ public class AnnotatedObjectsScanner<OBJECT> implements SmartParamConsts {
             Object[] constructorArgs = new Object[constructorArgCount];
 
             String constructorArg;
-            for(int i = 0; i < constructorArgCount; ++i) {
+            for (int i = 0; i < constructorArgCount; ++i) {
                 constructorArg = objectDescriptor.constructorArgs()[i];
                 constructorArgClasses[i] = constructorArg.getClass();
                 constructorArgs[i] = constructorArg;
@@ -110,23 +97,21 @@ public class AnnotatedObjectsScanner<OBJECT> implements SmartParamConsts {
         }
     }
 
+    protected String[] extractIdentifiers(Annotation annotation) {
+        String[] identifiers = (String[]) extractValue(annotation, VALUES_METHOD_NAME);
+        if (identifiers.length > 0) {
+            return identifiers;
+        }
+        return new String[]{extractValue(annotation)};
+    }
+
     private SmartParamObjectInstance[] extractInstanceDescriptors(Annotation annotation) {
         try {
             Method instanceDescriptorsMethod = annotation.annotationType().getMethod(INSTANCES_METHOD_NAME);
             return (SmartParamObjectInstance[]) instanceDescriptorsMethod.invoke(annotation);
         } catch (Exception exception) {
             throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR,
-                    exception, "no " + VALUE_METHOD_NAME + " field found on annotation " + ClassUtils.getShortCanonicalName(annotation.annotationType()));
-        }
-    }
-
-    private String extractObjectIdentifier(Annotation annotation) {
-        try {
-            Method defaultValueMethod = annotation.annotationType().getMethod(VALUE_METHOD_NAME);
-            return (String) defaultValueMethod.invoke(annotation);
-        } catch (Exception exception) {
-            throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR,
-                    exception, "no " + VALUE_METHOD_NAME + " field found on annotation " + ClassUtils.getShortCanonicalName(annotation.annotationType()));
+                    exception, "no " + INSTANCES_METHOD_NAME + " field found on annotation " + ClassUtils.getShortCanonicalName(annotation.annotationType()));
         }
     }
 }

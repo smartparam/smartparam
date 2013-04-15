@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import org.smartparam.engine.model.functions.JavaFunction;
+import org.smartparam.engine.model.function.JavaFunction;
 import org.smartparam.engine.util.Formatter;
 
 /**

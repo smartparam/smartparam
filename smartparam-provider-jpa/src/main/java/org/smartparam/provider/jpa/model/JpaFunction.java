@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 
 /**
  * JPA data source based function implementation.

@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.cache;
 
 import org.junit.Test;
-import org.smartparam.engine.model.Function;
+import org.smartparam.engine.model.function.Function;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
