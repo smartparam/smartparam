@@ -10,7 +10,9 @@ import org.smartparam.engine.core.type.Type;
  */
 public interface TypeRepository {
 
-    public void registerType(String code, Type<?> type);
+    void registerType(String code, Type<?> type);
 
-    public Type<?> getType(String code);
+    Iterable<String> registeredTypes();
+
+    Type<?> getType(String code);
 }

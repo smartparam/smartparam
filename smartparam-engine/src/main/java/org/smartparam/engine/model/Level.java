@@ -46,7 +46,7 @@ public interface Level {
      *
      * @return function registered in function repository
      */
-    Function getLevelCreator();
+    String getLevelCreator();
 
     /**
      * Get type of values stored in level.

@@ -43,6 +43,10 @@ public class SmartMatcherRepository extends AbstractRepository<Matcher> implemen
         matcherMap.put(code, matcher);
     }
 
+    public Iterable<String> registeredMatchers() {
+        return matcherMap.keySet();
+    }
+
     /**
      * Zwraca matcher zarejstrowany pod kodem <tt>code</tt>
      * lub <tt>null</tt>, jesli nie ma takiego matchera.

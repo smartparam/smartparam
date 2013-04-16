@@ -19,7 +19,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.OldFunctionInvoker;
 import org.smartparam.engine.core.function.JavaFunctionRepository;
-import org.smartparam.engine.core.loader.ParamProvider;
+import org.smartparam.engine.core.loader.ParamRepository;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.test.builder.FunctionMockBuilder;
@@ -326,13 +326,13 @@ public class ParamEngineTest {
         tp.registerType("plugin", new PluginType());
         tp.registerType("string", new StringType());
 
-        ParamProvider loader = mock(ParamProvider.class);
+        ParamRepository loader = mock(ParamRepository.class);
         when(loader.load("par")).thenReturn(par);
 
         SmartParamPreparer provider = new SmartParamPreparer();
-        provider.setTypeProvider(tp);
-        provider.setLoader(loader);
-        provider.setCache(new MapParamCache());
+        provider.setTypeRepository(tp);
+        provider.setParamRepository(loader);
+        provider.setParamCache(new MapParamCache());
 
         // zaleznosci
         SmartInvokerRepository invokerProvider = mock(SmartInvokerRepository.class);

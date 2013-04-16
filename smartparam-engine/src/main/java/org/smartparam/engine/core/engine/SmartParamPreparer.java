@@ -17,11 +17,13 @@ import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.loader.ParamProvider;
+import org.smartparam.engine.core.loader.ParamRepository;
+import org.smartparam.engine.core.service.FunctionProvider;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.function.Function;
 
 /**
  * Klasa dostarcza przygotowane parametry na podstawie nazwy. Wykorzystuje
@@ -59,7 +61,9 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
     /**
      * Loader parametrow.
      */
-    private ParamProvider loader;
+    private ParamRepository paramRepository;
+
+    private FunctionProvider functionProvider;
 
     /**
      * Cache.
@@ -70,8 +74,9 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
         super();
     }
 
-    public SmartParamPreparer(boolean scanAnnotations, PackageList packagesToScan) {
+    public SmartParamPreparer(boolean scanAnnotations, PackageList packagesToScan, FunctionProvider functionProvider) {
         super(scanAnnotations, packagesToScan);
+        this.functionProvider = functionProvider;
     }
 
     @PostConstruct
@@ -99,7 +104,7 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
         PreparedParameter pp = cache.get(paramName);
 
         if (pp == null) {
-            Parameter p = loader.load(paramName);
+            Parameter p = paramRepository.load(paramName);
 
             if (p == null) {
                 logger.warn("param not found: {}", paramName);
@@ -179,7 +184,8 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
                 }
             }
 
-            levels[i] = new PreparedLevel(type, lev.isArray(), matcher, lev.getLevelCreator());
+            Function levelCreator = functionProvider.getFunction(lev.getLevelCreator());
+            levels[i] = new PreparedLevel(type, lev.isArray(), matcher, levelCreator);
             types[i] = type;
             matchers[i] = matcher;
         }
@@ -235,7 +241,7 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
 
     @Override
     public List<PreparedEntry> findEntries(String paramName, String[] levelValues) {
-        List<ParameterEntry> entries = loader.findEntries(paramName, levelValues);
+        List<ParameterEntry> entries = paramRepository.findEntries(paramName, levelValues);
 
         List<PreparedEntry> result = new ArrayList<PreparedEntry>(entries.size());
         for (ParameterEntry pe : entries) {
@@ -245,19 +251,35 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
         return result;
     }
 
-    public void setCache(ParamCache cache) {
+    public ParamCache getParamCache() {
+        return cache;
+    }
+
+    public void setParamCache(ParamCache cache) {
         this.cache = cache;
     }
 
-    public void setLoader(ParamProvider loader) {
-        this.loader = loader;
+    public ParamRepository getParamRepository() {
+        return paramRepository;
     }
 
-    public void setTypeProvider(TypeRepository typeProvider) {
-        this.typeProvider = typeProvider;
+    public void setParamRepository(ParamRepository paramRepository) {
+        this.paramRepository = paramRepository;
     }
 
-    public void setMatcherProvider(SmartMatcherRepository matcherProvider) {
-        this.matcherProvider = matcherProvider;
+    public TypeRepository getTypeRepository() {
+        return typeProvider;
+    }
+
+    public void setTypeRepository(TypeRepository typeRepository) {
+        this.typeProvider = typeRepository;
+    }
+
+    public MatcherRepository getMatcherRepository() {
+        return matcherProvider;
+    }
+
+    public void setMatcherRepository(SmartMatcherRepository matcherRepository) {
+        this.matcherProvider = matcherRepository;
     }
 }

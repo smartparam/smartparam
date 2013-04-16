@@ -5,7 +5,6 @@ import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.function.FunctionInvoker;
-import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.core.repository.InvokerRepository;
 import org.smartparam.engine.core.repository.SmartInvokerRepository;
 import org.smartparam.engine.model.function.Function;
@@ -58,5 +57,13 @@ public class SmartFunctionManager implements FunctionManager {
         } catch (RuntimeException e) {
             throw new SmartParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Failed to invoke function: " + function);
         }
+    }
+
+    public FunctionProvider getFunctionProvider() {
+        return functionProvider;
+    }
+
+    public InvokerRepository getInvokerRepository() {
+        return invokerRepository;
     }
 }

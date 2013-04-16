@@ -9,7 +9,7 @@ import org.smartparam.engine.core.repository.SmartMatcherRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.loader.ParamProvider;
+import org.smartparam.engine.core.loader.ParamRepository;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.test.builder.LevelMockBuilder;
 import org.smartparam.engine.test.builder.ParameterEntryMockBuilder;
@@ -33,7 +33,7 @@ public class SmartParamPreparerTest {
 
     private ParamCache cache;
 
-    private ParamProvider loader;
+    private ParamRepository loader;
 
     private PreparedParameter pp1;
 
@@ -68,16 +68,16 @@ public class SmartParamPreparerTest {
         when(cache.get("par1")).thenReturn(pp1);
         when(cache.get("par2")).thenReturn(null);
 
-        loader = mock(ParamProvider.class);
+        loader = mock(ParamRepository.class);
         when(loader.load("par2")).thenReturn(p2);
         when(loader.load("par3")).thenReturn(null);
         when(loader.findEntries(any(String.class), any(String[].class))).thenReturn(entries);
 
         instance = new SmartParamPreparer();
-        instance.setCache(cache);
-        instance.setLoader(loader);
-        instance.setTypeProvider(typeProvider);
-        instance.setMatcherProvider(matcherProvider);
+        instance.setParamCache(cache);
+        instance.setParamRepository(loader);
+        instance.setTypeRepository(typeProvider);
+        instance.setMatcherRepository(matcherProvider);
     }
 
     @Test

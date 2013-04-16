@@ -1,5 +1,6 @@
 package org.smartparam.engine.core.service;
 
+import org.smartparam.engine.core.repository.InvokerRepository;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -14,4 +15,8 @@ public interface FunctionManager {
     Object invokeFunction(String name, Object... args);
 
     Object invokeFunction(Function function, Object... args);
+
+    InvokerRepository getInvokerRepository();
+
+    FunctionProvider getFunctionProvider();
 }

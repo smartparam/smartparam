@@ -79,6 +79,10 @@ public class SmartTypeRepository extends AbstractRepository<Type<?>> implements 
         typeMap.put(code, type);
     }
 
+    public Iterable<String> registeredTypes() {
+        return typeMap.keySet();
+    }
+
     /**
      * Zwraca typ zarejestrowany pod podanym kodem (case sensitive).
      *

@@ -2,7 +2,7 @@ package org.smartparam.engine.core.engine;
 
 import org.smartparam.engine.core.service.SmartFunctionManager;
 import java.util.ArrayList;
-import org.smartparam.engine.core.loader.ParamProvider;
+import org.smartparam.engine.core.loader.ParamRepository;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +22,7 @@ import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import org.smartparam.engine.core.function.JavaFunctionInvoker;
 import org.smartparam.engine.core.function.JavaFunctionRepository;
 import org.smartparam.engine.core.loader.FunctionLoader;
 import org.smartparam.engine.core.type.AbstractHolder;
@@ -46,7 +47,7 @@ public class ParamEngineScenarioTest {
 
     private TypeRepository typeProvider;
 
-    private ParamProvider loader;
+    private ParamRepository loader;
 
     private SmartParamPreparer paramProvider;
 
@@ -65,15 +66,15 @@ public class ParamEngineScenarioTest {
         typeProvider.registerType("integer", new IntegerType());
         typeProvider.registerType("plugin", new PluginType());
 
-        loader = mock(ParamProvider.class);
+        loader = mock(ParamRepository.class);
 
         paramProvider = new SmartParamPreparer();
-        paramProvider.setTypeProvider(typeProvider);
-        paramProvider.setLoader(loader);
-        paramProvider.setCache(new MapParamCache());
+        paramProvider.setTypeRepository(typeProvider);
+        paramProvider.setParamRepository(loader);
+        paramProvider.setParamCache(new MapParamCache());
 
         invokerProvider = new SmartInvokerRepository();
-        invokerProvider.registerInvoker("java", new JavaFunctionRepository());
+        invokerProvider.registerInvoker("java", new JavaFunctionInvoker());
 
         assemblerProvider = new SmartAssemblerProvider();
 
@@ -87,7 +88,7 @@ public class ParamEngineScenarioTest {
         engine.setParamPreparer(paramProvider);
         engine.setInvokerProvider(invokerProvider);
         engine.setAssemblerProvider(assemblerProvider);
-        engine.setFunctionProvider(fp);
+        engine.setFunctionManager(fp);
     }
 
     @Test

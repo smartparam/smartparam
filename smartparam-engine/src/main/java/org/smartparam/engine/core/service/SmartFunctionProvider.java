@@ -38,6 +38,20 @@ public class SmartFunctionProvider extends AbstractRepository<FunctionRepository
         populateCache();
     }
 
+    public void registerRepository(String type, FunctionRepository repository) {
+        repositories.put(type, repository);
+    }
+
+    public void registerRepository(String[] types, FunctionRepository repository) {
+        for (String type : types) {
+            repositories.put(type, repository);
+        }
+    }
+
+    public Iterable<String> registeredRepositories() {
+        return repositories.keySet();
+    }
+
     public Function getFunction(String functionName) {
         Function function = functionCache.get(functionName);
 
@@ -84,11 +98,11 @@ public class SmartFunctionProvider extends AbstractRepository<FunctionRepository
         repositories.put(functionTypeCode, repository);
     }
 
-    public FunctionCache getCache() {
+    public FunctionCache getFunctionCache() {
         return functionCache;
     }
 
-    public void setCache(FunctionCache cache) {
+    public void setFunctionCache(FunctionCache cache) {
         this.functionCache = cache;
     }
 }

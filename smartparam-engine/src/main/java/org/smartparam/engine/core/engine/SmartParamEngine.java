@@ -561,8 +561,16 @@ public class SmartParamEngine extends AbstractScanner implements ParamEngine {
         return param;
     }
 
+    protected ParamPreparer getParamPreparer() {
+        return paramPreparer;
+    }
+
     protected boolean hasParamPreparer() {
         return paramPreparer != null;
+    }
+
+    protected FunctionManager getFunctionManager() {
+        return functionManager;
     }
 
     protected boolean hasFunctionManager() {

@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import org.smartparam.engine.core.loader.ParamProvider;
+import org.smartparam.engine.core.loader.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.provider.jpa.model.JpaParameter;
@@ -18,7 +18,7 @@ import org.smartparam.provider.jpa.model.JpaParameterEntry;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  * @since 0.1.0
  */
-public class JpaLoader implements ParamProvider {
+public class JpaLoader implements ParamRepository {
 
     private static final int FIND_ENTRIES_QUERY_LENGTH = 100;
 
