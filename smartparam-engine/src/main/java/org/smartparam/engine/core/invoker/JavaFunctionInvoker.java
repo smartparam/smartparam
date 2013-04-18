@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.function;
+package org.smartparam.engine.core.invoker;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.function.JavaFunction;
 
 /**
@@ -16,7 +17,7 @@ import org.smartparam.engine.model.function.JavaFunction;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 @SmartParamFunctionInvoker("java")
-public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker<JavaFunction> implements FunctionInvoker<JavaFunction> {
+public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker implements FunctionInvoker {
 
     /**
      * Logger.
@@ -26,9 +27,11 @@ public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker<JavaFunctio
     private final Map<Class<?>, Object> instanceMap = new ConcurrentHashMap<Class<?>, Object>();
 
     @Override
-    public Object invoke(JavaFunction function, Object... args) {
-        Class<?> clazz = function.getMethod().getDeclaringClass();
-        Method method = function.getMethod();
+    public Object invoke(Function function, Object... args) {
+        JavaFunction javaFunction = (JavaFunction) function;
+
+        Class<?> clazz = javaFunction.getMethod().getDeclaringClass();
+        Method method = javaFunction.getMethod();
 
         Object instance = null;
 

@@ -6,7 +6,7 @@ import javax.annotation.PostConstruct;
 import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.SmartParamConsts;
-import org.smartparam.engine.core.engine.AbstractAnnotationScanner;
+import org.smartparam.engine.core.AbstractAnnotationScanner;
 
 /**
  *
@@ -14,7 +14,7 @@ import org.smartparam.engine.core.engine.AbstractAnnotationScanner;
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public abstract class AbstractRepository<REGISTERED_OBJECT> extends AbstractAnnotationScanner implements AnnotationScanningRepository, SmartParamConsts {
+public abstract class AbstractAnnotationScanningRepository<REGISTERED_OBJECT> extends AbstractAnnotationScanner implements AnnotationScanningRepository, SmartParamConsts {
 
     private boolean alreadyScanned = false;
 

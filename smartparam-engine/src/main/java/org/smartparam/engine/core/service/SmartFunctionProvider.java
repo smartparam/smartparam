@@ -11,8 +11,8 @@ import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.function.FunctionRepository;
-import org.smartparam.engine.core.repository.AbstractRepository;
+import org.smartparam.engine.core.repository.FunctionRepository;
+import org.smartparam.engine.core.repository.AbstractAnnotationScanningRepository;
 import org.smartparam.engine.core.repository.AnnotationScanningRepository;
 import org.smartparam.engine.model.function.Function;
 
@@ -20,7 +20,7 @@ import org.smartparam.engine.model.function.Function;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SmartFunctionProvider extends AbstractRepository<FunctionRepository> implements FunctionProvider {
+public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<FunctionRepository> implements FunctionProvider {
 
     private Map<String, FunctionRepository> repositories = new HashMap<String, FunctionRepository>();
 

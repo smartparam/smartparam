@@ -1,38 +1,17 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.service.FunctionManager;
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.slf4j.Logger;
-import org.smartparam.engine.core.cache.MapParamCache;
-import org.smartparam.engine.core.repository.SmartInvokerRepository;
-import org.smartparam.engine.core.repository.SmartTypeRepository;
-import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.context.DefaultContext;
-import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.function.JavaFunctionRepository;
-import org.smartparam.engine.core.loader.ParamRepository;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.test.builder.FunctionMockBuilder;
-import org.smartparam.engine.test.builder.ParameterEntryMockBuilder;
-import org.smartparam.engine.test.builder.ParameterMockBuilder;
 import org.smartparam.engine.model.function.Function;
-import org.smartparam.engine.model.function.FunctionImpl;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.integer.IntegerType;
-import org.smartparam.engine.types.number.NumberHolder;
-import org.smartparam.engine.types.number.NumberType;
-import org.smartparam.engine.types.plugin.PluginType;
 import org.smartparam.engine.types.string.StringHolder;
 import org.smartparam.engine.types.string.StringType;
 

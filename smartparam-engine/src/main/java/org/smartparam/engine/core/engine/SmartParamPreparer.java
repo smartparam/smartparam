@@ -1,5 +1,6 @@
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.AbstractAnnotationScanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +18,7 @@ import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.loader.ParamRepository;
+import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.service.FunctionProvider;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Level;

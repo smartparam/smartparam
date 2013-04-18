@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.loader;
+package org.smartparam.engine.core.repository;
 
 import java.util.List;
 import org.smartparam.engine.model.Parameter;

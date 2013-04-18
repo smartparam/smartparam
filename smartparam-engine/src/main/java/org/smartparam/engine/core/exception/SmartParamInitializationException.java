@@ -7,6 +7,8 @@ package org.smartparam.engine.core.exception;
  */
 public class SmartParamInitializationException extends SmartParamException {
 
+    private static final long serialVersionUID = 1L;
+
     public SmartParamInitializationException(SmartParamErrorCode errorCode, Throwable t, String message) {
         super(errorCode, t, message);
     }

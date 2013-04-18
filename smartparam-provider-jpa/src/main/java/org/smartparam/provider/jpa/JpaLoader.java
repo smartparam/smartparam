@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import org.smartparam.engine.core.loader.ParamRepository;
+import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.provider.jpa.model.JpaParameter;

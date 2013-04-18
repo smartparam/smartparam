@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.engine;
+package org.smartparam.engine.core;
 
 import java.util.List;
 import org.smartparam.engine.bean.AnnotationScannerProperties;

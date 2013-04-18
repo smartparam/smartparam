@@ -1,18 +1,16 @@
-package org.smartparam.engine.core.function;
+package org.smartparam.engine.core.invoker;
 
 import java.lang.reflect.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.model.function.Function;
 
 /**
  *
- * @param <FUNCTION>
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public abstract class AbstractJavaFunctionInvoker<FUNCTION extends Function> {
+public abstract class AbstractJavaFunctionInvoker {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

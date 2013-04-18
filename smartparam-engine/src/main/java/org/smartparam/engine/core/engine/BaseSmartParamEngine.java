@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.engine;
 
 import javax.annotation.PostConstruct;
-import org.smartparam.engine.core.loader.ParamRepository;
+import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.service.SmartFunctionManager;
 
 /**

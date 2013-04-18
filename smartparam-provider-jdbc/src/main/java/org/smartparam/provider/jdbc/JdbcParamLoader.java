@@ -7,7 +7,7 @@ package org.smartparam.provider.jdbc;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
-import org.smartparam.engine.core.loader.ParamRepository;
+import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.provider.jdbc.dao.JdbcProviderDAO;

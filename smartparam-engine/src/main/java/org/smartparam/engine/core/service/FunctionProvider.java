@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.service;
 
 import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.repository.FunctionRepository;
 import org.smartparam.engine.model.function.Function;
 
 /**

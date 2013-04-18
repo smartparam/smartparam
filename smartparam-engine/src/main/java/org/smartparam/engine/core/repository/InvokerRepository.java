@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.repository;
 
 import java.util.Map;
-import org.smartparam.engine.core.function.FunctionInvoker;
+import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -11,9 +11,9 @@ import org.smartparam.engine.model.function.Function;
  */
 public interface InvokerRepository {
 
-    <T extends Function> void registerInvoker(String typeCode, FunctionInvoker<T> invoker);
+    void registerInvoker(String typeCode, FunctionInvoker invoker);
 
-    <T extends Function> FunctionInvoker<T> getInvoker(T function);
+    FunctionInvoker getInvoker(Function function);
 
-    void setInvokers(Map<String, FunctionInvoker<?>> invokers);
+    void setInvokers(Map<String, FunctionInvoker> invokers);
 }

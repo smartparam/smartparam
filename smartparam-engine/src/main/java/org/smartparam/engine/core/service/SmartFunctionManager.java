@@ -2,21 +2,15 @@ package org.smartparam.engine.core.service;
 
 import javax.annotation.PostConstruct;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
-import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.engine.AbstractAnnotationScanner;
+import org.smartparam.engine.core.AbstractAnnotationScanner;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.function.FunctionInvoker;
-import org.smartparam.engine.core.loader.FunctionLoader;
+import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.core.repository.InvokerRepository;
 import org.smartparam.engine.core.repository.SmartInvokerRepository;
 import org.smartparam.engine.model.function.Function;
 
 /**
- * Service Provider, ktory dostarcza funkcje z repozytorium o zadanej nazwie.
- * Pobiera funkcje przy pomocy loadera ({@link FunctionLoader}), ktorego
- * zadaniem jest fizyczne wczytani funkcji z bazy danych. Wczytana funkcja jest
- * cache'owana przy pomocy {@link FunctionCache}.
  *
  * @author Przemek Hertel
  * @since 1.0.0

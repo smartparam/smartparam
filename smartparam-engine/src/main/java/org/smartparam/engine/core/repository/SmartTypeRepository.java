@@ -50,7 +50,7 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class SmartTypeRepository extends AbstractRepository<Type<?>> implements TypeRepository {
+public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Type<?>> implements TypeRepository {
 
     /**
      * Przechowuje typu pod unikalnymi kodami.

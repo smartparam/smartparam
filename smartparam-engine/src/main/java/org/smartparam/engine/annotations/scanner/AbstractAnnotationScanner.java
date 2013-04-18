@@ -15,7 +15,7 @@ import org.smartparam.engine.core.exception.SmartParamInitializationException;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public abstract class AbstractAnnotationScanner {
+abstract class AbstractAnnotationScanner {
 
     private final static String VALUE_METHOD_NAME = "value";
 

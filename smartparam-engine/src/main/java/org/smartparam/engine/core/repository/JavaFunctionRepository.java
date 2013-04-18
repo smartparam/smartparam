@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.function;
+package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -12,7 +12,7 @@ import org.smartparam.engine.model.function.JavaFunction;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 @SmartParamFunctionRepository("java")
-public class JavaFunctionRepository extends AbstractJavaFunctionRepository<JavaFunction> implements FunctionRepository {
+public class JavaFunctionRepository extends AbstractJavaFunctionRepository implements FunctionRepository {
 
     public Function loadFunction(String functionName) {
         throw new IllegalStateException("API method unavailable!");
@@ -27,7 +27,7 @@ public class JavaFunctionRepository extends AbstractJavaFunctionRepository<JavaF
         return SmartParamJavaPlugin.class;
     }
 
-    protected JavaFunction createFunction(String functionName, Method method) {
+    protected Function createFunction(String functionName, Method method) {
         return new JavaFunction(functionName, "java", method);
     }
 }

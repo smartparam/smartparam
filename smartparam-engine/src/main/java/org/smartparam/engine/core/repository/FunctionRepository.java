@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.function;
+package org.smartparam.engine.core.repository;
 
 import java.util.Map;
 import org.smartparam.engine.model.function.Function;

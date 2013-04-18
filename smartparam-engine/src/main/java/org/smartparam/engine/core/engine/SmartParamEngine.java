@@ -1,5 +1,6 @@
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.AbstractAnnotationScanner;
 import org.smartparam.engine.core.service.FunctionManager;
 import java.lang.reflect.Array;
 import java.util.Arrays;

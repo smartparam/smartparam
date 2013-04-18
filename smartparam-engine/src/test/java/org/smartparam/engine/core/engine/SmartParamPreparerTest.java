@@ -9,7 +9,7 @@ import org.smartparam.engine.core.repository.SmartMatcherRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.loader.ParamRepository;
+import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.test.builder.LevelMockBuilder;
 import org.smartparam.engine.test.builder.ParameterEntryMockBuilder;

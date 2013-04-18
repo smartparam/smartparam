@@ -1,12 +1,11 @@
-package org.smartparam.engine.core.function;
+package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.smartparam.engine.annotations.scanner.AnnotatedMethodsScanner;
-import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.core.engine.AbstractAnnotationScanner;
+import org.smartparam.engine.core.AbstractAnnotationScanner;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -22,7 +21,7 @@ import org.smartparam.engine.model.function.Function;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public abstract class AbstractJavaFunctionRepository<FUNCTION extends Function> extends AbstractAnnotationScanner {
+public abstract class AbstractJavaFunctionRepository extends AbstractAnnotationScanner {
 
     public Map<String, Function> loadFunctions() {
         Map<String, Function> loadedFunctions = new HashMap<String, Function>();
@@ -41,5 +40,5 @@ public abstract class AbstractJavaFunctionRepository<FUNCTION extends Function> 
 
     protected abstract Class<? extends Annotation> annotationClass();
 
-    protected abstract FUNCTION createFunction(String functionName, Method method);
+    protected abstract Function createFunction(String functionName, Method method);
 }

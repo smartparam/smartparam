@@ -16,7 +16,7 @@ import org.smartparam.engine.core.index.Matcher;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class SmartMatcherRepository extends AbstractRepository<Matcher> implements MatcherRepository {
+public class SmartMatcherRepository extends AbstractAnnotationScanningRepository<Matcher> implements MatcherRepository {
 
     /**
      * Mapuje kod matchera na obiekt matchera.
