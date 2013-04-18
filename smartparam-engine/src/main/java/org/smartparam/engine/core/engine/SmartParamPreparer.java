@@ -149,13 +149,13 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
          * przygotowanie konfiguracji poziomow (typy, matchery)
          */
 
-        int levelCount = p.getLevelCount();
+        int levelCount = getLevelCount(p);
         PreparedLevel[] levels = new PreparedLevel[levelCount];
         Type<?>[] types = new Type<?>[levelCount];
         Matcher[] matchers = new Matcher[levelCount];
 
         for (int i = 0; i < levelCount; i++) {
-            Level lev = p.getLevel(i);
+            Level lev = getLevel(p, i);
 
             Type<?> type = null;
             if (lev.getType() != null) {
@@ -209,18 +209,37 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
             kmatchers = Arrays.copyOf(matchers, k);             // podtablica matcherow
 
         } else {
-            k = p.getLevelCount();                              // indeksujemy wszystkie n poziomow (k = n)
+            k = getLevelCount(p);                               // indeksujemy wszystkie n poziomow (k = n)
         }
 
 
         LevelIndex<PreparedEntry> index = new LevelIndex<PreparedEntry>(k, ktypes, kmatchers);   // indeks k-poziomowy
 
         for (ParameterEntry pe : p.getEntries()) {
-            String[] keys = pe.getLevels(k);                                                   // pobranie k pierwszych poziomow
-            index.add(keys, prepareEntry(pe));                                                 // indeksujemy k poziomow
+            String[] keys = getFirstLevels(pe, k);                                               // pobranie k pierwszych poziomow
+            index.add(keys, prepareEntry(pe));                                                   // indeksujemy k poziomow
         }
 
         pp.setIndex(index);
+    }
+    
+    private int getLevelCount(Parameter p) {
+        List<? extends Level> levels = p.getLevels();
+        return levels != null ? levels.size() : 0;
+    }
+    
+    private Level getLevel(Parameter p, int index) {
+        return p.getLevels().get(index);
+    }
+    
+    /**
+     * Returns patterns for first k levels.
+     *
+     * @param k number of levels
+     * @return values of first k levels
+     */
+    protected String[] getFirstLevels(ParameterEntry pe, int k) {
+        return Arrays.copyOf(pe.getLevels(), k);        
     }
 
     private PreparedEntry prepareEntry(ParameterEntry pe) {

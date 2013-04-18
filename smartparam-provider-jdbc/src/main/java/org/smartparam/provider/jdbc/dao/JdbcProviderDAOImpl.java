@@ -25,6 +25,9 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     private DataSource dataSource;
 
+    public JdbcProviderDAOImpl() {
+    }
+    
     public JdbcProviderDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -239,4 +242,9 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
             }
         }
     }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+    
 }

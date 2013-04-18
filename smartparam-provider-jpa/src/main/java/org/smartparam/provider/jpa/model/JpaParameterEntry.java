@@ -183,17 +183,6 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
     }
 
     /**
-     * Zwraca n pierwszych wartosci z wzorca dopasowania.
-     * Innymi slowy - zwraca wartosci dla n pierwszych poziomow.
-     *
-     * @param n liczba zadanych poziomow
-     * @return wartosci dla n poziomow
-     */
-    public String[] getLevels(int n) {
-        return Arrays.copyOf(levels, n);
-    }
-
-    /**
      * Zwraca wzorzec dla k-tego poziomu. Numerowanie zaczyna sie od 1 (k = 1,...)
      *
      * @param k numer poziomu

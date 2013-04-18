@@ -50,15 +50,6 @@ public interface Parameter {
     String getLabel();
 
     /**
-     * Returns parameter description. Description eases parameter maintenance,
-     * should be clear and comprehensive.
-     *
-     * @return description
-     */
-//    String getDescription();
-//TODO #ph remove getDescription from interface
-
-    /**
      * Returns parameter return type (for single-value parameters).
      *
      * @return parameter return value type
@@ -71,24 +62,6 @@ public interface Parameter {
      * @return list of levels
      */
     List<? extends Level> getLevels();
-
-    /**
-     * Returns level at given number.
-     *
-     * @param levelNumber level number
-     *
-     * @return sorted level value resolver list
-     */
-    Level getLevel(int levelNumber);
-    //TODO #ph remove from interface and from impl ParProvImpl
-
-    /**
-     * Returns number of levels (level list length).
-     *
-     * @return number of parameter levels
-     */
-    int getLevelCount();
-    //TODO #ph remove from interface
 
     /**
      * Returns number of input levels (k). Meaningful only for
@@ -105,14 +78,6 @@ public interface Parameter {
      * @return parameter matrix
      */
     Set<? extends ParameterEntry> getEntries();
-
-    /**
-     * Is parametr in archive. TODO #ad what does it really mean?
-     *
-     * @return is archive
-     */
-    boolean isArchive();
-    //TODO #ph maybe remove isArchive?
 
     /**
      * Should parameter return value be treated as an array of values.

@@ -25,7 +25,6 @@ public class ParameterMockBuilder {
 
     private ParameterMockBuilder() {
         this.parameter = mock(Parameter.class);
-        when(parameter.isArchive()).thenReturn(false);
         when(parameter.isArray()).thenReturn(false);
         when(parameter.isCacheable()).thenReturn(true);
         when(parameter.isMultivalue()).thenReturn(false);
@@ -82,17 +81,10 @@ public class ParameterMockBuilder {
     public ParameterMockBuilder withLevels(Level... levels) {
         List<Level> list = new ArrayList<Level>();
         for (int index = 0; index < levels.length; ++index) {
-            when(parameter.getLevel(index)).thenReturn(levels[index]);
             list.add(levels[index]);
         }
         Mockito.doReturn(list).when(parameter).getLevels();
-        when(parameter.getLevelCount()).thenReturn(levels.length);
 
-        return this;
-    }
-
-    public ParameterMockBuilder withArchive(boolean archive) {
-        when(parameter.isArchive()).thenReturn(false);
         return this;
     }
 

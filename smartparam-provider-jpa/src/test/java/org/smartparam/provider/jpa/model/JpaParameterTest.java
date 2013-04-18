@@ -75,15 +75,6 @@ public class JpaParameterTest {
     }
 
     @Test
-    public void testArchive() {
-
-        assertFalse(par.isArchive());
-
-        par.setArchive(true);
-        assertTrue(par.isArchive());
-    }
-
-    @Test
     public void testMultivalue() {
 
         assertFalse(par.isMultivalue());

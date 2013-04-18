@@ -136,16 +136,6 @@ public class JpaParameter implements Parameter, JpaModelObject {
     }
 
     /**
-     * Getter dla archive.
-     *
-     * @return czy archive
-     */
-    @Override
-    public boolean isArchive() {
-        return archive;
-    }
-
-    /**
      * Setter dla archive.
      *
      * @param archive wartosc flagi
@@ -257,7 +247,6 @@ public class JpaParameter implements Parameter, JpaModelObject {
      * @return liczba poziomow
      */
     @Transient
-    @Override
     public int getLevelCount() {
         return levels != null ? levels.size() : 0;
     }
