@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.smartparam.engine.annotations.SmartParamFunctionRepository;
+import org.smartparam.engine.bean.AnnotationScannerProperties;
+import org.smartparam.engine.core.AnnotationScanner;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.repository.AbstractRepository;
+import org.smartparam.engine.core.repository.AnnotationScanningRepository;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -23,8 +26,10 @@ public class SmartFunctionProvider extends AbstractRepository<FunctionRepository
 
     private FunctionCache functionCache = null;
 
-    public static SmartFunctionProvider createAndInitialize() {
+    public static SmartFunctionProvider createAndInitialize(AnnotationScannerProperties scannerProperties) {
         SmartFunctionProvider functionProvider = new SmartFunctionProvider();
+        functionProvider.setScannerProperties(scannerProperties);
+
         functionProvider.initialize();
         return functionProvider;
     }
@@ -96,6 +101,11 @@ public class SmartFunctionProvider extends AbstractRepository<FunctionRepository
     @Override
     protected void handleRegistration(String functionTypeCode, FunctionRepository repository) {
         repositories.put(functionTypeCode, repository);
+        
+        // TODO #ad maybe this can be done better?
+        if(repository instanceof AnnotationScanner) {
+            ((AnnotationScanner)repository).setScannerProperties(getScannerProperties());
+        }
     }
 
     public FunctionCache getFunctionCache() {

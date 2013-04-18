@@ -41,6 +41,11 @@ public class LevelMockBuilder {
         return this;
     }
 
+    public LevelMockBuilder withLevelCreator(String levelCreator) {
+        when(level.getLevelCreator()).thenReturn(levelCreator);
+        return this;
+    }
+
     public LevelMockBuilder withArray(boolean array) {
         when(level.isArray()).thenReturn(array);
         return this;

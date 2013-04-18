@@ -44,7 +44,7 @@ public class JpaLevel implements Level, JpaModelObject {
     /**
      * Funkcja dynamicznie wyznaczajaca wartosc poziomu dla danego kontekstu.
      */
-    private JpaFunction levelCreator;
+    private String levelCreator;
 
     /**
      * Typ wartosci dla tego poziomu (zgodny z systemem typow silnika).
@@ -69,7 +69,7 @@ public class JpaLevel implements Level, JpaModelObject {
      * Funkcja (z repozytorium), ktora pelni role walidatora.
      * Moze byc uzywana prze GUI do walidacji wartosci wprowadzonych przez uzytkownika.
      */
-    private JpaFunction validator;
+    private String validator;
 
     /**
      * Skrotowy opis (label) poziomu w jezyku naturalnym.
@@ -198,8 +198,7 @@ public class JpaLevel implements Level, JpaModelObject {
      *
      * @return funkcja levelCreator
      */
-    @ManyToOne(fetch = FetchType.EAGER)
-    public JpaFunction getLevelCreator() {
+    public String getLevelCreator() {
         return levelCreator;
     }
 
@@ -208,7 +207,7 @@ public class JpaLevel implements Level, JpaModelObject {
      *
      * @param levelCreator funkcja
      */
-    public void setLevelCreator(JpaFunction levelCreator) {
+    public void setLevelCreator(String levelCreator) {
         this.levelCreator = levelCreator;
     }
 
@@ -299,8 +298,7 @@ public class JpaLevel implements Level, JpaModelObject {
      *
      * @return funkcja validator
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    public JpaFunction getValidator() {
+    public String getValidator() {
         return validator;
     }
 
@@ -309,7 +307,7 @@ public class JpaLevel implements Level, JpaModelObject {
      *
      * @param validator funkcja validator
      */
-    public void setValidator(JpaFunction validator) {
+    public void setValidator(String validator) {
         this.validator = validator;
     }
 
@@ -318,7 +316,7 @@ public class JpaLevel implements Level, JpaModelObject {
         StringBuilder sb = new StringBuilder();
         sb.append("Level[");
         sb.append("id=").append(id);
-        sb.append(", cre=").append(levelCreator != null ? levelCreator.getName() : null);
+        sb.append(", cre=").append(levelCreator);
         sb.append(", type=").append(type);
 
         if (matcherCode != null) {
@@ -326,7 +324,7 @@ public class JpaLevel implements Level, JpaModelObject {
         }
 
         if (validator != null) {
-            sb.append(", validator=").append(validator.getName());
+            sb.append(", validator=").append(validator);
         }
 
         sb.append(']');

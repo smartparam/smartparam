@@ -1,10 +1,13 @@
 package org.smartparam.engine.test.builder;
 
+import java.lang.reflect.Method;
 import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.function.JavaFunction;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import org.smartparam.engine.core.context.DefaultContext;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  * {@link Function} mock object builder.
@@ -14,10 +17,10 @@ import static org.mockito.Mockito.when;
  */
 public class FunctionMockBuilder {
 
-    private Function function;
+    private JavaFunction function;
 
     private FunctionMockBuilder() {
-        this.function = mock(Function.class);
+        this.function = mock(JavaFunction.class);
     }
 
     public static FunctionMockBuilder function() {
@@ -39,12 +42,18 @@ public class FunctionMockBuilder {
     }
 
     public FunctionMockBuilder withJavaImplementation(Class<?> clazz, String functionName) {
-        JavaFunction javaFunction = mock(JavaFunction.class);
-        when(javaFunction.getClassName()).thenReturn(clazz.getName());
-        when(javaFunction.getMethodName()).thenReturn(functionName);
-        when(javaFunction.getTypeCode()).thenReturn("java");
+        when(function.getType()).thenReturn("java");
+        when(function.getName()).thenReturn(functionName);
 
-        when(function.getImplementation()).thenReturn(javaFunction);
+        try {
+            Method method = clazz.getMethod(functionName, DefaultContext.class);
+
+            when(function.getMethod()).thenReturn(method);
+        }
+        catch(NoSuchMethodException e) {
+            throw new SmartParamException(e);
+        }
+
         return this;
     }
 

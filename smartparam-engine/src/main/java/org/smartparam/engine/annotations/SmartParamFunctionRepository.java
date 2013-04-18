@@ -16,4 +16,6 @@ public @interface SmartParamFunctionRepository {
     String value();
 
     String[] values() default {};
+
+    SmartParamObjectInstance[] instances() default {};
 }

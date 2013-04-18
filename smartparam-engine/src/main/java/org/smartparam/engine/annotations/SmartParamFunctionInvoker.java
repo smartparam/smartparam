@@ -16,5 +16,7 @@ public @interface SmartParamFunctionInvoker {
 
     String value();
 
+    String[] values() default {};
+
     SmartParamObjectInstance[] instances() default {};
 }

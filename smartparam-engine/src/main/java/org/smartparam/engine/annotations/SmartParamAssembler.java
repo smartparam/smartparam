@@ -16,5 +16,7 @@ public @interface SmartParamAssembler {
 
     String value();
 
+    String[] values() default{};
+
     SmartParamObjectInstance[] instances() default {};
 }

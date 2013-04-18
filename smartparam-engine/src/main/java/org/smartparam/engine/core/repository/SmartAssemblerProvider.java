@@ -151,7 +151,7 @@ public class SmartAssemblerProvider implements AssemblerProvider {
      * @param target klasa obiektu otrzymywanego na wyjsciu assemblera
      * @return metoda assemblera lub <tt>null</tt>, jesli nie znaleziono pasujacego assemblera
      */
-    AssemblerMethod lookupAssembler(Class<?> source, Class<?> target) {
+    public AssemblerMethod lookupAssembler(Class<?> source, Class<?> target) {
 
         // twarda zgodnosc na target i miekka zgodnosc na source
         for (AssemblerMethod candidate : assemblers) {
@@ -223,17 +223,17 @@ public class SmartAssemblerProvider implements AssemblerProvider {
      *
      * @return lista zarejstrowanych assemblerow
      */
-    List<AssemblerMethod> getAssemblers() {
+    public List<AssemblerMethod> getAssemblers() {
         return assemblers;
     }
 
-    static final class SignatureKey {
+    public static final class SignatureKey {
 
         private Class<?> source;
 
         private Class<?> target;
 
-        SignatureKey(Class<?> source, Class<?> target) {
+        public SignatureKey(Class<?> source, Class<?> target) {
             this.source = source;
             this.target = target;
         }

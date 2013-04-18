@@ -2,7 +2,7 @@ package org.smartparam.engine.core.function;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
+import org.smartparam.engine.annotations.SmartParamFunctionRepository;
 import org.smartparam.engine.annotations.SmartParamJavaPlugin;
 import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.function.JavaFunction;
@@ -11,7 +11,7 @@ import org.smartparam.engine.model.function.JavaFunction;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-@SmartParamFunctionInvoker("java")
+@SmartParamFunctionRepository("java")
 public class JavaFunctionRepository extends AbstractJavaFunctionRepository<JavaFunction> implements FunctionRepository {
 
     public Function loadFunction(String functionName) {

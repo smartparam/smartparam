@@ -30,10 +30,6 @@
         <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <bean id="smartParamFunctionLoader" class="org.smartparam.provider.jpa.JpaFunctionLoader">
-        <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
-
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" p:dataSource-ref="dataSource">
         <property name="packagesToScan">
             <list>

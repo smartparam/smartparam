@@ -17,13 +17,16 @@ public class BaseSmartParamEngine extends SmartParamEngine {
         //super.initializeProviders();
 
         if (!hasFunctionManager()) {
-            SmartFunctionManager functionManager = SmartFunctionManager.createAndInitialize();
+            SmartFunctionManager functionManager = SmartFunctionManager.createAndInitialize(getScannerProperties());
             setFunctionManager(functionManager);
         }
 
         if (!hasParamPreparer()) {
-            SmartParamPreparer smartParamPreparer = new SmartParamPreparer(isScanAnnotations(), getPackagesToScan(), getFunctionManager().getFunctionProvider());
+            SmartParamPreparer smartParamPreparer = new SmartParamPreparer();
             smartParamPreparer.setParamRepository(paramProvider);
+            smartParamPreparer.setFunctionProvider(getFunctionManager().getFunctionProvider());
+            smartParamPreparer.setScannerProperties(getScannerProperties());
+
             smartParamPreparer.initializeProviders();
             setParamPreparer(smartParamPreparer);
         }

@@ -41,7 +41,7 @@ import org.smartparam.engine.model.function.Function;
  * @author Przemek Hertel
  * @since 0.1.0
  */
-public class SmartParamPreparer extends AbstractScanner implements ParamPreparer {
+public class SmartParamPreparer extends AbstractAnnotationScanner implements ParamPreparer {
 
     /**
      * Logger.
@@ -70,25 +70,20 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
      */
     private ParamCache cache;
 
-    public SmartParamPreparer() {
-        super();
-    }
-
-    public SmartParamPreparer(boolean scanAnnotations, PackageList packagesToScan, FunctionProvider functionProvider) {
-        super(scanAnnotations, packagesToScan);
-        this.functionProvider = functionProvider;
-    }
-
     @PostConstruct
     public void initializeProviders() {
         if (matcherProvider == null) {
-            SmartMatcherRepository smartMatcherProvider = new SmartMatcherRepository(isScanAnnotations(), getPackagesToScan());
+            SmartMatcherRepository smartMatcherProvider = new SmartMatcherRepository();
+            smartMatcherProvider.setScannerProperties(getScannerProperties());
+
             smartMatcherProvider.scan();
             matcherProvider = smartMatcherProvider;
         }
 
         if (typeProvider == null) {
-            SmartTypeRepository smartTypeProvider = new SmartTypeRepository(isScanAnnotations(), getPackagesToScan());
+            SmartTypeRepository smartTypeProvider = new SmartTypeRepository();
+            smartTypeProvider.setScannerProperties(getScannerProperties());
+
             smartTypeProvider.scan();
             typeProvider = smartTypeProvider;
         }
@@ -184,7 +179,10 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
                 }
             }
 
-            Function levelCreator = functionProvider.getFunction(lev.getLevelCreator());
+            Function levelCreator = null;
+            if(lev.getLevelCreator() != null) {
+                    levelCreator = functionProvider.getFunction(lev.getLevelCreator());
+            }
             levels[i] = new PreparedLevel(type, lev.isArray(), matcher, levelCreator);
             types[i] = type;
             matchers[i] = matcher;
@@ -234,7 +232,9 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
 
         e.setLevels(pe.getLevels());
         e.setValue(pe.getValue());
-        e.setFunction(pe.getFunction());
+        if(pe.getFunction() != null) {
+            e.setFunction(functionProvider.getFunction(pe.getFunction()));
+        }
 
         return e;
     }
@@ -257,6 +257,14 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
 
     public void setParamCache(ParamCache cache) {
         this.cache = cache;
+    }
+
+    public FunctionProvider getFunctionProvider() {
+        return functionProvider;
+    }
+
+    public void setFunctionProvider(FunctionProvider functionProvider) {
+        this.functionProvider = functionProvider;
     }
 
     public ParamRepository getParamRepository() {

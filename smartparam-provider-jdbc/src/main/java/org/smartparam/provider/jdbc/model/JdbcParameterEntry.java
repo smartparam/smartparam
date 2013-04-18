@@ -1,7 +1,6 @@
 package org.smartparam.provider.jdbc.model;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.ParameterEntry;
 
 /**
@@ -41,7 +40,7 @@ public class JdbcParameterEntry implements ParameterEntry {
     }
 
     @Override
-    public Function getFunction() {
+    public String getFunction() {
         //TODO #ph fix: change interface to getFunction:string
         return null;
     }

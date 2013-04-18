@@ -16,5 +16,7 @@ public @interface SmartParamMatcher {
 
     String value();
 
+    String[] values() default{};
+
     SmartParamObjectInstance[] instances() default {};
 }

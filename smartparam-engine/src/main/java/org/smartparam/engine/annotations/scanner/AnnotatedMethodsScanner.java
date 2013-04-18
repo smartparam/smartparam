@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.reflections.Reflections;
+import org.reflections.scanners.MethodAnnotationsScanner;
+import org.reflections.util.ClasspathHelper;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
@@ -18,8 +20,8 @@ public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
     public Map<String, Method> getAnnotatedMethods(PackageList packagesToScan, Class<? extends Annotation> annotationClass) {
         Map<String, Method> methods = new HashMap<String, Method>();
         
-        Reflections reflections = getReflectionsForPackages(packagesToScan);
-        
+        Reflections reflections = getReflectionsForPackages(packagesToScan, new MethodAnnotationsScanner());
+
         String pluginName;
         for(Method method : reflections.getMethodsAnnotatedWith(annotationClass)) {
             pluginName = extractValue(method.getAnnotation(annotationClass));

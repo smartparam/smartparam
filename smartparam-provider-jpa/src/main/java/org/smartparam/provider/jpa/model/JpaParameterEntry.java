@@ -46,7 +46,7 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
     /**
      * Funkcja zwracajaca wartosc wiersza. Uzywana, jesli <tt>value</tt> jest <tt>null</tt>.
      */
-    private JpaFunction function;
+    private String function;
 
     /**
      * Konstruktor domyslny.
@@ -61,7 +61,7 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
      * @param value    wartosc wiersza
      * @param function funkcja wartosci
      */
-    public JpaParameterEntry(String[] levels, String value, JpaFunction function) {
+    public JpaParameterEntry(String[] levels, String value, String function) {
         setLevels(levels);
         this.value = value;
         this.function = function;
@@ -84,7 +84,7 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
      * @param value     wartosc wiersza
      * @param function  funkcja wartosci
      */
-    public JpaParameterEntry(String csvLevels, String value, JpaFunction function) {
+    public JpaParameterEntry(String csvLevels, String value, String function) {
         this(EngineUtil.split(csvLevels, ';'), value, function);
     }
 
@@ -98,15 +98,6 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
         this(csvLevels, value, null);
     }
 
-    /**
-     * Konstruktor inicjalizujacy obiekt.
-     *
-     * @param csvLevels wartosci poziomow rozdzielone znakiem srednika
-     * @param function  funkcja wartosci
-     */
-    public JpaParameterEntry(String csvLevels, JpaFunction function) {
-        this(csvLevels, null, function);
-    }
 
     /**
      * Konstruktor inicjalizujacy obiekt.
@@ -158,8 +149,7 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
      *
      * @return funkcja
      */
-    @ManyToOne(fetch = FetchType.EAGER)
-    public JpaFunction getFunction() {
+    public String getFunction() {
         return function;
     }
 
@@ -168,7 +158,7 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
      *
      * @param function funkcja
      */
-    public void setFunction(JpaFunction function) {
+    public void setFunction(String function) {
         this.function = function;
     }
 
@@ -501,7 +491,7 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
         sb.append(' ');
         sb.append(Arrays.toString(levels));
         sb.append(" v=").append(value);
-        sb.append(" f=").append(function != null ? function.getName() : null);
+        sb.append(" f=").append(function);
         sb.append(']');
         return sb.toString();
     }

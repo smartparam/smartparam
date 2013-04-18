@@ -79,5 +79,5 @@ public interface ParameterEntry {
      *
      * @return value resolving function
      */
-    public Function getFunction();
+    public String getFunction();
 }

@@ -23,14 +23,6 @@ public class SmartMatcherRepository extends AbstractRepository<Matcher> implemen
      */
     private Map<String, Matcher> matcherMap = new HashMap<String, Matcher>();
 
-    public SmartMatcherRepository() {
-        super();
-    }
-
-    public SmartMatcherRepository(boolean scanAnnotations, PackageList packagesToScan) {
-        super(scanAnnotations, packagesToScan);
-    }
-
     /**
      * Rejestruje matcher <tt>matcher</tt> pod kodem <tt>code</tt>. Rejestracja
      * nie jest thread-safe, wiec powinna byc wykonywana wylacznie podczas
@@ -73,7 +65,7 @@ public class SmartMatcherRepository extends AbstractRepository<Matcher> implemen
      *
      * @param matcherMap mapa matcherow
      */
-    public void setMatcherMap(Map<String, Matcher> matcherMap) {
+    public void setMatchers(Map<String, Matcher> matcherMap) {
         this.matcherMap = matcherMap;
     }
 }

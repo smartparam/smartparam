@@ -6,7 +6,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
-import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.bean.AnnotationScannerProperties;
 import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
@@ -21,16 +21,10 @@ public class SmartInvokerRepository extends AbstractRepository<FunctionInvoker<?
 
     private Map<String, FunctionInvoker<?>> invokers = new HashMap<String, FunctionInvoker<?>>();
 
-    public SmartInvokerRepository() {
-        super();
-    }
-
-    public SmartInvokerRepository(boolean scanAnnotations, PackageList packagesToScan) {
-        super(scanAnnotations, packagesToScan);
-    }
-
-    public static SmartInvokerRepository createAndInitialize() {
+    public static SmartInvokerRepository createAndInitialize(AnnotationScannerProperties scannerProperties) {
         SmartInvokerRepository invokerRepository = new SmartInvokerRepository();
+        invokerRepository.setScannerProperties(scannerProperties);
+
         invokerRepository.scan();
         return invokerRepository;
     }

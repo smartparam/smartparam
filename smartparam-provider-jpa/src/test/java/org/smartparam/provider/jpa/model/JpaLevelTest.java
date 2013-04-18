@@ -1,8 +1,5 @@
 package org.smartparam.provider.jpa.model;
 
-import org.smartparam.provider.jpa.model.JpaParameter;
-import org.smartparam.provider.jpa.model.JpaLevel;
-import org.smartparam.provider.jpa.model.JpaFunction;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -66,7 +63,7 @@ public class JpaLevelTest {
     @Test
     public void testLevelCrator() {
         // test
-        JpaFunction lc = new JpaFunction();
+        String lc = "function";
         level.setLevelCreator(lc);
 
         // weryfikacja
@@ -116,7 +113,7 @@ public class JpaLevelTest {
     @Test
     public void testValidator() {
         // test
-        JpaFunction v = new JpaFunction();
+        String v = "validator";
         level.setValidator(v);
 
         // weryfikacja
@@ -158,10 +155,8 @@ public class JpaLevelTest {
         level.setId(123);
         level.setType("string");
         level.setMatcherCode("between");
-        level.setLevelCreator(new JpaFunction());
-        level.getLevelCreator().setName("level.creator");
-        level.setValidator(new JpaFunction());
-        level.getValidator().setName("validator");
+        level.setLevelCreator("level.creator");
+        level.setValidator("validator");
 
         // oczekiwany wynik dla wypelnionego
         String expected = "Level[id=123, cre=level.creator, type=string, matcher=between, validator=validator]";

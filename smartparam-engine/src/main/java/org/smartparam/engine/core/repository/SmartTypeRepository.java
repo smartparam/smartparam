@@ -57,14 +57,6 @@ public class SmartTypeRepository extends AbstractRepository<Type<?>> implements 
      */
     private Map<String, Type<?>> typeMap = new HashMap<String, Type<?>>();
 
-    public SmartTypeRepository() {
-        super();
-    }
-
-    public SmartTypeRepository(boolean scanAnnotations, PackageList packagesToScan) {
-        super(scanAnnotations, packagesToScan);
-    }
-
     /**
      * Rejestruje podany typ i kojarzy go z podanym kodem.
      *
@@ -108,7 +100,7 @@ public class SmartTypeRepository extends AbstractRepository<Type<?>> implements 
      *
      * @param typeMap mapa
      */
-    public void setTypeMap(Map<String, Type<?>> typeMap) {
+    public void setTypes(Map<String, Type<?>> typeMap) {
         this.typeMap = typeMap;
     }
 }

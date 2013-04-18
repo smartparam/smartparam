@@ -34,7 +34,7 @@ public class JdbcParameterLevel implements Level {
     }
 
     @Override
-    public Function getLevelCreator() {
+    public String getLevelCreator() {
         return null;
         //TODO #ph fix
     }

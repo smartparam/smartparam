@@ -35,7 +35,7 @@ public class ParameterEntryMockBuilder {
     }
 
     public static ParameterEntry parameterEntry(String csvLevels, Function function) {
-        return parameterEntry().withLevels(EngineUtil.split(csvLevels, ';')).withFunction(function).get();
+        return parameterEntry().withLevels(EngineUtil.split(csvLevels, ';')).withFunction(function.getName()).get();
     }
 
     public ParameterEntry get() {
@@ -57,7 +57,7 @@ public class ParameterEntryMockBuilder {
         return this;
     }
 
-    public ParameterEntryMockBuilder withFunction(Function function) {
+    public ParameterEntryMockBuilder withFunction(String function) {
         when(parameterEntry.getFunction()).thenReturn(function);
         return this;
     }

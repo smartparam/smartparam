@@ -36,7 +36,6 @@
 
     <bean id="paramEngine" class="org.smartparam.engine.core.engine.BaseSmartParamEngine">
         <property name="paramProvider" ref="smartParamProvider" />
-        <property name="functionLoader" ref="smartParamFunctionLoader"/>
         <property name="packagesToScan">
             <list>
                 <value>org.smartparam.demo.param</value>

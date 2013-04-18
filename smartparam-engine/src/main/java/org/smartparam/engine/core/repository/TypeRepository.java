@@ -1,5 +1,6 @@
 package org.smartparam.engine.core.repository;
 
+import java.util.Map;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -15,4 +16,6 @@ public interface TypeRepository {
     Iterable<String> registeredTypes();
 
     Type<?> getType(String code);
+
+    void setTypes(Map<String, Type<?>> types);
 }

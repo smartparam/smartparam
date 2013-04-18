@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import org.smartparam.engine.annotations.scanner.AnnotatedMethodsScanner;
+import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.core.engine.AbstractAnnotationScanner;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -16,17 +18,17 @@ import org.smartparam.engine.model.function.Function;
  * <li>cache dla refleksji przyspieszajacy znajdowanie metody okolo 5 razy
  * </ul>
  *
- * @param <FUNCTION> 
+ * @param <FUNCTION>
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public abstract class AbstractJavaFunctionRepository<FUNCTION extends Function> {
+public abstract class AbstractJavaFunctionRepository<FUNCTION extends Function> extends AbstractAnnotationScanner {
 
     public Map<String, Function> loadFunctions() {
         Map<String, Function> loadedFunctions = new HashMap<String, Function>();
 
         AnnotatedMethodsScanner methodsScanner = new AnnotatedMethodsScanner();
-        Map<String, Method> scannedMethods = methodsScanner.getAnnotatedMethods(null, annotationClass());
+        Map<String, Method> scannedMethods = methodsScanner.getAnnotatedMethods(getScannerProperties().getPackagesToScan(), annotationClass());
 
         String functionName;
         for (Map.Entry<String, Method> methodEntry : scannedMethods.entrySet()) {

@@ -25,7 +25,7 @@ public class MapFunctionCache implements FunctionCache {
     }
 
     public void putAll(Map<String, Function> functions) {
-        map.putAll(map);
+        map.putAll(functions);
     }
 
     @Override

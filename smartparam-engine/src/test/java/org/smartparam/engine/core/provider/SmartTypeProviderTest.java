@@ -80,7 +80,7 @@ public class SmartTypeProviderTest {
 
         // utworzenie testowanego obiektu
         SmartTypeRepository tp = new SmartTypeRepository();
-        tp.setTypeMap(types);
+        tp.setTypes(types);
 
         // sprawdzenie wynikow testu
         checkTypeProvider(tp);

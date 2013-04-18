@@ -7,7 +7,6 @@ import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.function.AbstractJavaFunctionRepository;
-import org.smartparam.engine.core.function.OldFunctionInvoker;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 

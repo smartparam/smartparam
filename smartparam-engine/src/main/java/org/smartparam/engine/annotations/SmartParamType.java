@@ -16,5 +16,7 @@ public @interface SmartParamType {
 
     String value();
 
+    String[] values() default{};
+
     SmartParamObjectInstance[] instances() default {};
 }

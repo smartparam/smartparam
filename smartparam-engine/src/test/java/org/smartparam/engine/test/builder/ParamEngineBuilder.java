@@ -1,7 +1,7 @@
 package org.smartparam.engine.test.builder;
 
-import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.engine.SmartParamEngine;
+import org.smartparam.engine.core.engine.SmartParamPreparer;
 
 /**
  *
@@ -9,12 +9,17 @@ import org.smartparam.engine.core.engine.SmartParamEngine;
  */
 public class ParamEngineBuilder {
 
-    private ParamEngine paramEngine;
+    private SmartParamEngine paramEngine;
+
+    private SmartParamPreparer paramPreparer;
 
     private ParamEngineBuilder() {
         this.paramEngine = new SmartParamEngine();
+        this.paramPreparer = new SmartParamPreparer();
+
+        this.paramEngine.setParamPreparer(paramPreparer);
     }
-    
-    
+
+
 
 }

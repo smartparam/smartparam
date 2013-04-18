@@ -1,5 +1,6 @@
 package org.smartparam.engine.core.repository;
 
+import java.util.Map;
 import org.smartparam.engine.core.index.Matcher;
 
 /**
@@ -14,4 +15,6 @@ public interface MatcherRepository {
     Iterable<String> registeredMatchers();
 
     Matcher getMatcher(String code);
+
+    void setMatchers(Map<String, Matcher> matchers);
 }

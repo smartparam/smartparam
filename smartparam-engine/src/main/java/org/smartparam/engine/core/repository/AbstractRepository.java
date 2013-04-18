@@ -6,7 +6,7 @@ import javax.annotation.PostConstruct;
 import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.SmartParamConsts;
-import org.smartparam.engine.core.engine.AbstractScanner;
+import org.smartparam.engine.core.engine.AbstractAnnotationScanner;
 
 /**
  *
@@ -14,26 +14,19 @@ import org.smartparam.engine.core.engine.AbstractScanner;
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public abstract class AbstractRepository<REGISTERED_OBJECT> extends AbstractScanner implements SmartParamConsts {
+public abstract class AbstractRepository<REGISTERED_OBJECT> extends AbstractAnnotationScanner implements AnnotationScanningRepository, SmartParamConsts {
 
     private boolean alreadyScanned = false;
 
-    public AbstractRepository() {
-        super();
-    }
-
-    public AbstractRepository(boolean scanAnnotations, PackageList packagesToScan) {
-        super(scanAnnotations, packagesToScan);
-    }
-
     @PostConstruct
     public void scan() {
-        if (!alreadyScanned && isScanAnnotations()) {
+        if (!alreadyScanned && getScannerProperties().isScanAnnotations()) {
             alreadyScanned = true;
-            AnnotatedObjectsScanner<REGISTERED_OBJECT> scanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>();
+            AnnotatedObjectsScanner<REGISTERED_OBJECT> defaultsScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(createPackagesForDefaults());
+            Map<String, REGISTERED_OBJECT> objects = defaultsScanner.getAnnotatedObjects(getAnnotationClass());
 
-            Map<String, REGISTERED_OBJECT> objects = scanner.getAnnotatedObjects(createPackagesForDefaults(), getAnnotationClass());
-            Map<String, REGISTERED_OBJECT> userObjects = scanner.getAnnotatedObjects(getPackagesToScan(), getAnnotationClass());
+            AnnotatedObjectsScanner<REGISTERED_OBJECT> userScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(getScannerProperties().getPackagesToScan());
+            Map<String, REGISTERED_OBJECT> userObjects = userScanner.getAnnotatedObjects(getAnnotationClass());
 
             // override defaults
             objects.putAll(userObjects);

@@ -30,7 +30,7 @@ import org.smartparam.engine.util.ParamHelper;
  * @author Przemek Hertel
  * @since 0.1.0
  */
-public class SmartParamEngine extends AbstractScanner implements ParamEngine {
+public class SmartParamEngine extends AbstractAnnotationScanner implements ParamEngine {
 
     private Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 

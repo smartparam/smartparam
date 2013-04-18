@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import org.apache.commons.lang3.ClassUtils;
 import org.reflections.Reflections;
+import org.reflections.scanners.Scanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.smartparam.engine.bean.PackageList;
@@ -18,11 +19,12 @@ public abstract class AbstractAnnotationScanner {
 
     private final static String VALUE_METHOD_NAME = "value";
 
-    protected Reflections getReflectionsForPackages(PackageList packageList) {
+    protected Reflections getReflectionsForPackages(PackageList packageList, Scanner... customScanners) {
         ConfigurationBuilder builder = new ConfigurationBuilder();
         for (String packageStem : packageList) {
             builder.addUrls(ClasspathHelper.forPackage(packageStem));
         }
+        builder.addScanners(customScanners);
 
         return builder.build();
     }
@@ -35,7 +37,7 @@ public abstract class AbstractAnnotationScanner {
         try {
             Method defaultValueMethod = annotation.annotationType().getMethod(methodName);
             return defaultValueMethod.invoke(annotation);
-        } catch (Exception exception) {
+        } catch (Throwable exception) {
             throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR,
                     exception, "no " + methodName + " field found on annotation " + ClassUtils.getShortCanonicalName(annotation.annotationType()));
         }
