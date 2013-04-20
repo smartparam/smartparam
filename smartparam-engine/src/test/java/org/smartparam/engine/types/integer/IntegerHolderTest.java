@@ -71,7 +71,7 @@ public class IntegerHolderTest {
 
     @Test(expected = SmartParamUsageException.class)
     public void testBooleanValue() {
-        h1.doubleValue();
+        h1.booleanValue();
     }
 
     @Test

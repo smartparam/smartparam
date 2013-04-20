@@ -40,7 +40,7 @@ public interface Type<T extends AbstractHolder> {
      * @param holder wartosc typu reprezentowana przez holder
      * @return zamieniona na string wartosc
      */
-    public abstract String encode(T holder);
+    String encode(T holder);
 
     /**
      * Zamienia reprezentacje stringowa na reprezentacje wewnetrzna typu,
@@ -53,7 +53,7 @@ public interface Type<T extends AbstractHolder> {
      * @param text tekstowa reprezentacja wartosci
      * @return wewnetrzna reprezentacja wartosci (holder)
      */
-    public abstract T decode(String text);
+    T decode(String text);
 
     /**
      * Konwertuje dowolny obiekt javowy na wartosc typu.
@@ -62,7 +62,7 @@ public interface Type<T extends AbstractHolder> {
      * @return reprezentacja wewnetrzna typu (holder), ktora jest
      * odpowiednikiem przekazanego obiektu (w sensie typu T)
      */
-    public abstract T convert(Object obj);
+    T convert(Object obj);
 
     /**
      * Tworzy <b>nowa</b> i niewypelniona tablice holderow o rozmiarze <tt>size</tt>.
@@ -70,5 +70,5 @@ public interface Type<T extends AbstractHolder> {
      * @param size rozmiar potrzebnej tablicy
      * @return nowa, niewypelniona tablica o rozmiarze <tt>size</tt>
      */
-    public abstract T[] newArray(int size);
+    T[] newArray(int size);
 }
