@@ -46,9 +46,9 @@ public class ParamEngineScenarioTest {
 
     private TypeProvider typeProvider;
 
-    private ParamProvider loader;
+    private ParamProvider paramProvider;
 
-    private SmartParamPreparer paramProvider;
+    private SmartParamPreparer paramPreparer;
 
     private SmartAssemblerProvider assemblerProvider;
 
@@ -65,12 +65,12 @@ public class ParamEngineScenarioTest {
         typeProvider.registerType("integer", new IntegerType());
         typeProvider.registerType("plugin", new PluginType());
 
-        loader = mock(ParamProvider.class);
+        paramProvider = mock(ParamProvider.class);
 
-        paramProvider = new SmartParamPreparer();
-        paramProvider.setTypeProvider(typeProvider);
-        paramProvider.setLoader(loader);
-        paramProvider.setCache(new MapParamCache());
+        paramPreparer = new SmartParamPreparer();
+        paramPreparer.setTypeProvider(typeProvider);
+        paramPreparer.setParamProvider(paramProvider);
+        paramPreparer.setCache(new MapParamCache());
 
         invokerProvider = new SmartInvokerProvider();
         invokerProvider.registerInvoker("java", new JavaFunctionInvoker());
@@ -84,7 +84,7 @@ public class ParamEngineScenarioTest {
         fp.setCache(new MapFunctionCache());
 
         engine = new SmartParamEngine();
-        engine.setParamPreparer(paramProvider);
+        engine.setParamPreparer(paramPreparer);
         engine.setInvokerProvider(invokerProvider);
         engine.setAssemblerProvider(assemblerProvider);
         engine.setFunctionProvider(fp);
@@ -115,7 +115,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).withLevels(l1, l2).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // testy - wartosci poziomow
         String[][] tests = {
@@ -166,7 +166,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).withLevels(l1, l2).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // testy - wartosci poziomow
         String[][] tests = {
@@ -217,7 +217,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).withLevels(l1).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // testy - wartosci poziomow
         String[] tests = {
@@ -270,7 +270,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).withLevels(l1, l2, l3).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // testy - wartosci poziomow
         String[] tests = {
@@ -318,7 +318,7 @@ public class ParamEngineScenarioTest {
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withEntries(entries).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         Integer result = engine.getValue("par", new DefaultContext()).getInteger();
@@ -341,7 +341,7 @@ public class ParamEngineScenarioTest {
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1, l2).withEntries(entries).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         try {
@@ -377,11 +377,11 @@ public class ParamEngineScenarioTest {
         List<ParameterEntry> resultCD = Arrays.asList(pe3);
         List<ParameterEntry> resultXY = new ArrayList<ParameterEntry>();
 
-        when(loader.load("par")).thenReturn(par);
-        when(loader.findEntries("par", new String[]{"A", "B"})).thenReturn(resultAB);
-        when(loader.findEntries("par", new String[]{"B", "C"})).thenReturn(resultBC);
-        when(loader.findEntries("par", new String[]{"C", "D"})).thenReturn(resultCD);
-        when(loader.findEntries("par", new String[]{"X", "Y"})).thenReturn(resultXY);
+        when(paramProvider.load("par")).thenReturn(par);
+        when(paramProvider.findEntries("par", new String[]{"A", "B"})).thenReturn(resultAB);
+        when(paramProvider.findEntries("par", new String[]{"B", "C"})).thenReturn(resultBC);
+        when(paramProvider.findEntries("par", new String[]{"C", "D"})).thenReturn(resultCD);
+        when(paramProvider.findEntries("par", new String[]{"X", "Y"})).thenReturn(resultXY);
 
         // test
         assertEquals(11, engine.getValue("par", "A", "B").intValue());
@@ -407,7 +407,7 @@ public class ParamEngineScenarioTest {
                 withNullable(true).withEntries(entries).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // testy - wartosci poziomow
         String[] tests = {
@@ -466,7 +466,7 @@ public class ParamEngineScenarioTest {
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3, l4).withMultivalue(true).withInputLevels(2)
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test 1
         MultiValue mv = engine.getMultiValue("par", new LevelValues("A", "B"));
@@ -494,7 +494,7 @@ public class ParamEngineScenarioTest {
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).withMultivalue(true).withInputLevels(1)
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test 1
         MultiValue mv = engine.getMultiValue("par", new LevelValues("A"));
@@ -524,7 +524,7 @@ public class ParamEngineScenarioTest {
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1).withMultivalue(false)
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         try {
@@ -547,7 +547,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // konfiguracja zaleznosci
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
         assemblerProvider.registerAssemblerOwner(new GenericEnumAssembler());
 
         // testy
@@ -595,7 +595,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // konfiguracja zaleznosci
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
         assemblerProvider.registerAssemblerOwner(new GenericEnumAssembler());
 
         // test 1 - rozbieznosc miedzy podanym resultClass a przechowywanym w kontekscie
@@ -629,7 +629,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // konfiguracja zaleznosci
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
         assemblerProvider.registerAssemblerOwner(new GenericEnumAssembler());
 
         // testy
@@ -674,7 +674,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // konfiguracja zaleznosci
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
         assemblerProvider.registerAssemblerOwner(new GenericEnumAssembler());
 
         // test
@@ -705,7 +705,7 @@ public class ParamEngineScenarioTest {
                 .withMultivalue(true).withInputLevels(1)
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test 1
         MultiRow mr = engine.getMultiRow("par", new LevelValues("A"));
@@ -741,7 +741,7 @@ public class ParamEngineScenarioTest {
                 .withMultivalue(true).withInputLevels(1)
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         MultiRow mr = engine.getMultiRow("par", new LevelValues("A"));
@@ -796,10 +796,10 @@ public class ParamEngineScenarioTest {
         List<ParameterEntry> resultCD = Arrays.asList(pe3);
         List<ParameterEntry> resultXY = Arrays.asList();
 
-        when(loader.load("par")).thenReturn(par);
-        when(loader.findEntries("par", new String[]{"A", "B"})).thenReturn(resultAB);
-        when(loader.findEntries("par", new String[]{"C", "D"})).thenReturn(resultCD);
-        when(loader.findEntries("par", new String[]{"X", "Y"})).thenReturn(resultXY);
+        when(paramProvider.load("par")).thenReturn(par);
+        when(paramProvider.findEntries("par", new String[]{"A", "B"})).thenReturn(resultAB);
+        when(paramProvider.findEntries("par", new String[]{"C", "D"})).thenReturn(resultCD);
+        when(paramProvider.findEntries("par", new String[]{"X", "Y"})).thenReturn(resultXY);
 
         // test
         MultiRow mr;
@@ -832,7 +832,7 @@ public class ParamEngineScenarioTest {
                 .withMultivalue(true).withInputLevels(1)
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         try {
@@ -858,7 +858,7 @@ public class ParamEngineScenarioTest {
                 .withMultivalue(false).withInputLevels(1)
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         try {
@@ -883,7 +883,7 @@ public class ParamEngineScenarioTest {
                 .withMultivalue(true).withInputLevels(1)
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         try {
@@ -912,7 +912,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // zaleznosci
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         MultiRow mr = engine.getMultiRow("par", new DefaultContext());
@@ -947,7 +947,7 @@ public class ParamEngineScenarioTest {
                 .withArray(true).withNullable(true).withArraySeparator(',')
                 .withEntries(entries).get();
 
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // testy
         String[] levels = {
@@ -993,7 +993,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // zaleznosci
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         //test
         try {
@@ -1017,7 +1017,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // zaleznosci
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         //test
         try {
@@ -1047,7 +1047,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
         when(functionLoader.load("calc.1")).thenReturn(f);
 
         // testy
@@ -1090,7 +1090,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // konfiguracja
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
         when(functionLoader.load("calc.1")).thenReturn(f);
 
         // testy
@@ -1132,7 +1132,7 @@ public class ParamEngineScenarioTest {
                 .withEntries(entries).get();
 
         // zaleznosci
-        when(loader.load("par")).thenReturn(par);
+        when(paramProvider.load("par")).thenReturn(par);
 
         // test
         try {

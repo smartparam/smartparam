@@ -326,13 +326,13 @@ public class ParamEngineTest {
         tp.registerType("plugin", new PluginType());
         tp.registerType("string", new StringType());
 
-        ParamProvider loader = mock(ParamProvider.class);
-        when(loader.load("par")).thenReturn(par);
+        ParamProvider provider = mock(ParamProvider.class);
+        when(provider.load("par")).thenReturn(par);
 
-        SmartParamPreparer provider = new SmartParamPreparer();
-        provider.setTypeProvider(tp);
-        provider.setLoader(loader);
-        provider.setCache(new MapParamCache());
+        SmartParamPreparer preparer = new SmartParamPreparer();
+        preparer.setTypeProvider(tp);
+        preparer.setParamProvider(provider);
+        preparer.setCache(new MapParamCache());
 
         // zaleznosci
         SmartInvokerProvider invokerProvider = mock(SmartInvokerProvider.class);
@@ -348,7 +348,7 @@ public class ParamEngineTest {
         // testowany obiekt
         SmartParamEngine engine = new SmartParamEngine();
         engine.setInvokerProvider(invokerProvider);
-        engine.setParamPreparer(provider);
+        engine.setParamPreparer(preparer);
         engine.setFunctionProvider(functionProvider);
 
         // test

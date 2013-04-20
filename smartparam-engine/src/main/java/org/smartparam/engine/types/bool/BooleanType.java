@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.smartparam.engine.types.bool;
 
 import org.smartparam.engine.annotations.SmartParamType;

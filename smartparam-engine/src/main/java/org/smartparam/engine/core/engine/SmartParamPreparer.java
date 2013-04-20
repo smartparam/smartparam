@@ -57,9 +57,9 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
     private MatcherProvider matcherProvider = null;
 
     /**
-     * Loader parametrow.
+     * Dostep do parametrow.
      */
-    private ParamProvider loader;
+    private ParamProvider paramProvider;
 
     /**
      * Cache.
@@ -99,7 +99,7 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
         PreparedParameter pp = cache.get(paramName);
 
         if (pp == null) {
-            Parameter p = loader.load(paramName);
+            Parameter p = paramProvider.load(paramName);
 
             if (p == null) {
                 logger.warn("param not found: {}", paramName);
@@ -222,16 +222,16 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
 
         pp.setIndex(index);
     }
-    
+
     private int getLevelCount(Parameter p) {
         List<? extends Level> levels = p.getLevels();
         return levels != null ? levels.size() : 0;
     }
-    
+
     private Level getLevel(Parameter p, int index) {
         return p.getLevels().get(index);
     }
-    
+
     /**
      * Returns patterns for first k levels.
      *
@@ -239,7 +239,7 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
      * @return values of first k levels
      */
     protected String[] getFirstLevels(ParameterEntry pe, int k) {
-        return Arrays.copyOf(pe.getLevels(), k);        
+        return Arrays.copyOf(pe.getLevels(), k);
     }
 
     private PreparedEntry prepareEntry(ParameterEntry pe) {
@@ -254,7 +254,7 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
 
     @Override
     public List<PreparedEntry> findEntries(String paramName, String[] levelValues) {
-        List<ParameterEntry> entries = loader.findEntries(paramName, levelValues);
+        List<ParameterEntry> entries = paramProvider.findEntries(paramName, levelValues);
 
         List<PreparedEntry> result = new ArrayList<PreparedEntry>(entries.size());
         for (ParameterEntry pe : entries) {
@@ -268,15 +268,15 @@ public class SmartParamPreparer extends AbstractScanner implements ParamPreparer
         this.cache = cache;
     }
 
-    public void setLoader(ParamProvider loader) {
-        this.loader = loader;
-    }
-
     public void setTypeProvider(TypeProvider typeProvider) {
         this.typeProvider = typeProvider;
     }
 
-    public void setMatcherProvider(SmartMatcherProvider matcherProvider) {
+    public void setMatcherProvider(MatcherProvider matcherProvider) {
         this.matcherProvider = matcherProvider;
+    }
+
+    public void setParamProvider(ParamProvider paramProvider) {
+        this.paramProvider = paramProvider;
     }
 }

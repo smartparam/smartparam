@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.provider.jdbc.dao.config.Configuration;
+import org.smartparam.provider.jdbc.dao.config.DefaultConfiguration;
 import org.smartparam.provider.jdbc.model.JdbcParameter;
 import org.smartparam.provider.jdbc.model.JdbcParameterEntry;
 import org.smartparam.provider.jdbc.model.JdbcParameterLevel;
@@ -25,9 +27,11 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     private DataSource dataSource;
 
+    private Configuration configuration = new DefaultConfiguration();
+
     public JdbcProviderDAOImpl() {
     }
-    
+
     public JdbcProviderDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -42,7 +46,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         try {
             ps = conn.prepareStatement(
                     " select id, label, type, input_levels, multivalue, cacheable, nullable, array_flag, array_separator"
-                    + " from smartparam_param"
+                    + " from " + configuration.getParameterTable()
                     + " where name = ?");
 
             ps.setString(1, parameterName);
@@ -58,6 +62,9 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch JdbcParamter", e);
             //TODO #ph own hierarchy
+            /*
+             * jesli poleci wyjatek: loguje 1. configuration, 2. sql
+             */
 
         } finally {
             try {
@@ -140,7 +147,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         try {
             ps = conn.prepareStatement(
                     " select id, order_no, label, type, matcher, array_flag, level_creator_id"
-                    + " from smartparam_level"
+                    + " from " + configuration.getParameterLevelTable()
                     + " where param_id = ?");
 
             ps.setInt(1, parameterId);
@@ -186,7 +193,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         try {
             ps = conn.prepareStatement(""
                     + " select id, level1, level2, level3, level4, level5, level6, level7, level8, value"
-                    + " from smartparam_entry"
+                    + " from " + configuration.getParameterEntryTable()
                     + " where param_id = ?");
 
             ps.setInt(1, parameterId);
@@ -246,5 +253,12 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
 }

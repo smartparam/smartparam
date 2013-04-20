@@ -29,7 +29,7 @@ public class BaseSmartParamEngine extends SmartParamEngine {
 
         if (!hasParamPreparer()) {
             SmartParamPreparer smartParamPreparer = new SmartParamPreparer(isScanAnnotations(), getPackagesToScan());
-            smartParamPreparer.setLoader(paramProvider);
+            smartParamPreparer.setParamProvider(paramProvider);
             smartParamPreparer.initializeProviders();
             setParamPreparer(smartParamPreparer);
         }

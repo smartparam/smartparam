@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.smartparam.provider.jdbc;
 
 import java.util.List;
@@ -17,9 +13,9 @@ import org.smartparam.provider.jdbc.model.JdbcParameterLevel;
 
 /**
  * @author Przemek Hertel
- * @since 0.1.0
+ * @since 0.2.0
  */
-public class JdbcParamLoader implements ParamProvider {
+public class JdbcParamProvider implements ParamProvider {
 
     /**
      * JDBC DataSource to obtain connections from.
@@ -49,6 +45,7 @@ public class JdbcParamLoader implements ParamProvider {
         return p;
     }
 
+    //TODO #ph finish findEntries for non-cachable parameters
     public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

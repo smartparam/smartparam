@@ -33,7 +33,7 @@ public class SmartParamPreparerTest {
 
     private ParamCache cache;
 
-    private ParamProvider loader;
+    private ParamProvider paramProvider;
 
     private PreparedParameter pp1;
 
@@ -68,14 +68,14 @@ public class SmartParamPreparerTest {
         when(cache.get("par1")).thenReturn(pp1);
         when(cache.get("par2")).thenReturn(null);
 
-        loader = mock(ParamProvider.class);
-        when(loader.load("par2")).thenReturn(p2);
-        when(loader.load("par3")).thenReturn(null);
-        when(loader.findEntries(any(String.class), any(String[].class))).thenReturn(entries);
+        paramProvider = mock(ParamProvider.class);
+        when(paramProvider.load("par2")).thenReturn(p2);
+        when(paramProvider.load("par3")).thenReturn(null);
+        when(paramProvider.findEntries(any(String.class), any(String[].class))).thenReturn(entries);
 
         instance = new SmartParamPreparer();
         instance.setCache(cache);
-        instance.setLoader(loader);
+        instance.setParamProvider(paramProvider);
         instance.setTypeProvider(typeProvider);
         instance.setMatcherProvider(matcherProvider);
     }
