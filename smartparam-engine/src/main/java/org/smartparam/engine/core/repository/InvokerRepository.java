@@ -13,6 +13,8 @@ public interface InvokerRepository {
 
     void registerInvoker(String typeCode, FunctionInvoker invoker);
 
+    Map<String, FunctionInvoker> registeredInvokers();
+
     FunctionInvoker getInvoker(Function function);
 
     void setInvokers(Map<String, FunctionInvoker> invokers);

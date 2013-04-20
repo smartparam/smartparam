@@ -1,6 +1,7 @@
 package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -36,6 +37,10 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
 
     public FunctionInvoker getInvoker(Function function) {
         return invokers.get(function.getType());
+    }
+
+    public Map<String, FunctionInvoker> registeredInvokers() {
+        return Collections.unmodifiableMap(invokers);
     }
 
     @Override

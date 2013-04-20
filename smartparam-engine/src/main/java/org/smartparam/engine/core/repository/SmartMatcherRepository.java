@@ -1,6 +1,7 @@
 package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.smartparam.engine.annotations.SmartParamMatcher;
@@ -35,8 +36,8 @@ public class SmartMatcherRepository extends AbstractAnnotationScanningRepository
         matcherMap.put(code, matcher);
     }
 
-    public Iterable<String> registeredMatchers() {
-        return matcherMap.keySet();
+    public Map<String, Matcher> registeredMatchers() {
+        return Collections.unmodifiableMap(matcherMap);
     }
 
     /**

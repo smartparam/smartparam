@@ -12,7 +12,7 @@ public interface MatcherRepository {
 
     void registerMatcher(String code, Matcher matcher);
 
-    Iterable<String> registeredMatchers();
+    Map<String, Matcher> registeredMatchers();
 
     Matcher getMatcher(String code);
 

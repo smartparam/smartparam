@@ -10,6 +10,8 @@ import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
+import org.smartparam.engine.core.config.SmartParamConfig;
+import org.smartparam.engine.core.config.SmartParamConfigBuilder;
 import org.smartparam.engine.core.repository.SmartAssemblerProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
@@ -35,11 +37,17 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
 
     private Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
+    private SmartParamConfigBuilder configBuilder = new SmartParamConfigBuilder();
+
     private ParamPreparer paramPreparer = null;
 
     private FunctionManager functionManager = null;
 
     private AssemblerProvider assemblerProvider;
+
+    public SmartParamConfig getConfiguration() {
+        return configBuilder.buildConfig(this);
+    }
 
     @Override
     public AbstractHolder getValue(String paramName, ParamContext ctx) {
@@ -562,7 +570,7 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
         return param;
     }
 
-    protected ParamPreparer getParamPreparer() {
+    public ParamPreparer getParamPreparer() {
         return paramPreparer;
     }
 
@@ -570,7 +578,7 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
         return paramPreparer != null;
     }
 
-    protected FunctionManager getFunctionManager() {
+    public FunctionManager getFunctionManager() {
         return functionManager;
     }
 

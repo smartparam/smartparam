@@ -5,6 +5,7 @@
 package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import org.smartparam.engine.annotations.SmartParamType;
@@ -71,8 +72,8 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
         typeMap.put(code, type);
     }
 
-    public Iterable<String> registeredTypes() {
-        return typeMap.keySet();
+    public Map<String, Type<?>> registeredTypes() {
+        return Collections.unmodifiableMap(typeMap);
     }
 
     /**

@@ -13,7 +13,7 @@ public interface TypeRepository {
 
     void registerType(String code, Type<?> type);
 
-    Iterable<String> registeredTypes();
+    Map<String, Type<?>> registeredTypes();
 
     Type<?> getType(String code);
 
