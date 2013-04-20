@@ -8,8 +8,9 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.Type;
@@ -53,6 +54,8 @@ import org.smartparam.engine.core.type.Type;
  */
 public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Type<?>> implements TypeRepository {
 
+    private Logger logger = LoggerFactory.getLogger(SmartTypeRepository.class);
+
     /**
      * Przechowuje typu pod unikalnymi kodami.
      */
@@ -67,8 +70,9 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
      */
     public void registerType(String code, Type<?> type) {
         if (typeMap.containsKey(code)) {
-            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "Such code is already registered: " + code);
+            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "other type has been already registered under " + code + " code");
         }
+        logger.info("registering type: {} -> {}", code, type.getClass());
         typeMap.put(code, type);
     }
 

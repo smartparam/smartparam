@@ -4,16 +4,19 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionRepository;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
 import org.smartparam.engine.core.AnnotationScanner;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.MapFunctionCache;
+import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.repository.FunctionRepository;
 import org.smartparam.engine.core.repository.AbstractAnnotationScanningRepository;
-import org.smartparam.engine.core.repository.AnnotationScanningRepository;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -21,6 +24,8 @@ import org.smartparam.engine.model.function.Function;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<FunctionRepository> implements FunctionProvider {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Map<String, FunctionRepository> repositories = new HashMap<String, FunctionRepository>();
 
@@ -44,12 +49,16 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
     }
 
     public void registerRepository(String type, FunctionRepository repository) {
+        if (repositories.containsKey(type)) {
+            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "other function repository has been already registered for " + type + " type");
+        }
+        logger.info("registering function repository: {} -> {}", type, repository.getClass());
         repositories.put(type, repository);
     }
 
     public void registerRepository(String[] types, FunctionRepository repository) {
         for (String type : types) {
-            repositories.put(type, repository);
+            registerRepository(type, repository);
         }
     }
 

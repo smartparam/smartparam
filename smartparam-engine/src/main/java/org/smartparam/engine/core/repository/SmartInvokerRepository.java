@@ -30,9 +30,9 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
         return invokerRepository;
     }
 
-    public void registerInvoker(String implCode, FunctionInvoker invoker) {
-        logger.info("registering function invoker: {} -> {}", implCode, invoker.getClass());
-        invokers.put(implCode, invoker);
+    public void registerInvoker(String code, FunctionInvoker invoker) {
+        logger.info("registering function invoker: {} -> {}", code, invoker.getClass());
+        invokers.put(code, invoker);
     }
 
     public FunctionInvoker getInvoker(Function function) {

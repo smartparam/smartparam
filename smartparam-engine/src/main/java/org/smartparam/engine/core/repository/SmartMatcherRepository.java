@@ -4,8 +4,10 @@ import java.lang.annotation.Annotation;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamMatcher;
-import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.index.Matcher;
 
 /**
@@ -18,6 +20,8 @@ import org.smartparam.engine.core.index.Matcher;
  * @since 1.0.0
  */
 public class SmartMatcherRepository extends AbstractAnnotationScanningRepository<Matcher> implements MatcherRepository {
+
+    private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
     /**
      * Mapuje kod matchera na obiekt matchera.
@@ -33,6 +37,7 @@ public class SmartMatcherRepository extends AbstractAnnotationScanningRepository
      * @param matcher obiekt matchera
      */
     public void registerMatcher(String code, Matcher matcher) {
+        logger.info("registering function invoker: {} -> {}", code, matcher.getClass());
         matcherMap.put(code, matcher);
     }
 

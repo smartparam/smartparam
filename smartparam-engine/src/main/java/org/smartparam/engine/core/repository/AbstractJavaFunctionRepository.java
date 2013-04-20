@@ -4,6 +4,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.scanner.AnnotatedMethodsScanner;
 import org.smartparam.engine.core.AbstractAnnotationScanner;
 import org.smartparam.engine.model.function.Function;
@@ -23,6 +25,8 @@ import org.smartparam.engine.model.function.Function;
  */
 public abstract class AbstractJavaFunctionRepository extends AbstractAnnotationScanner {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public Map<String, Function> loadFunctions() {
         Map<String, Function> loadedFunctions = new HashMap<String, Function>();
 
@@ -32,6 +36,7 @@ public abstract class AbstractJavaFunctionRepository extends AbstractAnnotationS
         String functionName;
         for (Map.Entry<String, Method> methodEntry : scannedMethods.entrySet()) {
             functionName = methodEntry.getKey();
+            logger.info("registering function: {} -> {}", functionName, methodEntry.getValue().toGenericString());
             loadedFunctions.put(functionName, createFunction(functionName, methodEntry.getValue()));
         }
 
