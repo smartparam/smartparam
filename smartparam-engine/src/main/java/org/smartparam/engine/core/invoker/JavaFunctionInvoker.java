@@ -17,7 +17,7 @@ import org.smartparam.engine.model.function.JavaFunction;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 @SmartParamFunctionInvoker("java")
-public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker implements FunctionInvoker {
+public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker {
 
     /**
      * Logger.
@@ -39,7 +39,7 @@ public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker implements 
             instance = findInstance(clazz);
         }
 
-        return invoke(instance, method, args);
+        return invokeMethod(instance, method, args);
     }
 
     private Object findInstance(Class<?> clazz) {

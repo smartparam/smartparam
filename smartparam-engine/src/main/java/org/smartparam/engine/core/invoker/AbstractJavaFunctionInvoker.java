@@ -10,11 +10,11 @@ import org.smartparam.engine.core.exception.SmartParamException;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public abstract class AbstractJavaFunctionInvoker {
+public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected Object invoke(Object instance, Method m, Object... args) {
+    protected Object invokeMethod(Object instance, Method m, Object... args) {
         try {
             return m.invoke(instance, args);
         } catch (Exception e) {

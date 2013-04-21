@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
-import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
 
@@ -18,7 +17,7 @@ import org.smartparam.engine.model.function.Function;
  */
 public class SmartInvokerRepository extends AbstractAnnotationScanningRepository<FunctionInvoker> implements InvokerRepository {
 
-    private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private Map<String, FunctionInvoker> invokers = new HashMap<String, FunctionInvoker>();
 

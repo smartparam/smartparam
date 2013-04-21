@@ -12,10 +12,10 @@ import org.smartparam.engine.model.function.JavaFunction;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 @SmartParamFunctionRepository("java")
-public class JavaFunctionRepository extends AbstractJavaFunctionRepository implements FunctionRepository {
+public class JavaFunctionRepository extends AbstractJavaFunctionRepository {
 
     public Function loadFunction(String functionName) {
-        throw new IllegalStateException("API method unavailable!");
+        throw new IllegalStateException("API method unavailable");
     }
 
     public FunctionRepositoryCapabilities repositoryCapabilities() {

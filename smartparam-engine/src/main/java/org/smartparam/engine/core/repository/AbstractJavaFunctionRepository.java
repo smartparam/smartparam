@@ -23,7 +23,7 @@ import org.smartparam.engine.model.function.Function;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public abstract class AbstractJavaFunctionRepository extends AbstractAnnotationScanner {
+public abstract class AbstractJavaFunctionRepository extends AbstractAnnotationScanner implements FunctionRepository {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

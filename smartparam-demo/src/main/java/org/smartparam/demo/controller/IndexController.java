@@ -5,7 +5,7 @@ import org.smartparam.demo.param.DemoParamContext;
 import org.smartparam.demo.param.DemoParamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -22,11 +22,12 @@ public class IndexController {
     private DemoParamService demoParamService;
 
     @RequestMapping("index")
-    @ModelAttribute("output")
-    public String view() {
+    public String view(Model model) {
         DemoParamContext context = new DemoParamContext();
         context.setDemoModelObject(new DemoModelObject("input1"));
 
-        return demoParamService.get("sample", context).getString();
+        model.addAttribute("output", demoParamService.get("sample", context).getString());
+
+        return "index";
     }
 }

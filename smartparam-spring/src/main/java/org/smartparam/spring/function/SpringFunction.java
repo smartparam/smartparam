@@ -1,26 +1,22 @@
 package org.smartparam.spring.function;
 
-import org.smartparam.engine.model.function.FunctionImpl;
+import java.lang.reflect.Method;
+import org.smartparam.engine.model.function.JavaFunction;
 
 /**
- * Function repository type for plugins stored inside spring beans.
  *
- * @author Adam Dubiel
- * @since 0.1.0
+ * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface SpringFunction extends FunctionImpl {
+public class SpringFunction extends JavaFunction {
 
-    /**
-     * Returns spring bean identifier which contains plugin method.
-     *
-     * @return spring bean name
-     */
-    String getBeanName();
+    private String beanName;
 
-    /**
-     * Name of method to run.
-     *
-     * @return method name
-     */
-    String getMethodName();
+    public SpringFunction(String name, String type, String beanName, Method method) {
+        super(name, type, method);
+        this.beanName = beanName;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
 }

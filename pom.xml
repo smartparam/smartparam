@@ -18,7 +18,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
     <modules>
@@ -26,18 +25,11 @@
         <module>smartparam-provider-jpa</module>
         <module>smartparam-demo</module>
         <module>smartparam-provider-jdbc</module>
-  </modules>
+        <module>smartparam-spring</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
-
-            <!-- do usuniecia -->
-            <dependency>
-                <groupId>rhino</groupId>
-                <artifactId>js</artifactId>
-                <version>1.7R2</version>
-            </dependency>
-
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
