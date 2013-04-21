@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
-import org.reflections.util.ClasspathHelper;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
@@ -34,7 +33,7 @@ public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
 
     private void checkForDuplicates(Map<String, Method> methods, String newPluginName, Method newPluginMethod) {
         if(methods.containsKey(newPluginName)) {
-            throw new SmartParamException(SmartParamErrorCode.UNKNOWN_MATCHER,
+            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE,
                     "plugin " + newPluginName + " found at method " + newPluginMethod.toGenericString() + " was already registered using "
                     + methods.get(newPluginName).toGenericString() + " method");
         }
