@@ -12,4 +12,8 @@ public interface ParamRepository {
     Parameter load(String parameterName);
 
     List<ParameterEntry> findEntries(String parameterName, String[] levelValues);
+
+    //Parameter create();
+
+    //void save() throws SmartParamRepositoryException;
 }

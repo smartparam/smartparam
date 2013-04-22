@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+        "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<urlrewrite>
+    <rule>
+        <note>
+            Rewrite any request to /partials/* to /partials?partial=sth, so it can
+            be handled by Spring controller.
+        </note>
+        <from>/view/(partials/.*)</from>
+        <to type="forward">/partials?partial=$1</to>
+    </rule>
+</urlrewrite>

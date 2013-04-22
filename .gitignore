@@ -5,3 +5,6 @@
 /smartparam-spring/target/
 /smartparam-provider-jdbc/target/
 /smartparam-rhino/target/
+/smartparam-editor-spring/target/
+/smartparam-editor-backend/target/
+/smartparam-editor-client/target/

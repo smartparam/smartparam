@@ -11,6 +11,7 @@
     <context:property-placeholder location="classpath:smartparam-demo.properties"  ignore-resource-not-found="false" />
 
     <context:component-scan base-package="org.smartparam.demo"/>
+    <context:component-scan base-package="org.smartparam.editor.backend"/>
 
     <bean id="paramEngine" class="org.smartparam.engine.core.engine.BaseSmartParamEngine">
         <property name="paramProvider" ref="smartParamProvider" />
@@ -21,4 +22,9 @@
             </list>
         </property>
     </bean>
+
+    <bean id="smartParamEditorParamService" class="org.smartparam.editor.backend.service.BasicParamService">
+        <property name="paramEngine" ref="paramEngine"/>
+    </bean>
+
 </beans>

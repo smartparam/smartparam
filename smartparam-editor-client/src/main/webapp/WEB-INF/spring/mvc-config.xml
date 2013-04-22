@@ -12,8 +12,7 @@
 
     <mvc:annotation-driven/>
     
-    <context:component-scan base-package="org.smartparam.demo.controller"/>
-    <context:component-scan base-package="org.smartparam.editor.spring"/>
+    <context:component-scan base-package="org.smartparam.editor.client"/>
     
     <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="/WEB-INF/messages/messages" />
