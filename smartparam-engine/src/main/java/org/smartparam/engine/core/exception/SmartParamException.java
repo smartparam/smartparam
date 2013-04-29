@@ -1,7 +1,5 @@
 package org.smartparam.engine.core.exception;
 
-import org.apache.log4j.spi.ErrorCode;
-
 /**
  * @author Przemek Hertel
  * @since 1.0.0

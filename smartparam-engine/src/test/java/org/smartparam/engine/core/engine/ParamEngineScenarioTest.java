@@ -10,6 +10,7 @@ import java.util.Set;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.repository.SmartInvokerRepository;
@@ -68,7 +69,7 @@ public class ParamEngineScenarioTest {
 
         SmartFunctionProvider functionProvider = new SmartFunctionProvider();
         functionProvider.setFunctionCache(new MapFunctionCache());
-        functionProvider.registerRepository("java", functionRepository);
+        functionProvider.registerRepository("java", 0, functionRepository);
 
         SmartParamPreparer paramPreparer = new SmartParamPreparer();
         paramPreparer.setTypeRepository(typeProvider);

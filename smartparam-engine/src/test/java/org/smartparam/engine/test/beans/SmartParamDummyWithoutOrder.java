@@ -1,10 +1,12 @@
-package org.smartparam.engine.annotations;
+
+package org.smartparam.engine.test.beans;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
+import org.smartparam.engine.annotations.SmartParamObjectInstance;
+import org.smartparam.engine.annotations.SmartParamSortable;
 
 /**
  *
@@ -13,7 +15,7 @@ import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SmartParamSortable
-public @interface SmartParamFunctionRepository {
+public @interface SmartParamDummyWithoutOrder {
 
     String value();
 
@@ -21,5 +23,4 @@ public @interface SmartParamFunctionRepository {
 
     SmartParamObjectInstance[] instances() default {};
 
-    int order() default AnnotatedObjectsScanner.DEFAULT_ORDER_VALUE;
 }

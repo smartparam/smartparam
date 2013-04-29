@@ -1,17 +1,17 @@
 package org.smartparam.engine.core.service;
 
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionRepository;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.AnnotationScanner;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.MapFunctionCache;
-import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
@@ -27,7 +27,7 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private Map<String, FunctionRepository> repositories = new HashMap<String, FunctionRepository>();
+    private Map<RepositoryObjectKey, FunctionRepository> repositories = new TreeMap<RepositoryObjectKey, FunctionRepository>();
 
     private FunctionCache functionCache = null;
 
@@ -48,21 +48,21 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
         populateCache();
     }
 
-    public void registerRepository(String type, FunctionRepository repository) {
-        if (repositories.containsKey(type)) {
+    public void registerRepository(String type, int order, FunctionRepository repository) {
+        if (repositories.containsKey(new RepositoryObjectKey(type))) {
             throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "other function repository has been already registered for " + type + " type");
         }
-        logger.info("registering function repository: {} -> {}", type, repository.getClass());
-        repositories.put(type, repository);
+        logger.info("registering function repository at index: {} -> {}" , type, repository.getClass());
+        repositories.put(new RepositoryObjectKey(type, order), repository);
     }
 
-    public void registerRepository(String[] types, FunctionRepository repository) {
+    public void registerRepository(String[] types, int order, FunctionRepository repository) {
         for (String type : types) {
-            registerRepository(type, repository);
+            registerRepository(type, order, repository);
         }
     }
 
-    public Iterable<String> registeredRepositories() {
+    public Iterable<RepositoryObjectKey> registeredRepositories() {
         return repositories.keySet();
     }
 
@@ -108,8 +108,8 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
     }
 
     @Override
-    protected void handleRegistration(String functionTypeCode, FunctionRepository repository) {
-        repositories.put(functionTypeCode, repository);
+    protected void handleRegistration(RepositoryObjectKey key, FunctionRepository repository) {
+        repositories.put(key, repository);
         
         // TODO #ad maybe this can be done better?
         if(repository instanceof AnnotationScanner) {

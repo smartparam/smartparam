@@ -1,5 +1,6 @@
 package org.smartparam.engine.core.service;
 
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.repository.FunctionRepository;
 import org.smartparam.engine.model.function.Function;
@@ -10,11 +11,11 @@ import org.smartparam.engine.model.function.Function;
  */
 public interface FunctionProvider {
 
-    void registerRepository(String type, FunctionRepository repository);
+    void registerRepository(String type, int order, FunctionRepository repository);
 
-    void registerRepository(String[] types, FunctionRepository repository);
+    void registerRepository(String[] types, int order, FunctionRepository repository);
 
-    Iterable<String> registeredRepositories();
+    Iterable<RepositoryObjectKey> registeredRepositories();
 
     Function getFunction(String functionName);
 

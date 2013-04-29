@@ -11,6 +11,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.Type;
@@ -96,8 +97,8 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
     }
 
     @Override
-    protected void handleRegistration(String objectCode, Type<?> objectToRegister) {
-        registerType(objectCode, objectToRegister);
+    protected void handleRegistration(RepositoryObjectKey key, Type<?> objectToRegister) {
+        registerType(key.getKey(), objectToRegister);
     }
 
     /**

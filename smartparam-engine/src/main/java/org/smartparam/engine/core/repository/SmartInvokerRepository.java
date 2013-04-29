@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
 
@@ -48,8 +49,8 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
     }
 
     @Override
-    protected void handleRegistration(String objectCode, FunctionInvoker objectToRegister) {
-        registerInvoker(objectCode, objectToRegister);
+    protected void handleRegistration(RepositoryObjectKey key, FunctionInvoker objectToRegister) {
+        registerInvoker(key.getKey(), objectToRegister);
     }
 
     public void setInvokers(Map<String, FunctionInvoker> map) {

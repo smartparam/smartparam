@@ -3,6 +3,7 @@ package org.smartparam.engine.core.repository;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.SmartParamConsts;
@@ -23,15 +24,15 @@ public abstract class AbstractAnnotationScanningRepository<REGISTERED_OBJECT> ex
         if (!alreadyScanned && getScannerProperties().isScanAnnotations()) {
             alreadyScanned = true;
             AnnotatedObjectsScanner<REGISTERED_OBJECT> defaultsScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(createPackagesForDefaults());
-            Map<String, REGISTERED_OBJECT> objects = defaultsScanner.getAnnotatedObjects(getAnnotationClass());
+            Map<RepositoryObjectKey, REGISTERED_OBJECT> objects = defaultsScanner.getAnnotatedObjects(getAnnotationClass());
 
             AnnotatedObjectsScanner<REGISTERED_OBJECT> userScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(getScannerProperties().getPackagesToScan());
-            Map<String, REGISTERED_OBJECT> userObjects = userScanner.getAnnotatedObjects(getAnnotationClass());
+            Map<RepositoryObjectKey, REGISTERED_OBJECT> userObjects = userScanner.getAnnotatedObjects(getAnnotationClass());
 
             // override defaults
             objects.putAll(userObjects);
 
-            for (Map.Entry<String, REGISTERED_OBJECT> typeEntry : objects.entrySet()) {
+            for (Map.Entry<RepositoryObjectKey, REGISTERED_OBJECT> typeEntry : objects.entrySet()) {
                 handleRegistration(typeEntry.getKey(), typeEntry.getValue());
             }
         }
@@ -45,5 +46,5 @@ public abstract class AbstractAnnotationScanningRepository<REGISTERED_OBJECT> ex
 
     protected abstract Class<? extends Annotation> getAnnotationClass();
 
-    protected abstract void handleRegistration(String objectCode, REGISTERED_OBJECT objectToRegister);
+    protected abstract void handleRegistration(RepositoryObjectKey key, REGISTERED_OBJECT objectToRegister);
 }

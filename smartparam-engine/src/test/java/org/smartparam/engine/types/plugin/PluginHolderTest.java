@@ -1,7 +1,6 @@
 package org.smartparam.engine.types.plugin;
 
 import java.util.Arrays;
-import org.apache.log4j.spi.ErrorCode;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.SmartParamUsageException;

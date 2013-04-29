@@ -1,5 +1,6 @@
 package org.smartparam.engine.annotations.scanner;
 
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang3.ClassUtils;
 import org.reflections.Reflections;
 import org.smartparam.engine.annotations.SmartParamObjectInstance;
+import org.smartparam.engine.annotations.SmartParamSortable;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.AnnotationScanner;
@@ -22,9 +24,13 @@ import org.smartparam.engine.core.exception.SmartParamInitializationException;
  */
 public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
 
+    public static final int DEFAULT_ORDER_VALUE = 100;
+
     private final static String INSTANCES_METHOD_NAME = "instances";
 
     private final static String VALUES_METHOD_NAME = "values";
+
+    private final static String ORDER_METHOD_NAME = "order";
 
     private final static String SET_ANNOTATION_SCANNER_PROPERTIES_METHOD_NAME = "setScannerProperties";
 
@@ -38,14 +44,14 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
         propertiesToInject.setPackagesToScan(packagesToScan);
     }
 
-    public Map<String, OBJECT> getAnnotatedObjects(Class<? extends Annotation> annotationClass) {
-        Map<String, OBJECT> objects = instantiateObjectsFromAnotations(getReflectionsForPackages(packagesToScan), annotationClass);
+    public Map<RepositoryObjectKey, OBJECT> getAnnotatedObjects(Class<? extends Annotation> annotationClass) {
+        Map<RepositoryObjectKey, OBJECT> objects = instantiateObjectsFromAnotations(getReflectionsForPackages(packagesToScan), annotationClass);
 
         return objects;
     }
 
-    private Map<String, OBJECT> instantiateObjectsFromAnotations(Reflections reflections, Class<? extends Annotation> annotationClass) {
-        Map<String, OBJECT> types = new HashMap<String, OBJECT>();
+    private Map<RepositoryObjectKey, OBJECT> instantiateObjectsFromAnotations(Reflections reflections, Class<? extends Annotation> annotationClass) {
+        Map<RepositoryObjectKey, OBJECT> types = new HashMap<RepositoryObjectKey, OBJECT>();
 
         Annotation typeAnnotation;
         for (Class<?> type : reflections.getTypesAnnotatedWith(annotationClass)) {
@@ -56,9 +62,10 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
         return types;
     }
 
-    private Map<String, OBJECT> interpreteAnnotation(Class<?> objectClass, Annotation annotation) {
-        Map<String, OBJECT> instantiatedObjects = new HashMap<String, OBJECT>();
+    private Map<RepositoryObjectKey, OBJECT> interpreteAnnotation(Class<?> objectClass, Annotation annotation) {
+        Map<RepositoryObjectKey, OBJECT> instantiatedObjects = new HashMap<RepositoryObjectKey, OBJECT>();
         SmartParamObjectInstance[] instanceDescriptors = extractInstanceDescriptors(annotation);
+        int scannedObjectOrder = extractOrder(annotation);
 
         OBJECT object;
         if (instanceDescriptors.length == 0) {
@@ -66,14 +73,14 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
             object = instantiateWithDefault(objectClass);
 
             for (String objectIdentifier : objectIdentifiers) {
-                instantiatedObjects.put(objectIdentifier, object);
+                instantiatedObjects.put(new RepositoryObjectKey(objectIdentifier, scannedObjectOrder), object);
             }
         } else {
             String objectIdentifier;
             for (SmartParamObjectInstance instanceDescriptor : instanceDescriptors) {
                 objectIdentifier = extractValue(instanceDescriptor);
                 object = instantiateUsingObjectDescriptor(objectClass, instanceDescriptor);
-                instantiatedObjects.put(objectIdentifier, object);
+                instantiatedObjects.put(new RepositoryObjectKey(objectIdentifier, scannedObjectOrder), object);
             }
         }
 
@@ -125,6 +132,13 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
                     + SET_ANNOTATION_SCANNER_PROPERTIES_METHOD_NAME + " method found for class "
                     + ClassUtils.getShortClassName(objectClass));
         }
+    }
+
+    private int extractOrder(Annotation annotation) {
+        if (annotation.annotationType().isAnnotationPresent(SmartParamSortable.class)) {
+            return (Integer) extractValue(annotation, ORDER_METHOD_NAME);
+        }
+        return DEFAULT_ORDER_VALUE;
     }
 
     protected String[] extractIdentifiers(Annotation annotation) {

@@ -1,6 +1,7 @@
 package org.smartparam.engine.test.beans;
 
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
+import org.smartparam.engine.annotations.SmartParamFunctionRepository;
 import org.smartparam.engine.annotations.SmartParamJavaPlugin;
 import org.smartparam.engine.annotations.SmartParamMatcher;
 import org.smartparam.engine.annotations.SmartParamObjectInstance;
@@ -15,9 +16,11 @@ import org.smartparam.engine.annotations.SmartParamType;
     @SmartParamObjectInstance(value = AnnotatedBeanConsts.INSTANCE_ONE_NAME, constructorArgs = {"oneA", "twoA"}),
     @SmartParamObjectInstance(value = AnnotatedBeanConsts.INSTANCE_TWO_NAME, constructorArgs = {"oneB", "twoB"})})
 @SmartParamFunctionInvoker(value = "", values = {AnnotatedBeanConsts.INSTANCE_ONE_NAME, AnnotatedBeanConsts.INSTANCE_TWO_NAME})
+@SmartParamFunctionRepository(value = "secondary", order = AnnotatedBeanConsts.SECONDARY_TEST_ORDER)
 @SmartParamDummyWithoutInstances
 @SmartParamDummyWithoutValues
 @SmartParamDummyWithoutValue
+@SmartParamDummyWithoutOrder(value = "dummy")
 public class AnnotatedBean {
 
     private String propertyOne;

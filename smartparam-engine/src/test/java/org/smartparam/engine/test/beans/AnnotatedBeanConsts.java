@@ -13,4 +13,8 @@ public interface AnnotatedBeanConsts {
     String INSTANCE_ONE_NAME = "annotatedBeanOne";
 
     String INSTANCE_TWO_NAME = "annotatedBeanTwo";
+
+    int PRIMARY_TEST_ORDER = 1;
+
+    int SECONDARY_TEST_ORDER = 10;
 }

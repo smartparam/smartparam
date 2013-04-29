@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamMatcher;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.index.Matcher;
 
 /**
@@ -61,8 +62,8 @@ public class SmartMatcherRepository extends AbstractAnnotationScanningRepository
     }
 
     @Override
-    protected void handleRegistration(String objectCode, Matcher objectToRegister) {
-        registerMatcher(objectCode, objectToRegister);
+    protected void handleRegistration(RepositoryObjectKey key, Matcher objectToRegister) {
+        registerMatcher(key.getKey(), objectToRegister);
     }
 
     /**
