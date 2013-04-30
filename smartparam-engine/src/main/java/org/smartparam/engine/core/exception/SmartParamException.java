@@ -34,6 +34,10 @@ public class SmartParamException extends RuntimeException {
         super(message);
     }
 
+    public SmartParamException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     /**
      * Konstruktor.
      *

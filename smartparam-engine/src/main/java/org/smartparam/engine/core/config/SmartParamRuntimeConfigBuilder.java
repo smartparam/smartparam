@@ -12,7 +12,7 @@ import org.smartparam.engine.core.service.FunctionManager;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SmartParamConfigBuilder {
+public class SmartParamRuntimeConfigBuilder {
 
     /**
      * Creates runtime configuration descriptor for given param engine.
@@ -20,14 +20,14 @@ public class SmartParamConfigBuilder {
      * @param paramEngine engine
      * @return configuration
      */
-    public SmartParamConfig buildConfig(ParamEngine paramEngine) {
+    public SmartParamRuntimeConfig buildConfig(ParamEngine paramEngine) {
         FunctionManager functionManager = paramEngine.getFunctionManager();
         ParamPreparer paramPreparer = paramEngine.getParamPreparer();
 
         FunctionCache functionCache = functionManager.getFunctionProvider().getFunctionCache();
         ParamCache paramCache = paramPreparer.getParamCache();
 
-        SmartParamConfig runtmeConfig = new SmartParamConfig(functionCache, paramCache,
+        SmartParamRuntimeConfig runtmeConfig = new SmartParamRuntimeConfig(functionCache, paramCache,
                 functionManager.getInvokerRepository().registeredInvokers(),
                 paramPreparer.getTypeRepository().registeredTypes(),
                 paramPreparer.getMatcherRepository().registeredMatchers());

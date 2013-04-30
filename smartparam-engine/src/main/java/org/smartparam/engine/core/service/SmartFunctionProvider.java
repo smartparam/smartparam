@@ -18,6 +18,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.repository.FunctionRepository;
 import org.smartparam.engine.core.repository.AbstractAnnotationScanningRepository;
 import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.util.RepositoryHelper;
 
 /**
  *
@@ -48,22 +49,20 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
         populateCache();
     }
 
-    public void registerRepository(String type, int order, FunctionRepository repository) {
+    public void register(String type, int order, FunctionRepository repository) {
         if (repositories.containsKey(new RepositoryObjectKey(type))) {
             throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "other function repository has been already registered for " + type + " type");
         }
-        logger.info("registering function repository at index: {} -> {}" , type, repository.getClass());
+        logger.info("registering function repository at index: {} -> {}", type, repository.getClass());
         repositories.put(new RepositoryObjectKey(type, order), repository);
     }
 
-    public void registerRepository(String[] types, int order, FunctionRepository repository) {
-        for (String type : types) {
-            registerRepository(type, order, repository);
-        }
+    public Map<RepositoryObjectKey, FunctionRepository> registeredItems() {
+        return repositories;
     }
 
-    public Iterable<RepositoryObjectKey> registeredRepositories() {
-        return repositories.keySet();
+    public void setItems(Map<String, FunctionRepository> items) {
+        RepositoryHelper.registerItems(this, items);
     }
 
     public Function getFunction(String functionName) {
@@ -110,10 +109,10 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
     @Override
     protected void handleRegistration(RepositoryObjectKey key, FunctionRepository repository) {
         repositories.put(key, repository);
-        
+
         // TODO #ad maybe this can be done better?
-        if(repository instanceof AnnotationScanner) {
-            ((AnnotationScanner)repository).setScannerProperties(getScannerProperties());
+        if (repository instanceof AnnotationScanner) {
+            ((AnnotationScanner) repository).setScannerProperties(getScannerProperties());
         }
     }
 

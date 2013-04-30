@@ -11,6 +11,7 @@ import org.smartparam.engine.bean.AnnotationScannerProperties;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.util.RepositoryHelper;
 
 /**
  * @author Przemek Hertel
@@ -30,7 +31,7 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
         return invokerRepository;
     }
 
-    public void registerInvoker(String code, FunctionInvoker invoker) {
+    public void register(String code, FunctionInvoker invoker) {
         logger.info("registering function invoker: {} -> {}", code, invoker.getClass());
         invokers.put(code, invoker);
     }
@@ -39,7 +40,7 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
         return invokers.get(function.getType());
     }
 
-    public Map<String, FunctionInvoker> registeredInvokers() {
+    public Map<String, FunctionInvoker> registeredItems() {
         return Collections.unmodifiableMap(invokers);
     }
 
@@ -50,14 +51,10 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
 
     @Override
     protected void handleRegistration(RepositoryObjectKey key, FunctionInvoker objectToRegister) {
-        registerInvoker(key.getKey(), objectToRegister);
+        register(key.getKey(), objectToRegister);
     }
 
-    public void setInvokers(Map<String, FunctionInvoker> map) {
-        for (Map.Entry<String, FunctionInvoker> e : map.entrySet()) {
-            String implCode = e.getKey();
-            FunctionInvoker invoker = e.getValue();
-            registerInvoker(implCode, invoker);
-        }
+    public void setItems(Map<String, FunctionInvoker> map) {
+        RepositoryHelper.registerItems(this, map);
     }
 }

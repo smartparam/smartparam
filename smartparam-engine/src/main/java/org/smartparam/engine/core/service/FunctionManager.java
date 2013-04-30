@@ -4,8 +4,8 @@ import org.smartparam.engine.core.repository.InvokerRepository;
 import org.smartparam.engine.model.function.Function;
 
 /**
- * Kontrakt, ktory musi spelniac kazda klasa udostepniajaca
- * funkcje z repozytorium na podstawie jej unikalnej nazwy.
+ * Kontrakt, ktory musi spelniac kazda klasa udostepniajaca funkcje z
+ * repozytorium na podstawie jej unikalnej nazwy.
  *
  * @author Przemek Hertel
  * @since 1.0.0
@@ -18,5 +18,9 @@ public interface FunctionManager {
 
     InvokerRepository getInvokerRepository();
 
+    void setInvokerRepository(InvokerRepository invokerRepository);
+
     FunctionProvider getFunctionProvider();
+
+    void setFunctionProvider(FunctionProvider functionProvider);
 }
