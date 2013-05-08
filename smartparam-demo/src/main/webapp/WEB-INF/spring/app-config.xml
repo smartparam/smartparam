@@ -13,13 +13,17 @@
     <context:component-scan base-package="org.smartparam.demo"/>
     <context:component-scan base-package="org.smartparam.editor.backend"/>
 
-    <bean id="paramEngine" class="org.smartparam.engine.core.engine.BaseSmartParamEngine">
-        <property name="paramProvider" ref="smartParamProvider" />
-        <property name="packagesToScan">
-            <list>
-                <value>org.smartparam.demo.param</value>
-                <value>org.smartparam.spring</value>
-            </list>
+    <bean id="paramEngine" class="org.smartparam.spring.SpringParamEngineFactory">
+        <property name="config">
+            <bean class="org.smartparam.engine.config.SmartParamConfig">
+                <property name="packagesToScan">
+                    <list>
+                        <value>org.smartparam.demo.param</value>
+                        <value>org.smartparam.spring</value>
+                    </list>
+                </property>
+                <property name="paramRepository" ref="smartParamProvider"/>
+            </bean>
         </property>
     </bean>
 

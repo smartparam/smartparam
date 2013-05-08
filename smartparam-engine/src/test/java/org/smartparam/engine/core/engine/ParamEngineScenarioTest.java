@@ -55,21 +55,21 @@ public class ParamEngineScenarioTest {
     @Before
     public void init() {
         TypeRepository typeProvider = new SmartTypeRepository();
-        typeProvider.registerType("string", new StringType());
-        typeProvider.registerType("integer", new IntegerType());
-        typeProvider.registerType("plugin", new PluginType());
+        typeProvider.register("string", new StringType());
+        typeProvider.register("integer", new IntegerType());
+        typeProvider.register("plugin", new PluginType());
 
         paramRepository = mock(ParamRepository.class);
 
         SmartInvokerRepository invokerRepository = new SmartInvokerRepository();
-        invokerRepository.registerInvoker("java", new JavaFunctionInvoker());
+        invokerRepository.register("java", new JavaFunctionInvoker());
 
         functionRepository = mock(FunctionRepository.class);
         when(functionRepository.repositoryCapabilities()).thenReturn(FunctionRepositoryCapabilities.SINGLE);
 
         SmartFunctionProvider functionProvider = new SmartFunctionProvider();
         functionProvider.setFunctionCache(new MapFunctionCache());
-        functionProvider.registerRepository("java", 0, functionRepository);
+        functionProvider.register("java", 0, functionRepository);
 
         SmartParamPreparer paramPreparer = new SmartParamPreparer();
         paramPreparer.setTypeRepository(typeProvider);

@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionRepository;
-import org.smartparam.engine.bean.AnnotationScannerProperties;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.AnnotationScanner;
 import org.smartparam.engine.core.cache.FunctionCache;
@@ -32,14 +31,6 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
 
     private FunctionCache functionCache = null;
 
-    public static SmartFunctionProvider createAndInitialize(AnnotationScannerProperties scannerProperties) {
-        SmartFunctionProvider functionProvider = new SmartFunctionProvider();
-        functionProvider.setScannerProperties(scannerProperties);
-
-        functionProvider.initialize();
-        return functionProvider;
-    }
-
     @PostConstruct
     public void initialize() {
         super.scan();
@@ -50,11 +41,13 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
     }
 
     public void register(String type, int order, FunctionRepository repository) {
-        if (repositories.containsKey(new RepositoryObjectKey(type))) {
+        RepositoryObjectKey objectKey = new RepositoryObjectKey(type, order);
+
+        if (repositories.containsKey(objectKey)) {
             throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "other function repository has been already registered for " + type + " type");
         }
         logger.info("registering function repository at index: {} -> {}", type, repository.getClass());
-        repositories.put(new RepositoryObjectKey(type, order), repository);
+        repositories.put(objectKey, repository);
     }
 
     public Map<RepositoryObjectKey, FunctionRepository> registeredItems() {

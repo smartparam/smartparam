@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.config;
 
 import java.util.Collections;
 import java.util.Map;

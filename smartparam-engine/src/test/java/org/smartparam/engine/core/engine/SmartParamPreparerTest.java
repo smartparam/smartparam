@@ -59,10 +59,10 @@ public class SmartParamPreparerTest {
         p2 = ParameterMockBuilder.parameter().get();
         entries = new ArrayList<ParameterEntry>();
 
-        typeProvider.registerType("string", type);
+        typeProvider.register("string", type);
 
-        matcherProvider.registerMatcher("between/ii", new BetweenMatcher(true, true, ":"));
-        matcherProvider.registerMatcher("between/ie", new BetweenMatcher(true, false, ":"));
+        matcherProvider.register("between/ii", new BetweenMatcher(true, true, ":"));
+        matcherProvider.register("between/ie", new BetweenMatcher(true, false, ":"));
 
         cache = mock(ParamCache.class);
         when(cache.get("par1")).thenReturn(pp1);

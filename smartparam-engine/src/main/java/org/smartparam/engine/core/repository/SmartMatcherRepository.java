@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamMatcher;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.util.RepositoryHelper;
 
 /**
  * Klasa udostepnia (zarejestrowane uprzednio) matchery. Matchery mozna pobierac
@@ -36,13 +37,17 @@ public class SmartMatcherRepository extends AbstractAnnotationScanningRepository
      * @param code kod matchera
      * @param matcher obiekt matchera
      */
-    public void registerMatcher(String code, Matcher matcher) {
+    public void register(String code, Matcher matcher) {
         logger.info("registering matcher: {} -> {}", code, matcher.getClass());
         matcherMap.put(code, matcher);
     }
 
-    public Map<String, Matcher> registeredMatchers() {
+    public Map<String, Matcher> registeredItems() {
         return Collections.unmodifiableMap(matcherMap);
+    }
+
+    public void setItems(Map<String, Matcher> objects) {
+        RepositoryHelper.registerItems(this, objects);
     }
 
     /**
@@ -63,15 +68,6 @@ public class SmartMatcherRepository extends AbstractAnnotationScanningRepository
 
     @Override
     protected void handleRegistration(RepositoryObjectKey key, Matcher objectToRegister) {
-        registerMatcher(key.getKey(), objectToRegister);
-    }
-
-    /**
-     * Ustawia cala mape zarejestrowanych matcherow.
-     *
-     * @param matcherMap mapa matcherow
-     */
-    public void setMatchers(Map<String, Matcher> matcherMap) {
-        this.matcherMap = matcherMap;
+        register(key.getKey(), objectToRegister);
     }
 }

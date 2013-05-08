@@ -7,7 +7,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.repository.MatcherRepository;
@@ -288,7 +287,7 @@ public class SmartParamPreparer extends AbstractAnnotationScanner implements Par
         return matcherProvider;
     }
 
-    public void setMatcherRepository(SmartMatcherRepository matcherRepository) {
+    public void setMatcherRepository(MatcherRepository matcherRepository) {
         this.matcherProvider = matcherRepository;
     }
 }

@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.config.SmartParamRuntimeConfig;
+import org.smartparam.engine.config.SmartParamRuntimeConfig;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.service.FunctionManager;
 import org.smartparam.engine.core.type.AbstractHolder;
@@ -29,5 +29,9 @@ public interface ParamEngine {
 
     FunctionManager getFunctionManager();
 
+    void setFunctionManager(FunctionManager functionManager);
+
     ParamPreparer getParamPreparer();
+
+    void setParamPreparer(ParamPreparer paramPreparer);
 }

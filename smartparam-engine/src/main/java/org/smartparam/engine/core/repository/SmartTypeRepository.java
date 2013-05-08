@@ -15,6 +15,7 @@ import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.util.RepositoryHelper;
 
 /**
  * Klasa zapewnia dostep do systemu typow silnika. Jednoczesnie jest to
@@ -69,7 +70,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
      * @param type typ rejestrowany pod podanym kodem
      * @throws ParamException jesli podany [code] jest juz zarejestrowany
      */
-    public void registerType(String code, Type<?> type) {
+    public void register(String code, Type<?> type) {
         if (typeMap.containsKey(code)) {
             throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "other type has been already registered under " + code + " code");
         }
@@ -77,7 +78,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
         typeMap.put(code, type);
     }
 
-    public Map<String, Type<?>> registeredTypes() {
+    public Map<String, Type<?>> registeredItems() {
         return Collections.unmodifiableMap(typeMap);
     }
 
@@ -98,7 +99,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
 
     @Override
     protected void handleRegistration(RepositoryObjectKey key, Type<?> objectToRegister) {
-        registerType(key.getKey(), objectToRegister);
+        register(key.getKey(), objectToRegister);
     }
 
     /**
@@ -106,7 +107,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
      *
      * @param typeMap mapa
      */
-    public void setTypes(Map<String, Type<?>> typeMap) {
-        this.typeMap = typeMap;
+    public void setItems(Map<String, Type<?>> typeMap) {
+        RepositoryHelper.registerItems(this, typeMap);
     }
 }

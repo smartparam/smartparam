@@ -1,13 +1,10 @@
 package org.smartparam.engine.core.service;
 
-import javax.annotation.PostConstruct;
-import org.smartparam.engine.bean.AnnotationScannerProperties;
 import org.smartparam.engine.core.AbstractAnnotationScanner;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.core.repository.InvokerRepository;
-import org.smartparam.engine.core.repository.SmartInvokerRepository;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -20,24 +17,6 @@ public class SmartFunctionManager extends AbstractAnnotationScanner implements F
     private InvokerRepository invokerRepository = null;
 
     private FunctionProvider functionProvider = null;
-
-    public static SmartFunctionManager createAndInitialize(AnnotationScannerProperties scannerProperties) {
-        SmartFunctionManager functionManager = new SmartFunctionManager();
-        functionManager.setScannerProperties(scannerProperties);
-
-        functionManager.initialize();
-        return functionManager;
-    }
-
-    @PostConstruct
-    public void initialize() {
-        if (invokerRepository == null) {
-            invokerRepository = SmartInvokerRepository.createAndInitialize(getScannerProperties());
-        }
-        if (functionProvider == null) {
-            functionProvider = SmartFunctionProvider.createAndInitialize(getScannerProperties());
-        }
-    }
 
     public Object invokeFunction(String name, Object... args) {
         Function function = functionProvider.getFunction(name);

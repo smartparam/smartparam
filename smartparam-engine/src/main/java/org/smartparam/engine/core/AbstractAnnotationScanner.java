@@ -2,7 +2,6 @@ package org.smartparam.engine.core;
 
 import java.util.List;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
-import org.smartparam.engine.core.AnnotationScanner;
 
 /**
  *

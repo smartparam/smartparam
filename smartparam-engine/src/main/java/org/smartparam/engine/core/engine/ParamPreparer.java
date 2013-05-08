@@ -40,7 +40,13 @@ public interface ParamPreparer {
 
     TypeRepository getTypeRepository();
 
+    void setTypeRepository(TypeRepository typeRepository);
+
     MatcherRepository getMatcherRepository();
 
+    void setMatcherRepository(MatcherRepository matcherRepository);
+
     ParamRepository getParamRepository();
+
+    void setParamRepository(ParamRepository paramRepository);
 }

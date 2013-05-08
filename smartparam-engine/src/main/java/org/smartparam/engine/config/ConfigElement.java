@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.config;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,9 +11,11 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ConfigDefault {
+public @interface ConfigElement {
 
-    Class<?> value() default Object.class;
+    Class<?> value();
 
-    boolean emptyMap() default false;
+    Class<?> registerAt() default EMPTY.class;
+
+    static final class EMPTY {};
 }

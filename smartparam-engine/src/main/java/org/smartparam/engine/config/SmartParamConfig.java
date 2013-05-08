@@ -1,5 +1,7 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.cache.FunctionCache;
@@ -30,61 +32,61 @@ import org.smartparam.engine.core.type.Type;
  */
 public class SmartParamConfig {
 
-    private PackageList packagesToScan = new PackageList();
+    private List<String> packagesToScan = new ArrayList<String>();
 
     private boolean scanPackages = true;
 
-    @ConfigDefault(SmartParamPreparer.class)
+    @ConfigElement(SmartParamPreparer.class)
     private ParamPreparer paramPreparer;
 
-    @ConfigDefault(MapParamCache.class)
+    @ConfigElement(MapParamCache.class)
     private ParamCache paramCache;
 
-    @ConfigDefault(SmartFunctionManager.class)
+    @ConfigElement(SmartFunctionManager.class)
     private FunctionManager functionManager;
 
-    @ConfigDefault(SmartFunctionProvider.class)
+    @ConfigElement(SmartFunctionProvider.class)
     private FunctionProvider functionProvider;
 
-    @ConfigDefault(MapFunctionCache.class)
+    @ConfigElement(MapFunctionCache.class)
     private FunctionCache functionCache;
 
-    @ConfigDefault(SmartInvokerRepository.class)
+    @ConfigElement(SmartInvokerRepository.class)
     private InvokerRepository invokerRepository;
 
     private ParamRepository paramRepository;
 
-    @ConfigDefault(emptyMap = true)
+    @ConfigElement(value = Map.class, registerAt = FunctionProvider.class)
     private Map<String, FunctionRepository> functionRepositories;
 
-    @ConfigDefault(SmartTypeRepository.class)
+    @ConfigElement(SmartTypeRepository.class)
     private TypeRepository typeRepository;
 
-    @ConfigDefault(SmartMatcherRepository.class)
+    @ConfigElement(SmartMatcherRepository.class)
     private MatcherRepository matcherRepository;
 
-    @ConfigDefault(emptyMap = true)
+    @ConfigElement(value = Map.class, registerAt = InvokerRepository.class)
     private Map<String, FunctionInvoker> functionInvokers;
 
-    @ConfigDefault(emptyMap = true)
+    @ConfigElement(value = Map.class, registerAt = TypeRepository.class)
     private Map<String, Type<?>> types;
 
-    @ConfigDefault(emptyMap = true)
+    @ConfigElement(value = Map.class, registerAt = MatcherRepository.class)
     private Map<String, Matcher> matchers;
 
-    public PackageList getPackagesToScan() {
+    public List<String> getPackagesToScan() {
         return packagesToScan;
     }
 
-    public void setPackagesToScan(PackageList packagesToScan) {
+    public void setPackagesToScan(List<String> packagesToScan) {
         this.packagesToScan = packagesToScan;
     }
 
-    public boolean isScanPackages() {
+    public boolean isScanAnnotations() {
         return scanPackages;
     }
 
-    public void setScanPackages(boolean scanPackages) {
+    public void setScanAnnotations(boolean scanPackages) {
         this.scanPackages = scanPackages;
     }
 

@@ -29,7 +29,7 @@ public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {
 
     public int compareTo(RepositoryObjectKey other) {
         if (other.order == order) {
-            return 0;
+            return key.compareTo(other.key);
         }
         return order > other.order ? 1 : -1;
     }
@@ -48,4 +48,11 @@ public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {
         hash = 53 * hash + (this.key != null ? this.key.hashCode() : 0);
         return hash;
     }
+
+    @Override
+    public String toString() {
+        return "[key: " + key + " order: " + order  + "]";
+    }
+
+
 }

@@ -1,4 +1,4 @@
-package org.smartparam.engine.core.config;
+package org.smartparam.engine.config;
 
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.ParamCache;
@@ -28,9 +28,9 @@ public class SmartParamRuntimeConfigBuilder {
         ParamCache paramCache = paramPreparer.getParamCache();
 
         SmartParamRuntimeConfig runtmeConfig = new SmartParamRuntimeConfig(functionCache, paramCache,
-                functionManager.getInvokerRepository().registeredInvokers(),
-                paramPreparer.getTypeRepository().registeredTypes(),
-                paramPreparer.getMatcherRepository().registeredMatchers());
+                functionManager.getInvokerRepository().registeredItems(),
+                paramPreparer.getTypeRepository().registeredItems(),
+                paramPreparer.getMatcherRepository().registeredItems());
 
         return runtmeConfig;
     }

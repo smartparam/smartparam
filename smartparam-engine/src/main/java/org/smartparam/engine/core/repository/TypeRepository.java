@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.repository;
 
-import java.util.Map;
+import org.smartparam.engine.core.Repository;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -9,13 +9,7 @@ import org.smartparam.engine.core.type.Type;
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public interface TypeRepository {
-
-    void registerType(String code, Type<?> type);
-
-    Map<String, Type<?>> registeredTypes();
+public interface TypeRepository extends Repository<Type<?>> {
 
     Type<?> getType(String code);
-
-    void setTypes(Map<String, Type<?>> types);
 }

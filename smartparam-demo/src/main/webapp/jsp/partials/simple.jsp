@@ -7,6 +7,7 @@
     Simple mapping parameter consists of single input value that produces single
     output value.
 </p>
+<p>${output}</p>
 <table class="table table-hover table-bordered">
     <thead>
         <tr>

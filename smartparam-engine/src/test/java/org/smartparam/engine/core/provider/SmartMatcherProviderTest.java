@@ -28,7 +28,7 @@ public class SmartMatcherProviderTest {
         SmartMatcherRepository provider = new SmartMatcherRepository();
 
         // test
-        provider.setMatchers(map);
+        provider.setItems(map);
 
         // weryfikacja
         assertSame(m1, provider.getMatcher("A"));
@@ -48,8 +48,8 @@ public class SmartMatcherProviderTest {
         SmartMatcherRepository provider = new SmartMatcherRepository();
 
         // test
-        provider.registerMatcher("A", m1);
-        provider.registerMatcher("B", m2);
+        provider.register("A", m1);
+        provider.register("B", m2);
 
         // weryfikacja
         assertSame(m1, provider.getMatcher("A"));

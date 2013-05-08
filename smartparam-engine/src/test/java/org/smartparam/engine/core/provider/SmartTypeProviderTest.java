@@ -61,9 +61,9 @@ public class SmartTypeProviderTest {
 
         // utworzenie testowanego obiektu
         TypeRepository tp = new SmartTypeRepository();
-        tp.registerType("int", intType);
-        tp.registerType("str", strType);
-        tp.registerType("chr", chrType);
+        tp.register("int", intType);
+        tp.register("str", strType);
+        tp.register("chr", chrType);
 
         // sprawdzenie wynikow testu
         checkTypeProvider(tp);
@@ -80,7 +80,7 @@ public class SmartTypeProviderTest {
 
         // utworzenie testowanego obiektu
         SmartTypeRepository tp = new SmartTypeRepository();
-        tp.setTypes(types);
+        tp.setItems(types);
 
         // sprawdzenie wynikow testu
         checkTypeProvider(tp);
@@ -91,12 +91,12 @@ public class SmartTypeProviderTest {
 
         // utworzenie testowanego obiektu
         TypeRepository tp = new SmartTypeRepository();
-        tp.registerType("int", intType);
-        tp.registerType("str", strType);
+        tp.register("int", intType);
+        tp.register("str", strType);
 
         // powtorna rejestracja typu int - skutkuje wyjatkiem
         try {
-            tp.registerType("int", new IntegerType());
+            tp.register("int", new IntegerType());
             fail();
         } catch (SmartParamException pe) {
             assertEquals(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, pe.getErrorCode());

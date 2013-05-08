@@ -23,14 +23,6 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
 
     private Map<String, FunctionInvoker> invokers = new HashMap<String, FunctionInvoker>();
 
-    public static SmartInvokerRepository createAndInitialize(AnnotationScannerProperties scannerProperties) {
-        SmartInvokerRepository invokerRepository = new SmartInvokerRepository();
-        invokerRepository.setScannerProperties(scannerProperties);
-
-        invokerRepository.scan();
-        return invokerRepository;
-    }
-
     public void register(String code, FunctionInvoker invoker) {
         logger.info("registering function invoker: {} -> {}", code, invoker.getClass());
         invokers.put(code, invoker);
@@ -50,8 +42,8 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
     }
 
     @Override
-    protected void handleRegistration(RepositoryObjectKey key, FunctionInvoker objectToRegister) {
-        register(key.getKey(), objectToRegister);
+    protected void handleRegistration(RepositoryObjectKey key, FunctionInvoker functionInvoker) {
+        register(key.getKey(), functionInvoker);
     }
 
     public void setItems(Map<String, FunctionInvoker> map) {
