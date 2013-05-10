@@ -309,8 +309,4 @@ public class SmartParamPreparer extends AbstractAnnotationScanner implements Par
     public void setMatcherRepository(MatcherRepository matcherRepository) {
         this.matcherProvider = matcherRepository;
     }
-
-    public void setParamProvider(ParamProvider paramProvider) {
-        this.paramProvider = paramProvider;
-    }
 }

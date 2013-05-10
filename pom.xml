@@ -28,8 +28,8 @@
         <module>smartparam-spring</module>
         <module>smartparam-editor-backend</module>
         <module>smartparam-editor-spring</module>
-    <module>smartparam-editor-client</module>
-  </modules>
+        <module>smartparam-editor-client</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>

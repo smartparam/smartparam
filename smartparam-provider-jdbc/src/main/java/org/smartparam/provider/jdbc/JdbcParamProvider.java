@@ -15,7 +15,7 @@ import org.smartparam.provider.jdbc.model.JdbcParameterLevel;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParamLoader implements ParamRepository {
+public class JdbcParamProvider implements ParamRepository {
 
     /**
      * JDBC DataSource to obtain connections from.

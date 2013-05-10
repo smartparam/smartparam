@@ -1,6 +1,5 @@
 package org.smartparam.engine.test.builder;
 
-import java.util.Arrays;
 import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.util.EngineUtil;
@@ -44,11 +43,6 @@ public class ParameterEntryMockBuilder {
 
     public ParameterEntryMockBuilder withLevels(String... levels) {
         when(parameterEntry.getLevels()).thenReturn(levels);
-
-//        for (int index = 0; index < levels.length; ++index) {
-//            when(parameterEntry.getLevels(index + 1)).thenReturn(Arrays.copyOfRange(levels, 0, index + 1));
-//        }
-
         return this;
     }
 
