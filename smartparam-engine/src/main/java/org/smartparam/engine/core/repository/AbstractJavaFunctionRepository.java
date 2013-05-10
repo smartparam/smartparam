@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.scanner.AnnotatedMethodsScanner;
@@ -27,7 +28,10 @@ public abstract class AbstractJavaFunctionRepository extends AbstractAnnotationS
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public Map<String, Function> loadFunctions() {
+    private Map<String, Function> innerCache;
+
+    @PostConstruct
+    public void loadFunctions() {
         Map<String, Function> loadedFunctions = new HashMap<String, Function>();
 
         AnnotatedMethodsScanner methodsScanner = new AnnotatedMethodsScanner();
@@ -40,7 +44,12 @@ public abstract class AbstractJavaFunctionRepository extends AbstractAnnotationS
             loadedFunctions.put(functionName, createFunction(functionName, methodEntry.getValue()));
         }
 
-        return loadedFunctions;
+        innerCache = loadedFunctions;
+    }
+
+    @Override
+    public Function loadFunction(String functionName) {
+        return innerCache.get(functionName);
     }
 
     protected abstract Class<? extends Annotation> annotationClass();

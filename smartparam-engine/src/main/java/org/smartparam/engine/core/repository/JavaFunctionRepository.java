@@ -14,19 +14,12 @@ import org.smartparam.engine.model.function.JavaFunction;
 @SmartParamFunctionRepository("java")
 public class JavaFunctionRepository extends AbstractJavaFunctionRepository {
 
-    public Function loadFunction(String functionName) {
-        throw new IllegalStateException("API method unavailable");
-    }
-
-    public FunctionRepositoryCapabilities repositoryCapabilities() {
-        return FunctionRepositoryCapabilities.BATCH;
-    }
-
     @Override
     protected Class<? extends Annotation> annotationClass() {
         return SmartParamJavaPlugin.class;
     }
 
+    @Override
     protected Function createFunction(String functionName, Method method) {
         return new JavaFunction(functionName, "java", method);
     }

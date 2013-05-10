@@ -99,7 +99,7 @@ public class SmartTypeProviderTest {
             tp.register("int", new IntegerType());
             fail();
         } catch (SmartParamException pe) {
-            assertEquals(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, pe.getErrorCode());
+            assertEquals(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE, pe.getErrorCode());
         }
     }
 }

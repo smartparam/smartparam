@@ -1,6 +1,5 @@
 package org.smartparam.engine.core.repository;
 
-import java.util.Map;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -9,9 +8,5 @@ import org.smartparam.engine.model.function.Function;
  */
 public interface FunctionRepository {
 
-    Map<String, Function> loadFunctions();
-
     Function loadFunction(String functionName);
-
-    FunctionRepositoryCapabilities repositoryCapabilities();
 }

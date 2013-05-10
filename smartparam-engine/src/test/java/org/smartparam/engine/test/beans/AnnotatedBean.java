@@ -1,6 +1,5 @@
 package org.smartparam.engine.test.beans;
 
-import java.util.Map;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
 import org.smartparam.engine.annotations.SmartParamFunctionRepository;
 import org.smartparam.engine.annotations.SmartParamJavaPlugin;
@@ -10,7 +9,6 @@ import org.smartparam.engine.annotations.SmartParamType;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.FunctionRepositoryCapabilities;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.function.Function;
@@ -63,38 +61,37 @@ public class AnnotatedBean implements FunctionRepository, Matcher, Type<Abstract
         return propertyTwo;
     }
 
-    public Map<String, Function> loadFunctions() {
-        return null;
-    }
-
+    @Override
     public Function loadFunction(String functionName) {
         return null;
     }
 
-    public FunctionRepositoryCapabilities repositoryCapabilities() {
-        return FunctionRepositoryCapabilities.SINGLE;
-    }
-
+    @Override
     public <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type) {
         return false;
     }
 
+    @Override
     public Object invoke(Function function, Object... args) {
         return null;
     }
 
+    @Override
     public String encode(AbstractHolder holder) {
         throw new UnsupportedOperationException("Test method without implementation.");
     }
 
+    @Override
     public AbstractHolder decode(String text) {
         throw new UnsupportedOperationException("Test method without implementation.");
     }
 
+    @Override
     public AbstractHolder convert(Object obj) {
         throw new UnsupportedOperationException("Test method without implementation.");
     }
 
+    @Override
     public AbstractHolder[] newArray(int size) {
         throw new UnsupportedOperationException("Test method without implementation.");
     }

@@ -8,6 +8,7 @@ import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.SmartParamConsts;
 import org.smartparam.engine.core.AbstractAnnotationScanner;
+import org.smartparam.engine.core.AnnotationScanner;
 
 /**
  *
@@ -33,7 +34,7 @@ public abstract class AbstractAnnotationScanningRepository<REGISTERED_OBJECT> ex
             objects.putAll(userObjects);
 
             for (Map.Entry<RepositoryObjectKey, REGISTERED_OBJECT> typeEntry : objects.entrySet()) {
-                handleRegistration(typeEntry.getKey(), typeEntry.getValue());
+                register(typeEntry.getKey(), typeEntry.getValue());
             }
         }
     }
@@ -45,6 +46,13 @@ public abstract class AbstractAnnotationScanningRepository<REGISTERED_OBJECT> ex
     }
 
     protected abstract Class<? extends Annotation> getAnnotationClass();
+
+    private void register(RepositoryObjectKey key, REGISTERED_OBJECT objectToRegister) {
+        if (objectToRegister instanceof AnnotationScanner) {
+            ((AnnotationScanner) objectToRegister).setScannerProperties(getScannerProperties());
+        }
+        handleRegistration(key, objectToRegister);
+    }
 
     protected abstract void handleRegistration(RepositoryObjectKey key, REGISTERED_OBJECT objectToRegister);
 }

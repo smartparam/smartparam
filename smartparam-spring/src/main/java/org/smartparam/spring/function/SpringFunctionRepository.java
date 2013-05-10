@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import org.smartparam.engine.annotations.SmartParamFunctionRepository;
 import org.smartparam.engine.core.repository.AbstractJavaFunctionRepository;
-import org.smartparam.engine.core.repository.FunctionRepositoryCapabilities;
 import org.smartparam.engine.model.function.Function;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
@@ -25,14 +24,6 @@ public class SpringFunctionRepository extends AbstractJavaFunctionRepository {
      * need a registry - serves no other purpose.
      */
     private SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
-
-    public Function loadFunction(String functionName) {
-        throw new IllegalStateException("API method unavailable!");
-    }
-
-    public FunctionRepositoryCapabilities repositoryCapabilities() {
-        return FunctionRepositoryCapabilities.BATCH;
-    }
 
     @Override
     protected Class<? extends Annotation> annotationClass() {

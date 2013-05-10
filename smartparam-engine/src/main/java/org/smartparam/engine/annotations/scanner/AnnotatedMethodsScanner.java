@@ -33,7 +33,7 @@ public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
 
     private void checkForDuplicates(Map<String, Method> methods, String newPluginName, Method newPluginMethod) {
         if(methods.containsKey(newPluginName)) {
-            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE,
+            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE,
                     "plugin " + newPluginName + " found at method " + newPluginMethod.toGenericString() + " was already registered using "
                     + methods.get(newPluginName).toGenericString() + " method");
         }

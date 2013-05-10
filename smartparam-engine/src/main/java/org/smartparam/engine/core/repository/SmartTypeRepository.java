@@ -72,7 +72,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
      */
     public void register(String code, Type<?> type) {
         if (typeMap.containsKey(code)) {
-            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "other type has been already registered under " + code + " code");
+            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE, "other type has been already registered under " + code + " code");
         }
         logger.info("registering type: {} -> {}", code, type.getClass());
         typeMap.put(code, type);

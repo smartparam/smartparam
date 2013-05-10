@@ -29,22 +29,13 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
 
     private Map<RepositoryObjectKey, FunctionRepository> repositories = new TreeMap<RepositoryObjectKey, FunctionRepository>();
 
-    private FunctionCache functionCache = null;
-
-    @PostConstruct
-    public void initialize() {
-        super.scan();
-        if (functionCache == null) {
-            functionCache = new MapFunctionCache();
-        }
-        populateCache();
-    }
+    private FunctionCache functionCache;
 
     public void register(String type, int order, FunctionRepository repository) {
         RepositoryObjectKey objectKey = new RepositoryObjectKey(type, order);
 
         if (repositories.containsKey(objectKey)) {
-            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, "other function repository has been already registered for " + type + " type");
+            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE, "other function repository has been already registered for " + type + " type");
         }
         logger.info("registering function repository at index: {} -> {}", type, repository.getClass());
         repositories.put(objectKey, repository);
@@ -75,23 +66,13 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
     private Function searchForFunction(String functionName) {
         Function function = null;
         for (FunctionRepository repository : repositories.values()) {
-            if (repository.repositoryCapabilities().isSupportsSingle()) {
-                function = repository.loadFunction(functionName);
-                if (function != null) {
-                    break;
-                }
+            function = repository.loadFunction(functionName);
+            if (function != null) {
+                break;
             }
         }
 
         return function;
-    }
-
-    private void populateCache() {
-        for (FunctionRepository repository : repositories.values()) {
-            if (repository.repositoryCapabilities().isSupportsBatch()) {
-                functionCache.putAll(repository.loadFunctions());
-            }
-        }
     }
 
     @Override
@@ -102,11 +83,6 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
     @Override
     protected void handleRegistration(RepositoryObjectKey key, FunctionRepository repository) {
         repositories.put(key, repository);
-
-        // TODO #ad maybe this can be done better?
-        if (repository instanceof AnnotationScanner) {
-            ((AnnotationScanner) repository).setScannerProperties(getScannerProperties());
-        }
     }
 
     public FunctionCache getFunctionCache() {

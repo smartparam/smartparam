@@ -43,7 +43,7 @@ public class AnnotatedMethodsScannerTest {
         Map<String, Method> methods = scanner.getAnnotatedMethods(buildPackageList(), SmartParamDummyPlugin.class);
         }
         catch(SmartParamException exception) {
-            assertEquals(SmartParamErrorCode.NON_UNIQUE_TYPE_CODE, exception.getErrorCode());
+            assertEquals(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE, exception.getErrorCode());
             return;
         }
         fail();

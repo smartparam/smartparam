@@ -10,7 +10,6 @@ import java.util.Set;
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.repository.SmartInvokerRepository;
@@ -22,7 +21,6 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.FunctionRepositoryCapabilities;
 import org.smartparam.engine.core.invoker.JavaFunctionInvoker;
 import org.smartparam.engine.core.service.SmartFunctionProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
@@ -34,7 +32,6 @@ import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.function.JavaFunction;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.plugin.PluginType;
@@ -65,7 +62,6 @@ public class ParamEngineScenarioTest {
         invokerRepository.register("java", new JavaFunctionInvoker());
 
         functionRepository = mock(FunctionRepository.class);
-        when(functionRepository.repositoryCapabilities()).thenReturn(FunctionRepositoryCapabilities.SINGLE);
 
         SmartFunctionProvider functionProvider = new SmartFunctionProvider();
         functionProvider.setFunctionCache(new MapFunctionCache());

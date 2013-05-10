@@ -27,7 +27,7 @@ public enum SmartParamErrorCode {
     /**
      * proba zarejestrowania typu pod kodem, ktory jest juz zarejestrowany.
      */
-    NON_UNIQUE_TYPE_CODE,
+    NON_UNIQUE_ITEM_CODE,
     /**
      * nieudana konwersja obiektu java na obiekt AbstractHolder.
      */

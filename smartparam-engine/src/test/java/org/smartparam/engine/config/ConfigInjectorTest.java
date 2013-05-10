@@ -1,4 +1,3 @@
-
 package org.smartparam.engine.config;
 
 import java.util.HashMap;
@@ -8,10 +7,7 @@ import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.FunctionRepositoryCapabilities;
 import org.smartparam.engine.core.repository.SmartTypeRepository;
-import org.smartparam.engine.core.repository.TypeRepository;
-import org.smartparam.engine.core.service.FunctionProvider;
 import org.smartparam.engine.core.service.SmartFunctionProvider;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.test.beans.config.DummyPreparableBean;
@@ -42,20 +38,14 @@ public class ConfigInjectorTest {
         assertTrue(typeRepository.registeredItems().keySet().containsAll(testTypes.keySet()));
     }
 
-    private FunctionRepository createFunctionRepositoryMock() {
-        FunctionRepository repository =  mock(FunctionRepository.class);
-        when(repository.repositoryCapabilities()).thenReturn(FunctionRepositoryCapabilities.SINGLE);
-        return repository;
-    }
-
     @Test
     public void testInjection_object() {
         SmartParamConfig config = new SmartParamConfig();
         config.setScanAnnotations(false);
 
         HashMap<String, FunctionRepository> testRepositories = new HashMap<String, FunctionRepository>();
-        testRepositories.put("repository_testInjection_1", createFunctionRepositoryMock());
-        testRepositories.put("repository_testInjection_2", createFunctionRepositoryMock());
+        testRepositories.put("repository_testInjection_1", mock(FunctionRepository.class));
+        testRepositories.put("repository_testInjection_2", mock(FunctionRepository.class));
         config.setFunctionRepositories(testRepositories);
 
         FunctionCache functionCache = new MapFunctionCache();
@@ -83,5 +73,4 @@ public class ConfigInjectorTest {
 
         assertTrue(preparableBean.isPrepared());
     }
-
 }
