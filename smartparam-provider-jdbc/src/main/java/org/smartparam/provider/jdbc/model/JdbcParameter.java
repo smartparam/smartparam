@@ -79,16 +79,8 @@ public class JdbcParameter implements Parameter {
         return levels;
     }
 
-    @Override
-    public Level getLevel(int levelNumber) {
-        return levels.get(levelNumber);
-        //TODO #ph remove getLevel(int ix)
-    }
-
-    @Override
     public int getLevelCount() {
-        return levels.size();
-        //TODO #ph remove from interface
+        return levels != null ? levels.size() : 0;
     }
 
     @Override
@@ -99,12 +91,6 @@ public class JdbcParameter implements Parameter {
     @Override
     public Set<JdbcParameterEntry> getEntries() {
         return entries;
-    }
-
-    @Override
-    public boolean isArchive() {
-        return false;
-        //TODO #ph remove isArchive
     }
 
     @Override

@@ -12,27 +12,11 @@ import org.smartparam.engine.model.function.Function;
 public interface Level {
 
     /**
-     * Returns parent parameter of this level.
-     *
-     * @return parameter owning this level
-     */
-//    Parameter getParameter();
-//TODO #ph 0 clean    
-
-    /**
      * Returns short description of level.
      *
      * @return short description
      */
     String getLabel();
-
-    /**
-     * Returns label key, that can be used to fetch it from message bundle.
-     *
-     * @return label key
-     */
-//    String getLabelKey();
-//TODO #ph 0 clean    
 
     /**
      * Position of level in parameter level array.
@@ -68,12 +52,4 @@ public interface Level {
      * @return matcher code
      */
     String getMatcherCode();
-
-    /**
-     * Returns function that validates if level value is correct (valid), can be null.
-     *
-     * @return function to validate contents of level
-     */
-    //Function getValidator();
-    //TODO #ph remove from interface
 }

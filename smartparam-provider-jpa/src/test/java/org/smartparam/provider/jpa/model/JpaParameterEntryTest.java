@@ -75,32 +75,6 @@ public class JpaParameterEntryTest {
 //    }
 
     @Test
-    public void testGetLevels() {
-
-        // przygotowanie obiektu
-        JpaParameterEntry pe = new JpaParameterEntry("1;2;3;4;5;6;7;8;9;10;11;12;13;14", "value");
-
-        // przypadki testowe
-        Object[][] tests = {
-            new Object[]{0, new String[]{}},
-            new Object[]{1, new String[]{"1"}},
-            new Object[]{4, new String[]{"1", "2", "3", "4"}},
-            new Object[]{8, new String[]{"1", "2", "3", "4", "5", "6", "7", "8"}},
-            new Object[]{11, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"}},
-            new Object[]{14, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"}},
-            new Object[]{15, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", null}}
-        };
-
-        // wykonanie testow
-        for (Object[] test : tests) {
-            Integer n = (Integer) test[0];
-            String[] expectedLevels = (String[]) test[1];
-
-            assertArrayEquals(expectedLevels, pe.getLevels(n));
-        }
-    }
-
-    @Test
     public void testGetLevel() {
 
         // przygotowanie obiektu

@@ -22,18 +22,6 @@ public class JdbcParameterEntry implements ParameterEntry {
         return levels;
     }
 
-    /**
-     * Zwraca n pierwszych wartosci z wzorca dopasowania.
-     * Innymi slowy - zwraca wartosci dla n pierwszych poziomow.
-     *
-     * @param n liczba zadanych poziomow
-     * @return wartosci dla n poziomow
-     */
-    @Override
-    public String[] getLevels(int n) {
-        return Arrays.copyOf(levels, n);
-    }
-
     @Override
     public String getValue() {
         return value;

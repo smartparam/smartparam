@@ -45,9 +45,9 @@ public class ParameterEntryMockBuilder {
     public ParameterEntryMockBuilder withLevels(String... levels) {
         when(parameterEntry.getLevels()).thenReturn(levels);
 
-        for (int index = 0; index < levels.length; ++index) {
-            when(parameterEntry.getLevels(index + 1)).thenReturn(Arrays.copyOfRange(levels, 0, index + 1));
-        }
+//        for (int index = 0; index < levels.length; ++index) {
+//            when(parameterEntry.getLevels(index + 1)).thenReturn(Arrays.copyOfRange(levels, 0, index + 1));
+//        }
 
         return this;
     }
