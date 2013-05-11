@@ -51,11 +51,6 @@ public class LevelMockBuilder {
         return this;
     }
 
-    public LevelMockBuilder withLabel(String label) {
-        when(level.getLabel()).thenReturn(label);
-        return this;
-    }
-
     public LevelMockBuilder withMatcherCode(String matcher) {
         when(level.getMatcherCode()).thenReturn(matcher);
         return this;

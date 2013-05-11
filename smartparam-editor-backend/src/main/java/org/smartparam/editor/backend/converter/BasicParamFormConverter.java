@@ -15,7 +15,7 @@ public class BasicParamFormConverter implements ParamFormConverter {
         ParameterForm parameterForm = new ParameterForm();
 
         parameterForm.setName(parameter.getName());
-        parameterForm.setLabel(parameter.getLabel());
+        //parameterForm.setLabel(parameter.getLabel());
 
         parameterForm.setInputLevels(parameter.getInputLevels());
         parameterForm.setMutlivalue(parameter.isMultivalue());

@@ -273,7 +273,7 @@ public class JpaParameterTest {
         return p;
     }
 
-    private void verifyLevel(Level l, int expectedOrderNo, String expectedLabel) {
+    private void verifyLevel(JpaLevel l, int expectedOrderNo, String expectedLabel) {
         assertEquals(expectedOrderNo, l.getOrderNo());
         assertEquals(expectedLabel, l.getLabel());
     }

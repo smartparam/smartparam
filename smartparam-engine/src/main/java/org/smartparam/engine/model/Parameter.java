@@ -43,13 +43,6 @@ public interface Parameter {
     String getName();
 
     /**
-     * Returns label. TODO #ad write something more..
-     *
-     * @return label
-     */
-    String getLabel();
-
-    /**
      * Returns parameter return type (for single-value parameters).
      *
      * @return parameter return value type

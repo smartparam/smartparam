@@ -103,7 +103,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("*;X", f));
         entries.add(ParameterEntryMockBuilder.parameterEntry("*;Y", f2));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withNullable(true)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").nullable(true)
                 .withEntries(entries).withLevels(l1, l2).get();
 
         // konfiguracja
@@ -207,7 +207,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A", "11"));
         entries.add(ParameterEntryMockBuilder.parameterEntry("B", f2));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withNullable(false)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").nullable(false)
                 .withEntries(entries).withLevels(l1).get();
 
         // konfiguracja
@@ -261,7 +261,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("B", "Y", "2").get());
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("C", "Z", "3").get());
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withNullable(false).withMultivalue(true).withInputLevels(1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").nullable(false).multivalue(true).inputLevels(1)
                 .withEntries(entries).withLevels(l1, l2, l3).get();
 
         // konfiguracja
@@ -363,8 +363,7 @@ public class ParamEngineScenarioTest {
         entries.add(pe2);
         entries.add(pe3);
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1, l2).withCacheable(false).
-                withNullable(true).withEntries(entries).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1, l2).cacheable(false).nullable(true).withEntries(entries).get();
 
         // konfiguracja
         List<ParameterEntry> resultAB = Arrays.asList(pe1);
@@ -398,8 +397,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("A", "X", "1").get());
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("B", "Y", "2").get());
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).withMultivalue(true).withInputLevels(1).
-                withNullable(true).withEntries(entries).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).multivalue(true).inputLevels(1).nullable(true).withEntries(entries).get();
 
         // konfiguracja
         when(paramRepository.load("par")).thenReturn(par);
@@ -458,7 +456,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("B;G;3;5", (String) null));
         entries.add(ParameterEntryMockBuilder.parameterEntry("B;H;3;6", (String) null));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3, l4).withMultivalue(true).withInputLevels(2)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3, l4).multivalue(true).inputLevels(2)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -486,7 +484,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("B", "YY", "4").get());
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("*", "ZZ", "").get());
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).withMultivalue(true).withInputLevels(1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).multivalue(true).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -516,7 +514,7 @@ public class ParamEngineScenarioTest {
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("A").get());
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1).withMultivalue(false)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1).multivalue(false)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -695,8 +693,8 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("B;G;3", (String) null));
         entries.add(ParameterEntryMockBuilder.parameterEntry("B;H;3", (String) null));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).withNullable(true)
-                .withMultivalue(true).withInputLevels(1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).nullable(true)
+                .multivalue(true).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -732,7 +730,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A;E;", (String) null));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3)
-                .withMultivalue(true).withInputLevels(1)
+                .multivalue(true).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -781,8 +779,8 @@ public class ParamEngineScenarioTest {
         entries.add(pe3);
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1, l2, l3, l4)
-                .withNullable(true).withCacheable(false)
-                .withMultivalue(true).withInputLevels(2)
+                .nullable(true).cacheable(false)
+                .multivalue(true).inputLevels(2)
                 .withEntries(entries).get();
 
         // konfiguracja
@@ -822,8 +820,8 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A;B;Z", (String) null));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3)
-                .withNullable(false)
-                .withMultivalue(true).withInputLevels(1)
+                .nullable(false)
+                .multivalue(true).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -849,7 +847,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A;B;Z", (String) null));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3)
-                .withMultivalue(false).withInputLevels(1)
+                .multivalue(false).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -874,7 +872,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A;value", (String) null));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2)
-                .withMultivalue(true).withInputLevels(1)
+                .multivalue(true).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -902,7 +900,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("C;2", ""));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2)
-                .withMultivalue(true)
+                .multivalue(true)
                 .withEntries(entries).get();
 
         // zaleznosci
@@ -938,7 +936,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("D", ""));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1)
-                .withArray(true).withNullable(true).withArraySeparator(',')
+                .array(true).nullable(true).arraySeparator(',')
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -1007,7 +1005,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A", "1,2,3"));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1)
-                .withArray(true).withNullable(false).withArraySeparator(',')
+                .array(true).nullable(false).arraySeparator(',')
                 .withEntries(entries).get();
 
         // zaleznosci
@@ -1037,7 +1035,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A;F", "calc.1"));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("plugin").withLevels(l1, l2)
-                .withNullable(true)
+                .nullable(true)
                 .withEntries(entries).get();
 
         // konfiguracja
@@ -1080,7 +1078,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A;F", "calc.1"));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2)
-                .withNullable(true)
+                .nullable(true)
                 .withEntries(entries).get();
 
         // konfiguracja

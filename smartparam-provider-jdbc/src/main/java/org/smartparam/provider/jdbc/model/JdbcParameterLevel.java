@@ -1,6 +1,5 @@
 package org.smartparam.provider.jdbc.model;
 
-import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.Level;
 
 /**
@@ -23,12 +22,10 @@ public class JdbcParameterLevel implements Level {
 
     private boolean array;
 
-    @Override
     public int getOrderNo() {
         return orderNo;
     }
 
-    @Override
     public String getLabel() {
         return label;
     }

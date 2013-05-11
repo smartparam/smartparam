@@ -29,6 +29,7 @@
         <module>smartparam-editor-backend</module>
         <module>smartparam-editor-spring</module>
         <module>smartparam-editor-client</module>
+        <module>smartparam-serializer</module>
     </modules>
 
     <dependencyManagement>
@@ -39,7 +40,6 @@
                 <version>1.2.16</version>
             </dependency>
 
-            <!-- czy potrzebujemy slf? -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
@@ -63,6 +63,19 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>3.1</version>
             </dependency>
+
+            <!-- serialization -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.2.3</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.supercsv</groupId>
+                <artifactId>super-csv</artifactId>
+                <version>2.1.0</version>
+            </dependency>
+            
 
             <dependency>
                 <groupId>junit</groupId>
@@ -94,6 +107,19 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <reporting>
         <plugins>

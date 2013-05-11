@@ -94,7 +94,7 @@ public class SmartParamPreparerTest {
     public void testGetPreparedParameter__prepare() {
 
         // konfiguracja
-        Level l1 = LevelMockBuilder.level().withType("string").withLabel("L1").get();
+        Level l1 = LevelMockBuilder.level().withType("string").get();
 
         ParameterMockBuilder.parameter(p2).withName("par2").withType("string").withLevels(l1).withEntries(
                 ParameterEntryMockBuilder.parameterEntry("A", "value-A"),
@@ -139,7 +139,7 @@ public class SmartParamPreparerTest {
     public void testGetPreparedParameter__prepare_multiValue_nullType() {
 
         ParameterMockBuilder.parameter(p2).withName("par2").withType(null)
-                .withMultivalue(true).withInputLevels(1)
+                .multivalue(true).inputLevels(1)
                 .withLevels(
                     LevelMockBuilder.level("string"),
                     LevelMockBuilder.level("string")
@@ -162,7 +162,7 @@ public class SmartParamPreparerTest {
     public void testGetPreparedParameter__prepare_multiValue_notnullType() {
 
         ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
-                .withMultivalue(true).withInputLevels(1)
+                .multivalue(true).inputLevels(1)
                 .withLevels(
                     LevelMockBuilder.level("string"),
                     LevelMockBuilder.level("string")
@@ -195,9 +195,9 @@ public class SmartParamPreparerTest {
     public void testGetPreparedParameter__array() {
 
         ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
-                .withArray(true)
+                .array(true)
                 .withLevels(
-                    LevelMockBuilder.level().withType("string").withLabel("L1").get()
+                    LevelMockBuilder.level().withType("string").get()
                 ).withEntries(
                     ParameterEntryMockBuilder.parameterEntry("*", "value")
                 );
@@ -326,7 +326,7 @@ public class SmartParamPreparerTest {
     public void testGetPreparedParameter__prepare_cacheable() {
 
         ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
-                .withMultivalue(true).withInputLevels(1).withCacheable(false)
+                .multivalue(true).inputLevels(1).cacheable(false)
                 .withLevels(
                     LevelMockBuilder.level("string"),
                     LevelMockBuilder.level("string")

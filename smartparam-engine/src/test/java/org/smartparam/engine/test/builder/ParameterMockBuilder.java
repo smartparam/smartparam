@@ -45,7 +45,7 @@ public class ParameterMockBuilder {
     }
 
     public static Parameter parameter(String name, String type, boolean nullable, Set<ParameterEntry> entries) {
-        return parameter().withName(name).withType(type).withNullable(nullable).withEntries(entries).get();
+        return parameter().withName(name).withType(type).nullable(nullable).withEntries(entries).get();
     }
 
     public Parameter get() {
@@ -62,7 +62,7 @@ public class ParameterMockBuilder {
         return this;
     }
 
-    public ParameterMockBuilder withNullable(boolean nullable) {
+    public ParameterMockBuilder nullable(boolean nullable) {
         when(parameter.isNullable()).thenReturn(nullable);
         return this;
     }
@@ -77,7 +77,7 @@ public class ParameterMockBuilder {
         Mockito.doReturn(entriesSet).when(parameter).getEntries();
         return this;
     }
-
+    
     public ParameterMockBuilder withLevels(Level... levels) {
         List<Level> list = new ArrayList<Level>();
         for (int index = 0; index < levels.length; ++index) {
@@ -88,27 +88,27 @@ public class ParameterMockBuilder {
         return this;
     }
 
-    public ParameterMockBuilder withArray(boolean array) {
+    public ParameterMockBuilder array(boolean array) {
         when(parameter.isArray()).thenReturn(array);
         return this;
     }
 
-    public ParameterMockBuilder withCacheable(boolean cacheable) {
+    public ParameterMockBuilder cacheable(boolean cacheable) {
         when(parameter.isCacheable()).thenReturn(cacheable);
         return this;
     }
 
-    public ParameterMockBuilder withMultivalue(boolean multivalue) {
+    public ParameterMockBuilder multivalue(boolean multivalue) {
         when(parameter.isMultivalue()).thenReturn(multivalue);
         return this;
     }
 
-    public ParameterMockBuilder withInputLevels(int inputLevels) {
+    public ParameterMockBuilder inputLevels(int inputLevels) {
         when(parameter.getInputLevels()).thenReturn(inputLevels);
         return this;
     }
 
-    public ParameterMockBuilder withArraySeparator(char separator) {
+    public ParameterMockBuilder arraySeparator(char separator) {
         when(parameter.getArraySeparator()).thenReturn(separator);
         return this;
     }

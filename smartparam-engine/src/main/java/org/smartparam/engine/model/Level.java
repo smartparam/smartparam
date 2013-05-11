@@ -12,20 +12,6 @@ import org.smartparam.engine.model.function.Function;
 public interface Level {
 
     /**
-     * Returns short description of level.
-     *
-     * @return short description
-     */
-    String getLabel();
-
-    /**
-     * Position of level in parameter level array.
-     *
-     * @return position number
-     */
-    int getOrderNo();
-
-    /**
      * Returns function for evaluating value of level using current context.
      *
      * @return function registered in function repository

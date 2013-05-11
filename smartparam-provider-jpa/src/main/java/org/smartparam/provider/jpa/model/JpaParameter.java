@@ -169,7 +169,6 @@ public class JpaParameter implements Parameter, JpaModelObject {
      * @return label
      */
     @Column
-    @Override
     public String getLabel() {
         return label;
     }
