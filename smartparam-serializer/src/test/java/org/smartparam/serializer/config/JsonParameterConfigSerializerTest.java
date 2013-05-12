@@ -37,6 +37,7 @@ public class JsonParameterConfigSerializerTest {
         assertNotNull(serializedConfig);
         assertFalse(serializedConfig.contains("entries"));
         assertTrue(serializedConfig.contains("levels"));
+        assertTrue(serializedConfig.contains("creator1"));
     }
 
     @Test
@@ -79,5 +80,27 @@ public class JsonParameterConfigSerializerTest {
         assertEquals(3, parameter.getLevels().size());
         assertEquals("l1Type", parameter.getLevels().get(0).getType());
         assertEquals("l1Matcher", parameter.getLevels().get(0).getMatcherCode());
+    }
+
+    @Test
+    public void serializeAndDeserialize() {
+        Parameter parameter = (new ParameterMockBuilder("parameter")).cacheable(true)
+                .multivalue(true).nullable(false).withInputLevels(3)
+                .withLevels(new LevelMock("creator1", "type", true, "matcher1"),
+                new LevelMock("creator2", "type", true, "matcher2"),
+                new LevelMock("creator3", "type", true, "matcher3"))
+                .withEntries(new ParameterEntryMock("v1", "v2", "v3")).get();
+
+        String serializedConfig = serializer.serialize(parameter);
+        Parameter deserializedParameter = serializer.deserialize(serializedConfig, EditableParameterMock.class);
+
+        assertEquals("parameter", deserializedParameter.getName());
+        assertEquals(true, deserializedParameter.isMultivalue());
+        assertEquals(true, deserializedParameter.isCacheable());
+        assertEquals(false, deserializedParameter.isNullable());
+        assertEquals(3, deserializedParameter.getInputLevels());
+        assertEquals(3, deserializedParameter.getLevels().size());
+        assertEquals("creator1", deserializedParameter.getLevels().get(0).getLevelCreator());
+        assertNull(deserializedParameter.getEntries());
     }
 }

@@ -53,8 +53,7 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
             logger.debug("serializing {} parameter entries took {}", counter, endTime - startTime);
         } catch (IOException exception) {
             throw new SmartParamSerializerException("serialization error", exception);
-        }
-        finally {
+        } finally {
             closeWriter(csvWriter);
         }
     }
@@ -62,8 +61,7 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
     private void closeWriter(CsvListWriter writer) {
         try {
             writer.close();
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             throw new SmartParamSerializerException("error while closing writer stream", exception);
         }
     }
@@ -85,11 +83,16 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
             int readedLineCounter = 1;
             while (line != null) {
                 parameterEntries.add(createParameterEntry(line));
-
                 if (readedLineCounter % persister.batchSize() == 0) {
-                    persister.writeBatch(parameterEntries);
-                    parameterEntries.clear();
+                    persist(persister, parameterEntries);
                 }
+
+                line = csvReader.read();
+                readedLineCounter++;
+            }
+
+            if (!parameterEntries.isEmpty()) {
+                persist(persister, parameterEntries);
             }
 
             long endTime = System.currentTimeMillis();
@@ -99,10 +102,14 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
         } catch (ReflectiveOperationException reflectiveException) {
             throw new SmartParamSerializerException("error creatign instance of " + instanceClass.getName() + ", maybe it has no default constructor?",
                     reflectiveException);
-        }
-        finally {
+        } finally {
             closeReader(csvReader);
         }
+    }
+
+    private void persist(ParameterEntryPersister persister, List<ParameterEntry> parameterEntries) {
+        persister.writeBatch(parameterEntries);
+        parameterEntries.clear();
     }
 
     private ParameterEntry createParameterEntry(List<String> levelValues) throws ReflectiveOperationException {
@@ -115,8 +122,7 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
     private void closeReader(CsvListReader reader) {
         try {
             reader.close();
-        }
-        catch (IOException exception) {
+        } catch (IOException exception) {
             throw new SmartParamSerializerException("error while closing reader stream", exception);
         }
     }

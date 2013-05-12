@@ -32,12 +32,12 @@ public class ParameterMockBuilder {
     }
     
     public ParameterMockBuilder cacheable(boolean cacheable) {
-        parameter.setArray(cacheable);
+        parameter.setCacheable(cacheable);
         return this;
     }
 
     public ParameterMockBuilder multivalue(boolean multivalue) {
-        parameter.setArray(multivalue);
+        parameter.setMultivalue(multivalue);
         return this;
     }
 

@@ -1,5 +1,6 @@
 package org.smartparam.serializer.entries;
 
+import java.util.Collection;
 import org.smartparam.engine.model.ParameterEntry;
 
 /**
@@ -8,7 +9,7 @@ import org.smartparam.engine.model.ParameterEntry;
  */
 public interface ParameterEntryPersister {
 
-    void writeBatch(Iterable<ParameterEntry> entries);
+    void writeBatch(Collection<ParameterEntry> entries);
 
     int batchSize();
 }

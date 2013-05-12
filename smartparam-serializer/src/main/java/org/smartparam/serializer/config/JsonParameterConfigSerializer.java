@@ -19,20 +19,22 @@ public class JsonParameterConfigSerializer implements ParameterConfigSerializer 
 
     public JsonParameterConfigSerializer(Class<? extends EditableLevel> levelInstanceClass) {
         PropertyExclusionStrategy exclusionStrategy = new PropertyExclusionStrategy(IGNORED_PROPERTIES);
-        LevelDeserializer levelDeserializer = new LevelDeserializer(levelInstanceClass);
+        LevelSerializationAdapter levelAdapter = new LevelSerializationAdapter(levelInstanceClass);
 
         gson = (new GsonBuilder()).setExclusionStrategies(exclusionStrategy)
-                .registerTypeAdapter(Level.class, levelDeserializer).setPrettyPrinting().create();
+                .registerTypeAdapter(Level.class, levelAdapter).setPrettyPrinting().create();
 
-        levelDeserializer.setGson(gson);
+        levelAdapter.setGson(gson);
     }
 
+    @Override
     public String serialize(Parameter parameter) {
         String serializedConfig = gson.toJson(parameter);
 
         return serializedConfig;
     }
 
+    @Override
     public <T extends EditableParameter> T deserialize(String configText, Class<T> implementingClass) {
         T configObject = gson.fromJson(configText, implementingClass);
 
