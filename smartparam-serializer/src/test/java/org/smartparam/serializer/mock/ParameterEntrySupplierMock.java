@@ -1,5 +1,7 @@
 package org.smartparam.serializer.mock;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import org.smartparam.engine.model.ParameterEntry;
@@ -32,13 +34,19 @@ public class ParameterEntrySupplierMock implements ParameterEntrySupplier {
         return calledForNextBatchCount;
     }
 
+    
+    @Override
+    public List<String> header() {
+        return Arrays.asList("some", "stupid", "header");
+    }
+
     @Override
     public boolean hasMore() {
         return suppliedEntriesCounter < entriesToSupply - 1;
     }
 
     @Override
-    public Iterable<ParameterEntry> nextBatch() {
+    public Collection<ParameterEntry> nextBatch() {
         List<ParameterEntry> entries = new LinkedList<ParameterEntry>();
 
         for (int i = 0; i < batchSize; ++i) {

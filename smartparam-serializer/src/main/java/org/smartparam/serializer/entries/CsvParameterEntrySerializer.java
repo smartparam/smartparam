@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.serializer.SerializationConfig;
-import org.smartparam.serializer.exception.SmartParamSerializerException;
+import org.smartparam.serializer.exception.SmartParamSerializationException;
 import org.smartparam.serializer.model.EditableParameterEntry;
 import org.supercsv.io.CsvListReader;
 import org.supercsv.io.CsvListWriter;
@@ -25,21 +25,21 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
 
     private Class<? extends EditableParameterEntry> instanceClass;
 
-    private CsvPreference csvPreference;
-
-    public CsvParameterEntrySerializer(SerializationConfig config, Class<? extends EditableParameterEntry> instanceClass) {
+    public CsvParameterEntrySerializer(Class<? extends EditableParameterEntry> instanceClass) {
         this.instanceClass = instanceClass;
+    }
 
-        this.csvPreference = new CsvPreference.Builder(config.getCsvQuote(), config.getCsvDelimiter(), config.getEndOfLine()).build();
+    private CsvPreference createCsvPreference(SerializationConfig config) {
+        return new CsvPreference.Builder(config.getCsvQuote(), config.getCsvDelimiter(), config.getEndOfLine()).build();
     }
 
     @Override
-    public void serialize(Writer writer, List<String> header, ParameterEntrySupplier supplier) {
-        CsvListWriter csvWriter = new CsvListWriter(writer, csvPreference);
+    public void serialize(SerializationConfig config, Writer writer, ParameterEntrySupplier supplier) throws SmartParamSerializationException {
+        CsvListWriter csvWriter = new CsvListWriter(writer, createCsvPreference(config));
         try {
             long startTime = System.currentTimeMillis();
             logger.debug("started parameter entries serialization at {}", startTime);
-            csvWriter.write(header);
+            csvWriter.write(supplier.header());
 
             int counter = 0;
             while (supplier.hasMore()) {
@@ -52,23 +52,23 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
             long endTime = System.currentTimeMillis();
             logger.debug("serializing {} parameter entries took {}", counter, endTime - startTime);
         } catch (IOException exception) {
-            throw new SmartParamSerializerException("serialization error", exception);
+            throw new SmartParamSerializationException("serialization error", exception);
         } finally {
             closeWriter(csvWriter);
         }
     }
 
-    private void closeWriter(CsvListWriter writer) {
+    private void closeWriter(CsvListWriter writer) throws SmartParamSerializationException {
         try {
             writer.close();
         } catch (IOException exception) {
-            throw new SmartParamSerializerException("error while closing writer stream", exception);
+            throw new SmartParamSerializationException("error while closing writer stream", exception);
         }
     }
 
     @Override
-    public void deserialize(Reader reader, ParameterEntryPersister persister) {
-        CsvListReader csvReader = new CsvListReader(reader, csvPreference);
+    public void deserialize(SerializationConfig config, Reader reader, ParameterEntryPersister persister) throws SmartParamSerializationException {
+        CsvListReader csvReader = new CsvListReader(reader, createCsvPreference(config));
         try {
             long startTime = System.currentTimeMillis();
             logger.debug("started parameter entries deserialization at {}", startTime);
@@ -98,9 +98,9 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
             long endTime = System.currentTimeMillis();
             logger.debug("deserializing {} parameter entries took {}", readedLineCounter, endTime - startTime);
         } catch (IOException exception) {
-            throw new SmartParamSerializerException("deserialization error", exception);
+            throw new SmartParamSerializationException("deserialization error", exception);
         } catch (ReflectiveOperationException reflectiveException) {
-            throw new SmartParamSerializerException("error creatign instance of " + instanceClass.getName() + ", maybe it has no default constructor?",
+            throw new SmartParamSerializationException("error creatign instance of " + instanceClass.getName() + ", maybe it has no default constructor?",
                     reflectiveException);
         } finally {
             closeReader(csvReader);
@@ -119,11 +119,11 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
         return parameterEntry;
     }
 
-    private void closeReader(CsvListReader reader) {
+    private void closeReader(CsvListReader reader) throws SmartParamSerializationException {
         try {
             reader.close();
         } catch (IOException exception) {
-            throw new SmartParamSerializerException("error while closing reader stream", exception);
+            throw new SmartParamSerializationException("error while closing reader stream", exception);
         }
     }
 }

@@ -1,5 +1,7 @@
 package org.smartparam.serializer.entries;
 
+import java.util.Collection;
+import java.util.List;
 import org.smartparam.engine.model.ParameterEntry;
 
 /**
@@ -8,8 +10,10 @@ import org.smartparam.engine.model.ParameterEntry;
  */
 public interface ParameterEntrySupplier {
 
+    List<String> header();
+
     boolean hasMore();
 
-    Iterable<ParameterEntry> nextBatch();
+    Collection<ParameterEntry> nextBatch();
 
 }

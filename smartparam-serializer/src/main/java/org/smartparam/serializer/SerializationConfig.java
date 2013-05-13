@@ -11,7 +11,7 @@ public class SerializationConfig {
     private char csvDelimiter;
 
     private String endOfLine;
-
+    
     public SerializationConfig(char csvQuote, char csvDelimiter, String endOfLine) {
         this.csvQuote = csvQuote;
         this.csvDelimiter = csvDelimiter;

@@ -2,8 +2,8 @@ package org.smartparam.serializer.entries;
 
 import java.io.Reader;
 import java.io.Writer;
-import java.util.List;
-import org.smartparam.serializer.exception.SmartParamSerializerException;
+import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
  *
@@ -11,7 +11,7 @@ import org.smartparam.serializer.exception.SmartParamSerializerException;
  */
 public interface ParameterEntrySerializer {
 
-    void serialize(Writer writer, List<String> header, ParameterEntrySupplier supplier) throws SmartParamSerializerException;
+    void serialize(SerializationConfig config, Writer writer, ParameterEntrySupplier supplier) throws SmartParamSerializationException;
 
-    void deserialize(Reader reader, ParameterEntryPersister persister) throws SmartParamSerializerException;
+    void deserialize(SerializationConfig config, Reader reader, ParameterEntryPersister persister) throws SmartParamSerializationException;
 }

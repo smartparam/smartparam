@@ -1,0 +1,16 @@
+#{
+#    name: "testParameter",
+#    cacheable: "true",
+#    multivalue: "true",
+#    nullable: "false",
+#    inputLevels: 4,
+#    levels: [
+#        { matcherCode: "matcher1", levelCreator: "levelCreator1", type: "type1" },
+#        { matcherCode: "matcher2", levelCreator: "levelCreator2", type: "type2" },
+#        { matcherCode: "matcher3", levelCreator: "levelCreator3", type: "type3" }
+#    ]
+# }
+#EOF-config
+date_from;date_to;age;size;value
+dateFrom1;dateTo1;25;10;value1
+dateFrom2;dateTo2;25;10;value2

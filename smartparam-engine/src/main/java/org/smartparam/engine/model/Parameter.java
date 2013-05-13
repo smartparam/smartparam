@@ -70,7 +70,7 @@ public interface Parameter {
      *
      * @return parameter matrix
      */
-    Set<? extends ParameterEntry> getEntries();
+    Set<ParameterEntry> getEntries();
 
     /**
      * Should parameter return value be treated as an array of values.

@@ -2,7 +2,6 @@
 package org.smartparam.serializer.config;
 
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.model.EditableParameter;
 
 /**
  *
@@ -12,5 +11,5 @@ public interface ParameterConfigSerializer {
 
     String serialize(Parameter parameter);
 
-    <T extends EditableParameter> T deserialize(String configText, Class<T> implementingClass);
+    Parameter deserialize(String configText);
 }

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.exception.SmartParamSerializationException;
 import org.smartparam.serializer.mock.EditableParameterEntryMock;
 import org.smartparam.serializer.mock.ParameterEntryPersisterMock;
 import org.smartparam.serializer.mock.ParameterEntrySupplierMock;
@@ -20,19 +21,19 @@ public class CsvParameterEntrySerializerTest {
 
     private CsvParameterEntrySerializer serializer;
 
+    private SerializationConfig config = new SerializationConfig('"', ';', "\n");
+
     @Before
     public void initialize() {
-        SerializationConfig config = new SerializationConfig('"', ';', "\n");
-        serializer = new CsvParameterEntrySerializer(config, EditableParameterEntryMock.class);
+        serializer = new CsvParameterEntrySerializer(EditableParameterEntryMock.class);
     }
 
     @Test
-    public void testSerialization() {
+    public void testSerialization() throws SmartParamSerializationException {
         ParameterEntrySupplierMock supplier = new ParameterEntrySupplierMock(100, 20, 5);
-        List<String> header = Arrays.asList("h1", "h2", "h3", "h4", "h5");
 
         StringWriter stringWriter = new StringWriter();
-        serializer.serialize(stringWriter, header, supplier);
+        serializer.serialize(config, stringWriter, supplier);
 
         String result = stringWriter.toString();
         assertEquals(5, supplier.getCalledForNextBatchCount());
@@ -40,7 +41,7 @@ public class CsvParameterEntrySerializerTest {
     }
 
     @Test
-    public void testDeserialization() {
+    public void testDeserialization() throws SmartParamSerializationException {
         ParameterEntryPersisterMock persister = new ParameterEntryPersisterMock(10);
 
         StringBuilder csvBuilder = new StringBuilder("some;header;to;ignore\n");
@@ -50,7 +51,7 @@ public class CsvParameterEntrySerializerTest {
         }
 
         StringReader stringReader = new StringReader(csvBuilder.toString());
-        serializer.deserialize(stringReader, persister);
+        serializer.deserialize(config, stringReader, persister);
 
         assertEquals(5, persister.getWriteBatchCallCount());
         assertEquals(45, persister.getEntries().size());
@@ -58,17 +59,17 @@ public class CsvParameterEntrySerializerTest {
     }
 
     @Test
-    public void testSerializationAndDeserialization() {
+    public void testSerializationAndDeserialization() throws SmartParamSerializationException {
         ParameterEntrySupplierMock supplier = new ParameterEntrySupplierMock(100, 20, 5);
         List<String> header = Arrays.asList("h1", "h2", "h3", "h4", "h5");
 
         StringWriter stringWriter = new StringWriter();
-        serializer.serialize(stringWriter, header, supplier);
+        serializer.serialize(config, stringWriter, supplier);
         String csv = stringWriter.toString();
 
         ParameterEntryPersisterMock persister = new ParameterEntryPersisterMock(10);
         StringReader stringReader = new StringReader(csv);
-        serializer.deserialize(stringReader, persister);
+        serializer.deserialize(config, stringReader, persister);
 
         assertEquals(10, persister.getWriteBatchCallCount());
         assertEquals(100, persister.getEntries().size());

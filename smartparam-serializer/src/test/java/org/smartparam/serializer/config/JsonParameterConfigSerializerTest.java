@@ -20,7 +20,7 @@ public class JsonParameterConfigSerializerTest {
 
     @Before
     public void initialize() {
-        serializer = new JsonParameterConfigSerializer(EditableLevelMock.class);
+        serializer = new JsonParameterConfigSerializer(EditableParameterMock.class, EditableLevelMock.class);
     }
 
     @Test
@@ -45,9 +45,10 @@ public class JsonParameterConfigSerializerTest {
         String json = "{ \"name\": \"parameter\", \"cacheable\": \"true\","
                 + "\"multivalue\": \"true\", \"nullable\": \"true\", \"inputLevels\": 3 }";
 
-        Parameter parameter = serializer.deserialize(json, EditableParameterMock.class);
+        Parameter parameter = serializer.deserialize(json);
 
         assertNotNull(parameter);
+        assertNotNull(parameter.getEntries());
         assertEquals("parameter", parameter.getName());
         assertEquals(true, parameter.isCacheable());
         assertEquals(true, parameter.isMultivalue());
@@ -59,7 +60,7 @@ public class JsonParameterConfigSerializerTest {
     public void testDeserializeWithoutQuotationMarks() {
         String json = "{ name: \"parameter\" }";
 
-        Parameter parameter = serializer.deserialize(json, EditableParameterMock.class);
+        Parameter parameter = serializer.deserialize(json);
 
         assertNotNull(parameter);
         assertEquals("parameter", parameter.getName());
@@ -73,7 +74,7 @@ public class JsonParameterConfigSerializerTest {
                 + "{ \"label\": \"level3\", \"levelCreator\": \"l3LevelCreator\", \"type\": \"l3Type\", \"matcherCode\": \"l3Matcher\" }"
                 + "] }";
 
-        Parameter parameter = serializer.deserialize(json, EditableParameterMock.class);
+        Parameter parameter = serializer.deserialize(json);
 
         assertNotNull(parameter);
         assertEquals("parameter", parameter.getName());
@@ -92,7 +93,7 @@ public class JsonParameterConfigSerializerTest {
                 .withEntries(new ParameterEntryMock("v1", "v2", "v3")).get();
 
         String serializedConfig = serializer.serialize(parameter);
-        Parameter deserializedParameter = serializer.deserialize(serializedConfig, EditableParameterMock.class);
+        Parameter deserializedParameter = serializer.deserialize(serializedConfig);
 
         assertEquals("parameter", deserializedParameter.getName());
         assertEquals(true, deserializedParameter.isMultivalue());
@@ -101,6 +102,6 @@ public class JsonParameterConfigSerializerTest {
         assertEquals(3, deserializedParameter.getInputLevels());
         assertEquals(3, deserializedParameter.getLevels().size());
         assertEquals("creator1", deserializedParameter.getLevels().get(0).getLevelCreator());
-        assertNull(deserializedParameter.getEntries());
+        assertTrue(deserializedParameter.getEntries().isEmpty());
     }
 }
