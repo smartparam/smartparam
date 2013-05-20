@@ -570,6 +570,7 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
         return param;
     }
 
+    @Override
     public ParamPreparer getParamPreparer() {
         return paramPreparer;
     }
@@ -578,6 +579,7 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
         return paramPreparer != null;
     }
 
+    @Override
     public FunctionManager getFunctionManager() {
         return functionManager;
     }
@@ -586,10 +588,12 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
         return functionManager != null;
     }
 
+    @Override
     public void setParamPreparer(ParamPreparer paramPreparer) {
         this.paramPreparer = paramPreparer;
     }
 
+    @Override
     public void setFunctionManager(FunctionManager functionManager) {
         this.functionManager = functionManager;
     }

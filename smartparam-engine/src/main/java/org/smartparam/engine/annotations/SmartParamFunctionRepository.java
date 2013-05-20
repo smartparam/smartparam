@@ -7,6 +7,9 @@ import java.lang.annotation.Target;
 import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
 
 /**
+ * Marks function repository that should be added to function provider during
+ * initial scan. Function repositories are ordered, first function repository
+ * that can provide searched function is used.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
@@ -15,11 +18,35 @@ import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
 @SmartParamSortable
 public @interface SmartParamFunctionRepository {
 
+    /**
+     * Unique name of repository.
+     *
+     * @return name
+     */
     String value();
 
+    /**
+     * List of unique names, which will be used to register same instance of
+     * function repository multiple times.
+     *
+     * @return list of names
+     */
     String[] values() default {};
 
+    /**
+     * List of function repository function descriptors - each descriptor
+     * creates new instance of function repository.
+     *
+     * @see SmartParamObjectInstance
+     * @return instance descriptors
+     */
     SmartParamObjectInstance[] instances() default {};
 
+    /**
+     * Order of repository on repository list, lower number means repository will
+     * be used earlier.
+     *
+     * @return order, defaults to 100
+     */
     int order() default AnnotatedObjectsScanner.DEFAULT_ORDER_VALUE;
 }

@@ -3,6 +3,7 @@ package org.smartparam.provider.jdbc.model;
 import java.util.List;
 import java.util.Set;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  * @author Przemek Hertel
@@ -43,7 +44,7 @@ public class JdbcParameter implements Parameter {
 
     private List<JdbcParameterLevel> levels;
 
-    private Set<JdbcParameterEntry> entries;
+    private Set<ParameterEntry> entries;
 
     private boolean multivalue;
 
@@ -86,7 +87,7 @@ public class JdbcParameter implements Parameter {
     }
 
     @Override
-    public Set<JdbcParameterEntry> getEntries() {
+    public Set<ParameterEntry> getEntries() {
         return entries;
     }
 
@@ -163,7 +164,7 @@ public class JdbcParameter implements Parameter {
         this.levels = levels;
     }
 
-    public void setEntries(Set<JdbcParameterEntry> entries) {
+    public void setEntries(Set<ParameterEntry> entries) {
         this.entries = entries;
     }
 

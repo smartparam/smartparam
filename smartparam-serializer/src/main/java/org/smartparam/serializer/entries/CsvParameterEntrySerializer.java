@@ -100,7 +100,7 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
         } catch (IOException exception) {
             throw new SmartParamSerializationException("deserialization error", exception);
         } catch (ReflectiveOperationException reflectiveException) {
-            throw new SmartParamSerializationException("error creatign instance of " + instanceClass.getName() + ", maybe it has no default constructor?",
+            throw new SmartParamSerializationException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?",
                     reflectiveException);
         } finally {
             closeReader(csvReader);

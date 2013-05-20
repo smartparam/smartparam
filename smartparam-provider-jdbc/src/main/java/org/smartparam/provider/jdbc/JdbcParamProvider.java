@@ -1,5 +1,6 @@
 package org.smartparam.provider.jdbc;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
@@ -8,7 +9,6 @@ import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.provider.jdbc.dao.JdbcProviderDAO;
 import org.smartparam.provider.jdbc.model.JdbcParameter;
-import org.smartparam.provider.jdbc.model.JdbcParameterEntry;
 import org.smartparam.provider.jdbc.model.JdbcParameterLevel;
 
 /**
@@ -37,7 +37,7 @@ public class JdbcParamProvider implements ParamRepository {
     public Parameter load(String parameterName) {
         JdbcParameter p = dao.getParameter(parameterName);
         List<JdbcParameterLevel> levels = dao.getParameterLevels(p.getId());
-        Set<JdbcParameterEntry> entries = dao.getParameterEntries(p.getId());
+        Set<ParameterEntry> entries = new HashSet<ParameterEntry>(dao.getParameterEntries(p.getId()));
         
         p.setLevels(levels);
         p.setEntries(entries);

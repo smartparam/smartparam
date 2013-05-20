@@ -3,9 +3,9 @@ package org.smartparam.provider.jpa.model;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
-import org.smartparam.engine.model.Level;
 
 import static org.junit.Assert.*;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  * @author Przemek Hertel
@@ -199,7 +199,7 @@ public class JpaParameterTest {
     public void testSetEntries() {
 
         // konfiguracja testu
-        Set<JpaParameterEntry> entries = new HashSet<JpaParameterEntry>();
+        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
         // test
         par.setEntries(entries);

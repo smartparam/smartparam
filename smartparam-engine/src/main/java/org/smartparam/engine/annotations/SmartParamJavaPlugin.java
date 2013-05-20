@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Marks function that should be included in Java function repository as a plugin.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
@@ -13,5 +14,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SmartParamJavaPlugin {
 
+    /**
+     * Unique name of plugin.
+     *
+     * @return plugin name
+     */
     String value();
 }

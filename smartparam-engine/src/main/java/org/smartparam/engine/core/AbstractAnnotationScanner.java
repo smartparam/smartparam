@@ -16,18 +16,22 @@ public abstract class AbstractAnnotationScanner implements AnnotationScanner {
         properties = new AnnotationScannerProperties();
     }
 
+    @Override
     public void setScanAnnotations(boolean scanAnnotations) {
         properties.setScanAnnotations(scanAnnotations);
     }
 
+    @Override
     public void setPackagesToScan(List<String> packagesToScan) {
         properties.addPackagesToScan(packagesToScan);
     }
 
+    @Override
     public AnnotationScannerProperties getScannerProperties() {
         return properties;
     }
 
+    @Override
     public void setScannerProperties(AnnotationScannerProperties properties) {
         this.properties = properties;
     }

@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 @Entity
 @Table(name = "smartparam_parameter")
@@ -82,7 +83,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
     /**
      * Macierz parametru, czyli zbior wierszy z wzorcami dopasowania i wartosciami.
      */
-    private Set<JpaParameterEntry> entries;
+    private Set<ParameterEntry> entries;
 
     /**
      * Czy parametr wielowartosciowy, definiujacy wartosc na kilku poziomach wyjsciowych.
@@ -308,7 +309,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
      */
     @OneToMany(mappedBy = "parameter", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Override
-    public Set<JpaParameterEntry> getEntries() {
+    public Set<ParameterEntry> getEntries() {
         return entries;
     }
 
@@ -317,7 +318,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
      *
      * @param entries zbior wierszy parametru
      */
-    void setEntries(Set<JpaParameterEntry> entries) {
+    void setEntries(Set<ParameterEntry> entries) {
         this.entries = entries;
     }
 
@@ -326,12 +327,12 @@ public class JpaParameter implements Parameter, JpaModelObject {
      *
      * @param e wiersz parametru
      */
-    public void addEntry(JpaParameterEntry e) {
+    public void addEntry(ParameterEntry e) {
         if (entries == null) {
-            entries = new HashSet<JpaParameterEntry>();
+            entries = new HashSet<ParameterEntry>();
         }
 
-        e.setParameter(this);
+        ((JpaParameterEntry)e).setParameter(this);
         entries.add(e);
     }
 

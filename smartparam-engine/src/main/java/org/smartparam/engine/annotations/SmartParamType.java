@@ -6,7 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Marks types that should be added to matcher repository during initial
+ * scan.
  *
+ * @see org.smartparam.engine.core.type.Type
  * @author Adam Dubiel
  * @since 0.1.0
  */
@@ -14,9 +17,27 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SmartParamType {
 
+    /**
+     * Unique name of type.
+     *
+     * @return name
+     */
     String value();
 
-    String[] values() default{};
+    /**
+     * Returns array of type names, if it should be registered multiple
+     * times under different names.
+     *
+     * @return names
+     */
+    String[] values() default {};
 
+    /**
+     * Returns data to instantiate type class with different constructor
+     * arguments. Type objects will be registered under given names.
+     *
+     * @see SmartParamObjectInstance
+     * @return instance descriptors
+     */
     SmartParamObjectInstance[] instances() default {};
 }
