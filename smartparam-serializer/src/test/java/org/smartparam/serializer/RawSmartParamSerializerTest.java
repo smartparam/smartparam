@@ -1,6 +1,5 @@
 package org.smartparam.serializer;
 
-import java.io.StringReader;
 import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +8,6 @@ import static org.mockito.Mockito.*;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.test.mock.LevelMock;
 import org.smartparam.engine.test.mock.ParameterEntryMock;
-import org.smartparam.engine.test.mock.ParameterMock;
 import org.smartparam.engine.test.mock.ParameterMockBuilder;
 import org.smartparam.serializer.config.ParameterConfigSerializer;
 import org.smartparam.serializer.entries.ParameterEntrySerializer;
@@ -47,7 +45,7 @@ public class RawSmartParamSerializerTest {
         when(configSerializer.serialize(any(Parameter.class))).thenReturn("multi\nline");
 
         StringWriter stringWriter = new StringWriter();
-        serializer.serialize(null, parameter, stringWriter);
+        serializer.serialize(new StandardSerializationConfig(), parameter, stringWriter);
 
         String expected = "#multi\n"
                 + "#line\n"
@@ -55,20 +53,4 @@ public class RawSmartParamSerializerTest {
         assertEquals(expected, stringWriter.toString());
     }
 
-    @Test
-    public void testDeserialize() throws SmartParamSerializationException {
-        String config = "#{\n"
-                + "#name: \"parameter\"\n"
-                + "#}\n"
-                + "#EOF-config";
-        String commentlessConfig = "{name: \"parameter\"}";
-
-        Parameter expectedParameter = new ParameterMock();
-        when(configSerializer.deserialize(commentlessConfig)).thenReturn(expectedParameter);
-
-        StringReader stringReader = new StringReader(config);
-        Parameter parameter = serializer.deserialize(null, stringReader);
-
-        assertSame(expectedParameter, parameter);
-    }
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.serializer.model.EditableLevel;
+import org.smartparam.mgmt.model.EditableLevel;
 
 /**
  *

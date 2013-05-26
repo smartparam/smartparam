@@ -6,7 +6,7 @@ import org.smartparam.engine.model.Parameter;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface ParameterConfigSerializer {
+public interface ParameterConfigDeserializer {
 
-    String serialize(Parameter parameter);
+    Parameter deserialize(String configText);
 }

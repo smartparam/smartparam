@@ -1,4 +1,4 @@
-package org.smartparam.serializer.model;
+package org.smartparam.mgmt.model;
 
 import org.smartparam.engine.model.ParameterEntry;
 

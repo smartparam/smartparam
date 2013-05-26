@@ -11,9 +11,9 @@ import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.test.mock.LevelMock;
 import org.smartparam.engine.test.mock.ParameterEntryMock;
 import org.smartparam.engine.test.mock.ParameterMockBuilder;
-import org.smartparam.serializer.mock.EditableLevelMock;
-import org.smartparam.serializer.mock.EditableParameterEntryMock;
-import org.smartparam.serializer.mock.EditableParameterMock;
+import org.smartparam.mgmt.test.mock.EditableLevelMock;
+import org.smartparam.mgmt.test.mock.EditableParameterEntryMock;
+import org.smartparam.mgmt.test.mock.EditableParameterMock;
 
 /**
  *
@@ -23,19 +23,22 @@ public class StandardSmartParamSerializerTest {
 
     private StandardSmartParamSerializer serializer;
 
-    private SerializationConfig config;
+    private StandardSmartParamDeserializer deserializer;
+
+    private StandardSerializationConfig config;
 
     @Before
     public void initialize() {
-        serializer = new StandardSmartParamSerializer(EditableParameterMock.class, EditableLevelMock.class, EditableParameterEntryMock.class);
-        config = new SerializationConfig('"', ';', "\n");
+        serializer = new StandardSmartParamSerializer(EditableParameterEntryMock.class);
+        deserializer = new StandardSmartParamDeserializer(EditableParameterMock.class, EditableLevelMock.class, EditableParameterEntryMock.class);
+        config = new StandardSerializationConfig('"', ';', '#', "\n");
     }
 
     @Test
     public void testDeserializationFromTestFile() throws Exception {
         Reader reader = new InputStreamReader(this.getClass().getResourceAsStream("/sampleParam.csv"));
 
-        Parameter parameter = serializer.deserialize(config, reader);
+        Parameter parameter = deserializer.deserialize(config, reader);
 
         assertEquals("testParameter", parameter.getName());
         assertEquals(true, parameter.isCacheable());
@@ -61,7 +64,7 @@ public class StandardSmartParamSerializerTest {
         serializer.serialize(config, parameter, paramWriter);
 
         StringReader paramReader = new StringReader(paramWriter.toString());
-        Parameter processedParameter = serializer.deserialize(config, paramReader);
+        Parameter processedParameter = deserializer.deserialize(config, paramReader);
 
         assertEquals(parameter.getName(), processedParameter.getName());
         assertEquals(parameter.isMultivalue(), processedParameter.isMultivalue());

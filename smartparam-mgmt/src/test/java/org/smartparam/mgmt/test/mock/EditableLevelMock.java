@@ -1,7 +1,7 @@
-package org.smartparam.serializer.mock;
+package org.smartparam.mgmt.test.mock;
 
 import org.smartparam.engine.test.mock.LevelMock;
-import org.smartparam.serializer.model.EditableLevel;
+import org.smartparam.mgmt.model.EditableLevel;
 
 /**
  *

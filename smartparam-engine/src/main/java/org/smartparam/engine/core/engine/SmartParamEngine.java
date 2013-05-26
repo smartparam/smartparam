@@ -39,12 +39,13 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
 
     private SmartParamRuntimeConfigBuilder configBuilder = new SmartParamRuntimeConfigBuilder();
 
-    private ParamPreparer paramPreparer = null;
+    private ParamPreparer paramPreparer;
 
-    private FunctionManager functionManager = null;
+    private FunctionManager functionManager;
 
     private AssemblerProvider assemblerProvider;
 
+    @Override
     public SmartParamRuntimeConfig getConfiguration() {
         return configBuilder.buildConfig(this);
     }

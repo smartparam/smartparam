@@ -22,14 +22,15 @@
 
     <modules>
         <module>smartparam-engine</module>
-        <module>smartparam-provider-jpa</module>
-        <module>smartparam-demo</module>
-        <module>smartparam-provider-jdbc</module>
+        <module>smartparam-mgmt</module>
+        <module>smartparam-serializer</module>
         <module>smartparam-spring</module>
+        <module>smartparam-provider-jpa</module>
+        <module>smartparam-provider-jdbc</module>
+        <module>smartparam-demo</module>
         <module>smartparam-editor-backend</module>
         <module>smartparam-editor-spring</module>
         <module>smartparam-editor-client</module>
-        <module>smartparam-serializer</module>
     </modules>
 
     <dependencyManagement>

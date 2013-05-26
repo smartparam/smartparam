@@ -7,7 +7,11 @@ import java.util.Map;
 import org.smartparam.engine.core.exception.SmartParamConfigException;
 
 /**
+ * Takes class, which fields have been annotated with {@link ConfigElement}
+ * annotations and prepares it by injecting default values into empty properties,
+ * as well as checking if required properties are set.
  *
+ * @param <CONFIG_OBJECT> type of config object to prepare
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 public abstract class ConfigPreparer<CONFIG_OBJECT> {

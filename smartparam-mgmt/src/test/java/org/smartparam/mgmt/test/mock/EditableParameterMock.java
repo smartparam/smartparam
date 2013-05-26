@@ -1,7 +1,7 @@
-package org.smartparam.serializer.mock;
+package org.smartparam.mgmt.test.mock;
 
 import org.smartparam.engine.test.mock.ParameterMock;
-import org.smartparam.serializer.model.EditableParameter;
+import org.smartparam.mgmt.model.EditableParameter;
 
 /**
  *
