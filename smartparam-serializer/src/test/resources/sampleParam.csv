@@ -10,7 +10,7 @@
 #        { matcherCode: "matcher3", levelCreator: "levelCreator3", type: "type3" }
 #    ]
 # }
-#EOF-config
+##
 date_from;date_to;age;size;value
 dateFrom1;dateTo1;25;10;value1
 dateFrom2;dateTo2;25;10;value2

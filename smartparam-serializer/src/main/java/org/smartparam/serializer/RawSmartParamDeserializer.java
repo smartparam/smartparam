@@ -18,8 +18,6 @@ public class RawSmartParamDeserializer implements SmartParamDeserializer {
 
     private static final int PROBABLE_CONFIG_LENGTH = 400;
 
-    private static final String CONFIG_END_MARK = "EOF-config";
-
     private ParameterConfigDeserializer configDeserializer;
 
     private ParameterEntryDeserializer entriesDeserializer;
@@ -56,7 +54,7 @@ public class RawSmartParamDeserializer implements SmartParamDeserializer {
     private String readConfig(char commentChar, BufferedReader reader) throws IOException {
         StringBuilder config = new StringBuilder(PROBABLE_CONFIG_LENGTH);
 
-        String endOfConfigTag = commentChar + CONFIG_END_MARK;
+        String endOfConfigTag = commentChar + String.valueOf(commentChar);
 
         String line = reader.readLine();
         while (line != null) {

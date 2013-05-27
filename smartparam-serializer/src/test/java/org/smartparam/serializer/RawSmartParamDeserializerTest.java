@@ -35,8 +35,7 @@ public class RawSmartParamDeserializerTest {
     public void testDeserialize() throws SmartParamSerializationException {
         String config = "#{\n"
                 + "#name: \"parameter\"\n"
-                + "#}\n"
-                + "#EOF-config";
+                + "#}\n";
         String commentlessConfig = "{name: \"parameter\"}";
 
         Parameter expectedParameter = new ParameterMock();

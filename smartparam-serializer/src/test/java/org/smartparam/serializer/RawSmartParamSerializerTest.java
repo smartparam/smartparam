@@ -6,8 +6,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.test.mock.LevelMock;
-import org.smartparam.engine.test.mock.ParameterEntryMock;
 import org.smartparam.engine.test.mock.ParameterMockBuilder;
 import org.smartparam.serializer.config.ParameterConfigSerializer;
 import org.smartparam.serializer.entries.ParameterEntrySerializer;
@@ -34,13 +32,7 @@ public class RawSmartParamSerializerTest {
 
     @Test
     public void testSerialize() throws SmartParamSerializationException {
-        Parameter parameter = (new ParameterMockBuilder("parameter")).cacheable(true)
-                .multivalue(true).nullable(false).withInputLevels(3)
-                .withLevels(new LevelMock("creator1", "type", true, "matcher1"),
-                new LevelMock("creator2", "type", true, "matcher2"),
-                new LevelMock("creator3", "type", true, "matcher3"))
-                .withEntries(new ParameterEntryMock("pe0_1", "pe0_2", "pe0_3"),
-                new ParameterEntryMock("pe1_1", "pe1_2", "pe1_3")).get();
+        Parameter parameter = new ParameterMockBuilder("parameter").get();
 
         when(configSerializer.serialize(any(Parameter.class))).thenReturn("multi\nline");
 
@@ -49,7 +41,7 @@ public class RawSmartParamSerializerTest {
 
         String expected = "#multi\n"
                 + "#line\n"
-                + "#EOF-config\n";
+                + "##\n";
         assertEquals(expected, stringWriter.toString());
     }
 

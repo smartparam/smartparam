@@ -34,21 +34,5 @@ public class CsvParameterEntrySerializerTest {
         assertEquals(5, supplier.getCalledForNextBatchCount());
         assertTrue(result.contains("level_99_4"));
     }
-// TODO #ad move to integration test
-//    @Test
-//    public void testSerializationAndDeserialization() throws SmartParamSerializationException {
-//        ParameterEntrySupplierMock supplier = new ParameterEntrySupplierMock(100, 20, 5);
-//        List<String> header = Arrays.asList("h1", "h2", "h3", "h4", "h5");
-//
-//        StringWriter stringWriter = new StringWriter();
-//        serializer.serialize(config, stringWriter, supplier);
-//        String csv = stringWriter.toString();
-//
-//        ParameterEntryPersisterMock persister = new ParameterEntryPersisterMock(10);
-//        StringReader stringReader = new StringReader(csv);
-//        serializer.deserialize(config, stringReader, persister);
-//
-//        assertEquals(10, persister.getWriteBatchCallCount());
-//        assertEquals(100, persister.getEntries().size());
-//    }
+
 }

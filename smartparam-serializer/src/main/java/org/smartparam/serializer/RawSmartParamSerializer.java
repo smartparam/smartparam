@@ -17,8 +17,6 @@ public class RawSmartParamSerializer implements SmartParamSerializer {
 
     private static final int PROBABLE_COMMENT_SIGNS_COUNT = 50;
 
-    private static final String CONFIG_END_MARK = "EOF-config";
-
     private ParameterConfigSerializer configSerializer;
 
     private ParameterEntrySerializer entriesSerializer;
@@ -52,7 +50,7 @@ public class RawSmartParamSerializer implements SmartParamSerializer {
         for (String line : serializedConfig.split("\n")) {
             commentedConfig.append(commentChar).append(line).append("\n");
         }
-        commentedConfig.append(commentChar).append(CONFIG_END_MARK).append("\n");
+        commentedConfig.append(commentChar).append(commentChar).append("\n");
 
         return commentedConfig.toString();
     }
