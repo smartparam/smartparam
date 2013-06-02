@@ -12,9 +12,11 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  */
 public interface SmartParamDeserializer {
 
-    public Parameter deserialize(SerializationConfig config, Reader reader) throws SmartParamSerializationException;
+    Parameter deserialize(Reader reader) throws SmartParamSerializationException;
 
-    public Parameter deserializeConfig(SerializationConfig config, BufferedReader reader) throws SmartParamSerializationException;
+    Parameter deserializeConfig(BufferedReader reader) throws SmartParamSerializationException;
 
-    public void deserializeEntries(SerializationConfig config, BufferedReader reader, ParameterEntryPersister persister) throws SmartParamSerializationException;
+    void deserializeEntries(BufferedReader reader, ParameterEntryPersister persister) throws SmartParamSerializationException;
+
+    SerializationConfig getSerializationConfig();
 }

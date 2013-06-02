@@ -17,28 +17,31 @@ public class RawSmartParamSerializer implements SmartParamSerializer {
 
     private static final int PROBABLE_COMMENT_SIGNS_COUNT = 50;
 
+    private SerializationConfig serializationConfig;
+
     private ParameterConfigSerializer configSerializer;
 
     private ParameterEntrySerializer entriesSerializer;
 
-    public RawSmartParamSerializer(ParameterConfigSerializer configSerializer, ParameterEntrySerializer entriesSerializer) {
+    public RawSmartParamSerializer(SerializationConfig serializationConfig, ParameterConfigSerializer configSerializer, ParameterEntrySerializer entriesSerializer) {
+        this.serializationConfig = serializationConfig;
         this.configSerializer = configSerializer;
         this.entriesSerializer = entriesSerializer;
     }
 
     @Override
-    public void serialize(SerializationConfig config, Parameter parameter, Writer writer) throws SmartParamSerializationException {
+    public void serialize(Parameter parameter, Writer writer) throws SmartParamSerializationException {
         StandardParameterEntrySupplier supplier = new StandardParameterEntrySupplier(parameter);
-        serialize(config, parameter, writer, supplier);
+        serialize(parameter, writer, supplier);
     }
 
     @Override
-    public void serialize(SerializationConfig config, Parameter parameter, Writer writer, ParameterEntrySupplier supplier) throws SmartParamSerializationException {
+    public void serialize(Parameter parameter, Writer writer, ParameterEntrySupplier supplier) throws SmartParamSerializationException {
         String serializedConifg = configSerializer.serialize(parameter);
-        serializedConifg = appendCommentToConfig(config.getCommentChar(), serializedConifg);
+        serializedConifg = appendCommentToConfig(serializationConfig.getCommentChar(), serializedConifg);
         try {
             writer.append(serializedConifg);
-            entriesSerializer.serialize(config, writer, supplier);
+            entriesSerializer.serialize(serializationConfig, writer, supplier);
         } catch (IOException exception) {
             throw new SmartParamSerializationException("error while serializing parameter " + parameter.getName(), exception);
         }
@@ -53,5 +56,10 @@ public class RawSmartParamSerializer implements SmartParamSerializer {
         commentedConfig.append(commentChar).append(commentChar).append("\n");
 
         return commentedConfig.toString();
+    }
+
+    @Override
+    public SerializationConfig getSerializationConfig() {
+        return serializationConfig;
     }
 }

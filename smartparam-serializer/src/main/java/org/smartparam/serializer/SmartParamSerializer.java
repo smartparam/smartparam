@@ -11,7 +11,9 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  */
 public interface SmartParamSerializer {
 
-    public void serialize(SerializationConfig config, Parameter parameter, Writer writer) throws SmartParamSerializationException;
+    public void serialize(Parameter parameter, Writer writer) throws SmartParamSerializationException;
 
-    public void serialize(SerializationConfig config, Parameter parameter, Writer writer, ParameterEntrySupplier supplier) throws SmartParamSerializationException;
+    public void serialize(Parameter parameter, Writer writer, ParameterEntrySupplier supplier) throws SmartParamSerializationException;
+
+    SerializationConfig getSerializationConfig();
 }

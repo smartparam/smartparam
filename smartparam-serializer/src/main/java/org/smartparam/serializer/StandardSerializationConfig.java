@@ -1,18 +1,22 @@
 package org.smartparam.serializer;
 
+import java.nio.charset.Charset;
+
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 public class StandardSerializationConfig implements CsvSerializationConfig {
 
-    private static final String DEFAULT_END_OF_LINE = "\n";
+    public static final String DEFAULT_END_OF_LINE = "\n";
 
-    private static final char DEFAULT_CSV_DELIMITER = ';';
+    public static final char DEFAULT_CSV_DELIMITER = ';';
 
-    private static final char DEFAULT_CSV_QUOTE = '"';
+    public static final char DEFAULT_CSV_QUOTE = '"';
 
-    private static final char DEFAULT_COMMENT = '#';
+    public static final char DEFAULT_COMMENT = '#';
+
+    public static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
     private char csvQuote;
 
@@ -22,15 +26,18 @@ public class StandardSerializationConfig implements CsvSerializationConfig {
 
     private String endOfLine;
 
+    private Charset charset;
+
     public StandardSerializationConfig() {
-        this(DEFAULT_CSV_QUOTE, DEFAULT_CSV_DELIMITER, DEFAULT_COMMENT, DEFAULT_END_OF_LINE);
+        this(DEFAULT_CSV_QUOTE, DEFAULT_CSV_DELIMITER, DEFAULT_COMMENT, DEFAULT_END_OF_LINE, DEFAULT_CHARSET_NAME);
     }
 
-    public StandardSerializationConfig(char csvQuote, char csvDelimiter, char comment, String endOfLine) {
+    public StandardSerializationConfig(char csvQuote, char csvDelimiter, char comment, String endOfLine, String charset) {
         this.csvQuote = csvQuote;
         this.csvDelimiter = csvDelimiter;
         this.comment = comment;
         this.endOfLine = endOfLine;
+        this.charset = Charset.forName(charset);
     }
 
     @Override
@@ -51,5 +58,10 @@ public class StandardSerializationConfig implements CsvSerializationConfig {
     @Override
     public char getCommentChar() {
         return comment;
+    }
+
+    @Override
+    public Charset getCharset() {
+        return charset;
     }
 }

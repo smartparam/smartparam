@@ -13,15 +13,18 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
 
     private SmartParamConfig config;
 
+    @Override
     public ParamEngine getObject() throws Exception {
         SmartParamEngineFactory factory = new SmartParamEngineFactory();
         return factory.getParamEngine(config);
     }
 
+    @Override
     public Class<?> getObjectType() {
         return ParamEngine.class;
     }
 
+    @Override
     public boolean isSingleton() {
         return false;
     }

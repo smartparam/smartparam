@@ -27,7 +27,7 @@ public class RawSmartParamSerializerTest {
     public void initialize() {
         configSerializer = mock(ParameterConfigSerializer.class);
         entrySerializer = mock(ParameterEntrySerializer.class);
-        serializer = new RawSmartParamSerializer(configSerializer, entrySerializer);
+        serializer = new RawSmartParamSerializer(new StandardSerializationConfig(), configSerializer, entrySerializer);
     }
 
     @Test
@@ -37,12 +37,11 @@ public class RawSmartParamSerializerTest {
         when(configSerializer.serialize(any(Parameter.class))).thenReturn("multi\nline");
 
         StringWriter stringWriter = new StringWriter();
-        serializer.serialize(new StandardSerializationConfig(), parameter, stringWriter);
+        serializer.serialize(parameter, stringWriter);
 
         String expected = "#multi\n"
                 + "#line\n"
                 + "##\n";
         assertEquals(expected, stringWriter.toString());
     }
-
 }

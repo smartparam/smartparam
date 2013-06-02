@@ -17,7 +17,7 @@ public class CsvParameterEntryDeserializerTest {
 
     private CsvParameterEntryDeserializer deserializer;
 
-    private StandardSerializationConfig config = new StandardSerializationConfig('"', ';', '#', "\n");
+    private StandardSerializationConfig config = new StandardSerializationConfig();
 
     @Before
     public void initialize() {

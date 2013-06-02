@@ -1,0 +1,15 @@
+#{
+#    name: "param3",
+#    cacheable: "true",
+#    multivalue: "true",
+#    nullable: "false",
+#    inputLevels: 1,
+#    levels: [
+#        { matcherCode: "matcher1", levelCreator: "levelCreator1", type: "type1" },
+#    ]
+# }
+##
+sample;data
+1;1
+2;2
+3;3

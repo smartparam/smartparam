@@ -24,9 +24,10 @@
         <module>smartparam-engine</module>
         <module>smartparam-mgmt</module>
         <module>smartparam-serializer</module>
-        <module>smartparam-spring</module>
+        <module>smartparam-repository-fs</module>
         <module>smartparam-provider-jpa</module>
         <module>smartparam-provider-jdbc</module>
+        <module>smartparam-spring</module>
         <module>smartparam-demo</module>
         <module>smartparam-editor-backend</module>
         <module>smartparam-editor-spring</module>
@@ -86,6 +87,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>6.8.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
                 <version>1.9.0</version>
@@ -103,6 +111,13 @@
                 <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
                 <version>3.2.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

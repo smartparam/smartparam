@@ -28,7 +28,7 @@ public class RawSmartParamDeserializerTest {
     public void initialize() {
         configDeserializer = mock(ParameterConfigDeserializer.class);
         entryDeserializer = mock(ParameterEntryDeserializer.class);
-        deserializer = new RawSmartParamDeserializer(configDeserializer, entryDeserializer);
+        deserializer = new RawSmartParamDeserializer(new StandardSerializationConfig(), configDeserializer, entryDeserializer);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class RawSmartParamDeserializerTest {
         when(configDeserializer.deserialize(commentlessConfig)).thenReturn(expectedParameter);
 
         StringReader stringReader = new StringReader(config);
-        Parameter parameter = deserializer.deserialize(new StandardSerializationConfig(), stringReader);
+        Parameter parameter = deserializer.deserialize(stringReader);
 
         assertSame(expectedParameter, parameter);
     }

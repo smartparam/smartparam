@@ -25,20 +25,20 @@ public class StandardSmartParamSerializerTest {
 
     private StandardSmartParamDeserializer deserializer;
 
-    private StandardSerializationConfig config;
-
     @Before
     public void initialize() {
-        serializer = new StandardSmartParamSerializer(EditableParameterEntryMock.class);
-        deserializer = new StandardSmartParamDeserializer(EditableParameterMock.class, EditableLevelMock.class, EditableParameterEntryMock.class);
-        config = new StandardSerializationConfig('"', ';', '#', "\n");
+        SerializationConfig config = new StandardSerializationConfig('"', ';', '#', "\n", "UTF-8");
+        serializer = new StandardSmartParamSerializer(config, EditableParameterEntryMock.class);
+        deserializer = new StandardSmartParamDeserializer(
+                config,
+                EditableParameterMock.class, EditableLevelMock.class, EditableParameterEntryMock.class);
     }
 
     @Test
     public void testDeserializationFromTestFile() throws Exception {
         Reader reader = new InputStreamReader(this.getClass().getResourceAsStream("/sampleParam.csv"));
 
-        Parameter parameter = deserializer.deserialize(config, reader);
+        Parameter parameter = deserializer.deserialize(reader);
 
         assertEquals("testParameter", parameter.getName());
         assertEquals(true, parameter.isCacheable());
@@ -61,10 +61,10 @@ public class StandardSmartParamSerializerTest {
                 new ParameterEntryMock("pe1_1", "pe1_2", "pe1_3")).get();
 
         StringWriter paramWriter = new StringWriter();
-        serializer.serialize(config, parameter, paramWriter);
+        serializer.serialize(parameter, paramWriter);
 
         StringReader paramReader = new StringReader(paramWriter.toString());
-        Parameter processedParameter = deserializer.deserialize(config, paramReader);
+        Parameter processedParameter = deserializer.deserialize(paramReader);
 
         assertEquals(parameter.getName(), processedParameter.getName());
         assertEquals(parameter.isMultivalue(), processedParameter.isMultivalue());

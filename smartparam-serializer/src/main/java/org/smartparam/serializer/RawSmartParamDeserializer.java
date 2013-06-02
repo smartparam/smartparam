@@ -18,30 +18,33 @@ public class RawSmartParamDeserializer implements SmartParamDeserializer {
 
     private static final int PROBABLE_CONFIG_LENGTH = 400;
 
+    private SerializationConfig serializationConfig;
+
     private ParameterConfigDeserializer configDeserializer;
 
     private ParameterEntryDeserializer entriesDeserializer;
 
-    public RawSmartParamDeserializer(ParameterConfigDeserializer configDeserializer, ParameterEntryDeserializer entriesDeserializer) {
+    public RawSmartParamDeserializer(SerializationConfig serializationConfig, ParameterConfigDeserializer configDeserializer, ParameterEntryDeserializer entriesDeserializer) {
+        this.serializationConfig = serializationConfig;
         this.configDeserializer = configDeserializer;
         this.entriesDeserializer = entriesDeserializer;
     }
 
     @Override
-    public Parameter deserialize(SerializationConfig config, Reader reader) throws SmartParamSerializationException {
+    public Parameter deserialize(Reader reader) throws SmartParamSerializationException {
         BufferedReader bufferedReader = new BufferedReader(reader);
 
-        Parameter deserialiedParameter = deserializeConfig(config, bufferedReader);
+        Parameter deserialiedParameter = deserializeConfig(bufferedReader);
         StandardParameterEntryPersister persister = new StandardParameterEntryPersister(deserialiedParameter);
-        deserializeEntries(config, bufferedReader, persister);
+        deserializeEntries(bufferedReader, persister);
 
         return deserialiedParameter;
     }
 
     @Override
-    public Parameter deserializeConfig(SerializationConfig config, BufferedReader reader) throws SmartParamSerializationException {
+    public Parameter deserializeConfig(BufferedReader reader) throws SmartParamSerializationException {
         try {
-            String configString = readConfig(config.getCommentChar(), reader);
+            String configString = readConfig(serializationConfig.getCommentChar(), reader);
             Parameter deserialiedParameter = configDeserializer.deserialize(configString);
 
             return deserialiedParameter;
@@ -70,7 +73,12 @@ public class RawSmartParamDeserializer implements SmartParamDeserializer {
     }
 
     @Override
-    public void deserializeEntries(SerializationConfig config, BufferedReader reader, ParameterEntryPersister persister) throws SmartParamSerializationException {
-        entriesDeserializer.deserialize(config, reader, persister);
+    public void deserializeEntries(BufferedReader reader, ParameterEntryPersister persister) throws SmartParamSerializationException {
+        entriesDeserializer.deserialize(serializationConfig, reader, persister);
+    }
+
+    @Override
+    public SerializationConfig getSerializationConfig() {
+        return serializationConfig;
     }
 }

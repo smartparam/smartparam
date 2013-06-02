@@ -11,3 +11,5 @@
 /smartparam-serializer/target/
 /target/
 /smartparam-mgmt/target/
+/smartparam-repository-file/target/
+/smartparam-repository-fs/target/

@@ -12,10 +12,14 @@ import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
  */
 public class StandardSmartParamDeserializer extends RawSmartParamDeserializer {
 
-    public StandardSmartParamDeserializer(Class<? extends EditableParameter> parameterInstanceClass,
-            Class<? extends EditableLevel> levelInstanceClass, Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
+    public StandardSmartParamDeserializer(
+            SerializationConfig serializationConfig,
+            Class<? extends EditableParameter> parameterInstanceClass,
+            Class<? extends EditableLevel> levelInstanceClass,
+            Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
 
-        super(new JsonParameterConfigDeserializer(parameterInstanceClass, levelInstanceClass),
+        super(serializationConfig,
+                new JsonParameterConfigDeserializer(parameterInstanceClass, levelInstanceClass),
                 new CsvParameterEntryDeserializer(parameterEntryInstanceClass));
     }
 }

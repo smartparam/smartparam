@@ -10,8 +10,9 @@ import org.smartparam.mgmt.model.EditableParameterEntry;
  */
 public class StandardSmartParamSerializer extends RawSmartParamSerializer {
 
-    public StandardSmartParamSerializer(Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
-
-        super(new JsonParameterConfigSerializer(), new CsvParameterEntrySerializer());
+    public StandardSmartParamSerializer(
+            SerializationConfig serializationConfig,
+            Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
+        super(serializationConfig, new JsonParameterConfigSerializer(), new CsvParameterEntrySerializer());
     }
 }
