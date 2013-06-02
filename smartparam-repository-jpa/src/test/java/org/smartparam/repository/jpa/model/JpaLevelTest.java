@@ -1,5 +1,7 @@
-package org.smartparam.provider.jpa.model;
+package org.smartparam.repository.jpa.model;
 
+import org.smartparam.repository.jpa.model.JpaParameter;
+import org.smartparam.repository.jpa.model.JpaLevel;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;

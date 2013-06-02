@@ -26,7 +26,7 @@
         <property name="maxActive" value="10" />
     </bean>
 
-    <bean id="smartParamProvider" class="org.smartparam.provider.jpa.JpaLoader">
+    <bean id="smartParamRepository" class="org.smartparam.repository.jpa.JPAParamRepository">
         <constructor-arg name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 

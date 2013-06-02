@@ -1,4 +1,4 @@
-package org.smartparam.provider.jpa;
+package org.smartparam.repository.jpa;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +9,8 @@ import javax.persistence.TypedQuery;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.provider.jpa.model.JpaParameter;
-import org.smartparam.provider.jpa.model.JpaParameterEntry;
+import org.smartparam.repository.jpa.model.JpaParameter;
+import org.smartparam.repository.jpa.model.JpaParameterEntry;
 
 /**
  * Loads parameters using provided connection.
@@ -18,13 +18,13 @@ import org.smartparam.provider.jpa.model.JpaParameterEntry;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  * @since 0.1.0
  */
-public class JpaLoader implements ParamRepository {
+public class JPAParamRepository implements ParamRepository {
 
     private static final int FIND_ENTRIES_QUERY_LENGTH = 100;
 
     private EntityManager entityManager;
 
-    public JpaLoader(EntityManagerFactory entityManagerFactory) {
+    public JPAParamRepository(EntityManagerFactory entityManagerFactory) {
         this.entityManager = entityManagerFactory.createEntityManager();
     }
 

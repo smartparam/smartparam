@@ -1,5 +1,7 @@
-package org.smartparam.provider.jpa.model;
+package org.smartparam.repository.jpa.model;
 
+import org.smartparam.repository.jpa.model.JpaParameter;
+import org.smartparam.repository.jpa.model.JpaParameterEntry;
 import org.junit.Test;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.model.function.Function;

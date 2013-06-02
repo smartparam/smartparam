@@ -9,9 +9,9 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>smartparam-provider-jpa</artifactId>
+    <artifactId>smartparam-repository-jpa</artifactId>
 
-    <name>smartparam-provider-jpa</name>
+    <name>smartparam-repository-jpa</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -22,7 +22,7 @@
                         <value>org.smartparam.spring</value>
                     </list>
                 </property>
-                <property name="paramRepository" ref="smartParamProvider"/>
+                <property name="paramRepository" ref="smartParamRepository"/>
             </bean>
         </property>
     </bean>

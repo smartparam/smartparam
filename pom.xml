@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <name>smartparam</name>
-    <description/>
+    <description>SmartParam</description>
 
     <inceptionYear>2012</inceptionYear>
 
@@ -25,7 +25,7 @@
         <module>smartparam-mgmt</module>
         <module>smartparam-serializer</module>
         <module>smartparam-repository-fs</module>
-        <module>smartparam-provider-jpa</module>
+        <module>smartparam-repository-jpa</module>
         <module>smartparam-provider-jdbc</module>
         <module>smartparam-spring</module>
         <module>smartparam-demo</module>

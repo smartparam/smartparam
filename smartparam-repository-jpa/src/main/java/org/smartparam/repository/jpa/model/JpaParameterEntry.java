@@ -1,4 +1,4 @@
-package org.smartparam.provider.jpa.model;
+package org.smartparam.repository.jpa.model;
 
 import java.util.Arrays;
 import javax.persistence.*;
