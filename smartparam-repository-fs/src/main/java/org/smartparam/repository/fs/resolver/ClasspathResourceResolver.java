@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
@@ -22,6 +24,8 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 public class ClasspathResourceResolver implements ResourceResolver {
+
+    private static final Logger logger = LoggerFactory.getLogger(ClasspathResourceResolver.class);
 
     private String basePath;
 
@@ -37,6 +41,8 @@ public class ClasspathResourceResolver implements ResourceResolver {
 
     @Override
     public Map<String, String> findParameterResources() {
+        logger.info("scanning resources, filtering pattern: {}", filePattern);
+
         Reflections reflections = new Reflections(new ResourcesScanner());
         Set<String> resources = reflections.getResources(Pattern.compile(filePattern));
 
@@ -45,7 +51,9 @@ public class ClasspathResourceResolver implements ResourceResolver {
         for (String resource : resources) {
             resourceName = basePath + resource;
             parameterName = readParameterNameFromResource(resourceName);
+
             parameters.put(parameterName, resourceName);
+            logger.debug("found parameter {} in resource {}", parameterName, resourceName);
         }
 
         return parameters;

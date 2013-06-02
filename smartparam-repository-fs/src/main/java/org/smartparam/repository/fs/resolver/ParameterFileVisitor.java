@@ -10,6 +10,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.SmartParamDeserializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
@@ -19,6 +21,8 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
+
+    private static final Logger logger = LoggerFactory.getLogger(ParameterFileVisitor.class);
 
     private SmartParamDeserializer deserializer;
 
@@ -39,6 +43,7 @@ public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         String fileName = file.toFile().getCanonicalPath();
         if(!filePattern.matcher(fileName).matches() ) {
+            logger.debug("discarding file {}, does not match filtering pattern: {}", fileName, filePattern);
             return FileVisitResult.CONTINUE;
         }
 
@@ -47,6 +52,8 @@ public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
             reader = Files.newBufferedReader(file, deserializer.getSerializationConfig().getCharset());
             Parameter parameter = deserializer.deserializeConfig(reader);
             parameters.put(parameter.getName(), fileName);
+
+            logger.debug("found parameter {} in file {}", parameter.getName(), fileName);
         } catch (SmartParamSerializationException exception) {
             throw new IOException(exception);
         } finally {

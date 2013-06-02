@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
@@ -17,6 +19,8 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 public class FileResourceResolver implements ResourceResolver {
+
+    private static final Logger logger = LoggerFactory.getLogger(FileResourceResolver.class);
 
     private String basePath;
 
@@ -32,6 +36,7 @@ public class FileResourceResolver implements ResourceResolver {
 
     @Override
     public Map<String, String> findParameterResources() {
+        logger.info("scanning files at {}", basePath);
         try {
             fileVisitor.clearOldResults();
 
