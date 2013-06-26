@@ -3,14 +3,11 @@ package org.smartparam.engine.core.service;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionRepository;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.core.AnnotationScanner;
 import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
@@ -31,6 +28,7 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
 
     private FunctionCache functionCache;
 
+    @Override
     public void register(String type, int order, FunctionRepository repository) {
         RepositoryObjectKey objectKey = new RepositoryObjectKey(type, order);
 
@@ -41,14 +39,17 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
         repositories.put(objectKey, repository);
     }
 
+    @Override
     public Map<RepositoryObjectKey, FunctionRepository> registeredItems() {
         return repositories;
     }
 
+    @Override
     public void setItems(Map<String, FunctionRepository> items) {
         RepositoryHelper.registerItems(this, items);
     }
 
+    @Override
     public Function getFunction(String functionName) {
         Function function = functionCache.get(functionName);
 
@@ -85,10 +86,12 @@ public class SmartFunctionProvider extends AbstractAnnotationScanningRepository<
         repositories.put(key, repository);
     }
 
+    @Override
     public FunctionCache getFunctionCache() {
         return functionCache;
     }
 
+    @Override
     public void setFunctionCache(FunctionCache cache) {
         this.functionCache = cache;
     }

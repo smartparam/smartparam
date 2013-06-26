@@ -18,11 +18,13 @@ public class SmartFunctionManager extends AbstractAnnotationScanner implements F
 
     private FunctionProvider functionProvider = null;
 
+    @Override
     public Object invokeFunction(String name, Object... args) {
         Function function = functionProvider.getFunction(name);
         return invokeFunction(function, args);
     }
 
+    @Override
     public Object invokeFunction(Function function, Object... args) {
         FunctionInvoker invoker = invokerRepository.getInvoker(function);
 
@@ -37,18 +39,22 @@ public class SmartFunctionManager extends AbstractAnnotationScanner implements F
         }
     }
 
+    @Override
     public FunctionProvider getFunctionProvider() {
         return functionProvider;
     }
 
+    @Override
     public void setFunctionProvider(FunctionProvider functionProvider) {
         this.functionProvider = functionProvider;
     }
 
+    @Override
     public InvokerRepository getInvokerRepository() {
         return invokerRepository;
     }
 
+    @Override
     public void setInvokerRepository(InvokerRepository invokerRepository) {
         this.invokerRepository = invokerRepository;
     }

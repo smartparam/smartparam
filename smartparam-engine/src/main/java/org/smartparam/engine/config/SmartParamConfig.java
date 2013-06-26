@@ -3,7 +3,6 @@ package org.smartparam.engine.config;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;

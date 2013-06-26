@@ -70,6 +70,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
      * @param type typ rejestrowany pod podanym kodem
      * @throws ParamException jesli podany [code] jest juz zarejestrowany
      */
+    @Override
     public void register(String code, Type<?> type) {
         if (typeMap.containsKey(code)) {
             throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE, "other type has been already registered under " + code + " code");
@@ -78,6 +79,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
         typeMap.put(code, type);
     }
 
+    @Override
     public Map<String, Type<?>> registeredItems() {
         return Collections.unmodifiableMap(typeMap);
     }
@@ -88,6 +90,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
      * @param code kod typu
      * @return typ zarejestrowany pod tym kodem
      */
+    @Override
     public Type<?> getType(String code) {
         return typeMap.get(code);
     }
@@ -107,6 +110,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
      *
      * @param typeMap mapa
      */
+    @Override
     public void setItems(Map<String, Type<?>> typeMap) {
         RepositoryHelper.registerItems(this, typeMap);
     }

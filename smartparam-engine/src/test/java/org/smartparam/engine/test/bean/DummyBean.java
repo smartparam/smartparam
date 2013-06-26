@@ -1,4 +1,4 @@
-package org.smartparam.engine.test.beans;
+package org.smartparam.engine.test.bean;
 
 /**
  *

@@ -1,12 +1,14 @@
 package org.smartparam.engine.assemblers;
 
-import org.junit.Test;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.string.StringHolder;
 
-import static org.junit.Assert.assertSame;
+
+import static org.fest.assertions.api.Assertions.*;
+import static com.googlecode.catchexception.CatchException.*;
+import org.junit.Test;
 
 /**
  * @author Przemek Hertel
@@ -39,11 +41,11 @@ public class GenericEnumAssemblerTest {
 
             // test
             Object resultObject = asm.findEnum(value, ctx);
-            assertSame(expectedEnumObject, resultObject);
+            assertThat(resultObject).isSameAs(expectedEnumObject);
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testFindEnum__illegalCode() {
 
         // przygotowanie argumentow
@@ -51,7 +53,9 @@ public class GenericEnumAssemblerTest {
         ParamContext ctx = new DefaultContext().withResultClass(IdType.class);
 
         // niepoprawny kod, assembler powinien rzucic wyjatek
-        asm.findEnum(value, ctx);
+        catchException(asm).findEnum(value, ctx);
+
+        assertThat(caughtException()).isNotNull().isInstanceOf(IllegalArgumentException.class);
     }
 
     private enum LetterType {

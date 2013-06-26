@@ -1,8 +1,7 @@
 package org.smartparam.repository.fs.resolver;
 
 import java.util.Map;
-import static org.fest.assertions.Assertions.*;
-import static org.fest.assertions.MapAssert.*;
+import static org.fest.assertions.api.Assertions.*;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.mgmt.test.mock.EditableLevelMock;
 import org.smartparam.mgmt.test.mock.EditableParameterEntryMock;
@@ -52,11 +51,11 @@ public class ClasspathResourceResolverIntegrationTest extends ResolverInegration
     public void shouldReturnMappingOfParametersOntoTheirLocationsRelativeToBasePath() throws Exception {
         Map<String, String> parameters = resolver.findParameterResources();
 
-        assertThat(parameters).hasSize(3).includes(
+        assertThat(parameters).hasSize(3).contains(
                 entry("param1", createPath() + "param1.csv"),
                 entry("param2", BASE_PATH + createPath(PARAMETER_SUB_DIR_NAME) + "param2.csv"),
                 entry("param3", BASE_PATH + createPath(PARAMETER_SUB_DIR_NAME, PARAMETER_DEEP_SUB_DIR_NAME) + "param3.csv"))
-                .excludes(entry("param4_ignored", createPath() + "param4_ignored.txt"));;
+                .doesNotContain(entry("param4_ignored", createPath() + "param4_ignored.txt"));;
     }
 
     @Test(dataProvider = "parameterResourceToNameDataProvider")

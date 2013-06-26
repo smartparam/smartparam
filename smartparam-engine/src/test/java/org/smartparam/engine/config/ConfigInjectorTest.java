@@ -1,16 +1,17 @@
 package org.smartparam.engine.config;
 
-import java.util.HashMap;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.cache.FunctionCache;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.cache.MapFunctionCache;
-import org.smartparam.engine.core.repository.FunctionRepository;
 import org.smartparam.engine.core.repository.SmartTypeRepository;
 import org.smartparam.engine.core.service.SmartFunctionProvider;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.test.beans.config.DummyPreparableBean;
+import org.smartparam.engine.test.bean.config.DummyPreparableBean;
+import static org.smartparam.engine.test.builder.SmartFunctionProviderTestBuilder.*;
+import static org.smartparam.engine.test.builder.SmartTypeRepositoryTestBuilder.*;
+import static org.smartparam.engine.test.builder.SmartParamConfigTestBuilder.*;
 
 /**
  *
@@ -19,58 +20,51 @@ import org.smartparam.engine.test.beans.config.DummyPreparableBean;
 public class ConfigInjectorTest {
 
     @Test
-    public void testInjection_map() {
-        SmartParamConfig config = new SmartParamConfig();
-        config.setScanAnnotations(false);
-
-        HashMap<String, Type<?>> testTypes = new HashMap<String, Type<?>>();
-        testTypes.put("type1", mock(Type.class));
-        testTypes.put("type2", mock(Type.class));
-        config.setTypes(testTypes);
-
-        SmartTypeRepository typeRepository = new SmartTypeRepository();
-        typeRepository.setScanAnnotations(false);
-
+    public void shouldRegisterMapContentsAsRepositoryItems() {
+        // given
+        SmartParamConfig config = config().withAnnotationScan()
+                .withType("type1", mock(Type.class))
+                .withType("type2", mock(Type.class))
+                .build();
+        SmartTypeRepository typeRepository = typeRepository().withoutAnnotationScan().build();
         ConfigInjector injector = new ConfigInjector(config);
+
+        // when
         injector.injectConfig(typeRepository);
 
-        assertEquals(testTypes.size(), typeRepository.registeredItems().size());
-        assertTrue(typeRepository.registeredItems().keySet().containsAll(testTypes.keySet()));
+        // then
+        assertThat(typeRepository.registeredItems()).hasSize(2).containsKey("type1").containsKey("type2");
     }
 
     @Test
-    public void testInjection_object() {
-        SmartParamConfig config = new SmartParamConfig();
-        config.setScanAnnotations(false);
-
-        HashMap<String, FunctionRepository> testRepositories = new HashMap<String, FunctionRepository>();
-        testRepositories.put("repository_testInjection_1", mock(FunctionRepository.class));
-        testRepositories.put("repository_testInjection_2", mock(FunctionRepository.class));
-        config.setFunctionRepositories(testRepositories);
-
+    public void shouldInjectObjectFromConfigIntoRootObjectIfSetterAvailable() {
+        // given
         FunctionCache functionCache = new MapFunctionCache();
-        config.setFunctionCache(functionCache);
-
-        SmartFunctionProvider functionProvider = new SmartFunctionProvider();
-        functionProvider.setScanAnnotations(false);
+        SmartParamConfig config = config().withAnnotationScan()
+                .withFunctionCache(functionCache).build();
+        SmartFunctionProvider functionProvider = functionProvider().withAnnotationScan().build();
 
         ConfigInjector injector = new ConfigInjector(config);
+
+        // when
         injector.injectConfig(functionProvider);
 
-        assertEquals(testRepositories.size(), functionProvider.registeredItems().size());
-        assertSame(functionProvider.getFunctionCache(), functionCache);
+        // then
+        assertThat(functionProvider.getFunctionCache()).isSameAs(functionCache);
     }
 
     @Test
-    public void testRunningPostConstruct() {
-        SmartParamConfig config = new SmartParamConfig();
+    public void shouldRunPostConstructMethodOnRootObject() {
+        // given
+        SmartParamConfig config = config().build();
         DummyPreparableBean preparableBean = new DummyPreparableBean();
 
-        assertFalse(preparableBean.isPrepared());
-
         ConfigInjector injector = new ConfigInjector(config);
+
+        // when
         injector.injectConfig(preparableBean);
 
-        assertTrue(preparableBean.isPrepared());
+        // then
+        assertThat(preparableBean.isPrepared()).isTrue();
     }
 }

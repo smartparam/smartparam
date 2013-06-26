@@ -21,13 +21,15 @@ public abstract class AbstractAnnotationScanningRepository<REGISTERED_OBJECT> ex
     private boolean alreadyScanned = false;
 
     @PostConstruct
+    @Override
     public void scan() {
-        if (!alreadyScanned && getScannerProperties().isScanAnnotations()) {
+        if (!alreadyScanned && isScanAnnotations()) {
             alreadyScanned = true;
+
             AnnotatedObjectsScanner<REGISTERED_OBJECT> defaultsScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(createPackagesForDefaults());
             Map<RepositoryObjectKey, REGISTERED_OBJECT> objects = defaultsScanner.getAnnotatedObjects(getAnnotationClass());
 
-            AnnotatedObjectsScanner<REGISTERED_OBJECT> userScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(getScannerProperties().getPackagesToScan());
+            AnnotatedObjectsScanner<REGISTERED_OBJECT> userScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(getPackagesToScan());
             Map<RepositoryObjectKey, REGISTERED_OBJECT> userObjects = userScanner.getAnnotatedObjects(getAnnotationClass());
 
             // override defaults
@@ -41,7 +43,7 @@ public abstract class AbstractAnnotationScanningRepository<REGISTERED_OBJECT> ex
 
     private PackageList createPackagesForDefaults() {
         PackageList defaultPackages = new PackageList();
-        defaultPackages.addPackage(BASE_PACKAGE_PREFIX);
+        defaultPackages.addPackage(getPackagesToScan().getDefaultPackage());
         return defaultPackages;
     }
 

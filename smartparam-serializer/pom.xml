@@ -12,7 +12,7 @@
     <artifactId>smartparam-serializer</artifactId>
 
     <name>smartparam-serializer</name>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -29,6 +29,11 @@
             <groupId>org.smartparam</groupId>
             <artifactId>smartparam-mgmt</artifactId>
             <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <!-- JSON -->

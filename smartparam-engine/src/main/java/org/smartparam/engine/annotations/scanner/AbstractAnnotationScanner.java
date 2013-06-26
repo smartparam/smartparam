@@ -7,6 +7,7 @@ import org.reflections.Reflections;
 import org.reflections.scanners.Scanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import org.reflections.util.FilterBuilder;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamInitializationException;
@@ -37,9 +38,12 @@ abstract class AbstractAnnotationScanner {
      */
     protected Reflections getReflectionsForPackages(PackageList packageList, Scanner... customScanners) {
         ConfigurationBuilder builder = new ConfigurationBuilder();
-        for (String packageStem : packageList) {
-            builder.addUrls(ClasspathHelper.forPackage(packageStem));
+        FilterBuilder filterBuilder = new FilterBuilder();
+        for (String packageName : packageList) {
+            filterBuilder.includePackage(packageName);
+            builder.addUrls(ClasspathHelper.forPackage(packageName));
         }
+        builder.filterInputsBy(filterBuilder);
         builder.addScanners(customScanners);
 
         return builder.build();

@@ -12,10 +12,22 @@ import java.util.List;
  */
 public class PackageList implements Iterable<String> {
 
+    private static final String DEFAULT_PACKAGE = "org.smartparam.engine";
+
+    private String defaultPackage;
+
     /**
      * Internal representation of package list.
      */
     private List<String> packages = null;
+
+    public PackageList() {
+        defaultPackage = DEFAULT_PACKAGE;
+    }
+
+    public PackageList(String defaultPackage) {
+        this.defaultPackage = defaultPackage;
+    }
 
     /**
      * Created internal list if it does not exist.
@@ -36,6 +48,10 @@ public class PackageList implements Iterable<String> {
         packages.add(packageName);
     }
 
+    public String getDefaultPackage() {
+        return defaultPackage;
+    }
+
     /**
      * Return ordered list of all packages.
      *
@@ -53,7 +69,7 @@ public class PackageList implements Iterable<String> {
      */
     public void setPackages(List<String> packages) {
         createIfNull();
-        packages.clear();
+        this.packages.clear();
         this.packages.addAll(packages);
     }
 

@@ -1,4 +1,4 @@
-package org.smartparam.engine.test.beans.config;
+package org.smartparam.engine.test.bean.config;
 
 import javax.annotation.PostConstruct;
 

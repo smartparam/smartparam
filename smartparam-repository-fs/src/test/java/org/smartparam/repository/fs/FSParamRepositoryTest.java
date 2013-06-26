@@ -3,7 +3,7 @@ package org.smartparam.repository.fs;
 import java.util.HashMap;
 import java.util.Map;
 import static org.mockito.Mockito.*;
-import static org.fest.assertions.Assertions.*;
+import static org.fest.assertions.api.Assertions.*;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.SmartParamDeserializer;
 import org.testng.annotations.BeforeMethod;

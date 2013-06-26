@@ -2,6 +2,7 @@ package org.smartparam.engine.core;
 
 import java.util.List;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
+import org.smartparam.engine.bean.PackageList;
 
 /**
  *
@@ -16,9 +17,17 @@ public abstract class AbstractAnnotationScanner implements AnnotationScanner {
         properties = new AnnotationScannerProperties();
     }
 
+    public boolean isScanAnnotations() {
+        return properties.isScanAnnotations();
+    }
+
     @Override
     public void setScanAnnotations(boolean scanAnnotations) {
         properties.setScanAnnotations(scanAnnotations);
+    }
+
+    public PackageList getPackagesToScan() {
+        return properties.getPackagesToScan();
     }
 
     @Override
