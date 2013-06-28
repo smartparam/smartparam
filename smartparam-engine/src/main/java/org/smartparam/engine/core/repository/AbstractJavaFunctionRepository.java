@@ -20,7 +20,6 @@ import org.smartparam.engine.model.function.Function;
  * <li>cache dla refleksji przyspieszajacy znajdowanie metody okolo 5 razy
  * </ul>
  *
- * @param <FUNCTION>
  * @author Przemek Hertel
  * @since 1.0.0
  */

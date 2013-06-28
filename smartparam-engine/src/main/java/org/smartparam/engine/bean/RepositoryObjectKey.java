@@ -23,9 +23,9 @@ public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {
     private String key;
 
     /**
-     * Order number, defaults to 0.
+     * Order number, defaults to -1.
      */
-    private int order;
+    private int order = -1;
 
     /**
      * Create new repository key with only string key.
@@ -45,6 +45,10 @@ public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {
     public RepositoryObjectKey(String key, int order) {
         this.key = key;
         this.order = order;
+    }
+
+    public static RepositoryObjectKey withKey(String key) {
+        return new RepositoryObjectKey(key);
     }
 
     public String getKey() {
@@ -80,6 +84,9 @@ public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {
 
     @Override
     public String toString() {
+        if(order < 0) {
+            return key;
+        }
         return "[key: " + key + " order: " + order + "]";
     }
 }

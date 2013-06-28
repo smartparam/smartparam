@@ -1,7 +1,5 @@
 package org.smartparam.engine.core.cache;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.smartparam.engine.model.function.Function;
 
 /**
@@ -12,34 +10,5 @@ import org.smartparam.engine.model.function.Function;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class MapFunctionCache implements FunctionCache {
-
-    /**
-     * Bezpieczna watkowo mapa, sluzaca jako trwaly cache.
-     */
-    private Map<String, Function> map = new ConcurrentHashMap<String, Function>();
-
-    @Override
-    public void put(String functionName, Function function) {
-        map.put(functionName, function);
-    }
-
-    public void putAll(Map<String, Function> functions) {
-        map.putAll(functions);
-    }
-
-    @Override
-    public Function get(String functionName) {
-        return map.get(functionName);
-    }
-
-    @Override
-    public void invalidate(String functionName) {
-        map.remove(functionName);
-    }
-
-    @Override
-    public void invalidate() {
-        map.clear();
-    }
+public class MapFunctionCache extends MapCache<Function> implements FunctionCache {
 }

@@ -1,6 +1,7 @@
 package org.smartparam.engine.test.builder;
 
 import org.smartparam.engine.core.repository.SmartTypeRepository;
+import org.smartparam.engine.core.type.Type;
 
 /**
  *
@@ -24,6 +25,11 @@ public class SmartTypeRepositoryTestBuilder {
 
     public SmartTypeRepositoryTestBuilder withoutAnnotationScan() {
         typeRepository.setScanAnnotations(false);
+        return this;
+    }
+
+    public SmartTypeRepositoryTestBuilder withType(String name, Type<?> type) {
+        typeRepository.register(name, type);
         return this;
     }
 }

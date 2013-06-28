@@ -17,59 +17,12 @@ import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.RepositoryHelper;
 
-/**
- * Klasa zapewnia dostep do systemu typow silnika. Jednoczesnie jest to
- * centralny zarzadca systemu typow. Silnik korzysta z jednej instancji tego
- * providera.
- * <p>
- * Provider mozna skonfigurowac programowo, poprzez metode
- * {@link #registerType(java.lang.String, org.smartparam.engine.core.type.AbstractType)},
- * lub deklaratywnie z uzyciem metody {@link #setTypeMap(java.util.Map)}.
- * <p>
- * Konfiguracja programowa:
- * <pre>
- *  TypeProvider tp = new TypeProvider();
- *  tp.registerType("string", new StringType());
- *  tp.registerType("integer", new IntegerType());
- *  ...
- *  ParamEngine engine = new ParamEngine();
- *  engine.setTypeProvider(tp);
- * </pre>
- *
- * Przyklad konfiguracji deklaratywnej z wykorzystaniem Springa:
- * <pre>
- *   [bean id="typeProvider" class="org.smartparam.engine.core.config.TypeProvider"]
- *     [property name="typeMap"]
- *       [map]
- *         [entry key="string" value-ref="stringType" /]
- *         [entry key="integer" value-ref="integerType" /]
- *       [/map]
- *     [/property]
- *     [bean id="stringType" class="org.smartparam.engine.types.string.StringType" /]
- *     [bean id="integerType" class="org.smartparam.engine.types.integer.IntegerType" /]
- *   [/bean]
- * </pre>
- *
- * Kazdy typ {@link AbstractType} jest zarejestrowany pod unikalnym kodem.
- *
- * @author Adam Dubiel
- */
 public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Type<?>> implements TypeRepository {
 
     private Logger logger = LoggerFactory.getLogger(SmartTypeRepository.class);
 
-    /**
-     * Przechowuje typu pod unikalnymi kodami.
-     */
     private Map<String, Type<?>> typeMap = new HashMap<String, Type<?>>();
 
-    /**
-     * Rejestruje podany typ i kojarzy go z podanym kodem.
-     *
-     * @param code kod jednoznacznie reprezentujacy typ (case sensitive)
-     * @param type typ rejestrowany pod podanym kodem
-     * @throws ParamException jesli podany [code] jest juz zarejestrowany
-     */
     @Override
     public void register(String code, Type<?> type) {
         if (typeMap.containsKey(code)) {
@@ -84,12 +37,6 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
         return Collections.unmodifiableMap(typeMap);
     }
 
-    /**
-     * Zwraca typ zarejestrowany pod podanym kodem (case sensitive).
-     *
-     * @param code kod typu
-     * @return typ zarejestrowany pod tym kodem
-     */
     @Override
     public Type<?> getType(String code) {
         return typeMap.get(code);
@@ -105,11 +52,6 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
         register(key.getKey(), objectToRegister);
     }
 
-    /**
-     * Setter dla mapy typeMap.
-     *
-     * @param typeMap mapa
-     */
     @Override
     public void setItems(Map<String, Type<?>> typeMap) {
         RepositoryHelper.registerItems(this, typeMap);

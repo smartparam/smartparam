@@ -1,17 +1,12 @@
 package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
-import org.smartparam.engine.bean.AnnotationScannerProperties;
 import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
-import org.smartparam.engine.util.RepositoryHelper;
 
 /**
  * @author Przemek Hertel
@@ -19,21 +14,26 @@ import org.smartparam.engine.util.RepositoryHelper;
  */
 public class SmartInvokerRepository extends AbstractAnnotationScanningRepository<FunctionInvoker> implements InvokerRepository {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private MapRepository<FunctionInvoker> innerRepository = new MapRepository<FunctionInvoker>(FunctionInvoker.class);
 
-    private Map<String, FunctionInvoker> invokers = new HashMap<String, FunctionInvoker>();
-
+    @Override
     public void register(String code, FunctionInvoker invoker) {
-        logger.info("registering function invoker: {} -> {}", code, invoker.getClass());
-        invokers.put(code, invoker);
+        innerRepository.register(code, invoker);
     }
 
+    @Override
     public FunctionInvoker getInvoker(Function function) {
-        return invokers.get(function.getType());
+        return innerRepository.getItem(function.getType());
     }
 
+    @Override
     public Map<String, FunctionInvoker> registeredItems() {
-        return Collections.unmodifiableMap(invokers);
+        return innerRepository.getItemsUnordered();
+    }
+
+    @Override
+    public void setItems(Map<String, FunctionInvoker> invokers) {
+        innerRepository.setItemsUnordered(invokers);
     }
 
     @Override
@@ -44,9 +44,5 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
     @Override
     protected void handleRegistration(RepositoryObjectKey key, FunctionInvoker functionInvoker) {
         register(key.getKey(), functionInvoker);
-    }
-
-    public void setItems(Map<String, FunctionInvoker> map) {
-        RepositoryHelper.registerItems(this, map);
     }
 }
