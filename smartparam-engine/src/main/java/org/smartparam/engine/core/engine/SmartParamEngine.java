@@ -6,7 +6,6 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import org.apache.commons.lang3.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
@@ -307,7 +306,7 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
     private String[] classNames(Object... args) {
         String[] names = new String[args.length];
         for (int i = 0; i < args.length; ++i) {
-            names[i] = ClassUtils.getShortClassName(args[i], "null");
+            names[i] = args[i] != null ? args[i].getClass().getSimpleName() : "null";
         }
         return names;
     }

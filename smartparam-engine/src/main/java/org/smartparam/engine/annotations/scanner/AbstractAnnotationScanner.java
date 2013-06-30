@@ -2,7 +2,6 @@ package org.smartparam.engine.annotations.scanner;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import org.apache.commons.lang3.ClassUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanner;
 import org.reflections.util.ClasspathHelper;
@@ -78,7 +77,7 @@ abstract class AbstractAnnotationScanner {
             return defaultValueMethod.invoke(annotation);
         } catch (Exception exception) {
             throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR,
-                    exception, "no " + methodName + " field found on annotation " + ClassUtils.getShortCanonicalName(annotation.annotationType()));
+                    exception, "no " + methodName + " field found on annotation " + annotation.annotationType().getSimpleName());
         }
     }
 }

@@ -2,7 +2,6 @@ package org.smartparam.engine.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Klasa zawiera metody pomocnicze i narzedziowe wykorzystywane przez silnik.
@@ -17,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 public abstract class EngineUtil {
 
     public static boolean hasText(String text) {
-        return StringUtils.isNotBlank(text);
+        return text != null && !text.trim().isEmpty();
     }
 
     /**
@@ -110,6 +109,20 @@ public abstract class EngineUtil {
     }
 
     public static String trimAllWhitespace(final String str) {
-        return StringUtils.deleteWhitespace(str);
+        if (!hasText(str)) {
+            return str;
+        }
+        int sz = str.length();
+        char[] chs = new char[sz];
+        int count = 0;
+        for (int i = 0; i < sz; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                chs[count++] = str.charAt(i);
+            }
+        }
+        if (count == sz) {
+            return str;
+        }
+        return new String(chs, 0, count);
     }
 }

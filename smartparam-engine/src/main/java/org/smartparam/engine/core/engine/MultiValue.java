@@ -3,7 +3,6 @@ package org.smartparam.engine.core.engine;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
-import org.apache.commons.lang3.ClassUtils;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -30,56 +29,6 @@ import org.smartparam.engine.util.Printer;
  * @since 1.0.0
  */
 public class MultiValue {
-
-    /**
-     * Numer pierwszej kolumny.
-     */
-    public static final int FIRST_COLUMN = 1;
-
-    /**
-     * Numer drugiej kolumny.
-     */
-    public static final int SECOND_COLUMN = 2;
-
-    /**
-     * Numer trzeciej kolumny.
-     */
-    public static final int THIRD_COLUMN = 3;
-
-    /**
-     * Numer czwartej kolumny.
-     */
-    public static final int FOURTH_COLUMN = 4;
-
-    /**
-     * Numer piatej kolumny.
-     */
-    public static final int FIFTH_COLUMN = 5;
-
-    /**
-     * Numer szostej kolumny.
-     */
-    public static final int SIXTH_COLUMN = 6;
-
-    /**
-     * Numer siodmej kolumny.
-     */
-    public static final int SEVETH_COLUMN = 7;
-
-    /**
-     * Numer osmej kolumny.
-     */
-    public static final int EIGHTH_COLUMN = 8;
-
-    /**
-     * Numer dziewiatej kolumny.
-     */
-    public static final int NINTH_COLUMN = 9;
-
-    /**
-     * Numer dziesiatej kolumny.
-     */
-    public static final int TENTH_COLUMN = 10;
 
     /**
      * Wartosci poziomow wyjsciowych.
@@ -429,7 +378,7 @@ public class MultiValue {
      * @return krotka nazwa klasy lub <tt>null</tt>, gdy obiekt rowny </tt>null</tt>
      */
     private String printClass(Object obj) {
-        return ClassUtils.getShortClassName(obj, null);
+        return obj != null ? obj.getClass().getSimpleName() : null;
     }
 
     @Override

@@ -5,7 +5,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang3.ClassUtils;
 import org.reflections.Reflections;
 import org.smartparam.engine.annotations.SmartParamObjectInstance;
 import org.smartparam.engine.annotations.SmartParamSortable;
@@ -189,7 +188,7 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
             return object;
         } catch (Exception exception) {
             throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no default constructor "
-                    + "found for class " + ClassUtils.getShortClassName(objectClass));
+                    + "found for class " + objectClass.getCanonicalName());
         }
     }
 
@@ -225,7 +224,7 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
             return object;
         } catch (ReflectiveOperationException exception) {
             throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no String[" + constructorArgCount + "] constructor "
-                    + "found for class " + ClassUtils.getShortClassName(objectClass));
+                    + "found for class " + objectClass.getCanonicalName());
         }
     }
 
@@ -250,7 +249,7 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
         } catch (ReflectiveOperationException exception) {
             throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "no "
                     + SET_ANNOTATION_SCANNER_PROPERTIES_METHOD_NAME + " method found for class "
-                    + ClassUtils.getShortClassName(objectClass));
+                    + objectClass.getCanonicalName());
         }
     }
 
@@ -298,7 +297,7 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
             return (SmartParamObjectInstance[]) instanceDescriptorsMethod.invoke(annotation);
         } catch (ReflectiveOperationException exception) {
             throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR,
-                    exception, "no " + INSTANCES_METHOD_NAME + " field found on annotation " + ClassUtils.getShortCanonicalName(annotation.annotationType()));
+                    exception, "no " + INSTANCES_METHOD_NAME + " field found on annotation " + annotation.annotationType().getSimpleName());
         }
     }
 }

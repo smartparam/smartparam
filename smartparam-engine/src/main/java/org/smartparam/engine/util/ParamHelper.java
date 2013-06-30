@@ -2,7 +2,6 @@ package org.smartparam.engine.util;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
-import org.apache.commons.lang3.ClassUtils;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
@@ -21,7 +20,7 @@ public abstract class ParamHelper {
         } catch (RuntimeException e) {
             throw new SmartParamException(
                     SmartParamErrorCode.TYPE_DECODING_FAILURE, e,
-                    "Failed to decode text [" + text + "] into type [" + ClassUtils.getShortClassName(type, null) + "]");
+                    "Failed to decode text [" + text + "] into type [" + type != null ? type.getClass().getSimpleName() : null + "]");
         }
     }
 

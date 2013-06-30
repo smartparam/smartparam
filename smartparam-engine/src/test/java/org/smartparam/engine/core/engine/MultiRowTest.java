@@ -1,16 +1,12 @@
 package org.smartparam.engine.core.engine;
 
-import java.math.BigDecimal;
 import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.types.integer.IntegerHolder;
-import org.smartparam.engine.types.number.NumberHolder;
 import org.smartparam.engine.types.string.StringHolder;
-import org.smartparam.engine.util.Formatter;
 
 /**
  * @author Przemek Hertel
@@ -118,46 +114,6 @@ public class MultiRowTest {
                 assertEquals(SmartParamErrorCode.INDEX_OUT_OF_BOUNDS, e.getErrorCode());
             }
         }
-    }
-
-    @Test
-    public void testToString() {
-
-        // zaleznosci
-        Object[] row1 = {
-            new StringHolder("STR1"),
-            new IntegerHolder[]{new IntegerHolder(1L), new IntegerHolder(2L), new IntegerHolder(3L)},
-            new NumberHolder(new BigDecimal("1.23"))
-        };
-        Object[] row2 = {
-            new StringHolder("STR2"),
-            new IntegerHolder[]{new IntegerHolder(99L)},
-            new NumberHolder(new BigDecimal("2.99"))
-        };
-        Object[] row3 = {
-            new StringHolder("STR3"),
-            new IntegerHolder[]{},
-            new NumberHolder(null)
-        };
-
-        // konfiguracja
-        MultiRow mr = new MultiRow(3);
-        mr.setRow(0, new MultiValue(row1));
-        mr.setRow(1, new MultiValue(row2));
-        mr.setRow(2, new MultiValue(row3));
-
-        // oczekiwany wynik
-        String expectedResult = Formatter.NL
-                + "MultiRow (3)" + Formatter.NL
-                + "  1. [STR1, [1, 2, 3], 1.23]" + Formatter.NL
-                + "  2. [STR2, [99], 2.99]" + Formatter.NL
-                + "  3. [STR3, [], null]" + Formatter.NL;
-
-        // test
-        String result = mr.toString();
-
-        // weryfikacja
-        assertEquals(expectedResult, result);
     }
 
     private void verifyMultiValue(MultiValue mv, Object... values) {

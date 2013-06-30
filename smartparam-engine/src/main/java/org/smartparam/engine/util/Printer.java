@@ -3,7 +3,6 @@ package org.smartparam.engine.util;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Przemek Hertel
@@ -128,6 +127,18 @@ public abstract class Printer {
      * tak by zajmowala {@link #NUMBER_WIDTH} znakow.
      */
     private static String padNumber(int n) {
-        return StringUtils.leftPad(String.valueOf(n), NUMBER_WIDTH);
+        String numberString = String.valueOf(n);
+
+        if(NUMBER_WIDTH > numberString.length()) {
+            StringBuilder builder = new StringBuilder(NUMBER_WIDTH);
+            for(int i = 0; i < NUMBER_WIDTH - numberString.length(); ++i) {
+                builder.append(" ");
+            }
+            builder.append(numberString);
+            return builder.toString();
+        }
+        else {
+            return numberString;
+        }
     }
 }

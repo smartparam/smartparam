@@ -2,7 +2,6 @@ package org.smartparam.engine.core.type;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import org.apache.commons.lang3.ClassUtils;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
@@ -167,7 +166,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(EXPECTED_TOSTR_LEN);
-        sb.append(ClassUtils.getShortClassName(this.getClass()));
+        sb.append(this.getClass().getSimpleName());
         sb.append('[').append(getValue()).append(']');
         return sb.toString();
     }
