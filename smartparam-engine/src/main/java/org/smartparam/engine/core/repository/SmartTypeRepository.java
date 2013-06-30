@@ -1,45 +1,38 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamType;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.util.RepositoryHelper;
 
+/**
+ *
+ * @author Adam Dubiel <dubiel.adam@gmail.com>
+ */
 public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Type<?>> implements TypeRepository {
 
-    private Logger logger = LoggerFactory.getLogger(SmartTypeRepository.class);
-
-    private Map<String, Type<?>> typeMap = new HashMap<String, Type<?>>();
+    private MapRepository<Type<?>> innerRepository = new MapRepository<Type<?>>(Type.class);
 
     @Override
     public void register(String code, Type<?> type) {
-        if (typeMap.containsKey(code)) {
-            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE, "other type has been already registered under " + code + " code");
-        }
-        logger.info("registering type: {} -> {}", code, type.getClass());
-        typeMap.put(code, type);
+        innerRepository.registerUnique(code, type);
     }
 
     @Override
     public Map<String, Type<?>> registeredItems() {
-        return Collections.unmodifiableMap(typeMap);
+        return innerRepository.getItemsUnordered();
     }
 
     @Override
     public Type<?> getType(String code) {
-        return typeMap.get(code);
+        return innerRepository.getItem(code);
+    }
+
+    @Override
+    public void setItems(Map<String, Type<?>> typeMap) {
+        innerRepository.setItemsUnordered(typeMap);
     }
 
     @Override
@@ -50,10 +43,5 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
     @Override
     protected void handleRegistration(RepositoryObjectKey key, Type<?> objectToRegister) {
         register(key.getKey(), objectToRegister);
-    }
-
-    @Override
-    public void setItems(Map<String, Type<?>> typeMap) {
-        RepositoryHelper.registerItems(this, typeMap);
     }
 }

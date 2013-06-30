@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
@@ -21,11 +23,11 @@ public class MapRepository<V> {
 
     private Map<RepositoryObjectKey, V> repositoryMap;
 
-    public MapRepository(Class<V> containedClass) {
+    public MapRepository(Class<?> containedClass) {
         this(containedClass, new HashMap<RepositoryObjectKey, V>());
     }
 
-    public MapRepository(Class<V> containedClass, Map<RepositoryObjectKey, V> repositoryMapInstance) {
+    public MapRepository(Class<?> containedClass, Map<RepositoryObjectKey, V> repositoryMapInstance) {
         this.containedClass = containedClass;
         repositoryMap = repositoryMapInstance;
     }
@@ -45,6 +47,14 @@ public class MapRepository<V> {
 
     public void register(String key, V value) {
         register(RepositoryObjectKey.withKey(key), value);
+    }
+
+    public void registerUnique(String key, V value) {
+        if(repositoryMap.containsKey(RepositoryObjectKey.withKey(key))) {
+            throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE,
+                    containedClass.getSimpleName() + " repository already contains item with key " + key);
+        }
+        register(key, value);
     }
 
     public void setItems(Map<RepositoryObjectKey, V> items) {

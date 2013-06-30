@@ -3,6 +3,7 @@ package org.smartparam.engine.test.assertions;
 import java.util.Map;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.ItemsContainer;
+import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.exception.SmartParamException;
 
@@ -26,6 +27,10 @@ public class Assertions extends org.fest.assertions.api.Assertions {
 
     public static ParamEngineAssert assertThat(ParamEngine engine) {
         return new ParamEngineAssert(engine);
+    }
+
+    public static MapRepositoryAssert assertThat(MapRepository<?> repository) {
+        return new MapRepositoryAssert(repository);
     }
 
 }
