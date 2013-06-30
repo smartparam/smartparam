@@ -4,11 +4,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import org.reflections.Reflections;
-import org.reflections.scanners.MethodAnnotationsScanner;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
 /**
  * Annotation scanner util specializing in scanning methods.
@@ -18,6 +17,8 @@ import org.smartparam.engine.core.exception.SmartParamException;
  * @since 0.1.0
  */
 public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
+
+    private ReflectionsScanner reflectionsScanner = new ReflectionsScanner();
 
     /**
      * Return all methods annotated with given annotation that can be found in
@@ -33,10 +34,8 @@ public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
     public Map<String, Method> getAnnotatedMethods(PackageList packagesToScan, Class<? extends Annotation> annotationClass) {
         Map<String, Method> methods = new HashMap<String, Method>();
 
-        Reflections reflections = getReflectionsForPackages(packagesToScan, new MethodAnnotationsScanner());
-
         String pluginName;
-        for (Method method : reflections.getMethodsAnnotatedWith(annotationClass)) {
+        for (Method method : reflectionsScanner.findMethodsAnnotatedWith(annotationClass, packagesToScan.getPackages())) {
             pluginName = extractValue(method.getAnnotation(annotationClass));
             checkForDuplicates(methods, pluginName, method);
             methods.put(pluginName, method);
@@ -50,8 +49,8 @@ public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
      * does {@link SmartParamException} with {@link SmartParamErrorCode#NON_UNIQUE_ITEM_CODE}
      * error code is thrown.
      *
-     * @param methods map of registered methods
-     * @param newPluginName new method name, should be unique in methods map
+     * @param methods         map of registered methods
+     * @param newPluginName   new method name, should be unique in methods map
      * @param newPluginMethod method, for exception reporting
      */
     private void checkForDuplicates(Map<String, Method> methods, String newPluginName, Method newPluginMethod) {
@@ -60,5 +59,9 @@ public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
                     "plugin " + newPluginName + " found at method " + newPluginMethod.toGenericString() + " was already registered using "
                     + methods.get(newPluginName).toGenericString() + " method");
         }
+    }
+
+    public void setReflectionsScanner(ReflectionsScanner reflectionsScanner) {
+        this.reflectionsScanner = reflectionsScanner;
     }
 }

@@ -55,15 +55,9 @@
             </dependency>
 
             <dependency>
-                <groupId>org.reflections</groupId>
-                <artifactId>reflections</artifactId>
-                <version>0.9.9-RC1</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.1</version>
+                <groupId>eu.infomas</groupId>
+                <artifactId>annotation-detector</artifactId>
+                <version>3.0.1</version>
             </dependency>
 
             <!-- serialization -->

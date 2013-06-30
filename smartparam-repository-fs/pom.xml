@@ -37,11 +37,6 @@
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-        </dependency>
-
         <!-- TEST -->
         <dependency>
             <groupId>org.smartparam</groupId>

@@ -5,7 +5,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import org.reflections.Reflections;
+import java.util.Set;
 import org.smartparam.engine.annotations.SmartParamObjectInstance;
 import org.smartparam.engine.annotations.SmartParamSortable;
 import org.smartparam.engine.bean.AnnotationScannerProperties;
@@ -13,6 +13,7 @@ import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.AnnotationScanner;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamInitializationException;
+import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
 /**
  * Annotation scanner util supporting SmartParam* annotations. It not only scans
@@ -84,6 +85,8 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
      */
     private AnnotationScannerProperties propertiesToInject;
 
+    private ReflectionsScanner reflectionsScanner = new ReflectionsScanner();
+
     /**
      * Constructor that takes list of packages to scan, same list of packages
      * will be injected to objects if they happen to be {@link AnnotationScanner}.
@@ -109,7 +112,8 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
      * @return map of objects
      */
     public Map<RepositoryObjectKey, OBJECT> getAnnotatedObjects(Class<? extends Annotation> annotationClass) {
-        Map<RepositoryObjectKey, OBJECT> objects = instantiateObjectsFromAnotations(getReflectionsForPackages(packagesToScan), annotationClass);
+        Set<Class<?>> annotatedObjectClasses = reflectionsScanner.findClassesAnnotatedWith(annotationClass, packagesToScan.getPackages());
+        Map<RepositoryObjectKey, OBJECT> objects = instantiateObjectsFromAnotations(annotatedObjectClasses, annotationClass);
 
         return objects;
     }
@@ -117,16 +121,16 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
     /**
      * Find all types annotated with given annotation and instantiate them.
      *
-     * @param reflections     source of types to instantiate
-     * @param annotationClass searched annotation
+     * @param annotatedObjectClasses types to instantiate
+     * @param annotationClass        searched annotation
      *
      * @return map of instantiated objects
      */
-    private Map<RepositoryObjectKey, OBJECT> instantiateObjectsFromAnotations(Reflections reflections, Class<? extends Annotation> annotationClass) {
+    private Map<RepositoryObjectKey, OBJECT> instantiateObjectsFromAnotations(Set<Class<?>> annotatedObjectClasses, Class<? extends Annotation> annotationClass) {
         Map<RepositoryObjectKey, OBJECT> types = new HashMap<RepositoryObjectKey, OBJECT>();
 
         Annotation typeAnnotation;
-        for (Class<?> type : reflections.getTypesAnnotatedWith(annotationClass)) {
+        for (Class<?> type : annotatedObjectClasses) {
             typeAnnotation = type.getAnnotation(annotationClass);
             types.putAll(interpreteAnnotation(type, typeAnnotation));
         }
@@ -152,7 +156,7 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
         OBJECT object;
         if (instanceDescriptors.length == 0) {
             String[] objectIdentifiers = extractIdentifiers(annotation);
-            object = instantiateWithDefault(objectClass);
+            object = instantiateUsingDefaultConstructor(objectClass);
 
             for (String objectIdentifier : objectIdentifiers) {
                 instantiatedObjects.put(new RepositoryObjectKey(objectIdentifier, scannedObjectOrder), object);
@@ -181,7 +185,7 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
      * @return created object
      */
     @SuppressWarnings("unchecked")
-    private OBJECT instantiateWithDefault(Class<?> objectClass) {
+    private OBJECT instantiateUsingDefaultConstructor(Class<?> objectClass) {
         try {
             OBJECT object = (OBJECT) objectClass.newInstance();
             injectPackagesToScanForScanners(objectClass, object);
@@ -299,5 +303,9 @@ public class AnnotatedObjectsScanner<OBJECT> extends AbstractAnnotationScanner {
             throw new SmartParamInitializationException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR,
                     exception, "no " + INSTANCES_METHOD_NAME + " field found on annotation " + annotation.annotationType().getSimpleName());
         }
+    }
+
+    public void setReflectionsScanner(ReflectionsScanner reflectionsScanner) {
+        this.reflectionsScanner = reflectionsScanner;
     }
 }

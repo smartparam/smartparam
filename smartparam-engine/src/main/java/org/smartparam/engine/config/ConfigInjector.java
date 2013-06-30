@@ -1,6 +1,5 @@
 package org.smartparam.engine.config;
 
-import com.google.common.collect.Sets;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -13,7 +12,7 @@ import javax.annotation.PostConstruct;
 import org.smartparam.engine.core.ItemsContainer;
 import org.smartparam.engine.core.exception.SmartParamConfigException;
 import org.smartparam.engine.util.BeanHelper;
-import org.smartparam.engine.util.ReflectionsHelper;
+import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
 /**
  * Builds (configures) object graph based on configuration object.
@@ -32,7 +31,7 @@ import org.smartparam.engine.util.ReflectionsHelper;
  *
  * Algorithm traverses object graph depth-first. Any object can become a root.
  * Configuration object should have fields annotated using {@link ConfigElement}.
- * To inject collection, object hosting it has to be {@link ItemsContainer}.
+ * To inject collection, host object has to be {@link ItemsContainer}.
  *
  * Configuration object can't have empty (null) fields.
  *
@@ -57,6 +56,8 @@ public class ConfigInjector {
      */
     private Map<Class<?>, Object> configCollections;
 
+    private ReflectionsScanner relfectionsScanner = new ReflectionsScanner();
+
     /**
      * Config injector can operate only on one config.
      *
@@ -77,7 +78,7 @@ public class ConfigInjector {
             throw new SmartParamConfigException("unable to extract properties from object " + config, exception);
         }
 
-        Set<Field> configElementFields = ReflectionsHelper.getFieldsAnnotatedBy(SmartParamConfig.class, ConfigElement.class);
+        Set<Field> configElementFields = relfectionsScanner.findFieldsAnnotatedWith(ConfigElement.class, SmartParamConfig.class);
         configCollections = new HashMap<Class<?>, Object>();
 
         try {
@@ -120,7 +121,11 @@ public class ConfigInjector {
 
             PropertyDescriptor propertyDescriptor, configPropertyDescriptor;
             Object propertyValue;
-            for (String sharedProperty : Sets.intersection(objectProperties.keySet(), configProperties.keySet())) {
+
+            Set<String> commonProperties = objectProperties.keySet();
+            commonProperties.retainAll(configProperties.keySet());
+
+            for (String sharedProperty : commonProperties) {
                 propertyDescriptor = objectProperties.get(sharedProperty);
                 configPropertyDescriptor = configProperties.get(sharedProperty);
                 propertyValue = propertyDescriptor.getReadMethod().invoke(targetObject);
@@ -184,9 +189,9 @@ public class ConfigInjector {
      * Uses reflection magic to read property from config object and inject it
      * into target object.
      *
-     * @param object target object
-     * @param propertyDescriptor property descriptor from target object, has to have write method
-     * @param config configuration object
+     * @param object                   target object
+     * @param propertyDescriptor       property descriptor from target object, has to have write method
+     * @param config                   configuration object
      * @param configPropertyDescriptor property descriptor for config object, has to have read method
      * @return value of injected property
      *
@@ -207,11 +212,15 @@ public class ConfigInjector {
      */
     private void initializeIfPostConstructAvailable(Object object) {
         try {
-            for (Method method : ReflectionsHelper.getMethodsAnnotatedBy(object.getClass(), PostConstruct.class)) {
+            for (Method method : relfectionsScanner.findMethodsAnnotatedWith(PostConstruct.class, object.getClass())) {
                 method.invoke(object);
             }
         } catch (ReflectiveOperationException exception) {
             throw new SmartParamConfigException("error while invoking @PostConstruct method", exception);
         }
+    }
+
+    public void setRelfectionsScanner(ReflectionsScanner relfectionsScanner) {
+        this.relfectionsScanner = relfectionsScanner;
     }
 }

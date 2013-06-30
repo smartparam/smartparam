@@ -24,11 +24,9 @@
         </dependency>
 
         <!-- Utils -->
-
-
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
+            <groupId>eu.infomas</groupId>
+            <artifactId>annotation-detector</artifactId>
         </dependency>
 
         <!-- TEST -->
