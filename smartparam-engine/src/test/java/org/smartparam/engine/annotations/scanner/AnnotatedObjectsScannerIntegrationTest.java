@@ -38,10 +38,10 @@ public class AnnotatedObjectsScannerIntegrationTest {
     @Test
     public void shouldFindSingleBeanWhenScanningForParamMatchers() {
         // given
-        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>(packageList);
+        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamMatcher.class);
+        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamMatcher.class, packageList);
 
         // then
         assertThatItemMap(foundObjects).containsRepositoryKey("dummyMatcher").hasSize(1);
@@ -50,10 +50,10 @@ public class AnnotatedObjectsScannerIntegrationTest {
     @Test
     public void shouldCreateTwoInstancesOfSingleBeanClass() {
         // given
-        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>(packageList);
+        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamType.class);
+        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamType.class, packageList);
 
         // then
         assertThatItemMap(foundObjects).containsObjectsThatAreNotSame("typeInstanceOne", "typeInstanceTwo").hasSize(2);
@@ -62,10 +62,10 @@ public class AnnotatedObjectsScannerIntegrationTest {
     @Test
     public void shouldRegisterSingleBeanUnderMultipleNames() {
         // given
-        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>(packageList);
+        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamFunctionInvoker.class);
+        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamFunctionInvoker.class, packageList);
 
         // then
         assertThatItemMap(foundObjects).containsObjectsThatAreSame("nameOne", "nameTwo").hasSize(2);
@@ -74,10 +74,10 @@ public class AnnotatedObjectsScannerIntegrationTest {
     @Test
     public void shouldReturnBeansInOrder() {
         // given
-        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>(packageList);
+        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamFunctionRepository.class);
+        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamFunctionRepository.class, packageList);
 
         // then
         assertThatItemMap(foundObjects).containsRepositoryKeys("primaryRepository", "secondaryRepsitory");
@@ -86,52 +86,52 @@ public class AnnotatedObjectsScannerIntegrationTest {
     @Test
     public void shouldFailToScanAnnotationWithoutInstancesMethod() {
         // given
-        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>(packageList);
+        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        catchException(scanner).getAnnotatedObjects(DummyAnnotationWithoutInstances.class);
+        catchException(scanner).getAnnotatedObjects(DummyAnnotationWithoutInstances.class, packageList);
 
         // then
         assertThat(caughtException()).isInstanceOf(SmartParamException.class);
-        assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR);
+        assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR);
     }
 
     @Test
     public void shouldFailToScanAnnotationWithoutValueMethod() {
         // given
-        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>(packageList);
+        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        catchException(scanner).getAnnotatedObjects(DummyAnnotationWithoutValue.class);
+        catchException(scanner).getAnnotatedObjects(DummyAnnotationWithoutValue.class, packageList);
 
         // then
         assertThat(caughtException()).isInstanceOf(SmartParamException.class);
-        assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR);
+        assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR);
     }
 
     @Test
     public void shouldFailToScanAnnotationWithoutValuesMethod() {
         // given
-        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>(packageList);
+        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        catchException(scanner).getAnnotatedObjects(DummyAnnotationWithoutValues.class);
+        catchException(scanner).getAnnotatedObjects(DummyAnnotationWithoutValues.class, packageList);
 
         // then
         assertThat(caughtException()).isInstanceOf(SmartParamException.class);
-        assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR);
+        assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR);
     }
 
     @Test
     public void shouldFailToScanAnnotationWithoutOrderMethod() {
         // given
-        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>(packageList);
+        AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        catchException(scanner).getAnnotatedObjects(DummyAnnotationWithoutOrder.class);
+        catchException(scanner).getAnnotatedObjects(DummyAnnotationWithoutOrder.class, packageList);
 
         // then
         assertThat(caughtException()).isInstanceOf(SmartParamException.class);
-        assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR);
+        assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR);
     }
 }

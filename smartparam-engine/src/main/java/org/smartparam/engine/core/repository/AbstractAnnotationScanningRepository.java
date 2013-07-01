@@ -26,11 +26,10 @@ public abstract class AbstractAnnotationScanningRepository<REGISTERED_OBJECT> ex
         if (!alreadyScanned && isScanAnnotations()) {
             alreadyScanned = true;
 
-            AnnotatedObjectsScanner<REGISTERED_OBJECT> defaultsScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(createPackagesForDefaults());
-            Map<RepositoryObjectKey, REGISTERED_OBJECT> objects = defaultsScanner.getAnnotatedObjects(getAnnotationClass());
+            AnnotatedObjectsScanner<REGISTERED_OBJECT> scanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>();
 
-            AnnotatedObjectsScanner<REGISTERED_OBJECT> userScanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>(getPackagesToScan());
-            Map<RepositoryObjectKey, REGISTERED_OBJECT> userObjects = userScanner.getAnnotatedObjects(getAnnotationClass());
+            Map<RepositoryObjectKey, REGISTERED_OBJECT> objects = scanner.getAnnotatedObjects(getAnnotationClass(), createPackagesForDefaults());
+            Map<RepositoryObjectKey, REGISTERED_OBJECT> userObjects = scanner.getAnnotatedObjects(getAnnotationClass(), getPackagesToScan());
 
             // override defaults
             objects.putAll(userObjects);

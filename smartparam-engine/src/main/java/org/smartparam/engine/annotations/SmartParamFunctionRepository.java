@@ -4,7 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.smartparam.engine.annotations.scanner.AnnotatedObjectsScanner;
 
 /**
  * Marks function repository that should be added to function provider during
@@ -48,5 +47,5 @@ public @interface SmartParamFunctionRepository {
      *
      * @return order, defaults to 100
      */
-    int order() default AnnotatedObjectsScanner.DEFAULT_ORDER_VALUE;
+    int order() default 100;
 }

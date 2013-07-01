@@ -109,6 +109,8 @@ public enum SmartParamErrorCode {
     /**
      * Error while initializing SmartParam using annotation aware classes.
      */
-    ANNOTATION_INITIALIZER_ERROR;
+    ANNOTATION_INITIALIZER_ERROR,
+
+    REFLECTIVE_OPERATION_ERROR;
 
 }

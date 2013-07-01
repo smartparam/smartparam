@@ -40,7 +40,7 @@ public class SmartMatcherRepository extends AbstractAnnotationScanningRepository
     @Override
     protected Class<? extends Annotation> getAnnotationClass() {
         return SmartParamMatcher.class;
-    }
+}
 
     @Override
     protected void handleRegistration(RepositoryObjectKey key, Matcher objectToRegister) {

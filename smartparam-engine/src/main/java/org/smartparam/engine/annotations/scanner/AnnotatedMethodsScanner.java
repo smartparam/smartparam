@@ -7,6 +7,7 @@ import java.util.Map;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.util.reflection.AnnotationHelper;
 import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
 /**
@@ -16,7 +17,7 @@ import org.smartparam.engine.util.reflection.ReflectionsScanner;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  * @since 0.1.0
  */
-public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
+public class AnnotatedMethodsScanner {
 
     private ReflectionsScanner reflectionsScanner = new ReflectionsScanner();
 
@@ -36,7 +37,7 @@ public class AnnotatedMethodsScanner extends AbstractAnnotationScanner {
 
         String pluginName;
         for (Method method : reflectionsScanner.findMethodsAnnotatedWith(annotationClass, packagesToScan.getPackages())) {
-            pluginName = extractValue(method.getAnnotation(annotationClass));
+            pluginName = AnnotationHelper.extractValue(method.getAnnotation(annotationClass), "value");
             checkForDuplicates(methods, pluginName, method);
             methods.put(pluginName, method);
         }

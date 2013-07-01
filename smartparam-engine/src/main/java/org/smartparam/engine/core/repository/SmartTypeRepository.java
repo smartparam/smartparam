@@ -38,7 +38,7 @@ public class SmartTypeRepository extends AbstractAnnotationScanningRepository<Ty
     @Override
     protected Class<? extends Annotation> getAnnotationClass() {
         return SmartParamType.class;
-    }
+}
 
     @Override
     protected void handleRegistration(RepositoryObjectKey key, Type<?> objectToRegister) {

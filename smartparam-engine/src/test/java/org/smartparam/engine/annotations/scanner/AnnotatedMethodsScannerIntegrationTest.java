@@ -64,6 +64,6 @@ public class AnnotatedMethodsScannerIntegrationTest {
         SmartParamException exception = (SmartParamException) caughtException();
 
         // then
-        assertThat(exception).isNotNull().hasErrorCode(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR);
+        assertThat(exception).isNotNull().hasErrorCode(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR);
     }
 }

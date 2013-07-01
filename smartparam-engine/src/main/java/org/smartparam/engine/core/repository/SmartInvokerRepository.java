@@ -39,7 +39,7 @@ public class SmartInvokerRepository extends AbstractAnnotationScanningRepository
     @Override
     protected Class<? extends Annotation> getAnnotationClass() {
         return SmartParamFunctionInvoker.class;
-    }
+}
 
     @Override
     protected void handleRegistration(RepositoryObjectKey key, FunctionInvoker functionInvoker) {

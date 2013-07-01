@@ -13,8 +13,8 @@ import org.smartparam.engine.core.exception.SmartParamException;
  */
 public class Assertions extends org.fest.assertions.api.Assertions {
 
-    public static RepositoryItemMapAssert assertThatItemMap(Map<RepositoryObjectKey, Object> actual) {
-        return new RepositoryItemMapAssert(actual);
+    public static <T> RepositoryItemMapAssert<T> assertThatItemMap(Map<RepositoryObjectKey, T> actual) {
+        return new RepositoryItemMapAssert<T>(actual);
     }
 
     public static SmartParamExceptionAssert assertThat(SmartParamException exception) {

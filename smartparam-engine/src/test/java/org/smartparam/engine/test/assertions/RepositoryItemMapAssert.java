@@ -10,32 +10,32 @@ import org.smartparam.engine.bean.RepositoryObjectKey;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class RepositoryItemMapAssert extends MapAssert<RepositoryObjectKey, Object> {
+public class RepositoryItemMapAssert<T> extends MapAssert<RepositoryObjectKey, T> {
 
-    public RepositoryItemMapAssert(Map<RepositoryObjectKey, Object> map) {
+    public RepositoryItemMapAssert(Map<RepositoryObjectKey, T> map) {
         super(map);
     }
 
-    public static RepositoryItemMapAssert assertThat(Map<RepositoryObjectKey, Object> map) {
-        return new RepositoryItemMapAssert(map);
+    public static <T> RepositoryItemMapAssert<T> assertThat(Map<RepositoryObjectKey, T> map) {
+        return new RepositoryItemMapAssert<T>(map);
     }
 
-    public RepositoryItemMapAssert containsRepositoryKey(RepositoryObjectKey key) {
+    public RepositoryItemMapAssert<T> containsRepositoryKey(RepositoryObjectKey key) {
         if(!actual.containsKey(key)) {
             fail("expected entry with key: " + key.getKey() + " but none found");
         }
         return this;
     }
 
-    public RepositoryItemMapAssert containsRepositoryKey(String key) {
+    public RepositoryItemMapAssert<T> containsRepositoryKey(String key) {
         return containsRepositoryKey(new RepositoryObjectKey(key));
     }
 
-    public RepositoryItemMapAssert containsRepositoryKeys(String... keys) {
+    public RepositoryItemMapAssert<T> containsRepositoryKeys(String... keys) {
         if(keys.length != actual.size()) {
             fail("expected " + keys.length + " items in map, instead found " + actual.size());
         }
-        
+
         for(RepositoryObjectKey repositoryKey : actual.keySet()) {
             containsRepositoryKey(repositoryKey);
         }
@@ -43,7 +43,7 @@ public class RepositoryItemMapAssert extends MapAssert<RepositoryObjectKey, Obje
         return this;
     }
 
-    public RepositoryItemMapAssert containsObjectsThatAreNotSame(String objectOneRepositoryKey, String objectTwoRepositoryKey) {
+    public RepositoryItemMapAssert<T> containsObjectsThatAreNotSame(String objectOneRepositoryKey, String objectTwoRepositoryKey) {
         containsRepositoryKey(objectOneRepositoryKey);
         containsRepositoryKey(objectTwoRepositoryKey);
 
@@ -53,7 +53,7 @@ public class RepositoryItemMapAssert extends MapAssert<RepositoryObjectKey, Obje
         return this;
     }
 
-    public RepositoryItemMapAssert containsObjectsThatAreSame(String objectOneRepositoryKey, String objectTwoRepositoryKey) {
+    public RepositoryItemMapAssert<T> containsObjectsThatAreSame(String objectOneRepositoryKey, String objectTwoRepositoryKey) {
         containsRepositoryKey(objectOneRepositoryKey);
         containsRepositoryKey(objectTwoRepositoryKey);
 
