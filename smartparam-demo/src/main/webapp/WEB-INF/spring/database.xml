@@ -33,7 +33,7 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" p:dataSource-ref="dataSource">
         <property name="packagesToScan">
             <list>
-                <value>org.smartparam.provider.jpa.model</value>
+                <value>org.smartparam.repository.jpa.model</value>
             </list>
         </property>
         <property name="jpaVendorAdapter">

@@ -5,6 +5,7 @@ import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.repository.MatcherRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
+import org.smartparam.engine.core.service.FunctionProvider;
 
 /**
  * Interface for services building complete, in-memory representation of
@@ -37,6 +38,12 @@ public interface ParamPreparer {
     List<PreparedEntry> findEntries(String paramName, String[] levelValues);
 
     ParamCache getParamCache();
+
+    void setParamCache(ParamCache cache);
+
+    FunctionProvider getFunctionProvider();
+
+    void setFunctionProvider(FunctionProvider functionProvider);
 
     TypeRepository getTypeRepository();
 

@@ -13,13 +13,19 @@ import org.smartparam.engine.util.reflection.ReflectionsScanner;
 /**
  * Annotation scanner util specializing in scanning methods.
  *
- * @see #getAnnotatedMethods(org.smartparam.engine.bean.PackageList, java.lang.Class)
+ * @see #getAnnotatedMethods(java.lang.Class)
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  * @since 0.1.0
  */
-public class AnnotatedMethodsScanner {
+public class PackageMethodScanner implements MethodScanner {
 
     private ReflectionsScanner reflectionsScanner = new ReflectionsScanner();
+
+    private PackageList packagesToScan;
+
+    public PackageMethodScanner(PackageList packagesToScan) {
+        this.packagesToScan = packagesToScan;
+    }
 
     /**
      * Return all methods annotated with given annotation that can be found in
@@ -32,7 +38,8 @@ public class AnnotatedMethodsScanner {
      *
      * @return map (name -> method) of methods (no ordering guaranteed)
      */
-    public Map<String, Method> getAnnotatedMethods(PackageList packagesToScan, Class<? extends Annotation> annotationClass) {
+    @Override
+    public Map<String, Method> scanMethods(Class<? extends Annotation> annotationClass) {
         Map<String, Method> methods = new HashMap<String, Method>();
 
         String pluginName;

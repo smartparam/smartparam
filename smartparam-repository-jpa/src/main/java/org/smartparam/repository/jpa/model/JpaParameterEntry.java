@@ -2,7 +2,7 @@ package org.smartparam.repository.jpa.model;
 
 import java.util.Arrays;
 import javax.persistence.*;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.model.ParameterEntry;
@@ -97,7 +97,6 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
     public JpaParameterEntry(String csvLevels, String value) {
         this(csvLevels, value, null);
     }
-
 
     /**
      * Konstruktor inicjalizujacy obiekt.
@@ -197,7 +196,7 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
      * @param k       numer poziomu
      * @param pattern wzorzec dla k-tego poziomu
      *
-     * @throws ParamDefinitionException errorCode={@link ErrorCode#INDEX_OUT_OF_BOUNDS} jesli k jest ujemne
+     * @throws ParamDefinitionException errorCode={@link org.smartparam.engine.core.exception.SmartParamErrorCode#INDEX_OUT_OF_BOUNDS} jesli k jest ujemne
      */
     public void setLevel(int k, String pattern) {
         ensureLevelCapacity(k);
@@ -324,7 +323,6 @@ public class JpaParameterEntry implements ParameterEntry, JpaModelObject {
      */
     @Column(length = LEVEL_COLUMN_LENGTH)
     public String getLevel8() {
-
         /*
          * jesli liczba rzeczywistych poziomow jest wieksza od liczby kolumn (MAX_LEVELS),
          * zlaczamy kolumny 8, ..., N w jeden string (separatorem jest znak srednika)

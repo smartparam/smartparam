@@ -1,17 +1,12 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.AbstractAnnotationScanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.repository.MatcherRepository;
-import org.smartparam.engine.core.repository.SmartMatcherRepository;
-import org.smartparam.engine.core.repository.SmartTypeRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -41,7 +36,7 @@ import org.smartparam.engine.model.function.Function;
  * @author Przemek Hertel
  * @since 0.1.0
  */
-public class SmartParamPreparer extends AbstractAnnotationScanner implements ParamPreparer {
+public class SmartParamPreparer implements ParamPreparer {
 
     /**
      * Logger.
@@ -69,29 +64,6 @@ public class SmartParamPreparer extends AbstractAnnotationScanner implements Par
      * Cache.
      */
     private ParamCache cache;
-
-    @PostConstruct
-    public void initializeProviders() {
-        if (matcherProvider == null) {
-            SmartMatcherRepository smartMatcherProvider = new SmartMatcherRepository();
-            smartMatcherProvider.setScannerProperties(getScannerProperties());
-
-            smartMatcherProvider.scan();
-            matcherProvider = smartMatcherProvider;
-        }
-
-        if (typeProvider == null) {
-            SmartTypeRepository smartTypeProvider = new SmartTypeRepository();
-            smartTypeProvider.setScannerProperties(getScannerProperties());
-
-            smartTypeProvider.scan();
-            typeProvider = smartTypeProvider;
-        }
-
-        if (cache == null) {
-            cache = new MapParamCache();
-        }
-    }
 
     @Override
     public PreparedParameter getPreparedParameter(String paramName) {
@@ -270,42 +242,52 @@ public class SmartParamPreparer extends AbstractAnnotationScanner implements Par
         return result;
     }
 
+    @Override
     public ParamCache getParamCache() {
         return cache;
     }
 
+    @Override
     public void setParamCache(ParamCache cache) {
         this.cache = cache;
     }
 
+    @Override
     public FunctionProvider getFunctionProvider() {
         return functionProvider;
     }
 
+    @Override
     public void setFunctionProvider(FunctionProvider functionProvider) {
         this.functionProvider = functionProvider;
     }
 
+    @Override
     public ParamRepository getParamRepository() {
         return paramRepository;
     }
 
+    @Override
     public void setParamRepository(ParamRepository paramRepository) {
         this.paramRepository = paramRepository;
     }
 
+    @Override
     public TypeRepository getTypeRepository() {
         return typeProvider;
     }
 
+    @Override
     public void setTypeRepository(TypeRepository typeRepository) {
         this.typeProvider = typeRepository;
     }
 
+    @Override
     public MatcherRepository getMatcherRepository() {
         return matcherProvider;
     }
 
+    @Override
     public void setMatcherRepository(MatcherRepository matcherRepository) {
         this.matcherProvider = matcherRepository;
     }

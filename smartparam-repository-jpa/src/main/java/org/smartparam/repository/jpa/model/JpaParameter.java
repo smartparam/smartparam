@@ -195,6 +195,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
      */
     @OneToMany(mappedBy = "parameter", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("orderNo")
+    @Override
     public List<JpaLevel> getLevels() {
         return levels;
     }
@@ -307,7 +308,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
      *
      * @return macierz parametru
      */
-    @OneToMany(mappedBy = "parameter", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parameter", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaParameterEntry.class)
     @Override
     public Set<ParameterEntry> getEntries() {
         return entries;

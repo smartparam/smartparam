@@ -1,6 +1,5 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.AbstractAnnotationScanner;
 import org.smartparam.engine.core.service.FunctionManager;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -9,8 +8,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.assembler.AssemblerMethod;
-import org.smartparam.engine.config.SmartParamRuntimeConfig;
-import org.smartparam.engine.config.SmartParamRuntimeConfigBuilder;
+import org.smartparam.engine.config.ParamEngineRuntimeConfig;
+import org.smartparam.engine.config.ParamEngineRuntimeConfigBuilder;
 import org.smartparam.engine.core.repository.SmartAssemblerProvider;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
@@ -32,11 +31,11 @@ import org.smartparam.engine.util.ParamHelper;
  * @author Przemek Hertel
  * @since 0.1.0
  */
-public class SmartParamEngine extends AbstractAnnotationScanner implements ParamEngine {
+public class SmartParamEngine implements ParamEngine {
 
     private Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
-    private SmartParamRuntimeConfigBuilder configBuilder = new SmartParamRuntimeConfigBuilder();
+    private ParamEngineRuntimeConfigBuilder configBuilder = new ParamEngineRuntimeConfigBuilder();
 
     private ParamPreparer paramPreparer;
 
@@ -45,7 +44,7 @@ public class SmartParamEngine extends AbstractAnnotationScanner implements Param
     private AssemblerProvider assemblerProvider;
 
     @Override
-    public SmartParamRuntimeConfig getConfiguration() {
+    public ParamEngineRuntimeConfig getConfiguration() {
         return configBuilder.buildConfig(this);
     }
 

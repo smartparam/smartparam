@@ -8,9 +8,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import org.smartparam.engine.annotations.SmartParamObjectInstance;
 import org.smartparam.engine.annotations.SmartParamSortable;
-import org.smartparam.engine.bean.AnnotationScannerProperties;
 import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.core.AnnotationScanner;
 import org.smartparam.engine.core.exception.SmartParamInitializationException;
 import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
@@ -32,10 +30,6 @@ import org.smartparam.engine.util.reflection.ReflectionsScanner;
  * Map returned by {@link #getAnnotatedObjects(java.lang.Class) } is not ordered,
  * but the key ({@link RepositoryObjectKey}) holds all information that can be
  * used for ordering.
- *
- * If instantiated object implements {@link AnnotationScanner} interface,
- * its scanner properties are set after instantiation using
- * {@link AnnotationScanner#setScannerProperties(org.smartparam.engine.bean.AnnotationScannerProperties) }.
  *
  *
  * @param <OBJECT> type of object to instantiate

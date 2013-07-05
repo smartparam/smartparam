@@ -1,6 +1,5 @@
 package org.smartparam.engine.core.service;
 
-import org.smartparam.engine.core.AbstractAnnotationScanner;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
@@ -12,11 +11,11 @@ import org.smartparam.engine.model.function.Function;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class SmartFunctionManager extends AbstractAnnotationScanner implements FunctionManager {
+public class SmartFunctionManager implements FunctionManager {
 
-    private InvokerRepository invokerRepository = null;
+    private InvokerRepository invokerRepository;
 
-    private FunctionProvider functionProvider = null;
+    private FunctionProvider functionProvider;
 
     @Override
     public Object invokeFunction(String name, Object... args) {

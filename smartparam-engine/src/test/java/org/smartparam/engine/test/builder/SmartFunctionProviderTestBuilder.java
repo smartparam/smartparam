@@ -21,9 +21,4 @@ public class SmartFunctionProviderTestBuilder {
     public SmartFunctionProvider build() {
         return functionProvider;
     }
-
-    public SmartFunctionProviderTestBuilder withAnnotationScan() {
-        functionProvider.setScanAnnotations(true);
-        return this;
-    }
 }

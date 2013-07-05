@@ -23,11 +23,6 @@ public class SmartTypeRepositoryTestBuilder {
         return typeRepository;
     }
 
-    public SmartTypeRepositoryTestBuilder withoutAnnotationScan() {
-        typeRepository.setScanAnnotations(false);
-        return this;
-    }
-
     public SmartTypeRepositoryTestBuilder withType(String name, Type<?> type) {
         typeRepository.register(name, type);
         return this;

@@ -2,54 +2,32 @@ package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.smartparam.engine.annotations.scanner.AnnotatedMethodsScanner;
-import org.smartparam.engine.core.AbstractAnnotationScanner;
+import org.smartparam.engine.annotations.scanner.MethodScanner;
+import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.model.function.Function;
 
-/**
- * Klasa bazowa dla FunctionInvokerow, ktore wykonuja funkcje bazujace na
- * implementacji poprzez metode javy. Klasa zapewnia:
- * <ul>
- * <li>odnajdowanie metod pasujacych do wywolania (sprawdzanie kompatybilnosci
- * parametrow),
- * <li>cache dla refleksji przyspieszajacy znajdowanie metody okolo 5 razy
- * </ul>
- *
- * @author Przemek Hertel
- * @since 1.0.0
- */
-public abstract class AbstractJavaFunctionRepository extends AbstractAnnotationScanner implements FunctionRepository {
+public abstract class AbstractJavaFunctionRepository implements FunctionRepository, MethodScanningRepository {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private MapRepository<Function> innerRepository = new MapRepository<Function>(functionClass());
 
-    private Map<String, Function> innerCache;
-
-    @PostConstruct
-    public void loadFunctions() {
-        Map<String, Function> loadedFunctions = new HashMap<String, Function>();
-
-        AnnotatedMethodsScanner methodsScanner = new AnnotatedMethodsScanner();
-        Map<String, Method> scannedMethods = methodsScanner.getAnnotatedMethods(getScannerProperties().getPackagesToScan(), annotationClass());
+    @Override
+    public void scanMethods(MethodScanner scanner) {
+        Map<String, Method> scannedMethods = scanner.scanMethods(annotationClass());
 
         String functionName;
         for (Map.Entry<String, Method> methodEntry : scannedMethods.entrySet()) {
             functionName = methodEntry.getKey();
-            logger.info("registering function: {} -> {}", functionName, methodEntry.getValue().toGenericString());
-            loadedFunctions.put(functionName, createFunction(functionName, methodEntry.getValue()));
+            innerRepository.register(functionName, createFunction(functionName, methodEntry.getValue()));
         }
-
-        innerCache = loadedFunctions;
     }
 
     @Override
     public Function loadFunction(String functionName) {
-        return innerCache.get(functionName);
+        return innerRepository.getItem(functionName);
     }
+
+    protected abstract Class<? extends Function> functionClass();
 
     protected abstract Class<? extends Annotation> annotationClass();
 

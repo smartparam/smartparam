@@ -1,7 +1,7 @@
 package org.smartparam.spring;
 
-import org.smartparam.engine.config.SmartParamConfig;
-import org.smartparam.engine.config.SmartParamEngineFactory;
+import org.smartparam.engine.config.ParamEngineConfig;
+import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.springframework.beans.factory.FactoryBean;
 
@@ -11,12 +11,12 @@ import org.springframework.beans.factory.FactoryBean;
  */
 public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
 
-    private SmartParamConfig config;
+    private ParamEngineConfig config;
 
     @Override
     public ParamEngine getObject() throws Exception {
-        SmartParamEngineFactory factory = new SmartParamEngineFactory();
-        return factory.getParamEngine(config);
+        ParamEngineFactory factory = new ParamEngineFactory();
+        return factory.createParamEngine(config);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
         return false;
     }
 
-    public void setConfig(SmartParamConfig config) {
+    public void setConfig(ParamEngineConfig config) {
         this.config = config;
     }
 }

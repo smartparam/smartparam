@@ -39,4 +39,9 @@ public class SpringFunctionRepository extends AbstractJavaFunctionRepository {
 
         return springFunction;
     }
+
+    @Override
+    protected Class<? extends Function> functionClass() {
+        return SpringFunction.class;
+    }
 }

@@ -13,7 +13,7 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SmartParamRuntimeConfig {
+public class ParamEngineRuntimeConfig {
 
     private FunctionCache functionCache;
 
@@ -35,7 +35,7 @@ public class SmartParamRuntimeConfig {
      * @param types registered types
      * @param matchers registered matchers
      */
-    public SmartParamRuntimeConfig(FunctionCache functionCache,
+    public ParamEngineRuntimeConfig(FunctionCache functionCache,
             ParamCache paramCache,
             Map<String, FunctionInvoker> invokers,
             Map<String, Type<?>> types,

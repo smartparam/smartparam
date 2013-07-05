@@ -1,6 +1,8 @@
 package org.smartparam.engine.config;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.cache.FunctionCache;
@@ -29,65 +31,37 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SmartParamConfig {
+public class ParamEngineConfig {
 
-    private List<String> packagesToScan = new ArrayList<String>();
+    private ParamPreparer paramPreparer = new SmartParamPreparer();
 
-    private boolean scanPackages = true;
+    private ParamCache paramCache = new MapParamCache();
 
-    @ConfigElement(SmartParamPreparer.class)
-    private ParamPreparer paramPreparer;
+    private FunctionManager functionManager = new SmartFunctionManager();
 
-    @ConfigElement(MapParamCache.class)
-    private ParamCache paramCache;
+    private FunctionProvider functionProvider = new SmartFunctionProvider();
 
-    @ConfigElement(SmartFunctionManager.class)
-    private FunctionManager functionManager;
+    private FunctionCache functionCache = new MapFunctionCache();
 
-    @ConfigElement(SmartFunctionProvider.class)
-    private FunctionProvider functionProvider;
-
-    @ConfigElement(MapFunctionCache.class)
-    private FunctionCache functionCache;
-
-    @ConfigElement(SmartInvokerRepository.class)
-    private InvokerRepository invokerRepository;
+    private InvokerRepository invokerRepository = new SmartInvokerRepository();
 
     private ParamRepository paramRepository;
 
-    @ConfigElement(value = Map.class, registerAt = FunctionProvider.class)
-    private Map<String, FunctionRepository> functionRepositories;
+    private Map<String, FunctionRepository> functionRepositories = new LinkedHashMap<String, FunctionRepository>();
 
-    @ConfigElement(SmartTypeRepository.class)
-    private TypeRepository typeRepository;
+    private TypeRepository typeRepository = new SmartTypeRepository();
 
-    @ConfigElement(SmartMatcherRepository.class)
-    private MatcherRepository matcherRepository;
+    private MatcherRepository matcherRepository = new SmartMatcherRepository();
 
-    @ConfigElement(value = Map.class, registerAt = InvokerRepository.class)
-    private Map<String, FunctionInvoker> functionInvokers;
+    private Map<String, FunctionInvoker> functionInvokers = new HashMap<String, FunctionInvoker>();
 
-    @ConfigElement(value = Map.class, registerAt = TypeRepository.class)
-    private Map<String, Type<?>> types;
+    private Map<String, Type<?>> types = new HashMap<String, Type<?>>();
 
-    @ConfigElement(value = Map.class, registerAt = MatcherRepository.class)
-    private Map<String, Matcher> matchers;
+    private Map<String, Matcher> matchers = new HashMap<String, Matcher>();
 
-    public List<String> getPackagesToScan() {
-        return packagesToScan;
-    }
+    private ComponentInitializerRunner initializationRunner;
 
-    public void setPackagesToScan(List<String> packagesToScan) {
-        this.packagesToScan = packagesToScan;
-    }
-
-    public boolean isScanAnnotations() {
-        return scanPackages;
-    }
-
-    public void setScanAnnotations(boolean scanPackages) {
-        this.scanPackages = scanPackages;
-    }
+    private List<ComponentInitializer> componentInitializers = new ArrayList<ComponentInitializer>();
 
     public ParamPreparer getParamPreparer() {
         return paramPreparer;
@@ -191,5 +165,21 @@ public class SmartParamConfig {
 
     public void setMatchers(Map<String, Matcher> matchers) {
         this.matchers = matchers;
+    }
+
+    public List<ComponentInitializer> getComponentInitializers() {
+        return componentInitializers;
+    }
+
+    public void setComponentInitializers(List<ComponentInitializer> componentInitializers) {
+        this.componentInitializers = componentInitializers;
+    }
+
+    public ComponentInitializerRunner getInitializationRunner() {
+        return initializationRunner;
+    }
+
+    public void setInitializationRunner(ComponentInitializerRunner initializationRunner) {
+        this.initializationRunner = initializationRunner;
     }
 }

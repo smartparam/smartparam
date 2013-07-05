@@ -1,7 +1,5 @@
 package org.smartparam.engine.model;
 
-import org.smartparam.engine.model.function.Function;
-
 /**
  * Klasa reprezentuje pojedynczy wiersz parametru {@link Parameter}.
  * Kazdy parametr moze zawierac dowolnie wiele takich wierszy.

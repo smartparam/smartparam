@@ -41,7 +41,7 @@ public class MapRepository<V> {
     }
 
     public void register(RepositoryObjectKey key, V value) {
-        logger.info("{} repository: registering {} under key {}", new Object[] {containedClass.getSimpleName(), value.getClass().getSimpleName(), key});
+        logger.info("{} repository: registering {} under key {}", new Object[]{containedClass.getSimpleName(), value.getClass().getSimpleName(), key});
         repositoryMap.put(key, value);
     }
 
@@ -49,21 +49,33 @@ public class MapRepository<V> {
         register(RepositoryObjectKey.withKey(key), value);
     }
 
-    public void registerUnique(String key, V value) {
-        if(repositoryMap.containsKey(RepositoryObjectKey.withKey(key))) {
+    public void registerUnique(RepositoryObjectKey key, V value) {
+        if (repositoryMap.containsKey(key)) {
             throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE,
                     containedClass.getSimpleName() + " repository already contains item with key " + key);
         }
         register(key, value);
     }
 
-    public void setItems(Map<RepositoryObjectKey, V> items) {
+    public void registerUnique(String key, V value) {
+        registerUnique(RepositoryObjectKey.withKey(key), value);
+    }
+
+    public void registerAll(Map<RepositoryObjectKey, V> items) {
         for (Entry<RepositoryObjectKey, V> item : items.entrySet()) {
             register(item.getKey(), item.getValue());
         }
     }
 
-    public void setItemsUnordered(Map<String, V> items) {
+    public void registerAllOrdered(Map<String, V> items) {
+        int index = 0;
+        for (Entry<String, V> item : items.entrySet()) {
+            register(new RepositoryObjectKey(item.getKey(), index), item.getValue());
+            index++;
+        }
+    }
+
+    public void registerAllUnordered(Map<String, V> items) {
         for (Entry<String, V> item : items.entrySet()) {
             register(RepositoryObjectKey.withKey(item.getKey()), item.getValue());
         }

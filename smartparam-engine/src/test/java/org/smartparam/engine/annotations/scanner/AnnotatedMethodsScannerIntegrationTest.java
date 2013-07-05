@@ -32,10 +32,10 @@ public class AnnotatedMethodsScannerIntegrationTest {
     @Test
     public void shouldScanMethodsAndReturnAllAnnotatedWithType() {
         // given
-        AnnotatedMethodsScanner scanner = new AnnotatedMethodsScanner();
+        PackageMethodScanner scanner = new PackageMethodScanner(packageList);
 
         // when
-        Map<String, Method> methods = scanner.getAnnotatedMethods(packageList, SmartParamJavaPlugin.class);
+        Map<String, Method> methods = scanner.scanMethods(SmartParamJavaPlugin.class);
 
         // then
         assertThat(methods).hasSize(1).containsKey("javaPlugin");
@@ -44,10 +44,10 @@ public class AnnotatedMethodsScannerIntegrationTest {
     @Test
     public void shouldFailWhenRegisteringTwoPluginsWithSameName() {
         // given
-        AnnotatedMethodsScanner scanner = new AnnotatedMethodsScanner();
+        PackageMethodScanner scanner = new PackageMethodScanner(packageList);
 
         // when
-        catchException(scanner).getAnnotatedMethods(packageList, DummyPluginAnnotation.class);
+        catchException(scanner).scanMethods(DummyPluginAnnotation.class);
         SmartParamException exception = (SmartParamException) caughtException();
 
         // then
@@ -57,10 +57,10 @@ public class AnnotatedMethodsScannerIntegrationTest {
     @Test
     public void shouldFailWhenPluginAnnotationHasNoValueMethod() {
         // given
-        AnnotatedMethodsScanner scanner = new AnnotatedMethodsScanner();
+        PackageMethodScanner scanner = new PackageMethodScanner(packageList);
 
         // when
-        catchException(scanner).getAnnotatedMethods(packageList, DummyPluginAnnotationWithoutValue.class);
+        catchException(scanner).scanMethods(DummyPluginAnnotationWithoutValue.class);
         SmartParamException exception = (SmartParamException) caughtException();
 
         // then

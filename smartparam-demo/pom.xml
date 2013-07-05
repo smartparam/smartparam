@@ -126,6 +126,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
         <!-- Servlet and JSP -->
         <dependency>
             <groupId>org.apache.tomcat</groupId>

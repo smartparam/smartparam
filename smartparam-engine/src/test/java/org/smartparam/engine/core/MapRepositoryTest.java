@@ -44,7 +44,7 @@ public class MapRepositoryTest {
         items.put(new RepositoryObjectKey("TEST_2", 1), new Object());
 
         // when
-        mapRepository.setItems(items);
+        mapRepository.registerAll(items);
 
         // then
         assertThat(mapRepository).contains("TEST_1").contains("TEST_2");
@@ -57,7 +57,7 @@ public class MapRepositoryTest {
         Map<RepositoryObjectKey, Object> items = new HashMap<RepositoryObjectKey, Object>();
         items.put(new RepositoryObjectKey("TEST_1", 0), new Object());
         items.put(new RepositoryObjectKey("TEST_2", 1), new Object());
-        mapRepository.setItems(items);
+        mapRepository.registerAll(items);
 
         // when
         Map<String, Object> orderedItems = mapRepository.getItemsOrdered();

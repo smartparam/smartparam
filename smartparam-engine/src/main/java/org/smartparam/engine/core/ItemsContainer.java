@@ -17,13 +17,13 @@ public interface ItemsContainer<KEY, TYPE> {
      *
      * @return registered items
      */
-    Map<KEY, TYPE> registeredItems();
+    Map<String, TYPE> registeredItems();
 
     /**
      * Insert all items to repository.
      *
      * @param objects items
      */
-    void setItems(Map<String, TYPE> objects);
+    void registerAll(Map<String, TYPE> objects);
 
 }

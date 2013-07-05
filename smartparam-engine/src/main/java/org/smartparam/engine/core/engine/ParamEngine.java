@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.config.SmartParamRuntimeConfig;
+import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.service.FunctionManager;
 import org.smartparam.engine.core.type.AbstractHolder;
@@ -25,7 +25,7 @@ public interface ParamEngine {
 
     AbstractHolder getValue(String paramName, Object... levelValues);
 
-    SmartParamRuntimeConfig getConfiguration();
+    ParamEngineRuntimeConfig getConfiguration();
 
     FunctionManager getFunctionManager();
 

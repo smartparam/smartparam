@@ -14,7 +14,7 @@ public class PackageList implements Iterable<String> {
 
     private static final String DEFAULT_PACKAGE = "org.smartparam.engine";
 
-    private String defaultPackage;
+    private String defaultPackage = DEFAULT_PACKAGE;
 
     /**
      * Internal representation of package list.
@@ -22,7 +22,6 @@ public class PackageList implements Iterable<String> {
     private List<String> packages = null;
 
     public PackageList() {
-        defaultPackage = DEFAULT_PACKAGE;
     }
 
     public PackageList(String defaultPackage) {
@@ -50,6 +49,10 @@ public class PackageList implements Iterable<String> {
 
     public String getDefaultPackage() {
         return defaultPackage;
+    }
+
+    public void setDefaultPackage(String defaultPackage) {
+        this.defaultPackage = defaultPackage;
     }
 
     /**
