@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.repository;
 
 import java.util.Map;
-import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.TypeScanner;
 import org.smartparam.engine.core.MapRepository;
@@ -18,7 +18,7 @@ public class SmartInvokerRepository implements InvokerRepository, TypeScanningRe
 
     @Override
     public void scanAnnotations(TypeScanner scanner) {
-        Map<RepositoryObjectKey, FunctionInvoker> invokers = scanner.scanTypes(SmartParamType.class);
+        Map<RepositoryObjectKey, FunctionInvoker> invokers = scanner.scanTypes(SmartParamFunctionInvoker.class);
         innerRepository.registerAll(invokers);
     }
 
