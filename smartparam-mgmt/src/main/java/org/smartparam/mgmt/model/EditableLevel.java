@@ -8,9 +8,7 @@ import org.smartparam.engine.model.Level;
  */
 public interface EditableLevel extends Level {
 
-    String getLabel();
-    
-    void setLabel(String label);
+    void setName(String name);
 
     void setLevelCreator(String levelCreator);
 

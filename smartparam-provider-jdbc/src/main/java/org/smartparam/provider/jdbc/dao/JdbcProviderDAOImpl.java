@@ -104,7 +104,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         level.setId(rs.getInt("id"));
         level.setParameterId(parameterId);
         level.setOrderNo(rs.getInt("order_no"));
-        level.setLabel(rs.getString("label"));
+        level.setName(rs.getString("label"));
         level.setType(rs.getString("type"));
         level.setMatcher(rs.getString("matcher"));
         level.setArray(rs.getBoolean("array_flag"));

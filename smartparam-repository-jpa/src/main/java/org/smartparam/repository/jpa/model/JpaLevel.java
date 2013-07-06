@@ -74,7 +74,7 @@ public class JpaLevel implements Level, JpaModelObject {
     /**
      * Skrotowy opis (label) poziomu w jezyku naturalnym.
      */
-    private String label;
+    private String name;
 
     /**
      * Kod opisu poziomu, spod ktorego jest brany opis z pliku <i>message bundle</i>.
@@ -161,17 +161,18 @@ public class JpaLevel implements Level, JpaModelObject {
      * @return label
      */
     @Column
-    public String getLabel() {
-        return label;
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**
      * Setter dla label.
      *
-     * @param label opis
+     * @param name opis
      */
-    public void setLabel(String label) {
-        this.label = label;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

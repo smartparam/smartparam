@@ -6,7 +6,7 @@ package org.smartparam.engine.config;
  */
 public interface ComponentInitializer {
 
-    void initializeObject(ComponentInitializerRunner initializerRunner, Object configObject);
+    void initializeObject(Object configObject);
 
     boolean acceptsObject(Object configObject);
 }

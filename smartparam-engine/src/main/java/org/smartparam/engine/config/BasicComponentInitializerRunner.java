@@ -25,7 +25,7 @@ public class BasicComponentInitializerRunner implements ComponentInitializerRunn
     public void runInitializers(Object initializedObject) {
         for (ComponentInitializer initializer : initializers) {
             if (initializer.acceptsObject(initializedObject)) {
-                initializer.initializeObject(this, initializedObject);
+                initializer.initializeObject(initializedObject);
             }
         }
     }

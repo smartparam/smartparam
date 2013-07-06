@@ -1,8 +1,5 @@
 package org.smartparam.repository.jpa.model;
 
-import org.smartparam.repository.jpa.model.JpaParameter;
-import org.smartparam.repository.jpa.model.JpaLevel;
-import org.smartparam.repository.jpa.model.JpaParameterEntry;
 import java.util.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -228,33 +225,6 @@ public class JpaParameterTest {
         assertTrue(par.getEntries().contains(pe3));
     }
 
-    @Test
-    public void testToString() {
-
-        // konfiguracja testu
-        JpaParameter[] tests = {
-            par(11, "par.a", "string", 4, 0, false, false, false, false, true),
-            par(22, "par.b", "number", 4, 2, true, false, true, false, false),
-            par(33, "par.c", "number", 4, 3, true, true, true, true, false)
-        };
-
-        // oczekiwane wyniki
-        String[] expected = {
-            "Parameter#11[par.a, type=string, levels=4, inputLevels=0, notnull]",
-            "Parameter#22[par.b, type=number, levels=4, inputLevels=2, nullable, array, nocache]",
-            "Parameter#33[par.c, type=number, levels=4, inputLevels=3, nullable, multivalue, array, archive, nocache]"
-        };
-
-        // test
-        for (int i = 0; i < tests.length; i++) {
-            JpaParameter par = tests[i];
-            String expectedResult = expected[i];
-
-            String result = par.toString();
-            assertEquals(expectedResult, result);
-        }
-    }
-
     private JpaParameter par(int id, String name, String type, int levels, int inputLevels,
             boolean nullable, boolean multivalue, boolean array, boolean archive, boolean cacheable) {
 
@@ -278,12 +248,12 @@ public class JpaParameterTest {
 
     private void verifyLevel(JpaLevel l, int expectedOrderNo, String expectedLabel) {
         assertEquals(expectedOrderNo, l.getOrderNo());
-        assertEquals(expectedLabel, l.getLabel());
+        assertEquals(expectedLabel, l.getName());
     }
 
     private JpaLevel l(String label, int orderNo) {
         JpaLevel l = new JpaLevel();
-        l.setLabel(label);
+        l.setName(label);
         l.setOrderNo(orderNo);
         return l;
     }

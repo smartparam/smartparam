@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.fs.model.FSLevel;
-import org.smartparam.repository.fs.model.FSParameter;
-import org.smartparam.repository.fs.model.FSParameterEntry;
+import org.smartparam.mgmt.model.SimpleEditableLevel;
+import org.smartparam.mgmt.model.SimpleEditableParameter;
+import org.smartparam.mgmt.model.SimpleEditableParameterEntry;
 import org.smartparam.serializer.SmartParamDeserializer;
 import org.smartparam.serializer.StandardSerializationConfig;
 import org.smartparam.serializer.StandardSmartParamDeserializer;
@@ -42,12 +42,12 @@ public class FSParamRepository implements ParamRepository {
 
     @PostConstruct
     public void initialize() {
-        if(deserializer == null) {
+        if (deserializer == null) {
             logger.debug("no custom deserializer provided, using {}", StandardSmartParamDeserializer.class.getSimpleName());
             this.deserializer = new StandardSmartParamDeserializer(new StandardSerializationConfig(),
-                FSParameter.class, FSLevel.class, FSParameterEntry.class);
+                    SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
         }
-        if(resourceResolverFactory == null) {
+        if (resourceResolverFactory == null) {
             logger.debug("no custom resource resolver factory provided, using {}", ResourceResolverFactory.class.getSimpleName());
             this.resourceResolverFactory = new ResourceResolverFactory(deserializer);
         }

@@ -18,7 +18,7 @@ import static com.googlecode.catchexception.CatchException.*;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class AnnotatedMethodsScannerIntegrationTest {
+public class PackageMethodScannerIntegrationTest {
 
     private static final String TEST_PACKAGE = "org.smartparam.engine.test.scan.plugins";
 

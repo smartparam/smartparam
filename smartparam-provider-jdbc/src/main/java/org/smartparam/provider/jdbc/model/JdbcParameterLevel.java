@@ -14,7 +14,7 @@ public class JdbcParameterLevel implements Level {
 
     private int orderNo;
 
-    private String label;
+    private String name;
 
     private String type;
 
@@ -26,8 +26,9 @@ public class JdbcParameterLevel implements Level {
         return orderNo;
     }
 
-    public String getLabel() {
-        return label;
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -55,8 +56,8 @@ public class JdbcParameterLevel implements Level {
         this.orderNo = orderNo;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setType(String type) {
@@ -103,7 +104,7 @@ public class JdbcParameterLevel implements Level {
             sb.append(" array");
         }
 
-        sb.append(", label=").append(label);
+        sb.append(", label=").append(name);
 
         sb.append(']');
         return sb.toString();

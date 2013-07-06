@@ -30,7 +30,7 @@ public class StandardParameterEntrySupplier implements ParameterEntrySupplier {
         int levelIndex = 0;
         for (Level level : parameter.getLevels()) {
             if (level instanceof EditableLevel) {
-                levelHeader = ((EditableLevel) level).getLabel();
+                levelHeader = ((EditableLevel) level).getName();
             } else {
                 levelHeader = "level" + levelIndex;
             }

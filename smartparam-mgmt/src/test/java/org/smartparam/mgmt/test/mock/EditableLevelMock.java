@@ -18,11 +18,11 @@ public class EditableLevelMock extends LevelMock implements EditableLevel {
         super(levelCreator, type, array, matcherCode);
     }
 
-    public String getLabel() {
+    public String getName() {
         return label;
     }
 
-    public void setLabel(String label) {
+    public void setName(String label) {
         this.label = label;
     }
 }

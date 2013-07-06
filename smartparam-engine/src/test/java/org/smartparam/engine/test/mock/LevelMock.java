@@ -8,6 +8,8 @@ import org.smartparam.engine.model.Level;
  */
 public class LevelMock implements Level {
 
+    private String name;
+
     private String levelCreator;
 
     private String type;
@@ -24,6 +26,11 @@ public class LevelMock implements Level {
         this.type = type;
         this.array = array;
         this.matcherCode = matcherCode;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override

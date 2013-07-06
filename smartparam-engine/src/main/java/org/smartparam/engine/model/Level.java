@@ -1,7 +1,5 @@
 package org.smartparam.engine.model;
 
-import org.smartparam.engine.model.function.Function;
-
 /**
  * Klasa reprezenuje definicje poziomu na poziomie parametru.
  *
@@ -10,6 +8,8 @@ import org.smartparam.engine.model.function.Function;
  * @since 0.1.0
  */
 public interface Level {
+
+    String getName();
 
     /**
      * Returns function for evaluating value of level using current context.
