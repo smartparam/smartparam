@@ -78,7 +78,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
      * <li> k pierwszych poziomow jest wejsciowych, pozostale sa wyjsciowe (gdy <tt>multivalue</tt>)
      * </ol>
      */
-    private List<JpaLevel> levels;
+    private List<Level> levels;
 
     /**
      * Macierz parametru, czyli zbior wierszy z wzorcami dopasowania i wartosciami.
@@ -193,10 +193,10 @@ public class JpaParameter implements Parameter, JpaModelObject {
      *
      * @return posortowana (orderNo) lista poziomow
      */
-    @OneToMany(mappedBy = "parameter", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "parameter", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, targetEntity = JpaLevel.class)
     @OrderBy("orderNo")
     @Override
-    public List<JpaLevel> getLevels() {
+    public List<Level> getLevels() {
         return levels;
     }
 
@@ -205,7 +205,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
      *
      * @param levels lista poziomow
      */
-    public void setLevels(List<JpaLevel> levels) {
+    public void setLevels(List<Level> levels) {
         this.levels = levels;
         setupLevelOrdering();
     }
@@ -219,7 +219,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
      */
     public void addLevel(JpaLevel... array) {
         if (levels == null) {
-            levels = new ArrayList<JpaLevel>();
+            levels = new ArrayList<Level>();
         }
 
         for (JpaLevel level : array) {
@@ -237,7 +237,7 @@ public class JpaParameter implements Parameter, JpaModelObject {
     private void setupLevelOrdering() {
         if (levels != null) {
             for (int i = 0; i < levels.size(); ++i) {
-                levels.get(i).setOrderNo(i);
+                ((JpaLevel) levels.get(i)).setOrderNo(i);
             }
         }
     }

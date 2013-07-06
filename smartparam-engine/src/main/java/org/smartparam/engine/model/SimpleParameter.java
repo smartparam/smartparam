@@ -40,7 +40,7 @@ public class SimpleParameter implements Parameter {
     }
 
     @Override
-    public List<? extends Level> getLevels() {
+    public List<Level> getLevels() {
         return levels;
     }
 

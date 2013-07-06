@@ -20,7 +20,6 @@ public class SimpleEditableParameter extends SimpleParameter implements Editable
     @Override
     public void setLevels(List<Level> levels) {
         this.levels = levels;
-
     }
 
     @Override

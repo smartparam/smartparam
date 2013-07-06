@@ -54,7 +54,7 @@ public interface Parameter {
      *
      * @return list of levels
      */
-    List<? extends Level> getLevels();
+    List<Level> getLevels();
 
     /**
      * Returns number of input levels (k). Meaningful only for
