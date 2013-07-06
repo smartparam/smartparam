@@ -23,8 +23,10 @@ import org.smartparam.engine.core.repository.SmartTypeRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.service.FunctionManager;
 import org.smartparam.engine.core.service.FunctionProvider;
+import org.smartparam.engine.core.service.ParameterProvider;
 import org.smartparam.engine.core.service.SmartFunctionManager;
 import org.smartparam.engine.core.service.SmartFunctionProvider;
+import org.smartparam.engine.core.service.SmartParameterProvider;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -45,7 +47,9 @@ public class ParamEngineConfig {
 
     private InvokerRepository invokerRepository = new SmartInvokerRepository();
 
-    private ParamRepository paramRepository;
+    private ParameterProvider parameterProvider = new SmartParameterProvider();
+
+    private Map<String, ParamRepository> parameterRepositories = new LinkedHashMap<String, ParamRepository>();
 
     private Map<String, FunctionRepository> functionRepositories = new LinkedHashMap<String, FunctionRepository>();
 
@@ -111,12 +115,20 @@ public class ParamEngineConfig {
         this.invokerRepository = invokerRepository;
     }
 
-    public ParamRepository getParamRepository() {
-        return paramRepository;
+    public ParameterProvider getParameterProvider() {
+        return parameterProvider;
     }
 
-    public void setParamRepository(ParamRepository paramRepository) {
-        this.paramRepository = paramRepository;
+    public void setParameterProvider(ParameterProvider parameterProvider) {
+        this.parameterProvider = parameterProvider;
+    }
+
+    public Map<String, ParamRepository> getParameterRepositories() {
+        return parameterRepositories;
+    }
+
+    public void setParameterRepositories(Map<String, ParamRepository> parameterRepositories) {
+        this.parameterRepositories = parameterRepositories;
     }
 
     public Map<String, FunctionRepository> getFunctionRepositories() {

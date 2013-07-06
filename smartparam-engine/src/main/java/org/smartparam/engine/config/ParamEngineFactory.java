@@ -8,6 +8,7 @@ import org.smartparam.engine.core.repository.MatcherRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.service.FunctionManager;
 import org.smartparam.engine.core.service.FunctionProvider;
+import org.smartparam.engine.core.service.ParameterProvider;
 
 /**
  *
@@ -29,7 +30,7 @@ public class ParamEngineFactory {
     }
 
     private void prepareInitializerRunner(ParamEngineConfig config) {
-        if(config.getInitializationRunner() == null) {
+        if (config.getInitializationRunner() == null) {
             ComponentInitializerRunner initializerRunner = new BasicComponentInitializerRunner(config.getComponentInitializers());
             config.setInitializationRunner(initializerRunner);
         }
@@ -67,16 +68,25 @@ public class ParamEngineFactory {
 
     private ParamPreparer prepareParamPreparer(ParamEngineConfig config) {
         ParamPreparer paramPreparer = config.getParamPreparer();
+        paramPreparer.setParameterProvider(prepareParameterProvider(config));
         paramPreparer.setFunctionProvider(config.getFunctionProvider());
         paramPreparer.setParamCache(config.getParamCache());
         paramPreparer.setMatcherRepository(prepareMatcherRepository(config));
         paramPreparer.setTypeRepository(prepareTypeRepository(config));
-        paramPreparer.setParamRepository(config.getParamRepository());
 
-        config.getInitializationRunner().runInitializers(config.getParamRepository());
         config.getInitializationRunner().runInitializers(paramPreparer);
 
         return paramPreparer;
+    }
+
+    private ParameterProvider prepareParameterProvider(ParamEngineConfig config) {
+        ParameterProvider parameterProvider = config.getParameterProvider();
+        parameterProvider.registerAll(config.getParameterRepositories());
+
+        config.getInitializationRunner().runInitializers(parameterProvider);
+        config.getInitializationRunner().runInitializersOnList(parameterProvider.registeredItems().values());
+
+        return parameterProvider;
     }
 
     private MatcherRepository prepareMatcherRepository(ParamEngineConfig config) {

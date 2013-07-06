@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.smartparam.engine.core.repository.SmartTypeRepository;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import org.smartparam.engine.core.service.SmartParameterProvider;
 
 /**
  * @author Przemek Hertel
@@ -75,9 +76,12 @@ public class SmartParamPreparerTest {
 
         instance = new SmartParamPreparer();
         instance.setParamCache(cache);
-        instance.setParamRepository(loader);
         instance.setTypeRepository(typeProvider);
         instance.setMatcherRepository(matcherProvider);
+
+        SmartParameterProvider provider = new SmartParameterProvider();
+        provider.register("test", 0, loader);
+        instance.setParameterProvider(provider);
     }
 
     @Test
@@ -344,10 +348,10 @@ public class SmartParamPreparerTest {
         assertFalse(result.isCacheable());
         assertNull(result.getIndex());
     }
-    
+
     @Test
     public void testGetFirstLevels() {
-        
+
         // preparing big entry: 14 levels
         ParameterEntry pe = ParameterEntryMockBuilder.parameterEntry("1;2;3;4;5;6;7;8;9;10;11;12;13;14", "value");
 
@@ -361,15 +365,15 @@ public class SmartParamPreparerTest {
             new Object[]{14, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"}},
             new Object[]{15, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", null}}
         };
-        
+
         // run test cases
         for (Object[] test : tests) {
             Integer n = (Integer) test[0];
             String[] expectedLevels = (String[]) test[1];
-            
+
             // when
             String[] result = instance.getFirstLevels(pe, n);
-            
+
             // then
             assertArrayEquals(expectedLevels, result);
         }

@@ -23,6 +23,7 @@ import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.repository.FunctionRepository;
 import org.smartparam.engine.core.invoker.JavaFunctionInvoker;
 import org.smartparam.engine.core.service.SmartFunctionProvider;
+import org.smartparam.engine.core.service.SmartParameterProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.test.builder.FunctionMockBuilder;
 import org.smartparam.engine.test.builder.LevelMockBuilder;
@@ -69,9 +70,12 @@ public class ParamEngineScenarioTest {
 
         SmartParamPreparer paramPreparer = new SmartParamPreparer();
         paramPreparer.setTypeRepository(typeProvider);
-        paramPreparer.setParamRepository(paramRepository);
         paramPreparer.setParamCache(new MapParamCache());
         paramPreparer.setFunctionProvider(functionProvider);
+
+        SmartParameterProvider paramProvider = new SmartParameterProvider();
+        paramProvider.register("test", 0, paramRepository);
+        paramPreparer.setParameterProvider(paramProvider);
 
         SmartFunctionManager functionManager = new SmartFunctionManager();
         functionManager.setFunctionProvider(functionProvider);

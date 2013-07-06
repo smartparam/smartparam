@@ -12,8 +12,8 @@ import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.service.FunctionProvider;
+import org.smartparam.engine.core.service.ParameterProvider;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
@@ -56,7 +56,7 @@ public class SmartParamPreparer implements ParamPreparer {
     /**
      * Dostep do parametrow.
      */
-    private ParamRepository paramRepository;
+    private ParameterProvider parameterProvider;
 
     private FunctionProvider functionProvider;
 
@@ -71,7 +71,7 @@ public class SmartParamPreparer implements ParamPreparer {
         PreparedParameter pp = cache.get(paramName);
 
         if (pp == null) {
-            Parameter p = paramRepository.load(paramName);
+            Parameter p = parameterProvider.load(paramName);
 
             if (p == null) {
                 logger.warn("param not found: {}", paramName);
@@ -232,7 +232,7 @@ public class SmartParamPreparer implements ParamPreparer {
 
     @Override
     public List<PreparedEntry> findEntries(String paramName, String[] levelValues) {
-        List<ParameterEntry> entries = paramRepository.findEntries(paramName, levelValues);
+        List<ParameterEntry> entries = parameterProvider.findEntries(paramName, levelValues);
 
         List<PreparedEntry> result = new ArrayList<PreparedEntry>(entries.size());
         for (ParameterEntry pe : entries) {
@@ -263,13 +263,13 @@ public class SmartParamPreparer implements ParamPreparer {
     }
 
     @Override
-    public ParamRepository getParamRepository() {
-        return paramRepository;
+    public ParameterProvider getParameterProvider() {
+        return parameterProvider;
     }
 
     @Override
-    public void setParamRepository(ParamRepository paramRepository) {
-        this.paramRepository = paramRepository;
+    public void setParameterProvider(ParameterProvider parameterProvider) {
+        this.parameterProvider = parameterProvider;
     }
 
     @Override

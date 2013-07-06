@@ -39,7 +39,7 @@ public class BasicParamService implements ParamService {
     public List<ParameterForm> listParams() {
         List<Parameter> parameters = new LinkedList<Parameter>();
         parameters.add(paramRepository.load("sample"));
-        
+
         return paramFormConverter.createList(parameters);
     }
 
@@ -48,7 +48,7 @@ public class BasicParamService implements ParamService {
     }
 
     public void setParamEngine(ParamEngine paramEngine) {
-        this.paramRepository = paramEngine.getParamPreparer().getParamRepository();
+        
     }
 
     public void setParamRepository(ParamRepository paramRepository) {

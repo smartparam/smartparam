@@ -19,11 +19,15 @@
     <bean id="paramEngine" class="org.smartparam.spring.SpringParamEngineFactory">
         <property name="config">
             <bean class="org.smartparam.engine.config.ParamEngineConfig">
-                <property name="paramRepository" ref="smartParamRepository"/>
+                <property name="parameterRepositories" ref="smartParamRepositories"/>
                 <property name="componentInitializers" ref="componentInitializers" />
             </bean>
         </property>
     </bean>
+
+    <util:map id="smartParamRepositories">
+        <entry key="jpa" value-ref="smartParamRepository"/>
+    </util:map>
 
     <util:list id="componentInitializers" >
         <bean id="typeScannerInitializer" class="org.smartparam.engine.config.TypeScannerInitializer" p:packagesToScan-ref="smartParamPackagesToScan"/>
@@ -37,6 +41,7 @@
 
     <bean id="smartParamEditorParamService" class="org.smartparam.editor.backend.service.BasicParamService">
         <property name="paramEngine" ref="paramEngine"/>
+        <property name="paramRepository" ref="smartParamRepository"/>
     </bean>
 
 </beans>

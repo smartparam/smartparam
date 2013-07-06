@@ -2,10 +2,10 @@ package org.smartparam.engine.core.engine;
 
 import java.util.List;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.repository.MatcherRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.service.FunctionProvider;
+import org.smartparam.engine.core.service.ParameterProvider;
 
 /**
  * Interface for services building complete, in-memory representation of
@@ -53,7 +53,7 @@ public interface ParamPreparer {
 
     void setMatcherRepository(MatcherRepository matcherRepository);
 
-    ParamRepository getParamRepository();
+    ParameterProvider getParameterProvider();
 
-    void setParamRepository(ParamRepository paramRepository);
+    void setParameterProvider(ParameterProvider parameterProvider);
 }

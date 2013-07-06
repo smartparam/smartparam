@@ -1,10 +1,12 @@
 package org.smartparam.provider.jdbc;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
 import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.provider.jdbc.dao.JdbcProviderDAO;
@@ -21,7 +23,7 @@ public class JdbcParamProvider implements ParamRepository {
      * JDBC DataSource to obtain connections from.
      */
     private DataSource dataSource;
-    
+
     private JdbcProviderDAO dao;
 
     /**
@@ -38,10 +40,10 @@ public class JdbcParamProvider implements ParamRepository {
         JdbcParameter p = dao.getParameter(parameterName);
         List<JdbcParameterLevel> levels = dao.getParameterLevels(p.getId());
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>(dao.getParameterEntries(p.getId()));
-        
-        p.setLevels(levels);
+
+        p.setLevels(new ArrayList<Level>(levels));
         p.setEntries(entries);
-        
+
         return p;
     }
 
@@ -69,5 +71,5 @@ public class JdbcParamProvider implements ParamRepository {
     public void setJdbcProviderDao(JdbcProviderDAO dao) {
         this.dao = dao;
     }
-    
+
 }
