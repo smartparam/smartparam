@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import static org.junit.Assert.*;
-import org.smartparam.mgmt.test.mock.EditableParameterEntryMock;
 import org.smartparam.serializer.StandardSerializationConfig;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 import org.smartparam.serializer.mock.ParameterEntryPersisterMock;
@@ -28,7 +28,7 @@ public class CsvParameterEntrySerializerIntegrationTest {
     @Before
     public void initialize() {
         serializer = new CsvParameterEntrySerializer();
-        deserializer = new CsvParameterEntryDeserializer(EditableParameterEntryMock.class);
+        deserializer = new CsvParameterEntryDeserializer(SimpleEditableParameterEntry.class);
     }
 
     @Test

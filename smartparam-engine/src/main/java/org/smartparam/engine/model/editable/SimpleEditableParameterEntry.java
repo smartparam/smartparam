@@ -1,4 +1,4 @@
-package org.smartparam.mgmt.model;
+package org.smartparam.engine.model.editable;
 
 import org.smartparam.engine.model.SimpleParameterEntry;
 

@@ -1,8 +1,8 @@
 package org.smartparam.serializer;
 
-import org.smartparam.mgmt.model.EditableLevel;
-import org.smartparam.mgmt.model.EditableParameter;
-import org.smartparam.mgmt.model.EditableParameterEntry;
+import org.smartparam.engine.model.editable.EditableLevel;
+import org.smartparam.engine.model.editable.EditableParameter;
+import org.smartparam.engine.model.editable.EditableParameterEntry;
 import org.smartparam.serializer.config.JsonParameterConfigDeserializer;
 import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
 

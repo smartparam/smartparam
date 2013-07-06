@@ -4,11 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.editable.SimpleEditableLevel;
+import org.smartparam.engine.model.editable.SimpleEditableParameter;
 import org.smartparam.engine.test.mock.LevelMock;
 import org.smartparam.engine.test.mock.ParameterEntryMock;
 import org.smartparam.engine.test.mock.ParameterMockBuilder;
-import org.smartparam.mgmt.test.mock.EditableLevelMock;
-import org.smartparam.mgmt.test.mock.EditableParameterMock;
 
 /**
  *
@@ -23,7 +23,7 @@ public class JsonParameterConfigSerializerIntegrationTest {
     @Before
     public void initialize() {
         serializer = new JsonParameterConfigSerializer();
-        deserializer = new JsonParameterConfigDeserializer(EditableParameterMock.class, EditableLevelMock.class);
+        deserializer = new JsonParameterConfigDeserializer(SimpleEditableParameter.class, SimpleEditableLevel.class);
     }
 
     @Test

@@ -7,7 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.mgmt.model.EditableParameterEntry;
+import org.smartparam.engine.model.editable.EditableParameterEntry;
 import org.smartparam.serializer.SerializationConfig;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 import org.supercsv.io.CsvListReader;

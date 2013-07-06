@@ -2,7 +2,7 @@ package org.smartparam.serializer;
 
 import org.smartparam.serializer.config.JsonParameterConfigSerializer;
 import org.smartparam.serializer.entries.CsvParameterEntrySerializer;
-import org.smartparam.mgmt.model.EditableParameterEntry;
+import org.smartparam.engine.model.editable.EditableParameterEntry;
 
 /**
  *

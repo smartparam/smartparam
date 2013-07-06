@@ -8,12 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.editable.SimpleEditableLevel;
+import org.smartparam.engine.model.editable.SimpleEditableParameter;
+import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.engine.test.mock.LevelMock;
 import org.smartparam.engine.test.mock.ParameterEntryMock;
 import org.smartparam.engine.test.mock.ParameterMockBuilder;
-import org.smartparam.mgmt.test.mock.EditableLevelMock;
-import org.smartparam.mgmt.test.mock.EditableParameterEntryMock;
-import org.smartparam.mgmt.test.mock.EditableParameterMock;
 
 /**
  *
@@ -28,10 +28,10 @@ public class StandardSmartParamSerializerTest {
     @Before
     public void initialize() {
         SerializationConfig config = new StandardSerializationConfig('"', ';', '#', "\n", "UTF-8");
-        serializer = new StandardSmartParamSerializer(config, EditableParameterEntryMock.class);
+        serializer = new StandardSmartParamSerializer(config, SimpleEditableParameterEntry.class);
         deserializer = new StandardSmartParamDeserializer(
                 config,
-                EditableParameterMock.class, EditableLevelMock.class, EditableParameterEntryMock.class);
+                SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
     }
 
     @Test

@@ -27,12 +27,6 @@
 
         <dependency>
             <groupId>org.smartparam</groupId>
-            <artifactId>smartparam-mgmt</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.smartparam</groupId>
             <artifactId>smartparam-serializer</artifactId>
             <version>${project.version}</version>
         </dependency>

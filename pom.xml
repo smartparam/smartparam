@@ -22,7 +22,6 @@
 
     <modules>
         <module>smartparam-engine</module>
-        <module>smartparam-mgmt</module>
         <module>smartparam-serializer</module>
         <module>smartparam-repository-fs</module>
         <module>smartparam-repository-jpa</module>

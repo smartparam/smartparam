@@ -6,8 +6,8 @@ import java.util.HashSet;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.mgmt.model.EditableLevel;
-import org.smartparam.mgmt.model.EditableParameter;
+import org.smartparam.engine.model.editable.EditableLevel;
+import org.smartparam.engine.model.editable.EditableParameter;
 
 /**
  *

@@ -3,9 +3,9 @@ package org.smartparam.repository.fs.resolver;
 import java.util.Map;
 import static org.fest.assertions.api.Assertions.*;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.mgmt.test.mock.EditableLevelMock;
-import org.smartparam.mgmt.test.mock.EditableParameterEntryMock;
-import org.smartparam.mgmt.test.mock.EditableParameterMock;
+import org.smartparam.engine.model.editable.SimpleEditableLevel;
+import org.smartparam.engine.model.editable.SimpleEditableParameter;
+import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
 import static org.smartparam.repository.fs.resolver.ResolverInegrationTestConsts.PARAMETER_SUB_DIR_NAME;
 import org.smartparam.serializer.SerializationConfig;
@@ -42,7 +42,7 @@ public class ClasspathResourceResolverIntegrationTest extends ResolverInegration
         SerializationConfig config = new StandardSerializationConfig();
         SmartParamDeserializer deserializer = new StandardSmartParamDeserializer(
                 config,
-                EditableParameterMock.class, EditableLevelMock.class, EditableParameterEntryMock.class);
+                SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
 
         resolver = new ClasspathResourceResolver(BASE_PATH, FILE_PATTERN, deserializer);
     }

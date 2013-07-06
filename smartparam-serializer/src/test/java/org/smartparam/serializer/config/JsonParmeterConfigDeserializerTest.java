@@ -5,8 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.mgmt.test.mock.EditableLevelMock;
-import org.smartparam.mgmt.test.mock.EditableParameterMock;
+import org.smartparam.engine.model.editable.SimpleEditableLevel;
+import org.smartparam.engine.model.editable.SimpleEditableParameter;
 
 /**
  *
@@ -18,7 +18,7 @@ public class JsonParmeterConfigDeserializerTest {
 
     @Before
     public void initialize() {
-        deserializer = new JsonParameterConfigDeserializer(EditableParameterMock.class, EditableLevelMock.class);
+        deserializer = new JsonParameterConfigDeserializer(SimpleEditableParameter.class, SimpleEditableLevel.class);
     }
 
     @Test
