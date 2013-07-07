@@ -28,9 +28,6 @@
         <module>smartparam-provider-jdbc</module>
         <module>smartparam-spring</module>
         <module>smartparam-demo</module>
-        <module>smartparam-editor-backend</module>
-        <module>smartparam-editor-spring</module>
-        <module>smartparam-editor-client</module>
     </modules>
 
     <dependencyManagement>
