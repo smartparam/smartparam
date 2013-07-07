@@ -3,7 +3,7 @@ package org.smartparam.engine.config;
 import java.util.List;
 import org.smartparam.engine.annotations.scanner.PackageTypeScanner;
 import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.core.TypeScanner;
+import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.repository.TypeScanningRepository;
 
 /**

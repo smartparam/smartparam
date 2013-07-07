@@ -3,7 +3,7 @@ package org.smartparam.engine.core.repository;
 import java.util.Map;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.core.TypeScanner;
+import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;

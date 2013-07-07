@@ -51,7 +51,7 @@ public class MapCacheTest {
     }
 
     @Test
-    public void shouldCleanCacheOnInvalidation() {
+    public void shouldClearCacheOnInvalidation() {
         // given
         MapCache<Object> cache = new MapCache<Object>();
         cache.put("TEST_KEY", new Object());

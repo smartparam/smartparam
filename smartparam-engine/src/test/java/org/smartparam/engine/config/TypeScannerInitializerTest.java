@@ -2,7 +2,7 @@ package org.smartparam.engine.config;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.smartparam.engine.core.TypeScanner;
+import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.repository.TypeScanningRepository;
 import static org.mockito.Mockito.*;
 import static org.fest.assertions.api.Assertions.*;

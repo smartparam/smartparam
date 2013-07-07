@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import org.smartparam.engine.annotations.SmartParamFunctionRepository;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.core.TypeScanner;
+import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;

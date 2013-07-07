@@ -6,7 +6,7 @@ import java.util.TreeMap;
 import org.smartparam.engine.annotations.SmartParamRepository;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.MapRepository;
-import org.smartparam.engine.core.TypeScanner;
+import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.repository.TypeScanningRepository;
 import org.smartparam.engine.model.Parameter;

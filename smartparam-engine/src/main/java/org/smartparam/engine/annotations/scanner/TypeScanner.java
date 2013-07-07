@@ -1,4 +1,4 @@
-package org.smartparam.engine.core;
+package org.smartparam.engine.annotations.scanner;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.repository;
 
-import org.smartparam.engine.core.TypeScanner;
+import org.smartparam.engine.annotations.scanner.TypeScanner;
 
 /**
  *

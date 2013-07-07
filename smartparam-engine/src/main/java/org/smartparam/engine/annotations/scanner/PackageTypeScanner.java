@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.core.TypeScanner;
 
 /**
  *
