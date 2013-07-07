@@ -1,7 +1,5 @@
 package org.smartparam.spring.function;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
 import org.smartparam.engine.core.invoker.AbstractJavaFunctionInvoker;
 import org.smartparam.engine.model.function.Function;
@@ -17,16 +15,9 @@ import org.springframework.context.ApplicationContextAware;
 @SmartParamFunctionInvoker("spring")
 public class SpringFunctionInvoker extends AbstractJavaFunctionInvoker implements ApplicationContextAware {
 
-    /**
-     * Logger.
-     */
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    /**
-     * Kontekst aplikacji springa.
-     */
     private ApplicationContext appContext = null;
 
+    @Override
     public Object invoke(Function function, Object... args) {
         SpringFunction springFunction = (SpringFunction) function;
 
@@ -35,6 +26,7 @@ public class SpringFunctionInvoker extends AbstractJavaFunctionInvoker implement
         return invokeMethod(bean, springFunction.getMethod(), args);
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext ac) throws BeansException {
         this.appContext = ac;
     }
