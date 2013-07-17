@@ -139,26 +139,6 @@ public class LevelIndex<T> {
     }
 
     /**
-     * Tworzy pusty index z podanymi typami i domyslnymi matcherami.
-     * Liczba poziomow bedzie rowna liczbie podanych typow.
-     *
-     * @param types typy dla kolejnych poziomow
-     */
-    public LevelIndex(Type<?>[] types) {
-        this(types.length, types);
-    }
-
-    /**
-     * Tworzy pusty index z podanymi matcherami i pustymi typami.
-     * Liczba poziomow bedzie rowna liczbie matcherow.
-     *
-     * @param matchers matchery dla kolejnych poziomow
-     */
-    public LevelIndex(Matcher... matchers) {
-        this(matchers.length, null, matchers);
-    }
-
-    /**
      * Dodaje wzorzec dopasowania (levelValues) do indeksu
      * i kojarzy go z wartoscia wzorca (leaf).
      * <p>

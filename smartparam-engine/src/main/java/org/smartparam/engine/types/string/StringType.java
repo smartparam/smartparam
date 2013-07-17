@@ -1,6 +1,6 @@
 package org.smartparam.engine.types.string;
 
-import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.annotations.ParamType;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -12,7 +12,7 @@ import org.smartparam.engine.core.type.Type;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-@SmartParamType("string")
+@ParamType("string")
 public class StringType implements Type<StringHolder> {
 
     /**

@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.repository;
 
 import java.util.Map;
-import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.annotations.ParamType;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.MapRepository;
@@ -11,13 +11,13 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SmartTypeRepository implements TypeRepository, TypeScanningRepository {
+public class BasicTypeRepository implements TypeRepository, TypeScanningRepository {
 
     private MapRepository<Type<?>> innerRepository = new MapRepository<Type<?>>(Type.class);
 
     @Override
     public void scanAnnotations(TypeScanner scanner) {
-        Map<RepositoryObjectKey, Type<?>> types = scanner.scanTypes(SmartParamType.class);
+        Map<RepositoryObjectKey, Type<?>> types = scanner.scanTypes(ParamType.class);
         innerRepository.registerAll(types);
     }
 

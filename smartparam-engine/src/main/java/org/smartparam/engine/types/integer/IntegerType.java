@@ -1,6 +1,6 @@
 package org.smartparam.engine.types.integer;
 
-import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.annotations.ParamType;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 
@@ -18,7 +18,7 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-@SmartParamType("integer")
+@ParamType("integer")
 public class IntegerType implements Type<IntegerHolder> {
 
     /**

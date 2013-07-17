@@ -1,6 +1,6 @@
 package org.smartparam.engine.test.scan;
 
-import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
+import org.smartparam.engine.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
 
@@ -8,7 +8,7 @@ import org.smartparam.engine.model.function.Function;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-@SmartParamFunctionInvoker(value = "", values = {"nameOne", "nameTwo"})
+@ParamFunctionInvoker(value = "", values = {"nameOne", "nameTwo"})
 public class DummyFunctionInvoker implements FunctionInvoker {
 
     @Override

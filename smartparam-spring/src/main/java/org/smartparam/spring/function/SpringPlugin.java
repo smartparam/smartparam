@@ -1,4 +1,4 @@
-package org.smartparam.engine.annotations;
+package org.smartparam.spring.function;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,12 +6,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks annotation, that has sorting capabilities.
- * Sortable annotation should provide order() method.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-@Target(ElementType.ANNOTATION_TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SmartParamSortable {
+public @interface SpringPlugin {
+
+    String value();
+
 }

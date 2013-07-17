@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.service.SmartFunctionManager;
+import org.smartparam.engine.core.service.BasicFunctionManager;
 import java.util.ArrayList;
 import org.smartparam.engine.core.repository.ParamRepository;
 import java.util.Arrays;
@@ -12,8 +12,8 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
-import org.smartparam.engine.core.repository.SmartInvokerRepository;
-import org.smartparam.engine.core.repository.SmartTypeRepository;
+import org.smartparam.engine.core.repository.BasicInvokerRepository;
+import org.smartparam.engine.core.repository.BasicTypeRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
@@ -22,8 +22,8 @@ import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.repository.FunctionRepository;
 import org.smartparam.engine.core.invoker.JavaFunctionInvoker;
-import org.smartparam.engine.core.service.SmartFunctionProvider;
-import org.smartparam.engine.core.service.SmartParameterProvider;
+import org.smartparam.engine.core.service.BasicFunctionProvider;
+import org.smartparam.engine.core.service.BasicParameterProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.test.builder.FunctionMockBuilder;
 import org.smartparam.engine.test.builder.LevelMockBuilder;
@@ -52,19 +52,19 @@ public class ParamEngineScenarioTest {
 
     @Before
     public void init() {
-        TypeRepository typeProvider = new SmartTypeRepository();
+        TypeRepository typeProvider = new BasicTypeRepository();
         typeProvider.register("string", new StringType());
         typeProvider.register("integer", new IntegerType());
         typeProvider.register("plugin", new PluginType());
 
         paramRepository = mock(ParamRepository.class);
 
-        SmartInvokerRepository invokerRepository = new SmartInvokerRepository();
+        BasicInvokerRepository invokerRepository = new BasicInvokerRepository();
         invokerRepository.register("java", new JavaFunctionInvoker());
 
         functionRepository = mock(FunctionRepository.class);
 
-        SmartFunctionProvider functionProvider = new SmartFunctionProvider();
+        BasicFunctionProvider functionProvider = new BasicFunctionProvider();
         functionProvider.setFunctionCache(new MapFunctionCache());
         functionProvider.register("java", 0, functionRepository);
 
@@ -73,11 +73,11 @@ public class ParamEngineScenarioTest {
         paramPreparer.setParamCache(new MapParamCache());
         paramPreparer.setFunctionProvider(functionProvider);
 
-        SmartParameterProvider paramProvider = new SmartParameterProvider();
+        BasicParameterProvider paramProvider = new BasicParameterProvider();
         paramProvider.register("test", 0, paramRepository);
         paramPreparer.setParameterProvider(paramProvider);
 
-        SmartFunctionManager functionManager = new SmartFunctionManager();
+        BasicFunctionManager functionManager = new BasicFunctionManager();
         functionManager.setFunctionProvider(functionProvider);
         functionManager.setInvokerRepository(invokerRepository);
 

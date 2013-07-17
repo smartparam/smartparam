@@ -2,7 +2,7 @@ package org.smartparam.engine.types.number;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.annotations.ParamType;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 
@@ -17,7 +17,7 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-@SmartParamType("number")
+@ParamType("number")
 public class NumberType implements Type<NumberHolder> {
 
     /**

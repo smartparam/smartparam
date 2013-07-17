@@ -2,8 +2,8 @@ package org.smartparam.engine.core.repository;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import org.smartparam.engine.annotations.SmartParamFunctionRepository;
-import org.smartparam.engine.annotations.SmartParamJavaPlugin;
+import org.smartparam.engine.annotations.ParamFunctionRepository;
+import org.smartparam.engine.annotations.JavaPlugin;
 import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.function.JavaFunction;
 
@@ -11,14 +11,14 @@ import org.smartparam.engine.model.function.JavaFunction;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-@SmartParamFunctionRepository(JavaFunctionRepository.JAVA_FUNCTION_CODE)
+@ParamFunctionRepository(JavaFunctionRepository.JAVA_FUNCTION_CODE)
 public class JavaFunctionRepository extends AbstractJavaFunctionRepository {
 
     public static final String JAVA_FUNCTION_CODE = "java";
 
     @Override
     protected Class<? extends Annotation> annotationClass() {
-        return SmartParamJavaPlugin.class;
+        return JavaPlugin.class;
     }
 
     @Override

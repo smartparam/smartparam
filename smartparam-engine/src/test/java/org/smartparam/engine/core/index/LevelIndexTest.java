@@ -1,7 +1,5 @@
 package org.smartparam.engine.core.index;
 
-import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.index.LevelIndex;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +13,7 @@ import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;
 import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.Formatter;
+import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
 
 /**
  * Test indeksu budowanego dla macierzy parametru.
@@ -111,51 +110,12 @@ public class LevelIndexTest {
     public void testConstructor2() {
 
         // utworzenie testowanego obiektu
-        LevelIndex<String> index = new LevelIndex<String>(2);     // 2 poziomy, brak typow, domyslne matchery
+        LevelIndex<String> index = levelIndex().withLevelCount(2).build();     // 2 poziomy, brak typow, domyslne matchery
 
         // sprawdzenie wynikow testu
         assertEquals(2, index.getLevelCount());
         assertArrayEquals(new Type<?>[]{null, null}, index.getTypes());
         assertArrayEquals(new Matcher[]{null, null}, index.getMatchers());
-    }
-
-    /**
-     * Test konstruktora {@link LevelIndex#LevelIndex(org.smartparam.engine.core.type.AbstractType<?>[])}.
-     */
-    @Test
-    public void testConstructor3() {
-
-        // konfiguracja zaleznosci
-        StringType t1 = new StringType();
-        Type<?>[] types = {t1};
-
-        // utworzenie testowanego obiektu
-        LevelIndex<Long> index = new LevelIndex<Long>(types);     // 1 poziom, 1 typ, domyslny matcher
-
-        // sprawdzenie wynikow testu
-        assertEquals(1, index.getLevelCount());
-        assertArrayEquals(types, index.getTypes());
-        assertArrayEquals(new Matcher[]{null}, index.getMatchers());
-    }
-
-    /**
-     * Test konstruktora {@link LevelIndex#LevelIndex(org.smartparam.engine.core.index.Matcher[])}.
-     */
-    @Test
-    public void testConstructor4() {
-
-        // konfiguracja zaleznosci
-        Matcher m1 = new EqMatcher();
-        Matcher m2 = new BetweenMatcher();
-
-        // utworzenie testowanego obiektu
-        LevelIndex<Object> index = new LevelIndex<Object>(m1, m2);     // 2 poziomy, 2 matchery, brak typow
-
-        // sprawdzenie wynikow testu
-        assertEquals(2, index.getLevelCount());
-        assertArrayEquals(new Matcher[]{m1, m2}, index.getMatchers());
-        assertEquals(m1, index.getMatcher(0));
-        assertEquals(m2, index.getMatcher(1));
     }
 
     /**

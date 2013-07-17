@@ -5,7 +5,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.annotations.SmartParamJavaPlugin;
+import org.smartparam.engine.annotations.JavaPlugin;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.test.scan.plugins.DummyPluginAnnotation;
@@ -35,7 +35,7 @@ public class PackageMethodScannerIntegrationTest {
         PackageMethodScanner scanner = new PackageMethodScanner(packageList);
 
         // when
-        Map<String, Method> methods = scanner.scanMethods(SmartParamJavaPlugin.class);
+        Map<String, Method> methods = scanner.scanMethods(JavaPlugin.class);
 
         // then
         assertThat(methods).hasSize(1).containsKey("javaPlugin");

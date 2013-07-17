@@ -6,26 +6,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks matchers that should be added to matcher repository during initial
+ * Marks types that should be added to matcher repository during initial
  * scan.
  *
- * @see org.smartparam.engine.core.index.Matcher
+ * @see org.smartparam.engine.core.type.Type
  * @author Adam Dubiel
  * @since 0.1.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SmartParamMatcher {
+public @interface ParamType {
 
     /**
-     * Unique name of matcher.
+     * Unique name of type.
      *
      * @return name
      */
     String value();
 
     /**
-     * Returns array of matcher names, if it should be registered multiple
+     * Returns array of type names, if it should be registered multiple
      * times under different names.
      *
      * @return names
@@ -33,11 +33,11 @@ public @interface SmartParamMatcher {
     String[] values() default {};
 
     /**
-     * Returns data to instantiate matcher class with different constructor
-     * arguments. Matcher objects will be registered under given names.
+     * Returns data to instantiate type class with different constructor
+     * arguments. Type objects will be registered under given names.
      *
      * @see SmartParamObjectInstance
      * @return instance descriptors
      */
-    SmartParamObjectInstance[] instances() default {};
+    ObjectInstance[] instances() default {};
 }

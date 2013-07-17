@@ -1,6 +1,6 @@
 package org.smartparam.engine.test.builder;
 
-import org.smartparam.engine.core.service.SmartFunctionProvider;
+import org.smartparam.engine.core.service.BasicFunctionProvider;
 
 /**
  *
@@ -8,17 +8,17 @@ import org.smartparam.engine.core.service.SmartFunctionProvider;
  */
 public class SmartFunctionProviderTestBuilder {
 
-    private SmartFunctionProvider functionProvider;
+    private BasicFunctionProvider functionProvider;
 
     private SmartFunctionProviderTestBuilder() {
-        functionProvider = new SmartFunctionProvider();
+        functionProvider = new BasicFunctionProvider();
     }
 
     public static SmartFunctionProviderTestBuilder functionProvider() {
         return new SmartFunctionProviderTestBuilder();
     }
 
-    public SmartFunctionProvider build() {
+    public BasicFunctionProvider build() {
         return functionProvider;
     }
 }

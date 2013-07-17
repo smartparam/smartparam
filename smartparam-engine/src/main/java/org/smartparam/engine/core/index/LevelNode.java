@@ -211,10 +211,6 @@ public class LevelNode<T> {
         return level;
     }
 
-    public LevelIndex<T> getIndex() {
-        return index;
-    }
-
     public List<T> getLeafList() {
         return leafList;
     }

@@ -1,10 +1,10 @@
 package org.smartparam.engine.annotations.scanner;
 
 import java.util.Map;
-import org.smartparam.engine.annotations.SmartParamMatcher;
-import org.smartparam.engine.annotations.SmartParamType;
-import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
-import org.smartparam.engine.annotations.SmartParamFunctionRepository;
+import org.smartparam.engine.annotations.ParamMatcher;
+import org.smartparam.engine.annotations.ParamType;
+import org.smartparam.engine.annotations.ParamFunctionInvoker;
+import org.smartparam.engine.annotations.ParamFunctionRepository;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutInstances;
@@ -41,7 +41,7 @@ public class PackageObjectScannerIntegrationTest {
         AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamMatcher.class, packageList);
+        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(ParamMatcher.class, packageList);
 
         // then
         assertThatItemMap(foundObjects).containsRepositoryKey("dummyMatcher").hasSize(1);
@@ -53,7 +53,7 @@ public class PackageObjectScannerIntegrationTest {
         AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamType.class, packageList);
+        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(ParamType.class, packageList);
 
         // then
         assertThatItemMap(foundObjects).containsObjectsThatAreNotSame("typeInstanceOne", "typeInstanceTwo").hasSize(2);
@@ -65,7 +65,7 @@ public class PackageObjectScannerIntegrationTest {
         AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamFunctionInvoker.class, packageList);
+        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(ParamFunctionInvoker.class, packageList);
 
         // then
         assertThatItemMap(foundObjects).containsObjectsThatAreSame("nameOne", "nameTwo").hasSize(2);
@@ -77,7 +77,7 @@ public class PackageObjectScannerIntegrationTest {
         AnnotatedObjectsScanner<Object> scanner = new AnnotatedObjectsScanner<Object>();
 
         // when
-        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(SmartParamFunctionRepository.class, packageList);
+        Map<RepositoryObjectKey, Object> foundObjects = scanner.getAnnotatedObjects(ParamFunctionRepository.class, packageList);
 
         // then
         assertThatItemMap(foundObjects).containsRepositoryKeys("primaryRepository", "secondaryRepsitory");

@@ -7,14 +7,14 @@ import java.lang.annotation.Target;
 
 /**
  * Marks assemblers that should be added to assembler repository during initial
- * scan.
+ * scan. Not working yet.
  *
  * @author Adam Dubiel
  * @since 0.1.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SmartParamAssembler {
+public @interface ParamAssembler {
 
     /**
      * Name of assembler (unique).
@@ -38,5 +38,5 @@ public @interface SmartParamAssembler {
      * @see SmartParamObjectInstance
      * @return assembler instance descriptors
      */
-    SmartParamObjectInstance[] instances() default {};
+    ObjectInstance[] instances() default {};
 }

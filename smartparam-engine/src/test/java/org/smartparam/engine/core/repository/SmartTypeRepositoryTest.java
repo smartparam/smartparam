@@ -16,7 +16,7 @@ public class SmartTypeRepositoryTest {
     @Test
     public void shouldFailWhenTryingToRegisterMultipleItemsUnderSameName() {
         // given
-        SmartTypeRepository typeRepository = typeRepository().withType("TYPE", new StringType()).build();
+        BasicTypeRepository typeRepository = typeRepository().withType("TYPE", new StringType()).build();
 
         // when
         catchException(typeRepository).register("TYPE", null);

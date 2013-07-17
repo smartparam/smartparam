@@ -4,8 +4,8 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.smartparam.engine.annotations.SmartParamObjectInstance;
-import org.smartparam.engine.annotations.SmartParamSortable;
+import org.smartparam.engine.annotations.ObjectInstance;
+import org.smartparam.engine.annotations.Sortable;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.exception.SmartParamInitializationException;
 import org.smartparam.engine.util.reflection.AnnotationHelper;
@@ -43,7 +43,7 @@ public class AnnotatedObjectFactory {
     public <T> Map<RepositoryObjectKey, T> createObjects(Class<T> objectClass, Annotation annotation) {
         Map<String, T> rawObjectInstances;
 
-        SmartParamObjectInstance[] instanceDescriptors = extractInstanceDescriptors(annotation);
+        ObjectInstance[] instanceDescriptors = extractInstanceDescriptors(annotation);
         if (instanceDescriptors.length > 0) {
             rawObjectInstances = createObjectsFromInstanceDescriptors(objectClass, instanceDescriptors);
         } else {
@@ -60,12 +60,12 @@ public class AnnotatedObjectFactory {
         return createdObjects;
     }
 
-    private <T> Map<String, T> createObjectsFromInstanceDescriptors(Class<T> objectClass, SmartParamObjectInstance[] instanceDescriptors) {
+    private <T> Map<String, T> createObjectsFromInstanceDescriptors(Class<T> objectClass, ObjectInstance[] instanceDescriptors) {
         Map<String, T> createdObjects = new HashMap<String, T>();
 
         T object;
         String objectIdentifier;
-        for (SmartParamObjectInstance instanceDescriptor : instanceDescriptors) {
+        for (ObjectInstance instanceDescriptor : instanceDescriptors) {
             objectIdentifier = extractValue(instanceDescriptor);
             object = instantiateUsingObjectDescriptor(objectClass, instanceDescriptor);
             createdObjects.put(objectIdentifier, object);
@@ -117,7 +117,7 @@ public class AnnotatedObjectFactory {
      * @return created object
      */
     @SuppressWarnings("unchecked")
-    private <T> T instantiateUsingObjectDescriptor(Class<T> objectClass, SmartParamObjectInstance objectDescriptor) {
+    private <T> T instantiateUsingObjectDescriptor(Class<T> objectClass, ObjectInstance objectDescriptor) {
         int constructorArgCount = objectDescriptor.constructorArgs().length;
         Class<?>[] constructorArgClasses = new Class<?>[constructorArgCount];
         Object[] constructorArgs = new Object[constructorArgCount];
@@ -147,7 +147,7 @@ public class AnnotatedObjectFactory {
      * @return order read from annotation or default value
      */
     private int extractOrder(Annotation annotation) {
-        if (annotation.annotationType().isAnnotationPresent(SmartParamSortable.class)) {
+        if (annotation.annotationType().isAnnotationPresent(Sortable.class)) {
             return AnnotationHelper.extractValue(annotation, ORDER_METHOD_NAME);
         }
         return DEFAULT_ORDER_VALUE;
@@ -175,7 +175,7 @@ public class AnnotatedObjectFactory {
      *
      * @return array of descriptors, never null
      */
-    private SmartParamObjectInstance[] extractInstanceDescriptors(Annotation annotation) {
+    private ObjectInstance[] extractInstanceDescriptors(Annotation annotation) {
         return AnnotationHelper.extractValue(annotation, INSTANCES_METHOD_NAME);
     }
 }

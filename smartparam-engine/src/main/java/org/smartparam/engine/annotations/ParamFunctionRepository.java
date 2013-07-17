@@ -6,13 +6,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Marks function repository that should be added to function provider during
+ * initial scan. Function repositories are ordered, first function repository
+ * that can provide searched function is used.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SmartParamSortable
-public @interface SmartParamRepository {
+@Sortable
+public @interface ParamFunctionRepository {
 
     /**
      * Unique name of repository.
@@ -36,7 +39,7 @@ public @interface SmartParamRepository {
      * @see SmartParamObjectInstance
      * @return instance descriptors
      */
-    SmartParamObjectInstance[] instances() default {};
+    ObjectInstance[] instances() default {};
 
     /**
      * Order of repository on repository list, lower number means repository will
