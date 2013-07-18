@@ -59,9 +59,12 @@ public class CsvParameterEntryDeserializer extends AbstractCsvParameterEntrySeri
             logger.debug("deserializing {} parameter entries took {}", readedLineCounter, endTime - startTime);
         } catch (IOException exception) {
             throw new SmartParamSerializationException("deserialization error", exception);
-        } catch (ReflectiveOperationException reflectiveException) {
+        } catch (IllegalAccessException illegalAccessException) {
             throw new SmartParamSerializationException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?",
-                    reflectiveException);
+                    illegalAccessException);
+        } catch (InstantiationException instantiationException) {
+            throw new SmartParamSerializationException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?",
+                    instantiationException);
         } finally {
             closeReader(csvReader);
         }
@@ -72,7 +75,7 @@ public class CsvParameterEntryDeserializer extends AbstractCsvParameterEntrySeri
         parameterEntries.clear();
     }
 
-    private ParameterEntry createParameterEntry(List<String> levelValues) throws ReflectiveOperationException {
+    private ParameterEntry createParameterEntry(List<String> levelValues) throws IllegalAccessException, InstantiationException {
         EditableParameterEntry parameterEntry = instanceClass.newInstance();
         parameterEntry.setLevels(levelValues.toArray(new String[levelValues.size()]));
 
