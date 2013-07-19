@@ -15,4 +15,6 @@ public interface ParameterProvider extends OrderedRepository<ParamRepository> {
     Parameter load(String parameterName);
 
     List<ParameterEntry> findEntries(String parameterName, String[] levelValues);
+
+    void registerAll(List<ParamRepository> repositories);
 }

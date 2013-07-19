@@ -16,6 +16,10 @@ import org.smartparam.engine.core.service.ParameterProvider;
  */
 public class ParamEngineFactory {
 
+    public static ParamEngine paramEngine(ParamEngineConfig config) {
+        return new ParamEngineFactory().createParamEngine(config);
+    }
+
     public ParamEngine createParamEngine(ParamEngineConfig config) {
         prepareInitializerRunner(config);
 

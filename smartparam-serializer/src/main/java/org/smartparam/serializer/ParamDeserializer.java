@@ -10,7 +10,7 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface SmartParamDeserializer {
+public interface ParamDeserializer {
 
     Parameter deserialize(Reader reader) throws SmartParamSerializationException;
 

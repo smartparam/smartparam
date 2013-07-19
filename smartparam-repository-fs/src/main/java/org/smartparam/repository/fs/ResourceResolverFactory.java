@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.repository.fs.resolver.FileResourceResolver;
 import org.smartparam.repository.fs.resolver.ClasspathResourceResolver;
-import org.smartparam.serializer.SmartParamDeserializer;
+import org.smartparam.serializer.ParamDeserializer;
 
 /**
  *
@@ -16,11 +16,11 @@ public class ResourceResolverFactory {
 
     private static final String FILE_RESOLVER_PREFIX = "file://";
 
-    private static final String CLASSPATH_RESOLVER_PREFIX = "classpath://";
+    private static final String CLASSPATH_RESOLVER_PREFIX = "classpath:";
 
-    private SmartParamDeserializer deserializer;
+    private ParamDeserializer deserializer;
 
-    public ResourceResolverFactory(SmartParamDeserializer deserializer) {
+    public ResourceResolverFactory(ParamDeserializer deserializer) {
         this.deserializer = deserializer;
     }
 

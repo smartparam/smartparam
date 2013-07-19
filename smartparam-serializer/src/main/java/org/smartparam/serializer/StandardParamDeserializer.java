@@ -10,9 +10,9 @@ import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class StandardSmartParamDeserializer extends RawSmartParamDeserializer {
+public class StandardParamDeserializer extends RawSmartParamDeserializer {
 
-    public StandardSmartParamDeserializer(
+    public StandardParamDeserializer(
             SerializationConfig serializationConfig,
             Class<? extends EditableParameter> parameterInstanceClass,
             Class<? extends EditableLevel> levelInstanceClass,

@@ -9,7 +9,7 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface SmartParamSerializer {
+public interface ParamSerializer {
 
     public void serialize(Parameter parameter, Writer writer) throws SmartParamSerializationException;
 

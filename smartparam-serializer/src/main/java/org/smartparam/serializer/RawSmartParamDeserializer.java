@@ -14,7 +14,7 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class RawSmartParamDeserializer implements SmartParamDeserializer {
+public class RawSmartParamDeserializer implements ParamDeserializer {
 
     private static final int PROBABLE_CONFIG_LENGTH = 400;
 

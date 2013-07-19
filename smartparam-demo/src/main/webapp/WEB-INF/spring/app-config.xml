@@ -23,25 +23,21 @@
                 <property name="componentInitializers" ref="componentInitializers" />
             </bean>
         </property>
+        <property name="scanAnnotations" value="true"/>
+        <property name="packagesToScan">
+            <list>
+                <value>org.smartparam.spring</value>
+                <value>org.smartparam.demo.param</value>
+            </list>
+        </property>
     </bean>
 
-    <util:map id="smartParamRepositories">
-        <entry key="jpa" value-ref="smartParamRepository"/>
-    </util:map>
-
-    <util:list id="componentInitializers" >
-        <bean id="typeScannerInitializer" class="org.smartparam.engine.config.TypeScannerInitializer" p:packagesToScan-ref="smartParamPackagesToScan"/>
-        <bean id="methodScannerInitializer" class="org.smartparam.engine.config.MethodScannerInitializer" p:packagesToScan-ref="smartParamPackagesToScan"/>
+    <util:list id="smartParamRepositories">
+        <bean id="smartParamRepository"/>
+        <!--        <bean class="org.smartparam.repository.fs.FSParamRepository">
+            <constructor-arg index="0" value="classpath:/param/"/>
+            <constructor-arg index="1" value="*.csv$"/>
+        </bean>-->
     </util:list>
-
-    <util:list id="smartParamPackagesToScan">
-        <value>org.smartparam.demo.param</value>
-        <value>org.smartparam.spring</value>
-    </util:list>
-
-    <bean id="smartParamEditorParamService" class="org.smartparam.editor.backend.service.BasicParamService">
-        <property name="paramEngine" ref="paramEngine"/>
-        <property name="paramRepository" ref="smartParamRepository"/>
-    </bean>
 
 </beans>

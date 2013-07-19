@@ -49,7 +49,7 @@ public class ParamEngineConfig {
 
     private ParameterProvider parameterProvider = new BasicParameterProvider();
 
-    private Map<String, ParamRepository> parameterRepositories = new LinkedHashMap<String, ParamRepository>();
+    private List<ParamRepository> parameterRepositories = new ArrayList<ParamRepository>();
 
     private Map<String, FunctionRepository> functionRepositories = new LinkedHashMap<String, FunctionRepository>();
 
@@ -123,11 +123,11 @@ public class ParamEngineConfig {
         this.parameterProvider = parameterProvider;
     }
 
-    public Map<String, ParamRepository> getParameterRepositories() {
+    public List<ParamRepository> getParameterRepositories() {
         return parameterRepositories;
     }
 
-    public void setParameterRepositories(Map<String, ParamRepository> parameterRepositories) {
+    public void setParameterRepositories(List<ParamRepository> parameterRepositories) {
         this.parameterRepositories = parameterRepositories;
     }
 

@@ -1,7 +1,7 @@
 package org.smartparam.engine.test.builder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.repository.ParamRepository;
@@ -29,9 +29,9 @@ public class SmartParamConfigTestBuilder {
 
     public SmartParamConfigTestBuilder withRepository(ParamRepository repository) {
         if(config.getParameterRepositories() == null) {
-            config.setParameterRepositories(new LinkedHashMap<String, ParamRepository>());
+            config.setParameterRepositories(new ArrayList<ParamRepository>());
         }
-        config.getParameterRepositories().put("test", repository);
+        config.getParameterRepositories().add(repository);
         return this;
     }
 

@@ -16,6 +16,13 @@ public class MethodScannerInitializer implements ComponentInitializer {
 
     private MethodScanner methodScanner = new PackageMethodScanner(packagesToScan);
 
+    public MethodScannerInitializer() {
+    }
+
+    public MethodScannerInitializer(PackageList packagesToScan) {
+        this.packagesToScan = packagesToScan;
+    }
+
     @Override
     public void initializeObject(Object configObject) {
         MethodScanningRepository repository = (MethodScanningRepository) configObject;

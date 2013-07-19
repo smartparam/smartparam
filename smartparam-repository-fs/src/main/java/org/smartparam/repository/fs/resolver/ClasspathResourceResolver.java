@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
-import org.smartparam.serializer.SmartParamDeserializer;
+import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
@@ -31,9 +31,9 @@ public class ClasspathResourceResolver implements ResourceResolver {
 
     private String filePattern;
 
-    private SmartParamDeserializer deserializer;
+    private ParamDeserializer deserializer;
 
-    public ClasspathResourceResolver(String basePath, String filePattern, SmartParamDeserializer deserializer) {
+    public ClasspathResourceResolver(String basePath, String filePattern, ParamDeserializer deserializer) {
         this.basePath = basePath;
         this.filePattern = filePattern;
         this.deserializer = deserializer;

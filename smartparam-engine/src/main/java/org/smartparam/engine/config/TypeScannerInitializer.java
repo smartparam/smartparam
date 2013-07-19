@@ -16,6 +16,13 @@ public class TypeScannerInitializer implements ComponentInitializer {
 
     private TypeScanner typeScanner = new PackageTypeScanner(packagesToScan);
 
+    public TypeScannerInitializer() {
+    }
+
+    public TypeScannerInitializer(PackageList packagesToScan) {
+        this.packagesToScan = packagesToScan;
+    }
+
     @Override
     public void initializeObject(Object configObject) {
         TypeScanningRepository repository = (TypeScanningRepository) configObject;

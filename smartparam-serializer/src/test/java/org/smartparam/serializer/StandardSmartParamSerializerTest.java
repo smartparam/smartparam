@@ -21,15 +21,15 @@ import org.smartparam.engine.test.mock.ParameterMockBuilder;
  */
 public class StandardSmartParamSerializerTest {
 
-    private StandardSmartParamSerializer serializer;
+    private StandardParamSerializer serializer;
 
-    private StandardSmartParamDeserializer deserializer;
+    private StandardParamDeserializer deserializer;
 
     @Before
     public void initialize() {
         SerializationConfig config = new StandardSerializationConfig('"', ';', '#', "\n", "UTF-8");
-        serializer = new StandardSmartParamSerializer(config, SimpleEditableParameterEntry.class);
-        deserializer = new StandardSmartParamDeserializer(
+        serializer = new StandardParamSerializer(config, SimpleEditableParameterEntry.class);
+        deserializer = new StandardParamDeserializer(
                 config,
                 SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
     }

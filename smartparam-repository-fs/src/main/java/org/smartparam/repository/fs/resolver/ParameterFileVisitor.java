@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.SmartParamDeserializer;
+import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
@@ -24,13 +24,13 @@ public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
 
     private static final Logger logger = LoggerFactory.getLogger(ParameterFileVisitor.class);
 
-    private SmartParamDeserializer deserializer;
+    private ParamDeserializer deserializer;
 
     private Pattern filePattern;
 
     private Map<String, String> parameters = new HashMap<String, String>();
 
-    public ParameterFileVisitor(String filePattern, SmartParamDeserializer deserializer) {
+    public ParameterFileVisitor(String filePattern, ParamDeserializer deserializer) {
         this.filePattern = Pattern.compile(filePattern);
         this.deserializer = deserializer;
     }

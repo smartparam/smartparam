@@ -12,9 +12,9 @@ import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
 import static org.smartparam.repository.fs.resolver.ResolverInegrationTestConsts.PARAMETER_SUB_DIR_NAME;
 import org.smartparam.serializer.SerializationConfig;
-import org.smartparam.serializer.SmartParamDeserializer;
+import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardSerializationConfig;
-import org.smartparam.serializer.StandardSmartParamDeserializer;
+import org.smartparam.serializer.StandardParamDeserializer;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -72,7 +72,7 @@ public class FileResourceResolverIntegrationTest extends ResolverInegrationTestC
     @BeforeMethod
     public void setUp() {
         SerializationConfig config = new StandardSerializationConfig();
-        SmartParamDeserializer deserializer = new StandardSmartParamDeserializer(
+        ParamDeserializer deserializer = new StandardParamDeserializer(
                 config,
                 SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
 

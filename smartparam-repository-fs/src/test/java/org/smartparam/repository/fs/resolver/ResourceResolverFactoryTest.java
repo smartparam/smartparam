@@ -18,8 +18,8 @@ public class ResourceResolverFactoryTest {
     @DataProvider(name = "resourceResolvers")
     public Object[][] resourceResolversProvider() {
         return new Object[][]{
-            {"file://home/test/path", FileResourceResolver.class},
-            {"classpath://test/path", ClasspathResourceResolver.class}
+            {"file:///home/test/path", FileResourceResolver.class},
+            {"classpath:/test/path", ClasspathResourceResolver.class}
         };
     }
 

@@ -13,7 +13,7 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class RawSmartParamSerializer implements SmartParamSerializer {
+public class RawSmartParamSerializer implements ParamSerializer {
 
     private static final int PROBABLE_COMMENT_SIGNS_COUNT = 50;
 

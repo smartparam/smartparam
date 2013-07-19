@@ -63,4 +63,15 @@ public class BasicParameterProvider implements ParameterProvider, TypeScanningRe
     public void registerAll(Map<String, ParamRepository> objects) {
         innerRepository.registerAllOrdered(objects);
     }
+
+    @Override
+    public void registerAll(List<ParamRepository> repositories) {
+        int order = 10;
+        for(ParamRepository repository : repositories) {
+            innerRepository.register(new RepositoryObjectKey(repository.getClass().getSimpleName(), order), repository);
+            order++;
+        }
+    }
+
+
 }

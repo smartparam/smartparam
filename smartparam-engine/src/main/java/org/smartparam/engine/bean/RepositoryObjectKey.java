@@ -23,9 +23,9 @@ public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {
     private String key;
 
     /**
-     * Order number, defaults to -1.
+     * Order number, defaults to 100.
      */
-    private int order = -1;
+    private int order = 100;
 
     /**
      * Create new repository key with only string key.

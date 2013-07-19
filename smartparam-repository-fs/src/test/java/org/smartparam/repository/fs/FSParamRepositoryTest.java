@@ -5,7 +5,7 @@ import java.util.Map;
 import static org.mockito.Mockito.*;
 import static org.fest.assertions.api.Assertions.*;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.SmartParamDeserializer;
+import org.smartparam.serializer.ParamDeserializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -19,9 +19,7 @@ public class FSParamRepositoryTest {
 
     private static final String VALID_RESOURCE_NAME = "testResource";
 
-    private FSParamRepository fsParamRepository;
-
-    private SmartParamDeserializer deserializer;
+    private ParamDeserializer deserializer;
 
     private ResourceResolverFactory resourceResolverFactory;
 
@@ -29,13 +27,9 @@ public class FSParamRepositoryTest {
 
     @BeforeMethod
     public void setUp() {
-        deserializer = mock(SmartParamDeserializer.class);
+        deserializer = mock(ParamDeserializer.class);
         resourceResolverFactory = mock(ResourceResolverFactory.class);
         resourceResolver = mock(ResourceResolver.class);
-
-        fsParamRepository = new FSParamRepository("someBasePath", "someFilePattern");
-        fsParamRepository.setDeserializer(deserializer);
-        fsParamRepository.setResourceResolverFactory(resourceResolverFactory);
     }
 
     @Test
@@ -46,7 +40,7 @@ public class FSParamRepositoryTest {
         when(resourceResolverFactory.getResourceResolver(anyString(), anyString())).thenReturn(resourceResolver);
         when(resourceResolver.findParameterResources()).thenReturn(resources);
         when(resourceResolver.loadParameterFromResource(VALID_RESOURCE_NAME)).thenReturn(mock(Parameter.class));
-        fsParamRepository.initialize();
+        FSParamRepository fsParamRepository = new FSParamRepository("someBasePath", "someFilePattern", deserializer, resourceResolverFactory);
 
         Parameter parameter = fsParamRepository.load(VALID_PARAM_NAME);
 
@@ -58,7 +52,7 @@ public class FSParamRepositoryTest {
         Map<String, String> resources = new HashMap<String, String>();
         when(resourceResolverFactory.getResourceResolver(anyString(), anyString())).thenReturn(resourceResolver);
         when(resourceResolver.findParameterResources()).thenReturn(resources);
-        fsParamRepository.initialize();
+        FSParamRepository fsParamRepository = new FSParamRepository("someBasePath", "someFilePattern", deserializer, resourceResolverFactory);
 
         Parameter parameter = fsParamRepository.load("INVALID_PARAM_NAME");
         assertThat(parameter).isNull();

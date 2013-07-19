@@ -2,7 +2,6 @@ package org.smartparam.repository.fs;
 
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.repository.ParamRepository;
@@ -11,9 +10,9 @@ import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
-import org.smartparam.serializer.SmartParamDeserializer;
+import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardSerializationConfig;
-import org.smartparam.serializer.StandardSmartParamDeserializer;
+import org.smartparam.serializer.StandardParamDeserializer;
 
 /**
  *
@@ -27,7 +26,7 @@ public class FSParamRepository implements ParamRepository {
 
     private String filePattern;
 
-    private SmartParamDeserializer deserializer;
+    private ParamDeserializer deserializer;
 
     private ResourceResolverFactory resourceResolverFactory;
 
@@ -38,13 +37,27 @@ public class FSParamRepository implements ParamRepository {
     public FSParamRepository(String basePath, String filePattern) {
         this.basePath = basePath;
         this.filePattern = filePattern;
+
+        initialize();
     }
 
-    @PostConstruct
-    public void initialize() {
+    public FSParamRepository(String basePath, String filePattern, ParamDeserializer deserializer) {
+        this(basePath, filePattern, deserializer, null);
+    }
+
+    public FSParamRepository(String basePath, String filePattern, ParamDeserializer deserializer, ResourceResolverFactory resourceResolverFatory) {
+        this.basePath = basePath;
+        this.filePattern = filePattern;
+        this.deserializer = deserializer;
+        this.resourceResolverFactory = resourceResolverFatory;
+
+        initialize();
+    }
+
+    private void initialize() {
         if (deserializer == null) {
-            logger.debug("no custom deserializer provided, using {}", StandardSmartParamDeserializer.class.getSimpleName());
-            this.deserializer = new StandardSmartParamDeserializer(new StandardSerializationConfig(),
+            logger.debug("no custom deserializer provided, using {}", StandardParamDeserializer.class.getSimpleName());
+            this.deserializer = new StandardParamDeserializer(new StandardSerializationConfig(),
                     SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
         }
         if (resourceResolverFactory == null) {
@@ -70,13 +83,5 @@ public class FSParamRepository implements ParamRepository {
     @Override
     public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
         throw new UnsupportedOperationException(getClass().getSimpleName() + " does not support non-cacheable parameters");
-    }
-
-    public void setDeserializer(SmartParamDeserializer deserializer) {
-        this.deserializer = deserializer;
-    }
-
-    public void setResourceResolverFactory(ResourceResolverFactory resourceResolverFactory) {
-        this.resourceResolverFactory = resourceResolverFactory;
     }
 }
