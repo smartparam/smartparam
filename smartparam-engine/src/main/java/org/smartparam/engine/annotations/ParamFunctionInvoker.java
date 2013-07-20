@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SmartParamFunctionInvoker {
+public @interface ParamFunctionInvoker {
 
     /**
      * Name of function invoker (unique), also marks the type of function
@@ -39,5 +39,5 @@ public @interface SmartParamFunctionInvoker {
      * @see SmartParamObjectInstance
      * @return instance descriptors
      */
-    SmartParamObjectInstance[] instances() default {};
+    ObjectInstance[] instances() default {};
 }

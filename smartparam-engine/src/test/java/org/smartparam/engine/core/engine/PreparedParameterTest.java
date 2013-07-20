@@ -6,6 +6,7 @@ import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.number.NumberType;
+import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
 
 /**
  * @author Przemek Hertel
@@ -69,7 +70,7 @@ public class PreparedParameterTest {
     public void testIndex() {
 
         // konfiguracja testu
-        LevelIndex<PreparedEntry> index = new LevelIndex<PreparedEntry>(3);
+        LevelIndex<PreparedEntry> index = levelIndex().withLevelCount(3).build();
 
         // test
         pp.setIndex(index);

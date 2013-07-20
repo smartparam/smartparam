@@ -1,6 +1,6 @@
 package org.smartparam.demo.param.type;
 
-import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.annotations.ParamType;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -8,7 +8,7 @@ import org.smartparam.engine.core.type.Type;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  * @since 0.1.0
  */
-@SmartParamType("demoType")
+@ParamType("demoType")
 public class DemoType implements Type<DemoTypeHolder> {
 
     @Override

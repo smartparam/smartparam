@@ -3,8 +3,8 @@ package org.smartparam.engine.test.builder;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-import org.smartparam.engine.annotations.SmartParamFunctionRepository;
-import org.smartparam.engine.annotations.SmartParamObjectInstance;
+import org.smartparam.engine.annotations.ParamFunctionRepository;
+import org.smartparam.engine.annotations.ObjectInstance;
 
 /**
  *
@@ -16,7 +16,7 @@ public class AnnotationBuilder {
 
     private String[] values = new String[] {};
 
-    private List<SmartParamObjectInstance> instanceDescriptors = new ArrayList<SmartParamObjectInstance>();
+    private List<ObjectInstance> instanceDescriptors = new ArrayList<ObjectInstance>();
 
     private int order;
 
@@ -25,7 +25,7 @@ public class AnnotationBuilder {
     }
 
     public Annotation build() {
-        return new SmartParamFunctionRepository() {
+        return new ParamFunctionRepository() {
             @Override
             public String value() {
                 return value;
@@ -37,8 +37,8 @@ public class AnnotationBuilder {
             }
 
             @Override
-            public SmartParamObjectInstance[] instances() {
-                return instanceDescriptors.toArray(new SmartParamObjectInstance[instanceDescriptors.size()]);
+            public ObjectInstance[] instances() {
+                return instanceDescriptors.toArray(new ObjectInstance[instanceDescriptors.size()]);
             }
 
             @Override
@@ -48,7 +48,7 @@ public class AnnotationBuilder {
 
             @Override
             public Class<? extends Annotation> annotationType() {
-                return SmartParamFunctionRepository.class;
+                return ParamFunctionRepository.class;
             }
         };
     }
@@ -64,7 +64,7 @@ public class AnnotationBuilder {
     }
 
     public AnnotationBuilder withInstanceDescriptor(final String name, final String[] constructorArgs) {
-        SmartParamObjectInstance instanceDescriptor = new SmartParamObjectInstance() {
+        ObjectInstance instanceDescriptor = new ObjectInstance() {
             @Override
             public String value() {
                 return name;
@@ -77,7 +77,7 @@ public class AnnotationBuilder {
 
             @Override
             public Class<? extends Annotation> annotationType() {
-                return SmartParamObjectInstance.class;
+                return ObjectInstance.class;
             }
         };
         instanceDescriptors.add(instanceDescriptor);

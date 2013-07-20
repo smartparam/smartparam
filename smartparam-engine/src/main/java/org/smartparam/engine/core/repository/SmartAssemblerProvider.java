@@ -42,6 +42,7 @@ import org.smartparam.engine.util.Printer;
  * @author Przemek Hertel
  * @since 1.0.0
  */
+@Deprecated
 public class SmartAssemblerProvider implements AssemblerProvider {
 
     /**

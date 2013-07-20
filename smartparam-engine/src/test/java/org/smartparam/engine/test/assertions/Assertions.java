@@ -6,6 +6,7 @@ import org.smartparam.engine.core.ItemsContainer;
 import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.core.index.LevelNode;
 
 /**
  *
@@ -31,6 +32,10 @@ public class Assertions extends org.fest.assertions.api.Assertions {
 
     public static MapRepositoryAssert assertThat(MapRepository<?> repository) {
         return new MapRepositoryAssert(repository);
+    }
+
+    public static LevelNodeAssert assertThat(LevelNode<?> levelNode) {
+        return LevelNodeAssert.assertThat(levelNode);
     }
 
 }

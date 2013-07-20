@@ -1,12 +1,12 @@
 package org.smartparam.engine.core.index;
 
-import org.smartparam.engine.core.index.LevelNode;
-import org.smartparam.engine.core.index.LevelIndex;
 import java.util.Arrays;
 import java.util.Map;
 import org.junit.*;
-import static org.junit.Assert.*;
 import org.smartparam.engine.util.Formatter;
+import static org.junit.Assert.*;
+import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
 
 /**
  * @author Przemek Hertel
@@ -14,39 +14,40 @@ import org.smartparam.engine.util.Formatter;
 public class LevelNodeTest {
 
     @Test
-    public void testConstructor() {
+    public void shouldAddNewNodeValueToLeavesWhenAddingToLastNodeInIndexTree() {
+        // given
+        LevelIndex<Integer> levelIndex = levelIndex().withLevelCount(0).build();
+        LevelNode<Integer> node = new LevelNode<Integer>(levelIndex);
 
-        // zaleznosci
-        LevelIndex<Integer> index = new LevelIndex<Integer>(1);
+        // when
+        int currentLevelNumber = 0;
+        node.add(new String[] {}, 10, null, currentLevelNumber);
+        node.add(new String[] {}, 12, null, currentLevelNumber);
 
-        // test
-        LevelNode<Integer> node = new LevelNode<Integer>(index);
-
-        // weryfikacja
-        assertSame(index, node.getIndex());
+        // then
+        assertThat(node).hasLeaves(2).leavesEqualTo(10, 12);
     }
 
     @Test
-    public void testConstructor2() {
+    public void shouldAddNodeToChildrenListWhenRootNodeIsNotLastInIndexTree() {
+        // given
+        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
+        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
 
-        // zaleznosci
-        LevelIndex<Integer> index = new LevelIndex<Integer>(2);
-        LevelNode<Integer> root = new LevelNode<Integer>(index);
+        // when
+        int currentLevelNumber = 0;
+        root.add(new String[]{"A"}, 10, null, currentLevelNumber);
+        root.add(new String[]{"*"}, 10, null, currentLevelNumber);
 
-        // test
-        LevelNode<Integer> node = new LevelNode<Integer>("A", root, index);
-
-        // weryfikacja
-        assertSame(index, node.getIndex());
-        assertSame(root, node.getParent());
-        assertEquals("A", node.getLevel());
+        // then
+        assertThat(root).hasNoLeaves().hasDirectChild("A").hasDirectChild("*");
     }
 
     @Test
     public void testAdd() {
 
         // zaleznosci
-        LevelIndex<Integer> index = new LevelIndex<Integer>(2);
+        LevelIndex<Integer> index = levelIndex().withLevelCount(2).build();
         LevelNode<Integer> root = new LevelNode<Integer>(index);
 
         // test
@@ -72,7 +73,7 @@ public class LevelNodeTest {
     public void testAdd__default() {
 
         // zaleznosci
-        LevelIndex<Integer> index = new LevelIndex<Integer>(2);
+        LevelIndex<Integer> index = levelIndex().withLevelCount(2).build();
         LevelNode<Integer> root = new LevelNode<Integer>(index);
 
         // test
@@ -97,7 +98,7 @@ public class LevelNodeTest {
     @Test
     public void testPrintNode() {
         // zaleznosci
-        LevelIndex<Integer> index = new LevelIndex<Integer>(2);
+        LevelIndex<Integer> index = levelIndex().withLevelCount(2).build();
 
         // testowany obiekt
         LevelNode<Integer> root = new LevelNode<Integer>(index);
@@ -119,52 +120,10 @@ public class LevelNodeTest {
     }
 
     @Test
-    public void testToString() {
-        // zaleznosci
-        LevelIndex<Integer> index = new LevelIndex<Integer>(2);
-        LevelNode<Integer> root = new LevelNode<Integer>(index);
-        root.add(Arrays.asList("A", "B"), 33, null, 0);     // A ma children=1
-        root.add(Arrays.asList("E", "*"), 99, null, 0);     // E ma tylko defaultNode
-
-        LevelNode<Integer> nodeA = root.getChildren().get("A");     // /A
-        LevelNode<Integer> nodeB = nodeA.getChildren().get("B");    // /A/B
-        LevelNode<Integer> nodeE = root.getChildren().get("E");     // /E
-        LevelNode<Integer> nodeX = nodeE.getDefaultNode();          // /E/*
-
-        // testowane obiekty
-        LevelNode<?>[] nodes = new LevelNode<?>[]{
-            root,
-            nodeA,
-            nodeB,
-            nodeE,
-            nodeX
-        };
-
-        // oczekiwane wyniki w fromie regexp (ze wzgledu na zmienna kolejnosc w [0])
-        String[] expected = {
-            "LevelNode\\[level=null, path=, children=\\[(A, E|E, A)\\]\\]",
-            "LevelNode\\[level=A, path=\\/A, children=\\[B\\]\\]",
-            "LevelNode\\[level=B, path=\\/A\\/B, leaf=\\[33\\]\\]",
-            "LevelNode\\[level=E, path=\\/E, children=null\\]",
-            "LevelNode\\[level=\\*, path=\\/E\\/\\*, leaf=\\[99\\]\\]",
-        };
-
-        // test
-        for (int i = 0; i < nodes.length; i++) {
-            LevelNode<?> node = nodes[i];
-            String expectedToString = expected[i];
-
-            String result = node.toString();
-            System.out.println("node = " + result);
-            assertTrue(result.matches(expectedToString));
-        }
-    }
-
-    @Test
     public void testFindNode() {
 
         // zaleznosci
-        LevelIndex<Integer> index = new LevelIndex<Integer>(3);
+        LevelIndex<Integer> index = levelIndex().withLevelCount(3).build();
         LevelNode<Integer> root = new LevelNode<Integer>(index);
 
         root.add(Arrays.asList("A", "B", "C"), 1, null, 0);

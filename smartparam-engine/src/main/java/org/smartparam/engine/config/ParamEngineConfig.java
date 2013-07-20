@@ -17,16 +17,16 @@ import org.smartparam.engine.core.repository.FunctionRepository;
 import org.smartparam.engine.core.repository.InvokerRepository;
 import org.smartparam.engine.core.repository.MatcherRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
-import org.smartparam.engine.core.repository.SmartInvokerRepository;
-import org.smartparam.engine.core.repository.SmartMatcherRepository;
-import org.smartparam.engine.core.repository.SmartTypeRepository;
+import org.smartparam.engine.core.repository.BasicInvokerRepository;
+import org.smartparam.engine.core.repository.BasicMatcherRepository;
+import org.smartparam.engine.core.repository.BasicTypeRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.service.FunctionManager;
 import org.smartparam.engine.core.service.FunctionProvider;
 import org.smartparam.engine.core.service.ParameterProvider;
-import org.smartparam.engine.core.service.SmartFunctionManager;
-import org.smartparam.engine.core.service.SmartFunctionProvider;
-import org.smartparam.engine.core.service.SmartParameterProvider;
+import org.smartparam.engine.core.service.BasicFunctionManager;
+import org.smartparam.engine.core.service.BasicFunctionProvider;
+import org.smartparam.engine.core.service.BasicParameterProvider;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -39,23 +39,23 @@ public class ParamEngineConfig {
 
     private ParamCache paramCache = new MapParamCache();
 
-    private FunctionManager functionManager = new SmartFunctionManager();
+    private FunctionManager functionManager = new BasicFunctionManager();
 
-    private FunctionProvider functionProvider = new SmartFunctionProvider();
+    private FunctionProvider functionProvider = new BasicFunctionProvider();
 
     private FunctionCache functionCache = new MapFunctionCache();
 
-    private InvokerRepository invokerRepository = new SmartInvokerRepository();
+    private InvokerRepository invokerRepository = new BasicInvokerRepository();
 
-    private ParameterProvider parameterProvider = new SmartParameterProvider();
+    private ParameterProvider parameterProvider = new BasicParameterProvider();
 
     private Map<String, ParamRepository> parameterRepositories = new LinkedHashMap<String, ParamRepository>();
 
     private Map<String, FunctionRepository> functionRepositories = new LinkedHashMap<String, FunctionRepository>();
 
-    private TypeRepository typeRepository = new SmartTypeRepository();
+    private TypeRepository typeRepository = new BasicTypeRepository();
 
-    private MatcherRepository matcherRepository = new SmartMatcherRepository();
+    private MatcherRepository matcherRepository = new BasicMatcherRepository();
 
     private Map<String, FunctionInvoker> functionInvokers = new HashMap<String, FunctionInvoker>();
 

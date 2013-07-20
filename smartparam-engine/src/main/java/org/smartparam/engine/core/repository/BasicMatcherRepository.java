@@ -1,7 +1,7 @@
 package org.smartparam.engine.core.repository;
 
 import java.util.Map;
-import org.smartparam.engine.annotations.SmartParamMatcher;
+import org.smartparam.engine.annotations.ParamMatcher;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.MapRepository;
@@ -13,13 +13,13 @@ import org.smartparam.engine.core.index.Matcher;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class SmartMatcherRepository implements MatcherRepository, TypeScanningRepository {
+public class BasicMatcherRepository implements MatcherRepository, TypeScanningRepository {
 
     private MapRepository<Matcher> innerRepository = new MapRepository<Matcher>(Matcher.class);
 
     @Override
     public void scanAnnotations(TypeScanner scanner) {
-        Map<RepositoryObjectKey, Matcher> matchers = scanner.scanTypes(SmartParamMatcher.class);
+        Map<RepositoryObjectKey, Matcher> matchers = scanner.scanTypes(ParamMatcher.class);
         innerRepository.registerAll(matchers);
     }
 

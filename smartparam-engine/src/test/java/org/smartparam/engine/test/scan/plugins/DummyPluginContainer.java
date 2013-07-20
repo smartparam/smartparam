@@ -1,6 +1,6 @@
 package org.smartparam.engine.test.scan.plugins;
 
-import org.smartparam.engine.annotations.SmartParamJavaPlugin;
+import org.smartparam.engine.annotations.JavaPlugin;
 
 /**
  *
@@ -8,7 +8,7 @@ import org.smartparam.engine.annotations.SmartParamJavaPlugin;
  */
 public class DummyPluginContainer {
 
-    @SmartParamJavaPlugin("javaPlugin")
+    @JavaPlugin("javaPlugin")
     public void javaPlugin() {
     }
 

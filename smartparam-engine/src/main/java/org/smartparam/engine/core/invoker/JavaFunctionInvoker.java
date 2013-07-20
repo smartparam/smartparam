@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
+import org.smartparam.engine.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.model.function.Function;
@@ -16,7 +16,7 @@ import org.smartparam.engine.model.function.JavaFunction;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-@SmartParamFunctionInvoker("java")
+@ParamFunctionInvoker("java")
 public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker {
 
     /**

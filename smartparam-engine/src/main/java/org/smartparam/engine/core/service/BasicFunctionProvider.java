@@ -2,7 +2,7 @@ package org.smartparam.engine.core.service;
 
 import java.util.Map;
 import java.util.TreeMap;
-import org.smartparam.engine.annotations.SmartParamFunctionRepository;
+import org.smartparam.engine.annotations.ParamFunctionRepository;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.MapRepository;
@@ -17,7 +17,7 @@ import org.smartparam.engine.model.function.Function;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SmartFunctionProvider implements FunctionProvider, TypeScanningRepository {
+public class BasicFunctionProvider implements FunctionProvider, TypeScanningRepository {
 
     private MapRepository<FunctionRepository> innerRepository = new MapRepository<FunctionRepository>(FunctionRepository.class, new TreeMap<RepositoryObjectKey, FunctionRepository>());
 
@@ -25,7 +25,7 @@ public class SmartFunctionProvider implements FunctionProvider, TypeScanningRepo
 
     @Override
     public void scanAnnotations(TypeScanner scanner) {
-        Map<RepositoryObjectKey, FunctionRepository> repositories = scanner.scanTypes(SmartParamFunctionRepository.class);
+        Map<RepositoryObjectKey, FunctionRepository> repositories = scanner.scanTypes(ParamFunctionRepository.class);
         innerRepository.registerAll(repositories);
     }
 

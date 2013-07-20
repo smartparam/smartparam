@@ -11,7 +11,7 @@ import org.smartparam.engine.model.function.Function;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class SmartFunctionManager implements FunctionManager {
+public class BasicFunctionManager implements FunctionManager {
 
     private InvokerRepository invokerRepository;
 

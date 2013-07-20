@@ -1,7 +1,7 @@
 package org.smartparam.engine.matchers;
 
-import org.smartparam.engine.annotations.SmartParamMatcher;
-import org.smartparam.engine.annotations.SmartParamObjectInstance;
+import org.smartparam.engine.annotations.ParamMatcher;
+import org.smartparam.engine.annotations.ObjectInstance;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
@@ -17,9 +17,9 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-@SmartParamMatcher(value = "", instances = {
-    @SmartParamObjectInstance(value = "between/ie", constructorArgs = { "true", "false" }),
-    @SmartParamObjectInstance(value = "between/ii", constructorArgs = { "true", "true" })
+@ParamMatcher(value = "", instances = {
+    @ObjectInstance(value = "between/ie", constructorArgs = { "true", "false" }),
+    @ObjectInstance(value = "between/ii", constructorArgs = { "true", "true" }),
 })
 public class BetweenMatcher implements Matcher {
 

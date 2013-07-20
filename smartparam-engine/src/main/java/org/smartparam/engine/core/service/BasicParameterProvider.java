@@ -3,7 +3,6 @@ package org.smartparam.engine.core.service;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import org.smartparam.engine.annotations.SmartParamRepository;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
@@ -16,13 +15,13 @@ import org.smartparam.engine.model.ParameterEntry;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SmartParameterProvider implements ParameterProvider, TypeScanningRepository {
+public class BasicParameterProvider implements ParameterProvider, TypeScanningRepository {
 
     private MapRepository<ParamRepository> innerRepository = new MapRepository<ParamRepository>(ParamRepository.class, new TreeMap<RepositoryObjectKey, ParamRepository>());
 
     @Override
     public void scanAnnotations(TypeScanner scanner) {
-        Map<RepositoryObjectKey, ParamRepository> repositories = scanner.scanTypes(SmartParamRepository.class);
+        Map<RepositoryObjectKey, ParamRepository> repositories = scanner.scanTypes(org.smartparam.engine.annotations.ParamRepository.class);
         innerRepository.registerAll(repositories);
     }
 

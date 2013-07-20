@@ -1,6 +1,6 @@
 package org.smartparam.engine.types.bool;
 
-import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.annotations.ParamType;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 
@@ -19,7 +19,7 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-@SmartParamType("boolean")
+@ParamType("boolean")
 public class BooleanType implements Type<BooleanHolder> {
 
     public String encode(BooleanHolder holder) {

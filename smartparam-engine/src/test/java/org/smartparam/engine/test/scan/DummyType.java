@@ -1,7 +1,7 @@
 package org.smartparam.engine.test.scan;
 
-import org.smartparam.engine.annotations.SmartParamObjectInstance;
-import org.smartparam.engine.annotations.SmartParamType;
+import org.smartparam.engine.annotations.ObjectInstance;
+import org.smartparam.engine.annotations.ParamType;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 
@@ -9,9 +9,9 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-@SmartParamType(value = "", instances = {
-    @SmartParamObjectInstance(value = "typeInstanceOne", constructorArgs = {"PROPERTY_1_A", "PROBERTY_1_B"}),
-    @SmartParamObjectInstance(value = "typeInstanceTwo", constructorArgs = {"PROBPERTY_2_A", "PROPERTY_2_B"})})
+@ParamType(value = "", instances = {
+    @ObjectInstance(value = "typeInstanceOne", constructorArgs = {"PROPERTY_1_A", "PROBERTY_1_B"}),
+    @ObjectInstance(value = "typeInstanceTwo", constructorArgs = {"PROBPERTY_2_A", "PROPERTY_2_B"})})
 public class DummyType implements Type {
 
     private String propertyOne;

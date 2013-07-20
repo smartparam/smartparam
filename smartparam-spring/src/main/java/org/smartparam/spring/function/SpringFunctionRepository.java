@@ -2,7 +2,7 @@ package org.smartparam.spring.function;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import org.smartparam.engine.annotations.SmartParamFunctionRepository;
+import org.smartparam.engine.annotations.ParamFunctionRepository;
 import org.smartparam.engine.core.repository.AbstractJavaFunctionRepository;
 import org.smartparam.engine.model.function.Function;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  * @since 0.1.0
  */
-@SmartParamFunctionRepository("spring")
+@ParamFunctionRepository("spring")
 public class SpringFunctionRepository extends AbstractJavaFunctionRepository {
 
     private AnnotationBeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
@@ -27,7 +27,7 @@ public class SpringFunctionRepository extends AbstractJavaFunctionRepository {
 
     @Override
     protected Class<? extends Annotation> annotationClass() {
-        return SmartParamSpringPlugin.class;
+        return SpringPlugin.class;
     }
 
     @Override

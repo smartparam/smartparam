@@ -1,7 +1,7 @@
 
 package org.smartparam.demo.param;
 
-import org.smartparam.spring.function.SmartParamSpringPlugin;
+import org.smartparam.spring.function.SpringPlugin;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SpringPlugins {
 
-    @SmartParamSpringPlugin("spring.sample")
+    @SpringPlugin("spring.sample")
     public void sampleSpringFunction() {
         
     }

@@ -5,8 +5,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import org.smartparam.engine.annotations.SmartParamObjectInstance;
-import org.smartparam.engine.annotations.SmartParamSortable;
+import org.smartparam.engine.annotations.ObjectInstance;
+import org.smartparam.engine.annotations.Sortable;
 
 /**
  *
@@ -14,13 +14,13 @@ import org.smartparam.engine.annotations.SmartParamSortable;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SmartParamSortable
+@Sortable
 public @interface DummyAnnotationWithoutOrder {
 
     String value();
 
     String[] values() default {};
 
-    SmartParamObjectInstance[] instances() default {};
+    ObjectInstance[] instances() default {};
 
 }

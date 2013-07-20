@@ -1,6 +1,6 @@
 package org.smartparam.demo.param;
 
-import org.smartparam.engine.annotations.SmartParamJavaPlugin;
+import org.smartparam.engine.annotations.JavaPlugin;
 
 /**
  * SmartParam level creator functions.
@@ -10,7 +10,7 @@ import org.smartparam.engine.annotations.SmartParamJavaPlugin;
  */
 public class LevelFunction {
 
-    @SmartParamJavaPlugin("level.sample")
+    @JavaPlugin("level.sample")
     public String demoModelObject(DemoParamContext context) {
         if(context.getDemoModelObject() != null) {
             return context.getDemoModelObject().getCode();

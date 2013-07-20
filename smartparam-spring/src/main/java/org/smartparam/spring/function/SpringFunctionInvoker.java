@@ -1,6 +1,6 @@
 package org.smartparam.spring.function;
 
-import org.smartparam.engine.annotations.SmartParamFunctionInvoker;
+import org.smartparam.engine.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.core.invoker.AbstractJavaFunctionInvoker;
 import org.smartparam.engine.model.function.Function;
 import org.springframework.beans.BeansException;
@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author Adam Dubiel
  * @since 0.1.0
  */
-@SmartParamFunctionInvoker("spring")
+@ParamFunctionInvoker("spring")
 public class SpringFunctionInvoker extends AbstractJavaFunctionInvoker implements ApplicationContextAware {
 
     private ApplicationContext appContext = null;
