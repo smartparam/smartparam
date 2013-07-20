@@ -54,10 +54,10 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
      *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
      *
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
      *                             jesli wartosc k-tego poziomu nie jest typu {@link AbstractHolder}
      */
     public AbstractHolder getValue(int k) {
@@ -79,8 +79,8 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako String
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako String
      */
     public String getString(int k) {
         return getValue(k).getString();
@@ -93,8 +93,8 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako BigDecimal
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako BigDecimal
      */
     public BigDecimal getBigDecimal(int k) {
         return getValue(k).getBigDecimal();
@@ -107,8 +107,8 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Date
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Date
      */
     public Date getDate(int k) {
         return getValue(k).getDate();
@@ -121,8 +121,8 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Integer
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Integer
      */
     public Integer getInteger(int k) {
         return getValue(k).getInteger();
@@ -135,8 +135,8 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Long
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Long
      */
     public Long getLong(int k) {
         return getValue(k).getLong();
@@ -149,8 +149,8 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli enumClass nie ma pola o takiej nazwie
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli enumClass nie ma pola o takiej nazwie
      */
     public <T extends Enum<T>> T getEnum(int k, Class<T> enumClass) {
         String code = getString(k);
@@ -182,10 +182,10 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
      *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
      *
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
      *                             jesli wartosc k-tego poziomu nie jest tablica obiektow {@link AbstractHolder}
      */
     public AbstractHolder[] getArray(int k) {
@@ -242,10 +242,10 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
      *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
      *
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
      *                             jesli wartosc k-tego poziomu nie moze byc interpretowana jako tablica stringow
      */
     public String[] getStringArray(int k) {
@@ -264,10 +264,10 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
      *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
      *
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
      *                             jesli wartosc k-tego poziomu nie moze byc interpretowana jako tablica dat
      */
     public Date[] getDateArray(int k) {
@@ -286,10 +286,10 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
      *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
      *
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
      *                             jesli wartosc k-tego poziomu nie moze byc interpretowana jako tablica integerow
      */
     public Integer[] getIntegerArray(int k) {
@@ -308,10 +308,10 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
      *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
      *
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
      *                             jesli wartosc k-tego poziomu nie moze byc interpretowana jako tablica obiektow BigDecimal
      */
     public BigDecimal[] getBigDecimalArray(int k) {
@@ -330,7 +330,7 @@ public class MultiValue {
      *
      * @return AbstractHolder albo AbstractHolder[]
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
      *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
      */
     private Object get(int k) {
@@ -420,10 +420,10 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
      *                             jesli jest k poziomow wyjsciowych, a metoda jest uzyta k+1 raz
      *
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE},
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
      *                             jesli wartosc poziomu nie jest typu {@link AbstractHolder}
      */
     public AbstractHolder nextValue() {
@@ -436,8 +436,8 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako String
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako String
      */
     public String nextString() {
         return getString(++last);
@@ -449,8 +449,8 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako BigDecimal
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako BigDecimal
      */
     public BigDecimal nextBigDecimal() {
         return getBigDecimal(++last);
@@ -462,8 +462,8 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Date
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Date
      */
     public Date nextDate() {
         return getDate(++last);
@@ -475,8 +475,8 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Integer
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Integer
      */
     public Integer nextInteger() {
         return getInteger(++last);
@@ -488,8 +488,8 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Long
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Long
      */
     public Long nextLong() {
         return getLong(++last);
@@ -500,8 +500,8 @@ public class MultiValue {
      *
      * @return wartosc k-tego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli enumClass nie ma pola o takiej nazwie
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli enumClass nie ma pola o takiej nazwie
      */
     public <T extends Enum<T>> T nextEnum(Class<T> enumClass) {
         return getEnum(++last, enumClass);
@@ -512,8 +512,8 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
      */
     public AbstractHolder[] nextArray() {
         return getArray(++last);
@@ -524,8 +524,8 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
      */
     public String[] nextStringArray() {
         return getStringArray(++last);
@@ -536,18 +536,14 @@ public class MultiValue {
      *
      * @return wartosc kolejnego poziomu
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws ParamException      errorcode={@link ErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
+     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
      */
     public BigDecimal[] nextBigDecimalArray() {
         return getBigDecimalArray(++last);
     }
 
-    public int getLastColumnCounter() {
-        return last;
-    }
-
-    public void resetLastCounter() {
-        last = 0;
-    }
+	public int size() {
+		return values != null ? values.length : 0;
+	}
 }

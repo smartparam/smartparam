@@ -2,7 +2,10 @@ package org.smartparam.engine.core.engine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.cache.ParamCache;
@@ -155,7 +158,7 @@ public class SmartParamPreparer implements ParamPreparer {
             if(lev.getLevelCreator() != null) {
                     levelCreator = functionProvider.getFunction(lev.getLevelCreator());
             }
-            levels[i] = new PreparedLevel(type, lev.isArray(), matcher, levelCreator);
+            levels[i] = new PreparedLevel(lev.getName(), type, lev.isArray(), matcher, levelCreator);
             types[i] = type;
             matchers[i] = matcher;
         }
@@ -168,6 +171,11 @@ public class SmartParamPreparer implements ParamPreparer {
         if (p.isCacheable()) {
             buildIndex(p, pp, types, matchers);
         }
+
+		/*
+		 * build level name mapping
+		 */
+		buildOutputLevelMap(pp);
 
         return pp;
     }
@@ -198,6 +206,29 @@ public class SmartParamPreparer implements ParamPreparer {
 
         pp.setIndex(index);
     }
+
+	/**
+	 * Construct level name to position mapping.
+	 */
+	private void buildOutputLevelMap(PreparedParameter pp) {
+
+		Map<String, Integer> nameMap = new LinkedHashMap<String, Integer>();
+
+		int inputCnt = pp.getInputLevelsCount();	// number of input levels
+		int allCnt = pp.getLevelCount();			// number of all levels
+
+		// all levels
+		PreparedLevel[] levels = pp.getLevels();
+
+		for (int i = inputCnt; i < allCnt; i++) {
+			PreparedLevel level = levels[i];
+			if (level.getName() != null) {
+				nameMap.put(level.getName(), i + 1 - inputCnt);
+			}
+		}
+
+		pp.setLevelNameMap(nameMap);
+	}
 
     private int getLevelCount(Parameter p) {
         List<? extends Level> levels = p.getLevels();

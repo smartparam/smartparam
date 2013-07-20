@@ -47,6 +47,7 @@ public interface Parameter {
      *
      * @return parameter return value type
      */
+	@Deprecated
     String getType();
 
     /**
@@ -77,6 +78,7 @@ public interface Parameter {
      *
      * @return is it an array
      */
+	@Deprecated
     boolean isArray();
 
     /**
@@ -84,6 +86,7 @@ public interface Parameter {
      *
      * @return separator
      */
+	@Deprecated
     char getArraySeparator();
 
     /**
@@ -98,6 +101,7 @@ public interface Parameter {
      *
      * @return is multivalue
      */
+	@Deprecated
     boolean isMultivalue();
 
     /**
@@ -107,4 +111,6 @@ public interface Parameter {
      * @return is nullable
      */
     boolean isNullable();
+
+	//todo ph remove deprecated methods
 }

@@ -23,10 +23,14 @@ public class PreparedLevelTest {
     @Test
     public void testConstructor() {
 
-        // testowany obiekt
-        PreparedLevel pl = new PreparedLevel(type, true, matcher, levelCreator);
+		// given
+		String name = "levelName";
 
-        // weryfikacja
+        // when
+        PreparedLevel pl = new PreparedLevel(name, type, true, matcher, levelCreator);
+
+        // then
+		assertSame(name, pl.getName());
         assertSame(type, pl.getType());
         assertTrue(pl.isArray());
         assertSame(matcher, pl.getMatcher());

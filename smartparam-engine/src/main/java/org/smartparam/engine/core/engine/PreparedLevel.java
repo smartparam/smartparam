@@ -24,6 +24,11 @@ import org.smartparam.engine.model.function.Function;
  */
 public class PreparedLevel {
 
+	/**
+	 * Optional level name.
+	 */
+	private String name;
+
     /**
      * Typ wartosci dla tego poziomu (zgodny z systemem typow silnika).
      * Musi byc <tt>not null</tt> jesli uzywamy niestandardowego matchera dla tego poziomu.
@@ -46,21 +51,27 @@ public class PreparedLevel {
     private Function levelCreator;
 
     /**
-     * Jedyny sposob wypelnienia tego obiektu - obiekt jest immutable.
+	 * Creates immutable instance.
      *
-     * @param type         typ wartosci poziomu
-     * @param array        flaga, czy tablica
-     * @param matcher      matcher
-     * @param levelCreator funkcja levelCreatora
+	 * @param name         level's name
+     * @param type         level's type code
+     * @param array        whether this level contains array
+     * @param matcher      level's matcher code
+     * @param levelCreator function resolving actual level value
      */
-    public PreparedLevel(Type<?> type, boolean array, Matcher matcher, Function levelCreator) {
+    public PreparedLevel(String name, Type<?> type, boolean array, Matcher matcher, Function levelCreator) {
+		this.name = name;
         this.type = type;
         this.array = array;
         this.matcher = matcher;
         this.levelCreator = levelCreator;
     }
 
-    /**
+	public String getName() {
+		return name;
+	}
+
+	/**
      * Getter dla flagi array.
      *
      * @return flaga array

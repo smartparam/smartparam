@@ -51,8 +51,8 @@ public class PreparedParameterTest {
     public void testLevels() {
 
         // zaleznosci
-        PreparedLevel l1 = new PreparedLevel(new IntegerType(), false, null, null);
-        PreparedLevel l2 = new PreparedLevel(new NumberType(), true, null, null);
+        PreparedLevel l1 = new PreparedLevel("L1", new IntegerType(), false, null, null);
+        PreparedLevel l2 = new PreparedLevel("L2", new NumberType(), true, null, null);
 
         // konfiguracja testu
         PreparedLevel[] levels = {l1, l2};

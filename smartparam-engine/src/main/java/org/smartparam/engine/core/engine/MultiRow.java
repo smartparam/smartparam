@@ -78,7 +78,7 @@ public class MultiRow {
      * @param k numer wiersza (numerowanie od 1)
      * @return k-ty wiersz
      *
-     * @throws ParamUsageException errorcode={@link ErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
+     * @throws SmartParamUsageException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
      */
     public MultiValue getRow(int k) {
         if (k >= 1 && k <= rows.length) {

@@ -170,10 +170,9 @@ public class SmartParamEngine implements ParamEngine {
         return result;
     }
 
+	@Deprecated
     @Override
     public MultiValue getMultiValue(String paramName, ParamContext ctx) {
-
-        logger.debug("enter getMultiValue[{}], ctx={}", paramName, ctx);
 
         PreparedParameter param = getPreparedParameter(paramName);
 
@@ -183,106 +182,92 @@ public class SmartParamEngine implements ParamEngine {
                     "Calling getMultiValue() for non-multivalue parameter: " + paramName);
         }
 
-        PreparedEntry pe = findParameterEntry(param, ctx);
+		ParamValue value = get(paramName, ctx);
+		if (value == null) {
+			return null;
+		}
 
-        if (pe == null) {
-            if (param.isNullable()) {
-                return null;
-            }
-
-            throw raiseValueNotFoundException(paramName, ctx);
-        }
-
-        int inputLevels = param.getInputLevelsCount();   // liczba poziomow wejsciowych (k)
-        int outputLevels = param.getLevelCount() - inputLevels;     // liczba poziomow wyjsciowych (n-k)
-        logger.trace("k={}, l={}", inputLevels, outputLevels);
-
-        PreparedLevel[] levels = param.getLevels();
-        Object[] vector = new Object[outputLevels];
-        for (int i = 0; i < outputLevels; ++i) {
-
-            String cellText = pe.getLevel(inputLevels + i + 1);
-            PreparedLevel level = levels[inputLevels + i];
-
-            Type<?> cellType = level.getType();
-            Object cellValue;
-
-            if (level.isArray()) {
-                cellValue = evaluateStringAsArray(cellText, cellType, ',');
-            } else {
-                cellValue = ParamHelper.decode(cellType, cellText);
-            }
-
-            vector[i] = cellValue;
-        }
-
-        MultiValue result = new MultiValue(vector);
-
-        logger.debug("leave getMultiValue[{}], result={}", paramName, result);
-        return result;
+		return value.row();
     }
 
+	@Deprecated
     @Override
     public MultiRow getMultiRow(String paramName, ParamContext ctx) {
+		
+		ParamValue value = get(paramName, ctx);
+		if (value == null) {
+			return null;
+		}
+		
+		MultiRow mr = new MultiRow(value.size());
+		for (int i = 0; i < value.size(); i++) {
+			mr.setRow(i, value.row(i + 1));
+		}
 
-        logger.debug("enter getMultiRow[{}], ctx={}", paramName, ctx);
-
-        PreparedParameter param = getPreparedParameter(paramName);
-
-        if (!param.isMultivalue()) {
-            throw new SmartParamUsageException(
-                    SmartParamErrorCode.ILLEGAL_API_USAGE,
-                    "Calling getMultiRow() for non-multivalue parameter: " + paramName);
-        }
-
-        PreparedEntry[] rows = findParameterEntries(param, ctx);
-
-        if (rows.length == 0) {
-            if (param.isNullable()) {
-                logger.debug("leave getMultiRow[{}], result=null", paramName);
-                return null;
-            }
-
-            throw raiseValueNotFoundException(paramName, ctx);
-        }
-
-        int k = param.getInputLevelsCount();   // liczba poziomow wejsciowych (k)
-        int l = param.getLevelCount() - k;     // liczba poziomow wyjsciowych (n-k)
-
-        MultiRow result = new MultiRow(rows.length);
-
-        // iteracja po wierszach podmacierzy
-        for (int i = 0; i < rows.length; i++) {
-            PreparedEntry pe = rows[i];
-
-            PreparedLevel[] levels = param.getLevels();
-            Object[] vector = new Object[l];
-
-            // iteracja po kolumnach podmacierzy (czyli po poziomach wyjsciowych)
-            for (int j = 0; j < l; ++j) {
-                String cellText = pe.getLevel(k + j + 1);
-                PreparedLevel level = levels[k + j];
-
-                Type<?> cellType = level.getType();
-                Object cellValue;
-
-                if (level.isArray()) {
-                    cellValue = evaluateStringAsArray(cellText, cellType, ',');
-                } else {
-                    cellValue = ParamHelper.decode(cellType, cellText);
-                }
-
-                vector[j] = cellValue;
-            }
-
-            result.setRow(i, new MultiValue(vector));
-        }
-
-        logger.debug("leave getMultiRow[{}], result={}", paramName, result);
-        return result;
+		return mr;
     }
 
-    public Object[] unwrap(AbstractHolder[] array) {
+	@Override
+	public ParamValue get(String paramName, ParamContext ctx) {
+
+		logger.debug("enter get[{}], ctx={}", paramName, ctx);
+
+		// obtain prepared parameter
+		PreparedParameter param = getPreparedParameter(paramName);
+
+		// find entries matching given context
+		PreparedEntry[] rows = findParameterEntries(param, ctx);
+
+		// todo ph think about it
+		if (rows.length == 0) {
+			if (param.isNullable()) {
+				logger.debug("leave get[{}], result=null", paramName);
+				return null;
+			}
+
+			throw raiseValueNotFoundException(paramName, ctx);
+		}
+
+		int k = param.getInputLevelsCount();   // liczba poziomow wejsciowych (k)
+		int l = param.getLevelCount() - k;     // liczba poziomow wyjsciowych (n-k)
+
+		// allocate result matrix
+		MultiValue[] mv = new MultiValue[rows.length];
+
+		// iteracja po wierszach podmacierzy
+		for (int i = 0; i < rows.length; i++) {
+			PreparedEntry pe = rows[i];
+
+			PreparedLevel[] levels = param.getLevels();
+			Object[] vector = new Object[l];
+
+			// iteracja po kolumnach podmacierzy (czyli po poziomach wyjsciowych)
+			for (int j = 0; j < l; ++j) {
+				String cellText = pe.getLevel(k + j + 1);
+				PreparedLevel level = levels[k + j];
+
+				Type<?> cellType = level.getType();
+				Object cellValue;
+
+				if (level.isArray()) {
+					cellValue = evaluateStringAsArray(cellText, cellType, ',');
+				} else {
+					cellValue = ParamHelper.decode(cellType, cellText);
+				}
+
+				vector[j] = cellValue;
+			}
+
+			mv[i] = new MultiValue(vector);
+		}
+
+		ParamValue result = new ParamValueImpl(mv, param.getLevelNameMap());
+
+		logger.debug("leave get[{}], result={}", paramName, result);
+		return result;
+	}
+
+	public Object[] unwrap(AbstractHolder[] array) {
         Object[] result = new Object[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getValue();

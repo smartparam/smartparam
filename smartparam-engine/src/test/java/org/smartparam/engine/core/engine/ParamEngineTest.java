@@ -468,16 +468,16 @@ public class ParamEngineTest {
         return pp;
     }
 
-    private PreparedLevel pl(Type<?> type) {
-        return new PreparedLevel(type, false, null, levelCreator);
-    }
+//    private PreparedLevel pl(Type<?> type) {
+//        return new PreparedLevel(type, false, null, levelCreator);
+//    }
 
-    private PreparedEntry pe(String value, Function f) {
-        PreparedEntry pe = new PreparedEntry();
-        pe.setValue(value);
-        pe.setFunction(f);
-        return pe;
-    }
+//    private PreparedEntry pe(String value, Function f) {
+//        PreparedEntry pe = new PreparedEntry();
+//        pe.setValue(value);
+//        pe.setFunction(f);
+//        return pe;
+//    }
 
     private void checkArrays(AbstractHolder[] expected, AbstractHolder[] result) {
         assertEquals(expected.length, result.length);

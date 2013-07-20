@@ -851,19 +851,17 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("A;B;Z", (String) null));
 
         Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3)
-                .multivalue(false).inputLevels(1)
+                .multivalue(true).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
 
-        // test
-        try {
-            engine.getMultiRow("par", new LevelValues("A"));
-            fail();
+        // when
+		MultiRow mr = engine.getMultiRow("par", new LevelValues("A"));
 
-        } catch (SmartParamException e) {
-            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
-        }
+		// then
+		assertEquals("B", mr.getRow(1).nextString());
+		assertEquals("Z", mr.getRow(1).nextString());
     }
 
     @Test

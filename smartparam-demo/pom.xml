@@ -42,17 +42,17 @@
         </dependency>
 
         <!-- SMARTPARAM EDITOR -->
-        <dependency>
-            <groupId>org.smartparam</groupId>
-            <artifactId>smartparam-editor-backend</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.smartparam</groupId>-->
+            <!--<artifactId>smartparam-editor-backend</artifactId>-->
+            <!--<version>${project.version}</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.smartparam</groupId>
-            <artifactId>smartparam-editor-spring</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.smartparam</groupId>-->
+            <!--<artifactId>smartparam-editor-spring</artifactId>-->
+            <!--<version>${project.version}</version>-->
+        <!--</dependency>-->
 
         <!-- SPRING -->
         <dependency>

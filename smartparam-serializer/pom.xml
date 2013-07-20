@@ -25,11 +25,11 @@
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.smartparam</groupId>
-            <artifactId>smartparam-mgmt</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.smartparam</groupId>-->
+            <!--<artifactId>smartparam-mgmt</artifactId>-->
+            <!--<version>${project.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -55,13 +55,13 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.smartparam</groupId>
-            <artifactId>smartparam-mgmt</artifactId>
-            <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.smartparam</groupId>-->
+            <!--<artifactId>smartparam-mgmt</artifactId>-->
+            <!--<version>${project.version}</version>-->
+            <!--<type>test-jar</type>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>junit</groupId>

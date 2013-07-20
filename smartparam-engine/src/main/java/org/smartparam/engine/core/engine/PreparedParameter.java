@@ -3,6 +3,9 @@ package org.smartparam.engine.core.engine;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.Type;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * Przetworzony (skompilowany) parametr.
  * Jest tworzony jako kopia obiektu parametru wczytanego z bazy danych,
@@ -69,6 +72,8 @@ public class PreparedParameter {
      * Znak separatora, jesli parametr typu <tt>array</tt>.
      */
     private char arraySeparator;
+
+	private Map<String, Integer> levelNameMap;
 
     /**
      * Zwraca zbudowany indeks wyszukiwania.
@@ -270,4 +275,12 @@ public class PreparedParameter {
     public void setArraySeparator(char arraySeparator) {
         this.arraySeparator = arraySeparator;
     }
+
+	public Map<String, Integer> getLevelNameMap() {
+		return levelNameMap;
+	}
+
+	public void setLevelNameMap(Map<String, Integer> levelNameMap) {
+		this.levelNameMap = levelNameMap;
+	}
 }
