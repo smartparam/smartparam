@@ -33,7 +33,6 @@
         <module>smartparam-repository-fs</module>
         <module>smartparam-repository-jpa</module>
         <module>smartparam-provider-jdbc</module>
-        <module>smartparam-repository-static</module>
         <module>smartparam-spring</module>
         <module>smartparam-demo</module>
     </modules>
