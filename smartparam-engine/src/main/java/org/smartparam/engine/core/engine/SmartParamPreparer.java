@@ -139,7 +139,9 @@ public class SmartParamPreparer implements ParamPreparer {
                 if (type == null) {
                     throw new SmartParamDefinitionException(
                             SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
-                            "Parameter " + p.getName() + ": level(" + (i + 1) + ") has unknown type: " + lev.getType());
+                            String.format("Level[%d] of parameter %s has unknown type %s. "
+                            + "To see all registered types, look for MapRepository logs on INFO level during startup.",
+                            (i + 1), p.getName(), lev.getType()));
                 }
             }
 
@@ -150,7 +152,9 @@ public class SmartParamPreparer implements ParamPreparer {
                 if (matcher == null) {
                     throw new SmartParamDefinitionException(
                             SmartParamErrorCode.UNKNOWN_MATCHER,
-                            "Parameter " + p.getName() + ": level(" + (i + 1) + ") has unknown matcher: " + lev.getMatcherCode());
+                            String.format("Level[%d] of parameter %s has unknown matcher %s. "
+                            + "To see all registered matchers, look for MapRepository logs on INFO level during startup.",
+                            (i + 1), p.getName(), lev.getMatcherCode()));
                 }
             }
 

@@ -51,14 +51,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>org.smartparam</groupId>-->
-            <!--<artifactId>smartparam-mgmt</artifactId>-->
-            <!--<version>${project.version}</version>-->
-            <!--<type>test-jar</type>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>

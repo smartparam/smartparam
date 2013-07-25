@@ -29,7 +29,7 @@ public class AnnotationHelper {
             return (T) defaultValueMethod.invoke(annotation);
         } catch (Exception exception) {
             throw new SmartParamInitializationException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR,
-                    exception, "no " + methodName + " method found on annotation " + annotation.annotationType().getCanonicalName());
+                    exception, String.format("no %s method found on annotation %s", methodName, annotation.annotationType().getCanonicalName()));
         }
     }
 }

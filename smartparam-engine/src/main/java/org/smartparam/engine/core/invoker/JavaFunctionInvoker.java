@@ -4,13 +4,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.smartparam.engine.annotations.ParamFunctionInvoker;
-import org.smartparam.engine.core.exception.SmartParamDefinitionException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.function.JavaFunction;
+import org.smartparam.engine.util.reflection.ReflectionsHelper;
 
 /**
  *
@@ -18,11 +15,6 @@ import org.smartparam.engine.model.function.JavaFunction;
  */
 @ParamFunctionInvoker("java")
 public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker {
-
-    /**
-     * Logger.
-     */
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final Map<Class<?>, Object> instanceMap = new ConcurrentHashMap<Class<?>, Object>();
 
@@ -42,23 +34,12 @@ public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker {
         return invokeMethod(instance, method, args);
     }
 
-    private Object findInstance(Class<?> clazz) {
-        Object obj = instanceMap.get(clazz);
+    private Object findInstance(Class<?> objectClass) {
+        Object obj = instanceMap.get(objectClass);
         if (obj == null) {
-            obj = createInstance(clazz);
-            instanceMap.put(clazz, obj);
+            obj = ReflectionsHelper.createObject(objectClass);
+            instanceMap.put(objectClass, obj);
         }
         return obj;
-    }
-
-    private Object createInstance(Class<?> clazz) {
-        try {
-            return clazz.newInstance();
-        } catch (Exception e) {
-            logger.error("", e);
-            throw new SmartParamDefinitionException(
-                    SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e,
-                    "Error instantiating class: " + clazz + ", msg=" + e.getMessage());
-        }
     }
 }

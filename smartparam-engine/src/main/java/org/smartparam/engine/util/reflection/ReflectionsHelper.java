@@ -19,7 +19,7 @@ public class ReflectionsHelper {
         try {
             return classLoader.loadClass(className);
         } catch (ClassNotFoundException exception) {
-            throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception, "unable to load class " + className + " using classloader " + classLoader);
+            throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception, String.format("Unable to load class %s using %s classloader.", className, classLoader));
         }
     }
 
@@ -47,8 +47,8 @@ public class ReflectionsHelper {
     }
 
     private static void throwSmartParamException(Exception exception, Class<?> objectClass, Object[] construtorArgs) {
-        throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception, "no String[" + construtorArgs.length + "] constructor "
-                + "found for class " + objectClass.getCanonicalName());
+        throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception,
+                String.format("no String[%d] constructor found for class %s", construtorArgs.length, objectClass.getCanonicalName()));
     }
 
     public static Set<Method> findMethodsAnnotatedWith(Class<? extends Annotation> annotationType, Class<?> parentClass) {

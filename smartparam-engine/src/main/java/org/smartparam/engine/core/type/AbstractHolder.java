@@ -33,47 +33,45 @@ import org.smartparam.engine.core.exception.SmartParamErrorCode;
  */
 public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
+    private static final int EXPECTED_TOSTRING_LENGTH = 32;
+
     /**
-     * Zwraca obiekt javowy bedacy ostateczna wartoscia parametru.
-     * <p>
-     * Konkretne implementacje moga nadpisywac typ zwracany,
-     * na przyklad NumberHolder moze przeslonic metode w taki sposob:
+     * Return object held in holder.
+     * Implementations of AbstractHolder should change return value
+     * with appropriate for type held, for example:
      * <pre>
-     * public BigDecimal getValue()
+     * public BigDecimal getValue() { //if BigDecimal holder }
      * </pre>
      *
-     * @return ostateczna (unwrapped) wartosc (np. parametru)
+     * @return object held
      */
     public abstract Object getValue();
 
     /**
-     * Sprawdza, czy wartosc jest interpretowana jako null.
      *
-     * @return <tt>true</tt> jesli wartosc jest interpretowana jako null, <tt>false</tt> w przeciwnym przypadku
+     * @return if value is null
      */
     public boolean isNull() {
         return getValue() == null;
     }
 
     /**
-     * Sprawdza, czy wartosc jest interpretowana jako rozna od null.
      *
-     * @return <tt>true</tt> jesli wartosc jest rozna od null, <tt>false</tt> w przeciwnym przypadku
+     * @return if value is not null
      */
     public boolean isNotNull() {
         return getValue() != null;
     }
 
     /**
-     * Porownuje <b>zawartosc</b> biezacego holdera z holderem przekazanym w parametrze.
-     * Przekazany holder jest rowny z biezacym holderem (w sensie equals), wtedy i tylko wtedy, gdy:
+     * Implementation of equals that returns true only if:
      * <ul>
-     * <li>przekazany holder jest dokladnie tej samej klasy co biezacy
-     * <li>zawartosc biezacego holdera jest rowna (equals) zawartosci przekazanego holdera lub obie wartosci sa rowne <tt>null</tt>
+     * <li>other object is of the same class</li>
+     * <li>values held in this and other holder are equal (via equals() method)</li>
      * </ul>
      *
-     * @param obj przekazny obiekt
-     * @return true, jesli oba holdera sa rowne co do zawartosci
+     * @param obj object to compare
+     * @return true if both conditions are met
      */
     @Override
     public boolean equals(Object obj) {
@@ -93,9 +91,9 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
     }
 
     /**
-     * Wylicza hash code dla holdera wedlug wzoru:
+     * Calculate hash code using formula:
      * <pre>
-     *   hashcode(holder) := hashcode(holder.getClass()) XOR hashcode(holder.getValue())
+     * hashcode(holder) := hashcode(holder.getClass()) XOR hashcode(holder.getValue())
      * </pre>
      *
      * @return hash code
@@ -108,35 +106,25 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
     }
 
     /**
-     * Metoda powinna informowac, czy wartosci zwracane przez {@link #getValue()}
-     * implementuja interface {@link Comparable}.
-     * <p>
-     * Ta metoda (jako default) zwraca <tt>true</tt>, ale kazdy holder moze ja nadpisac, jesli bedzie taka potrzeba.
-     *
-     * @return czy wartosci zwracane przez holder sa porownywalne (Comparable)
+     * Returns true only if value held in this holder implement {@link Comparable}.
+     * By default returns true.
      */
     public boolean isComparable() {
         return true;
     }
 
     /**
-     * Metoda sluzy do porownywania zawartosci holderow (tej samej klasy).
-     * Zwraca wartosc:
+     * Compares two holders using algorithm:
      * <ul>
-     * <li>-1 gdy biezacy holder jest mniejszy od <tt>o</tt>,
-     * <li> 0 gdy biezacy holder jest rowny <tt>o</tt>,
-     * <li>+1 gdy biezacy holder jest wiekszy od <tt>o</tt>.
+     * <li>is value held comparable? (checked using {@link AbstractHolder#isComparable() } method</li>
+     * <li>if not return 0 (objects are equal, cos we don't know how to compare them)</li>
+     * <li>if comparable, do a null-safe comparison using {@link Comparable#compareTo(java.lang.Object)} method</li>
      * </ul>
-     * Moze byc uzywana na przyklad przez Matchery przedzialowe.
-     *
-     * @param o holder tej samej klasy co biezacy
-     * @return wyniko porownywania (w sensie interace'u Comparable)
      */
     @Override
     @SuppressWarnings("unchecked")
     public int compareTo(AbstractHolder o) {
         if (isComparable()) {
-
             Comparable<Object> v1 = (Comparable<Object>) this.getValue();
             Comparable<Object> v2 = (Comparable<Object>) o.getValue();
 
@@ -150,132 +138,24 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
         return 0;
     }
 
-    /**
-     * Zwraca stringowa reprezentacje holdera w postaci:
-     * <pre>
-     *   NazwaKlasy[getValue()]
-     * </pre>
-     * na przyklad:
-     * <pre>
-     *   StringHolder[ABC]
-     *   NumberHolder[3.14]
-     * </pre>
-     *
-     * @return string pokazujacy zawartosc holdera
-     */
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(EXPECTED_TOSTR_LEN);
+        StringBuilder sb = new StringBuilder(EXPECTED_TOSTRING_LENGTH);
         sb.append(this.getClass().getSimpleName());
         sb.append('[').append(getValue()).append(']');
         return sb.toString();
     }
-    /**
-     * Oczekiwana maksymalna dlugosc wyniku metody toString, wystarczajaca dla wiekszosci przypadkow.
-     */
-    private static final int EXPECTED_TOSTR_LEN = 32;
 
-
-    /**
-     * Tworzy wyjatek swiadczacy o niepoprawnym dostepie do wartosci.
-     *
-     * @param t nazwa typu, ktory probuje pobrac uzytkownik
-     * @return wyjatek ParamUsageException
-     */
-    private SmartParamUsageException unexpectedUsage(String t) {
-        return new SmartParamUsageException(
-                SmartParamErrorCode.GETTING_WRONG_TYPE,
-                "trying to get [" + t + "] value from " + this.getClass());
+    private SmartParamUsageException prepareUnexpectedUsageException(String valueType) {
+        return new SmartParamUsageException(SmartParamErrorCode.GETTING_WRONG_TYPE,
+                String.format("Trying to get [%s] value from %s, which does not support this type. "
+                + "Check if type of parameter level is correct.", valueType, this.getClass()));
     }
 
     /**
-     * Zwraca int, jesli dla danego typu ma to sens.
+     * Returns String representation of held object (by using toString).
      *
-     * @return wartosc jako int
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
-     */
-    public int intValue() {
-        throw unexpectedUsage("int");
-    }
-
-    /**
-     * Zwraca long, jesli dla danego typu ma to sens.
-     *
-     * @return wartosc jako long
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
-     */
-    public long longValue() {
-        throw unexpectedUsage("long");
-    }
-
-    /**
-     * Zwraca double, jesli dla danego typu ma to sens.
-     *
-     * @return wartosc jako double
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
-     */
-    public double doubleValue() {
-        throw unexpectedUsage("double");
-    }
-
-    /**
-     * Zwraca boolean, jesli dla danego typu ma to sens.
-     *
-     * @return wartosc jako boolean
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
-     */
-    public boolean booleanValue() {
-        throw unexpectedUsage("boolean");
-    }
-
-    /**
-     * Zwraca Integer, jesli dla danego typu ma to sens.
-     *
-     * @return wartosc jako Integer
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
-     */
-    public Integer getInteger() {
-        throw unexpectedUsage("Integer");
-    }
-
-    /**
-     * Zwraca Long, jesli dla danego typu ma to sens.
-     *
-     * @return wartosc jako Long
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
-     */
-    public Long getLong() {
-        throw unexpectedUsage("Long");
-    }
-
-    /**
-     * Zwraca Double, jesli dla danego typu ma to sens.
-     *
-     * @return wartosc jako Double
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
-     */
-    public Double getDouble() {
-        throw unexpectedUsage("Double");
-    }
-
-    /**
-     * Zwraca Boolean, jesli dla danego typu ma to sens.
-     *
-     * @return wartosc jako Boolean
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
-     */
-    public Boolean getBoolean() {
-        throw unexpectedUsage("Boolean");
-    }
-
-    /**
-     * Zwraca reprezentacje stringowa (toString) obiektu przechowywanego przez dany holder,
-     * lub null, jesli przechowywany obiekt jest rowny null.
-     * <p>
-     * Metoda moze byc przyslaniana w holderach, jesli bedzie taka potrzeba.
-     *
-     * @return wartosc jako string lub null, jesli holder zawiera null
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana jako string
+     * @return toString value or null if none value held
      */
     public String getString() {
         Object value = getValue();
@@ -283,23 +163,102 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
     }
 
     /**
-     * Zwraca wartosc jako BigDecimal, jesli dla danego typu ma to sens.
+     * Returns int value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
      *
-     * @return wartosc jako BigDecimal
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
+     * @return int value
      */
-    public BigDecimal getBigDecimal() {
-        throw unexpectedUsage("BigDecimal");
+    public int intValue() {
+        throw prepareUnexpectedUsageException("int");
     }
 
     /**
-     * Zwraca Date, jesli dla danego typu ma to sens.
+     * Returns long value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
      *
-     * @return wartosc jako Date
-     * @throws ParamUsageException jesli wartosc nie moze byc interpretowana w ten sposob
+     * @return long value
      */
-    public Date getDate() {
-        throw unexpectedUsage("Date");
+    public long longValue() {
+        throw prepareUnexpectedUsageException("long");
     }
 
+    /**
+     * Returns double value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     *
+     * @return double value
+     */
+    public double doubleValue() {
+        throw prepareUnexpectedUsageException("double");
+    }
+
+    /**
+     * Returns boolean value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     *
+     * @return boolean value
+     */
+    public boolean booleanValue() {
+        throw prepareUnexpectedUsageException("boolean");
+    }
+
+    /**
+     * Returns Integer value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     *
+     * @return Integer value
+     */
+    public Integer getInteger() {
+        throw prepareUnexpectedUsageException("Integer");
+    }
+
+    /**
+     * Returns Long value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     *
+     * @return Long value
+     */
+    public Long getLong() {
+        throw prepareUnexpectedUsageException("Long");
+    }
+
+    /**
+     * Returns Double value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     *
+     * @return Double value
+     */
+    public Double getDouble() {
+        throw prepareUnexpectedUsageException("Double");
+    }
+
+    /**
+     * Returns Boolean value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     *
+     * @return Boolean value
+     */
+    public Boolean getBoolean() {
+        throw prepareUnexpectedUsageException("Boolean");
+    }
+
+    /**
+     * Returns BigDecimal value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     *
+     * @return BigDecimal value
+     */
+    public BigDecimal getBigDecimal() {
+        throw prepareUnexpectedUsageException("BigDecimal");
+    }
+
+    /**
+     * Returns Date value if holder is capable of doing it, otherwise
+     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     *
+     * @return Date value
+     */
+    public Date getDate() {
+        throw prepareUnexpectedUsageException("Date");
+    }
 }

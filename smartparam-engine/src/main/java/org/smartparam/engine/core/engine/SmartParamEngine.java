@@ -193,12 +193,12 @@ public class SmartParamEngine implements ParamEngine {
 	@Deprecated
     @Override
     public MultiRow getMultiRow(String paramName, ParamContext ctx) {
-		
+
 		ParamValue value = get(paramName, ctx);
 		if (value == null) {
 			return null;
 		}
-		
+
 		MultiRow mr = new MultiRow(value.size());
 		for (int i = 0; i < value.size(); i++) {
 			mr.setRow(i, value.row(i + 1));
@@ -459,7 +459,8 @@ public class SmartParamEngine implements ParamEngine {
             if (levelCreator == null) {
                 throw new SmartParamException(
                         SmartParamErrorCode.UNDEFINED_LEVEL_CREATOR,
-                        "Level(" + (i + 1) + ") has no level-creator funtion, but function is needed to evaluate level value");
+                        String.format("Level[%d] has no level creator function registered. "
+                        + "When using dynamic context, level creators are mandatory for all input levels.", i + 1));
             }
 
             Object result = functionManager.invokeFunction(levelCreator, ctx);
@@ -486,18 +487,10 @@ public class SmartParamEngine implements ParamEngine {
     private PreparedEntry findParameterEntry(PreparedParameter param, String[] levelValues) {
 
         if (param.isCacheable()) {
-
             LevelIndex<PreparedEntry> index = param.getIndex();
-            if (levelValues.length != index.getLevelCount()) {
-                throw new SmartParamUsageException(
-                        SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
-                        "Illegal user-supplied levelValues array: levelCount=" + index.getLevelCount() + ", levelValues=" + levelValues.length);
-            }
-
+            validateLevelValues(levelValues, index.getLevelCount());
             return index.find(levelValues);
-
         } else {
-
             List<PreparedEntry> entries = paramPreparer.findEntries(param.getName(), levelValues);
             return entries.isEmpty() ? null : entries.get(0);
         }
@@ -517,22 +510,24 @@ public class SmartParamEngine implements ParamEngine {
         List<PreparedEntry> entries;
 
         if (param.isCacheable()) {
-
             LevelIndex<PreparedEntry> index = param.getIndex();
-            if (levelValues.length != index.getLevelCount()) {
-                throw new SmartParamUsageException(
-                        SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
-                        "Illegal user-supplied levelValues array: levelCount=" + index.getLevelCount() + ", levelValues=" + levelValues.length);
-            }
-
+            validateLevelValues(levelValues, index.getLevelCount());
             entries = index.findAll(levelValues);
-
         } else {
-
             entries = paramPreparer.findEntries(param.getName(), levelValues);
         }
 
         return entries != null ? entries.toArray(new PreparedEntry[entries.size()]) : new PreparedEntry[0];
+    }
+
+    private void validateLevelValues(String[] levelValues, int parameterLevelCount) {
+        if (levelValues.length != parameterLevelCount) {
+                throw new SmartParamUsageException(
+                        SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
+                        String.format("Level values array length differs from parameter input levels count (%d != %d). "
+                        + "Provided values: %s.",
+                        levelValues.length, parameterLevelCount, levelValues));
+            }
     }
 
     private PreparedEntry[] findParameterEntries(PreparedParameter param, ParamContext ctx) {
@@ -549,7 +544,9 @@ public class SmartParamEngine implements ParamEngine {
         logger.trace("prepared parameter: {}", param);
 
         if (param == null) {
-            throw new SmartParamException(SmartParamErrorCode.UNKNOWN_PARAMETER, "parameter not found: " + paramName);
+            throw new SmartParamException(SmartParamErrorCode.UNKNOWN_PARAMETER,
+                    String.format("Parameter %s was not found in any of registered repositories. "
+                    + "Check if name is correct and repositories are properly configured and initalized.", paramName));
         }
         return param;
     }
@@ -586,13 +583,12 @@ public class SmartParamEngine implements ParamEngine {
         this.assemblerProvider = assemblerProvider;
     }
 
-    //todo ph: par 0 bool type
-    //todo ph: par 3 lt, le, gt, ge matchers
-    private SmartParamException raiseValueNotFoundException(String paramName, ParamContext ctx) {
+    private SmartParamException raiseValueNotFoundException(String paramName, ParamContext context) {
 
         return new SmartParamException(
                 SmartParamErrorCode.PARAM_VALUE_NOT_FOUND,
-                "Value not found for parameter [" + paramName + "] and given context: " + ctx);
+                String.format("No value found for parameter [%s] using values from context %s.\n"
+                + "If parameter should return null values instead of throwing this exception, set nullable flag to true.", paramName, context));
     }
 
     boolean isDebug() {

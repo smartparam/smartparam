@@ -52,7 +52,7 @@ public class MapRepository<V> {
     public void registerUnique(RepositoryObjectKey key, V value) {
         if (repositoryMap.containsKey(key)) {
             throw new SmartParamException(SmartParamErrorCode.NON_UNIQUE_ITEM_CODE,
-                    containedClass.getSimpleName() + " repository already contains item with key " + key);
+                    String.format("%s repository accepts only unique items and already contains item with key %s", containedClass.getSimpleName(), key));
         }
         register(key, value);
     }

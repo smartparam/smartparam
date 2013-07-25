@@ -1,116 +1,103 @@
 package org.smartparam.engine.core.exception;
 
+import org.smartparam.engine.core.context.LevelValues;
+
 /**
  *
  * @author Adam Dubiel
- * @since 0.1.0
  */
 public enum SmartParamErrorCode {
 
     /**
-     * proba pobrania niewlasciwego typu z holdera, np. NumberHolder.getDate().
+     * Trying to extract wrong type from {@link org.smartparam.engine.core.type.AbstractHolder}.
      */
     GETTING_WRONG_TYPE,
     /**
-     * niepoprawna definicja assemblera. metoda assemblera musi przyjmowac
-     * dokladnie 1 argument: klasa zrodlowa.
+     * Deprecated.
      */
     ILLEGAL_ASSEMBLER_DEFINITION,
     /**
-     * Nie znaleziono pasujacego assemblera.
+     * Deprecated.
      */
     ASSEMBLER_NOT_FOUND,
     /**
-     * Blad podczas wykonywania metody assemblera.
+     * Deprecated.
      */
     ASSEMBLER_INVOKE_ERROR,
     /**
-     * proba zarejestrowania typu pod kodem, ktory jest juz zarejestrowany.
+     * Trying to register an item under same code (for strictly unique repositories).
      */
     NON_UNIQUE_ITEM_CODE,
     /**
-     * nieudana konwersja obiektu java na obiekt AbstractHolder.
+     * Conversion to declared level type failed.
      */
     TYPE_CONVERSION_FAILURE,
     /**
-     * Nieudana probra zdekodowania wartosci tekstowej w obiekt holdera:
+     * Decoding value failed
      * {@link org.smartparam.engine.core.type.AbstractType#decode(java.lang.String)}.
      */
     TYPE_DECODING_FAILURE,
     /**
-     * Parametr nieznany, np. brak parametru o podanej nazwie.
+     * No parameter with given name could be found in any registered repository.
      */
     UNKNOWN_PARAMETER,
     /**
-     * Funkcja nieznana, np. w repozytorium funkcji brak funkcji o podanej
-     * nazwie.
+     * No function with given name could be found in any registered repository.
      */
     UNKNOWN_FUNCTION,
     /**
-     * Nie znaleziono wartosci parametru dla podanego kontekstu, a parametr nie
-     * zezwala na zwracanie wartosci <tt>null</tt>.
+     * No value found in evaluated parameter, returned only if parameter does
+     * not allow returning null values.
      */
     PARAM_VALUE_NOT_FOUND,
     /**
-     * niepoprawna tablica z wartosciami poziomow przekazana przez uzytkownika.
-     * na przyklad - parametr ma 3 poziomy, a uzytkownik przekazal 2-elementowa
-     * tablice wartosci.
+     * When using {@link org.smartparam.engine.core.context.LevelValues} and
+     * provided less level values than there are levels defined in parameter.
      */
     ILLEGAL_LEVEL_VALUES,
     /**
-     * blad podczas wywolywania funkcji z repozytorium funkcji (Function), np: -
-     * nie mozna znalezc odpowiedniej metody lub klasy (javafunction) - funkcja
-     * rzucila wyjatek
+     * If function invocation thrown any error.
      */
     FUNCTION_INVOKE_ERROR,
     /**
-     * Blad podczas wypelniania kontekstu. Oczekiwano kolejnego argumentu.
+     * When initializing dynamic context.
      *
      * @see
      * org.smartparam.engine.core.context.DefaultContext#initialize(java.lang.Object[]).
      */
     ERROR_FILLING_CONTEXT,
     /**
-     * Niepoprawne uzycie metody API. Najprawdopodobniej przekazano do metody
-     * argumenty, ktore sa ze soba sprzeczne.
+     * Misused API, probably passed incompatible arguments.
      */
     ILLEGAL_API_USAGE,
     /**
-     * Level nie ma podpietej funkcji typu levelCreator, a funkcja ta jest
-     * wymagana przez kontekst uzycia - uzycie bez podawania przygotowanych
-     * wartosci poziomow.
+     * When using dynamic context without providing levelCreator function name.
      */
     UNDEFINED_LEVEL_CREATOR,
     /**
-     * Uzycie funkcji (FunctionImpl), dla ktorej nie jest skonfigurowany
-     * FunctionInvoker.
+     * When trying to call function of type that has no associated invoker.
      */
     UNDEFINED_FUNCTION_INVOKER,
     /**
-     * Uzycie typu (AbstractType), ktory nie jest zarejstrowany w ramach
-     * TypeProvidera.
+     * Trying to use level value of unknown {@link org.smartparam.engine.core.type.Type}.
      */
     UNKNOWN_PARAM_TYPE,
     /**
-     * Uzycie kodu matchera, ktory nie jest zarejestrowany w ramach
-     * MatcherProvidera.
+     * Trying to use unknown level {@link org.smartparam.engine.core.index.Matcher}.
      */
     UNKNOWN_MATCHER,
     /**
-     * Wartosc parametru <tt>null</tt> nie jest dozwolona dla danego parametru.
-     */
-    NULL_NOT_ALLOWED,
-    /**
-     * Proba pobrania wartosci spod nieistniejacej pozycji. Korzysta z tego
-     * wiele metod. W wiekszosci metod numer pozycji zaczyna sie od 1.
+     * When trying to get item from array/list that doesn't exist.
      */
     INDEX_OUT_OF_BOUNDS,
-
     /**
      * Error while initializing SmartParam using annotation aware classes.
      */
     ANNOTATION_INITIALIZER_ERROR,
-
+    /**
+     * When error comes from any reflective operation (class instantiation,
+     * method call etc).
+     */
     REFLECTIVE_OPERATION_ERROR;
 
 }

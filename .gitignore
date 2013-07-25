@@ -6,3 +6,4 @@ nb-configuration.xml
 *.iml
 *.iws
 
+/smartparam-repository-transfer/nbproject/private/

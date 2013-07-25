@@ -9,33 +9,31 @@ import org.smartparam.engine.core.type.Type;
 
 /**
  * @author Przemek Hertel
- * @since 1.0.0
  */
 public abstract class ParamHelper {
 
-    //t
     public static AbstractHolder decode(Type<?> type, String text) {
         try {
             return type.decode(text != null ? text.trim() : null);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException exception) {
             throw new SmartParamException(
-                    SmartParamErrorCode.TYPE_DECODING_FAILURE, e,
-                    "Failed to decode text [" + text + "] into type [" + type != null ? type.getClass().getSimpleName() : null + "]");
+                    SmartParamErrorCode.TYPE_DECODING_FAILURE, exception,
+                    String.format("Failed to decode text [%s] into type [%s], check if level type is set correctly.",
+                    text, type != null ? type.getClass().getSimpleName() : null));
         }
     }
 
-    //t
     public static AbstractHolder convert(Type<?> type, Object obj) {
         try {
             return type.convert(obj);
         } catch (RuntimeException e) {
             throw new SmartParamException(
                     SmartParamErrorCode.TYPE_CONVERSION_FAILURE, e,
-                    "Failed to convert object [" + obj + "] into type [" + type.getClass() + "]");
+                    String.format("Failed to convert object [%s] into type [%s], check if level type is set correctly.",
+                    obj, type.getClass().getSimpleName()));
         }
     }
 
-    //t
     public static AbstractHolder[] convert(Type<?> type, Object[] array) {
         AbstractHolder[] result = type.newArray(array.length);
         for (int i = 0; i < result.length; i++) {
@@ -53,7 +51,6 @@ public abstract class ParamHelper {
         return result;
     }
 
-    //t
     public static AbstractHolder[] convert(Type<?> type, Collection<?> coll) {
         return convert(type, coll.toArray());
     }

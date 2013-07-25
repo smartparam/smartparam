@@ -14,13 +14,15 @@ public class MethodScannerInitializer implements ComponentInitializer {
 
     private PackageList packagesToScan = new PackageList();
 
-    private MethodScanner methodScanner = new PackageMethodScanner(packagesToScan);
+    private MethodScanner methodScanner;
 
     public MethodScannerInitializer() {
+        methodScanner = new PackageMethodScanner(packagesToScan);
     }
 
     public MethodScannerInitializer(PackageList packagesToScan) {
         this.packagesToScan = packagesToScan;
+        methodScanner = new PackageMethodScanner(packagesToScan);
     }
 
     @Override

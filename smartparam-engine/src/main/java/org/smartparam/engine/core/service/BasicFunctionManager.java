@@ -28,7 +28,10 @@ public class BasicFunctionManager implements FunctionManager {
         FunctionInvoker invoker = invokerRepository.getInvoker(function);
 
         if (invoker == null) {
-            throw new SmartParamException(SmartParamErrorCode.UNDEFINED_FUNCTION_INVOKER, "Undefined FunctionInvoker for: " + function);
+            throw new SmartParamException(SmartParamErrorCode.UNDEFINED_FUNCTION_INVOKER,
+                    String.format("Could not find function invoker for function %s of type %s. "
+                    + "To see all registered function invokers, look for MapRepository logs on INFO level during startup.",
+                    function.getName(), function.getType()));
         }
 
         try {

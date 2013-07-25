@@ -52,7 +52,10 @@ public class BasicFunctionProvider implements FunctionProvider, TypeScanningRepo
         if (function == null) {
             function = searchForFunction(functionName);
             if (function == null) {
-                throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_FUNCTION, "Unknown function: " + functionName);
+                throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_FUNCTION,
+                        String.format("Could not find function %s in any registered repository. "
+                        + "Check if all repositories are properly configured."
+                        + "To see all functions registered, follow logs from MapRepository on INFO level.", functionName));
             }
             functionCache.put(functionName, function);
         }

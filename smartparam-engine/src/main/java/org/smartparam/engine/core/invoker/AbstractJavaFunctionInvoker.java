@@ -14,12 +14,14 @@ public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected Object invokeMethod(Object instance, Method m, Object... args) {
+    protected Object invokeMethod(Object instance, Method method, Object... args) {
         try {
-            return m.invoke(instance, args);
+            return method.invoke(instance, args);
         } catch (Exception e) {
             logger.error("", e);
-            throw new SmartParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Error invoking method: " + m);
+            throw new SmartParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e,
+                    String.format("Error invoking method %s on object %s.",
+                    method.getName(), instance != null ? instance.getClass().getSimpleName() : "<null>"));
         }
     }
 }
