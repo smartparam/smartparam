@@ -32,6 +32,14 @@ public class MapRepository<V> {
         repositoryMap = repositoryMapInstance;
     }
 
+    public boolean contains(RepositoryObjectKey key) {
+        return repositoryMap.containsKey(key);
+    }
+
+    public boolean contains(String key) {
+        return contains(RepositoryObjectKey.withKey(key));
+    }
+
     public V getItem(RepositoryObjectKey key) {
         return repositoryMap.get(key);
     }

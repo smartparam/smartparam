@@ -1,5 +1,6 @@
 package org.smartparam.engine.bean;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class PackageList implements Iterable<String> {
     /**
      * Internal representation of package list.
      */
-    private List<String> packages = null;
+    private List<String> packages = new LinkedList<String>();
 
     public PackageList() {
     }
@@ -28,23 +29,12 @@ public class PackageList implements Iterable<String> {
         this.defaultPackage = defaultPackage;
     }
 
-    /**
-     * Created internal list if it does not exist.
-     */
-    private void createIfNull() {
-        if (packages == null) {
-            packages = new LinkedList<String>();
-        }
+    public void addPackage(String packageName) {
+        packages.add(packageName);
     }
 
-    /**
-     * Add new packages to list.
-     *
-     * @param packageName package name
-     */
-    public void addPackage(String packageName) {
-        createIfNull();
-        packages.add(packageName);
+    public void addAllPackages(String... packages) {
+        this.packages.addAll(Arrays.asList(packages));
     }
 
     public String getDefaultPackage() {
@@ -61,7 +51,6 @@ public class PackageList implements Iterable<String> {
      * @return package names
      */
     public List<String> getPackages() {
-        createIfNull();
         return packages;
     }
 
@@ -71,14 +60,12 @@ public class PackageList implements Iterable<String> {
      * @param packages list of package, content is copied
      */
     public void setPackages(List<String> packages) {
-        createIfNull();
         this.packages.clear();
         this.packages.addAll(packages);
     }
 
     @Override
     public Iterator<String> iterator() {
-        createIfNull();
         return packages.iterator();
     }
 }

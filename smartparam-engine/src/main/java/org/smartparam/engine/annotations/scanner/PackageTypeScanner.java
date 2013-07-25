@@ -1,6 +1,7 @@
 package org.smartparam.engine.annotations.scanner;
 
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.RepositoryObjectKey;
@@ -28,6 +29,12 @@ public class PackageTypeScanner implements TypeScanner {
         objects.putAll(userObjects);
 
         return objects;
+    }
+
+    @Override
+    public <REGISTERED_OBJECT> List<REGISTERED_OBJECT> scanTypesWithoutName(Class<? extends Annotation> annotationType) {
+        AnnotatedObjectsScanner<REGISTERED_OBJECT> scanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>();
+        return scanner.getAnnotatedObjectsWithoutName(annotationType, packagesToScan);
     }
 
     private PackageList createPackagesForDefaults(PackageList packagesToScan) {
