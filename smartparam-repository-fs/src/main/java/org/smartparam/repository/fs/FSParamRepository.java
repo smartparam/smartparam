@@ -15,7 +15,15 @@ import org.smartparam.serializer.StandardSerializationConfig;
 import org.smartparam.serializer.StandardParamDeserializer;
 
 /**
+ * Repository that uses serializer/deserializer for reading parameters from
+ * file system (fs). Depending on {@link ResourceResolverFactory}, it can
+ * support loading files from any source. By default pure file system files
+ * and classpath files scanning is available (note, that to use classpath scanning
+ * you need to have reflections.org library in dependencies).
  *
+ * To use files, prefix source directory with <code>file://</code> (default file protocol marker).
+ * To use classpath files, prefix classpath directory path with <code>classpath:</code>.
+ * 
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 public class FSParamRepository implements ParamRepository {
