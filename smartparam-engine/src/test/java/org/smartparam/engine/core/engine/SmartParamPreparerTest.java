@@ -8,7 +8,6 @@ import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.repository.BasicMatcherRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
-import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.test.builder.LevelMockBuilder;
@@ -99,8 +98,9 @@ public class SmartParamPreparerTest {
 
         // konfiguracja
         Level l1 = LevelMockBuilder.level().withType("string").get();
+        Level l2 = LevelMockBuilder.level().withType("string").get();
 
-        ParameterMockBuilder.parameter(p2).withName("par2").withType("string").withLevels(l1).withEntries(
+        ParameterMockBuilder.parameter(p2).withName("par2").withLevels(l1, l2).inputLevels(1).withEntries(
                 ParameterEntryMockBuilder.parameterEntry("A", "value-A"),
                 ParameterEntryMockBuilder.parameterEntry("*", "value-*")
                 );
@@ -109,81 +109,37 @@ public class SmartParamPreparerTest {
         PreparedParameter result = instance.getPreparedParameter("par2");
 
         // weryfikacja
-        assertEquals(1, result.getLevelCount());
+        assertEquals(2, result.getLevelCount());
         assertEquals(1, result.getInputLevelsCount());
         assertEquals("par2", result.getName());
-        assertSame(type, result.getType());
 
-        assertEquals(1, result.getLevels().length);
+        assertEquals(2, result.getLevels().length);
         assertEquals(type, result.getLevels()[0].getType());
+        assertEquals(type, result.getLevels()[1].getType());
     }
 
-    @Test
-    public void testGetPreparedParameter__prepare_singleValue_nullType() {
-
-        // konfiguracja
-        ParameterMockBuilder.parameter(p2).withName("par2").withType(null)
-                .withLevels(
-                    LevelMockBuilder.level("string")
-                ).withEntries(
-                    ParameterEntryMockBuilder.parameterEntry("A", "value-A")
-                );
-
-        // test
-        try {
-            instance.getPreparedParameter("par2");
-            fail();
-
-        } catch (SmartParamException e) {
-            assertEquals(SmartParamErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
-        }
-    }
-
-    @Test
-    public void testGetPreparedParameter__prepare_multiValue_nullType() {
-
-        ParameterMockBuilder.parameter(p2).withName("par2").withType(null)
-                .multivalue(true).inputLevels(1)
-                .withLevels(
-                    LevelMockBuilder.level("string"),
-                    LevelMockBuilder.level("string")
-                ).withEntries(
-                    ParameterEntryMockBuilder.parameterEntry("A;B", "value-AB"),
-                    ParameterEntryMockBuilder.parameterEntry("C;D", "value-CD")
-                );
-
-        // test
-        PreparedParameter result = instance.getPreparedParameter("par2");
-
-        // weryfikacja
-        assertEquals(2, result.getLevelCount());
-        assertEquals(1, result.getInputLevelsCount());
-        assertEquals("par2", result.getName());
-        assertNull(result.getType());
-    }
-
-    @Test
-    public void testGetPreparedParameter__prepare_multiValue_notnullType() {
-
-        ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
-                .multivalue(true).inputLevels(1)
-                .withLevels(
-                    LevelMockBuilder.level("string"),
-                    LevelMockBuilder.level("string")
-                ).withEntries(
-                    ParameterEntryMockBuilder.parameterEntry("A;B", "value-AB"),
-                    ParameterEntryMockBuilder.parameterEntry("C;D", "value-CD")
-                );
-
-        // test
-        PreparedParameter result = instance.getPreparedParameter("par2");
-
-        // weryfikacja
-        assertEquals(2, result.getLevelCount());
-        assertEquals(1, result.getInputLevelsCount());
-        assertEquals("par2", result.getName());
-        assertSame(type, result.getType());
-    }
+//todo ph 0 finish shouldFailWhenOutputLevelHasNoType
+//    @Test
+//    public void shouldFailWhenOutputLevelHasNoType() {
+//
+//        // konfiguracja
+//        ParameterMockBuilder.parameter(p2).withName("par2")
+//                .withLevels(
+//                    LevelMockBuilder.level().withType("string").get(),
+//                    LevelMockBuilder.level().get()
+//                ).withEntries(
+//                    ParameterEntryMockBuilder.parameterEntry("A", "value-A")
+//                );
+//
+//        // test
+//        try {
+//            instance.getPreparedParameter("par2");
+//            fail();
+//
+//        } catch (SmartParamException e) {
+//            assertEquals(SmartParamErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
+//        }
+//    }
 
     @Test
     public void testGetPreparedParameter__paramNotFound() {
@@ -198,11 +154,13 @@ public class SmartParamPreparerTest {
     @Test
     public void testGetPreparedParameter__array() {
 
-        ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
-                .array(true)
+        ParameterMockBuilder.parameter(p2).withName("par2")
                 .withLevels(
+                    LevelMockBuilder.level().withType("string").get(),
                     LevelMockBuilder.level().withType("string").get()
-                ).withEntries(
+                )
+                .inputLevels(1)
+                .withEntries(
                     ParameterEntryMockBuilder.parameterEntry("*", "value")
                 );
 
@@ -210,8 +168,8 @@ public class SmartParamPreparerTest {
         PreparedParameter result = instance.getPreparedParameter("par2");
 
         // weryfikacja
-        assertEquals(1, result.getLevelCount());
-        assertTrue(result.isArray());
+        assertEquals(2, result.getLevelCount());
+        assertEquals(1, result.getInputLevelsCount());
         assertEquals(',', result.getArraySeparator());
 
         // test 2
@@ -219,31 +177,32 @@ public class SmartParamPreparerTest {
         result = instance.getPreparedParameter("par2");
 
         // weryfikacja 2
-        assertTrue(result.isArray());
         assertEquals('/', result.getArraySeparator());
     }
 
     @Test
     public void testGetPreparedParameter__prepare_withMatchers() {
 
-        ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
+        ParameterMockBuilder.parameter(p2).withName("par2")
                 .withLevels(
                     LevelMockBuilder.level().withType("string").withMatcherCode("between/ii").get(),
-                    LevelMockBuilder.level().withType("string").withMatcherCode("between/ie").get()
-                ).withEntries(
-                    ParameterEntryMockBuilder.parameterEntry("A;B", "value-AB")
+                    LevelMockBuilder.level().withType("string").withMatcherCode("between/ie").get(),
+                    LevelMockBuilder.level().withType("string").get()
+                )
+                .inputLevels(2)
+                .withEntries(
+                    ParameterEntryMockBuilder.parameterEntry("A", "B", "value-AB")
                 );
 
         // test
         PreparedParameter result = instance.getPreparedParameter("par2");
 
         // weryfikacja
-        assertEquals(2, result.getLevelCount());
+        assertEquals(3, result.getLevelCount());
         assertEquals(2, result.getInputLevelsCount());
         assertEquals("par2", result.getName());
-        assertSame(type, result.getType());
 
-        assertEquals(2, result.getLevels().length);
+        assertEquals(3, result.getLevels().length);
         for (int i = 0; i < 2; i++) {
             PreparedLevel pl = result.getLevels()[i];
             assertEquals(type, pl.getType());
@@ -254,11 +213,11 @@ public class SmartParamPreparerTest {
     @Test
     public void testGetPreparedParameter__prepare_illegalMatcher() {
 
-        ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
+        ParameterMockBuilder.parameter(p2).withName("par2")
                 .withLevels(
                     LevelMockBuilder.level().withType("string").withMatcherCode("nonexisting").get()
                 ).withEntries(
-                    ParameterEntryMockBuilder.parameterEntry("A;B", "value-AB")
+                    ParameterEntryMockBuilder.parameterEntry("A", "B", "value-AB")
                 );
 
         // test
@@ -273,19 +232,20 @@ public class SmartParamPreparerTest {
     @Test
     public void testGetPreparedParameter__prepare_nullTypeLevel() {
 
-        ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
+        ParameterMockBuilder.parameter(p2).withName("par2")
                 .withLevels(
-                    LevelMockBuilder.level().get()
+                    LevelMockBuilder.level().get(),
+                    LevelMockBuilder.level().withType("string").get()
                 ).withEntries(
                     ParameterEntryMockBuilder.parameterEntry("A", "value-AB"),
                     ParameterEntryMockBuilder.parameterEntry("B", "value-CD")
-                );
+                ).inputLevels(1);
 
         // test
         PreparedParameter result = instance.getPreparedParameter("par2");
 
         // weryfikacja
-        assertEquals(1, result.getLevelCount());
+        assertEquals(2, result.getLevelCount());
         assertEquals(1, result.getInputLevelsCount());
         assertEquals("par2", result.getName());
         assertNull(result.getLevels()[0].getType());
@@ -294,7 +254,7 @@ public class SmartParamPreparerTest {
     @Test
     public void testGetPreparedParameter__prepare_illegalLevelType() {
 
-        ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
+        ParameterMockBuilder.parameter(p2).withName("par2")
                 .withLevels(
                     LevelMockBuilder.level("unknown-type")
                 ).withEntries(
@@ -314,8 +274,8 @@ public class SmartParamPreparerTest {
     public void testFindEntries() {
 
         // konfiguracja
-        entries.add(ParameterEntryMockBuilder.parameterEntry(new String[] { "A", "A2", "A3", "A4"}, null ));
-        entries.add(ParameterEntryMockBuilder.parameterEntry(new String[] { "A", "B2", "B3", "B4"}, null ));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "A2", "A3", "A4"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "B2", "B3", "B4"));
 
         // test
         List<PreparedEntry> result = instance.findEntries("param", new String[]{"A"});
@@ -329,14 +289,14 @@ public class SmartParamPreparerTest {
     @Test
     public void testGetPreparedParameter__prepare_cacheable() {
 
-        ParameterMockBuilder.parameter(p2).withName("par2").withType("string")
-                .multivalue(true).inputLevels(1).cacheable(false)
+        ParameterMockBuilder.parameter(p2).withName("par2")
+                .inputLevels(1).cacheable(false)
                 .withLevels(
                     LevelMockBuilder.level("string"),
                     LevelMockBuilder.level("string")
                 ).withEntries(
-                    ParameterEntryMockBuilder.parameterEntry("A;B", "value-AB"),
-                    ParameterEntryMockBuilder.parameterEntry("C;D", "value-CD")
+                    ParameterEntryMockBuilder.parameterEntry("A", "B", "value-AB"),
+                    ParameterEntryMockBuilder.parameterEntry("C", "D", "value-CD")
                 );
 
         // test
@@ -352,8 +312,8 @@ public class SmartParamPreparerTest {
     @Test
     public void testGetFirstLevels() {
 
-        // preparing big entry: 14 levels
-        ParameterEntry pe = ParameterEntryMockBuilder.parameterEntry("1;2;3;4;5;6;7;8;9;10;11;12;13;14", "value");
+        // preparing big entry: 14 parameterEntry
+        ParameterEntry pe = ParameterEntryMockBuilder.parameterEntryCsv("1;2;3;4;5;6;7;8;9;10;11;12;13;14");
 
         // test cases
         Object[][] tests = {

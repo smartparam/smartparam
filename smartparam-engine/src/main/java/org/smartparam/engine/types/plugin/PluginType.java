@@ -12,8 +12,11 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 1.0.0
  */
+@Deprecated
 @ParamType("plugin")
 public class PluginType implements Type<PluginHolder> {
+
+    //todo #ph 0 will be removed
 
     /**
      * Zamienia obiekt holdera na <tt>String</tt>.
@@ -64,4 +67,5 @@ public class PluginType implements Type<PluginHolder> {
     public PluginHolder[] newArray(int size) {
         return new PluginHolder[size];
     }
+
 }

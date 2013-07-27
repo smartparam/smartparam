@@ -93,9 +93,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         p.setCacheable(rs.getBoolean("cacheable"));
         p.setNullable(rs.getBoolean("nullable"));
         p.setArray(rs.getBoolean("array_flag"));
-        if (p.isArray()) {
-            p.setArraySeparator(toChar(rs.getString("array_separator")));
-        }
+        p.setArraySeparator(toChar(rs.getString("array_separator")));
         return p;
     }
 

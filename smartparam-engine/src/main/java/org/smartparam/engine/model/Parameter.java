@@ -43,14 +43,6 @@ public interface Parameter {
     String getName();
 
     /**
-     * Returns parameter return type (for single-value parameters).
-     *
-     * @return parameter return value type
-     */
-	@Deprecated
-    String getType();
-
-    /**
      * Returns ordered list of levels.
      *
      * @return list of levels
@@ -58,51 +50,25 @@ public interface Parameter {
     List<Level> getLevels();
 
     /**
-     * Returns number of input levels (k). Meaningful only for
-     * <tt>MultiValue</tt> parameters.
+     * Returns number of input levels (criteria levels).
      *
-     * @return number of input levels (k)
+     * @return number of input levels
      */
     int getInputLevels();
 
     /**
-     * Returns set of parameter entries representing (unordered) parameter
-     * matrix.
+     * Returns set of parameter entries representing (unordered) parameter matrix.
      *
      * @return parameter matrix
      */
     Set<ParameterEntry> getEntries();
 
     /**
-     * Should parameter return value be treated as an array of values.
-     *
-     * @return is it an array
-     */
-	@Deprecated
-    boolean isArray();
-
-    /**
-     * Returns char used as value separator for list of values.
-     *
-     * @return separator
-     */
-	@Deprecated
-    char getArraySeparator();
-
-    /**
-     * Can parameter be stored in cache.
+     * Whether parameter's search index is stored in cache.
      *
      * @return is cacheable
      */
     boolean isCacheable();
-
-    /**
-     * Can parameter return more than one value at a time.
-     *
-     * @return is multivalue
-     */
-	@Deprecated
-    boolean isMultivalue();
 
     /**
      * Can parameter return null-value, which means that there might be no
@@ -112,5 +78,21 @@ public interface Parameter {
      */
     boolean isNullable();
 
-	//todo ph remove deprecated methods
+    char getArraySeparator();   // still in use
+
+    /*
+     * todo #ph remove deprecated methods [10. august]
+     *
+     * the following methods can be removed as a result of generic ParamValue introduction
+     */
+
+    @Deprecated
+    boolean isArray();      // not used
+
+    @Deprecated
+    String getType();       // not used
+
+    @Deprecated
+    boolean isMultivalue(); // used only in: org.smartparam.serializer/**/*
+
 }

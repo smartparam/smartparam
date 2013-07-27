@@ -104,5 +104,4 @@ public class PluginTypeTest {
         assertNotSame(arr1, arr2);
     }
     
-    //TODO #ph: remove pluginType
 }

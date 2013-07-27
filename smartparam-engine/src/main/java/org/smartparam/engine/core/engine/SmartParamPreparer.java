@@ -49,12 +49,12 @@ public class SmartParamPreparer implements ParamPreparer {
     /**
      * Dostep do systemu typow silnika.
      */
-    private TypeRepository typeProvider = null;
+    private TypeRepository typeProvider;
 
     /**
      * Dostep do systemu matcherow.
      */
-    private MatcherRepository matcherProvider = null;
+    private MatcherRepository matcherProvider;
 
     /**
      * Dostep do parametrow.
@@ -103,22 +103,10 @@ public class SmartParamPreparer implements ParamPreparer {
          */
         PreparedParameter pp = new PreparedParameter();
         pp.setName(p.getName());
-        pp.setMultivalue(p.isMultivalue());
         pp.setInputLevelsCount(p.getInputLevels());
         pp.setNullable(p.isNullable());
         pp.setCacheable(p.isCacheable());
-        pp.setArray(p.isArray());
         pp.setArraySeparator(p.getArraySeparator());
-
-        // typ parametru jest wymagany dla parametrow single-value (czyli standardowych)
-        Type<?> paramType = typeProvider.getType(p.getType());
-        pp.setType(paramType);
-
-        if (paramType == null && !p.isMultivalue()) {
-            throw new SmartParamDefinitionException(
-                    SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
-                    "Parameter " + p.getName() + " has undefined param type: " + p.getType());
-        }
 
         /*
          * przygotowanie konfiguracji poziomow (typy, matchery)
@@ -137,11 +125,10 @@ public class SmartParamPreparer implements ParamPreparer {
                 type = typeProvider.getType(lev.getType());
 
                 if (type == null) {
-                    throw new SmartParamDefinitionException(
-                            SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
-                            String.format("Level[%d] of parameter %s has unknown type %s. "
-                            + "To see all registered types, look for MapRepository logs on INFO level during startup.",
-                            (i + 1), p.getName(), lev.getType()));
+                    throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
+                            String.format("Level[%d] of parameter %s has unknown type %s. " +
+                                    "To see all registered types, look for MapRepository logs on INFO level during startup.",
+                                    (i + 1), p.getName(), lev.getType()));
                 }
             }
 
@@ -150,11 +137,10 @@ public class SmartParamPreparer implements ParamPreparer {
                 matcher = matcherProvider.getMatcher(lev.getMatcherCode());
 
                 if (matcher == null) {
-                    throw new SmartParamDefinitionException(
-                            SmartParamErrorCode.UNKNOWN_MATCHER,
-                            String.format("Level[%d] of parameter %s has unknown matcher %s. "
-                            + "To see all registered matchers, look for MapRepository logs on INFO level during startup.",
-                            (i + 1), p.getName(), lev.getMatcherCode()));
+                    throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_MATCHER,
+                            String.format("Level[%d] of parameter %s has unknown matcher %s. " +
+                                    "To see all registered matchers, look for MapRepository logs on INFO level during startup.",
+                                    (i + 1), p.getName(), lev.getMatcherCode()));
                 }
             }
 
@@ -184,28 +170,17 @@ public class SmartParamPreparer implements ParamPreparer {
         return pp;
     }
 
-    //todo ph: par 0 clean
     private void buildIndex(Parameter p, PreparedParameter pp, Type<?>[] types, Matcher[] matchers) {
 
-        Type<?>[] ktypes = types;
-        Matcher[] kmatchers = matchers;
-        int k;
-
-        if (p.isMultivalue()) {
-            k = p.getInputLevels();                             // indeksujemy k pierwszych poziomow
-            ktypes = Arrays.copyOf(types, k);                   // podtablica typow
-            kmatchers = Arrays.copyOf(matchers, k);             // podtablica matcherow
-
-        } else {
-            k = getLevelCount(p);                               // indeksujemy wszystkie n poziomow (k = n)
-        }
-
+        int k = p.getInputLevels();                         // indeksujemy k pierwszych poziomow
+        Type<?>[] ktypes = Arrays.copyOf(types, k);         // podtablica typow
+        Matcher[] kmatchers = Arrays.copyOf(matchers, k);   // podtablica matcherow
 
         LevelIndex<PreparedEntry> index = new LevelIndex<PreparedEntry>(k, ktypes, kmatchers);   // indeks k-poziomowy
 
         for (ParameterEntry pe : p.getEntries()) {
-            String[] keys = getFirstLevels(pe, k);                                               // pobranie k pierwszych poziomow
-            index.add(keys, prepareEntry(pe));                                                   // indeksujemy k poziomow
+            String[] keys = getFirstLevels(pe, k);          // pobranie k pierwszych poziomow
+            index.add(keys, prepareEntry(pe));              // indeksujemy k poziomow
         }
 
         pp.setIndex(index);

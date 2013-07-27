@@ -29,7 +29,6 @@ public class JdbcParameterEntry implements ParameterEntry {
 
     @Override
     public String getFunction() {
-        //TODO #ph fix: change interface to getFunction:string
         return null;
     }
 

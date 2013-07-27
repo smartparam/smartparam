@@ -3,7 +3,6 @@ package org.smartparam.engine.core.engine;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.Type;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -23,33 +22,48 @@ import java.util.Map;
  */
 public class PreparedParameter {
 
+
+    @Deprecated
+    private Type<?> type;
+
+    @Deprecated
+    public Type<?> getType() {
+        return type;
+    }
+
+    @Deprecated
+    public void setType(Type<?> type) {
+        this.type = type;
+    }
+
+    @Deprecated
+    public boolean isMultivalue() {
+        return true;
+    }
+
+    @Deprecated
+    public boolean isArray() {
+        return false;
+    }
+
     /**
-     * Unikalna nazwa parametru.
+     * Unique name of parameter.
      */
     private String name;
 
     /**
-     * Typ parametru.
-     */
-    private Type<?> type;
-
-    /**
-     * Definicje poziomow.
+     * Prepared (compiled) levels.
      */
     private PreparedLevel[] levels;
 
     /**
-     * Indeks wyszukiwania zbudowany dla tego parametru.
+     * Search index built for this parameter.
      */
     private LevelIndex<PreparedEntry> index;
 
     /**
-     * Flaga <tt>multivalue</tt> parametru.
-     */
-    private boolean multivalue;
-
-    /**
-     * Liczba poziomow wejsciowych (jesli multivalue).
+     * Number of input (criteria) levels.
+     * Zero means this is no-criteria parameter.
      */
     private int inputLevelsCount;
 
@@ -64,21 +78,19 @@ public class PreparedParameter {
     private boolean cacheable;
 
     /**
-     * Flaga <tt>array</tt> parametru.
+     * Prepared mapping: level name to (1-based) level position
      */
-    private boolean array;
+    private Map<String, Integer> levelNameMap;
 
     /**
-     * Znak separatora, jesli parametr typu <tt>array</tt>.
+     * Znak separatora stosowany, jesli parametr uzywa leveli typu array
      */
     private char arraySeparator;
 
-	private Map<String, Integer> levelNameMap;
-
     /**
-     * Zwraca zbudowany indeks wyszukiwania.
+     * Returns prepared search index.
      *
-     * @return index
+     * @return search index
      */
     public LevelIndex<PreparedEntry> getIndex() {
         return index;
@@ -129,23 +141,6 @@ public class PreparedParameter {
         this.name = name;
     }
 
-    /**
-     * Zwraca typ parametru.
-     *
-     * @return typ parametru
-     */
-    public Type<?> getType() {
-        return type;
-    }
-
-    /**
-     * Setter dla typu parametru
-     *
-     * @param type kod typu
-     */
-    public void setType(Type<?> type) {
-        this.type = type;
-    }
 
     /**
      * Zwraca liczbe poziomow.
@@ -157,15 +152,14 @@ public class PreparedParameter {
     }
 
     /**
-     * Zwraca liczbe poziomow wejsciowych - jesli parametr multivalue.
-     * W przeciwnym przypadku zwraca liczbe wszystkich poziomow.
+     * Returns number of input (criteria) levels.
      *
      * @see #getLevelCount()
      *
-     * @return liczba poziomow wejsciowych (k)
+     * @return number of input levels (k)
      */
     public int getInputLevelsCount() {
-        return multivalue ? inputLevelsCount : getLevelCount();
+        return inputLevelsCount;
     }
 
     /**
@@ -222,65 +216,23 @@ public class PreparedParameter {
         return !isNullable();
     }
 
-    /**
-     * Czy parametru jest typu multivalue.
-     *
-     * @return wartosc flagi
-     */
-    public boolean isMultivalue() {
-        return multivalue;
-    }
-
-    /**
-     * Setter dla multivalue.
-     *
-     * @param multivalue wartosc flagi
-     */
-    public void setMultivalue(boolean multivalue) {
-        this.multivalue = multivalue;
-    }
-
-    /**
-     * Getter dla flagi array.
-     *
-     * @return array
-     */
-    public boolean isArray() {
-        return array;
-    }
-
-    /**
-     * Setter dla array.
-     *
-     * @param array wartosc flagi
-     */
-    public void setArray(boolean array) {
-        this.array = array;
-    }
-
-    /**
-     * Getter dla znaku separatora, jesli parametr jest <tt>array</tt>.
-     *
-     * @return znak separatora
-     */
     public char getArraySeparator() {
         return arraySeparator;
     }
 
-    /**
-     * Setter dla znaku separatora.
-     *
-     * @param arraySeparator znak separatora
-     */
     public void setArraySeparator(char arraySeparator) {
         this.arraySeparator = arraySeparator;
     }
 
-	public Map<String, Integer> getLevelNameMap() {
+    public Map<String, Integer> getLevelNameMap() {
 		return levelNameMap;
 	}
 
 	public void setLevelNameMap(Map<String, Integer> levelNameMap) {
 		this.levelNameMap = levelNameMap;
 	}
+
+    public PreparedLevel getOutputLevel(int k) {
+        return levels[inputLevelsCount + k - 1];
+    }
 }

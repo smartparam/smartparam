@@ -25,16 +25,12 @@ public class ParameterEntryMockBuilder {
         return new ParameterEntryMockBuilder();
     }
 
-    public static ParameterEntry parameterEntry(String csvLevels, String value) {
-        return parameterEntry().withLevels(EngineUtil.split(csvLevels, ';')).withValue(value).get();
+    public static ParameterEntry parameterEntry(String... levels) {
+        return parameterEntry().withLevels(levels).get();
     }
 
-    public static ParameterEntry parameterEntry(String[] levels, String value) {
-        return parameterEntry().withLevels(levels).withValue(value).get();
-    }
-
-    public static ParameterEntry parameterEntry(String csvLevels, Function function) {
-        return parameterEntry().withLevels(EngineUtil.split(csvLevels, ';')).withFunction(function.getName()).get();
+    public static ParameterEntry parameterEntryCsv(String csvLevels) {
+        return parameterEntry().withLevels(EngineUtil.split(csvLevels, ';')).get();
     }
 
     public ParameterEntry get() {
@@ -43,11 +39,6 @@ public class ParameterEntryMockBuilder {
 
     public ParameterEntryMockBuilder withLevels(String... levels) {
         when(parameterEntry.getLevels()).thenReturn(levels);
-        return this;
-    }
-
-    public ParameterEntryMockBuilder withValue(String value) {
-        when(parameterEntry.getValue()).thenReturn(value);
         return this;
     }
 

@@ -1,10 +1,10 @@
 package org.smartparam.engine.core.engine;
 
-import org.junit.*;
-import org.smartparam.engine.model.function.Function;
+import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Przemek Hertel
@@ -16,32 +16,6 @@ public class PreparedEntryTest {
     @Before
     public void init() {
         pe = new PreparedEntry();
-    }
-
-    @Test
-    public void testValue() {
-
-        // zaleznosci
-        String val = "value";
-
-        // test
-        pe.setValue(val);
-
-        // weryfikacja
-        assertEquals(val, pe.getValue());
-    }
-
-    @Test
-    public void testFunction() {
-
-        // zaleznosci
-        Function f = mock(Function.class);
-
-        // test
-        pe.setFunction(f);
-
-        // weryfikacja
-        assertSame(f, pe.getFunction());
     }
 
     @Test

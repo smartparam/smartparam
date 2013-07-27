@@ -29,17 +29,14 @@ public interface ParameterEntry {
 
     /**
      * Get all level patterns for this row.
+     * Both input and output levels.
      *
      * @return levels row values
      */
     String[] getLevels();
 
-    /**
-     * Returns value for row (if single value parameter).
-     *
-     * @return value value
-     */
-    public String getValue();
+    @Deprecated
+    String getValue();
 
     /**
      * Get function, that will be used to evaluate row value if no value is set (value == null).
@@ -47,5 +44,13 @@ public interface ParameterEntry {
      *
      * @return value resolving function
      */
-    public String getFunction();
+    @Deprecated
+    String getFunction();
+
+    /*
+     * getValue() and getFunctions() were used for single-value parameters.
+     * now there is no distinction between single-value, multi-value and multi-row.
+     * - getValue() behavior can be obtained thru defining 1 output levele
+     * - getFunction() cannot be achieved currently
+     */
 }

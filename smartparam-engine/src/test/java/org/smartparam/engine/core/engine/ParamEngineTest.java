@@ -297,7 +297,7 @@ public class ParamEngineTest {
 //
 //        // dane testowe
 //        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("", "plugin.fun"));
+//        entries.add(ParameterEntryMockBuilder.parameterEntry0("", "plugin.fun"));
 //        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("plugin").withEntries(entries).get();
 //
 //        TypeRepository tp = new SmartTypeRepository();

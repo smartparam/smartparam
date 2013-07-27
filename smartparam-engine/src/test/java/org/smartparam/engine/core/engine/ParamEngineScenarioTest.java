@@ -52,10 +52,10 @@ public class ParamEngineScenarioTest {
 
     @Before
     public void init() {
-        TypeRepository typeProvider = new BasicTypeRepository();
-        typeProvider.register("string", new StringType());
-        typeProvider.register("integer", new IntegerType());
-        typeProvider.register("plugin", new PluginType());
+        TypeRepository typeRepository = new BasicTypeRepository();
+        typeRepository.register("string", new StringType());
+        typeRepository.register("integer", new IntegerType());
+        typeRepository.register("plugin", new PluginType());
 
         paramRepository = mock(ParamRepository.class);
 
@@ -69,7 +69,7 @@ public class ParamEngineScenarioTest {
         functionProvider.register("java", 0, functionRepository);
 
         SmartParamPreparer paramPreparer = new SmartParamPreparer();
-        paramPreparer.setTypeRepository(typeProvider);
+        paramPreparer.setTypeRepository(typeRepository);
         paramPreparer.setParamCache(new MapParamCache());
         paramPreparer.setFunctionProvider(functionProvider);
 
@@ -90,30 +90,31 @@ public class ParamEngineScenarioTest {
     public void testGetValue__nullable() {
 
         // zaleznosci
-        Level l1 = LevelMockBuilder.level("string");
-        Level l2 = LevelMockBuilder.level("string");
+        Level l1 = LevelMockBuilder.level("string");    // input
+        Level l2 = LevelMockBuilder.level("string");    // input
+        Level l3 = LevelMockBuilder.level("integer");   // output
 
         Function f = FunctionMockBuilder.function().withType("integer").withJavaImplementation(this.getClass(), "calculate").get();
 
         Function f2 = FunctionMockBuilder.function().withType("integer").withJavaImplementation(this.getClass(), "calculate2").get();
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;F", "11"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;G", "12"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;*", "13"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;F", "21"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;*", "22"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("*;F", "31"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("*;X", f));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("*;Y", f2));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "F", "11"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "G", "12"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "*", "13"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("B", "F", "21"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("B", "*", "22"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("*", "F", "31"));
+//        entries.add(ParameterEntryMockBuilder.parameterEntry0("*;X", f));
+//        entries.add(ParameterEntryMockBuilder.parameterEntry0("*;Y", f2));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").nullable(true)
-                .withEntries(entries).withLevels(l1, l2).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par").nullable(true)
+                .withEntries(entries).withLevels(l1, l2, l3).inputLevels(2).get();
 
         // konfiguracja
         when(paramRepository.load("par")).thenReturn(par);
-        when(functionRepository.loadFunction("calculate")).thenReturn(f);
-        when(functionRepository.loadFunction("calculate2")).thenReturn(f2);
+//        when(functionRepository.loadFunction("calculate")).thenReturn(f);
+//        when(functionRepository.loadFunction("calculate2")).thenReturn(f2);
 
         // testy - wartosci poziomow
         String[][] tests = {
@@ -123,13 +124,13 @@ public class ParamEngineScenarioTest {
             {"B", "F"}, //BF 21
             {"B", "B"}, //B* 22
             {"C", "F"}, //*F 31
-            {"S", "X"}, //*X f  = 78
-            {"S", "Y"}, //*Y f2 = null
+//            {"S", "X"}, //*X f  = 78
+//            {"S", "Y"}, //*Y f2 = null
             {"Z", "Z"} //null
         };
 
         // oczekiwane wyniki
-        Integer[] expected = {11, 12, 13, 21, 22, 31, 78, null, null};
+        Integer[] expected = {11, 12, 13, 21, 22, 31, null};
 
         // test i weryfikacja
         for (int i = 0; i < tests.length; i++) {
@@ -150,18 +151,21 @@ public class ParamEngineScenarioTest {
     public void testGetValue__nullLevelValue() {
 
         // zaleznosci
-        Level l1 = LevelMockBuilder.level("string");
-        Level l2 = LevelMockBuilder.level("string");
+        Level l1 = LevelMockBuilder.level("string");    // input
+        Level l2 = LevelMockBuilder.level("string");    // output
+        Level l3 = LevelMockBuilder.level("string");    // output
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry(new String[]{"A", null}, "A-null"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry(new String[]{"A", "B"}, "A-B"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry(new String[]{null, "B"}, "null-B"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry(new String[]{null, null}, "null-null"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry(new String[]{"*", "*"}, "default"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", null, "A-null"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "B", "A-B"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry(null, "B", "null-B"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry(null, null, "null-null"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("*", "*", "default"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string")
-                .withEntries(entries).withLevels(l1, l2).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par")
+                .withEntries(entries)
+                .withLevels(l1, l2, l3).inputLevels(2)
+                .get();
 
         // konfiguracja
         when(paramRepository.load("par")).thenReturn(par);
@@ -199,59 +203,62 @@ public class ParamEngineScenarioTest {
         }
     }
 
-    @Test
-    public void testGetValue__notnull() {
+//    @Test
+//    public void testGetValue__notnull() {
+//
+//        // zaleznosci
+//        Level l1 = LevelMockBuilder.level("string");
+//
+//        Function f2 = FunctionMockBuilder.function().withType("integer").withJavaImplementation(this.getClass(), "calculate2").get();
+//
+//        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
+//        entries.add(ParameterEntryMockBuilder.parameterEntry0("A", "11"));
+//        entries.add(ParameterEntryMockBuilder.parameterEntry0("B", f2));
+//
+//        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").nullable(false)
+//                .withEntries(entries).withLevels(l1).get();
+//
+//        // konfiguracja
+//        when(paramRepository.load("par")).thenReturn(par);
+//        when(functionRepository.loadFunction("calculate2")).thenReturn(f2);
+//
+//        // testy - wartosci poziomow
+//        String[] tests = {
+//            "A", //11
+//            "B", //null
+//            "C" //ex
+//        };
+//
+//        // oczekiwane wyniki
+//        Object[] expected = {
+//            11,
+//            null,
+//            new SmartParamException(SmartParamErrorCode.PARAM_VALUE_NOT_FOUND, "")
+//        };
+//
+//        // test i weryfikacja
+//        for (int i = 0; i < tests.length; i++) {
+//            String lv = tests[i];
+//            Object expectedObject = expected[i];
+//
+//            if (expectedObject instanceof Exception) {
+//                try {
+//                    engine.getValue("par", lv).getInteger();
+//                    fail();
+//                } catch (SmartParamException e) {
+//                    assertEquals(expectedObject.getClass(), e.getClass());
+//                }
+//
+//            } else {
+//                Integer result = engine.getValue("par", lv).getInteger();
+//                assertEquals(expectedObject, result);
+//            }
+//        }
+//    }
 
-        // zaleznosci
-        Level l1 = LevelMockBuilder.level("string");
-
-        Function f2 = FunctionMockBuilder.function().withType("integer").withJavaImplementation(this.getClass(), "calculate2").get();
-
-        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "11"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B", f2));
-
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").nullable(false)
-                .withEntries(entries).withLevels(l1).get();
-
-        // konfiguracja
-        when(paramRepository.load("par")).thenReturn(par);
-        when(functionRepository.loadFunction("calculate2")).thenReturn(f2);
-
-        // testy - wartosci poziomow
-        String[] tests = {
-            "A", //11
-            "B", //null
-            "C" //ex
-        };
-
-        // oczekiwane wyniki
-        Object[] expected = {
-            11,
-            null,
-            new SmartParamException(SmartParamErrorCode.PARAM_VALUE_NOT_FOUND, "")
-        };
-
-        // test i weryfikacja
-        for (int i = 0; i < tests.length; i++) {
-            String lv = tests[i];
-            Object expectedObject = expected[i];
-
-            if (expectedObject instanceof Exception) {
-                try {
-                    engine.getValue("par", lv).getInteger();
-                    fail();
-                } catch (SmartParamException e) {
-                    assertEquals(expectedObject.getClass(), e.getClass());
-                }
-
-            } else {
-                Integer result = engine.getValue("par", lv).getInteger();
-                assertEquals(expectedObject, result);
-            }
-        }
-    }
-
+    /**
+     * Getting multivalue from notnull parameter.
+     */
     @Test
     public void testGetMultiValue__notnull() {
 
@@ -265,8 +272,8 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("B", "Y", "2").get());
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("C", "Z", "3").get());
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").nullable(false).multivalue(true).inputLevels(1)
-                .withEntries(entries).withLevels(l1, l2, l3).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par").nullable(false)
+                .withEntries(entries).withLevels(l1, l2, l3).inputLevels(1).get();
 
         // konfiguracja
         when(paramRepository.load("par")).thenReturn(par);
@@ -276,7 +283,7 @@ public class ParamEngineScenarioTest {
             "A", //MV: X 1
             "B", //MV: Y 2
             "C", //MV: Z 3
-            "F" //ex
+            "F"  //ex
         };
 
         // oczekiwane wyniki
@@ -308,43 +315,52 @@ public class ParamEngineScenarioTest {
     }
 
     @Test
-    public void testGetValue__noLevelParam() {
+    public void testGet__noInputLevelParam() {
 
-        // zaleznosci
+        // given
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("", "123"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("123"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withEntries(entries).get();
+        Level l1 = LevelMockBuilder.level("integer");
+        Parameter par = ParameterMockBuilder.parameter().withName("par").
+                withLevels(l1).inputLevels(0).
+                withEntries(entries).get();
 
-        // konfiguracja
         when(paramRepository.load("par")).thenReturn(par);
 
-        // test
-        Integer result = engine.getValue("par", new DefaultContext()).getInteger();
+        // when
+        int result = engine.get("par", new DefaultContext()).get().intValue();
 
-        // weryfikacja
-        assertEquals(new Integer(123), result);
+        // then
+        assertEquals(123, result);
     }
 
+    /**
+     * Calling get() with wrong number of input values.
+     * Parameter has 2 input parameterEntry.
+     * Provided 4 input parameterEntry.
+     * get() throws ILLEGAL_LEVEL_VALUES
+     */
     @Test
-    public void testGetValue__illegalLevelValues() {
+    public void testGet__illegalLevelValues() {
 
         // zaleznosci
         Level l1 = LevelMockBuilder.level("string");
         Level l2 = LevelMockBuilder.level("string");
+        Level l3 = LevelMockBuilder.level("integer");
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;B", "11"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;C", "12"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("A", "B", "11").get());
+        entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("B", "C", "12").get());
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1, l2).withEntries(entries).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3).inputLevels(2).withEntries(entries).get();
 
         // konfiguracja
         when(paramRepository.load("par")).thenReturn(par);
 
         // test
         try {
-            engine.getValue("par", "A", "B", "C", "D");
+            engine.get("par", new LevelValues("A", "B", "C", "D"));
             fail();
         } catch (SmartParamUsageException e) {
             assertEquals(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES, e.getErrorCode());
@@ -355,19 +371,21 @@ public class ParamEngineScenarioTest {
     public void testGetValue__findParameterEntry__nocache() {
 
         // zaleznosci
-        ParameterEntry pe1 = ParameterEntryMockBuilder.parameterEntry("A;B", "11");
-        ParameterEntry pe2 = ParameterEntryMockBuilder.parameterEntry("B;C", "12");
-        ParameterEntry pe3 = ParameterEntryMockBuilder.parameterEntry("C;D", "13");
+        ParameterEntry pe1 = ParameterEntryMockBuilder.parameterEntry("A", "B", "11");
+        ParameterEntry pe2 = ParameterEntryMockBuilder.parameterEntry("B", "C", "12");
+        ParameterEntry pe3 = ParameterEntryMockBuilder.parameterEntry("C", "D", "13");
 
         Level l1 = LevelMockBuilder.level("string");
         Level l2 = LevelMockBuilder.level("string");
+        Level l3 = LevelMockBuilder.level("integer");
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
         entries.add(pe1);
         entries.add(pe2);
         entries.add(pe3);
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1, l2).cacheable(false).nullable(true).withEntries(entries).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3).inputLevels(2)
+                .cacheable(false).nullable(true).withEntries(entries).get();
 
         // konfiguracja
         List<ParameterEntry> resultAB = Arrays.asList(pe1);
@@ -401,7 +419,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("A", "X", "1").get());
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("B", "Y", "2").get());
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).multivalue(true).inputLevels(1).nullable(true).withEntries(entries).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3).inputLevels(1).nullable(true).withEntries(entries).get();
 
         // konfiguracja
         when(paramRepository.load("par")).thenReturn(par);
@@ -453,27 +471,27 @@ public class ParamEngineScenarioTest {
         Level l4 = LevelMockBuilder.level("string");
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;B;Z;1", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;C;Z;2", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;D;Y;3", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;F;3;4", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;G;3;5", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;H;3;6", (String) null));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("A;B;Z;1"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("A;C;Z;2"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("A;D;Y;3"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("B;F;3;4"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("B;G;3;5"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("B;H;3;6"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3, l4).multivalue(true).inputLevels(2)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3, l4).inputLevels(2)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
 
         // test 1
-        MultiValue mv = engine.getMultiValue("par", new LevelValues("A", "B"));
+        MultiValue mv = engine.get("par", new LevelValues("A", "B")).row();
         assertEquals(StringHolder.class, mv.getValue(1).getClass());
         assertEquals(StringHolder.class, mv.getValue(2).getClass());
         assertEquals("Z", mv.getString(1));
         assertEquals("1", mv.getString(2));
 
         // test 2
-        mv = engine.getMultiValue("par", new LevelValues("B", "H"));
+        mv = engine.get("par", new LevelValues("B", "H")).row();
         assertArrayEquals(new String[]{"3", "6"}, mv.asStrings());
     }
 
@@ -488,7 +506,7 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("B", "YY", "4").get());
         entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("*", "ZZ", "").get());
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).multivalue(true).inputLevels(1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -512,177 +530,6 @@ public class ParamEngineScenarioTest {
     }
 
     @Test
-    public void testGetMultiValue__illegalUsage() {
-        Level l1 = LevelMockBuilder.level("string");
-
-        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry().withLevels("A").get());
-
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1).multivalue(false)
-                .withEntries(entries).get();
-
-        when(paramRepository.load("par")).thenReturn(par);
-
-        // test
-        try {
-            engine.getMultiValue("par", new DefaultContext());
-            fail();
-        } catch (SmartParamException e) {
-            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
-        }
-    }
-
-//    @Test
-//    public void testGetResult() {
-//        Level l1 = LevelMockBuilder.level("string");
-//
-//        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("C", "A3"));
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("D", "A4"));
-//
-//        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1).withNullable(true)
-//                .withEntries(entries).get();
-//
-//        // konfiguracja zaleznosci
-//        when(paramRepository.load("par")).thenReturn(par);
-//        assemblerProvider.registerAssemblerOwner(new GenericEnumAssembler());
-//
-//        // testy
-//        String[] tests = {
-//            "C",
-//            "D",
-//            "X"
-//        };
-//
-//        // oczekiwane obiekty
-//        LetterType[] expected = {
-//            LetterType.A3,
-//            LetterType.A4,
-//            null
-//        };
-//
-//        // testy
-//        for (int i = 0; i < tests.length; i++) {
-//            String level = tests[i];
-//            LetterType expectedResult = expected[i];
-//
-//            // test 1
-//            LetterType result = engine.getResult("par", LetterType.class, new DefaultContext().withLevelValues(level));
-//            assertEquals(expectedResult, result);
-//
-//            // test 2
-//            result = engine.getResult("par", LetterType.class, new DefaultContext().withLevelValues(level).withResultClass(LetterType.class));
-//            assertEquals(expectedResult, result);
-//
-//            // test 3
-//            result = (LetterType) engine.getResult("par", new LevelValues(level).withResultClass(LetterType.class));
-//            assertEquals(expectedResult, result);
-//        }
-//    }
-//
-//    @Test
-//    public void testGetResult__illegalArgument() {
-//
-//        Level l1 = LevelMockBuilder.level("string");
-//
-//        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("C", "A3"));
-//
-//        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1)
-//                .withEntries(entries).get();
-//
-//        // konfiguracja zaleznosci
-//        when(paramRepository.load("par")).thenReturn(par);
-//        assemblerProvider.registerAssemblerOwner(new GenericEnumAssembler());
-//
-//        // test 1 - rozbieznosc miedzy podanym resultClass a przechowywanym w kontekscie
-//        try {
-//            engine.getResult("par", LetterType.class, new LevelValues("C").withResultClass(Integer.class));
-//            fail();
-//        } catch (SmartParamUsageException e) {
-//            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
-//        }
-//
-//        // test 2 - brak resultClass w kontekscie
-//        try {
-//            engine.getResult("par", new LevelValues("C"));
-//            fail();
-//        } catch (SmartParamUsageException e) {
-//            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
-//        }
-//    }
-//
-//    @Test
-//    public void testGetResultArray() {
-//        Level l1 = LevelMockBuilder.level("string");
-//
-//        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "A3,A4"));
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("B", "A3, A4, A5"));
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("C", ""));
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("*", "A1"));
-//
-//        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1).withArray(true)
-//                .withEntries(entries).get();
-//
-//        // konfiguracja zaleznosci
-//        when(paramRepository.load("par")).thenReturn(par);
-//        assemblerProvider.registerAssemblerOwner(new GenericEnumAssembler());
-//
-//        // testy
-//        String[] tests = {
-//            "A",
-//            "B",
-//            "C",
-//            "OTHER"
-//        };
-//
-//        // oczekiwane wyniki
-//        LetterType[][] expected = {
-//            {LetterType.A3, LetterType.A4},
-//            {LetterType.A3, LetterType.A4, LetterType.A5},
-//            {},
-//            {LetterType.A1}
-//        };
-//
-//        // testy
-//        for (int i = 0; i < tests.length; i++) {
-//            String level = tests[i];
-//            LetterType[] expectedArray = expected[i];
-//
-//            // test 1 - typowe uzycie
-//            LetterType[] array = engine.getResultArray("par", LetterType.class, new LevelValues(level));
-//            assertArrayEquals(expectedArray, array);
-//
-//            // test 2 - kontekst zawiera juz resultClass
-//            array = engine.getResultArray("par", LetterType.class, new LevelValues(level).withResultClass(LetterType.class));
-//            assertArrayEquals(expectedArray, array);
-//        }
-//    }
-//
-//    @Test
-//    public void testGetResultArray__illegalArgument() {
-//        Level l1 = LevelMockBuilder.level("string");
-//
-//        Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "A3,A4"));
-//
-//        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1).withArray(true)
-//                .withEntries(entries).get();
-//
-//        // konfiguracja zaleznosci
-//        when(paramRepository.load("par")).thenReturn(par);
-//        assemblerProvider.registerAssemblerOwner(new GenericEnumAssembler());
-//
-//        // test
-//        try {
-//            engine.getResultArray("par", LetterType.class, new LevelValues("A").withResultClass(Integer.class));
-//            fail();
-//        } catch (SmartParamUsageException e) {
-//            assertEquals(SmartParamErrorCode.ILLEGAL_API_USAGE, e.getErrorCode());
-//        }
-//    }
-    @Test
     public void testGetMultiRow() {
 
         Level l1 = LevelMockBuilder.level("string");
@@ -690,15 +537,15 @@ public class ParamEngineScenarioTest {
         Level l3 = LevelMockBuilder.level("string");
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;B;Z", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;C;Z", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;D;Y", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;F;3", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;G;3", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;H;3", (String) null));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("A;B;Z"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("A;C;Z"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("A;D;Y"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("B;F;3"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("B;G;3"));
+        entries.add(ParameterEntryMockBuilder.parameterEntryCsv("B;H;3"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3).nullable(true)
-                .multivalue(true).inputLevels(1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3).nullable(true)
+                .inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -721,29 +568,29 @@ public class ParamEngineScenarioTest {
     }
 
     @Test
-    public void testGetMultiRow__withArray() {
+    public void testGet__withArray() {
 
         Level l1 = LevelMockBuilder.level("string");
         Level l2 = LevelMockBuilder.level("string");
         Level l3 = LevelMockBuilder.level("integer", true);
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;B;1", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;C;2,3", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;D;4,5,6", (String) null));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;E;", (String) null));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "B", "1"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "C", "2,3"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "D", "4,5,6"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "E", ""));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3)
-                .multivalue(true).inputLevels(1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3)
+                .inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
 
         // test
-        MultiRow mr = engine.getMultiRow("par", new LevelValues("A"));
+        ParamValue value = engine.get("par", new LevelValues("A"));
 
         // weryfikacja
-        for (MultiValue row : mr.getRows()) {
+        for (MultiValue row : value.rows()) {
             String v1 = row.getString(1);
             if (v1.equals("B")) {
                 Integer[] array = row.getIntegerArray(2);
@@ -768,9 +615,9 @@ public class ParamEngineScenarioTest {
     public void testGetMultiRow__findParameterEntries__nocache() {
 
         // zaleznosci
-        ParameterEntry pe1 = ParameterEntryMockBuilder.parameterEntry("A;B;1;2", "");
-        ParameterEntry pe2 = ParameterEntryMockBuilder.parameterEntry("A;B;2;3", "");
-        ParameterEntry pe3 = ParameterEntryMockBuilder.parameterEntry("C;D;7;8", "");
+        ParameterEntry pe1 = ParameterEntryMockBuilder.parameterEntryCsv("A;B;1;2");
+        ParameterEntry pe2 = ParameterEntryMockBuilder.parameterEntryCsv("A;B;2;3");
+        ParameterEntry pe3 = ParameterEntryMockBuilder.parameterEntryCsv("C;D;7;8");
 
         Level l1 = LevelMockBuilder.level("string");
         Level l2 = LevelMockBuilder.level("string");
@@ -782,9 +629,9 @@ public class ParamEngineScenarioTest {
         entries.add(pe2);
         entries.add(pe3);
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1, l2, l3, l4)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3, l4)
                 .nullable(true).cacheable(false)
-                .multivalue(true).inputLevels(2)
+                .inputLevels(2)
                 .withEntries(entries).get();
 
         // konfiguracja
@@ -821,18 +668,17 @@ public class ParamEngineScenarioTest {
         Level l3 = LevelMockBuilder.level("string");
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;B;Z", (String) null));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "B", "Z"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3).inputLevels(1)
                 .nullable(false)
-                .multivalue(true).inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
 
         // test
         try {
-            engine.getMultiRow("par", new LevelValues("NON_EXISTING"));
+            engine.get("par", new LevelValues("NON_EXISTING"));
             fail();
 
         } catch (SmartParamException e) {
@@ -841,27 +687,27 @@ public class ParamEngineScenarioTest {
     }
 
     @Test
-    public void testGetMultiRow__illegalUsage() {
+    public void testGet__illegalUsage() {
 
         Level l1 = LevelMockBuilder.level("string");
         Level l2 = LevelMockBuilder.level("string");
         Level l3 = LevelMockBuilder.level("string");
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;B;Z", (String) null));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "B", "Z"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2, l3)
-                .multivalue(true).inputLevels(1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3)
+                .inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
 
         // when
-		MultiRow mr = engine.getMultiRow("par", new LevelValues("A"));
+		ParamValue value = engine.get("par", new LevelValues("A"));
 
 		// then
-		assertEquals("B", mr.getRow(1).nextString());
-		assertEquals("Z", mr.getRow(1).nextString());
+		assertEquals("B", value.row(1).nextString());
+        assertEquals("Z", value.row(1).nextString());
     }
 
     @Test
@@ -871,10 +717,10 @@ public class ParamEngineScenarioTest {
         Level l2 = LevelMockBuilder.level("string");
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;value", (String) null));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "value"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2)
-                .multivalue(true).inputLevels(1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2)
+                .inputLevels(1)
                 .withEntries(entries).get();
 
         when(paramRepository.load("par")).thenReturn(par);
@@ -882,7 +728,7 @@ public class ParamEngineScenarioTest {
         // test
         try {
             // uzytkownik podaje 3 levelValues, w parametrze jest tylko 1 level wejsciowy
-            engine.getMultiRow("par", new LevelValues("A", "B", "C"));
+            engine.get("par", new LevelValues("A", "B", "C"));
             fail();
 
         } catch (SmartParamException e) {
@@ -891,18 +737,17 @@ public class ParamEngineScenarioTest {
     }
 
     @Test
-    public void testGetMultiRow__noLevelParam() {
+    public void testGetMultiRow__noInputLevelParam() {
 
-        Level l1 = LevelMockBuilder.level("string");
-        Level l2 = LevelMockBuilder.level("string");
+        Level l1 = LevelMockBuilder.level("string");    // output
+        Level l2 = LevelMockBuilder.level("string");    // output
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;1", ""));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("B;2", ""));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("C;2", ""));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "1"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("B", "2"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("C", "2"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2)
-                .multivalue(true)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2).inputLevels(0)
                 .withEntries(entries).get();
 
         // zaleznosci
@@ -926,10 +771,15 @@ public class ParamEngineScenarioTest {
         return false;
     }
 
+    /**
+     * Should return first output level as array.
+     * Verifies ParamEngine.getArray() method.
+     */
     @Test
     public void testGetArray() {
 
         Level l1 = LevelMockBuilder.level("string");
+        Level l2 = LevelMockBuilder.level().withType("integer").withArray(true).get();
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
         entries.add(ParameterEntryMockBuilder.parameterEntry("A", "1,2,3"));
@@ -937,13 +787,16 @@ public class ParamEngineScenarioTest {
         entries.add(ParameterEntryMockBuilder.parameterEntry("C", "9"));
         entries.add(ParameterEntryMockBuilder.parameterEntry("D", ""));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1)
-                .array(true).nullable(true).arraySeparator(',')
-                .withEntries(entries).get();
+        Parameter par = ParameterMockBuilder.parameter().withName("par")
+                .withLevels(l1, l2)
+                .inputLevels(1)
+                .nullable(true).arraySeparator(',')
+                .withEntries(entries)
+                .get();
 
         when(paramRepository.load("par")).thenReturn(par);
 
-        // testy
+        // test cases for input parameterEntry
         String[] levels = {
             "A",
             "B",
@@ -952,7 +805,7 @@ public class ParamEngineScenarioTest {
             "NONEXISTING"
         };
 
-        // oczekiwane wartosci
+        // expected arrays
         AbstractHolder[][] expected = {
             {inth(1), inth(2), inth(3)},
             {inth(4), inth(5), inth(6), inth(7), inth(8), inth(null)},
@@ -961,7 +814,7 @@ public class ParamEngineScenarioTest {
             {}
         };
 
-        // testy i weryfikacja
+        // run tests and verify
         for (int i = 0; i < expected.length; i++) {
             String lev = levels[i];
             AbstractHolder[] expectedArray = expected[i];
@@ -974,16 +827,21 @@ public class ParamEngineScenarioTest {
         }
     }
 
+    /**
+     * Trying to read integer array from output level
+     * but output level is not defined as array (array flag is not set).
+     */
     @Test
     public void testGetArray__illegalUsage() {
 
         // konfiguracja
-        Level l1 = LevelMockBuilder.level("string");
+        Level l1 = LevelMockBuilder.level("string");        // input
+        Level l2 = LevelMockBuilder.level("integer");       // output
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
         entries.add(ParameterEntryMockBuilder.parameterEntry("A", "1,2,3"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2).inputLevels(1)
                 .withEntries(entries).get();
 
         // zaleznosci
@@ -1002,12 +860,13 @@ public class ParamEngineScenarioTest {
     public void testGetArray__notnull() {
 
         Level l1 = LevelMockBuilder.level("string");
+        Level l2 = LevelMockBuilder.level().withType("integer").withArray(true).get();
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
         entries.add(ParameterEntryMockBuilder.parameterEntry("A", "1,2,3"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("integer").withLevels(l1)
-                .array(true).nullable(false).arraySeparator(',')
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2).inputLevels(1)
+                .nullable(false).arraySeparator(',')
                 .withEntries(entries).get();
 
         // zaleznosci
@@ -1029,14 +888,16 @@ public class ParamEngineScenarioTest {
     @Test
     public void testCall() {
         // zaleznosci
-        Level l1 = LevelMockBuilder.level("string");
-        Level l2 = LevelMockBuilder.level("string");
+        Level l1 = LevelMockBuilder.level("string"); // input
+        Level l2 = LevelMockBuilder.level("string"); // input
+        Level l3 = LevelMockBuilder.level("string"); // output (plugin name)
 
         Function f = FunctionMockBuilder.function().withName("calc.1").withType("plugin").withJavaImplementation(this.getClass(), "calculate").get();
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;F", "calc.1"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "F", "calc.1"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("plugin").withLevels(l1, l2)
+        Parameter par = ParameterMockBuilder.parameter().withName("par")
+                .withLevels(l1, l2, l3).inputLevels(2)
                 .nullable(true)
                 .withEntries(entries).get();
 
@@ -1074,12 +935,13 @@ public class ParamEngineScenarioTest {
         // zaleznosci
         Level l1 = LevelMockBuilder.level("string");
         Level l2 = LevelMockBuilder.level("string");
+        Level l3 = LevelMockBuilder.level("string");
 
         Function f = FunctionMockBuilder.function().withName("calc.1").withType("string").withJavaImplementation(this.getClass(), "calculate").get();
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;F", "calc.1"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "F", "calc.1"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3).inputLevels(2)
                 .nullable(true)
                 .withEntries(entries).get();
 
@@ -1118,11 +980,12 @@ public class ParamEngineScenarioTest {
         // konfiguracja
         Level l1 = LevelMockBuilder.level("string");
         Level l2 = LevelMockBuilder.level("string");
+        Level l3 = LevelMockBuilder.level("string");    // output
 
         Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A;B", "value"));
+        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "B", "value"));
 
-        Parameter par = ParameterMockBuilder.parameter().withName("par").withType("string").withLevels(l1, l2)
+        Parameter par = ParameterMockBuilder.parameter().withName("par").withLevels(l1, l2, l3).inputLevels(2)
                 .withEntries(entries).get();
 
         // zaleznosci
@@ -1130,7 +993,7 @@ public class ParamEngineScenarioTest {
 
         // test
         try {
-            engine.getValue("par", new DefaultContext());
+            engine.get("par", new DefaultContext());
             fail();
         } catch (SmartParamException e) {
             assertEquals(SmartParamErrorCode.UNDEFINED_LEVEL_CREATOR, e.getErrorCode());

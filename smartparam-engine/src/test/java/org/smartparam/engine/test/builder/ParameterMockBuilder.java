@@ -25,9 +25,7 @@ public class ParameterMockBuilder {
 
     private ParameterMockBuilder() {
         this.parameter = mock(Parameter.class);
-        when(parameter.isArray()).thenReturn(false);
         when(parameter.isCacheable()).thenReturn(true);
-        when(parameter.isMultivalue()).thenReturn(false);
         when(parameter.isNullable()).thenReturn(false);
         when(parameter.getArraySeparator()).thenReturn(',');
     }
@@ -45,7 +43,7 @@ public class ParameterMockBuilder {
     }
 
     public static Parameter parameter(String name, String type, boolean nullable, Set<ParameterEntry> entries) {
-        return parameter().withName(name).withType(type).nullable(nullable).withEntries(entries).get();
+        return parameter().withName(name).nullable(nullable).withEntries(entries).get();
     }
 
     public Parameter get() {
@@ -54,11 +52,6 @@ public class ParameterMockBuilder {
 
     public ParameterMockBuilder withName(String name) {
         when(parameter.getName()).thenReturn(name);
-        return this;
-    }
-
-    public ParameterMockBuilder withType(String type) {
-        when(parameter.getType()).thenReturn(type);
         return this;
     }
 
@@ -88,18 +81,8 @@ public class ParameterMockBuilder {
         return this;
     }
 
-    public ParameterMockBuilder array(boolean array) {
-        when(parameter.isArray()).thenReturn(array);
-        return this;
-    }
-
     public ParameterMockBuilder cacheable(boolean cacheable) {
         when(parameter.isCacheable()).thenReturn(cacheable);
-        return this;
-    }
-
-    public ParameterMockBuilder multivalue(boolean multivalue) {
-        when(parameter.isMultivalue()).thenReturn(multivalue);
         return this;
     }
 

@@ -33,7 +33,7 @@ public class ParamValueImpl implements ParamValue {
 
 		throw new SmartParamUsageException(
 				SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
-				"Getting element from non-existing position: " + rowNo);
+                String.format("Trying to get non-existing row: %d. Available rows: %d..%d", rowNo, 1, size()));
 	}
 
 	@Override

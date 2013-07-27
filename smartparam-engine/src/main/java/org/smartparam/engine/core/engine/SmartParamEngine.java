@@ -1,5 +1,6 @@
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.service.FunctionManager;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -48,26 +49,39 @@ public class SmartParamEngine implements ParamEngine {
         return configBuilder.buildConfig(this);
     }
 
+    @Deprecated
     @Override
     public AbstractHolder getValue(String paramName, ParamContext ctx) {
 
         logger.debug("enter getValue[{}], ctx={}", paramName, ctx);
 
+
+
         PreparedParameter param = getPreparedParameter(paramName);
 
         PreparedEntry pe = findParameterEntry(param, ctx);
 
+
         AbstractHolder result;
 
-        if (pe != null) {
-            result = evaluateParameterEntry(pe, ctx, param.getType());
+        ParamValue value = get(paramName, ctx);
 
-        } else if (param.isNullable()) {
-            result = param.getType().convert(null);
-
-        } else {
-            throw raiseValueNotFoundException(paramName, ctx);
+        if (value != null) {
+            result = value.get();
         }
+        else {
+            result = param.getOutputLevel(1).getType().convert(null);
+        }
+
+//        if (pe != null) {
+//            result = evaluateParameterEntry(pe, ctx, param.getType());
+//
+//        } else if (param.isNullable()) {
+//            result = param.getType().convert(null);
+//
+//        } else {
+//            throw raiseValueNotFoundException(paramName, ctx);
+//        }
 
         logger.debug("leave getValue[{}], result={}", paramName, result);
         return result;
@@ -138,32 +152,30 @@ public class SmartParamEngine implements ParamEngine {
         return result;
     }
 
+    @Deprecated
     @Override
     public AbstractHolder[] getArray(String paramName, ParamContext ctx) {
 
         logger.debug("enter getArray[{}], ctx={}", paramName, ctx);
 
         PreparedParameter param = getPreparedParameter(paramName);
+        PreparedLevel out = param.getOutputLevel(1);
 
-        if (!param.isArray()) {
+        if (!out.isArray()) {
             throw new SmartParamUsageException(
                     SmartParamErrorCode.ILLEGAL_API_USAGE,
                     "Calling getArray() for non-array parameter: " + paramName);
         }
 
-        PreparedEntry pe = findParameterEntry(param, ctx);
-
-        Type<?> type = param.getType();
         AbstractHolder[] result;
 
-        if (pe != null) {
-            result = evaluateParameterEntryAsArray(pe, ctx, type, param.getArraySeparator());
-        } else {
-            if (param.isNullable()) {
-                result = type.newArray(0);
-            } else {
-                throw raiseValueNotFoundException(paramName, ctx);
-            }
+        ParamValue value = get(paramName, ctx);
+
+        if (value != null) {
+            result = value.row().getArray(1);
+        }
+        else {
+            result = out.getType().newArray(0);
         }
 
         logger.debug("leave getArray[{}], result={}", paramName, result);
@@ -267,7 +279,13 @@ public class SmartParamEngine implements ParamEngine {
 		return result;
 	}
 
-	public Object[] unwrap(AbstractHolder[] array) {
+    @Override
+    public ParamValue get(String paramName, Object... inputLevels) {
+        ParamContext ctx = new LevelValues(inputLevels);
+        return get(paramName, ctx);
+    }
+
+    public Object[] unwrap(AbstractHolder[] array) {
         Object[] result = new Object[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getValue();
@@ -521,12 +539,11 @@ public class SmartParamEngine implements ParamEngine {
     }
 
     private void validateLevelValues(String[] levelValues, int parameterLevelCount) {
+
         if (levelValues.length != parameterLevelCount) {
-                throw new SmartParamUsageException(
-                        SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
-                        String.format("Level values array length differs from parameter input levels count (%d != %d). "
-                        + "Provided values: %s.",
-                        levelValues.length, parameterLevelCount, levelValues));
+                throw new SmartParamUsageException(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
+                        String.format("Level values array length differs from parameter input levels count (%d != %d). Provided values: %s.",
+                        levelValues.length, parameterLevelCount, Arrays.toString(levelValues)));
             }
     }
 

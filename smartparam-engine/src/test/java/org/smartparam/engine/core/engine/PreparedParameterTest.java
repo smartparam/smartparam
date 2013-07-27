@@ -82,24 +82,12 @@ public class PreparedParameterTest {
     }
 
     @Test
-    public void testMultivalue() {
-
-        // test
-        pp.setMultivalue(true);
-
-        // sprawdzenie wynikow testu
-        assertTrue(pp.isMultivalue());
-    }
-
-    @Test
     public void testInputLevelsCount() {
 
-        // test 1
+        // when
         pp.setInputLevelsCount(3);
-        assertEquals(0, pp.getInputLevelsCount());
 
-        // test 2
-        pp.setMultivalue(true);
+        // then
         assertEquals(3, pp.getInputLevelsCount());
     }
 
@@ -116,23 +104,4 @@ public class PreparedParameterTest {
         assertFalse(pp.isNotNull());
     }
 
-    @Test
-    public void testArray() {
-
-        // test
-        pp.setArray(true);
-
-        // sprawdzenie wynikow testu
-        assertTrue(pp.isArray());
-    }
-
-    @Test
-    public void testArraySeparator() {
-
-        // test
-        pp.setArraySeparator('/');
-
-        // sprawdzenie wynikow testu
-        assertEquals('/', pp.getArraySeparator());
-    }
 }

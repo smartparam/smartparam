@@ -39,7 +39,7 @@ public class JdbcParameter implements Parameter {
 
     /**
      * Code of parameter type if parameter is single valued.
-     * This code has to be compatible to smartparam type system provided by {@link TypeProvider} object.
+     * This code has to be compatible to smartparam type system provided by {@link org.smartparam.engine.core.repository.TypeRepository} object.
      */
     private String type;
 

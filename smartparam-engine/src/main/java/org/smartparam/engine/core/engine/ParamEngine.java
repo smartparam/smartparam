@@ -13,12 +13,16 @@ public interface ParamEngine {
 
 	ParamValue get(String paramName, ParamContext ctx);
 
-	//todo ph get(name, levelvalues...)
+    ParamValue get(String paramName, Object... inputLevels);
 
     Object call(String paramName, ParamContext ctx, Object... args);
 
     Object callFunction(String functionName, Object... args);
 
+    /*
+     * use get()
+     */
+    @Deprecated
     AbstractHolder[] getArray(String paramName, ParamContext ctx);
 
 	/*

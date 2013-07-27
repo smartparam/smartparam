@@ -10,12 +10,13 @@ import org.smartparam.engine.model.function.Function;
 public class PreparedEntry {
 
     //todo ph: par 2 clean, toString prepared entry
-    private String[] levels = null;
+    private String[] levels;
 
-    private String value = null;
+    @Deprecated
+    private String value;
 
-    //todo ph: par 0, pprovider zamienia nazwe na funkcje (pojo) i umieszcza w cache'u
-    private Function function = null;
+    @Deprecated
+    private Function function;
 
     public Function getFunction() {
         return function;
@@ -59,6 +60,7 @@ public class PreparedEntry {
     public void setValue(String value) {
         this.value = value;
     }
+
     private static final String[] EMPTY_ARRAY = {};
 
 }
