@@ -69,11 +69,6 @@ public class JdbcParameter implements Parameter {
     }
 
     @Override
-    public String getType() {
-        return type;
-    }
-
-    @Override
     public List<Level> getLevels() {
         return levels;
     }
@@ -93,11 +88,6 @@ public class JdbcParameter implements Parameter {
     }
 
     @Override
-    public boolean isArray() {
-        return array;
-    }
-
-    @Override
     public char getArraySeparator() {
         return arraySeparator;
     }
@@ -105,11 +95,6 @@ public class JdbcParameter implements Parameter {
     @Override
     public boolean isCacheable() {
         return cacheable;
-    }
-
-    @Override
-    public boolean isMultivalue() {
-        return multivalue;
     }
 
     @Override

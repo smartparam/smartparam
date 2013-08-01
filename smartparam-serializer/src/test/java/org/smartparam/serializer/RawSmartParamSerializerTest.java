@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.test.mock.ParameterMockBuilder;
+import org.smartparam.engine.model.SimpleParameter;
 import org.smartparam.serializer.config.ParameterConfigSerializer;
 import org.smartparam.serializer.entries.ParameterEntrySerializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
@@ -32,7 +32,7 @@ public class RawSmartParamSerializerTest {
 
     @Test
     public void testSerialize() throws SmartParamSerializationException {
-        Parameter parameter = new ParameterMockBuilder("parameter").get();
+        SimpleParameter parameter = new SimpleParameter();
 
         when(configSerializer.serialize(any(Parameter.class))).thenReturn("multi\nline");
 

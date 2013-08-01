@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.test.mock.ParameterMock;
+import org.smartparam.engine.model.SimpleParameter;
 import org.smartparam.serializer.config.ParameterConfigDeserializer;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
@@ -38,7 +38,7 @@ public class RawSmartParamDeserializerTest {
                 + "#}\n";
         String commentlessConfig = "{name: \"parameter\"}";
 
-        Parameter expectedParameter = new ParameterMock();
+        Parameter expectedParameter = new SimpleParameter();
         when(configDeserializer.deserialize(commentlessConfig)).thenReturn(expectedParameter);
 
         StringReader stringReader = new StringReader(config);

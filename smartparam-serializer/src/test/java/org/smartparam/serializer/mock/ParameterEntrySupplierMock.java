@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.test.mock.ParameterEntryMock;
+import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.serializer.entries.ParameterEntrySupplier;
 
 /**
@@ -34,7 +34,7 @@ public class ParameterEntrySupplierMock implements ParameterEntrySupplier {
         return calledForNextBatchCount;
     }
 
-    
+
     @Override
     public List<String> header() {
         return Arrays.asList("some", "stupid", "header");
@@ -59,14 +59,14 @@ public class ParameterEntrySupplierMock implements ParameterEntrySupplier {
     }
 
     private ParameterEntry createEntry(int currentIndex) {
-        ParameterEntryMock mock = new ParameterEntryMock();
+        SimpleEditableParameterEntry entry = new SimpleEditableParameterEntry();
 
         String[] levels = new String[levelCount];
         for (int i = 0; i < levelCount; ++i) {
             levels[i] = "level_" + currentIndex + "_" + i;
         }
-        mock.setLevels(levels);
+        entry.setLevels(levels);
 
-        return mock;
+        return entry;
     }
 }

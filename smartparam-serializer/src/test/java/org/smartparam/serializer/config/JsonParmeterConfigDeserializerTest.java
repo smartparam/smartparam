@@ -32,7 +32,6 @@ public class JsonParmeterConfigDeserializerTest {
         assertNotNull(parameter.getEntries());
         assertEquals("parameter", parameter.getName());
         assertEquals(true, parameter.isCacheable());
-        assertEquals(true, parameter.isMultivalue());
         assertEquals(true, parameter.isNullable());
         assertEquals(3, parameter.getInputLevels());
     }

@@ -79,20 +79,4 @@ public interface Parameter {
     boolean isNullable();
 
     char getArraySeparator();   // still in use
-
-    /*
-     * todo #ph remove deprecated methods [10. august]
-     *
-     * the following methods can be removed as a result of generic ParamValue introduction
-     */
-
-    @Deprecated
-    boolean isArray();      // not used
-
-    @Deprecated
-    String getType();       // not used
-
-    @Deprecated
-    boolean isMultivalue(); // used only in: org.smartparam.serializer/**/*
-
 }

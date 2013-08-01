@@ -11,32 +11,21 @@ public class SimpleParameter implements Parameter {
 
     protected String name;
 
-    protected String type;
-
     protected List<Level> levels;
 
     protected int inputLevels;
 
     protected Set<ParameterEntry> entries;
 
-    protected boolean array;
-
     protected char arraySeparator;
 
     protected boolean cacheable;
-
-    protected boolean multivalue;
 
     protected boolean nullable;
 
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public String getType() {
-        return type;
     }
 
     @Override
@@ -55,11 +44,6 @@ public class SimpleParameter implements Parameter {
     }
 
     @Override
-    public boolean isArray() {
-        return array;
-    }
-
-    @Override
     public char getArraySeparator() {
         return arraySeparator;
     }
@@ -67,11 +51,6 @@ public class SimpleParameter implements Parameter {
     @Override
     public boolean isCacheable() {
         return cacheable;
-    }
-
-    @Override
-    public boolean isMultivalue() {
-        return multivalue;
     }
 
     @Override

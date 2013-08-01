@@ -273,35 +273,6 @@ public class JpaParameter implements Parameter, JpaModelObject {
     }
 
     /**
-     * Zwraca typ wartosci parametru, zgodny z systemem typow.
-     *
-     * @return kod typu wartosci
-     */
-    @Column(length = SHORT_COLUMN_LENGTH)
-    @Override
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Setter dla typu wartosci.
-     *
-     * @param type kod typu
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
-     * Ustawia kod typu, ktory pobiera z metody <tt>toString</tt> przekazanego enuma.
-     *
-     * @param e enum, ktorego <tt>toString</tt> jest traktowany jako kod typu
-     */
-    public void setType(Enum<?> e) {
-        setType(e.toString());
-    }
-
-    /**
      * Zwraca <b>zbior</b> wierszy parametru reprezentujacy macierz.
      * Ze wzgledu na semantyke zbioru, kolejnosc wierszy jest nieokreslona,
      * zatem jest to luzna reprezentacja macierzy.
@@ -346,25 +317,6 @@ public class JpaParameter implements Parameter, JpaModelObject {
         for (JpaParameterEntry pe : rows) {
             addEntry(pe);
         }
-    }
-
-    /**
-     * Getter dla flagi multivaule.
-     *
-     * @return multivalue
-     */
-    @Override
-    public boolean isMultivalue() {
-        return multivalue;
-    }
-
-    /**
-     * Setter dla flagi multivalue
-     *
-     * @param multivalue wartosc flagi
-     */
-    public void setMultivalue(boolean multivalue) {
-        this.multivalue = multivalue;
     }
 
     /**
@@ -424,26 +376,6 @@ public class JpaParameter implements Parameter, JpaModelObject {
      */
     public void setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
-    }
-
-    /**
-     * Czy wartosc parametru jest traktowana jako tablica wartosci elementarnych.
-     *
-     * @return array
-     */
-    @Column(name = "array_flag")
-    @Override
-    public boolean isArray() {
-        return array;
-    }
-
-    /**
-     * Setter dla array
-     *
-     * @param array wartosc flagi
-     */
-    public void setArray(boolean array) {
-        this.array = array;
     }
 
     /**
