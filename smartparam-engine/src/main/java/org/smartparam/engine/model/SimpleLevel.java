@@ -14,7 +14,7 @@ public class SimpleLevel implements Level {
 
     protected boolean array;
 
-    protected String matcherCode;
+    protected String matcher;
 
     @Override
     public String getLevelCreator() {
@@ -32,8 +32,8 @@ public class SimpleLevel implements Level {
     }
 
     @Override
-    public String getMatcherCode() {
-        return matcherCode;
+    public String getMatcher() {
+        return matcher;
     }
 
     @Override

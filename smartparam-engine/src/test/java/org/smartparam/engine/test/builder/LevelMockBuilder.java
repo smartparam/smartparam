@@ -52,7 +52,7 @@ public class LevelMockBuilder {
     }
 
     public LevelMockBuilder withMatcherCode(String matcher) {
-        when(level.getMatcherCode()).thenReturn(matcher);
+        when(level.getMatcher()).thenReturn(matcher);
         return this;
     }
 }

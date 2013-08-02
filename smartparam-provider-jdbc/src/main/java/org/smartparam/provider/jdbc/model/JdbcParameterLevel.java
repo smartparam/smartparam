@@ -48,7 +48,7 @@ public class JdbcParameterLevel implements Level {
     }
 
     @Override
-    public String getMatcherCode() {
+    public String getMatcher() {
         return matcher;
     }
 

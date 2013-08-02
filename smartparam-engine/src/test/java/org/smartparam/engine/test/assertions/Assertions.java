@@ -7,12 +7,22 @@ import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.index.LevelNode;
+import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.Parameter;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
 public class Assertions extends org.fest.assertions.api.Assertions {
+
+    public static ParameterAssert assertThat(Parameter actual) {
+        return ParameterAssert.assertThat(actual);
+    }
+
+    public static LevelAssert assertThat(Level actual) {
+        return LevelAssert.assertThat(actual);
+    }
 
     public static <T> RepositoryItemMapAssert<T> assertThatItemMap(Map<RepositoryObjectKey, T> actual) {
         return new RepositoryItemMapAssert<T>(actual);

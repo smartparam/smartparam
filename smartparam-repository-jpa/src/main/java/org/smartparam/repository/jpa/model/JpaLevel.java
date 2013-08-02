@@ -218,7 +218,7 @@ public class JpaLevel implements Level, JpaModelObject {
      * @return matcherCode
      */
     @Column(length = SHORT_COLUMN_LENGTH)
-    public String getMatcherCode() {
+    public String getMatcher() {
         return matcherCode;
     }
 

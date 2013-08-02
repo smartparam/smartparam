@@ -3,13 +3,13 @@ package org.smartparam.serializer;
 import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.SimpleParameter;
 import org.smartparam.serializer.config.ParameterConfigSerializer;
 import org.smartparam.serializer.entries.ParameterEntrySerializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
+import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 
 /**
  *
@@ -31,17 +31,18 @@ public class RawSmartParamSerializerTest {
     }
 
     @Test
-    public void testSerialize() throws SmartParamSerializationException {
-        SimpleParameter parameter = new SimpleParameter();
-
-        when(configSerializer.serialize(any(Parameter.class))).thenReturn("multi\nline");
-
+    public void shouldAppendCommentCharToEachLineOfParameterConfigSectionAndEndItWithDoubleCommentChar() throws SmartParamSerializationException {
+        // given
+        Parameter parameter = parameter().build();
+        when(configSerializer.serialize(parameter)).thenReturn("multi\nline");
         StringWriter stringWriter = new StringWriter();
+
+        // when
         serializer.serialize(parameter, stringWriter);
 
-        String expected = "#multi\n"
+        // then
+        assertThat(stringWriter.toString()).isEqualTo("#multi\n"
                 + "#line\n"
-                + "##\n";
-        assertEquals(expected, stringWriter.toString());
+                + "##\n");
     }
 }

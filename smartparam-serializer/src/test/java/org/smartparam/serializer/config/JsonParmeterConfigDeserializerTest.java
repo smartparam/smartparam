@@ -1,12 +1,11 @@
 package org.smartparam.serializer.config;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
+import static org.smartparam.engine.test.assertions.Assertions.*;
 
 /**
  *
@@ -22,45 +21,32 @@ public class JsonParmeterConfigDeserializerTest {
     }
 
     @Test
-    public void testSimpleDeserialize() {
+    public void shouldDeserializeParaeterConfigSectionFromJSON() {
+        // given
         String json = "{ \"name\": \"parameter\", \"cacheable\": \"true\","
-                + "\"multivalue\": \"true\", \"nullable\": \"true\", \"inputLevels\": 3 }";
+                + "\"nullable\": \"true\", \"inputLevels\": 1, \"levels\": ["
+                + "{\"name\": \"level1\", \"levelCreator\": \"level1Creator\", \"type\": \"level1Type\", \"matcher\": \"level1Matcher\"},"
+                + "{\"name\": \"level2\"}"
+                + "]}";
 
+        // when
         Parameter parameter = deserializer.deserialize(json);
 
-        assertNotNull(parameter);
-        assertNotNull(parameter.getEntries());
-        assertEquals("parameter", parameter.getName());
-        assertEquals(true, parameter.isCacheable());
-        assertEquals(true, parameter.isNullable());
-        assertEquals(3, parameter.getInputLevels());
+        // then
+        assertThat(parameter).hasName("parameter").isCacheable().isNullable().hasInputLevels(1).hasLevels(2)
+                .level(0).hasName("level1").hasLevelCreator("level1Creator")
+                .hasType("level1Type").hasMatcher("level1Matcher");
     }
 
     @Test
-    public void testDeserializeWithoutQuotationMarks() {
+    public void shouldDeserializeNonStrictJSON() {
+        // given
         String json = "{ name: \"parameter\" }";
 
+        // when
         Parameter parameter = deserializer.deserialize(json);
 
-        assertNotNull(parameter);
-        assertEquals("parameter", parameter.getName());
+        // then
+        assertThat(parameter).isNotNull().hasName("parameter");
     }
-
-    @Test
-    public void testDeserializeWithLevels() {
-        String json = "{ \"name\": \"parameter\", \"levels\": ["
-                + "{ \"label\": \"level1\", \"levelCreator\": \"l1LevelCreator\", \"type\": \"l1Type\", \"matcherCode\": \"l1Matcher\" },"
-                + "{ \"label\": \"level2\", \"levelCreator\": \"l2LevelCreator\", \"type\": \"l2Type\", \"matcherCode\": \"l2Matcher\" },"
-                + "{ \"label\": \"level3\", \"levelCreator\": \"l3LevelCreator\", \"type\": \"l3Type\", \"matcherCode\": \"l3Matcher\" }"
-                + "] }";
-
-        Parameter parameter = deserializer.deserialize(json);
-
-        assertNotNull(parameter);
-        assertEquals("parameter", parameter.getName());
-        assertEquals(3, parameter.getLevels().size());
-        assertEquals("l1Type", parameter.getLevels().get(0).getType());
-        assertEquals("l1Matcher", parameter.getLevels().get(0).getMatcherCode());
-    }
-
 }

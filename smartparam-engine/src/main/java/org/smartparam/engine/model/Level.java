@@ -37,5 +37,5 @@ public interface Level {
      *
      * @return matcher code
      */
-    String getMatcherCode();
+    String getMatcher();
 }

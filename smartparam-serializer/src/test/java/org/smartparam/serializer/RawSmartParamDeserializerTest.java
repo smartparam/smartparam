@@ -1,13 +1,9 @@
 package org.smartparam.serializer;
 
 import java.io.StringReader;
-import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.SimpleParameter;
+import static org.mockito.Mockito.*;
 import org.smartparam.serializer.config.ParameterConfigDeserializer;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
@@ -32,18 +28,17 @@ public class RawSmartParamDeserializerTest {
     }
 
     @Test
-    public void testDeserialize() throws SmartParamSerializationException {
+    public void shouldStripCommentCharsFromParameterConfigSectionBeforeDeserialization() throws SmartParamSerializationException {
+        // given
         String config = "#{\n"
                 + "#name: \"parameter\"\n"
                 + "#}\n";
-        String commentlessConfig = "{name: \"parameter\"}";
 
-        Parameter expectedParameter = new SimpleParameter();
-        when(configDeserializer.deserialize(commentlessConfig)).thenReturn(expectedParameter);
-
+        // when
         StringReader stringReader = new StringReader(config);
-        Parameter parameter = deserializer.deserialize(stringReader);
+        deserializer.deserialize(stringReader);
 
-        assertSame(expectedParameter, parameter);
+        // then
+        verify(configDeserializer).deserialize("{name: \"parameter\"}");
     }
 }

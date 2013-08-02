@@ -19,8 +19,8 @@ public class SimpleEditableLevel extends SimpleLevel implements EditableLevel {
     }
 
     @Override
-    public void setMatcherCode(String matcherCode) {
-        this.matcherCode = matcherCode;
+    public void setMatcher(String matcher) {
+        this.matcher = matcher;
     }
 
     @Override

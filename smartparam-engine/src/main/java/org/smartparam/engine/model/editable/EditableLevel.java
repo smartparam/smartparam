@@ -14,5 +14,5 @@ public interface EditableLevel extends Level {
 
     void setType(String type);
 
-    void setMatcherCode(String matcherCode);
+    void setMatcher(String matcher);
 }

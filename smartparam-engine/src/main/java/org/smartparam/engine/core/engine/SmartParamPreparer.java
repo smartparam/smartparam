@@ -133,14 +133,14 @@ public class SmartParamPreparer implements ParamPreparer {
             }
 
             Matcher matcher = null;
-            if (lev.getMatcherCode() != null) {
-                matcher = matcherProvider.getMatcher(lev.getMatcherCode());
+            if (lev.getMatcher() != null) {
+                matcher = matcherProvider.getMatcher(lev.getMatcher());
 
                 if (matcher == null) {
                     throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_MATCHER,
                             String.format("Level[%d] of parameter %s has unknown matcher %s. " +
                                     "To see all registered matchers, look for MapRepository logs on INFO level during startup.",
-                                    (i + 1), p.getName(), lev.getMatcherCode()));
+                                    (i + 1), p.getName(), lev.getMatcher()));
                 }
             }
 
