@@ -17,12 +17,7 @@
     <context:component-scan base-package="org.smartparam.editor.backend"/>
 
     <bean id="paramEngine" class="org.smartparam.spring.SpringParamEngineFactory">
-        <property name="config">
-            <bean class="org.smartparam.engine.config.ParamEngineConfig">
-                <property name="parameterRepositories" ref="smartParamRepositories"/>
-                <property name="componentInitializers" ref="componentInitializers" />
-            </bean>
-        </property>
+        <property name="paramRepository" value="fsParamRepository"/>
         <property name="scanAnnotations" value="true"/>
         <property name="packagesToScan">
             <list>
@@ -32,12 +27,9 @@
         </property>
     </bean>
 
-    <util:list id="smartParamRepositories">
-        <bean id="smartParamRepository"/>
-        <!--        <bean class="org.smartparam.repository.fs.FSParamRepository">
-            <constructor-arg index="0" value="classpath:/param/"/>
-            <constructor-arg index="1" value="*.csv$"/>
-        </bean>-->
-    </util:list>
+    <bean id="fsParamRepository" class="org.smartparam.repository.fs.FSParamRepository">
+        <constructor-arg index="0" value="classpath:/param/"/>
+        <constructor-arg index="1" value="*.csv$"/>
+    </bean>
 
 </beans>

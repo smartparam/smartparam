@@ -37,7 +37,7 @@ public class Assertions extends org.fest.assertions.api.Assertions {
     }
 
     public static ParamEngineAssert assertThat(ParamEngine engine) {
-        return new ParamEngineAssert(engine);
+        return ParamEngineAssert.assertThat(engine);
     }
 
     public static MapRepositoryAssert assertThat(MapRepository<?> repository) {

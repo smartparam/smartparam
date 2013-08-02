@@ -6,6 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotates function inside Spring beans that should be added to {@link SpringFunctionRepository}
+ * during annotation scan.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
@@ -13,6 +15,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SpringPlugin {
 
+    /**
+     * Name of function, should be unique in single repository scope (functions
+     * from other repositories can shadow it).
+     */
     String value();
 
 }

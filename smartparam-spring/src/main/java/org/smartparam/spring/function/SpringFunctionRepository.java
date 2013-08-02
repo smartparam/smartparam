@@ -12,10 +12,11 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
- * @since 0.1.0
  */
-@ParamFunctionRepository("spring")
+@ParamFunctionRepository(SpringFunctionRepository.FUNCTION_TYPE)
 public class SpringFunctionRepository extends AbstractJavaFunctionRepository {
+
+    public static final String FUNCTION_TYPE = "spring";
 
     private AnnotationBeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
 
@@ -35,7 +36,7 @@ public class SpringFunctionRepository extends AbstractJavaFunctionRepository {
         AnnotatedGenericBeanDefinition beanDefinition = new AnnotatedGenericBeanDefinition(method.getDeclaringClass());
         String beanName = beanNameGenerator.generateBeanName(beanDefinition, registry);
 
-        SpringFunction springFunction = new SpringFunction(functionName, "spring", beanName, method);
+        SpringFunction springFunction = new SpringFunction(functionName, FUNCTION_TYPE, beanName, method);
 
         return springFunction;
     }

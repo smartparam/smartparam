@@ -2,6 +2,7 @@ package org.smartparam.engine.test.assertions;
 
 import org.fest.assertions.api.AbstractAssert;
 import org.smartparam.engine.core.engine.ParamEngine;
+import org.smartparam.engine.core.repository.ParamRepository;
 
 /**
  *
@@ -9,7 +10,7 @@ import org.smartparam.engine.core.engine.ParamEngine;
  */
 public class ParamEngineAssert extends AbstractAssert<ParamEngineAssert, ParamEngine> {
 
-    public ParamEngineAssert(ParamEngine actual) {
+    private ParamEngineAssert(ParamEngine actual) {
         super(actual, ParamEngineAssert.class);
     }
 
@@ -39,6 +40,11 @@ public class ParamEngineAssert extends AbstractAssert<ParamEngineAssert, ParamEn
         Assertions.assertThat(actual.getParamPreparer().getTypeRepository()).hasItems();
         Assertions.assertThat(actual.getParamPreparer().getMatcherRepository()).hasItems();
 
+        return this;
+    }
+
+    public ParamEngineAssert hasRepository(ParamRepository repository) {
+        Assertions.assertThat(actual.getParamPreparer().getParameterProvider().registeredItems()).containsValue(repository);
         return this;
     }
 }

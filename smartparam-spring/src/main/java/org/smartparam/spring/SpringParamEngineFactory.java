@@ -7,6 +7,7 @@ import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.config.TypeScannerInitializer;
 import org.smartparam.engine.core.engine.ParamEngine;
+import org.smartparam.engine.core.repository.ParamRepository;
 import org.springframework.beans.factory.FactoryBean;
 
 /**
@@ -17,13 +18,22 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
 
     private ParamEngineConfig config;
 
+    private ParamRepository paramRepository;
+
     private boolean scanAnnotations;
 
     private List<String> packagesToScan;
 
     @Override
     public ParamEngine getObject() throws Exception {
-        if(scanAnnotations) {
+        if (config == null) {
+            config = new ParamEngineConfig();
+        }
+        if (paramRepository != null) {
+            config.getParameterRepositories().add(paramRepository);
+        }
+
+        if (scanAnnotations) {
             injectComponentInitializers();
         }
 
@@ -47,6 +57,10 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
     @Override
     public boolean isSingleton() {
         return false;
+    }
+
+    public void setParamRepository(ParamRepository paramRepository) {
+        this.paramRepository = paramRepository;
     }
 
     public void setConfig(ParamEngineConfig config) {

@@ -11,10 +11,10 @@ import org.smartparam.engine.model.function.JavaFunction;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-@ParamFunctionRepository(JavaFunctionRepository.JAVA_FUNCTION_CODE)
+@ParamFunctionRepository(JavaFunctionRepository.FUNCTION_TYPE)
 public class JavaFunctionRepository extends AbstractJavaFunctionRepository {
 
-    public static final String JAVA_FUNCTION_CODE = "java";
+    public static final String FUNCTION_TYPE = "java";
 
     @Override
     protected Class<? extends Annotation> annotationClass() {
@@ -23,7 +23,7 @@ public class JavaFunctionRepository extends AbstractJavaFunctionRepository {
 
     @Override
     protected Function createFunction(String functionName, Method method) {
-        return new JavaFunction(functionName, JAVA_FUNCTION_CODE, method);
+        return new JavaFunction(functionName, FUNCTION_TYPE, method);
     }
 
     @Override
