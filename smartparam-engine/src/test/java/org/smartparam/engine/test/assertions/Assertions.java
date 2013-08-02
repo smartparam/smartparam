@@ -25,15 +25,15 @@ public class Assertions extends org.fest.assertions.api.Assertions {
     }
 
     public static <T> RepositoryItemMapAssert<T> assertThatItemMap(Map<RepositoryObjectKey, T> actual) {
-        return new RepositoryItemMapAssert<T>(actual);
+        return RepositoryItemMapAssert.assertThat(actual);
     }
 
     public static SmartParamExceptionAssert assertThat(SmartParamException exception) {
-        return new SmartParamExceptionAssert(exception);
+        return SmartParamExceptionAssert.assertThat(exception);
     }
 
     public static ItemsContainerAssert assertThat(ItemsContainer<?, ?> container) {
-        return new ItemsContainerAssert(container);
+        return ItemsContainerAssert.assertThat(container);
     }
 
     public static ParamEngineAssert assertThat(ParamEngine engine) {

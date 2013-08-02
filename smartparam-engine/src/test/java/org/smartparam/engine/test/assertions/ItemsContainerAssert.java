@@ -9,7 +9,7 @@ import org.smartparam.engine.core.ItemsContainer;
  */
 public class ItemsContainerAssert extends AbstractAssert<ItemsContainerAssert, ItemsContainer<?, ?>> {
 
-    public ItemsContainerAssert(ItemsContainer<?, ?> actual) {
+    private ItemsContainerAssert(ItemsContainer<?, ?> actual) {
         super(actual, ItemsContainerAssert.class);
     }
 

@@ -12,7 +12,7 @@ import org.smartparam.engine.bean.RepositoryObjectKey;
  */
 public class RepositoryItemMapAssert<T> extends MapAssert<RepositoryObjectKey, T> {
 
-    public RepositoryItemMapAssert(Map<RepositoryObjectKey, T> map) {
+    private RepositoryItemMapAssert(Map<RepositoryObjectKey, T> map) {
         super(map);
     }
 

@@ -10,7 +10,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
  */
 public class SmartParamExceptionAssert extends AbstractAssert<SmartParamExceptionAssert, SmartParamException> {
 
-    public SmartParamExceptionAssert(SmartParamException actual) {
+    private SmartParamExceptionAssert(SmartParamException actual) {
         super(actual, SmartParamExceptionAssert.class);
     }
 
