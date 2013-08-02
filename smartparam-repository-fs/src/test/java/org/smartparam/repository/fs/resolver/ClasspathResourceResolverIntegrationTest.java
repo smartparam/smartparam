@@ -1,13 +1,11 @@
 package org.smartparam.repository.fs.resolver;
 
 import java.util.Map;
-import static org.fest.assertions.api.Assertions.*;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
-import static org.smartparam.repository.fs.resolver.ResolverInegrationTestConsts.PARAMETER_SUB_DIR_NAME;
 import org.smartparam.serializer.SerializationConfig;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardSerializationConfig;
@@ -15,6 +13,8 @@ import org.smartparam.serializer.StandardParamDeserializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import static org.smartparam.engine.test.assertions.Assertions.*;
+import static com.googlecode.catchexception.CatchException.*;
 
 /**
  *
@@ -22,51 +22,76 @@ import org.testng.annotations.Test;
  */
 public class ClasspathResourceResolverIntegrationTest extends ResolverInegrationTestConsts {
 
-    private static final String BASE_PATH = "/";
-
-    private static final String FILE_PATTERN = ".*csv$";
-
-    private ClasspathResourceResolver resolver;
+    private ParamDeserializer deserializer;
 
     @DataProvider(name = "parameterResourceToNameDataProvider")
     public Object[][] parameterResourceToNameDataProvider() {
         return new Object[][]{
-            {"param1", 1, createPath() + "param1.csv"},
-            {"param2", 2, BASE_PATH + createPath(PARAMETER_SUB_DIR_NAME) + "param2.csv"},
-            {"param3", 3, BASE_PATH + createPath(PARAMETER_SUB_DIR_NAME, PARAMETER_DEEP_SUB_DIR_NAME) + "param3.csv"}
+            {"param1", 1, "/param1.csv"},
+            {"param2", 2, "/param/param2.csv"},
+            {"param3", 3, "/param/deep/param3.csv"}
         };
     }
 
     @BeforeMethod
     public void setUp() {
         SerializationConfig config = new StandardSerializationConfig();
-        ParamDeserializer deserializer = new StandardParamDeserializer(
+        deserializer = new StandardParamDeserializer(
                 config,
                 SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
 
-        resolver = new ClasspathResourceResolver(BASE_PATH, FILE_PATTERN, deserializer);
     }
 
     @Test
-    public void shouldReturnMappingOfParametersOntoTheirLocationsRelativeToBasePath() throws Exception {
+    public void shouldReturnMappingOfParametersOntoTheirAbsoluteClasspathLocations() throws Exception {
+        // given
+        ClasspathResourceResolver resolver = new ClasspathResourceResolver("/", ".*csv$", deserializer);
+
+        // when
         Map<String, String> parameters = resolver.findParameterResources();
 
+        // then
         assertThat(parameters).hasSize(3).contains(
-                entry("param1", createPath() + "param1.csv"),
-                entry("param2", BASE_PATH + createPath(PARAMETER_SUB_DIR_NAME) + "param2.csv"),
-                entry("param3", BASE_PATH + createPath(PARAMETER_SUB_DIR_NAME, PARAMETER_DEEP_SUB_DIR_NAME) + "param3.csv"))
-                .doesNotContain(entry("param4_ignored", createPath() + "param4_ignored.txt"));;
+                entry("param1", "/param1.csv"),
+                entry("param2", "/param/param2.csv"),
+                entry("param3", "/param/deep/param3.csv"))
+                .doesNotContain(entry("param4_ignored",  "/param4_ignored.txt"));;
+    }
+
+    @Test
+    public void shouldReturnMappingOfParametersOntoTheirLocationForComplexPath() {
+        // given
+        ClasspathResourceResolver resolver = new ClasspathResourceResolver("/param/deep", ".*csv$", deserializer);
+
+        // when
+        Map<String, String> parameters = resolver.findParameterResources();
+
+        // then
+        assertThat(parameters).hasSize(1).contains(
+                entry("param3", "/param/deep/param3.csv"));
     }
 
     @Test(dataProvider = "parameterResourceToNameDataProvider")
     public void shouldReturnParameterFromRepository(String parameterName, int expectedSize, String parameterResource) throws Exception {
+        // given
+        ClasspathResourceResolver resolver = new ClasspathResourceResolver("/", ".*csv$", deserializer);
+
+        // when
         Parameter parameter = resolver.loadParameterFromResource(parameterResource);
-        assertThat(parameter.getName()).isEqualTo(parameterName);
-        assertThat(parameter.getEntries()).hasSize(expectedSize);
+
+        // then
+        assertThat(parameter).hasName(parameterName).hasEntries(expectedSize);
     }
 
-    @Test(expectedExceptions = SmartParamResourceResolverException.class)
+    @Test
     public void shouldBailIfUnresolvableResource() {
-        resolver.loadParameterFromResource("WRONG_RESOURCE_NAME");
+        // given
+        ClasspathResourceResolver resolver = new ClasspathResourceResolver("/", ".*", deserializer);
+
+        // when
+        catchException(resolver).loadParameterFromResource("WRONG_RESOURCE_NAME");
+
+        // then
+        assertThat(caughtException()).isInstanceOf(SmartParamResourceResolverException.class);
     }
 }
