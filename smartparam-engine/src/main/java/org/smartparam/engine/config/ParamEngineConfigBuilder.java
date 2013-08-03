@@ -34,6 +34,7 @@ public class ParamEngineConfigBuilder {
     }
 
     public ParamEngineConfig build() {
+        withComponentInitializers(new PostConstructInitializer());
         return paramEngineConfig;
     }
 

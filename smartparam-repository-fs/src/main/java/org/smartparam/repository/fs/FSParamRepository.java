@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.engine.config.InitializableComponent;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -21,12 +22,14 @@ import org.smartparam.serializer.StandardParamDeserializer;
  * and classpath files scanning is available (note, that to use classpath scanning
  * you need to have reflections.org library in dependencies).
  *
- * To use files, prefix source directory with <code>file://</code> (default file protocol marker).
- * To use classpath files, prefix classpath directory path with <code>classpath:</code>.
- * 
+ * To use files, prefix source directory with
+ * <code>file://</code> (default file protocol marker).
+ * To use classpath files, prefix classpath directory path with
+ * <code>classpath:</code>.
+ *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class FSParamRepository implements ParamRepository {
+public class FSParamRepository implements ParamRepository, InitializableComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(FSParamRepository.class);
 
@@ -43,10 +46,7 @@ public class FSParamRepository implements ParamRepository {
     private Map<String, String> parameters;
 
     public FSParamRepository(String basePath, String filePattern) {
-        this.basePath = basePath;
-        this.filePattern = filePattern;
-
-        initialize();
+        this(basePath, filePattern, null, null);
     }
 
     public FSParamRepository(String basePath, String filePattern, ParamDeserializer deserializer) {
@@ -58,11 +58,10 @@ public class FSParamRepository implements ParamRepository {
         this.filePattern = filePattern;
         this.deserializer = deserializer;
         this.resourceResolverFactory = resourceResolverFatory;
-
-        initialize();
     }
 
-    private void initialize() {
+    @Override
+    public void initialize() {
         if (deserializer == null) {
             logger.debug("no custom deserializer provided, using {}", StandardParamDeserializer.class.getSimpleName());
             this.deserializer = new StandardParamDeserializer(new StandardSerializationConfig(),

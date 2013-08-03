@@ -15,10 +15,6 @@ import org.testng.annotations.Test;
  */
 public class FSParamRepositoryTest {
 
-    private static final String VALID_PARAM_NAME = "testParam";
-
-    private static final String VALID_RESOURCE_NAME = "testResource";
-
     private ParamDeserializer deserializer;
 
     private ResourceResolverFactory resourceResolverFactory;
@@ -34,27 +30,39 @@ public class FSParamRepositoryTest {
 
     @Test
     public void shouldReturnParameter() {
+        // given
         Map<String, String> resources = new HashMap<String, String>();
-        resources.put(VALID_PARAM_NAME, VALID_RESOURCE_NAME);
+        resources.put("parameter", "resource");
 
         when(resourceResolverFactory.getResourceResolver(anyString(), anyString())).thenReturn(resourceResolver);
         when(resourceResolver.findParameterResources()).thenReturn(resources);
-        when(resourceResolver.loadParameterFromResource(VALID_RESOURCE_NAME)).thenReturn(mock(Parameter.class));
-        FSParamRepository fsParamRepository = new FSParamRepository("someBasePath", "someFilePattern", deserializer, resourceResolverFactory);
+        when(resourceResolver.loadParameterFromResource("resource")).thenReturn(mock(Parameter.class));
 
-        Parameter parameter = fsParamRepository.load(VALID_PARAM_NAME);
+        FSParamRepository fsParamRepository = new FSParamRepository("TEST", "TEST", deserializer, resourceResolverFactory);
+        fsParamRepository.initialize();
 
+        // when
+        Parameter parameter = fsParamRepository.load("parameter");
+
+        // then
         assertThat(parameter).isNotNull();
     }
 
     @Test
-    public void shouldReturnNullValueForUnknonwParameterName() {
+    public void shouldReturnNullValueForUnknownParameter() {
+        // given
         Map<String, String> resources = new HashMap<String, String>();
+
         when(resourceResolverFactory.getResourceResolver(anyString(), anyString())).thenReturn(resourceResolver);
         when(resourceResolver.findParameterResources()).thenReturn(resources);
-        FSParamRepository fsParamRepository = new FSParamRepository("someBasePath", "someFilePattern", deserializer, resourceResolverFactory);
 
+        FSParamRepository fsParamRepository = new FSParamRepository("TEST", "TEST", deserializer, resourceResolverFactory);
+        fsParamRepository.initialize();
+
+        // when
         Parameter parameter = fsParamRepository.load("INVALID_PARAM_NAME");
+
+        // then
         assertThat(parameter).isNull();
     }
 }
