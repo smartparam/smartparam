@@ -2,7 +2,7 @@ package org.smartparam.serializer;
 
 import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.entries.ParameterEntrySupplier;
+import org.smartparam.serializer.entries.ParameterEntryBatchLoader;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
@@ -13,7 +13,7 @@ public interface ParamSerializer {
 
     public void serialize(Parameter parameter, Writer writer) throws SmartParamSerializationException;
 
-    public void serialize(Parameter parameter, Writer writer, ParameterEntrySupplier supplier) throws SmartParamSerializationException;
+    public void serialize(Parameter parameter, Writer writer, ParameterEntryBatchLoader entryBatchLoader) throws SmartParamSerializationException;
 
     SerializationConfig getSerializationConfig();
 }

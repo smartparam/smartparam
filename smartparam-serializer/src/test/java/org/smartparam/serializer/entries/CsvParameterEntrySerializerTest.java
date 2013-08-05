@@ -1,12 +1,20 @@
 package org.smartparam.serializer.entries;
 
 import java.io.StringWriter;
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.serializer.StandardSerializationConfig;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
-import org.smartparam.serializer.mock.ParameterEntrySupplierMock;
+import static org.fest.assertions.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
+import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 
 /**
  *
@@ -18,21 +26,64 @@ public class CsvParameterEntrySerializerTest {
 
     private StandardSerializationConfig config = new StandardSerializationConfig();
 
+    private ParameterEntryBatchLoader entryBatchLoader;
+
     @Before
     public void initialize() {
         serializer = new CsvParameterEntrySerializer();
+        entryBatchLoader = mock(ParameterEntryBatchLoader.class);
     }
 
     @Test
-    public void testSerialization() throws SmartParamSerializationException {
-        ParameterEntrySupplierMock supplier = new ParameterEntrySupplierMock(100, 20, 5);
+    public void shouldWriteParameterEntryHeaderUsingLevelNames() throws Exception {
+        // given
+        Level[] levels = new Level[]{
+            level().withName("one").build(),
+            level().withName("two").build()
+        };
+        Parameter parameter = parameter().withLevels(levels).build();
+        StringWriter writer = new StringWriter();
 
-        StringWriter stringWriter = new StringWriter();
-        serializer.serialize(config, stringWriter, supplier);
+        // when
+        serializer.serialize(config, writer, parameter, entryBatchLoader);
 
-        String result = stringWriter.toString();
-        assertEquals(5, supplier.getCalledForNextBatchCount());
-        assertTrue(result.contains("level_99_4"));
+        // then
+        assertThat(writer.toString()).containsOnlyOnce("one;two");
     }
 
+    @Test
+    public void shouldSerializeParameterEntriesWithHeader() throws Exception {
+        // given
+        Level[] levels = new Level[]{
+            level().withName("one").build(),
+            level().withName("two").build()
+        };
+        Parameter parameter = parameter().withLevels(levels).build();
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("entry_one", "entry_one").build(),
+            parameterEntry().withLevels("entry_two", "entry_two").build()
+        };
+        when(entryBatchLoader.hasMore()).thenAnswer(new EntryBatchLoaderHasMoreAnswer());
+        when(entryBatchLoader.nextBatch(anyInt())).thenReturn(Arrays.asList(entries));
+        StringWriter writer = new StringWriter();
+
+        // when
+        serializer.serialize(config, writer, parameter, entryBatchLoader);
+
+        // then
+        assertThat(writer.toString()).containsOnlyOnce("one;two")
+                .containsOnlyOnce("entry_one;entry_one").containsOnlyOnce("entry_two;entry_two");
+    }
+
+    private static final class EntryBatchLoaderHasMoreAnswer implements Answer<Boolean> {
+
+        private boolean hasMore = true;
+
+        @Override
+        public Boolean answer(InvocationOnMock invocation) throws Throwable {
+            boolean returnValue = hasMore;
+            hasMore = false;
+            return returnValue;
+        }
+    }
 }

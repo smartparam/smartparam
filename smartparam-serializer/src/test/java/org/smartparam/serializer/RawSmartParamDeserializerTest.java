@@ -1,5 +1,6 @@
 package org.smartparam.serializer;
 
+import java.io.BufferedReader;
 import java.io.StringReader;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,10 +34,10 @@ public class RawSmartParamDeserializerTest {
         String config = "#{\n"
                 + "#name: \"parameter\"\n"
                 + "#}\n";
+        StringReader stringReader = new StringReader(config);
 
         // when
-        StringReader stringReader = new StringReader(config);
-        deserializer.deserialize(stringReader);
+        deserializer.deserializeConfig(new BufferedReader(stringReader));
 
         // then
         verify(configDeserializer).deserialize("{name: \"parameter\"}");

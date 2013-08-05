@@ -33,7 +33,7 @@ public class RawSmartParamSerializerTest {
     @Test
     public void shouldAppendCommentCharToEachLineOfParameterConfigSectionAndEndItWithDoubleCommentChar() throws SmartParamSerializationException {
         // given
-        Parameter parameter = parameter().build();
+        Parameter parameter = parameter().withEntries().build();
         when(configSerializer.serialize(parameter)).thenReturn("multi\nline");
         StringWriter stringWriter = new StringWriter();
 

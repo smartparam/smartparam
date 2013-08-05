@@ -1,17 +1,8 @@
 package org.smartparam.serializer.entries;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.List;
 import org.junit.Before;
-import org.junit.Test;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
-import static org.junit.Assert.*;
 import org.smartparam.serializer.StandardSerializationConfig;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
-import org.smartparam.serializer.mock.ParameterEntryPersisterMock;
-import org.smartparam.serializer.mock.ParameterEntrySupplierMock;
 
 /**
  *
@@ -31,20 +22,20 @@ public class CsvParameterEntrySerializerIntegrationTest {
         deserializer = new CsvParameterEntryDeserializer(SimpleEditableParameterEntry.class);
     }
 
-    @Test
-    public void testSerializationAndDeserialization() throws SmartParamSerializationException {
-        ParameterEntrySupplierMock supplier = new ParameterEntrySupplierMock(100, 20, 5);
-        List<String> header = Arrays.asList("h1", "h2", "h3", "h4", "h5");
-
-        StringWriter stringWriter = new StringWriter();
-        serializer.serialize(config, stringWriter, supplier);
-        String csv = stringWriter.toString();
-
-        ParameterEntryPersisterMock persister = new ParameterEntryPersisterMock(10);
-        StringReader stringReader = new StringReader(csv);
-        deserializer.deserialize(config, stringReader, persister);
-
-        assertEquals(10, persister.getWriteBatchCallCount());
-        assertEquals(100, persister.getEntries().size());
-    }
+//    @Test
+//    public void testSerializationAndDeserialization() throws SmartParamSerializationException {
+//        ParameterEntrySupplierMock supplier = new ParameterEntrySupplierMock(100, 20, 5);
+//        List<String> header = Arrays.asList("h1", "h2", "h3", "h4", "h5");
+//
+//        StringWriter stringWriter = new StringWriter();
+//        serializer.serialize(config, stringWriter, supplier);
+//        String csv = stringWriter.toString();
+//
+//        ParameterEntryPersisterMock persister = new ParameterEntryPersisterMock(10);
+//        StringReader stringReader = new StringReader(csv);
+//        deserializer.deserialize(config, stringReader, persister);
+//
+//        assertEquals(10, persister.getWriteBatchCallCount());
+//        assertEquals(100, persister.getEntries().size());
+//    }
 }

@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.config.ParameterConfigSerializer;
+import org.smartparam.serializer.entries.ParameterEntryBatchLoader;
 import org.smartparam.serializer.entries.ParameterEntrySerializer;
-import org.smartparam.serializer.entries.ParameterEntrySupplier;
-import org.smartparam.serializer.entries.StandardParameterEntrySupplier;
+import org.smartparam.serializer.entries.SimpleParameterEntryBatchLoader;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
@@ -31,17 +31,17 @@ public class RawSmartParamSerializer implements ParamSerializer {
 
     @Override
     public void serialize(Parameter parameter, Writer writer) throws SmartParamSerializationException {
-        StandardParameterEntrySupplier supplier = new StandardParameterEntrySupplier(parameter);
-        serialize(parameter, writer, supplier);
+        ParameterEntryBatchLoader batchLoader = new SimpleParameterEntryBatchLoader(parameter);
+        serialize(parameter, writer, batchLoader);
     }
 
     @Override
-    public void serialize(Parameter parameter, Writer writer, ParameterEntrySupplier supplier) throws SmartParamSerializationException {
+    public void serialize(Parameter parameter, Writer writer, ParameterEntryBatchLoader entryBatchLoader) throws SmartParamSerializationException {
         String serializedConifg = configSerializer.serialize(parameter);
         serializedConifg = appendCommentToConfig(serializationConfig.getCommentChar(), serializedConifg);
         try {
             writer.append(serializedConifg);
-            entriesSerializer.serialize(serializationConfig, writer, supplier);
+            entriesSerializer.serialize(serializationConfig, writer, parameter, entryBatchLoader);
         } catch (IOException exception) {
             throw new SmartParamSerializationException("error while serializing parameter " + parameter.getName(), exception);
         }

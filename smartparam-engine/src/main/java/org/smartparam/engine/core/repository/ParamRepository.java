@@ -12,4 +12,6 @@ public interface ParamRepository {
     Parameter load(String parameterName);
 
     List<ParameterEntry> findEntries(String parameterName, String[] levelValues);
+
+//    Set<String> listParameters();
 }

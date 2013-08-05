@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.io.Reader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.config.ParameterConfigDeserializer;
+import org.smartparam.serializer.entries.ParameterEntryBatchLoader;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
-import org.smartparam.serializer.entries.ParameterEntryPersister;
-import org.smartparam.serializer.entries.StandardParameterEntryPersister;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
@@ -17,6 +16,8 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
 public class RawSmartParamDeserializer implements ParamDeserializer {
 
     private static final int PROBABLE_CONFIG_LENGTH = 400;
+
+    private static final int PARAMETER_ENTRIES_BATCH_SIZE = 500;
 
     private SerializationConfig serializationConfig;
 
@@ -35,10 +36,15 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
         BufferedReader bufferedReader = new BufferedReader(reader);
 
         Parameter deserialiedParameter = deserializeConfig(bufferedReader);
-        StandardParameterEntryPersister persister = new StandardParameterEntryPersister(deserialiedParameter);
-        deserializeEntries(bufferedReader, persister);
+        readEntries(deserialiedParameter, deserializeEntries(bufferedReader));
 
         return deserialiedParameter;
+    }
+
+    private void readEntries(Parameter parameter, ParameterEntryBatchLoader loader) throws SmartParamSerializationException {
+        while(loader.hasMore()) {
+            parameter.getEntries().addAll(loader.nextBatch(PARAMETER_ENTRIES_BATCH_SIZE));
+        }
     }
 
     @Override
@@ -73,8 +79,8 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
     }
 
     @Override
-    public void deserializeEntries(BufferedReader reader, ParameterEntryPersister persister) throws SmartParamSerializationException {
-        entriesDeserializer.deserialize(serializationConfig, reader, persister);
+    public ParameterEntryBatchLoader deserializeEntries(BufferedReader reader) throws SmartParamSerializationException {
+        return entriesDeserializer.deserialize(serializationConfig, reader);
     }
 
     @Override
