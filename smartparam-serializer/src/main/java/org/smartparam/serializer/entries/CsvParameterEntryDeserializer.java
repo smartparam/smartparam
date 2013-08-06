@@ -1,5 +1,6 @@
 package org.smartparam.serializer.entries;
 
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.smartparam.engine.model.editable.EditableParameterEntry;

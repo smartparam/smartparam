@@ -2,7 +2,7 @@ package org.smartparam.serializer;
 
 import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.entries.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**

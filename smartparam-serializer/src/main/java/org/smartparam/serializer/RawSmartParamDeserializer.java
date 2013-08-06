@@ -3,9 +3,10 @@ package org.smartparam.serializer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.config.ParameterConfigDeserializer;
-import org.smartparam.serializer.entries.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
@@ -43,7 +44,12 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
 
     private void readEntries(Parameter parameter, ParameterEntryBatchLoader loader) throws SmartParamSerializationException {
         while(loader.hasMore()) {
-            parameter.getEntries().addAll(loader.nextBatch(PARAMETER_ENTRIES_BATCH_SIZE));
+            try {
+                parameter.getEntries().addAll(loader.nextBatch(PARAMETER_ENTRIES_BATCH_SIZE));
+            }
+            catch(ParamBatchLoadingException exception) {
+                throw new SmartParamSerializationException("error while loading batch of entries", exception);
+            }
         }
     }
 

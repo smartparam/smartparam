@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.entries;
-
-import java.util.Collection;
-import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+package org.smartparam.engine.core.exception;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface ParameterEntryBatchLoader {
+@SuppressWarnings("serial")
+public class ParamBatchLoadingException extends Exception {
 
-    boolean hasMore();
-
-    Collection<ParameterEntry> nextBatch(int batchSize) throws SmartParamSerializationException;
-
-    void close() throws SmartParamSerializationException;
+    public ParamBatchLoadingException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

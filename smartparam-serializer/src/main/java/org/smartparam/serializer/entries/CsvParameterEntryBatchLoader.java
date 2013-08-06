@@ -15,13 +15,14 @@
  */
 package org.smartparam.serializer.entries;
 
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
 import org.supercsv.io.CsvListReader;
 
 /**
@@ -47,7 +48,7 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
     }
 
     @Override
-    public Collection<ParameterEntry> nextBatch(int batchSize) throws SmartParamSerializationException {
+    public Collection<ParameterEntry> nextBatch(int batchSize) throws ParamBatchLoadingException {
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>(batchSize);
 
         if (!closed) {
@@ -62,11 +63,11 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
                     entries.add(createParameterEntry(line));
                 }
             } catch (IOException exception) {
-                throw new SmartParamSerializationException("deserialization error", exception);
+                throw new ParamBatchLoadingException("deserialization error", exception);
             } catch (IllegalAccessException illegalAccessException) {
-                throw new SmartParamSerializationException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?", illegalAccessException);
+                throw new ParamBatchLoadingException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?", illegalAccessException);
             } catch (InstantiationException instantiationException) {
-                throw new SmartParamSerializationException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?", instantiationException);
+                throw new ParamBatchLoadingException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?", instantiationException);
             }
 
             if (entriesRead < batchSize) {
@@ -85,7 +86,7 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
     }
 
     @Override
-    public void close() throws SmartParamSerializationException {
+    public void close() throws ParamBatchLoadingException {
         if (closed) {
             return;
         }
@@ -93,7 +94,7 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
             reader.close();
             closed = true;
         } catch (IOException exception) {
-            throw new SmartParamSerializationException("error while closing CSV reader stream", exception);
+            throw new ParamBatchLoadingException("error while closing CSV reader stream", exception);
         }
     }
 }
