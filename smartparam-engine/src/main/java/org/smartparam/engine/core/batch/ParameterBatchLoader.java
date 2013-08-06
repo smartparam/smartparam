@@ -13,27 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.repository;
+package org.smartparam.engine.core.batch;
 
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.Parameter;
 
 /**
- * Warning! This interface will be undergoing big changes in near future
- * (adding new methods most probably) to integrate with editor.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface EditableParamRepository {
+public class ParameterBatchLoader {
 
-    void save(Parameter parameter);
+    private Parameter metadata;
 
-    void save(ParameterBatchLoader batchLoader);
+    private ParameterEntryBatchLoader entryLoader;
 
-    void delete(String parameterName);
+    public ParameterBatchLoader(Parameter metadata, ParameterEntryBatchLoader entryLoader) {
+        this.metadata = metadata;
+        this.entryLoader = entryLoader;
+    }
 
-    void reload(Parameter parameter);
+    public Parameter getMetadata() {
+        return metadata;
+    }
 
-    void reload(ParameterBatchLoader batchLoader);
-
+    public ParameterEntryBatchLoader getEntryLoader() {
+        return entryLoader;
+    }
 }
