@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.Reader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
+import org.smartparam.serializer.entries.BatchReaderWrapper;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
@@ -16,7 +17,7 @@ public interface ParamDeserializer {
 
     Parameter deserializeConfig(BufferedReader reader) throws SmartParamSerializationException;
 
-    ParameterEntryBatchLoader deserializeEntries(BufferedReader reader) throws SmartParamSerializationException;
+    ParameterEntryBatchLoader deserializeEntries(BatchReaderWrapper reader) throws SmartParamSerializationException;
 
     SerializationConfig getSerializationConfig();
 }

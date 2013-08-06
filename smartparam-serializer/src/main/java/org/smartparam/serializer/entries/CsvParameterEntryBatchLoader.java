@@ -23,6 +23,7 @@ import java.util.List;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
+import org.smartparam.serializer.SerializationConfig;
 import org.supercsv.io.CsvListReader;
 
 /**
@@ -31,20 +32,27 @@ import org.supercsv.io.CsvListReader;
  */
 public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
 
-    private CsvListReader reader;
+    private CsvListReader cachedListReader;
+
+    private SerializationConfig config;
+
+    private BatchReaderWrapper readerWrapper;
 
     private Class<? extends EditableParameterEntry> instanceClass;
 
     private boolean closed = false;
 
-    public CsvParameterEntryBatchLoader(Class<? extends EditableParameterEntry> instanceClass, CsvListReader reader) {
+    private boolean hasMore = true;
+
+    public CsvParameterEntryBatchLoader(Class<? extends EditableParameterEntry> instanceClass, SerializationConfig serializationConfig, BatchReaderWrapper readerWrapper) {
         this.instanceClass = instanceClass;
-        this.reader = reader;
+        this.config = serializationConfig;
+        this.readerWrapper = readerWrapper;
     }
 
     @Override
     public boolean hasMore() {
-        return !closed;
+        return hasMore;
     }
 
     @Override
@@ -52,15 +60,20 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>(batchSize);
 
         if (!closed) {
-            int entriesRead = 0;
-            List<String> line;
             try {
+                CsvListReader reader = initializeReader();
+                List<String> line;
+                int entriesRead = 0;
                 for (entriesRead = 0; entriesRead < batchSize; ++entriesRead) {
                     line = reader.read();
                     if (line == null) {
                         break;
                     }
                     entries.add(createParameterEntry(line));
+                }
+
+                if(entriesRead < batchSize) {
+                    hasMore = false;
                 }
             } catch (IOException exception) {
                 throw new ParamBatchLoadingException("deserialization error", exception);
@@ -69,13 +82,18 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
             } catch (InstantiationException instantiationException) {
                 throw new ParamBatchLoadingException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?", instantiationException);
             }
-
-            if (entriesRead < batchSize) {
-                close();
-            }
         }
 
         return entries;
+    }
+
+    private CsvListReader initializeReader() throws ParamBatchLoadingException, IOException {
+        if (!closed && cachedListReader == null) {
+            cachedListReader = new CsvListReader(readerWrapper.initializeReader(), CsvPreferenceBuilder.csvPreference(config));
+            // drop header
+            cachedListReader.read();
+        }
+        return cachedListReader;
     }
 
     private ParameterEntry createParameterEntry(List<String> levelValues) throws IllegalAccessException, InstantiationException {
@@ -87,12 +105,13 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
 
     @Override
     public void close() throws ParamBatchLoadingException {
-        if (closed) {
+        if (closed || cachedListReader == null) {
             return;
         }
         try {
-            reader.close();
+            cachedListReader.close();
             closed = true;
+            hasMore = false;
         } catch (IOException exception) {
             throw new ParamBatchLoadingException("error while closing CSV reader stream", exception);
         }

@@ -7,7 +7,9 @@ import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.config.ParameterConfigDeserializer;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
+import org.smartparam.serializer.entries.BatchReaderWrapper;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
+import org.smartparam.serializer.entries.SimpleBatchReaderWrapper;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
@@ -18,7 +20,7 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
 
     private static final int PROBABLE_CONFIG_LENGTH = 400;
 
-    private static final int PARAMETER_ENTRIES_BATCH_SIZE = 500;
+    private static final int PARAMETER_ENTRIES_BATCH_SIZE = 1000;
 
     private SerializationConfig serializationConfig;
 
@@ -37,7 +39,7 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
         BufferedReader bufferedReader = new BufferedReader(reader);
 
         Parameter deserialiedParameter = deserializeConfig(bufferedReader);
-        readEntries(deserialiedParameter, deserializeEntries(bufferedReader));
+        readEntries(deserialiedParameter, deserializeEntries(new SimpleBatchReaderWrapper(bufferedReader)));
 
         return deserialiedParameter;
     }
@@ -85,7 +87,7 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
     }
 
     @Override
-    public ParameterEntryBatchLoader deserializeEntries(BufferedReader reader) throws SmartParamSerializationException {
+    public ParameterEntryBatchLoader deserializeEntries(BatchReaderWrapper reader) throws SmartParamSerializationException {
         return entriesDeserializer.deserialize(serializationConfig, reader);
     }
 

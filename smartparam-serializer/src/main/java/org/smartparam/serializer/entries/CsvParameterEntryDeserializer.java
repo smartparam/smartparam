@@ -1,12 +1,9 @@
 package org.smartparam.serializer.entries;
 
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
-import java.io.BufferedReader;
-import java.io.IOException;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
 import org.smartparam.serializer.SerializationConfig;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
-import org.supercsv.io.CsvListReader;
 
 /**
  *
@@ -21,15 +18,7 @@ public class CsvParameterEntryDeserializer implements ParameterEntryDeserializer
     }
 
     @Override
-    public ParameterEntryBatchLoader deserialize(SerializationConfig config, BufferedReader reader) throws SmartParamSerializationException {
-        CsvListReader csvReader = new CsvListReader(reader, CsvPreferenceBuilder.csvPreference(config));
-        try {
-            // drop header
-            csvReader.read();
-        } catch (IOException exception) {
-            throw new SmartParamSerializationException("failed to read from csv reader", exception);
-        }
-
-        return new CsvParameterEntryBatchLoader(instanceClass, csvReader);
+    public ParameterEntryBatchLoader deserialize(SerializationConfig config, BatchReaderWrapper readerWrapper) throws SmartParamSerializationException {
+        return new CsvParameterEntryBatchLoader(instanceClass, config, readerWrapper);
     }
 }

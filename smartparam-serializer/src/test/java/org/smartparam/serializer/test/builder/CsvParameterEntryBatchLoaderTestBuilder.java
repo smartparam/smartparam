@@ -18,9 +18,9 @@ package org.smartparam.serializer.test.builder;
 
 import java.io.StringReader;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
+import org.smartparam.serializer.SerializationConfig;
 import org.smartparam.serializer.entries.CsvParameterEntryBatchLoader;
-import org.supercsv.io.CsvListReader;
-import org.supercsv.prefs.CsvPreference;
+import org.smartparam.serializer.entries.SimpleBatchReaderWrapper;
 
 
 /**
@@ -31,7 +31,7 @@ public class CsvParameterEntryBatchLoaderTestBuilder {
 
     private StringReader stringReader;
 
-    private CsvPreference csvPreferences;
+    private SerializationConfig config;
 
     private Class<? extends EditableParameterEntry> instanceClass;
 
@@ -43,7 +43,7 @@ public class CsvParameterEntryBatchLoaderTestBuilder {
     }
 
     public CsvParameterEntryBatchLoader build() {
-        return new CsvParameterEntryBatchLoader(instanceClass, new CsvListReader(stringReader, csvPreferences));
+        return new CsvParameterEntryBatchLoader(instanceClass, config, new SimpleBatchReaderWrapper(stringReader));
     }
 
     public CsvParameterEntryBatchLoaderTestBuilder readingFrom(StringReader stringReader) {
@@ -56,8 +56,8 @@ public class CsvParameterEntryBatchLoaderTestBuilder {
         return this;
     }
 
-    public CsvParameterEntryBatchLoaderTestBuilder withCsvPreferences(CsvPreference preferences) {
-        this.csvPreferences = preferences;
+    public CsvParameterEntryBatchLoaderTestBuilder withSerializationConfig(SerializationConfig config) {
+        this.config = config;
         return this;
     }
 }
