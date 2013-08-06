@@ -2,6 +2,7 @@ package org.smartparam.repository.fs;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import static org.mockito.Mockito.*;
 import static org.fest.assertions.api.Assertions.*;
 import org.smartparam.engine.model.Parameter;
@@ -36,7 +37,7 @@ public class FSParamRepositoryTest {
 
         when(resourceResolverFactory.getResourceResolver(anyString(), anyString())).thenReturn(resourceResolver);
         when(resourceResolver.findParameterResources()).thenReturn(resources);
-        when(resourceResolver.loadParameterFromResource("resource")).thenReturn(mock(Parameter.class));
+        when(resourceResolver.loadParameterFromResource("resource")).thenReturn(mock(ParameterBatchLoader.class));
 
         FSParamRepository fsParamRepository = new FSParamRepository("TEST", "TEST", deserializer, resourceResolverFactory);
         fsParamRepository.initialize();

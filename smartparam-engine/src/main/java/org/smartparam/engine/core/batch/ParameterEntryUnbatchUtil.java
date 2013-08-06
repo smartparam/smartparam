@@ -25,21 +25,13 @@ import org.smartparam.engine.model.Parameter;
  */
 public class ParameterEntryUnbatchUtil {
 
-    public static final int DEFAULT_BATH_SIZE = 1000;
-
-    public static void loadEntriesIntoParameter(Parameter parameter, ParameterEntryBatchLoader entryBatchLoader) {
-        loadEntriesIntoParameter(parameter, entryBatchLoader, DEFAULT_BATH_SIZE);
-    }
-
     public static void loadEntriesIntoParameter(Parameter parameter, ParameterEntryBatchLoader entryBatchLoader, int batchSize) {
         try {
-            while(entryBatchLoader.hasMore()) {
-            parameter.getEntries().addAll(entryBatchLoader.nextBatch(batchSize));
+            while (entryBatchLoader.hasMore()) {
+                parameter.getEntries().addAll(entryBatchLoader.nextBatch(batchSize));
             }
-        }
-        catch(ParamBatchLoadingException batchException) {
+        } catch (ParamBatchLoadingException batchException) {
             throw new SmartParamException(batchException);
         }
     }
-
 }

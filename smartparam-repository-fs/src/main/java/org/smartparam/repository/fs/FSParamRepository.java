@@ -2,9 +2,12 @@ package org.smartparam.repository.fs;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.InitializableComponent;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.batch.ParameterEntryUnbatchUtil;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -32,6 +35,8 @@ import org.smartparam.serializer.StandardParamDeserializer;
 public class FSParamRepository implements ParamRepository, InitializableComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(FSParamRepository.class);
+
+    private static final int DEFAULT_BATCH_LOADER_SIZE = 2000;
 
     private String basePath;
 
@@ -80,9 +85,19 @@ public class FSParamRepository implements ParamRepository, InitializableComponen
 
     @Override
     public Parameter load(String parameterName) {
+        ParameterBatchLoader parameterBatch = batchLoad(parameterName);
+        if(parameterBatch != null) {
+            ParameterEntryUnbatchUtil.loadEntriesIntoParameter(parameterBatch.getMetadata(), parameterBatch.getEntryLoader(), DEFAULT_BATCH_LOADER_SIZE);
+            return parameterBatch.getMetadata();
+        }
+        return null;
+    }
+
+    @Override
+    public ParameterBatchLoader batchLoad(String parameterName) {
         String parameterResourceName = parameters.get(parameterName);
         if (parameterResourceName != null) {
-            return resourceResolver.loadParameterFromResource(parameterResourceName);
+            return resourceResolver.loadParameterFromResource(parameterName);
         }
         return null;
     }
@@ -90,5 +105,10 @@ public class FSParamRepository implements ParamRepository, InitializableComponen
     @Override
     public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
         throw new UnsupportedOperationException(getClass().getSimpleName() + " does not support non-cacheable parameters");
+    }
+
+    @Override
+    public Set<String> listParameters() {
+        return parameters.keySet();
     }
 }

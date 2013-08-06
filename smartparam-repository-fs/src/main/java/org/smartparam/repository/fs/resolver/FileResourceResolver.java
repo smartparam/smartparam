@@ -3,11 +3,14 @@ package org.smartparam.repository.fs.resolver;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
@@ -50,14 +53,32 @@ public class FileResourceResolver implements ResourceResolver {
     }
 
     @Override
-    public Parameter loadParameterFromResource(String parameterResourceName) {
+    public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
         File file = new File(parameterResourceName);
+        BufferedReader reader = null;
         try {
-            return readFromFile(file);
+            reader = Files.newBufferedReader(file.toPath(), deserializer.getSerializationConfig().getCharset());
+
+            Parameter metadata = deserializer.deserializeConfig(reader);
+            ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(reader);
+
+            return new ParameterBatchLoader(metadata, entriesLoader);
         } catch (IOException ioException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, ioException);
         } catch (SmartParamSerializationException serializationException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
+        } finally {
+            closeReader(reader);
+        }
+    }
+
+    private void closeReader(Reader reader) throws SmartParamResourceResolverException {
+        try {
+            if (reader != null) {
+                reader.close();
+            }
+        } catch (IOException exception) {
+            throw new SmartParamResourceResolverException("eception while loading file stream", exception);
         }
     }
 

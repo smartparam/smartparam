@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
@@ -97,10 +97,11 @@ public class FileResourceResolverIntegrationTest extends ResolverInegrationTestC
         // given
 
         // when
-        Parameter parameter = resolver.loadParameterFromResource(parameterResource);
+        ParameterBatchLoader parameterBatch = resolver.loadParameterFromResource(parameterResource);
 
         // then
-        assertThat(parameter).hasName(parameterName).hasEntries(expectedSize);
+        assertThat(parameterBatch.getMetadata()).hasName(parameterName);
+        assertThat(parameterBatch.getEntryLoader().nextBatch(expectedSize + 1)).hasSize(expectedSize);
     }
 
     @Test

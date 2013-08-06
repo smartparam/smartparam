@@ -1,7 +1,7 @@
 package org.smartparam.repository.fs;
 
 import java.util.Map;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 
 /**
  *
@@ -11,5 +11,5 @@ public interface ResourceResolver {
 
     Map<String, String> findParameterResources();
 
-    Parameter loadParameterFromResource(String parameterResourceName);
+    ParameterBatchLoader loadParameterFromResource(String parameterResourceName);
 }
