@@ -1,7 +1,7 @@
 package org.smartparam.repository.fs.resolver;
 
 import java.util.Map;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
@@ -77,10 +77,11 @@ public class ClasspathResourceResolverIntegrationTest extends ResolverInegration
         ClasspathResourceResolver resolver = new ClasspathResourceResolver("/", ".*csv$", deserializer);
 
         // when
-        Parameter parameter = resolver.loadParameterFromResource(parameterResource);
+        ParameterBatchLoader parameterLoader = resolver.loadParameterFromResource(parameterResource);
 
         // then
-        assertThat(parameter).hasName(parameterName).hasEntries(expectedSize);
+        assertThat(parameterLoader.getMetadata()).hasName(parameterName);
+        assertThat(parameterLoader.getEntryLoader().nextBatch(expectedSize + 1)).hasSize(expectedSize);
     }
 
     @Test

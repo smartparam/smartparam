@@ -3,7 +3,6 @@ package org.smartparam.repository.fs.resolver;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -14,8 +13,11 @@ import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
+import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
+import org.smartparam.serializer.entries.BatchReaderWrapper;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.util.StreamCloser;
 
 /**
  *
@@ -54,43 +56,19 @@ public class FileResourceResolver implements ResourceResolver {
 
     @Override
     public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
-        File file = new File(parameterResourceName);
         BufferedReader reader = null;
         try {
-            reader = Files.newBufferedReader(file.toPath(), deserializer.getSerializationConfig().getCharset());
+            reader = StreamReaderOpener.openReaderForFile(basePath, deserializer.getSerializationConfig().getCharset());
+            BatchReaderWrapper readerWrapper = new BatchFileReaderWrapper(parameterResourceName, deserializer.getSerializationConfig().getCharset());
 
             Parameter metadata = deserializer.deserializeConfig(reader);
-            ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(reader);
+            ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(readerWrapper);
 
             return new ParameterBatchLoader(metadata, entriesLoader);
-        } catch (IOException ioException) {
-            throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, ioException);
         } catch (SmartParamSerializationException serializationException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
         } finally {
-            closeReader(reader);
-        }
-    }
-
-    private void closeReader(Reader reader) throws SmartParamResourceResolverException {
-        try {
-            if (reader != null) {
-                reader.close();
-            }
-        } catch (IOException exception) {
-            throw new SmartParamResourceResolverException("eception while loading file stream", exception);
-        }
-    }
-
-    private Parameter readFromFile(File file) throws IOException, SmartParamSerializationException {
-        BufferedReader reader = null;
-        try {
-            reader = Files.newBufferedReader(file.toPath(), deserializer.getSerializationConfig().getCharset());
-            return deserializer.deserialize(reader);
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
+            StreamCloser.closeStream(reader);
         }
     }
 }

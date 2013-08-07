@@ -12,4 +12,8 @@ public class SmartParamResourceResolverException extends SmartParamException {
     public SmartParamResourceResolverException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public SmartParamResourceResolverException(String message) {
+        super(message);
+    }
 }

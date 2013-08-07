@@ -63,7 +63,7 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
             try {
                 CsvListReader reader = initializeReader();
                 List<String> line;
-                int entriesRead = 0;
+                int entriesRead;
                 for (entriesRead = 0; entriesRead < batchSize; ++entriesRead) {
                     line = reader.read();
                     if (line == null) {

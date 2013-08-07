@@ -17,11 +17,16 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
+import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
+import org.smartparam.serializer.entries.BatchReaderWrapper;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.util.StreamCloser;
 
 /**
  *
@@ -79,10 +84,10 @@ public class ClasspathResourceResolver implements ResourceResolver {
         String packagePath = "";
         if (basePath.length() > 1) {
             packagePath = basePath.replaceAll(CLASSPATH_SEPARATOR, PACKAGE_SEPARATOR);
-            if(packagePath.startsWith(PACKAGE_SEPARATOR)) {
+            if (packagePath.startsWith(PACKAGE_SEPARATOR)) {
                 packagePath = packagePath.substring(1);
             }
-            if(!packagePath.endsWith(PACKAGE_SEPARATOR)) {
+            if (!packagePath.endsWith(PACKAGE_SEPARATOR)) {
                 packagePath += PACKAGE_SEPARATOR;
             }
         }
@@ -92,33 +97,37 @@ public class ClasspathResourceResolver implements ResourceResolver {
     private String readParameterNameFromResource(String resourceName) {
         try {
             return readParameterConfigFromResource(resourceName).getName();
-        } catch (IOException ioException) {
-            throw new SmartParamResourceResolverException("unable to load parameter from " + resourceName, ioException);
         } catch (SmartParamSerializationException serializationException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + resourceName, serializationException);
         }
     }
 
-    private Parameter readParameterConfigFromResource(String resourceName) throws IOException, SmartParamSerializationException {
+    private Parameter readParameterConfigFromResource(String resourceName) throws SmartParamSerializationException {
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream(resourceName)));
             return deserializer.deserializeConfig(reader);
         } finally {
-            if (reader != null) {
-                reader.close();
-            }
+            StreamCloser.closeStream(reader);
         }
     }
 
     @Override
-    public Parameter loadParameterFromResource(String parameterResourceName) {
+    public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
+        BufferedReader reader = null;
         try {
-            return readParameterFromResource(parameterResourceName);
-        } catch (IOException ioException) {
-            throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, ioException);
+            reader = StreamReaderOpener.openReaderForResource(this.getClass(), parameterResourceName);
+            BatchReaderWrapper readerWrapper = new BatchClasspathReaderWrapper(this.getClass(), parameterResourceName);
+
+            Parameter metadata = deserializer.deserializeConfig(reader);
+            ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(readerWrapper);
+
+            return new ParameterBatchLoader(metadata, entriesLoader);
         } catch (SmartParamSerializationException serializationException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
+        }
+        finally {
+            StreamCloser.closeStream(reader);
         }
     }
 
