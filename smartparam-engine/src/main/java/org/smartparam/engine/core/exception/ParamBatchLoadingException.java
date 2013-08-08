@@ -25,4 +25,8 @@ public class ParamBatchLoadingException extends Exception {
     public ParamBatchLoadingException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public ParamBatchLoadingException(String message) {
+        super(message);
+    }
 }

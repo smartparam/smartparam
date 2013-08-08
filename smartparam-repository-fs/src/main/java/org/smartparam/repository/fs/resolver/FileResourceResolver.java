@@ -15,9 +15,7 @@ import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.entries.BatchReaderWrapper;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
-import org.smartparam.serializer.util.StreamCloser;
 
 /**
  *
@@ -56,19 +54,15 @@ public class FileResourceResolver implements ResourceResolver {
 
     @Override
     public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
-        BufferedReader reader = null;
+        BufferedReader reader;
         try {
-            reader = StreamReaderOpener.openReaderForFile(basePath, deserializer.getSerializationConfig().getCharset());
-            BatchReaderWrapper readerWrapper = new BatchFileReaderWrapper(parameterResourceName, deserializer.getSerializationConfig().getCharset());
-
+            reader = StreamReaderOpener.openReaderForFile(parameterResourceName, deserializer.getSerializationConfig().getCharset());
             Parameter metadata = deserializer.deserializeConfig(reader);
-            ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(readerWrapper);
+            ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(reader);
 
             return new ParameterBatchLoader(metadata, entriesLoader);
         } catch (SmartParamSerializationException serializationException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
-        } finally {
-            StreamCloser.closeStream(reader);
         }
     }
 }

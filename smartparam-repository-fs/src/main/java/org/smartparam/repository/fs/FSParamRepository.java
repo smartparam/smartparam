@@ -97,7 +97,7 @@ public class FSParamRepository implements ParamRepository, InitializableComponen
     public ParameterBatchLoader batchLoad(String parameterName) {
         String parameterResourceName = parameters.get(parameterName);
         if (parameterResourceName != null) {
-            return resourceResolver.loadParameterFromResource(parameterName);
+            return resourceResolver.loadParameterFromResource(parameterResourceName);
         }
         return null;
     }

@@ -51,17 +51,12 @@ public class SimpleParameterEntryBatchLoader implements ParameterEntryBatchLoade
             int sublistEndIndex = lastReadPosition + batchSize;
             if(sublistEndIndex > allEntriesList.size()) {
                 sublistEndIndex = allEntriesList.size();
-                close();
+                hasMore = false;
             }
 
             entries = allEntriesList.subList(lastReadPosition, sublistEndIndex);
         }
 
         return entries;
-    }
-
-    @Override
-    public void close() {
-        hasMore = false;
     }
 }

@@ -20,7 +20,8 @@ import java.io.StringReader;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
 import org.smartparam.serializer.SerializationConfig;
 import org.smartparam.serializer.entries.CsvParameterEntryBatchLoader;
-import org.smartparam.serializer.entries.SimpleBatchReaderWrapper;
+import org.smartparam.serializer.entries.CsvPreferenceBuilder;
+import org.supercsv.io.CsvListReader;
 
 
 /**
@@ -43,7 +44,7 @@ public class CsvParameterEntryBatchLoaderTestBuilder {
     }
 
     public CsvParameterEntryBatchLoader build() {
-        return new CsvParameterEntryBatchLoader(instanceClass, config, new SimpleBatchReaderWrapper(stringReader));
+        return new CsvParameterEntryBatchLoader(instanceClass, new CsvListReader(stringReader, CsvPreferenceBuilder.csvPreference(config)));
     }
 
     public CsvParameterEntryBatchLoaderTestBuilder readingFrom(StringReader stringReader) {

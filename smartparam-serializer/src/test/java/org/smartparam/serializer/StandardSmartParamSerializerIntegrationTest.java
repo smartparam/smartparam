@@ -1,7 +1,7 @@
 package org.smartparam.serializer;
 
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import org.junit.Before;
@@ -37,7 +37,7 @@ public class StandardSmartParamSerializerIntegrationTest {
     @Test
     public void shouldDeserializeParameterFromTestFile() throws Exception {
         // given
-        Reader reader = new InputStreamReader(this.getClass().getResourceAsStream("/sampleParam.csv"));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/sampleParam.csv")));
 
         // when
         Parameter parameter = deserializer.deserialize(reader);
@@ -64,8 +64,10 @@ public class StandardSmartParamSerializerIntegrationTest {
         StringWriter paramWriter = new StringWriter();
         serializer.serialize(parameter, paramWriter);
 
+        BufferedReader reader = new BufferedReader(new StringReader(paramWriter.toString()));
+
         // when
-        Parameter processedParameter = deserializer.deserialize(new StringReader(paramWriter.toString()));
+        Parameter processedParameter = deserializer.deserialize(reader);
 
         // then
         assertThat(processedParameter).hasName("parameter").isNotNullable()

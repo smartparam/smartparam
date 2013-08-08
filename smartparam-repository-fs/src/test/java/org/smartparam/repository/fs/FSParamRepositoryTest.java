@@ -37,16 +37,18 @@ public class FSParamRepositoryTest {
 
         when(resourceResolverFactory.getResourceResolver(anyString(), anyString())).thenReturn(resourceResolver);
         when(resourceResolver.findParameterResources()).thenReturn(resources);
-        when(resourceResolver.loadParameterFromResource("resource")).thenReturn(mock(ParameterBatchLoader.class));
+
+        ParameterBatchLoader batchLoader = mock(ParameterBatchLoader.class);
+        when(resourceResolver.loadParameterFromResource("resource")).thenReturn(batchLoader);
 
         FSParamRepository fsParamRepository = new FSParamRepository("TEST", "TEST", deserializer, resourceResolverFactory);
         fsParamRepository.initialize();
 
         // when
-        Parameter parameter = fsParamRepository.load("parameter");
+        ParameterBatchLoader parameter = fsParamRepository.batchLoad("parameter");
 
         // then
-        assertThat(parameter).isNotNull();
+        assertThat(parameter).isSameAs(batchLoader);
     }
 
     @Test
