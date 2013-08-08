@@ -13,27 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.repository;
+package org.smartparam.transferer.test.assertions;
 
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.transferer.sort.SortedParameters;
 
 /**
- * Warning! This interface will be undergoing big changes in near future
- * (adding new methods most probably) to integrate with editor.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface EditableParamRepository extends ParamRepository {
+public class Assertions extends org.smartparam.engine.test.assertions.Assertions {
 
-    void save(Parameter parameter);
-
-    void save(ParameterBatchLoader batchLoader);
-
-    void delete(String parameterName);
-
-    void reload(Parameter parameter);
-
-    void reload(ParameterBatchLoader batchLoader);
+    public static SortedParametersAssert assertThat(SortedParameters actual) {
+        return SortedParametersAssert.assertThat(actual);
+    }
 
 }

@@ -13,27 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.repository;
-
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.model.Parameter;
+package org.smartparam.transferer;
 
 /**
- * Warning! This interface will be undergoing big changes in near future
- * (adding new methods most probably) to integrate with editor.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface EditableParamRepository extends ParamRepository {
+public enum TransferOperationType {
 
-    void save(Parameter parameter);
-
-    void save(ParameterBatchLoader batchLoader);
-
-    void delete(String parameterName);
-
-    void reload(Parameter parameter);
-
-    void reload(ParameterBatchLoader batchLoader);
+    /**
+     * Override parameter in target repository.
+     */
+    OVERRIDE,
+    /**
+     * Create parameter in target repository if it does not exist.
+     */
+    CREATE,
+    /**
+     * Delete parameter in target repository if it does not exist in source repo.
+     */
+    DELETE;
 
 }

@@ -13,27 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.repository;
-
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.model.Parameter;
+package org.smartparam.transferer;
 
 /**
- * Warning! This interface will be undergoing big changes in near future
- * (adding new methods most probably) to integrate with editor.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface EditableParamRepository extends ParamRepository {
+public class TransferConfig {
 
-    void save(Parameter parameter);
+    private TransferOperationType[] operationsToPerform;
 
-    void save(ParameterBatchLoader batchLoader);
+    public TransferConfig(TransferOperationType... operationsToPerform) {
+        this.operationsToPerform = operationsToPerform;
+    }
 
-    void delete(String parameterName);
+    public TransferOperationType[] getOperationsToPerform() {
+        return operationsToPerform;
+    }
 
-    void reload(Parameter parameter);
-
-    void reload(ParameterBatchLoader batchLoader);
-
+    public boolean perform(TransferOperationType operation) {
+        for (TransferOperationType activeOperation : operationsToPerform) {
+            if (operation == activeOperation) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

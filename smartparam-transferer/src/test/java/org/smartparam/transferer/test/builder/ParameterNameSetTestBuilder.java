@@ -13,27 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.repository;
+package org.smartparam.transferer.test.builder;
 
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.model.Parameter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Warning! This interface will be undergoing big changes in near future
- * (adding new methods most probably) to integrate with editor.
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface EditableParamRepository extends ParamRepository {
+public class ParameterNameSetTestBuilder {
 
-    void save(Parameter parameter);
+    private Set<String> parameters = new HashSet<String>();
 
-    void save(ParameterBatchLoader batchLoader);
+    private ParameterNameSetTestBuilder() {
+    }
 
-    void delete(String parameterName);
+    public static ParameterNameSetTestBuilder parameterNames() {
+        return new ParameterNameSetTestBuilder();
+    }
 
-    void reload(Parameter parameter);
+    public Set<String> build() {
+        return parameters;
+    }
 
-    void reload(ParameterBatchLoader batchLoader);
-
+    public ParameterNameSetTestBuilder having(String... parameterNames) {
+        parameters.addAll(Arrays.asList(parameterNames));
+        return this;
+    }
 }
