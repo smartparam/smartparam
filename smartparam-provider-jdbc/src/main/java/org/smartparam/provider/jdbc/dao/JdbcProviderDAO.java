@@ -14,6 +14,8 @@ public interface JdbcProviderDAO {
 
     JdbcParameter getParameter(String parameterName);
 
+    Set<String> getParameterNames();
+
     List<JdbcParameterLevel> getParameterLevels(int parameterId);
 
     Set<JdbcParameterEntry> getParameterEntries(int parameterId);

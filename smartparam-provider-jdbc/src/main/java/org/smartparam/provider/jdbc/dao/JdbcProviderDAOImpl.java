@@ -36,6 +36,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         this.dataSource = dataSource;
     }
 
+    @Override
     public JdbcParameter getParameter(String parameterName) {
 
         Connection conn = getConnection();
@@ -58,6 +59,48 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
             }
 
             return null;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch JdbcParamter", e);
+            //TODO #ph own hierarchy
+            /*
+             * jesli poleci wyjatek: loguje 1. configuration, 2. sql
+             */
+
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                logger.error("Failed to cleanup resources", ex);
+            }
+        }
+    }
+
+    @Override
+    public Set<String> getParameterNames() {
+        Connection conn = getConnection();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = conn.prepareStatement("select name from " + configuration.getParameterTable());
+            rs = ps.executeQuery();
+
+            Set<String> names = new HashSet<String>();
+            while(rs.next()) {
+                names.add(rs.getString("name"));
+            }
+
+            return names;
 
         } catch (SQLException e) {
             throw new RuntimeException("Failed to fetch JdbcParamter", e);
@@ -133,6 +176,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         return str != null && str.length() > 0 ? str.charAt(0) : ',';
     }
 
+    @Override
     public List<JdbcParameterLevel> getParameterLevels(int parameterId) {
 
         List<JdbcParameterLevel> result = new ArrayList<JdbcParameterLevel>();
@@ -179,6 +223,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         }
     }
 
+    @Override
     public Set<JdbcParameterEntry> getParameterEntries(int parameterId) {
 
         Set<JdbcParameterEntry> result = new HashSet<JdbcParameterEntry>();

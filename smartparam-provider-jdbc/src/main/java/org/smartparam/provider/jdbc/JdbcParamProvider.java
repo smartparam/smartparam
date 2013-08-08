@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
@@ -32,22 +33,39 @@ public class JdbcParamProvider implements ParamRepository {
      * If this variable is set to a non-zero value, it will be used for setting the
      * fetchSize property on statements used for query processing.
      */
-    private int fetchSize = 100;
     //TODO #ph rethink default and comment
+    private int fetchSize = 100;
+
+    @Override
+    public Set<String> listParameters() {
+        return dao.getParameterNames();
+    }
 
     @Override
     public Parameter load(String parameterName) {
-        JdbcParameter p = dao.getParameter(parameterName);
-        List<JdbcParameterLevel> levels = dao.getParameterLevels(p.getId());
-        Set<ParameterEntry> entries = new HashSet<ParameterEntry>(dao.getParameterEntries(p.getId()));
+        JdbcParameter parameter = loadMetadata(parameterName);
 
-        p.setLevels(new ArrayList<Level>(levels));
-        p.setEntries(entries);
+        Set<ParameterEntry> entries = new HashSet<ParameterEntry>(dao.getParameterEntries(parameter.getId()));
+        parameter.setEntries(entries);
 
-        return p;
+        return parameter;
+    }
+
+    @Override
+    public ParameterBatchLoader batchLoad(String parameterName) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private JdbcParameter loadMetadata(String parameterName) {
+        JdbcParameter parameter = dao.getParameter(parameterName);
+
+        List<JdbcParameterLevel> levels = dao.getParameterLevels(parameter.getId());
+        parameter.setLevels(new ArrayList<Level>(levels));
+        return parameter;
     }
 
     //TODO #ph finish findEntries for non-cachable parameters
+    @Override
     public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -71,5 +89,4 @@ public class JdbcParamProvider implements ParamRepository {
     public void setJdbcProviderDao(JdbcProviderDAO dao) {
         this.dao = dao;
     }
-
 }
