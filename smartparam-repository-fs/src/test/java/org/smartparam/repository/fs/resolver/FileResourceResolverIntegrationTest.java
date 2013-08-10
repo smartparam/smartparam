@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.Map;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
@@ -25,7 +26,7 @@ import static org.smartparam.engine.test.assertions.Assertions.*;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class FileResourceResolverIntegrationTest extends ResolverInegrationTestConsts {
+public class FileResourceResolverIntegrationTest {
 
     private static final String PARAMETER_DIR_NAME = "smartParam";
 
@@ -40,6 +41,10 @@ public class FileResourceResolverIntegrationTest extends ResolverInegrationTestC
             {"param2", 2, createFilePath(basePath, "param") + "param2.csv"},
             {"param3", 3, createFilePath(basePath, "param", "deep") + "param3.csv"}
         };
+    }
+
+    private String createFilePath(String... components) {
+        return StringUtils.join(components, File.separatorChar) + File.separatorChar;
     }
 
     @BeforeClass

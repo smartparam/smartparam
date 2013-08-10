@@ -20,7 +20,7 @@ import static com.googlecode.catchexception.CatchException.*;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class ClasspathResourceResolverIntegrationTest extends ResolverInegrationTestConsts {
+public class ClasspathResourceResolverIntegrationTest {
 
     private ParamDeserializer deserializer;
 
@@ -55,7 +55,7 @@ public class ClasspathResourceResolverIntegrationTest extends ResolverInegration
                 entry("param1", "/param1.csv"),
                 entry("param2", "/param/param2.csv"),
                 entry("param3", "/param/deep/param3.csv"))
-                .doesNotContain(entry("param4_ignored",  "/param4_ignored.txt"));;
+                .doesNotContain(entry("param4_ignored", "/param4_ignored.txt"));;
     }
 
     @Test
