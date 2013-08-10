@@ -11,14 +11,17 @@ public class DefaultConfiguration implements Configuration {
 
     private String parameterEntryTable = "sp_parameter_entry";
 
+    @Override
     public String getParameterTable() {
         return parameterTable;
     }
 
+    @Override
     public String getParameterLevelTable() {
         return parameterLevelTable;
     }
 
+    @Override
     public String getParameterEntryTable() {
         return parameterEntryTable;
     }
@@ -34,5 +37,5 @@ public class DefaultConfiguration implements Configuration {
     public void setParameterEntryTable(String parameterEntryTable) {
         this.parameterEntryTable = parameterEntryTable;
     }
-    
+
 }

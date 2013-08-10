@@ -2,9 +2,9 @@ package org.smartparam.provider.jdbc.dao;
 
 import java.util.List;
 import java.util.Set;
+import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.provider.jdbc.model.JdbcParameter;
-import org.smartparam.provider.jdbc.model.JdbcParameterEntry;
-import org.smartparam.provider.jdbc.model.JdbcParameterLevel;
 
 /**
  * @author Przemek Hertel
@@ -16,7 +16,7 @@ public interface JdbcProviderDAO {
 
     Set<String> getParameterNames();
 
-    List<JdbcParameterLevel> getParameterLevels(int parameterId);
+    List<Level> getParameterLevels(int parameterId);
 
-    Set<JdbcParameterEntry> getParameterEntries(int parameterId);
+    Set<ParameterEntry> getParameterEntries(int parameterId);
 }

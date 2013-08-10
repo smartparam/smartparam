@@ -1,0 +1,44 @@
+/*
+ * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ *
+ * Licensed under the Apache License, VeresultSetion 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.smartparam.provider.jdbc.mapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.smartparam.provider.jdbc.model.JdbcParameter;
+import org.smartparam.provider.jdbc.query.ObjectMapper;
+import org.smartparam.provider.jdbc.util.JdbcConverter;
+
+/**
+ *
+ * @author Adam Dubiel <dubiel.adam@gmail.com>
+ */
+public class ParameterMapper implements ObjectMapper<JdbcParameter> {
+
+    @Override
+    public JdbcParameter createObject(ResultSet resultSet) throws SQLException {
+        JdbcParameter p = new JdbcParameter();
+        p.setId(resultSet.getInt("id"));
+        p.setLabel(resultSet.getString("label"));
+        p.setType(resultSet.getString("type"));
+        p.setInputLevels(resultSet.getInt("input_levels"));
+        p.setMultivalue(resultSet.getBoolean("multivalue"));
+        p.setCacheable(resultSet.getBoolean("cacheable"));
+        p.setNullable(resultSet.getBoolean("nullable"));
+        p.setArray(resultSet.getBoolean("array_flag"));
+        p.setArraySeparator(JdbcConverter.toChar(resultSet.getString("array_separator")));
+        return p;
+    }
+}
