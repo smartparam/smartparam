@@ -31,12 +31,11 @@
         <module>smartparam-engine</module>
         <module>smartparam-serializer</module>
         <module>smartparam-repository-fs</module>
-        <module>smartparam-repository-jpa</module>
         <module>smartparam-provider-jdbc</module>
         <module>smartparam-spring</module>
         <module>smartparam-demo</module>
-    <module>smartparam-transferer</module>
-  </modules>
+        <module>smartparam-transferer</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
