@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.provider.jdbc.mapper;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import org.smartparam.provider.jdbc.query.ObjectMapper;
+package org.smartparam.jdbc.exception;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class StringMapper implements ObjectMapper<String> {
+@SuppressWarnings("serial")
+public class JdbcException extends RuntimeException {
 
-    @Override
-    public String createObject(ResultSet resultSet) throws SQLException {
-        return resultSet.getString(1);
+    public JdbcException(String message) {
+        super(message);
     }
 
+    public JdbcException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

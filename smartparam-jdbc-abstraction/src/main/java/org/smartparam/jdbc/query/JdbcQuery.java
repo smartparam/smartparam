@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.provider.jdbc.query;
+package org.smartparam.jdbc.query;
 
-import org.smartparam.provider.jdbc.exception.SmartParamJdbcException;
+import org.smartparam.jdbc.exception.JdbcException;
 
 /**
  *
@@ -54,7 +54,7 @@ public class JdbcQuery {
 
     private void setValue(String argumentName, String value) {
         if(!query.contains(":" + argumentName)) {
-            throw new SmartParamJdbcException("Could not set JdbcQuery value for argument " + argumentName + ". Argument does not exist in query: " + originalQuery);
+            throw new JdbcException("Could not set JdbcQuery value for argument " + argumentName + ". Argument does not exist in query: " + originalQuery);
         }
         query = query.replaceFirst("\\:" + argumentName, value);
     }

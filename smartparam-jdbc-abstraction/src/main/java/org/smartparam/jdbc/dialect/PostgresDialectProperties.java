@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.provider.jdbc.util;
+package org.smartparam.jdbc.dialect;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class JdbcConverter {
+public class PostgresDialectProperties implements DialectProperties {
 
-    public static char toChar(String str) {
-        return str != null && str.length() > 0 ? str.charAt(0) : ',';
+    @Override
+    public String tableExistsQuery() {
+        return "select relname from pg_class where relname = :tableName";
     }
+
 }

@@ -18,8 +18,8 @@ package org.smartparam.provider.jdbc.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.smartparam.engine.model.Level;
+import org.smartparam.jdbc.mapper.ObjectMapper;
 import org.smartparam.provider.jdbc.model.JdbcParameterLevel;
-import org.smartparam.provider.jdbc.query.ObjectMapper;
 
 /**
  *

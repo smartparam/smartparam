@@ -1,20 +1,20 @@
 package org.smartparam.provider.jdbc.dao;
 
 import org.smartparam.provider.jdbc.mapper.ParameterMapper;
-import org.smartparam.provider.jdbc.mapper.StringMapper;
+import org.smartparam.jdbc.mapper.StringMapper;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.provider.jdbc.dao.config.Configuration;
-import org.smartparam.provider.jdbc.dao.config.DefaultConfiguration;
+import org.smartparam.provider.jdbc.config.Configuration;
+import org.smartparam.provider.jdbc.config.DefaultConfiguration;
 import org.smartparam.provider.jdbc.mapper.LevelMapper;
 import org.smartparam.provider.jdbc.mapper.ParameterEntryMapper;
 import org.smartparam.provider.jdbc.model.JdbcParameter;
-import org.smartparam.provider.jdbc.query.JdbcQuery;
-import org.smartparam.provider.jdbc.query.JdbcQueryRunner;
-import org.smartparam.provider.jdbc.query.JdbcQueryRunnerImpl;
+import org.smartparam.jdbc.query.JdbcQuery;
+import org.smartparam.jdbc.query.JdbcQueryRunner;
+import org.smartparam.jdbc.query.JdbcQueryRunnerImpl;
 
 /**
  * @author Przemek Hertel

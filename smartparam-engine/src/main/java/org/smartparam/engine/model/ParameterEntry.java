@@ -38,12 +38,6 @@ public interface ParameterEntry {
     @Deprecated
     String getValue();
 
-    /**
-     * Get function, that will be used to evaluate row value if no value is set (value == null).
-     * Function has to be stored in function repository.
-     *
-     * @return value resolving function
-     */
     @Deprecated
     String getFunction();
 

@@ -34,7 +34,8 @@
         <module>smartparam-provider-jdbc</module>
         <module>smartparam-spring</module>
         <module>smartparam-transferer</module>
-    </modules>
+    <module>smartparam-jdbc-abstraction</module>
+  </modules>
 
     <dependencyManagement>
         <dependencies>

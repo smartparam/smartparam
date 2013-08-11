@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.provider.jdbc.exception;
+package org.smartparam.jdbc.query;
 
-import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.jdbc.mapper.ObjectMapper;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-@SuppressWarnings("serial")
-public class SmartParamJdbcException extends SmartParamException {
+public interface JdbcQueryRunner {
 
-    public SmartParamJdbcException(String message) {
-        super(message);
-    }
+    <T> List<T> queryForList(JdbcQuery query, ObjectMapper<T> mapper);
 
-    public SmartParamJdbcException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    <T> Set<T> queryForSet(JdbcQuery query, ObjectMapper<T> mapper);
+
+    <T> T queryForObject(JdbcQuery query, ObjectMapper<T> mapper);
+
+    boolean queryForExistence(JdbcQuery query);
 }

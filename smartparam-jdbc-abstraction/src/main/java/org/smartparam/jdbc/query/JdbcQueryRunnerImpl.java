@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.provider.jdbc.query;
+package org.smartparam.jdbc.query;
 
+import org.smartparam.jdbc.mapper.ObjectMapper;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +28,8 @@ import java.util.Set;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.provider.jdbc.exception.SmartParamJdbcException;
+import org.smartparam.jdbc.exception.JdbcException;
+import org.smartparam.jdbc.mapper.EmptyMapper;
 
 /**
  *
@@ -66,6 +68,12 @@ public class JdbcQueryRunnerImpl implements JdbcQueryRunner {
         return null;
     }
 
+    @Override
+    public boolean queryForExistence(JdbcQuery query) {
+        List<Object> objects = queryForList(query, new EmptyMapper());
+        return !objects.isEmpty();
+    }
+
     private <T> void query(JdbcQuery query, ObjectMapper<T> mapper, Collection<T> objectCollection) {
         Connection connection = openConnection();
         PreparedStatement preparedStatement = null;
@@ -79,7 +87,7 @@ public class JdbcQueryRunnerImpl implements JdbcQueryRunner {
                 objectCollection.add(mapper.createObject(resultSet));
             }
         } catch (SQLException e) {
-            throw new SmartParamJdbcException("Failed to execute query", e);
+            throw new JdbcException("Failed to execute query", e);
         } finally {
             closeConnection(connection, preparedStatement, resultSet);
         }
@@ -89,7 +97,7 @@ public class JdbcQueryRunnerImpl implements JdbcQueryRunner {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            throw new SmartParamJdbcException("Failed to obtain connection from datasource", e);
+            throw new JdbcException("Failed to obtain connection from datasource", e);
         }
     }
 

@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.provider.jdbc.query;
+package org.smartparam.jdbc.query;
 
-import org.smartparam.provider.jdbc.exception.SmartParamJdbcException;
+import org.smartparam.jdbc.query.JdbcQuery;
+import org.smartparam.jdbc.exception.JdbcException;
 import org.testng.annotations.Test;
 import static com.googlecode.catchexception.CatchException.*;
 import static org.fest.assertions.api.Assertions.*;
@@ -84,6 +85,6 @@ public class JdbcQueryTest {
         catchException(query).setString("unknown", "value");
 
         // then
-        assertThat(caughtException()).isNotNull().isInstanceOf(SmartParamJdbcException.class);
+        assertThat(caughtException()).isNotNull().isInstanceOf(JdbcException.class);
     }
 }

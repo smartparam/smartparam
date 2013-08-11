@@ -13,20 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.provider.jdbc.query;
+package org.smartparam.jdbc.schema.loader;
 
-import java.util.List;
-import java.util.Set;
+import org.smartparam.jdbc.dialect.Dialect;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface JdbcQueryRunner {
+public interface SchemaDefinitionLoader {
 
-    <T> List<T> queryForList(JdbcQuery query, ObjectMapper<T> mapper);
-
-    <T> Set<T> queryForSet(JdbcQuery query, ObjectMapper<T> mapper);
-
-    <T> T queryForObject(JdbcQuery query, ObjectMapper<T> mapper);
+    String getQuery(Dialect dialect);
 }

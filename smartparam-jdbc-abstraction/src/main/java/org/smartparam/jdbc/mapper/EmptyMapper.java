@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.provider.jdbc.query;
+package org.smartparam.jdbc.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,8 +22,11 @@ import java.sql.SQLException;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface ObjectMapper<T> {
+public class EmptyMapper implements ObjectMapper<Object> {
 
-    T createObject(ResultSet resultSet) throws SQLException;
+    @Override
+    public Object createObject(ResultSet resultSet) throws SQLException {
+        return new Object();
+    }
 
 }
