@@ -49,7 +49,7 @@ public class SimpleParameterEntryBatchLoader implements ParameterEntryBatchLoade
 
         if (hasMore) {
             int sublistEndIndex = lastReadPosition + batchSize;
-            if(sublistEndIndex > allEntriesList.size()) {
+            if (sublistEndIndex > allEntriesList.size()) {
                 sublistEndIndex = allEntriesList.size();
                 hasMore = false;
             }
@@ -58,5 +58,9 @@ public class SimpleParameterEntryBatchLoader implements ParameterEntryBatchLoade
         }
 
         return entries;
+    }
+
+    @Override
+    public void close() {
     }
 }

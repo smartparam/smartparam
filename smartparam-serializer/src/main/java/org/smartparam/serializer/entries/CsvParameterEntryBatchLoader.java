@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
 import org.supercsv.io.CsvListReader;
@@ -82,4 +83,17 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
 
         return parameterEntry;
     }
+
+    @Override
+    public void close() {
+        try {
+            if (reader != null) {
+                reader.close();
+            }
+        } catch (IOException exception) {
+            throw new SmartParamException("exception while closing stream", exception);
+        }
+    }
+
+
 }

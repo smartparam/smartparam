@@ -28,4 +28,6 @@ public interface ParameterEntryBatchLoader {
     boolean hasMore();
 
     Collection<ParameterEntry> nextBatch(int batchSize) throws ParamBatchLoadingException;
+
+    void close();
 }
