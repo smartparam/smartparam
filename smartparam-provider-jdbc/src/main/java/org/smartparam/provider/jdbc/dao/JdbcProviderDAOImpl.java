@@ -32,7 +32,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     @Override
     public JdbcParameter getParameter(String parameterName) {
-        JdbcQuery query = JdbcQuery.query(" select id, label, type, input_levels, multivalue, cacheable, nullable, array_flag, array_separator"
+        JdbcQuery query = JdbcQuery.query(" select id, input_levels, cacheable, nullable, array_separator"
                 + " from " + configuration.getParameterTable()
                 + " where name = :name");
         query.setString("name", parameterName);
@@ -49,7 +49,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     @Override
     public List<Level> getParameterLevels(int parameterId) {
-        JdbcQuery query = JdbcQuery.query(" select id, order_no, label, type, matcher, array_flag, level_creator_id"
+        JdbcQuery query = JdbcQuery.query(" select id, order_no, label, type, matcher, level_creator, array_flag"
                 + " from " + configuration.getParameterLevelTable()
                 + " where param_id = :parameterId");
         query.setInt("parameterId", parameterId);

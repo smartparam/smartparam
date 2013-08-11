@@ -31,13 +31,9 @@ public class ParameterMapper implements ObjectMapper<JdbcParameter> {
     public JdbcParameter createObject(ResultSet resultSet) throws SQLException {
         JdbcParameter p = new JdbcParameter();
         p.setId(resultSet.getInt("id"));
-        p.setLabel(resultSet.getString("label"));
-        p.setType(resultSet.getString("type"));
         p.setInputLevels(resultSet.getInt("input_levels"));
-        p.setMultivalue(resultSet.getBoolean("multivalue"));
         p.setCacheable(resultSet.getBoolean("cacheable"));
         p.setNullable(resultSet.getBoolean("nullable"));
-        p.setArray(resultSet.getBoolean("array_flag"));
         p.setArraySeparator(JdbcConverter.toChar(resultSet.getString("array_separator")));
         return p;
     }

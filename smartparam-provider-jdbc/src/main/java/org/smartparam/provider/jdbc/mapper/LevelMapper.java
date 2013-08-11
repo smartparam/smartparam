@@ -42,6 +42,7 @@ public class LevelMapper implements ObjectMapper<Level> {
         level.setName(resultSet.getString("label"));
         level.setType(resultSet.getString("type"));
         level.setMatcher(resultSet.getString("matcher"));
+        level.setLevelCreator(resultSet.getString("level_creator"));
         level.setArray(resultSet.getBoolean("array_flag"));
         return level;
     }

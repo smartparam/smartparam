@@ -20,6 +20,8 @@ public class JdbcParameterLevel implements Level {
 
     private String matcher;
 
+    private String levelCreator;
+
     private boolean array;
 
     public int getOrderNo() {
@@ -33,8 +35,7 @@ public class JdbcParameterLevel implements Level {
 
     @Override
     public String getLevelCreator() {
-        return null;
-        //TODO #ph 0 fix
+        return levelCreator;
     }
 
     @Override
@@ -58,6 +59,10 @@ public class JdbcParameterLevel implements Level {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setLevelCreator(String levelCreator) {
+        this.levelCreator = levelCreator;
     }
 
     public void setType(String type) {

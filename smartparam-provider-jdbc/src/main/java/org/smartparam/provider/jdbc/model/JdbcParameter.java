@@ -27,27 +27,9 @@ public class JdbcParameter implements Parameter {
      */
     private String name;
 
-    /**
-     * Label or caption legible for human. Mainly for GUI purposes.
-     */
-    private String label;
-
-    /**
-     * Detailed parameter description. Mainly for GUI purposes.
-     */
-    private String description;
-
-    /**
-     * Code of parameter type if parameter is single valued.
-     * This code has to be compatible to smartparam type system provided by {@link org.smartparam.engine.core.repository.TypeRepository} object.
-     */
-    private String type;
-
     private List<Level> levels;
 
     private Set<ParameterEntry> entries;
-
-    private boolean multivalue;
 
     private int inputLevels;
 
@@ -55,17 +37,15 @@ public class JdbcParameter implements Parameter {
 
     private boolean cacheable = true;
 
-    private boolean array;
-
     private char arraySeparator = DEFAULT_ARRAY_SEPARATOR;
+
+    public int getId() {
+        return id;
+    }
 
     @Override
     public String getName() {
         return name;
-    }
-
-    public String getLabel() {
-        return label;
     }
 
     @Override
@@ -107,17 +87,10 @@ public class JdbcParameter implements Parameter {
         StringBuilder sb = new StringBuilder();
         sb.append("Parameter#").append(id);
         sb.append('[').append(name);
-        sb.append(", type=").append(type);
         sb.append(", levels=").append(getLevelCount());
         sb.append(", inputLevels=").append(getInputLevels());
         sb.append(nullable ? ", nullable" : ", notnull");
 
-        if (multivalue) {
-            sb.append(", multivalue");
-        }
-        if (array) {
-            sb.append(", array");
-        }
         if (!cacheable) {
             sb.append(", nocache");
         }
@@ -134,28 +107,12 @@ public class JdbcParameter implements Parameter {
         this.name = name;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public void setLevels(List<Level> levels) {
         this.levels = levels;
     }
 
     public void setEntries(Set<ParameterEntry> entries) {
         this.entries = entries;
-    }
-
-    public void setMultivalue(boolean multivalue) {
-        this.multivalue = multivalue;
     }
 
     public void setInputLevels(int inputLevels) {
@@ -170,19 +127,7 @@ public class JdbcParameter implements Parameter {
         this.cacheable = cacheable;
     }
 
-    public void setArray(boolean array) {
-        this.array = array;
-    }
-
     public void setArraySeparator(char arraySeparator) {
         this.arraySeparator = arraySeparator;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }
