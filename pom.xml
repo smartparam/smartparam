@@ -30,12 +30,12 @@
     <modules>
         <module>smartparam-engine</module>
         <module>smartparam-serializer</module>
+        <module>smartparam-repository-jdbc</module>
         <module>smartparam-repository-fs</module>
-        <module>smartparam-provider-jdbc</module>
         <module>smartparam-spring</module>
         <module>smartparam-transferer</module>
-    <module>smartparam-jdbc-abstraction</module>
-  </modules>
+        <module>smartparam-jdbc-abstraction</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
