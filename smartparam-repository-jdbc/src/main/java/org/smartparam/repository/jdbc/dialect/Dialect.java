@@ -13,23 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
-
-import org.smartparam.repository.jdbc.schema.SchemaDescription;
+package org.smartparam.repository.jdbc.dialect;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SchemaDescriptionFactory {
+public enum Dialect {
 
-    public static SchemaDescription createSchemaDescription(Configuration configuration) {
-        SchemaDescription description = new SchemaDescription();
-        description.addTables(configuration.getParameterTable(),
-                configuration.getParameterLevelTable(),
-                configuration.getParameterEntryTable());
-        description.setDialect(configuration.getDialect());
+    ORACLE(null),
+    POSTGRESQL(new PostgresDialectProperties()),
+    MYSQL(null),
+    H2(new H2DialectProperties());
 
-        return description;
+    private DialectProperties properties;
+
+    private Dialect(DialectProperties properties) {
+        this.properties = properties;
+}
+
+    public DialectProperties getProperties() {
+        return properties;
     }
 }

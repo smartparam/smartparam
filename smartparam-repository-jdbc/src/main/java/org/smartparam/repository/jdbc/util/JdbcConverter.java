@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
-
-import org.smartparam.repository.jdbc.schema.SchemaDescription;
+package org.smartparam.repository.jdbc.util;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SchemaDescriptionFactory {
+public class JdbcConverter {
 
-    public static SchemaDescription createSchemaDescription(Configuration configuration) {
-        SchemaDescription description = new SchemaDescription();
-        description.addTables(configuration.getParameterTable(),
-                configuration.getParameterLevelTable(),
-                configuration.getParameterEntryTable());
-        description.setDialect(configuration.getDialect());
-
-        return description;
+    public static char toChar(String str) {
+        return str != null && str.length() > 0 ? str.charAt(0) : ',';
     }
 }

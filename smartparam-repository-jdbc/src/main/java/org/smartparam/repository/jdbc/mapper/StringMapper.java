@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
+package org.smartparam.repository.jdbc.mapper;
 
-import org.smartparam.repository.jdbc.schema.SchemaDescription;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SchemaDescriptionFactory {
+public class StringMapper implements ObjectMapper<String> {
 
-    public static SchemaDescription createSchemaDescription(Configuration configuration) {
-        SchemaDescription description = new SchemaDescription();
-        description.addTables(configuration.getParameterTable(),
-                configuration.getParameterLevelTable(),
-                configuration.getParameterEntryTable());
-        description.setDialect(configuration.getDialect());
-
-        return description;
+    @Override
+    public String createObject(ResultSet resultSet) throws SQLException {
+        return resultSet.getString(1);
     }
+
 }

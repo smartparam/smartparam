@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
+package org.smartparam.repository.jdbc.query;
 
-import org.smartparam.repository.jdbc.schema.SchemaDescription;
+import org.smartparam.repository.jdbc.mapper.ObjectMapper;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SchemaDescriptionFactory {
+public interface JdbcQueryRunner {
 
-    public static SchemaDescription createSchemaDescription(Configuration configuration) {
-        SchemaDescription description = new SchemaDescription();
-        description.addTables(configuration.getParameterTable(),
-                configuration.getParameterLevelTable(),
-                configuration.getParameterEntryTable());
-        description.setDialect(configuration.getDialect());
+    <T> List<T> queryForList(JdbcQuery query, ObjectMapper<T> mapper);
 
-        return description;
-    }
+    <T> Set<T> queryForSet(JdbcQuery query, ObjectMapper<T> mapper);
+
+    <T> T queryForObject(JdbcQuery query, ObjectMapper<T> mapper);
+
+    boolean queryForExistence(JdbcQuery query);
+
+    void execute(String ddl);
 }

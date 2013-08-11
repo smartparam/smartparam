@@ -1,7 +1,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import org.smartparam.repository.jdbc.mapper.ParameterMapper;
-import org.smartparam.jdbc.mapper.StringMapper;
+import org.smartparam.repository.jdbc.mapper.StringMapper;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
@@ -13,15 +13,15 @@ import org.smartparam.repository.jdbc.config.DefaultConfiguration;
 import org.smartparam.repository.jdbc.mapper.LevelMapper;
 import org.smartparam.repository.jdbc.mapper.ParameterEntryMapper;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
-import org.smartparam.jdbc.query.JdbcQuery;
-import org.smartparam.jdbc.query.JdbcQueryRunner;
-import org.smartparam.jdbc.query.JdbcQueryRunnerImpl;
-import org.smartparam.jdbc.schema.SchemaDescription;
-import org.smartparam.jdbc.schema.SchemaLookupResult;
-import org.smartparam.jdbc.schema.SchemaManager;
-import org.smartparam.jdbc.schema.SchemaManagerImpl;
-import org.smartparam.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
-import org.smartparam.jdbc.schema.loader.SchemaDefinitionLoader;
+import org.smartparam.repository.jdbc.query.JdbcQuery;
+import org.smartparam.repository.jdbc.query.JdbcQueryRunner;
+import org.smartparam.repository.jdbc.query.JdbcQueryRunnerImpl;
+import org.smartparam.repository.jdbc.schema.SchemaDescription;
+import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
+import org.smartparam.repository.jdbc.schema.SchemaManager;
+import org.smartparam.repository.jdbc.schema.SchemaManagerImpl;
+import org.smartparam.repository.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
+import org.smartparam.repository.jdbc.schema.loader.SchemaDefinitionLoader;
 import org.smartparam.repository.jdbc.config.SchemaDescriptionFactory;
 import org.smartparam.repository.jdbc.schema.SchemaDefinitionPreparer;
 

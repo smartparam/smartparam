@@ -1,6 +1,6 @@
 package org.smartparam.repository.jdbc.config;
 
-import org.smartparam.jdbc.dialect.Dialect;
+import org.smartparam.repository.jdbc.dialect.Dialect;
 
 /**
  * @author Przemek Hertel

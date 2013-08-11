@@ -13,23 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
-
-import org.smartparam.repository.jdbc.schema.SchemaDescription;
+package org.smartparam.repository.jdbc.dialect;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SchemaDescriptionFactory {
+public interface DialectProperties {
 
-    public static SchemaDescription createSchemaDescription(Configuration configuration) {
-        SchemaDescription description = new SchemaDescription();
-        description.addTables(configuration.getParameterTable(),
-                configuration.getParameterLevelTable(),
-                configuration.getParameterEntryTable());
-        description.setDialect(configuration.getDialect());
+    String tableExistsQuery();
 
-        return description;
-    }
+    boolean hasSequences();
+
+    String sequenceExistsQuery();
 }

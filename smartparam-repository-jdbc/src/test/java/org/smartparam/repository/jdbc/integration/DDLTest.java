@@ -16,15 +16,15 @@
 package org.smartparam.repository.jdbc.integration;
 
 import javax.sql.DataSource;
-import org.smartparam.jdbc.dialect.Dialect;
-import org.smartparam.jdbc.query.JdbcQueryRunner;
-import org.smartparam.jdbc.query.JdbcQueryRunnerImpl;
-import org.smartparam.jdbc.schema.SchemaDescription;
-import org.smartparam.jdbc.schema.SchemaLookupResult;
-import org.smartparam.jdbc.schema.SchemaManager;
-import org.smartparam.jdbc.schema.SchemaManagerImpl;
-import org.smartparam.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
-import org.smartparam.jdbc.schema.loader.SchemaDefinitionLoader;
+import org.smartparam.repository.jdbc.dialect.Dialect;
+import org.smartparam.repository.jdbc.query.JdbcQueryRunner;
+import org.smartparam.repository.jdbc.query.JdbcQueryRunnerImpl;
+import org.smartparam.repository.jdbc.schema.SchemaDescription;
+import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
+import org.smartparam.repository.jdbc.schema.SchemaManager;
+import org.smartparam.repository.jdbc.schema.SchemaManagerImpl;
+import org.smartparam.repository.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
+import org.smartparam.repository.jdbc.schema.loader.SchemaDefinitionLoader;
 import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.dao.JdbcProviderDAOImpl;
 import org.smartparam.repository.jdbc.schema.SchemaDefinitionPreparer;

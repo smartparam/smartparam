@@ -34,7 +34,6 @@
         <module>smartparam-repository-fs</module>
         <module>smartparam-spring</module>
         <module>smartparam-transferer</module>
-        <module>smartparam-jdbc-abstraction</module>
     </modules>
 
     <dependencyManagement>

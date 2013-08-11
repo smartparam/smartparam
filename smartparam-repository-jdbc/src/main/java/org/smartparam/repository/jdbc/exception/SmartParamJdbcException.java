@@ -13,23 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
-
-import org.smartparam.repository.jdbc.schema.SchemaDescription;
+package org.smartparam.repository.jdbc.exception;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SchemaDescriptionFactory {
+@SuppressWarnings("serial")
+public class SmartParamJdbcException extends RuntimeException {
 
-    public static SchemaDescription createSchemaDescription(Configuration configuration) {
-        SchemaDescription description = new SchemaDescription();
-        description.addTables(configuration.getParameterTable(),
-                configuration.getParameterLevelTable(),
-                configuration.getParameterEntryTable());
-        description.setDialect(configuration.getDialect());
+    public SmartParamJdbcException(String message) {
+        super(message);
+    }
 
-        return description;
+    public SmartParamJdbcException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

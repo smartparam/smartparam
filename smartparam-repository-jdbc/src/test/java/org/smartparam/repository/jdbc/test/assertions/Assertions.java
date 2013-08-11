@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.test.assertions;
 
-import org.smartparam.jdbc.schema.SchemaLookupResult;
+import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 
 
 /**

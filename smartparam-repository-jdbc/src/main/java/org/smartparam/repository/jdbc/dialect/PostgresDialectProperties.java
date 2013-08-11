@@ -13,23 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
-
-import org.smartparam.repository.jdbc.schema.SchemaDescription;
+package org.smartparam.repository.jdbc.dialect;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class SchemaDescriptionFactory {
+public class PostgresDialectProperties implements DialectProperties {
 
-    public static SchemaDescription createSchemaDescription(Configuration configuration) {
-        SchemaDescription description = new SchemaDescription();
-        description.addTables(configuration.getParameterTable(),
-                configuration.getParameterLevelTable(),
-                configuration.getParameterEntryTable());
-        description.setDialect(configuration.getDialect());
-
-        return description;
+    @Override
+    public String tableExistsQuery() {
+        return "select relname from pg_class where upper(relname) = upper(:tableName)";
     }
+
+    @Override
+    public boolean hasSequences() {
+        return true;
+    }
+
+    @Override
+    public String sequenceExistsQuery() {
+        return "select relname from pg_class where upper(relname) = upper(:sequenceName)";
+    }
+
 }
