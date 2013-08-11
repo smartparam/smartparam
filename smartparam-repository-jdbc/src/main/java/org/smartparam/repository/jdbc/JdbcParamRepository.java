@@ -2,6 +2,7 @@ package org.smartparam.repository.jdbc;
 
 import java.util.List;
 import java.util.Set;
+import org.smartparam.engine.config.InitializableComponent;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
@@ -13,7 +14,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParamRepository implements ParamRepository {
+public class JdbcParamRepository implements ParamRepository, InitializableComponent {
 
     private JdbcProviderDAO dao;
 
@@ -25,6 +26,11 @@ public class JdbcParamRepository implements ParamRepository {
      */
     //TODO #ph rethink default and comment
     private int fetchSize = 100;
+
+    @Override
+    public void initialize() {
+        dao.createSchema();
+    }
 
     @Override
     public Set<String> listParameters() {
