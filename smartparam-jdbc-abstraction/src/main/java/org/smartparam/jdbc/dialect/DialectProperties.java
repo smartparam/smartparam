@@ -23,4 +23,7 @@ public interface DialectProperties {
 
     String tableExistsQuery();
 
+    boolean hasSequences();
+
+    String sequenceExistsQuery();
 }

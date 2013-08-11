@@ -17,8 +17,10 @@
 package org.smartparam.jdbc.schema.loader;
 
 import org.smartparam.jdbc.dialect.Dialect;
+import org.smartparam.jdbc.exception.JdbcException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import static com.googlecode.catchexception.CatchException.*;
 import static org.fest.assertions.api.Assertions.*;
 
 /**
@@ -35,13 +37,22 @@ public class ClasspathSchemaDefinitionLoaderTest {
     }
 
     @Test
-    public void shouldReadContentsOfDialectFile() {
+    public void shouldReadContentsOfDialectFilePerservingLinebreaks() {
         // given
         // when
         String ddlQuery = classpathSchemaDefinitionLoader.getQuery(Dialect.ORACLE);
 
         // then
-        assertThat(ddlQuery).isEqualTo("test");
+        assertThat(ddlQuery).isEqualTo("test\nnewline\n");
     }
 
+    @Test
+    public void shouldBailIfDDLFileDoesNotExist() {
+        // given
+        // when
+        catchException(classpathSchemaDefinitionLoader).getQuery(Dialect.POSTGRESQL);
+
+        // then
+        assertThat(caughtException()).isNotNull().isInstanceOf(JdbcException.class);
+    }
 }

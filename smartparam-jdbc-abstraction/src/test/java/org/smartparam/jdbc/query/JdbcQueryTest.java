@@ -48,7 +48,7 @@ public class JdbcQueryTest {
         query.setString("name", "test");
 
         // then
-        assertThat(query.getQuery()).isEqualTo("select * from test where name = \"test\"");
+        assertThat(query.getQuery()).isEqualTo("select * from test where name = 'test'");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class JdbcQueryTest {
         query.setString("name", "test");
 
         // then
-        assertThat(query.getQuery()).isEqualTo("select * from test where name = \"test\" and count = 1");
+        assertThat(query.getQuery()).isEqualTo("select * from test where name = 'test' and count = 1");
     }
 
     @Test

@@ -49,7 +49,7 @@ public class JdbcQuery {
     }
 
     public void setString(String argumentName, String value) {
-        setValue(argumentName, "\"" + value + "\"");
+        setValue(argumentName, "'" + value + "'");
     }
 
     private void setValue(String argumentName, String value) {
@@ -58,4 +58,11 @@ public class JdbcQuery {
         }
         query = query.replaceFirst("\\:" + argumentName, value);
     }
+
+    @Override
+    public String toString() {
+        return query;
+    }
+
+
 }

@@ -32,4 +32,6 @@ public interface JdbcQueryRunner {
     <T> T queryForObject(JdbcQuery query, ObjectMapper<T> mapper);
 
     boolean queryForExistence(JdbcQuery query);
+
+    void execute(String ddl);
 }

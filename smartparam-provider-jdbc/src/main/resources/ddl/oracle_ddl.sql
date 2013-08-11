@@ -8,7 +8,7 @@ CREATE TABLE :parameterTableName (
     array_separator VARCHAR2(1 CHAR) DEFAULT ';' NOT NULL,
     CONSTRAINT pk_:parameterTableName PRIMARY KEY (id),
     CONSTRAINT u_:parameterTableName_name UNIQUE (name)
-)
+);
 
 -- parameter level
 CREATE TABLE :levelTableName (
@@ -20,9 +20,9 @@ CREATE TABLE :levelTableName (
     matcher VARCHAR2(100 CHAR),
     level_creator VARCHAR2(100 CHAR),
     array_flag NUMBER(1,0) DEFAULT 0 NOT NULL,
-    CONSTRAINT pl_:levelTableName PRIMARY KEY (id),
+    CONSTRAINT pk_:levelTableName PRIMARY KEY (id),
     CONSTRAINT fk_:levelTableName_param_id FOREIGN KEY (param_id) REFERENCES :parameterTableName (id)
-)
+);
 
 -- parameter entry
 CREATE TABLE :parameterEntryTableName (
@@ -38,4 +38,4 @@ CREATE TABLE :parameterEntryTableName (
     level8 VARCHAR2(256 CHAR),
     CONSTRAINT pk_:parameterEntryTableName PRIMARY KEY (id),
     CONSTRAINT fk_:parameterEntryTableName_param_id FOREIGN KEY (param_id) REFERENCES :parameterTableName (id)
-)
+);

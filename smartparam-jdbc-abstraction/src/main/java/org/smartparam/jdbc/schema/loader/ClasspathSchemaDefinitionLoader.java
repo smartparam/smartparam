@@ -84,7 +84,7 @@ public class ClasspathSchemaDefinitionLoader implements SchemaDefinitionLoader {
         StringWriter target = new StringWriter();
         String line = source.readLine();
         while (line != null) {
-            target.write(line);
+            target.write(line + "\n");
             line = source.readLine();
         }
 

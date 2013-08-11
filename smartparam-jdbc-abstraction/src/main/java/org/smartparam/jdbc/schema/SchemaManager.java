@@ -13,27 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.jdbc.dialect;
+package org.smartparam.jdbc.schema;
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class PostgresDialectProperties implements DialectProperties {
+public interface SchemaManager {
 
-    @Override
-    public String tableExistsQuery() {
-        return "select relname from pg_class where upper(relname) = upper(:tableName)";
-    }
+    SchemaLookupResult schemaExists(SchemaDescription description);
 
-    @Override
-    public boolean hasSequences() {
-        return true;
-    }
+    void createSchema(String ddl);
 
-    @Override
-    public String sequenceExistsQuery() {
-        return "select relname from pg_class where upper(relname) = upper(:sequenceName)";
-    }
+    void dropSchema(SchemaDescription description);
 
+    void executeDDL(String ddl);
 }

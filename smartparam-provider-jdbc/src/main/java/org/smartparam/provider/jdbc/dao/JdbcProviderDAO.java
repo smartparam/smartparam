@@ -12,6 +12,8 @@ import org.smartparam.provider.jdbc.model.JdbcParameter;
  */
 public interface JdbcProviderDAO {
 
+    void createSchema();
+
     JdbcParameter getParameter(String parameterName);
 
     Set<String> getParameterNames();

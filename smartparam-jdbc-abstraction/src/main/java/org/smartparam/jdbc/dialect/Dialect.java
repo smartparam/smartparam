@@ -22,14 +22,15 @@ package org.smartparam.jdbc.dialect;
 public enum Dialect {
 
     ORACLE(null),
-    POSTGRES(new PostgresDialectProperties()),
-    MYSQL(null);
+    POSTGRESQL(new PostgresDialectProperties()),
+    MYSQL(null),
+    H2(new H2DialectProperties());
 
     private DialectProperties properties;
 
     private Dialect(DialectProperties properties) {
         this.properties = properties;
-    }
+}
 
     public DialectProperties getProperties() {
         return properties;

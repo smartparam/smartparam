@@ -5,6 +5,7 @@ import org.smartparam.jdbc.mapper.StringMapper;
 import java.util.List;
 import java.util.Set;
 import javax.sql.DataSource;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.provider.jdbc.config.Configuration;
@@ -15,6 +16,14 @@ import org.smartparam.provider.jdbc.model.JdbcParameter;
 import org.smartparam.jdbc.query.JdbcQuery;
 import org.smartparam.jdbc.query.JdbcQueryRunner;
 import org.smartparam.jdbc.query.JdbcQueryRunnerImpl;
+import org.smartparam.jdbc.schema.SchemaDescription;
+import org.smartparam.jdbc.schema.SchemaLookupResult;
+import org.smartparam.jdbc.schema.SchemaManager;
+import org.smartparam.jdbc.schema.SchemaManagerImpl;
+import org.smartparam.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
+import org.smartparam.jdbc.schema.loader.SchemaDefinitionLoader;
+import org.smartparam.provider.jdbc.config.SchemaDescriptionFactory;
+import org.smartparam.provider.jdbc.schema.SchemaDefinitionPreparer;
 
 /**
  * @author Przemek Hertel
@@ -26,8 +35,32 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     private JdbcQueryRunner queryRunner;
 
+    private SchemaManager schemaManager;
+
+    private SchemaDefinitionLoader schemaDefinitionLoader = new ClasspathSchemaDefinitionLoader("/ddl/", ":dialect_ddl.sql", ":dialect");
+
+    private SchemaDefinitionPreparer schemaDefinitionPreparer = new SchemaDefinitionPreparer();
+
     public JdbcProviderDAOImpl(DataSource dataSource) {
         this.queryRunner = new JdbcQueryRunnerImpl(dataSource);
+        schemaManager = new SchemaManagerImpl(queryRunner);
+    }
+
+    @Override
+    public void createSchema() {
+        SchemaDescription description = SchemaDescriptionFactory.createSchemaDescription(configuration);
+        SchemaLookupResult result = schemaManager.schemaExists(description);
+
+        if (result.noEntityExisting()) {
+            String rawDDL = schemaDefinitionLoader.getQuery(configuration.getDialect());
+            String ddl = schemaDefinitionPreparer.prepareQuery(rawDDL, configuration);
+            schemaManager.createSchema(ddl);
+        }
+        else if(!result.noEntityMissing()) {
+            throw new SmartParamException("JDBC repository detected partial SmartParam schema in database. "
+                    + "This version of JDBC repository has no schema update capabilities, remove old SmartParam entities "
+                    + "from the database or use different naming schema. Detected partial entities: " + result.getExistingEntities());
+        }
     }
 
     @Override

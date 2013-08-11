@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.jdbc.schema;
+package org.smartparam.provider.jdbc.test.assertions;
+
+import org.smartparam.jdbc.schema.SchemaLookupResult;
+
 
 /**
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public interface SchemaCreator {
+public class Assertions extends org.fest.assertions.api.Assertions {
 
-    boolean schemaExists();
+    public static SchemaLookupResultAssert assertThat(SchemaLookupResult actual) {
+        return SchemaLookupResultAssert.assertThat(actual);
+    }
 
-    void createSchema();
-
-    void dropSchema();
 }
