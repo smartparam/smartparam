@@ -31,7 +31,7 @@ import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 /**
  * @author Przemek Hertel
  */
-public class ParamEngineScenarioTest {
+public class ParamEngineIntegrationTest {
 
     private SmartParamEngine engine;
 
