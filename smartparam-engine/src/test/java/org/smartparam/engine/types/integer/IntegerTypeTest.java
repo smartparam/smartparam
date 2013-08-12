@@ -3,8 +3,8 @@ package org.smartparam.engine.types.integer;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import java.math.BigDecimal;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 
 /**
  * @author Przemek Hertel

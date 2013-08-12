@@ -1,13 +1,11 @@
 package org.smartparam.engine.types.date;
 
-import org.smartparam.engine.types.date.DateHolder;
-import org.smartparam.engine.types.date.DateType;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
@@ -49,37 +47,37 @@ public class DateHolderTest {
         assertFalse(h3.isNotNull());
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testLongValue() {
         h1.longValue();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testIntValue() {
         h2.intValue();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testDoubleValue() {
         h3.doubleValue();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetInteger() {
         h1.getInteger();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetLong() {
         h2.getLong();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetDouble() {
         h3.getDouble();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetBigDecimal() {
         h1.getBigDecimal();
     }
@@ -94,12 +92,12 @@ public class DateHolderTest {
         assertNull(h3.getString());
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testBooleanValue() {
         h1.booleanValue();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetBoolean() {
         h1.getBoolean();
     }

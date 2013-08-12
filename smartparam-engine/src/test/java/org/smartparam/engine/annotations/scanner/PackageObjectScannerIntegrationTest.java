@@ -11,8 +11,8 @@ import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutInstance
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.PackageListTestBuilder.*;
 import static com.googlecode.catchexception.CatchException.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutOrder;
@@ -30,7 +30,7 @@ public class PackageObjectScannerIntegrationTest {
 
     private PackageList packageList;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         packageList = packageList().withPackage(TEST_PACKAGE).build();
     }

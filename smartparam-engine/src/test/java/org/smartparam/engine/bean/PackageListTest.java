@@ -1,7 +1,7 @@
 package org.smartparam.engine.bean;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import static org.fest.assertions.api.Assertions.*;
 
 /**
@@ -13,7 +13,7 @@ public class PackageListTest {
 
     private PackageList packageList = null;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         packageList = new PackageList();
     }

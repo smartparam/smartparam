@@ -4,8 +4,8 @@ import org.smartparam.engine.core.repository.SmartAssemblerProvider;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 import static org.mockito.Mockito.*;
 import java.util.List;
 import org.smartparam.engine.core.assembler.Assembler;
@@ -149,7 +149,7 @@ public class AssemblerProviderTest {
         ap.logAssemblers();
     }
 
-    @Test(expected = SmartParamException.class)
+    @Test(expectedExceptions = SmartParamException.class)
     public void testFindAssembler__notFound() {
 
         // testowany obiekt

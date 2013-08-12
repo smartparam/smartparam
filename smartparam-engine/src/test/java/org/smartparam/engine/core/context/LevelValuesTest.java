@@ -3,8 +3,8 @@ package org.smartparam.engine.core.context;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.context.ParamContext;
 import java.math.BigDecimal;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 
 /**
  * @author Przemek Hertel

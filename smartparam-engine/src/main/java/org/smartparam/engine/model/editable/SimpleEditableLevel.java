@@ -27,4 +27,9 @@ public class SimpleEditableLevel extends SimpleLevel implements EditableLevel {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public void setArray(boolean array) {
+        this.array = array;
+    }
 }

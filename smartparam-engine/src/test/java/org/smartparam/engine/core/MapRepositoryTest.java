@@ -3,8 +3,8 @@ package org.smartparam.engine.core;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
@@ -19,7 +19,7 @@ public class MapRepositoryTest {
 
     private MapRepository<Object> mapRepository;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
     }
 

@@ -58,4 +58,9 @@ public class LevelTestBuilder {
         level.setType(type);
         return this;
     }
+
+    public LevelTestBuilder array() {
+        level.setArray(true);
+        return this;
+    }
 }

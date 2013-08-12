@@ -2,17 +2,12 @@ package org.smartparam.engine.core.engine;
 
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.service.FunctionManager;
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.assembler.AssemblerMethod;
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 import org.smartparam.engine.config.ParamEngineRuntimeConfigBuilder;
-import org.smartparam.engine.core.repository.SmartAssemblerProvider;
-import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
@@ -22,7 +17,7 @@ import org.smartparam.engine.core.repository.AssemblerProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.function.Function;
-import org.smartparam.engine.types.plugin.PluginHolder;
+import org.smartparam.engine.types.string.StringHolder;
 import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.ParamHelper;
 
@@ -49,248 +44,70 @@ public class SmartParamEngine implements ParamEngine {
         return configBuilder.buildConfig(this);
     }
 
-    @Deprecated
     @Override
-    public AbstractHolder getValue(String paramName, ParamContext ctx) {
+    public ParamValue get(String paramName, ParamContext ctx) {
 
-        logger.debug("enter getValue[{}], ctx={}", paramName, ctx);
+        logger.debug("enter get[{}], ctx={}", paramName, ctx);
 
-
-
+        // obtain prepared parameter
         PreparedParameter param = getPreparedParameter(paramName);
 
-        PreparedEntry pe = findParameterEntry(param, ctx);
+        // find entries matching given context
+        PreparedEntry[] rows = findParameterEntries(param, ctx);
 
+        // todo ph think about it
+        if (rows.length == 0) {
+            if (param.isNullable()) {
+                logger.debug("leave get[{}], result=null", paramName);
+                return null;
+            }
 
-        AbstractHolder result;
-
-        ParamValue value = get(paramName, ctx);
-
-        if (value != null) {
-            result = value.get();
+            throw raiseValueNotFoundException(paramName, ctx);
         }
-        else {
-            result = param.getOutputLevel(1).getType().convert(null);
+
+        int k = param.getInputLevelsCount();   // liczba poziomow wejsciowych (k)
+        int l = param.getLevelCount() - k;     // liczba poziomow wyjsciowych (n-k)
+
+        // allocate result matrix
+        MultiValue[] mv = new MultiValue[rows.length];
+
+        // iteracja po wierszach podmacierzy
+        for (int i = 0; i < rows.length; i++) {
+            PreparedEntry pe = rows[i];
+
+            PreparedLevel[] levels = param.getLevels();
+            Object[] vector = new Object[l];
+
+            // iteracja po kolumnach podmacierzy (czyli po poziomach wyjsciowych)
+            for (int j = 0; j < l; ++j) {
+                String cellText = pe.getLevel(k + j + 1);
+                PreparedLevel level = levels[k + j];
+
+                Type<?> cellType = level.getType();
+                Object cellValue;
+
+                if (level.isArray()) {
+                    cellValue = evaluateStringAsArray(cellText, cellType, ',');
+                } else {
+                    cellValue = ParamHelper.decode(cellType, cellText);
+                }
+
+                vector[j] = cellValue;
+            }
+
+            mv[i] = new MultiValue(vector);
         }
 
-//        if (pe != null) {
-//            result = evaluateParameterEntry(pe, ctx, param.getType());
-//
-//        } else if (param.isNullable()) {
-//            result = param.getType().convert(null);
-//
-//        } else {
-//            throw raiseValueNotFoundException(paramName, ctx);
-//        }
+        ParamValue result = new ParamValueImpl(mv, param.getLevelNameMap());
 
-        logger.debug("leave getValue[{}], result={}", paramName, result);
+        logger.debug("leave get[{}], result={}", paramName, result);
         return result;
     }
-
-    @Override
-    public AbstractHolder getValue(String paramName, Object... levelValues) {
-        DefaultContext ctx = new DefaultContext();
-        ctx.setLevelValues(levelValues);
-
-        return getValue(paramName, ctx);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T getResult(String paramName, Class<T> resultClass, ParamContext ctx) {
-
-        if (ctx.getResultClass() == null) {
-            ctx.setResultClass(resultClass);
-
-        } else if (ctx.getResultClass() != resultClass) {
-            throw new SmartParamUsageException(
-                    SmartParamErrorCode.ILLEGAL_API_USAGE,
-                    "Passing resultClass different from ctx#resultClass: " + resultClass + " / " + ctx.getResultClass());
-        }
-
-        T result = null;
-        AbstractHolder value = getValue(paramName, ctx);
-
-        if (value.isNotNull()) {
-            AssemblerMethod asm = assemblerProvider.findAssembler(value.getClass(), resultClass);
-            result = (T) asm.assemble(value, ctx);
-        }
-
-        return result;
-    }
-
-    public Object getResult(String paramName, ParamContext ctx) {
-
-        if (ctx.getResultClass() == null) {
-            throw new SmartParamUsageException(
-                    SmartParamErrorCode.ILLEGAL_API_USAGE,
-                    "Calling getResult() but there is no result class in param context");
-        }
-
-        return getResult(paramName, ctx.getResultClass(), ctx);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T[] getResultArray(String paramName, Class<T> resultClass, ParamContext ctx) {
-
-        if (ctx.getResultClass() == null) {
-            ctx.setResultClass(resultClass);
-        } else if (ctx.getResultClass() != resultClass) {
-            throw new SmartParamUsageException(
-                    SmartParamErrorCode.ILLEGAL_API_USAGE,
-                    "Passing resultClass different from ctx#resultClass: " + resultClass + " / " + ctx.getResultClass());
-        }
-
-        AbstractHolder[] array = getArray(paramName, ctx);
-
-        T[] result = (T[]) Array.newInstance(resultClass, array.length);
-
-        for (int i = 0; i < result.length; i++) {
-            AssemblerMethod asm = assemblerProvider.findAssembler(array[i].getClass(), resultClass);
-            result[i] = (T) asm.assemble(array[i], ctx);
-        }
-
-        return result;
-    }
-
-    @Deprecated
-    @Override
-    public AbstractHolder[] getArray(String paramName, ParamContext ctx) {
-
-        logger.debug("enter getArray[{}], ctx={}", paramName, ctx);
-
-        PreparedParameter param = getPreparedParameter(paramName);
-        PreparedLevel out = param.getOutputLevel(1);
-
-        if (!out.isArray()) {
-            throw new SmartParamUsageException(
-                    SmartParamErrorCode.ILLEGAL_API_USAGE,
-                    "Calling getArray() for non-array parameter: " + paramName);
-        }
-
-        AbstractHolder[] result;
-
-        ParamValue value = get(paramName, ctx);
-
-        if (value != null) {
-            result = value.row().getArray(1);
-        }
-        else {
-            result = out.getType().newArray(0);
-        }
-
-        logger.debug("leave getArray[{}], result={}", paramName, result);
-        return result;
-    }
-
-	@Deprecated
-    @Override
-    public MultiValue getMultiValue(String paramName, ParamContext ctx) {
-
-        PreparedParameter param = getPreparedParameter(paramName);
-
-        if (!param.isMultivalue()) {
-            throw new SmartParamUsageException(
-                    SmartParamErrorCode.ILLEGAL_API_USAGE,
-                    "Calling getMultiValue() for non-multivalue parameter: " + paramName);
-        }
-
-		ParamValue value = get(paramName, ctx);
-		if (value == null) {
-			return null;
-		}
-
-		return value.row();
-    }
-
-	@Deprecated
-    @Override
-    public MultiRow getMultiRow(String paramName, ParamContext ctx) {
-
-		ParamValue value = get(paramName, ctx);
-		if (value == null) {
-			return null;
-		}
-
-		MultiRow mr = new MultiRow(value.size());
-		for (int i = 0; i < value.size(); i++) {
-			mr.setRow(i, value.row(i + 1));
-		}
-
-		return mr;
-    }
-
-	@Override
-	public ParamValue get(String paramName, ParamContext ctx) {
-
-		logger.debug("enter get[{}], ctx={}", paramName, ctx);
-
-		// obtain prepared parameter
-		PreparedParameter param = getPreparedParameter(paramName);
-
-		// find entries matching given context
-		PreparedEntry[] rows = findParameterEntries(param, ctx);
-
-		// todo ph think about it
-		if (rows.length == 0) {
-			if (param.isNullable()) {
-				logger.debug("leave get[{}], result=null", paramName);
-				return null;
-			}
-
-			throw raiseValueNotFoundException(paramName, ctx);
-		}
-
-		int k = param.getInputLevelsCount();   // liczba poziomow wejsciowych (k)
-		int l = param.getLevelCount() - k;     // liczba poziomow wyjsciowych (n-k)
-
-		// allocate result matrix
-		MultiValue[] mv = new MultiValue[rows.length];
-
-		// iteracja po wierszach podmacierzy
-		for (int i = 0; i < rows.length; i++) {
-			PreparedEntry pe = rows[i];
-
-			PreparedLevel[] levels = param.getLevels();
-			Object[] vector = new Object[l];
-
-			// iteracja po kolumnach podmacierzy (czyli po poziomach wyjsciowych)
-			for (int j = 0; j < l; ++j) {
-				String cellText = pe.getLevel(k + j + 1);
-				PreparedLevel level = levels[k + j];
-
-				Type<?> cellType = level.getType();
-				Object cellValue;
-
-				if (level.isArray()) {
-					cellValue = evaluateStringAsArray(cellText, cellType, ',');
-				} else {
-					cellValue = ParamHelper.decode(cellType, cellText);
-				}
-
-				vector[j] = cellValue;
-			}
-
-			mv[i] = new MultiValue(vector);
-		}
-
-		ParamValue result = new ParamValueImpl(mv, param.getLevelNameMap());
-
-		logger.debug("leave get[{}], result={}", paramName, result);
-		return result;
-	}
 
     @Override
     public ParamValue get(String paramName, Object... inputLevels) {
         ParamContext ctx = new LevelValues(inputLevels);
         return get(paramName, ctx);
-    }
-
-    public Object[] unwrap(AbstractHolder[] array) {
-        Object[] result = new Object[array.length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = array[i].getValue();
-        }
-        return result;
     }
 
     @Override
@@ -313,12 +130,12 @@ public class SmartParamEngine implements ParamEngine {
         return names;
     }
 
-    @Override
     public Object call(String paramName, ParamContext ctx, Object... args) {
-        AbstractHolder holder = getValue(paramName, ctx);
+        AbstractHolder holder = get(paramName, ctx).get();
 
-        if (!(holder instanceof PluginHolder)) {
-            logger.warn("result is not plugin holder: {}", holder);
+        if (!(holder instanceof StringHolder)) {
+            throw new SmartParamException(SmartParamErrorCode.ILLEGAL_API_USAGE,
+                    "Can't call function if returned value is not of \"string\" type! Got " + holder.getClass().getSimpleName() + " instead of StringHolder.");
         }
 
         String functionName = holder.getString();
@@ -330,124 +147,6 @@ public class SmartParamEngine implements ParamEngine {
         return null;
     }
 
-    /**
-     * Zwraca wartosc wiersza parametru. Wartosc pochodzi z:
-     * <ol>
-     * <li> pola <tt>value</tt>,
-     * <li> lub funkcji <tt>function</tt>, jesli <tt>value=null</tt>.
-     * </ol>
-     *
-     * Jesli <tt>value</tt> i <tt>function</tt> sa rowne <tt>null</tt>, zwracany
-     * jest <tt>null</tt> skonwetowany na typ <tt>type</tt>
-     * zgodnie z metoda <tt>convert</tt> danego typu.
-     *
-     * @param pe wiersz parametru
-     * @param ctx kontekstu uzycia parametru
-     * @param type typ parametru
-     *
-     * @return holder reprezentujacy wartosc parametru
-     */
-    AbstractHolder evaluateParameterEntry(PreparedEntry pe, ParamContext ctx, Type<?> type) {
-
-        String v = pe.getValue();
-        if (v != null) {
-            return ParamHelper.decode(type, v);
-        }
-
-        if (pe.getFunction() != null) {
-            Object result = functionManager.invokeFunction(pe.getFunction(), ctx);
-            return ParamHelper.convert(type, result);
-        }
-
-        return ParamHelper.convert(type, (Object) null);
-    }
-
-    /**
-     * Zwraca wartosc wiersza parametru jako <b>tablice</b> holderow
-     * odpowiedniego typu, na przyklad IntegerHolder[] czy NumberHolder[].
-     * <p>
-     * Wartosci zwracanej tablicy pochodza z:
-     * <ol>
-     * <li> pola <tt>value</tt>,
-     * <li> lub funkcji <tt>function</tt>, jesli <tt>value=null</tt>.
-     * </ol>
-     *
-     * Jesli <tt>value</tt> i <tt>function</tt> sa rowne <tt>null</tt>, zwracana
-     * jest pusta tablica typu wynikajacego z <tt>type</tt>.
-     *
-     * @param pe wiersz parametru
-     * @param ctx kontekstu uzycia parametru
-     * @param type typ parametru
-     * @param separator znak separatora wartosci
-     *
-     * @return tablica holderow typu wynikajacego z <tt>type</tt>
-     */
-    AbstractHolder[] evaluateParameterEntryAsArray(PreparedEntry pe, ParamContext ctx, Type<?> type, char separator) {
-        String v = pe.getValue();
-        if (v != null) {
-            return evaluateStringAsArray(v, type, separator);
-        }
-
-        if (pe.getFunction() != null) {
-            Object result = functionManager.invokeFunction(pe.getFunction(), ctx);
-
-            // funkcja zwrocila null - zamieniamy na pusta tablice odpowiedniego typu
-            if (result == null) {
-                return type.newArray(0);
-            }
-
-            // rezultat funkcji to tablica
-            if (result.getClass().isArray()) {
-                if (result instanceof Object[]) {
-                    // tablica obiektow
-                    return ParamHelper.convert(type, (Object[]) result);
-
-                } else {
-                    // tablica typow prostych
-                    return ParamHelper.convertNonObjectArray(type, result);
-                }
-            }
-
-            // rezultat funkcji to kolekcja
-            if (result instanceof Collection) {
-                return ParamHelper.convert(type, (Collection) result);
-            }
-
-            // rezultat funkcji to string (csv)
-            if (result instanceof String) {
-                return evaluateStringAsArray(result.toString(), type, separator);
-            }
-
-            // rezultat funkcji to pojedynczy obiekt - traktujemy jako 1-elementowa tablice
-            AbstractHolder[] array = type.newArray(1);
-            array[0] = ParamHelper.convert(type, result);
-            return array;
-        }
-
-        // brak value i function - zwracamy pusta tablice odpowiedniego typu
-        return type.newArray(0);
-    }
-
-    /**
-     * Dekoduje zawartosc komorki <tt>value</tt> typu tablicowego (array) na
-     * tablice wartosci typu <tt>AbstractHolder[]</tt>.
-     *
-     * Wartosc <tt>value</tt> moze pochodzic:
-     * <ol>
-     * <li> z komorki poziomu - w przypadku parametru typu <tt>multivalue</tt>
-     * <li> z wartosci w wierszu (ParameterEntry#value) - w przypadku parametru
-     * zwyklego
-     * </ol>
-     *
-     * Gdy wartosc jest pusta lub rowna null, zwraca pusta tablice typu
-     * wynikajacego z <tt>type</tt>.
-     *
-     * @param value zawartosc komorki, ktora bedzie parsowana jako tablica
-     * @param type typ zawartosci (typ parametru lub typ poziomu)
-     * @param separator znak separatora
-     *
-     * @return tablica zdekodowanych wartosci
-     */
     AbstractHolder[] evaluateStringAsArray(String value, Type<?> type, char separator) {
 
         if (EngineUtil.hasText(value)) {
@@ -495,32 +194,9 @@ public class SmartParamEngine implements ParamEngine {
             }
         }
 
-        if (isDebug()) {
-            logger.debug("discovered level values: {}", Arrays.toString(values));
-        }
+        logger.debug("discovered level values: {}", Arrays.toString(values));
 
         ctx.setLevelValues(values);
-    }
-
-    private PreparedEntry findParameterEntry(PreparedParameter param, String[] levelValues) {
-
-        if (param.isCacheable()) {
-            LevelIndex<PreparedEntry> index = param.getIndex();
-            validateLevelValues(levelValues, index.getLevelCount());
-            return index.find(levelValues);
-        } else {
-            List<PreparedEntry> entries = paramPreparer.findEntries(param.getName(), levelValues);
-            return entries.isEmpty() ? null : entries.get(0);
-        }
-    }
-
-    private PreparedEntry findParameterEntry(PreparedParameter param, ParamContext ctx) {
-
-        if (ctx.getLevelValues() == null) {
-            evaluateLevelValues(param, ctx);
-        }
-
-        return findParameterEntry(param, ctx.getLevelValues());
     }
 
     private PreparedEntry[] findParameterEntries(PreparedParameter param, String[] levelValues) {
@@ -541,10 +217,10 @@ public class SmartParamEngine implements ParamEngine {
     private void validateLevelValues(String[] levelValues, int parameterLevelCount) {
 
         if (levelValues.length != parameterLevelCount) {
-                throw new SmartParamUsageException(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
-                        String.format("Level values array length differs from parameter input levels count (%d != %d). Provided values: %s.",
-                        levelValues.length, parameterLevelCount, Arrays.toString(levelValues)));
-            }
+            throw new SmartParamUsageException(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
+                    String.format("Level values array length differs from parameter input levels count (%d != %d). Provided values: %s.",
+                    levelValues.length, parameterLevelCount, Arrays.toString(levelValues)));
+        }
     }
 
     private PreparedEntry[] findParameterEntries(PreparedParameter param, ParamContext ctx) {
@@ -573,17 +249,9 @@ public class SmartParamEngine implements ParamEngine {
         return paramPreparer;
     }
 
-    protected boolean hasParamPreparer() {
-        return paramPreparer != null;
-    }
-
     @Override
     public FunctionManager getFunctionManager() {
         return functionManager;
-    }
-
-    protected boolean hasFunctionManager() {
-        return functionManager != null;
     }
 
     @Override
@@ -596,23 +264,10 @@ public class SmartParamEngine implements ParamEngine {
         this.functionManager = functionManager;
     }
 
-    public void setAssemblerProvider(SmartAssemblerProvider assemblerProvider) {
-        this.assemblerProvider = assemblerProvider;
-    }
-
     private SmartParamException raiseValueNotFoundException(String paramName, ParamContext context) {
-
         return new SmartParamException(
                 SmartParamErrorCode.PARAM_VALUE_NOT_FOUND,
                 String.format("No value found for parameter [%s] using values from context %s.\n"
                 + "If parameter should return null values instead of throwing this exception, set nullable flag to true.", paramName, context));
-    }
-
-    boolean isDebug() {
-        return logger.isDebugEnabled();
-    }
-
-    void setLogger(Logger logger) {
-        this.logger = logger;
     }
 }

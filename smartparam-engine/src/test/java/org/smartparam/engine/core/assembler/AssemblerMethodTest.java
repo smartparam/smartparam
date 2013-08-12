@@ -2,8 +2,8 @@ package org.smartparam.engine.core.assembler;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 import org.smartparam.engine.core.context.DefaultContext;
 
 import org.smartparam.engine.core.context.ParamContext;

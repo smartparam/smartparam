@@ -2,9 +2,9 @@ package org.smartparam.engine.annotations.scanner;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.Test;
 import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.testng.annotations.BeforeMethod;
 import static org.smartparam.engine.test.builder.AnnotationBuilder.*;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 
@@ -16,7 +16,7 @@ public class AnnotatedObjectFactoryTest {
 
     private AnnotatedObjectFactory annotatedObjectFactory;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         annotatedObjectFactory = new AnnotatedObjectFactory();
     }

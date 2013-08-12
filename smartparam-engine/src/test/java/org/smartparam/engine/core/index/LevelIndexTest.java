@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.*;
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.*; 
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.EqMatcher;
 import org.smartparam.engine.core.type.Type;

@@ -1,8 +1,8 @@
 package org.smartparam.engine.types.bool;
 
 import java.util.Arrays;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
@@ -69,7 +69,7 @@ public class BooleanHolderTest {
         assertEquals(Boolean.TRUE, h2.getBoolean());
         assertEquals(null, h3.getBoolean());
     }
-    
+
     @Test
     public void testBooleanValue() {
         assertFalse(h1.booleanValue());
@@ -94,16 +94,16 @@ public class BooleanHolderTest {
 //    }
 
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetDouble() {
         h1.getDouble();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testDoubleValue() {
         h1.doubleValue();
     }
-    
+
 //    @Test
 //    public void testGetBigDecimal() {
 //        BigDecimal bd1 = new BigDecimal(long1);
@@ -185,8 +185,8 @@ public class BooleanHolderTest {
 
         // then - expected sorted array
         assertEquals(null, array[0].getValue());
-        assertEquals(false, array[1].getValue());
-        assertEquals(true, array[2].getValue());
+        assertEquals(false, (boolean) array[1].getValue());
+        assertEquals(true, (boolean) array[2].getValue());
     }
-    
+
 }

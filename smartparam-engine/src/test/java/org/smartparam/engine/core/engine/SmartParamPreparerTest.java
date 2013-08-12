@@ -2,8 +2,8 @@ package org.smartparam.engine.core.engine;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.repository.BasicMatcherRepository;
 import org.smartparam.engine.core.repository.TypeRepository;
@@ -18,7 +18,7 @@ import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.types.string.StringType;
 
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -41,26 +41,25 @@ public class SmartParamPreparerTest {
 
     private SmartParamPreparer instance;
 
-    private TypeRepository typeProvider = new BasicTypeRepository();
+    private TypeRepository typeProvider;
 
-    private BasicMatcherRepository matcherProvider = new BasicMatcherRepository();
+    private BasicMatcherRepository matcherProvider;
 
     private StringType type = new StringType();
 
     private List<ParameterEntry> entries;
 
-    @Test
-    public void noop() {
 
-    }
-    @Before
-    public void init() {
+    @BeforeMethod
+    public void initialize() {
         pp1 = new PreparedParameter();
         p2 = ParameterMockBuilder.parameter().get();
         entries = new ArrayList<ParameterEntry>();
 
+        typeProvider = new BasicTypeRepository();
         typeProvider.register("string", type);
 
+        matcherProvider = new BasicMatcherRepository();
         matcherProvider.register("between/ii", new BetweenMatcher(true, true, ":"));
         matcherProvider.register("between/ie", new BetweenMatcher(true, false, ":"));
 

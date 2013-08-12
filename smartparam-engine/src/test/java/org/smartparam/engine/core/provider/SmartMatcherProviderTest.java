@@ -3,8 +3,8 @@ package org.smartparam.engine.core.provider;
 import org.smartparam.engine.core.repository.BasicMatcherRepository;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.index.Matcher;
 

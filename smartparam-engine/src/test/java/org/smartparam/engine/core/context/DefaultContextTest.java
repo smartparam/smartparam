@@ -2,8 +2,8 @@ package org.smartparam.engine.core.context;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
@@ -177,14 +177,14 @@ public class DefaultContextTest {
         assertEquals(new Integer(22), ctx.get("key"));
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testSet__duplicateAlloweOverwriteFalse() {
 
         // inicjalizacja kontekstu
         new DefaultContext().set("key", 11).set("key", 22);
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testSetArg__setterException() {
 
         // inicjalizacja kontekstu - setter(BigDecimal) rzuca wyjatek

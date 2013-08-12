@@ -1,11 +1,12 @@
 package org.smartparam.engine.core.engine;
 
-import org.junit.*;
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.number.NumberType;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
 
 /**
@@ -15,7 +16,7 @@ public class PreparedParameterTest {
 
     private PreparedParameter pp;
 
-    @Before
+    @BeforeMethod
     public void init() {
         pp = new PreparedParameter();
     }
@@ -103,5 +104,4 @@ public class PreparedParameterTest {
         assertTrue(pp.isNullable());
         assertFalse(pp.isNotNull());
     }
-
 }

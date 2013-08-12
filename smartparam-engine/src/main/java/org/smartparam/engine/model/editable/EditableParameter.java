@@ -13,15 +13,17 @@ import org.smartparam.engine.model.ParameterEntry;
 public interface EditableParameter extends Parameter {
 
     void setName(String name);
-    
+
     void setLevels(List<Level> levels);
-    
+
     void setInputLevels(int inputLevels);
-    
+
     void setEntries(Set<ParameterEntry> entries);
-    
+
     void setCacheable(boolean cacheable);
-    
+
     void setNullable(boolean nullable);
+
+    void setArraySeparator(char arraySeparator);
 
 }

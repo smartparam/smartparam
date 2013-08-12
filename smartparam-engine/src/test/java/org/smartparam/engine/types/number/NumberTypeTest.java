@@ -5,8 +5,8 @@ import org.smartparam.engine.types.number.NumberHolder;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 
 /**
  * @author Przemek Hertel

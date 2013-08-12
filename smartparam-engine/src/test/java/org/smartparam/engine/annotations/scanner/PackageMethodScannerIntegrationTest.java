@@ -2,8 +2,8 @@ package org.smartparam.engine.annotations.scanner;
 
 import java.lang.reflect.Method;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.annotations.JavaPlugin;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -24,7 +24,7 @@ public class PackageMethodScannerIntegrationTest {
 
     private PackageList packageList;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         packageList = packageList().withPackage(TEST_PACKAGE).build();
     }

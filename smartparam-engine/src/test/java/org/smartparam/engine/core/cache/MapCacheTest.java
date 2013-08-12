@@ -1,6 +1,6 @@
 package org.smartparam.engine.core.cache;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import static org.fest.assertions.api.Assertions.*;
 

@@ -31,6 +31,7 @@ public class ParameterTestBuilder {
     private SimpleEditableParameter parameter = new SimpleEditableParameter();
 
     private ParameterTestBuilder() {
+        parameter.setCacheable(true);
     }
 
     public static ParameterTestBuilder parameter() {
@@ -46,18 +47,23 @@ public class ParameterTestBuilder {
         return this;
     }
 
-    public ParameterTestBuilder cacheable(boolean cacheable) {
-        parameter.setCacheable(cacheable);
+    public ParameterTestBuilder noncacheable() {
+        parameter.setCacheable(false);
         return this;
     }
 
-    public ParameterTestBuilder nullable(boolean nullable) {
-        parameter.setNullable(nullable);
+    public ParameterTestBuilder nullable() {
+        parameter.setNullable(true);
         return this;
     }
 
     public ParameterTestBuilder withInputLevels(int inputLevels) {
         parameter.setInputLevels(inputLevels);
+        return this;
+    }
+
+    public ParameterTestBuilder withArraySeparator(char separator) {
+        parameter.setArraySeparator(separator);
         return this;
     }
 

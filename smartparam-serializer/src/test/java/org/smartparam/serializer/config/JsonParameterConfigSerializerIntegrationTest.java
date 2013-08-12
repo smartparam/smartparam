@@ -33,8 +33,7 @@ public class JsonParameterConfigSerializerIntegrationTest {
             level().withName("level1").build(),
             level().withName("level2").build()
         };
-        Parameter parameter = parameter().withName("parameter").cacheable(true)
-                .nullable(false).withInputLevels(3)
+        Parameter parameter = parameter().withName("parameter").withInputLevels(3)
                 .withLevels(levels)
                 .build();
 

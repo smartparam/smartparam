@@ -2,7 +2,7 @@ package org.smartparam.engine.core.engine;
 
 import java.util.List;
 import org.junit.*;
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.*; 
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;

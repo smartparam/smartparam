@@ -3,8 +3,8 @@ package org.smartparam.engine.util;
 import org.smartparam.engine.util.EngineUtil;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 
 /**
  * @author Przemek Hertel

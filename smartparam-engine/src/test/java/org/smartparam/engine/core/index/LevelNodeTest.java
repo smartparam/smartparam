@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 import org.junit.*;
 import org.smartparam.engine.util.Formatter;
-import static org.junit.Assert.*;
+import static org.testng.AssertJUnit.*; 
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
 

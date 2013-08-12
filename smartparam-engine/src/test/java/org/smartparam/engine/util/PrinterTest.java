@@ -5,8 +5,8 @@ import org.smartparam.engine.util.Formatter;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 
 /**
  * @author Przemek Hertel

@@ -1,8 +1,8 @@
 package org.smartparam.engine.matchers;
 
 import org.smartparam.engine.matchers.EqMatcher;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;

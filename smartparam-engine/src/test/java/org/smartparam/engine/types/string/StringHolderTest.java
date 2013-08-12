@@ -1,8 +1,8 @@
 package org.smartparam.engine.types.string;
 
 import java.util.Arrays;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
@@ -60,17 +60,17 @@ public class StringHolderTest {
         }
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testLongValue() {
         h1.longValue();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetLong() {
         h1.getLong();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetInteger() {
         h1.getInteger();
     }

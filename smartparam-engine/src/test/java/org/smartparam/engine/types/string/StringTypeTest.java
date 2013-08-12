@@ -2,8 +2,8 @@ package org.smartparam.engine.types.string;
 
 import org.smartparam.engine.types.string.StringType;
 import org.smartparam.engine.types.string.StringHolder;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 
 /**
  * @author Przemek Hertel

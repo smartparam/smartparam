@@ -5,8 +5,8 @@ import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.types.integer.IntegerType;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.testng.AssertJUnit.*; 
+import static org.testng.AssertJUnit.*; 
 import static org.mockito.Mockito.mock;
 
 /**

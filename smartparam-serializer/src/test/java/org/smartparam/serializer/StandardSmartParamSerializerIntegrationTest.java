@@ -58,8 +58,7 @@ public class StandardSmartParamSerializerIntegrationTest {
             parameterEntry().withLevels("level1").build(),
             parameterEntry().withLevels("level1").build()
         };
-        Parameter parameter = parameter().withName("parameter").cacheable(true)
-                .nullable(false).withInputLevels(3)
+        Parameter parameter = parameter().withName("parameter").withInputLevels(3)
                 .withLevels(levels).withEntries(entries).build();
         StringWriter paramWriter = new StringWriter();
         serializer.serialize(parameter, paramWriter);

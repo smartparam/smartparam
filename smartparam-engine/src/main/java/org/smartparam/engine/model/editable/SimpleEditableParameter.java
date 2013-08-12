@@ -41,4 +41,9 @@ public class SimpleEditableParameter extends SimpleParameter implements Editable
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }
+
+    @Override
+    public void setArraySeparator(char arraySeparator) {
+        this.arraySeparator = arraySeparator;
+    }
 }

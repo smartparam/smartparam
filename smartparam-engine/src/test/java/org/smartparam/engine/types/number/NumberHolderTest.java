@@ -1,10 +1,9 @@
 package org.smartparam.engine.types.number;
 
-import org.smartparam.engine.types.number.NumberHolder;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
@@ -112,17 +111,17 @@ public class NumberHolderTest {
         assertNull(h3.getString());
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testBooleanValue() {
         h1.booleanValue();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetBoolean() {
         h1.getBoolean();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetDate() {
         h1.getDate();
     }

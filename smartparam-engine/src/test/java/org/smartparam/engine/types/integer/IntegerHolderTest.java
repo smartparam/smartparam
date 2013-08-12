@@ -1,10 +1,9 @@
 package org.smartparam.engine.types.integer;
 
-import org.smartparam.engine.types.integer.IntegerHolder;
 import java.math.BigDecimal;
 import java.util.Arrays;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
@@ -64,12 +63,12 @@ public class IntegerHolderTest {
         assertEquals(0, h3.intValue());
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testDoubleValue() {
         h1.doubleValue();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testBooleanValue() {
         h1.booleanValue();
     }
@@ -90,12 +89,12 @@ public class IntegerHolderTest {
         assertEquals(null, h3.getInteger());
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetBoolean() {
         h1.getBoolean();
     }
 
-    @Test(expected = SmartParamUsageException.class)
+    @Test(expectedExceptions = SmartParamUsageException.class)
     public void testGetDouble() {
         h1.getDouble();
     }

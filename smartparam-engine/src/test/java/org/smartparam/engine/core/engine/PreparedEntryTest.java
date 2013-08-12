@@ -1,10 +1,10 @@
 package org.smartparam.engine.core.engine;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.testng.AssertJUnit.*; 
+import static org.testng.AssertJUnit.*; 
 
 /**
  * @author Przemek Hertel
@@ -13,7 +13,7 @@ public class PreparedEntryTest {
 
     PreparedEntry pe;
 
-    @Before
+    @BeforeMethod
     public void init() {
         pe = new PreparedEntry();
     }

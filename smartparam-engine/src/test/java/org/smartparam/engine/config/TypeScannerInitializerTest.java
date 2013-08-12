@@ -1,7 +1,7 @@
 package org.smartparam.engine.config;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.core.repository.TypeScanningRepository;
 import static org.mockito.Mockito.*;
@@ -15,7 +15,7 @@ public class TypeScannerInitializerTest {
 
     private TypeScannerInitializer typeScannerInitializer;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         typeScannerInitializer = new TypeScannerInitializer();
     }

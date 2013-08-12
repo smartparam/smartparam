@@ -8,9 +8,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import org.junit.Test;
-import static org.junit.Assert.*;
-import org.junit.Before;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
+import org.testng.annotations.BeforeMethod;
 
 /**
  * @author Przemek Hertel
@@ -19,7 +19,7 @@ public class DateTypeTest {
 
     DateType type;
 
-    @Before
+    @BeforeMethod
     public void init() {
         type = new DateType();
     }

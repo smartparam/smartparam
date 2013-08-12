@@ -1,8 +1,8 @@
 package org.smartparam.engine.core.type;
 
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.testng.annotations.Test;
+import static org.testng.AssertJUnit.*; 
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.string.StringHolder;
 

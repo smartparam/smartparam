@@ -1,7 +1,7 @@
 package org.smartparam.engine.config;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.smartparam.engine.annotations.scanner.MethodScanner;
 import org.smartparam.engine.core.repository.MethodScanningRepository;
 import static org.mockito.Mockito.*;
@@ -15,7 +15,7 @@ public class MethodScannerInitializerTest {
 
     private MethodScannerInitializer methodScannerInitializer;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
         methodScannerInitializer = new MethodScannerInitializer();
     }

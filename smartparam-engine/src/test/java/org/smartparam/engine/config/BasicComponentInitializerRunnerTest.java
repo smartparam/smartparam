@@ -1,8 +1,8 @@
 package org.smartparam.engine.config;
 
 import java.util.Arrays;
-import org.junit.Before;
-import org.junit.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
 
 /**
@@ -13,7 +13,7 @@ public class BasicComponentInitializerRunnerTest {
 
     private BasicComponentInitializerRunner basicComponentInitializerRunner;
 
-    @Before
+    @BeforeMethod
     public void setUp() {
     }
 

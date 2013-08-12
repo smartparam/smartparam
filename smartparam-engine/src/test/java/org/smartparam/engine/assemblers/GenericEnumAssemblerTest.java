@@ -8,7 +8,7 @@ import org.smartparam.engine.types.string.StringHolder;
 
 import static org.fest.assertions.api.Assertions.*;
 import static com.googlecode.catchexception.CatchException.*;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 /**
  * @author Przemek Hertel
