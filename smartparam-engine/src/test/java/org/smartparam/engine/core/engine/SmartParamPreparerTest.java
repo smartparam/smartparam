@@ -1,7 +1,8 @@
 package org.smartparam.engine.core.engine;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.smartparam.engine.core.cache.ParamCache;
@@ -47,14 +48,14 @@ public class SmartParamPreparerTest {
 
     private StringType type = new StringType();
 
-    private List<ParameterEntry> entries;
+    private Set<ParameterEntry> entries;
 
 
     @BeforeMethod
     public void initialize() {
         pp1 = new PreparedParameter();
         p2 = ParameterMockBuilder.parameter().get();
-        entries = new ArrayList<ParameterEntry>();
+        entries = new HashSet<ParameterEntry>();
 
         typeProvider = new BasicTypeRepository();
         typeProvider.register("string", type);

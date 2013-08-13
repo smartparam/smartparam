@@ -1,7 +1,8 @@
 package org.smartparam.repository.jdbc;
 
-import java.util.List;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.InitializableComponent;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.repository.ParamRepository;
@@ -15,6 +16,8 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  * @since 0.2.0
  */
 public class JdbcParamRepository implements ParamRepository, InitializableComponent {
+
+    private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
 
     private JdbcProviderDAO dao;
 
@@ -59,8 +62,9 @@ public class JdbcParamRepository implements ParamRepository, InitializableCompon
 
     //TODO #ph finish findEntries for non-cachable parameters
     @Override
-    public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Set<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
+        logger.info("trying to load parameter {}, but {} does not support non-cacheable parameters", parameterName, getClass().getSimpleName());
+        return null;
     }
 
     public int getFetchSize() {

@@ -1,6 +1,7 @@
 package org.smartparam.engine.core.service;
 
 import java.util.List;
+import java.util.Set;
 import org.smartparam.engine.core.OrderedRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
@@ -14,7 +15,7 @@ public interface ParameterProvider extends OrderedRepository<ParamRepository> {
 
     Parameter load(String parameterName);
 
-    List<ParameterEntry> findEntries(String parameterName, String[] levelValues);
+    Set<ParameterEntry> findEntries(String parameterName, String[] levelValues);
 
     void registerAll(List<ParamRepository> repositories);
 }

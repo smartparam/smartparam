@@ -15,7 +15,6 @@
  */
 package org.smartparam.repository.fs;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
@@ -99,8 +98,9 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
     }
 
     @Override
-    public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
-        throw new UnsupportedOperationException(getClass().getSimpleName() + " does not support non-cacheable parameters");
+    public Set<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
+        logger.info("trying to load parameter {}, but {} does not support non-cacheable parameters", parameterName, getClass().getSimpleName());
+        return null;
     }
 
     @Override

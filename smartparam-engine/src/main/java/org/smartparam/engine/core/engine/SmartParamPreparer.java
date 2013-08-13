@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.cache.ParamCache;
@@ -242,7 +243,7 @@ public class SmartParamPreparer implements ParamPreparer {
 
     @Override
     public List<PreparedEntry> findEntries(String paramName, String[] levelValues) {
-        List<ParameterEntry> entries = parameterProvider.findEntries(paramName, levelValues);
+        Set<ParameterEntry> entries = parameterProvider.findEntries(paramName, levelValues);
 
         List<PreparedEntry> result = new ArrayList<PreparedEntry>(entries.size());
         for (ParameterEntry pe : entries) {

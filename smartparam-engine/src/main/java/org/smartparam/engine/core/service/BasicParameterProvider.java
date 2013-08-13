@@ -2,6 +2,7 @@ package org.smartparam.engine.core.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.MapRepository;
@@ -30,8 +31,8 @@ public class BasicParameterProvider implements ParameterProvider {
     }
 
     @Override
-    public List<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
-        List<ParameterEntry> entries = null;
+    public Set<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
+        Set<ParameterEntry> entries = null;
         for (ParamRepository repository : innerRepository.getItemsOrdered().values()) {
             entries = repository.findEntries(parameterName, levelValues);
             if (entries != null) {

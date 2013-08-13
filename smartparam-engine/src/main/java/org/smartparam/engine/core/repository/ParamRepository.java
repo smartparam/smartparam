@@ -1,6 +1,5 @@
 package org.smartparam.engine.core.repository;
 
-import java.util.List;
 import java.util.Set;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.Parameter;
@@ -56,7 +55,7 @@ public interface ParamRepository {
      * @param levelValues query (level) values
      * @return set of entries or null if either not found or not supported
      */
-    List<ParameterEntry> findEntries(String parameterName, String[] levelValues);
+    Set<ParameterEntry> findEntries(String parameterName, String[] levelValues);
 
     /**
      * Returns set of all parameter names kept in this repository.

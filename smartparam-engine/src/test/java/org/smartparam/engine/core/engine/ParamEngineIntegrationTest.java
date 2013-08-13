@@ -1,6 +1,7 @@
 package org.smartparam.engine.core.engine;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.testng.annotations.BeforeMethod;
 import static org.mockito.Mockito.*;
@@ -329,7 +330,7 @@ public class ParamEngineIntegrationTest {
         };
         Parameter parameter = parameter().withName("parameter").nullable().noncacheable().withLevels(levels).withEntries(entries).withInputLevels(2).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
-        when(paramRepository.findEntries("parameter", new String[]{"A", "B"})).thenReturn(Arrays.asList(entries));
+        when(paramRepository.findEntries("parameter", new String[]{"A", "B"})).thenReturn(new HashSet<ParameterEntry>(Arrays.asList(entries)));
 
         // when
         ParamValue value = engine.get("parameter", "A", "B");
