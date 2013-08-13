@@ -10,20 +10,12 @@ import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.util.Printer;
 
 /**
- * Obiekt reprezentuje wartosc parametru typu <i>multivalue</i>.
- * Innymi slowy reprezentuje wartosc zapisana na wielu poziomach.
- * <p>
+ * Represents single row of matrix returned from parameter querying. Immutable.
+ * All method accept 1-based arguments, meaning to get first value all getValue(1).
+ * Each method returning value can throw {@link SmartParamException} with:
  *
- * Dla przykladu, jesli parametr definiuje 5 poziomow, w tym 2 wejsciowe i 3 wyjsciowe, wowczas wartoscia
- * parametru jest obiekt MultiValue obejmujacy 3 poziomy wyjsciowe.
- * <p>
- *
- * Obiekt MultiValue udostepnia metody dostepowe dla kazdego (k-tego) poziomu wyjsciowego.
- * Metody dostepowe sa 2 rodzajow:
- * <ol>
- * <li> podstawowe - zwracajace obiekty zwrocone wprost przez silnik,
- * <li> convenience methods - pobierajace wartosci docelowe: int, BigDecimal, Date, itp.
- * </ol>
+ * * {@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS} when trying to access wrong index
+ * * {@link SmartParamErrorCode#GETTING_WRONG_TYPE} when trying to get wrong type from position
  *
  * @author Przemek Hertel
  * @since 1.0.0
@@ -31,37 +23,27 @@ import org.smartparam.engine.util.Printer;
 public class MultiValue {
 
     /**
-     * Wartosci poziomow wyjsciowych.
-     * Kazdy element to obiekt <tt>AbstractHolder</tt> albo tablica <tt>AbstractHolder[]</tt>.
+     * Values held, each entry is either AbstractHolder or AbstractHolder[].
      */
     private Object[] values;
 
+    /**
+     * Keeps iteration state, used to power next* methods.
+     */
     private int last;
 
-    /**
-     * Jedyny sposob utworzenia obiektu. Obiekt jest immutable.
-     *
-     * @param values wartosci poziomow wyjsciowych
-     */
     public MultiValue(Object[] values) {
         this.values = values;
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego.
+     * Returns value stored at position.
      *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
-     *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
-     *                             jesli wartosc k-tego poziomu nie jest typu {@link AbstractHolder}
+     * @param position value position, 1-based
+     * @return value holder, throws exception if array is stored
      */
-    public AbstractHolder getValue(int k) {
-        Object obj = get(k);
+    public AbstractHolder getValue(int position) {
+        Object obj = get(position);
 
         if (obj instanceof AbstractHolder) {
             return (AbstractHolder) obj;
@@ -69,103 +51,62 @@ public class MultiValue {
 
         throw new SmartParamException(
                 SmartParamErrorCode.GETTING_WRONG_TYPE,
-                "Expecting AbstractHolder but found " + printClass(obj) + " at position " + k);
+                "Expecting AbstractHolder but found " + printClass(obj) + " at position " + position);
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego jako String.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako String
+     * @param position 1-based
+     * @return string representation of value
      */
-    public String getString(int k) {
-        return getValue(k).getString();
+    public String getString(int position) {
+        return getValue(position).getString();
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego jako BigDecimal.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako BigDecimal
+     * @param position 1-based
+     * @return big decimal value, if supported by holder
      */
-    public BigDecimal getBigDecimal(int k) {
-        return getValue(k).getBigDecimal();
+    public BigDecimal getBigDecimal(int position) {
+        return getValue(position).getBigDecimal();
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego jako Date.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Date
+     * @param position 1-based
+     * @return date value, if supported by holder
      */
-    public Date getDate(int k) {
-        return getValue(k).getDate();
+    public Date getDate(int position) {
+        return getValue(position).getDate();
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego jako Integer.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Integer
+     * @param position 1-based
+     * @return integer value, if supported by holder
      */
-    public Integer getInteger(int k) {
-        return getValue(k).getInteger();
+    public Integer getInteger(int position) {
+        return getValue(position).getInteger();
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego jako Long.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Long
+     * @param position 1-based
+     * @return long value, if supported by holder
      */
-    public Long getLong(int k) {
-        return getValue(k).getLong();
+    public Long getLong(int position) {
+        return getValue(position).getLong();
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego jako obiekt <tt>enum</tt> oczekiwanej klasy <tt>enumClass</tt>.
+     * Parses string value as enum entry, using {@link Enum#valueOf(java.lang.Class, java.lang.String) } method.
      *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli enumClass nie ma pola o takiej nazwie
+     * @param <T> enum type
+     * @param position 1-based
+     * @param enumClass enum class
+     * @return enum value
      */
-    public <T extends Enum<T>> T getEnum(int k, Class<T> enumClass) {
-        String code = getString(k);
+    public <T extends Enum<T>> T getEnum(int position, Class<T> enumClass) {
+        String code = getString(position);
         return code != null ? codeToEnum(code, enumClass) : null;
     }
 
-    /**
-     * Zamienia kod na odpowiedni enum.
-     *
-     * @param <T>       parametr klasy enuma
-     * @param code      kod stalej wewnatrz enuma
-     * @param enumClass klasa enuma
-     *
-     * @return obiekt enuma klasy <tt>enumClass</tt> o kodzie <tt>code</tt>
-     */
     private <T extends Enum<T>> T codeToEnum(String code, Class<T> enumClass) {
         try {
             return Enum.valueOf(enumClass, code);
@@ -176,20 +117,17 @@ public class MultiValue {
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego <b>jako tablice</b>.
+     * Return array of values stored at position. Should be used if parameter
+     * level contained list of values ({@link org.smartparam.engine.model.Level#isArray()}.
+     * This string list is split into array of values using separator defined at
+     * parameter level ({@link org.smartparam.engine.model.Parameter#getArraySeparator()}).
+     * Type of each value holder in array is the same, defined by level type.
      *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
-     *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
-     *                             jesli wartosc k-tego poziomu nie jest tablica obiektow {@link AbstractHolder}
+     * @param position 1-based
+     * @return array of value holders of same type
      */
-    public AbstractHolder[] getArray(int k) {
-        Object obj = get(k);
+    public AbstractHolder[] getArray(int position) {
+        Object obj = get(position);
 
         if (obj instanceof AbstractHolder[]) {
             return (AbstractHolder[]) obj;
@@ -197,17 +135,15 @@ public class MultiValue {
 
         throw new SmartParamException(
                 SmartParamErrorCode.GETTING_WRONG_TYPE,
-                "Expecting AbstractHolder[] but found " + printClass(obj) + " at position " + k);
+                "Expecting AbstractHolder[] but found " + printClass(obj) + " at position " + position);
     }
 
     /**
-     * Zwraca tablice wartosci wyluskanych z holderow:
-     * <ol>
-     * <li> Kazdy i-ty element typu AbstractHolder zwracany jest jako wartosc AbstractHolder.getValue().
-     * <li> Kazdy i-ty element typu AbstractHolder[] zwracany jest jako tablica Object[] wartosci AbstractHolder.getValue().
-     * </ol>
-     *
-     * @return tablica obiektow wewnetrznie trzymanych przez holdery
+     * Return array of unwrapped objects, this is a raw representation of
+     * contents of AbstractHolders from MultiValue object.
+     * Each array element is either value of {@link AbstractHolder#getValue() }
+     * if level stores single value or array of {@link AbstractHolder#getValue() }
+     * if level stores an array.
      */
     public Object[] unwrap() {
         Object[] result = new Object[values.length];
@@ -543,7 +479,7 @@ public class MultiValue {
         return getBigDecimalArray(++last);
     }
 
-	public int size() {
-		return values != null ? values.length : 0;
-	}
+    public int size() {
+        return values != null ? values.length : 0;
+    }
 }
