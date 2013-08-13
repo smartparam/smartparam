@@ -275,15 +275,15 @@ public class SmartParamPreparerTest {
 
         // konfiguracja
         entries.add(ParameterEntryMockBuilder.parameterEntry("A", "A2", "A3", "A4"));
-        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "B2", "B3", "B4"));
+        //entries.add(ParameterEntryMockBuilder.parameterEntry("A", "B2", "B3", "B4"));
 
         // test
         List<PreparedEntry> result = instance.findEntries("param", new String[]{"A"});
 
         // weryfikacja
-        assertEquals(2, result.size());
+        assertEquals(1, result.size());
         assertArrayEquals(new String[]{"A", "A2", "A3", "A4"}, result.get(0).getLevels());
-        assertArrayEquals(new String[]{"A", "B2", "B3", "B4"}, result.get(1).getLevels());
+        //assertArrayEquals(new String[]{"A", "B2", "B3", "B4"}, result.get(1).getLevels());
     }
 
     @Test
