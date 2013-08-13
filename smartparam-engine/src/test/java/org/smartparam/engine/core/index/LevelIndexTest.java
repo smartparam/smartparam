@@ -4,8 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.*;
-import static org.testng.AssertJUnit.*; 
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.EqMatcher;
 import org.smartparam.engine.core.type.Type;
@@ -13,6 +12,7 @@ import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;
 import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.Formatter;
+import org.testng.annotations.Test;
 import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
 
 /**
@@ -136,23 +136,23 @@ public class LevelIndexTest {
         cases.put("Z;Z", 99);
 
         // utworzenie testowanego obiektu
-        LevelIndex<Integer> index = new LevelIndex<Integer>(2);
+        LevelIndex<Integer> index = levelIndex().withLevelCount(2).build();
 
         // wypelnienie testowanego obiektu
-        index.add("A;X", 7);
-        index.add("A;Y", 8);
-        index.add("A;*", 9);
-        index.add("B;X", 11);
-        index.add("B;*", 20);
-        index.add("*;X", 30);
-        index.add("*;*", 99);
+        index.add(new String[]{"A", "X"}, 7);
+        index.add(new String[]{"A", "Y"}, 8);
+        index.add(new String[]{"A", "*"}, 9);
+        index.add(new String[]{"B", "X"}, 11);
+        index.add(new String[]{"B", "*"}, 20);
+        index.add(new String[]{"*", "X"}, 30);
+        index.add(new String[]{"*", "*"}, 99);
 
         // sprawdzenie wynikow testu
         for (Map.Entry<String, Integer> e : cases.entrySet()) {
             String[] levelValues = EngineUtil.split(e.getKey(), ';');
             Integer expectedResult = e.getValue();
 
-            assertEquals(expectedResult, index.find(levelValues));
+            assertEquals(expectedResult, index.find(levelValues).get(0));
         }
     }
 
@@ -167,12 +167,12 @@ public class LevelIndexTest {
         LevelIndex<String> ix = new LevelIndex<String>(3);
 
         // wypelnienie testowanego obiektu
-        ix.add("A;B;C", "ABC");
-        ix.add("A;B;A", "ABA");
-        ix.add("A;*;*", "A**");
-        ix.add("*;*;*", "***");
-        ix.add("*;*;E", "**E");
-        ix.add("*;E;*", "*E*");
+        ix.add(new String[]{"A", "B", "C"}, "ABC");
+        ix.add(new String[]{"A", "B", "A"}, "ABA");
+        ix.add(new String[]{"A", "*", "*"}, "A**");
+        ix.add(new String[]{"*", "*", "*"}, "***");
+        ix.add(new String[]{"*", "*", "E"}, "**E");
+        ix.add(new String[]{"*", "E", "*"}, "*E*");
 
         // oczekiwane wyniki wyszukiwania
         String[][] cases = {
@@ -188,7 +188,7 @@ public class LevelIndexTest {
         // sprawdzenie wynikow testu
         for (String[] row : cases) {
             String expectedResult = row[3];
-            String result = ix.find(row[0], row[1], row[2]);
+            String result = ix.find(row[0], row[1], row[2]).get(0);
 
             assertEquals(expectedResult, result);
         }
@@ -207,12 +207,12 @@ public class LevelIndexTest {
 
         // utworzenie testowanego obiektu
         LevelIndex<Integer> ix = new LevelIndex<Integer>(2, new StringType[]{stringType, stringType}, m1, m2);
-        ix.add("A;X", 7);
-        ix.add("A;Y", 8);
-        ix.add("A;*", 9);
-        ix.add("b;y", 11);
-        ix.add("b;*", 20);
-        ix.add("*;z", 30);
+        ix.add(new String[]{"A", "X"}, 7);
+        ix.add(new String[]{"A", "Y"}, 8);
+        ix.add(new String[]{"A", "*"}, 9);
+        ix.add(new String[]{"b", "y"}, 11);
+        ix.add(new String[]{"b", "*"}, 20);
+        ix.add(new String[]{"*", "z"}, 30);
 
         // oczekiwane wyniki wyszukiwania
         Object[][] cases = {
@@ -232,7 +232,8 @@ public class LevelIndexTest {
         // sprawdzenie wynikow testu
         for (Object[] row : cases) {
             Integer expectedResult = (Integer) row[2];
-            Integer result = ix.find((String) row[0], (String) row[1]);
+            List<Integer> resultList = ix.find((String) row[0], (String) row[1]);
+            Integer result = resultList != null ? resultList.get(0) : null;
 
             assertEquals(expectedResult, result);
         }
@@ -254,19 +255,19 @@ public class LevelIndexTest {
         // utworzenie testowanego obiektu
         LevelIndex<Integer> ix = new LevelIndex<Integer>(2, new Type<?>[]{t1, t2}, m1, m2);
 
-        ix.add("A;1:5", 15);
-        ix.add("A;5:12", 512);
-        ix.add("A;12:20", 1220);
-        ix.add("B;1:50", 150);
-        ix.add("B;*", 99);
-        ix.add("*;1:9", 19);
-        ix.add("*;*", 999);
+        ix.add(new String[]{"A", "1:5"}, 15);
+        ix.add(new String[]{"A", "5:12"}, 512);
+        ix.add(new String[]{"A", "12:20"}, 1220);
+        ix.add(new String[]{"B", "1:50"}, 150);
+        ix.add(new String[]{"B", "*"}, 99);
+        ix.add(new String[]{"*", "1:9"}, 19);
+        ix.add(new String[]{"*", "*"}, 999);
 
         // sprawdzenie wynikow testu
-        assertEquals(15, (int) ix.find("A", "1"));
-        assertEquals(15, (int) ix.find("A", "4"));
-        assertEquals(512, (int) ix.find("A", "5"));
-        assertEquals(1220, (int) ix.find("A", "12"));
+        assertEquals(15, (int) ix.find("A", "1").get(0));
+        assertEquals(15, (int) ix.find("A", "4").get(0));
+        assertEquals(512, (int) ix.find("A", "5").get(0));
+        assertEquals(1220, (int) ix.find("A", "12").get(0));
     }
 
     @Test
@@ -274,9 +275,9 @@ public class LevelIndexTest {
 
         // utworzenie testowanego obiektu
         LevelIndex<Integer> index = new LevelIndex<Integer>(2);
-        index.add("A;X", 11);
-        index.add("B;X", 22);
-        index.add("B;*", 33);
+        index.add(new String[]{"A", "X"}, 11);
+        index.add(new String[]{"B", "X"}, 22);
+        index.add(new String[]{"B", "*"}, 33);
 
         // oczekiwany wynik
         String expectedPrefix = ""
@@ -303,12 +304,12 @@ public class LevelIndexTest {
 
         // utworzenie testowanego obiektu
         LevelIndex<Integer> index = new LevelIndex<Integer>(1);
-        index.add("A", 1);
-        index.add("A", 2);
-        index.add("A", 3);
-        index.add("B", 11);
-        index.add("B", 12);
-        index.add("C", 99);
+        index.add(new String[]{"A"}, 1);
+        index.add(new String[]{"A"}, 2);
+        index.add(new String[]{"A"}, 3);
+        index.add(new String[]{"B"}, 11);
+        index.add(new String[]{"B"}, 12);
+        index.add(new String[]{"C"}, 99);
 
         // szukane wartosci
         String[] cases = {
@@ -331,7 +332,7 @@ public class LevelIndexTest {
             String level = cases[i];
             List<?> expectedResult = expected[i];
 
-            List<Integer> result = index.findAll(level);
+            List<Integer> result = index.find(level);
             assertEquals(expectedResult, result);
         }
     }

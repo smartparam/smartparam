@@ -6,29 +6,13 @@ import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
- * Kontrakt, ktory musi spelniac kazda klasa, ktora reprezentuje wartosci
- * jakiegos typu z wewnetrznego systemu typow silnika.
- * <p>
- * Na przyklad NumberHolder reprezentuje wartosci typu NumberType.
+ * Concrete representation of value of {@link Type}.
  *
- * <p>
- * Klasa musi implementowac metode {@link #getValue()}, ktora bedzie
- * zwracac javowa reprezentacje typu. Z tej metody moze korzystac uzytkownik
- * modulu parametrycznego.
+ * Holder implementation is obliged to override {@link #getValue() } method,
+ * but also might override any number of convenience methods if they are
+ * suitable for given type.
  *
- * <p>
- * Dodatkowo klasa definiuje metody pomocnicze (convenience methods),
- * z ktorych uzytkownik powinien korzystac jak najczesciej, np:
- * <pre>
- *      int k = getIntegerHolder(...).getInt();
- *      BigDecimal factor = getNumberHolder(...).getBigDecimal();
- *      double factor = getNumberHolder(...).getDouble();
- * </pre>
- * Jesli uzycie ktorejs metody pomocniczej w danym typie nie ma sensu
- * (np. getDouble w DateHolder), metoda powinna rzucic wyjatek
- * oznaczajacy niepoprawne uzycie wartosci parametru.
- *
- * @author Przemek Hertel
+ * @author Przemek Hertel <przemek.hertel@gmail.com>
  * @since 1.0.0
  */
 public abstract class AbstractHolder implements Comparable<AbstractHolder> {

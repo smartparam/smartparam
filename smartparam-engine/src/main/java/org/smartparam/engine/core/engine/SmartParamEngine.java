@@ -206,7 +206,7 @@ public class SmartParamEngine implements ParamEngine {
         if (param.isCacheable()) {
             LevelIndex<PreparedEntry> index = param.getIndex();
             validateLevelValues(levelValues, index.getLevelCount());
-            entries = index.findAll(levelValues);
+            entries = index.find(levelValues);
         } else {
             entries = paramPreparer.findEntries(param.getName(), levelValues);
         }

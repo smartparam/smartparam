@@ -1,9 +1,9 @@
 package org.smartparam.engine.core.repository;
 
-import org.junit.*;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.types.string.StringType;
+import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static com.googlecode.catchexception.CatchException.*;
 import static org.smartparam.engine.test.builder.SmartTypeRepositoryTestBuilder.*;

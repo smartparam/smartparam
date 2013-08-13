@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import org.junit.*;
-import static org.testng.AssertJUnit.*; 
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.integer.IntegerType;
+import org.testng.annotations.Test;
 
 /**
  * @author Przemek Hertel

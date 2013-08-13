@@ -3,20 +3,21 @@ package org.smartparam.engine.core.index;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.Formatter;
 
 /**
- * in progress
  *
- * @param <T> typ indeksowanych wartosci, czyli typ liscia
+ * @param <T> leaf type
  *
- * @author Przemek Hertel
- * @since 1.0.0
+ * @author Przemek Hertel <przemek.hertel@gmail.com>
  */
 public class LevelNode<T> {
+
+    private static final float CHILDREN_MAP_LOAD_FACTOR = 0.8f;
 
     private String level;
 
@@ -46,14 +47,10 @@ public class LevelNode<T> {
         add(levelsArray, leafValue, matchers, depth);
     }
 
-    /**
-     * buduje poddrzewo (galaz) biezacego wezla
-     */
     public void add(String[] levels, T leafValue, Matcher[] matchers, int depth) {
 
-        if (depth < index.getLevelCount()) {
-            //pobieramy kolejna wartosc levelu
-            String levelVal = levels[depth];	//wartosc lub *
+        if (!reachedLeafDepth(depth)) {
+            String levelVal = levels[depth];
 
             if ("*".equals(levelVal)) {
                 if (defaultNode == null) {
@@ -70,8 +67,6 @@ public class LevelNode<T> {
                 child.add(levels, leafValue, matchers, depth + 1);
             }
         } else {
-
-            //wezel staje sie lisciem, zawiera ostateczna wartosc
             if (leafList == null) {
                 leafList = new ArrayList<T>(1);
                 leafList.add(leafValue);
@@ -85,69 +80,83 @@ public class LevelNode<T> {
         }
     }
 
+    private boolean reachedLeafDepth(int depth) {
+        return depth >= index.getLevelCount();
+    }
+
     private void ensureChildrenIsReady() {
         if (children == null) {
-            children = new HashMap<String, LevelNode<T>>(2, LOAD_FACTOR);
+            children = new HashMap<String, LevelNode<T>>(2, CHILDREN_MAP_LOAD_FACTOR);
         }
     }
-    private static final float LOAD_FACTOR = 0.8f;
 
     /**
-     * znajduje wezel-lisc i zwraca jego wartosc, czyli obiekt CustomParameter.
-     * szukanie odbywa sie wedlug algorytmu: 1. znajdz sciezke w drzewie
-     * odpowiadajaca podanym wartosciom poziomow 2. jesli nie mozna znalezc
-     * sciezki w oparciu do konkretne wartosci - szukamy sciezek oznaczonych
-     * jako gwiazdki
+     * Finds leaf node and returns its value.
+     * Recurrent search algorithm:
+     * <pre>
+     * 1. find tree path that matches query values descending one by one node
+     * 2. if none found, try default value if defined for this level
+     * </pre>
+     *
+     * @param levelValues query values
+     * @param depth depth of current node
+     * @return value
      */
     public LevelNode<T> findNode(String[] levelValues, int depth) {
 
         if (depth >= levelValues.length) {
-            //osiagnelismy ostatni wezel na szukanej sciezce
+            // last node reached - final station
             return this;
         }
 
-        //wartosc biezacego poziomu na sciezce
         String levelVal = levelValues[depth];
-
-        //szukamy wezla-dziecka dla wartosci levelVal
 
         Matcher matcher = index.getMatcher(depth);
         Type<?> type = index.getType(depth);
 
-        LevelNode<T> child = null;
+        LevelNode<T> matchedLeaf = null;
 
         if (children != null) {
-            if (matcher == null) {
-                child = children.get(levelVal);
-            } else {
-                child = match(levelVal, matcher, type);
-            }
+            matchedLeaf = match(levelVal, matcher, type, levelValues, depth);
         }
 
-        if (child != null) {
-            LevelNode<T> leaf = child.findNode(levelValues, depth + 1);		//podazamy sciezka w kierunku liscia
-            if (leaf != null) {
-                return leaf;								//jesli znalezlismy lisc, zwracamy jego wartosc
-            }
+        if (matchedLeaf == null && defaultNode != null) {
+            matchedLeaf = defaultNode.findNode(levelValues, depth + 1);
         }
 
-        //jesli nie znalezlismy wezla-dziecka lub nie znalezlismy dla niego poprawnej sciezki - sprawdzamy wezel domyslny (*)
-        if (defaultNode != null) {
-            return defaultNode.findNode(levelValues, depth + 1);
-        }
-
-        //z biezacego wezla nie ma sciezki zgodnej z podlista levelValues(depth)
-        return null;
+        return matchedLeaf;
     }
 
-    private LevelNode<T> match(String val, Matcher matcher, Type<?> type) {
-        for (Map.Entry<String, LevelNode<T>> e : children.entrySet()) {
-            String pattern = e.getKey();
-            if (matcher.matches(val, pattern, type)) {
-                return e.getValue();
+    private LevelNode<T> match(String val, Matcher matcher, Type<?> type, String[] levelValues, int depth) {
+        LevelNode<T> leaf = null;
+        Iterator<Map.Entry<String, LevelNode<T>>> childrenIterator = children.entrySet().iterator();
+
+        Map.Entry<String, LevelNode<T>> entry;
+        while(leaf == null && childrenIterator.hasNext()) {
+            entry = childrenIterator.next();
+            if(patternMatches(val, matcher, type, entry.getKey())) {
+                leaf = traverseChildNode(entry.getValue(), levelValues, depth);
             }
         }
-        return null;
+
+        return leaf;
+    }
+
+    private boolean patternMatches(String value, Matcher matcher, Type<?> type, String pattern) {
+        if(matcher == null) {
+            if(pattern == null) {
+                return value == null;
+            }
+            return pattern.equals(value);
+        }
+        else {
+            return matcher.matches(value, pattern, type);
+        }
+    }
+
+    private LevelNode<T> traverseChildNode(LevelNode<T> child, String[] levelValues, int depth) {
+        LevelNode<T> leaf = child.findNode(levelValues, depth + 1);
+        return leaf;
     }
 
     public void printNode(StringBuilder sb, int level) {
@@ -194,13 +203,6 @@ public class LevelNode<T> {
         return sb.toString();
     }
 
-    /**
-     * Buduje string skladajacy sie z <tt>count</tt> znakow <tt>c</tt>
-     *
-     * @param c     znak
-     * @param count liczba powtorzen znaku <tt>c</tt>
-     * @return string o dlugosci <tt>count</tt>
-     */
     private String repeat(char c, int count) {
         char[] str = new char[count];
         Arrays.fill(str, c);

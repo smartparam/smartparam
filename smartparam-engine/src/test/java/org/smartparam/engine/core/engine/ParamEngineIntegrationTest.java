@@ -186,7 +186,7 @@ public class ParamEngineIntegrationTest {
         assertThat(value).hasValue(42l);
     }
 
-    @Test(enabled = false)
+    @Test
     // waiting for implementation
     public void shouldGetBackToTheRootIfStuckInDeadEndWhenSearchingForValue() {
         // given

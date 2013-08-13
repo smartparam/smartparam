@@ -1,74 +1,60 @@
 package org.smartparam.engine.core.type;
 
 /**
- * Klasa reprezentuje kontrakt, ktory musi spelniac kazdy typ
- * obslugiwany przez silnik parametryczny.
- * <p>
- * Silnik parametryczny posiada swoj wewnetrzny system typow.
- * Typy definiuje uzytkownik poprzez skonfigurowanie obiektu
- * TypeProvider.
- * <p>
- * Klasa ta reprezentuje typ. Natomiast wartosci zgodne z tym typem
- * reprezentuje skojarzona z typem podklasa {@link AbstractHolder}.
- * Na przyklad StringType przechowuje swoje wartosci w obiektach
- * klasy StringHolder.
- * <p>
- * Silnik dostarcza wiele domyslnych typow:
- * <ul>
- * <li>StringType + StringHolder
- * <li>NumberType + NumberHolder
- * <li>StringArrayType + StringArrayHolder
- * <li>...
- * </ul>
- * Ponadto uzytkownik moze zdefiniowac wlasne poprzez implementacje
- * pary: AbstractType + AbstractHolder.
+ * Contract for parameter engine type system entity. Type gives behavior to
+ * its value - most of all decodes and encodes from/to String form. Each type
+ * should have {@link AbstractHolder} defined, which is a concrete representation
+ * (instance) of type.
  *
- * @param <T> klasa przechowujaca wartosci typu
+ * To use custom type in engine, register it at {@link org.smartparam.engine.core.repository.TypeRepository},
+ * or use {@link org.smartparam.engine.annotations.ParamType} if annotation scan
+ * is enabled.
  *
- * @author Przemek Hertel
+ * @param T held value
+ *
+ * @author Przemek Hertel <przemek.hertel@gamil.com>
  * @since 1.0.0
  */
 public interface Type<T extends AbstractHolder> {
 
     /**
-     * Zamienia wartosc typu {@code holder} na string.
-     * Kodowanie powinno byc bezstratne oraz jednoznacznie odwracalne, tzn:
+     * Create String representation of value. Transformation has to be reversible using
+     * {@link Type#decode(java.lang.String)} method:
      * <pre>
-     * decode( encode(X) ) == X
+     * decode( encode(obj) ) == obj
      * </pre>
      *
-     * @param holder wartosc typu reprezentowana przez holder
-     * @return zamieniona na string wartosc
+     * @param holder value to stringify
+     * @return string representation
      */
     String encode(T holder);
 
     /**
-     * Zamienia reprezentacje stringowa na reprezentacje wewnetrzna typu,
-     * czyli na obiekt odpowiedniego holdera.
-     * Dekodowanie jest operacja odwrotna do kodowania, tzn:
+     * Create value out of provided string. This is opposite to
+     * {@link Type#encode(org.smartparam.engine.core.type.AbstractHolder) }, so:
      * <pre>
      * encode( decode(str) ) == str
      * </pre>
      *
-     * @param text tekstowa reprezentacja wartosci
-     * @return wewnetrzna reprezentacja wartosci (holder)
+     * @param text string to interprete
+     * @return value
      */
     T decode(String text);
 
     /**
-     * Konwertuje dowolny obiekt javowy na wartosc typu.
+     * Can convert any object to value of Type. Should throw IllegalArgumentException
+     * if unable to convert from object.
      *
-     * @param obj dowolny obiekt
-     * @return reprezentacja wewnetrzna typu (holder), ktora jest
-     * odpowiednikiem przekazanego obiektu (w sensie typu T)
+     * @param obj object to try and convert
+     * @return value
      */
     T convert(Object obj);
 
     /**
-     * Tworzy <b>nowa</b> i niewypelniona tablice holderow o rozmiarze <tt>size</tt>.
+     * Should create new, empty array of given size.
      *
-     * @param size rozmiar potrzebnej tablicy
-     * @return nowa, niewypelniona tablica o rozmiarze <tt>size</tt>
+     * @param size size of array
+     * @return empty array of values
      */
     T[] newArray(int size);
 }

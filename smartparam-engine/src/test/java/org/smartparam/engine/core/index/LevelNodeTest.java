@@ -1,10 +1,7 @@
 package org.smartparam.engine.core.index;
 
-import java.util.Arrays;
-import java.util.Map;
-import org.junit.*;
-import org.smartparam.engine.util.Formatter;
-import static org.testng.AssertJUnit.*; 
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
 
@@ -21,15 +18,14 @@ public class LevelNodeTest {
 
         // when
         int currentLevelNumber = 0;
-        node.add(new String[] {}, 10, null, currentLevelNumber);
-        node.add(new String[] {}, 12, null, currentLevelNumber);
+        node.add(new String[]{}, 10, null, currentLevelNumber);
 
         // then
-        assertThat(node).hasLeaves(2).leavesEqualTo(10, 12);
+        assertThat(node).hasLeaves(1).leavesEqualTo(10);
     }
 
     @Test
-    public void shouldAddNodeToChildrenListWhenRootNodeIsNotLastInIndexTree() {
+    public void shouldAddNewNodeToChildrenListWhenCurrentNodeIsNotLastInIndexTree() {
         // given
         LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
         LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
@@ -37,143 +33,88 @@ public class LevelNodeTest {
         // when
         int currentLevelNumber = 0;
         root.add(new String[]{"A"}, 10, null, currentLevelNumber);
-        root.add(new String[]{"*"}, 10, null, currentLevelNumber);
 
         // then
-        assertThat(root).hasNoLeaves().hasDirectChild("A").hasDirectChild("*");
+        assertThat(root).hasNoLeaves().hasDirectChild("A");
     }
 
     @Test
-    public void testAdd() {
+    public void shouldFavourConcreteValuesOverDefaultWhenLookingForValue() {
+        // given
+        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
+        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
+        root.add(new String[]{"*"}, 11, null, 0);
+        root.add(new String[]{"A"}, 42, null, 0);
 
-        // zaleznosci
-        LevelIndex<Integer> index = levelIndex().withLevelCount(2).build();
-        LevelNode<Integer> root = new LevelNode<Integer>(index);
+        // when
+        LevelNode<Integer> node = root.findNode(new String[]{"A"}, 0);
 
-        // test
-        root.add(new String[]{"A", "B"}, 33, null, 0);
-        root.add(new String[]{"X", "Y"}, 44, null, 0);
-
-        // weryfikacja
-        Map<String, LevelNode<Integer>> children = root.getChildren();
-        assertEquals(2, children.size());
-        assertTrue(children.containsKey("A"));
-        assertTrue(children.containsKey("X"));
-
-        LevelNode<Integer> nodeA = children.get("A");
-        assertSame(root, nodeA.getParent());
-        verifyNode(nodeA, "A", false, true, null);
-
-        LevelNode<Integer> nodeAB = nodeA.getChildren().get("B");
-        assertSame(nodeA, nodeAB.getParent());
-        verifyNode(nodeAB, "B", true, false, 33);
+        // then
+        assertThat(node).leavesEqualTo(42);
     }
 
     @Test
-    public void testAdd__default() {
+    public void shouldFallBackToDefaultValueIfNoneOtherFound() {
+        // given
+        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
+        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
+        root.add(new String[]{"*"}, 42, null, 0);
+        root.add(new String[]{"A"}, 11, null, 0);
 
-        // zaleznosci
-        LevelIndex<Integer> index = levelIndex().withLevelCount(2).build();
-        LevelNode<Integer> root = new LevelNode<Integer>(index);
+        // when
+        LevelNode<Integer> node = root.findNode(new String[]{"B"}, 0);
 
-        // test
-        root.add(Arrays.asList("A", "B"), 33, null, 0);
-        root.add(Arrays.asList("*", "Y"), 44, null, 0);
-
-        // weryfikacja
-        Map<String, LevelNode<Integer>> children = root.getChildren();
-        assertEquals(1, children.size());
-        assertTrue(children.containsKey("A"));
-        assertNotNull(root.getDefaultNode());
-
-        LevelNode<Integer> nodeDef = root.getDefaultNode();
-        assertSame(root, nodeDef.getParent());
-        verifyNode(nodeDef, "*", false, true, null);
-
-        LevelNode<Integer> nodeDefY = nodeDef.getChildren().get("Y");
-        assertSame(nodeDef, nodeDefY.getParent());
-        verifyNode(nodeDefY, "Y", true, false, 44);
+        // then
+        assertThat(node).leavesEqualTo(42);
     }
 
     @Test
-    public void testPrintNode() {
-        // zaleznosci
-        LevelIndex<Integer> index = levelIndex().withLevelCount(2).build();
+    public void shouldReturnNullIfNothingFound() {
+        // given
+        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
+        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
+        root.add(new String[]{"A"}, 10, null, 0);
 
-        // testowany obiekt
-        LevelNode<Integer> root = new LevelNode<Integer>(index);
-        root.add(Arrays.asList("A", "B"), 33, null, 0);
+        // when
+        LevelNode<Integer> node = root.findNode(new String[]{"B"}, 0);
 
-        // wypelniany obiekt
-        StringBuilder sb = new StringBuilder();
-
-        // test
-        root.printNode(sb, 0);
-
-        // weryfikacja
-        String expected = ""
-                + "path : " + Formatter.NL
-                + "    path : /A" + Formatter.NL
-                + "        path : /A/B   (leaf=[33])" + Formatter.NL;
-
-        assertEquals(expected, sb.toString());
+        // then
+        assertThat(node).isNull();
     }
-
-    @Test
-    public void testFindNode() {
-
-        // zaleznosci
-        LevelIndex<Integer> index = levelIndex().withLevelCount(3).build();
-        LevelNode<Integer> root = new LevelNode<Integer>(index);
-
-        root.add(Arrays.asList("A", "B", "C"), 1, null, 0);
-        root.add(Arrays.asList("A", "B", "*"), 9, null, 0);
-        root.add(Arrays.asList("A", "E", "D"), 11, null, 0);
-        root.add(Arrays.asList("A", "*", "D"), 12, null, 0);
-        root.add(Arrays.asList("A", "*", "*"), 13, null, 0);
-        root.add(Arrays.asList("*", "Z", "Z"), 21, null, 0);
-        root.add(Arrays.asList("*", "Z", "*"), 22, null, 0);
-        root.add(Arrays.asList("*", "*", "*"), 99, null, 0);
-
-        // przypadki testowe
-        String[][] testcases = {
-            {"A", "B", "C"},
-            {"A", "B", "X"},
-            {"A", "E", "D"},
-            {"A", "X", "D"},
-            {"A", "X", "X"},
-            {"V", "Z", "Z"},
-            {"V", "Z", "A"},
-            {"V", "V", "V"}
+    
+    @DataProvider(name = "findNodeSearchSet")
+    public Object[][] provideFindNodeSearchSets() {
+        return new Object[][]{
+            {new String[]{"A", "B", "C"}, 1},
+            {new String[]{"A", "B", "X"}, 9},
+            {new String[]{"A", "E", "D"}, 11},
+            {new String[]{"A", "X", "D"}, 12},
+            {new String[]{"A", "X", "X"}, 13},
+            {new String[]{"V", "Z", "Z"}, 21},
+            {new String[]{"V", "Z", "A"}, 22},
+            {new String[]{"V", "V", "V"}, 99}
         };
-
-        Integer[] expectations = {
-            1,
-            9,
-            11,
-            12,
-            13,
-            21,
-            22,
-            99
-        };
-
-        // testy
-        for (int i = 0; i < testcases.length; i++) {
-            String[] levelValues = testcases[i];
-            Integer expectedResult = expectations[i];
-
-            LevelNode<Integer> node = root.findNode(levelValues, 0);
-            assertEquals(expectedResult, node.getLeafValue());
-        }
     }
 
-    private void verifyNode(LevelNode<?> node, String level, boolean isLeaf, boolean hasChildren, Object value) {
-        assertEquals(level, node.getLevel());
-        assertEquals(isLeaf, node.isLeaf());
-        assertEquals(hasChildren, node.hasChildren());
-        if (isLeaf) {
-            assertEquals(value, node.getLeafValue());
-        }
+    @Test(dataProvider = "findNodeSearchSet")
+    public void shouldFindNodeFromTestSet(String[] levelValues, int expectedValue) {
+        // given
+        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(3).build();
+        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
+
+        root.add(new String[]{"A", "B", "C"}, 1, null, 0);
+        root.add(new String[]{"A", "B", "*"}, 9, null, 0);
+        root.add(new String[]{"A", "E", "D"}, 11, null, 0);
+        root.add(new String[]{"A", "*", "D"}, 12, null, 0);
+        root.add(new String[]{"A", "*", "*"}, 13, null, 0);
+        root.add(new String[]{"*", "Z", "Z"}, 21, null, 0);
+        root.add(new String[]{"*", "Z", "*"}, 22, null, 0);
+        root.add(new String[]{"*", "*", "*"}, 99, null, 0);
+
+        // when
+        LevelNode<Integer> node = root.findNode(levelValues, 0);
+
+        // then
+        assertThat(node).leavesEqualTo(expectedValue);
     }
 }

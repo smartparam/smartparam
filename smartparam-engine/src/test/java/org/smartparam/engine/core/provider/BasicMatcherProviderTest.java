@@ -11,7 +11,7 @@ import org.smartparam.engine.core.index.Matcher;
 /**
  * @author Przemek Hertel
  */
-public class SmartMatcherProviderTest {
+public class BasicMatcherProviderTest {
 
     @Test
     public void testSetMatcherMap() {
