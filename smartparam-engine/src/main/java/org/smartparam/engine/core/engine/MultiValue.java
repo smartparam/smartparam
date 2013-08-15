@@ -43,7 +43,7 @@ public class MultiValue {
      * @return value holder, throws exception if array is stored
      */
     public AbstractHolder getValue(int position) {
-        Object obj = get(position);
+        Object obj = getHolder(position);
 
         if (obj instanceof AbstractHolder) {
             return (AbstractHolder) obj;
@@ -97,8 +97,8 @@ public class MultiValue {
     /**
      * Parses string value as enum entry, using {@link Enum#valueOf(java.lang.Class, java.lang.String) } method.
      *
-     * @param <T> enum type
-     * @param position 1-based
+     * @param <T>       enum type
+     * @param position  1-based
      * @param enumClass enum class
      * @return enum value
      */
@@ -127,7 +127,7 @@ public class MultiValue {
      * @return array of value holders of same type
      */
     public AbstractHolder[] getArray(int position) {
-        Object obj = get(position);
+        Object obj = getHolder(position);
 
         if (obj instanceof AbstractHolder[]) {
             return (AbstractHolder[]) obj;
@@ -172,20 +172,11 @@ public class MultiValue {
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego <b>jako tablice String[]</b>.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
-     *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
-     *                             jesli wartosc k-tego poziomu nie moze byc interpretowana jako tablica stringow
+     * @param position 1-based
+     * @return string array, if supported by holder
      */
-    public String[] getStringArray(int k) {
-        AbstractHolder[] array = getArray(k);
+    public String[] getStringArray(int position) {
+        AbstractHolder[] array = getArray(position);
         String[] result = new String[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getString();
@@ -194,20 +185,11 @@ public class MultiValue {
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego <b>jako tablice Date[]</b>.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
-     *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
-     *                             jesli wartosc k-tego poziomu nie moze byc interpretowana jako tablica dat
+     * @param position 1-based
+     * @return date array, if supported by holder
      */
-    public Date[] getDateArray(int k) {
-        AbstractHolder[] array = getArray(k);
+    public Date[] getDateArray(int position) {
+        AbstractHolder[] array = getArray(position);
         Date[] result = new Date[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getDate();
@@ -216,20 +198,11 @@ public class MultiValue {
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego <b>jako tablice Integer[]</b>.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
-     *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
-     *                             jesli wartosc k-tego poziomu nie moze byc interpretowana jako tablica integerow
+     * @param position 1-based
+     * @return integer array, if supported by holder
      */
-    public Integer[] getIntegerArray(int k) {
-        AbstractHolder[] array = getArray(k);
+    public Integer[] getIntegerArray(int position) {
+        AbstractHolder[] array = getArray(position);
         Integer[] result = new Integer[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getInteger();
@@ -238,20 +211,11 @@ public class MultiValue {
     }
 
     /**
-     * Zwraca wartosc k-tego poziomu wyjsciowego <b>jako tablice BigDecimal[]</b>.
-     *
-     * @param k numer poziomu (numerowanie od 1)
-     *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
-     *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
-     *                             jesli wartosc k-tego poziomu nie moze byc interpretowana jako tablica obiektow BigDecimal
+     * @param position 1-based
+     * @return big decimal array, if supported by holder
      */
-    public BigDecimal[] getBigDecimalArray(int k) {
-        AbstractHolder[] array = getArray(k);
+    public BigDecimal[] getBigDecimalArray(int position) {
+        AbstractHolder[] array = getArray(position);
         BigDecimal[] result = new BigDecimal[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getBigDecimal();
@@ -259,30 +223,20 @@ public class MultiValue {
         return result;
     }
 
-    /**
-     * Zwraca wartosc k-tego poziomu.
-     *
-     * @param k numer poziomu wyjsciowego
-     *
-     * @return AbstractHolder albo AbstractHolder[]
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
-     *                             jesli k jest niepoprawnym numerem poziomu wyjsciowego
-     */
-    private Object get(int k) {
-        if (k >= 1 && k <= values.length) {
-            return values[k - 1];
+    private Object getHolder(int position) {
+        if (position >= 1 && position <= values.length) {
+            return values[position - 1];
         }
         throw new SmartParamUsageException(
                 SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
-                "Getting element from non-existing position: " + k);
+                "Getting element from non-existing position: " + position);
     }
 
     /**
-     * Zwraca wartosci poziomow jako Stringi.
-     * Kazdy k-ty element musi byc typu {@link AbstractHolder}.
+     * Returns row values as strings, equivalent to calling {@link #getString(int) }
+     * on every row value.
      *
-     * @return tablica stringow odczytanych z poszczegolnych elementow
+     * @return
      */
     public String[] asStrings() {
         String[] array = new String[values.length];
@@ -293,10 +247,10 @@ public class MultiValue {
     }
 
     /**
-     * Zwraca wartosci poziomow jako obiekty BigDecimal.
-     * Kazdy k-ty element musi byc typu {@link AbstractHolder}.
+     * Returns row values as BigDecimals, equivalent to calling {@link #getBigDecimal(int) }
+     * on every row value.
      *
-     * @return tablica BigDecimali odczytanych z poszczegolnych elementow
+     * @return
      */
     public BigDecimal[] asBigDecimals() {
         BigDecimal[] array = new BigDecimal[values.length];
@@ -306,30 +260,19 @@ public class MultiValue {
         return array;
     }
 
-    /**
-     * Zwraca krotka nazwe klasy obiektu.
-     *
-     * @param obj obiekt
-     *
-     * @return krotka nazwa klasy lub <tt>null</tt>, gdy obiekt rowny </tt>null</tt>
-     */
-    private String printClass(Object obj) {
-        return obj != null ? obj.getClass().getSimpleName() : null;
-    }
-
     @Override
     public String toString() {
         return Printer.print(values, "MultiValue");
     }
 
     /**
-     * Zwraca zawartosc w jednej linii.
+     * Returns toString, but in single line.
      *
-     * @return zawartosc obiektu zapisana w jednej linii
+     * @return string representation of object
      */
     public String toStringInline() {
         Object[] rawValues = unwrap();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(100);
         sb.append('[');
 
         for (int i = 0; i < rawValues.length; ++i) {
@@ -350,135 +293,118 @@ public class MultiValue {
         return sb.toString();
     }
 
+    private String printClass(Object obj) {
+        return obj != null ? obj.getClass().getSimpleName() : null;
+    }
+
+    private int nextPosition() {
+        last++;
+        return last;
+    }
+
     /**
-     * Zwraca wartosc <b>kolejnego</b> poziomu wyjsciowego.
-     * Kolejne wywolania tej metody iteruja przez poziomy wyjsciowe.
+     * Iteration mode, return value of next row element.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS},
-     *                             jesli jest k poziomow wyjsciowych, a metoda jest uzyta k+1 raz
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE},
-     *                             jesli wartosc poziomu nie jest typu {@link AbstractHolder}
+     * @return raw value
+     * @see #getValue(int)
      */
     public AbstractHolder nextValue() {
-        return getValue(++last);
+        return getValue(nextPosition());
     }
 
     /**
-     * Zwraca wartosc <b>kolejnego</b> poziomu wyjsciowego jako String.
-     * Kolejne wywolania tej metody iteruja przez poziomy wyjsciowe.
+     * Iteration mode, get string value of next row element.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako String
+     * @return string value
+     * @see #getString(int)
      */
     public String nextString() {
-        return getString(++last);
+        return getString(nextPosition());
     }
 
     /**
-     * Zwraca wartosc <b>kolejnego</b> poziomu wyjsciowego jako BigDecimal.
-     * Kolejne wywolania tej metody iteruja przez poziomy wyjsciowe.
+     * Iteration mode, get BigDecimal value of next row element.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako BigDecimal
+     * @return BigDecimal value
+     * @see #getBigDecimal(int)
      */
     public BigDecimal nextBigDecimal() {
-        return getBigDecimal(++last);
+        return getBigDecimal(nextPosition());
     }
 
     /**
-     * Zwraca wartosc <b>kolejnego</b> poziomu wyjsciowego jako Date.
-     * Kolejne wywolania tej metody iteruja przez poziomy wyjsciowe.
+     * Iteration mode, get Date value of next row element.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Date
+     * @return Date value
+     * @see #getDate(int)
      */
     public Date nextDate() {
-        return getDate(++last);
+        return getDate(nextPosition());
     }
 
     /**
-     * Zwraca wartosc <b>kolejnego</b> poziomu wyjsciowego jako Integer.
-     * Kolejne wywolania tej metody iteruja przez poziomy wyjsciowe.
+     * Iteration mode, get integer value of next row element.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Integer
+     * @return integer value
+     * @see #getInteger(int)
      */
     public Integer nextInteger() {
-        return getInteger(++last);
+        return getInteger(nextPosition());
     }
 
     /**
-     * Zwraca wartosc <b>kolejnego</b> poziomu wyjsciowego jako Long.
-     * Kolejne wywolania tej metody iteruja przez poziomy wyjsciowe.
+     * Iteration mode, get long value of next row element.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest interpretowalna jako Long
+     * @return long value
+     * @see #getLong(int)
      */
     public Long nextLong() {
-        return getLong(++last);
+        return getLong(nextPosition());
     }
 
     /**
-     * Zwraca wartosc <b>kolejnego</b> poziomu wyjsciowego jako obiekt <tt>enum</tt> oczekiwanej klasy <tt>enumClass</tt>.
+     * Iteration mode, get enum value of next row element.
      *
-     * @return wartosc k-tego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli enumClass nie ma pola o takiej nazwie
+     * @return enum of given class
+     * @see #getEnum(int, java.lang.Class)
      */
     public <T extends Enum<T>> T nextEnum(Class<T> enumClass) {
-        return getEnum(++last, enumClass);
+        return getEnum(nextPosition(), enumClass);
     }
 
     /**
-     * Zwraca wartosc kolejnego poziomu wyjsciowego <b>jako tablice</b>.
+     * Iteration mode, return value of next row element as holder array.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
+     * @return raw elements array
+     * @see #getArray(int)
      */
     public AbstractHolder[] nextArray() {
-        return getArray(++last);
+        return getArray(nextPosition());
     }
 
     /**
-     * Zwraca wartosc kolejnego poziomu wyjsciowego <b>jako tablice String</b>.
+     * Iteration mode, return value of next row element as string array.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
+     * @return string array
+     * @see #getStringArray(int)
      */
     public String[] nextStringArray() {
-        return getStringArray(++last);
+        return getStringArray(nextPosition());
     }
 
     /**
-     * Zwraca wartosc kolejnego poziomu wyjsciowego <b>jako tablice BigDecimal</b>.
+     * Iteration mode, return value of next row element as BigDecimal array.
      *
-     * @return wartosc kolejnego poziomu
-     *
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS}, jesli iteracja wyszla poza ostatni poziom wyjsciowy
-     * @throws SmartParamException errorcode={@link SmartParamErrorCode#GETTING_WRONG_TYPE}, jesli wartosc nie jest tablica obiektow {@link AbstractHolder}
+     * @return BigDecimal array
+     * @see #getBigDecimalArray(int)
      */
     public BigDecimal[] nextBigDecimalArray() {
-        return getBigDecimalArray(++last);
+        return getBigDecimalArray(nextPosition());
     }
 
+    /**
+     * @return length of row
+     */
     public int size() {
         return values != null ? values.length : 0;
     }

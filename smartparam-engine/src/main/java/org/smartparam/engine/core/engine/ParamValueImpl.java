@@ -16,90 +16,89 @@ import java.util.Map;
  */
 public class ParamValueImpl implements ParamValue {
 
-	private MultiValue[] rows;
+    private MultiValue[] rows;
 
-	private Map<String, Integer> indexMap;
+    private Map<String, Integer> indexMap;
 
-	public ParamValueImpl(MultiValue[] rows, Map<String, Integer> indexMap) {
-		this.rows = rows;
-		this.indexMap = indexMap;
-	}
+    public ParamValueImpl(MultiValue[] rows, Map<String, Integer> indexMap) {
+        this.rows = rows;
+        this.indexMap = indexMap;
+    }
 
-	@Override
-	public MultiValue row(int rowNo) {
-		if (rowNo >= 1 && rowNo <= size()) {
-			return rows[rowNo - 1];
-		}
+    @Override
+    public MultiValue row(int rowNo) {
+        if (rowNo >= 1 && rowNo <= size()) {
+            return rows[rowNo - 1];
+        }
 
-		throw new SmartParamUsageException(
-				SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
+        throw new SmartParamUsageException(
+                SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
                 String.format("Trying to get non-existing row: %d. Available rows: %d..%d", rowNo, 1, size()));
-	}
+    }
 
-	@Override
-	public MultiValue row() {
-		return row(1);
-	}
+    @Override
+    public MultiValue row() {
+        return row(1);
+    }
 
-	@Override
-	public MultiValue[] rows() {
-		return rows;
-	}
+    @Override
+    public MultiValue[] rows() {
+        return rows;
+    }
 
-	@Override
-	public AbstractHolder get(int rowNo, int colNo) {
-		return row(rowNo).getValue(colNo);
-	}
+    @Override
+    public AbstractHolder get(int rowNo, int colNo) {
+        return row(rowNo).getValue(colNo);
+    }
 
-	@Override
-	public AbstractHolder get(int rowNo, String name) {
-		return get(rowNo, index(name));
-	}
+    @Override
+    public AbstractHolder get(int rowNo, String name) {
+        return get(rowNo, index(name));
+    }
 
-	@Override
-	public AbstractHolder get(int colNo) {
-		return row().getValue(colNo);
-	}
+    @Override
+    public AbstractHolder get(int colNo) {
+        return row().getValue(colNo);
+    }
 
-	@Override
-	public AbstractHolder get(String name) {
-		return row().getValue(index(name));
-	}
+    @Override
+    public AbstractHolder get(String name) {
+        return row().getValue(index(name));
+    }
 
-	@Override
-	public AbstractHolder get() {
-		return row().getValue(1);
-	}
+    @Override
+    public AbstractHolder get() {
+        return row().getValue(1);
+    }
 
-	@Override
-	public int size() {
-		return rows != null ? rows.length : 0;
-	}
+    @Override
+    public int size() {
+        return rows != null ? rows.length : 0;
+    }
 
-	private int index(String name) {
-		if (indexMap != null) {
-			Integer k = indexMap.get(name);
-			if (k != null) {
-				return k;
-			}
-		}
+    private int index(String name) {
+        if (indexMap != null) {
+            Integer k = indexMap.get(name);
+            if (k != null) {
+                return k;
+            }
+        }
 
-		throw new SmartParamException("Unknown level name: " + name);
-	}
+        throw new SmartParamException("Unknown level name: " + name);
+    }
 
-	@Override
-	public String toString() {
-		String header = "ParamValue " + indexMap;
-		return Printer.print(Arrays.asList(rows), header, 0, new MultiValueInlineFormatter());
-	}
+    @Override
+    public String toString() {
+        String header = "ParamValue " + indexMap;
+        return Printer.print(Arrays.asList(rows), header, 0, new MultiValueInlineFormatter());
+    }
 
-	static final class MultiValueInlineFormatter implements Formatter {
+    static final class MultiValueInlineFormatter implements Formatter {
 
-		@Override
-		public String format(Object obj) {
-			MultiValue mv = (MultiValue) obj;
-			return mv.toStringInline();
-		}
-	}
-
+        @Override
+        public String format(Object obj) {
+            MultiValue mv = (MultiValue) obj;
+            return mv.toStringInline();
+        }
+    }
 }

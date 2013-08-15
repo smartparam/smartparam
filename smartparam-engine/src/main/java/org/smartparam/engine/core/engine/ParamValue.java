@@ -51,7 +51,7 @@ public interface ParamValue {
      * Get cell of matrix using level name as column indicator.
      *
      * @param rowNo cell row, 1-based
-     * @param name name of level representing column
+     * @param name  name of level representing column
      * @return value held in cell
      */
     AbstractHolder get(int rowNo, String name);
@@ -81,7 +81,7 @@ public interface ParamValue {
     AbstractHolder get();
 
     /**
-     * 
+     *
      * @return number of rows
      */
     int size();
