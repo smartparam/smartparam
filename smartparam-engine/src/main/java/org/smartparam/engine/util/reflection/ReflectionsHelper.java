@@ -86,15 +86,15 @@ public class ReflectionsHelper {
         return annotatedFields;
     }
 
-    public static void runSetter(Method setter, Object setterHostClass, Object argument) {
+    public static void runSetter(Method setter, Object setterHostObject, Object argument) {
         try {
-            setter.invoke(setterHostClass, argument);
+            setter.invoke(setterHostObject, argument);
         } catch (IllegalAccessException illegalAccessException) {
-            throwSmartParamExceptionForSetterInvocation(illegalAccessException, setter, setterHostClass, argument);
+            throwSmartParamExceptionForSetterInvocation(illegalAccessException, setter, setterHostObject, argument);
         } catch (IllegalArgumentException illeagalArgumentException) {
-            throwSmartParamExceptionForSetterInvocation(illeagalArgumentException, setter, setterHostClass, argument);
+            throwSmartParamExceptionForSetterInvocation(illeagalArgumentException, setter, setterHostObject, argument);
         } catch (InvocationTargetException illegalTargetException) {
-            throwSmartParamExceptionForSetterInvocation(illegalTargetException, setter, setterHostClass, argument);
+            throwSmartParamExceptionForSetterInvocation(illegalTargetException, setter, setterHostObject, argument);
         }
     }
 

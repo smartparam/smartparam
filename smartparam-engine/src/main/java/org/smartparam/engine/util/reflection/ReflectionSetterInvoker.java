@@ -25,11 +25,20 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Adam Dubiel <dubiel.adam@gmail.com>
  */
-public class ReflectionSetterFinder {
+public class ReflectionSetterInvoker {
 
     private Map<Class<?>, Map<Class<?>, Setter>> setterCache = new ConcurrentHashMap<Class<?>, Map<Class<?>, Setter>>();
 
-    public Method findSetter(Class<?> setterHostObject, Object forArg) {
+    public boolean invokeSetter(Object setterHostObject, Object forArg) {
+        Method setter = findSetter(setterHostObject.getClass(), forArg);
+        if(setter == null) {
+            return false;
+        }
+        ReflectionsHelper.runSetter(setter, setterHostObject, forArg);
+        return true;
+    }
+
+    private Method findSetter(Class<?> setterHostObject, Object forArg) {
         Class<?> argClass = forArg.getClass();
         Map<Class<?>, Setter> settersMap = setterCache.get(setterHostObject);
         if (settersMap == null) {

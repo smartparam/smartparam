@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.core.context;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
@@ -23,8 +22,7 @@ import java.util.TreeMap;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.util.reflection.ReflectionSetterFinder;
-import org.smartparam.engine.util.reflection.ReflectionsHelper;
+import org.smartparam.engine.util.reflection.ReflectionSetterInvoker;
 
 /**
  * Implementation of dynamic {@link ParamContext}.
@@ -47,11 +45,15 @@ public class DefaultContext implements ParamContext {
 
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
+    private Locale locale = DEFAULT_LOCALE;
+
     /**
      * Setter cache. Keeps reference to setter methods extracted via reflection
      * mechanisms. Speeds up initialization of context up to 3-4 times.
      */
-    private static ReflectionSetterFinder setterCache = new ReflectionSetterFinder();
+    private static ReflectionSetterInvoker sharedSetterInvoker = new ReflectionSetterInvoker();
+
+    private ReflectionSetterInvoker setterInvoker = sharedSetterInvoker;
 
     private Map<String, Object> userContext;
 
@@ -63,9 +65,19 @@ public class DefaultContext implements ParamContext {
      * <li>if <tt>args[i]</tt> is <tt>String[]</tt> level values are set using {@link #setLevelValues(java.lang.String[]) } </li>
      * <li>if <tt>args[i]</tt> is <tt>Object[]</tt> level values are set using {@link #setLevelValues(java.lang.Object[]) } </li>
      * <li>if <tt>args[i]</tt> is <tt>String</tt> <tt>args[i+1]</tt> value is taken and put into context under <tt>args[i]</tt> key using {@link #set(java.lang.String, java.lang.Object) }</li>
+     * <li>if <tt>args[i]</tt> is <tt>Locale</tt>, it is set as a locale used for lowercase operations in {@link #set(java.lang.String, java.lang.Object, boolean) }</li>
      * <li>else, setter lookup is performed using {@link ReflectionSetterFinder} to find any setter of current context object that accepts <tt>args[i]</tt></li>
      * <li>eventually, <tt>args[i]</tt> is put into context under its class name using {@link #set(java.lang.Object) }</li>
      * </ol>.
+     *
+     * There is one more, power-user property. It is possible to substitute default
+     * implementation of {@link ReflectionSetterInvoker}, utility responsible
+     * for efficient setter invoking (includes inner cache). DefaultContext keeps
+     * default setter invoker as a static property, to share its caching abilities
+     * among all instances of DeaultContext. To substitute it with own
+     * implementation, pass ReflectionSetterInvoker object as <b>first</b>
+     * argument. Passing setter invoker on any other position will have no effect,
+     * as it will be treated as a normal argument.
      *
      * @param args
      */
@@ -96,19 +108,22 @@ public class DefaultContext implements ParamContext {
         for (int argumentIndex = 0; argumentIndex < args.length; ++argumentIndex) {
             Object arg = getArgumentAt(args, argumentIndex);
 
-            if (arg instanceof String[]) {
+            if(argumentIndex == 0 && arg instanceof ReflectionSetterInvoker) {
+                setterInvoker = (ReflectionSetterInvoker) arg;
+            }
+            else if (arg instanceof String[]) {
                 setLevelValues((String[]) arg);
             } else if (arg instanceof Object[]) {
                 setLevelValues((Object[]) arg);
+            } else if (arg instanceof Locale) {
+                locale = (Locale) arg;
             } else if (arg instanceof String) {
                 // skip one, cos it is being consumed now
                 argumentIndex++;
                 set((String) arg, getArgumentAt(args, argumentIndex));
             } else if (arg != null) {
-                Method setter = setterCache.findSetter(getClass(), arg);
-                if (setter != null) {
-                    setArgumentWithSetter(setter, arg);
-                } else {
+                boolean setterFound = findAndInvokeSetter(arg);
+                if(!setterFound) {
                     set(arg);
                 }
             }
@@ -133,8 +148,7 @@ public class DefaultContext implements ParamContext {
      * Put <tt>value</tt> under key <tt>lowercase(key)</tt>. allowOverwrite flag
      * determines what happens in case of key collision. If overwriting is allowed,
      * new value replaces old one, otherwise {@link SmartParamUsageException} is
-     * thrown. Lowercase function uses default JVM locale, so be careful with
-     * some fancy keys.
+     * thrown. Lowercase function uses default JVM locale, if none other specified.
      *
      * @param key
      * @param value
@@ -159,7 +173,7 @@ public class DefaultContext implements ParamContext {
     }
 
     private String lowercase(final String str) {
-        return str.toLowerCase(DEFAULT_LOCALE);
+        return str.toLowerCase(locale);
     }
 
     /**
@@ -174,8 +188,8 @@ public class DefaultContext implements ParamContext {
     }
 
     /**
-     * Return object stored under key. Key is always lowercased using default
-     * locale.
+     * Return object stored under key. Lowercase function uses default JVM locale,
+     * if none other specified.
      *
      * @param key
      * @return
@@ -229,12 +243,12 @@ public class DefaultContext implements ParamContext {
                 + "Maybe you wanted to put value under key and forgot to pass in a value after last string argument?", index, args.length));
     }
 
-    private void setArgumentWithSetter(Method setter, Object arg) {
+    private boolean findAndInvokeSetter(Object arg) {
         try {
-            ReflectionsHelper.runSetter(setter, this, arg);
+            return setterInvoker.invokeSetter(this, arg);
         } catch (SmartParamException exception) {
             throw new SmartParamUsageException(SmartParamErrorCode.ERROR_FILLING_CONTEXT, exception,
-                    String.format("Unable to set argument %s on context using setter %s", arg, setter));
+                    String.format("Unable to set argument %s on context", arg));
         }
     }
 
@@ -246,6 +260,17 @@ public class DefaultContext implements ParamContext {
     @Override
     public final void setLevelValues(String... levelValues) {
         this.levelValues = levelValues;
+    }
+
+    /**
+     * Explicitly set locale used for lowercase operation on map keys used by
+     * {@link #set(java.lang.String, java.lang.Object, boolean) } and
+     * {@link #get(java.lang.String) }.
+     *
+     * @param locale
+     */
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     /**
