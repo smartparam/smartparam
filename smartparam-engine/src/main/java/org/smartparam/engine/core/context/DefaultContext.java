@@ -70,6 +70,14 @@ public class DefaultContext implements ParamContext {
      * <li>eventually, <tt>args[i]</tt> is put into context under its class name using {@link #set(java.lang.Object) }</li>
      * </ol>.
      *
+     * This mechanism should be used with caution, as sometimes it can produce
+     * unexpected (although perfectly valid and deterministic) results. Biggest pitfall
+     * is hidden in implementation of {@link ReflectionSetterInvoker#findSetter(java.lang.Class, java.lang.Object) },
+     * which may lead to nondeterministic behavior if used incorrectly. In short,
+     * make sure you don't use automatic setter invocation if you need to define
+     * two setters that accept same type of object (i.e. two setters for different
+     * Date objects).
+     *
      * There is one more, power-user property. It is possible to substitute default
      * implementation of {@link ReflectionSetterInvoker}, utility responsible
      * for efficient setter invoking (includes inner cache). DefaultContext keeps
