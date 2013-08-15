@@ -46,22 +46,22 @@ public class ReflectionsHelper {
         try {
             return objectClass.getConstructor(constructorArgsClasses).newInstance(construtorArgs);
         } catch (IllegalAccessException illegalAccessException) {
-            throwSmartParamException(illegalAccessException, objectClass, construtorArgs);
+            throwSmartParamExceptionForObjectConstruction(illegalAccessException, objectClass, construtorArgs);
         } catch (IllegalArgumentException illegalArgumentException) {
-            throwSmartParamException(illegalArgumentException, objectClass, construtorArgs);
+            throwSmartParamExceptionForObjectConstruction(illegalArgumentException, objectClass, construtorArgs);
         } catch (InstantiationException instantiationException) {
-            throwSmartParamException(instantiationException, objectClass, construtorArgs);
+            throwSmartParamExceptionForObjectConstruction(instantiationException, objectClass, construtorArgs);
         } catch (NoSuchMethodException noSuchMethodException) {
-            throwSmartParamException(noSuchMethodException, objectClass, construtorArgs);
+            throwSmartParamExceptionForObjectConstruction(noSuchMethodException, objectClass, construtorArgs);
         } catch (SecurityException securityException) {
-            throwSmartParamException(securityException, objectClass, construtorArgs);
+            throwSmartParamExceptionForObjectConstruction(securityException, objectClass, construtorArgs);
         } catch (InvocationTargetException invoicationTargetException) {
-            throwSmartParamException(invoicationTargetException, objectClass, construtorArgs);
+            throwSmartParamExceptionForObjectConstruction(invoicationTargetException, objectClass, construtorArgs);
         }
         return null;
     }
 
-    private static void throwSmartParamException(Exception exception, Class<?> objectClass, Object[] construtorArgs) {
+    private static void throwSmartParamExceptionForObjectConstruction(Exception exception, Class<?> objectClass, Object[] construtorArgs) {
         throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception,
                 String.format("no String[%d] constructor found for class %s", construtorArgs.length, objectClass.getCanonicalName()));
     }
@@ -84,5 +84,22 @@ public class ReflectionsHelper {
             }
         }
         return annotatedFields;
+    }
+
+    public static void runSetter(Method setter, Object setterHostClass, Object argument) {
+        try {
+            setter.invoke(setterHostClass, argument);
+        } catch (IllegalAccessException illegalAccessException) {
+            throwSmartParamExceptionForSetterInvocation(illegalAccessException, setter, setterHostClass, argument);
+        } catch (IllegalArgumentException illeagalArgumentException) {
+            throwSmartParamExceptionForSetterInvocation(illeagalArgumentException, setter, setterHostClass, argument);
+        } catch (InvocationTargetException illegalTargetException) {
+            throwSmartParamExceptionForSetterInvocation(illegalTargetException, setter, setterHostClass, argument);
+        }
+    }
+
+    private static void throwSmartParamExceptionForSetterInvocation(Exception exception, Method setter, Object setterHostObject, Object argument) {
+        throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception,
+                String.format("Could not invoke setter %s on object %s using %s as argument", setter.getName(), setterHostObject.getClass().getSimpleName(), argument.getClass().getSimpleName()));
     }
 }

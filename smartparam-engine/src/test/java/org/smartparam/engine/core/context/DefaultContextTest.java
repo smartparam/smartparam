@@ -31,12 +31,11 @@ public class DefaultContextTest {
     public void testConstructor() {
 
         // inicjalizacja kontekstu
-        DefaultContext ctx = new DefaultContext("numberValue", 17, SomeResult.class, new String[]{"A", "B"}, 19, 20L);
+        DefaultContext ctx = new DefaultContext("numberValue", 17, new String[]{"A", "B"}, 19, 20L);
 
         // weryfikacja zawartosci kontekstu
         assertEquals(new Integer(17), ctx.get("numberValue"));
         assertEquals(new Integer(17), ctx.get("numberVALUE"));
-        assertSame(SomeResult.class, ctx.getResultClass());
         assertArrayEquals(new String[]{"A", "B"}, ctx.getLevelValues());
         assertEquals(new Integer(19), ctx.get("integer"));
         assertEquals(new Integer(19), ctx.get(Integer.class));
@@ -65,11 +64,10 @@ public class DefaultContextTest {
     public void testConstructor__levelValuesAsObjectArray() {
 
         // inicjalizacja kontekstu
-        DefaultContext ctx = new DefaultContext(SomeResult.class, new Object[]{"A", 'B', 9});
+        DefaultContext ctx = new DefaultContext("test", "noise", new Object[]{"A", 'B', 9});
 
         // weryfikacja zawartosci kontekstu
         assertArrayEquals(new String[]{"A", "B", "9"}, ctx.getLevelValues());
-        assertSame(SomeResult.class, ctx.getResultClass());
         assertNull(ctx.get("A"));
         assertNull(ctx.get("integer"));
     }
@@ -85,11 +83,10 @@ public class DefaultContextTest {
         SomeResult sr = new SomeResult();
 
         // inicjalizacja kontekstu
-        MyContext ctx = new MyContext(date, sr, "someResult", sr);
+        MyContext ctx = new MyContext(date, "someResult", sr);
 
         // weryfikacja zawartosci kontekstu
         assertSame(date, ctx.getDate());
-        assertSame(sr, ctx.getSomeResult());
         assertSame(sr, ctx.get("someresult"));
     }
 

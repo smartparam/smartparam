@@ -16,17 +16,15 @@
 package org.smartparam.engine.core.context;
 
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.util.reflection.ReflectionSetterFinder;
+import org.smartparam.engine.util.reflection.ReflectionsHelper;
 
 /**
  * Domyslna implementacja kontekstu (ParamContext).
@@ -48,16 +46,7 @@ import org.smartparam.engine.core.exception.SmartParamErrorCode;
  * Wartosci poziomow mozna przekazac w konstruktorze jako obiekt typu <tt>String[]</tt>
  * lub skorzystac z settera {@link #withLevelValues(java.lang.Object[])}
  * lub wykorzystac dziedziczaca klase kontekstu {@link LevelValues}.
- *
- * <li> <b>resultClass</b> - oczekiwana klasa zwracanego przez silnik obiektu.
- * Uzytkownik moze zawolac metode API silnika (np. <tt>engine.get[param, ...]</tt>)
- * i oczekiwac, ze silnik zwroci obiekt klasy <tt>resultClass</tt>.
- * Oczekiwana klase mozna przekazac w konstruktorze jako jeden z argumentow
- * lub podac w setterze {@link #withResultClass(java.lang.Class)}.
- * Silnik odnajdzie wartosc parametru ({@link org.smartparam.engine.core.type.AbstractHolder})
- * a nastepnie uruchomi odpowiedni {@link org.smartparam.engine.core.assembler.Assembler},
- * zeby stworzyc obiekt klasy <tt>resultClass</tt>
- *
+
  * <li> <b>userContext</b> - mapa, do ktorej uzytkownik moze wstawic wszelkie
  * obiekty pod dowolnymi kluczami. Z tych obiektow moze nastepnie skorzystac
  * w funkcjach silnika (<i>level creatory</i>, <i>version selectory</i> itp)
@@ -82,104 +71,70 @@ import org.smartparam.engine.core.exception.SmartParamErrorCode;
  */
 public class DefaultContext implements ParamContext {
 
-    /**
-     * Logger.
-     */
-    private static Logger logger = LoggerFactory.getLogger(DefaultContext.class);
+    private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
     /**
-     * Cache setterow. Przechowuje pobrana przez refleksje metode settera okreslonej klasy.
-     * Jesli danej metody nie ma, przechowuje informacje o braku okreslonego settera.
-     * Przyspiesza inicjalizowanie obiektu ok. 3-4 razy.
+     * Setter cache. Keeps reference to setter methods extracted via reflection
+     * mechanisms. Speeds up initialization of context up to 3-4 times.
      */
-    private static Map<Class<?>, Map<Class<?>, Setter>> setterCache = new ConcurrentHashMap<Class<?>, Map<Class<?>, Setter>>();
+    private static ReflectionSetterFinder setterCache = new ReflectionSetterFinder();
 
-    /**
-     * Kontekst uzytkownika. Dowolne obiekty pod dowolnymi kluczami.
-     * Jesli uzytkownik nie przekazal wlasnych obiektow, mapa userContext jest rowna null.
-     */
     private Map<String, Object> userContext;
 
-    /**
-     * Wartosci poziomow dostarczone przez uzytkownika.
-     * Jesli uzytkownik nie dostarczy tych wartosci, silnik sam je wyznaczy
-     * przy pomocy level creatorow podpietych do poszczegonych leveli.
-     */
     private String[] levelValues;
 
     /**
-     * Oczekiwana przez uzytkownika klasa obiektu zwracanego przez silnik.
-     */
-    private Class<?> resultClass;
-
-    /**
-     * Wypelnia kontekst na podstawie luzno przekazanych argumentow (inline arguments).
-     * Algorytm rozpoznawania i interpretowania kolejnych argumentow jest nastepujacy:
+     * Puts provided values into context using algorithm:
      * <ol>
-     * <li>jesli <tt>arg[i]</tt> jest typu <tt>String[]</tt>, to jest przekazywany do metody {@link #setLevelValues(java.lang.String[])}.
-     * <li>jesli <tt>arg[i]</tt> jest typu <tt>Object[]</tt>, to jest przekazywany do metody {@link #setLevelValues(java.lang.Object[])}.
-     * <li>jesli <tt>arg[i]</tt> jest typu <tt>Class</tt>, to jest przekazywany do metody {@link #withResultClass(java.lang.Class)}.
-     * <li>jesli <tt>arg[i]</tt> jest typu <tt>String</tt> i istnieje <tt>arg[i+1]</tt>, to <tt>arg[i+1]</tt>
-     * jest wstawiany do <tt>userContext</tt> pod kluczem <tt>arg[i]</tt>, czyli: <tt>userContext.put(arg[i], arg[i+1])</tt>.
-     * <li>jesli istnieje setter dla typu <tt>arg[i]</tt>, to jest uzywany ten setter.
-     * <li>ostatecznie <tt>arg[i]</tt> jest wstawiany do <tt>userContext</tt> pod kluczem bedacym nazwa klasy argumenty,
-     * czyli: <tt>userContext.put(arg[i].getClass().getSimpleName(), arg[i])</tt>.
-     * </ol>
+     * <li>if <tt>args[i]</tt> is <tt>String[]</tt> level values are set using {@link #setLevelValues(java.lang.String[]) } </li>
+     * <li>if <tt>args[i]</tt> is <tt>Object[]</tt> level values are set using {@link #setLevelValues(java.lang.Object[]) } </li>
+     * <li>if <tt>args[i]</tt> is <tt>String</tt> <tt>args[i+1]</tt> value is taken and put into context under <tt>args[i]</tt> key using {@link #set(java.lang.String, java.lang.Object) }</li>
+     * <li>else, setter lookup is performed using {@link ReflectionSetterFinder} to find any setter of current context object that accepts <tt>args[i]</tt></li>
+     * <li>eventually, <tt>args[i]</tt> is put into context under its class name using {@link #set(java.lang.Object) }</li>
+     * </ol>.
      *
-     * @throws ParamUsageException jesli wystapi blad podczas interpretowania ciagu argumentow
+     * @param args
      */
     public DefaultContext(Object... args) {
         initialize(args);
     }
 
     /**
-     * Tworzy pusty konktekst.
-     * Po stworzeniu mozna go wypelnic odpowiednimi metodami ustawiajacymi.
+     * Create empty context, use setter methods to initialize it.
      *
      * @see #setLevelValues(java.lang.String[])
      * @see #setLevelValues(java.lang.Object[])
-     * @see #setResultClass(java.lang.Class)
      * @see #set(java.lang.String, java.lang.Object)
      * @see #set(java.lang.Object)
-     *
      * @see #DefaultContext(java.lang.Object[])
      */
     public DefaultContext() {
     }
 
     /**
-     * Algorytm inicjalizacji opisany jest przy okazji konstruktora.
+     * Implementation of value initializing algorithm.
+     *
+     * @param args
      *
      * @see #DefaultContext(java.lang.Object[])
-     * @param args luzno przekazane argumenty
      */
     protected final void initialize(Object... args) {
-
-        for (int i = 0; i < args.length; ++i) {
-            Object arg = get(args, i);
+        for (int argumentIndex = 0; argumentIndex < args.length; ++argumentIndex) {
+            Object arg = getArgumentAt(args, argumentIndex);
 
             if (arg instanceof String[]) {
                 setLevelValues((String[]) arg);
-
             } else if (arg instanceof Object[]) {
                 setLevelValues((Object[]) arg);
-
-            } else if (arg instanceof Class) {
-                setResultClass((Class<?>) arg);
-
             } else if (arg instanceof String) {
-                // arg jest kluczem dla kolejnego argumentu, arg[i+1] wstawiamy do userContext pod kluczem arg
-                set((String) arg, get(args, ++i));
-
+                // skip one, cos it is now being used
+                argumentIndex++;
+                set((String) arg, getArgumentAt(args, argumentIndex));
             } else if (arg != null) {
-                // sprawdzamy, czy jest setter dla klasy arg (metoda cache'owana)
-                Method setter = findSetter(arg);
-
+                Method setter = setterCache.findSetter(getClass(), arg);
                 if (setter != null) {
-                    // istnieje setter dla tego argumentu, uzywamy tego settera
-                    setArg(setter, arg);
+                    setArgumentWithSetter(setter, arg);
                 } else {
-                    // wstawiamy argument pod kluczem bedacym nazwa klasy
                     set(arg);
                 }
             }
@@ -187,28 +142,32 @@ public class DefaultContext implements ParamContext {
     }
 
     /**
-     * Wstawia do kontekstu uzytkownika obiekt <tt>value</tt> pod kluczem <tt>lowercase(key)</tt>.
+     * Put <tt>value</tt> under <tt>lowercase(key)</tt>. Will throw a
+     * {@link SmartParamUsageException} if there was value registered already.
      *
-     * @param key   klucz, ktory zostanie zamieniony na lowercase(key)
-     * @param value wartosc
-     * @throws ParamUsageException jesli jest juz obiekt pod takim kluczem
+     * @param key
+     * @param value
+     * @return
+     *
+     * @see #set(java.lang.String, java.lang.Object, boolean)
      */
     public final DefaultContext set(String key, Object value) {
         return set(key, value, false);
     }
 
     /**
-     * Wstawia do kontekstu uzytkownika obiekt <tt>value</tt> pod kluczem <tt>lowercase(key)</tt>.
-     * Uzycie drugi raz tego samego klucza:
-     * <ul>
-     * <li>nadpisuje poprzednia wartosc, gdy <tt>allowOverwrite=true</tt>,
-     * <li>rzuca wyjatek ParamUsageException, gdy <tt>allowOverwrite=false</tt>.
-     * </ul>
+     * Put <tt>value</tt> under key <tt>lowercase(key)</tt>. allowOverwrite flag
+     * determines what happens in case of key collision. If overwriting is allowed,
+     * new value replaces old one, otherwise {@link SmartParamUsageException} is
+     * thrown. Lowercase function uses default JVM locale, so be careful with
+     * some fancy keys.
      *
-     * @param key            klucz, pod ktorym wstawiamy obiekt
-     * @param value          wstawiany obiekt
-     * @param allowOverwrite czy dopuszczalne jest nadpisywanie juz istniejacego klucza
-     * @throws ParamUsageException jesli duplikujemy klucz a nie pozwalamy na nadpisywanie
+     * @param key
+     * @param value
+     * @param allowOverwrite
+     * @return
+     *
+     * @see Locale#getDefault()
      */
     public final DefaultContext set(String key, Object value, boolean allowOverwrite) {
         if (userContext == null) {
@@ -224,49 +183,44 @@ public class DefaultContext implements ParamContext {
         userContext.put(k, value);
         return this;
     }
-    /**
-     * Wstepnie zainicjalizowane domyslne Locale, na potrzeby przyspieszenia
-     * metody {@link #lowercase(java.lang.String)}
-     */
-    private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
-    /**
-     * Zwraca lowercase(str).
-     */
     private String lowercase(final String str) {
         return str.toLowerCase(DEFAULT_LOCALE);
     }
 
     /**
-     * Wstawia do kontekstu uzytkownika obiekt <tt>value</tt> pod kluczem <tt>lowercase(value.class.getSimpleName())</tt>.
+     * Put value under <tt>lowercase(value.class.getSimpleName())</tt> in user
+     * context map. Internally calls {@link #set(java.lang.String, java.lang.Object) }.
      *
-     * @param value wstawiany obiekt
-     * @throws ParamUsageException jesli duplikujemy klucz, czy gdy wstawiamy drugi obiekt tej samej klasy
+     * @param value
+     * @return
      */
     public final DefaultContext set(Object value) {
         return set(value.getClass().getSimpleName(), value);
     }
 
     /**
-     * Pobiera z kontekstu uzytkownika obiekt o kluczu <tt>key</tt>.
+     * Return object stored under key. Key is always lowercased using default
+     * locale.
      *
-     * @param key - wielkosc liter nie ma znaczenia
-     * @return obiekt spod klucza <tt>key</tt> lub <tt>null</tt>, gdy nie ma obiektu pod takim kluczem
+     * @param key
+     * @return
      */
     public Object get(String key) {
         return userContext != null ? userContext.get(lowercase(key)) : null;
     }
 
     /**
-     * Pobiera z kontekstu uzytkownika obiekt klasy <tt>clazz</tt> lub pochodnej.
-     * Algorytm:
+     * Looks for object of class <tt>clazz</tt> (or object which class is
+     * assignable from <tt>clazz</tt>. Algorithm:
      * <ol>
-     * <li>Szukany jest obiekt pod kluczem bedacym nazwa klasy, jesli obiekt jest i jest klasy <tt>clazz</tt>, to zostaje zwrocony.
-     * <li>Szukany jest obiekt o klasie rownej <tt>clazz</tt> lub pochodnej.
+     * <li>look for object stored under <tt>clazz.getSimpleName()</tt>, return if not null and class match</li>
+     * <li>iterate through all context values to look for first object that matches provided clazz</li>
      * </ol>
      *
-     * @param clazz klasa szukanego obiektu
-     * @return obiekt klasy clazz lub pochodnej
+     * @param <T>
+     * @param clazz
+     * @return
      */
     @SuppressWarnings("unchecked")
     public <T> T get(Class<T> clazz) {
@@ -278,111 +232,35 @@ public class DefaultContext implements ParamContext {
                 return (T) obj;
             }
 
-            for (Object x : userContext.values()) {
-                if (x == null) {
+            for (Object contextValue : userContext.values()) {
+                if (contextValue == null) {
                     continue;
                 }
 
-                if (clazz.isAssignableFrom(x.getClass())) {
-                    return (T) x;
+                if (clazz.isAssignableFrom(contextValue.getClass())) {
+                    return (T) contextValue;
                 }
             }
         }
-
         return null;
     }
 
-    /**
-     * Zwraca argument o indeksie ix.
-     *
-     * @param args tablica argumentow
-     * @param ix   indeks argumentu (0-based)
-     * @return args[ix]
-     * @throws ParamUsageException jesli tablica jest krotsza
-     */
-    private Object get(Object[] args, int ix) {
-        if (ix < args.length) {
-            return args[ix];
+    private Object getArgumentAt(Object[] args, int index) {
+        if (index < args.length) {
+            return args[index];
         }
-
         throw new SmartParamUsageException(
                 SmartParamErrorCode.ERROR_FILLING_CONTEXT,
-                "args[" + ix + "] expected, but not found");
+                String.format("Expected element at position %d in argument array, but passed only %d arguments to DefaultContext constructor. "
+                + "Maybe you wanted to put value under key and forgot to pass in a value after last string argument?", index, args.length));
     }
 
-    /**
-     * Znajduje setter dla klasy takiej jak klasa argumentu <tt>arg</tt>.
-     * Pobiera metode z cache'a lub szuka jej przez refleksje.
-     *
-     * @param arg obiekt, dla ktorego szukay settera
-     * @return metoda bedace setterm lub <tt>null</tt>, jesli nie ma settera dla obiektu tej klasy
-     */
-    private Method findSetter(Object arg) {
-        Class<?> argClass = arg.getClass();
-        Map<Class<?>, Setter> settersMap = setterCache.get(getClass());
-        if (settersMap == null) {
-            settersMap = new ConcurrentHashMap<Class<?>, Setter>();
-            setterCache.put(getClass(), settersMap);
-        }
-
-        Setter setter = settersMap.get(argClass);
-
-        if (setter == null) {
-            Method method = lookupSetter(getClass(), argClass);
-            setter = new Setter(method);
-            settersMap.put(argClass, setter);
-        }
-
-        return setter.getMethod();
-    }
-
-    /**
-     * Przeszukuje klase <tt>clazz</tt>, a nastepnie cala hierarchie dziedziczenia,
-     * w poszukiwaniu 1-argumentowej metody <tt>void</tt>, ktora przyjmuje
-     * argument klasy <tt>clazz</tt> lub nadrzednej.
-     *
-     * @param objClazz klasa, w ktorej szukamy settera
-     * @param argClazz klasa argumentu, dla ktorego szukamy settera
-     * @return metoda, ktora jest setterem wg. konwencji javabeans
-     */
-    private Method lookupSetter(Class<?> objClazz, Class<?> argClazz) {
-        Class<?> clazz = objClazz;
-
-        // przeszukujemy hierarchie dziedziczenia az do znalezienia metody
-        while (clazz != null) {
-            Method[] methods = clazz.getDeclaredMethods();
-            for (Method m : methods) {
-                Class<?>[] argTypes = m.getParameterTypes();
-                if (m.getReturnType() == Void.TYPE && argTypes.length == 1 && argTypes[0].isAssignableFrom(argClazz)) {
-
-                    AccessController.doPrivileged(new AccessibleSetter(m));
-                    return m;
-                }
-            }
-
-            // przechodzimy do klasy bazowej
-            clazz = clazz.getSuperclass();
-        }
-
-        // setter nie zostal znaleziony mimo przeszukania calej hierarchii dziedziczenia
-        return null;
-    }
-
-    /**
-     * Ustawia obiekt <tt>arg</tt> przy pomocy settera <tt>setter</tt>.
-     *
-     * @param setter metoda settera
-     * @param arg    argument settera
-     * @throws ParamUsageException jesli wywolanie settera sie nie powiodlo
-     */
-    private void setArg(Method setter, Object arg) {
+    private void setArgumentWithSetter(Method setter, Object arg) {
         try {
-            setter.invoke(this, arg);
-        } catch (Exception e) {
-            logger.error("", e);
-            throw new SmartParamUsageException(
-                    SmartParamErrorCode.ERROR_FILLING_CONTEXT, e,
-                    "Unable to set arg on context, arg=" + arg + ", setter=" + setter);
+            ReflectionsHelper.runSetter(setter, this, arg);
+        } catch (SmartParamException exception) {
+            throw new SmartParamUsageException(SmartParamErrorCode.ERROR_FILLING_CONTEXT, exception,
+                    String.format("Unable to set argument %s on context using setter %s", arg, setter));
         }
     }
 
@@ -391,125 +269,47 @@ public class DefaultContext implements ParamContext {
         return levelValues;
     }
 
-    /**
-     * Setter dla tablicy levelValues.
-     *
-     * @param levelValues przygotowane wartosci poziomow
-     */
     @Override
     public final void setLevelValues(String... levelValues) {
         this.levelValues = levelValues;
     }
 
     /**
-     * Ustawia tablice przygotowanych wartosci poziomow.
-     * Kazdy element tej tablicy bedzie wynikiem metody <tt>toString</tt>
-     * odpowiedniego elementu z tablicy obiektow <tt>levelValues</tt>.
-     * Wartosc <tt>null</tt> jest przepisywana jako <tt>null</tt>.
+     * Set level values directly, without using user context. Objects are
+     * transformed to level values by calling toString on each of them. Method
+     * is null safe, puts null value into level values.
      *
-     * @param levelValues tablica obiektow
+     * @param levelValues
      */
-    public final void setLevelValues(Object... levelValues) {
+    protected final void setLevelValues(Object... levelValues) {
         this.levelValues = new String[levelValues.length];
         for (int i = 0; i < levelValues.length; ++i) {
-            Object v = levelValues[i];
-            this.levelValues[i] = v != null ? v.toString() : null;
+            Object value = levelValues[i];
+            this.levelValues[i] = value != null ? value.toString() : null;
         }
     }
 
-    /**
-     * Odpowiednik {@link #setLevelValues(java.lang.String[])},
-     * z tym, ze zwraca referencje do biezacego obiektu pozwalajac tym samym na chaining.
-     */
     public DefaultContext withLevelValues(String... levelValues) {
         setLevelValues(levelValues);
         return this;
     }
 
-    /**
-     * Odpowiednik {@link #setLevelValues(java.lang.Object[])},
-     * z tym, ze zwraca referencje do biezacego obiektu pozwalajac tym samym na chaining.
-     */
     public DefaultContext withLevelValues(Object... levelValues) {
         setLevelValues(levelValues);
         return this;
     }
 
-    public Class<?> getResultClass() {
-        return resultClass;
-    }
-
     /**
-     * Zwraca mape reprezentujaca kontekst uzytkownika.
+     * Return map representing parameter evaluation context.
      *
-     * @return userContext
+     * @return
      */
     protected Map<String, Object> getUserContext() {
         return userContext;
     }
 
-    /**
-     * Setter dla <tt>resultClass</tt>.
-     *
-     * @param resultClass klasa oczekiwanego obiektu wynikowego
-     */
-    public final void setResultClass(Class<?> resultClass) {
-        this.resultClass = resultClass;
-    }
-
-    /**
-     * Odpowiednik {@link #setResultClass(java.lang.Class)},
-     * z tym, ze zwraca referencje do biezacego obiektu pozwalajac tym samym na chaining.
-     */
-    public DefaultContext withResultClass(Class<?> resultClass) {
-        setResultClass(resultClass);
-        return this;
-    }
-
-    /**
-     * Wrapper dla obiektu <tt>Method</tt>.
-     */
-    static final class Setter {
-
-        private Method method;
-
-        Setter(Method method) {
-            this.method = method;
-        }
-
-        Method getMethod() {
-            return method;
-        }
-    }
-
     @Override
     public String toString() {
         return "DefaultContext[levelValues=" + Arrays.toString(levelValues) + ", userContext=" + userContext + ']';
-    }
-
-    /**
-     * Klasa callbackowa, ktora ustawia flage dostepnosci na metodzie.
-     */
-    static final class AccessibleSetter implements PrivilegedAction<Object> {
-
-        private Method method;
-
-        private AccessibleSetter(Method method) {
-            this.method = method;
-        }
-
-        @Override
-        public Object run() {
-            method.setAccessible(true);
-            return null;
-        }
-    }
-
-    protected void append(StringBuilder sb, String property, Object value) {
-        sb.append(property).append('=').append(value).append(", ");
-    }
-
-    protected void append(StringBuilder sb, String property) {
-        sb.append(property).append(", ");
     }
 }
