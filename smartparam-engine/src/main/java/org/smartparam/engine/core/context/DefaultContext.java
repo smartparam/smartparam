@@ -27,44 +27,18 @@ import org.smartparam.engine.util.reflection.ReflectionSetterFinder;
 import org.smartparam.engine.util.reflection.ReflectionsHelper;
 
 /**
- * Domyslna implementacja kontekstu (ParamContext).
- * Klasa zawiera jeden, generyczny konstruktor (vargs),
- * ktory wypelnia pola klasy zaleznie od przekazanych argumentow.
- * <p>
- * Kontekst jest zbiorem danych, ktore uzytkownik moze przekazac podczas
- * wywolywania metod silnika parametrycznego. Z danych kontekstu moga
- * nastepnie korzystac pozostale fragmenty silnika lub funkcje,
- * na przyklad: <i>level creatory</i>, <i>version selectory</i> itp.
- * <p>
- * Klasa zawiera 4 podstawowe struktury/koncepcje:
- * <ol>
+ * Implementation of dynamic {@link ParamContext}.
  *
- * <li> <b>levelValues</b> - tablica stringow, ktore zostana uzyte jako wartosci
- * kolejnych poziomow w trakcie szukania pasujacego wzorca w macierzy parametru.
- * Jesli <tt>levelValues</tt> bedzie rowne <tt>null</tt>, silnik parametryczny
- * skorzysta z funkcji (<i>level creator</i>) do wyznaczenia wartosci dla kolejnych poziomow.
- * Wartosci poziomow mozna przekazac w konstruktorze jako obiekt typu <tt>String[]</tt>
- * lub skorzystac z settera {@link #withLevelValues(java.lang.Object[])}
- * lub wykorzystac dziedziczaca klase kontekstu {@link LevelValues}.
-
- * <li> <b>userContext</b> - mapa, do ktorej uzytkownik moze wstawic wszelkie
- * obiekty pod dowolnymi kluczami. Z tych obiektow moze nastepnie skorzystac
- * w funkcjach silnika (<i>level creatory</i>, <i>version selectory</i> itp)
- * przy pomocy metody {@link #get(java.lang.String)} lub {@link #get(java.lang.Class)}.
- * Elementy <tt>userContextu</tt> mozna przekazac w konstruktorze (zob. opis konstruktora)
- * lub poprzez settery {@link #set(java.lang.String, java.lang.Object)} i podobne.
+ * Core of default context is the initialization algorithm, that can turn list of loosely provided
+ * values into a meaningful context ({@link DefaultContext#DefaultContext(java.lang.Object[]) }),
+ * that is later translated into string array of level values (with help of level creators)
+ * returned by {@link ParamContext#getLevelValues() }.
  *
- * <li> <b>kontekst specjalizowany</b> - uzytkownik moze stworzyc wlasna klase
- * kontekstu (np. MyBankContext), ktora dziedziczy po tej klasie i zawiera
- * rozne pola z modelu dziedzinowego uzytkownika. Wystarczy zeby uzytkownik
- * zapewnil settery dla tych pol, a generyczny konstruktor kontekstu
- * bedzie potrafil je rozpoznac i wypelnic. Innymi slowy, kazdy obiekt przekazany
- * do konstruktora trafi do odpowiedniego settera, jesli tylko taki setter
- * bedzie dostepny w klasie kontekstu.
- * </ol>
- *
- * Sercem klasy {@link DefaultContext} jest algorytm inicjalizacji
- * zastosowany w konstruktorze.
+ * DefaultContext should be extended to form specialized user contexts, which can
+ * provide support for application domain objects. Thanks to DefaultContext
+ * initialization algorithm, it is enough to pass an object to the constructor and
+ * it will take care of running a setter in user implemented context to set the
+ * value.
  *
  * @author Przemek Hertel
  * @since 1.0.0
@@ -127,7 +101,7 @@ public class DefaultContext implements ParamContext {
             } else if (arg instanceof Object[]) {
                 setLevelValues((Object[]) arg);
             } else if (arg instanceof String) {
-                // skip one, cos it is now being used
+                // skip one, cos it is being consumed now
                 argumentIndex++;
                 set((String) arg, getArgumentAt(args, argumentIndex));
             } else if (arg != null) {

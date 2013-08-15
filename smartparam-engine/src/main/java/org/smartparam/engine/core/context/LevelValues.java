@@ -16,6 +16,10 @@
 package org.smartparam.engine.core.context;
 
 /**
+ * Simple parameter evaluation context that uses values provided directly by
+ * user. Under the hood, {@link DefaultContext#setLevelValues(java.lang.Object[]) }
+ * is called.
+ *
  * @author Przemek Hertel
  * @since 1.0.0
  */

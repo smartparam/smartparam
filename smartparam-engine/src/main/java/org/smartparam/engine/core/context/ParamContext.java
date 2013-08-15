@@ -16,9 +16,12 @@
 package org.smartparam.engine.core.context;
 
 /**
- * Context of parameter result evaluation. However complex the implementation,
+ * Context of parameter result evaluation. Context is a set of values that
+ * are used to create parameter value query. However complex the implementation,
  * it all boils down to vector (array) of values that will be matched to patterns
  * in parameter definition to find matching entries.
+ *
+ * Context is the only argument passed to level creators.
  *
  * @author Przemek Hertel
  */

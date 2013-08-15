@@ -203,7 +203,6 @@ public class ParamEngineIntegrationTest {
     }
 
     @Test
-    // waiting for implementation
     public void shouldGetBackToTheRootIfStuckInDeadEndWhenSearchingForValue() {
         // given
         Level[] levels = new Level[]{
