@@ -13,7 +13,6 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
-import org.smartparam.engine.core.repository.AssemblerProvider;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.function.Function;
@@ -36,8 +35,6 @@ public class SmartParamEngine implements ParamEngine {
     private ParamPreparer paramPreparer;
 
     private FunctionManager functionManager;
-
-    private AssemblerProvider assemblerProvider;
 
     @Override
     public ParamEngineRuntimeConfig getConfiguration() {
