@@ -5,7 +5,7 @@ import org.smartparam.engine.core.engine.SmartParamPreparer;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ParamEngineBuilder {
 

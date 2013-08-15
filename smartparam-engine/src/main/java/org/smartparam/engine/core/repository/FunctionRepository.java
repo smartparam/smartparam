@@ -13,7 +13,7 @@ import org.smartparam.engine.model.function.Function;
  * @see Function
  * @see org.smartparam.engine.core.invoker.FunctionInvoker
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  * @since 1.0.0
  */
 public interface FunctionRepository {

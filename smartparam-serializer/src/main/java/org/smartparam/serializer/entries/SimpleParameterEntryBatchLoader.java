@@ -24,7 +24,7 @@ import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SimpleParameterEntryBatchLoader implements ParameterEntryBatchLoader {
 

@@ -17,7 +17,7 @@ package org.smartparam.repository.jdbc.dialect;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public enum Dialect {
 

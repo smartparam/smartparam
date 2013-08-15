@@ -22,7 +22,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameterLevel;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class LevelMapper implements ObjectMapper<Level> {
 

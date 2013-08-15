@@ -19,7 +19,7 @@ import org.smartparam.repository.jdbc.exception.SmartParamJdbcException;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class JdbcQuery {
 

@@ -7,7 +7,7 @@ import org.smartparam.engine.core.type.Type;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @ParamType(value = "", instances = {
     @ObjectInstance(value = "typeInstanceOne", constructorArgs = {"PROPERTY_1_A", "PROBERTY_1_B"}),

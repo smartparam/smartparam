@@ -8,7 +8,7 @@ import org.smartparam.engine.model.SimpleParameter;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SimpleEditableParameter extends SimpleParameter implements EditableParameter {
 

@@ -12,7 +12,7 @@ import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class PackageMethodScanner implements MethodScanner {
 

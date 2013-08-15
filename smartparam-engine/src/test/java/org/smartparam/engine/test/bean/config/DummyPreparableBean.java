@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class DummyPreparableBean {
 

@@ -23,7 +23,7 @@ import org.smartparam.repository.jdbc.dialect.Dialect;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class DataSourceFactory {
 

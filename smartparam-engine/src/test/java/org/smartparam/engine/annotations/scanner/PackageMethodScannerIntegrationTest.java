@@ -16,7 +16,7 @@ import static com.googlecode.catchexception.CatchException.*;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class PackageMethodScannerIntegrationTest {
 

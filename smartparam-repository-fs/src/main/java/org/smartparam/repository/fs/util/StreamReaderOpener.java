@@ -26,7 +26,7 @@ import org.smartparam.repository.fs.exception.SmartParamResourceResolverExceptio
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class StreamReaderOpener {
 

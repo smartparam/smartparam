@@ -20,7 +20,7 @@ import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SchemaLookupResultAssert extends AbstractAssert<SchemaLookupResultAssert, SchemaLookupResult> {
 

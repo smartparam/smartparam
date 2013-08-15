@@ -9,7 +9,7 @@ import org.smartparam.engine.model.function.JavaFunction;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @ParamFunctionRepository(JavaFunctionRepository.FUNCTION_TYPE)
 public class JavaFunctionRepository extends AbstractJavaFunctionRepository {

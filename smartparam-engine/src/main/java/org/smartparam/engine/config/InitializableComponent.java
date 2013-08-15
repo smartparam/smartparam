@@ -19,7 +19,7 @@ package org.smartparam.engine.config;
  * Contract for component, that can be initialized using {@link PostConstructInitializer}
  * when constructed by {@link ParamEngineFactory}.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface InitializableComponent {
 

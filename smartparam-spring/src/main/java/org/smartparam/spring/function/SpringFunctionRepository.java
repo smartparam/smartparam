@@ -11,7 +11,7 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @ParamFunctionRepository(SpringFunctionRepository.FUNCTION_TYPE)
 public class SpringFunctionRepository extends AbstractJavaFunctionRepository {

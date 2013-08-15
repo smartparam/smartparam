@@ -8,7 +8,7 @@ import org.smartparam.engine.annotations.ObjectInstance;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class AnnotationBuilder {
 

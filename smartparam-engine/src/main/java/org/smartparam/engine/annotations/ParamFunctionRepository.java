@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * initial scan. Function repositories are ordered, first function repository
  * that can provide searched function is used.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

@@ -4,7 +4,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @SuppressWarnings("serial")
 public class SmartParamResourceResolverException extends SmartParamException {

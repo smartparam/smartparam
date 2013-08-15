@@ -19,7 +19,7 @@ package org.smartparam.engine.config;
  * Initializer for handling simple post-construct like initialization.
  *
  * @see InitializableComponent
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class PostConstructInitializer implements ComponentInitializer {
 

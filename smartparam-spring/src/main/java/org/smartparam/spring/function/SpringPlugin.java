@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Annotates function inside Spring beans that should be added to {@link SpringFunctionRepository}
  * during annotation scan.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

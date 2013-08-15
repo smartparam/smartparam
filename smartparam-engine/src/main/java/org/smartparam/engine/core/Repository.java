@@ -5,7 +5,7 @@ package org.smartparam.engine.core;
  * of specific type under string key.
  *
  * @param <TYPE> type of objects kept in repository
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface Repository<TYPE> extends ItemsContainer<String, TYPE> {
 

@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Annotation scanner util specializing in scanning methods.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface MethodScanner {
 

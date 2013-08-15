@@ -6,7 +6,7 @@ import org.smartparam.engine.model.function.Function;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @ParamFunctionRepository(value = "primaryRepository", order = 1)
 public class DummyPrimaryRepository implements FunctionRepository {

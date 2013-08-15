@@ -26,7 +26,7 @@ import static org.smartparam.transferer.test.builder.ParameterNameSetTestBuilder
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SimpleParameterSorterTest {
 

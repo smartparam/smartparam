@@ -11,7 +11,7 @@ import org.smartparam.engine.util.reflection.ReflectionsHelper;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @ParamFunctionInvoker("java")
 public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker {

@@ -8,7 +8,7 @@ import java.util.Map;
  * @param <KEY> object key type
  * @param <TYPE> object type
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface ItemsContainer<KEY, TYPE> {
 

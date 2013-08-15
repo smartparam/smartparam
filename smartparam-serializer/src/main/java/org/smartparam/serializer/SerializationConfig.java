@@ -5,7 +5,7 @@ import java.nio.charset.Charset;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface SerializationConfig {
 

@@ -17,7 +17,7 @@ package org.smartparam.repository.jdbc.exception;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @SuppressWarnings("serial")
 public class SmartParamJdbcException extends RuntimeException {

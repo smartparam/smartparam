@@ -22,7 +22,7 @@ import org.smartparam.engine.core.type.AbstractHolder;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ParamValueAssert extends AbstractAssert<ParamValueAssert, ParamValue> {
 

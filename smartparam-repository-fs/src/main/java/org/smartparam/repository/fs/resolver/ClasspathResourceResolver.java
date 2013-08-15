@@ -25,7 +25,7 @@ import org.smartparam.serializer.util.StreamCloser;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ClasspathResourceResolver implements ResourceResolver {
 

@@ -8,7 +8,7 @@ import org.smartparam.engine.core.type.Type;
  * takes place in type context, so same matcher can handle values differently
  * based on type.
  *
- * @author Przemek Hertel <przemek.hertel@gmail.com>
+ * @author Przemek Hertel
  * @since 1.0.0
  */
 public interface Matcher {

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <T> cached object type
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class MapCache<T> {
 

@@ -29,7 +29,7 @@ import static org.smartparam.transferer.test.builder.SortedParametersTestBuilder
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class StandardTransfererTest {
 

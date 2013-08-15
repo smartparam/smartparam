@@ -17,7 +17,7 @@ package org.smartparam.repository.jdbc.schema;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface SchemaManager {
 

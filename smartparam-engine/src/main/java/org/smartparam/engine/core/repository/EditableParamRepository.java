@@ -22,7 +22,7 @@ import org.smartparam.engine.model.Parameter;
  * Warning! This interface will be undergoing big changes in near future
  * (adding new methods most probably) to integrate with editor.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface EditableParamRepository extends ParamRepository {
 

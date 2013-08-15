@@ -2,7 +2,7 @@ package org.smartparam.engine.model;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SimpleLevel implements Level {
 

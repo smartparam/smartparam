@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

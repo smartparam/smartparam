@@ -2,7 +2,7 @@ package org.smartparam.serializer.entries;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class StandardParameterEntryPersisterTest {
 

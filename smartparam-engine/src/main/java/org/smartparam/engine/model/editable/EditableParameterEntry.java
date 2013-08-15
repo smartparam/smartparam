@@ -4,7 +4,7 @@ import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface EditableParameterEntry extends ParameterEntry {
 

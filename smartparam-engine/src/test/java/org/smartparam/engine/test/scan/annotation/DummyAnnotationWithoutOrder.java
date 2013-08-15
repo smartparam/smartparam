@@ -10,7 +10,7 @@ import org.smartparam.engine.annotations.Sortable;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

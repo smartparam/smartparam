@@ -26,7 +26,7 @@ import org.supercsv.io.CsvListReader;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class CsvParameterEntryBatchLoaderTestBuilder {
 

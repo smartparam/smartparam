@@ -35,7 +35,7 @@ import static org.smartparam.repository.jdbc.test.assertions.Assertions.*;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @Test(groups = {"nativeDatabase"})
 public class DDLTest {

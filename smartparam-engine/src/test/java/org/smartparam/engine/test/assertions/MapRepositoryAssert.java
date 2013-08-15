@@ -5,7 +5,7 @@ import org.smartparam.engine.core.MapRepository;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class MapRepositoryAssert extends AbstractAssert<MapRepositoryAssert, MapRepository<?>> {
 

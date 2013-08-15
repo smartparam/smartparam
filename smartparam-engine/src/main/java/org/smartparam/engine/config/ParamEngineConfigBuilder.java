@@ -19,7 +19,7 @@ import org.smartparam.engine.core.type.Type;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ParamEngineConfigBuilder {
 

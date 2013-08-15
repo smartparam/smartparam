@@ -2,7 +2,7 @@ package org.smartparam.engine.core.exception;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SmartParamConfigException extends SmartParamException {
 

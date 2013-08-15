@@ -6,7 +6,7 @@ import org.smartparam.engine.model.editable.EditableParameterEntry;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class StandardParamSerializer extends RawSmartParamSerializer {
 

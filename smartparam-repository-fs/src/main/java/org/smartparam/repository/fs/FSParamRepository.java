@@ -5,7 +5,7 @@ import org.smartparam.serializer.ParamDeserializer;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class FSParamRepository extends AbstractFSParamRepository {
 

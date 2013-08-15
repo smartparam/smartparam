@@ -8,7 +8,7 @@ import org.smartparam.engine.core.repository.TypeScanningRepository;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class TypeScannerInitializer implements ComponentInitializer {
 

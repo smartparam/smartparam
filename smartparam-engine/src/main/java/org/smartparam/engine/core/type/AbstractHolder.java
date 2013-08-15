@@ -12,7 +12,7 @@ import org.smartparam.engine.core.exception.SmartParamErrorCode;
  * but also might override any number of convenience methods if they are
  * suitable for given type.
  *
- * @author Przemek Hertel <przemek.hertel@gmail.com>
+ * @author Przemek Hertel
  * @since 1.0.0
  */
 public abstract class AbstractHolder implements Comparable<AbstractHolder> {

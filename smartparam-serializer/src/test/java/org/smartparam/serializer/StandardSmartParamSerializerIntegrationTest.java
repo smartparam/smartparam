@@ -19,7 +19,7 @@ import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class StandardSmartParamSerializerIntegrationTest {
 

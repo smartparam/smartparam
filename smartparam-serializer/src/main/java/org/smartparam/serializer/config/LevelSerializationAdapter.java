@@ -13,7 +13,7 @@ import org.smartparam.engine.model.editable.EditableLevel;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class LevelSerializationAdapter implements JsonDeserializer<Level>, JsonSerializer<Level> {
 

@@ -4,7 +4,7 @@ import org.smartparam.engine.annotations.scanner.MethodScanner;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface MethodScanningRepository {
 

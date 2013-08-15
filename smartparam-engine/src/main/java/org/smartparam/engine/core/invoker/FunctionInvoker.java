@@ -16,7 +16,7 @@ import org.smartparam.engine.model.function.Function;
  * </pre>
  * There can be only one function invoker registered per function type.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface FunctionInvoker {
 

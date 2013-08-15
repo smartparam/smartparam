@@ -11,7 +11,7 @@ import org.smartparam.engine.core.type.Type;
 /**
  * Runtime configuration of SmartParam. All collections are immutable.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ParamEngineRuntimeConfig {
 

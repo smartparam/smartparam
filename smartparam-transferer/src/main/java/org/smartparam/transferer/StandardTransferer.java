@@ -27,7 +27,7 @@ import org.smartparam.transferer.sort.SortedParameters;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class StandardTransferer implements Transferer {
 

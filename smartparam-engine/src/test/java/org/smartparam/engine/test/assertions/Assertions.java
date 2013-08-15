@@ -13,7 +13,7 @@ import org.smartparam.engine.model.Parameter;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class Assertions extends org.fest.assertions.api.Assertions {
 

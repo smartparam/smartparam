@@ -34,7 +34,7 @@ import org.smartparam.serializer.StandardSerializationConfig;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public abstract class AbstractFSParamRepository implements ParamRepository, InitializableComponent {
 

@@ -21,7 +21,7 @@ import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutValues;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  * @since 0.1.0
  */
 public class PackageObjectScannerIntegrationTest {

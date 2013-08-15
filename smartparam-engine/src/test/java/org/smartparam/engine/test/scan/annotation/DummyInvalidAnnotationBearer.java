@@ -2,7 +2,7 @@ package org.smartparam.engine.test.scan.annotation;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @DummyAnnotationWithoutInstances
 @DummyAnnotationWithoutOrder("A")

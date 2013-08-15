@@ -13,7 +13,7 @@ import org.smartparam.engine.util.Formatter;
  *
  * @param <T> leaf type
  *
- * @author Przemek Hertel <przemek.hertel@gmail.com>
+ * @author Przemek Hertel
  */
 public class LevelNode<T> {
 

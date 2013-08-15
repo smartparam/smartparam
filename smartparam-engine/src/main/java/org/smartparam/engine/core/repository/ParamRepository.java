@@ -22,7 +22,7 @@ import org.smartparam.engine.model.ParameterEntry;
  * query for values each time parameter is used.
  * Every repository has to implement first mode, second one is complementary.
  *
- * @author Przemek Hertel <przemek.hertel@gmail.com>
+ * @author Przemek Hertel
  */
 public interface ParamRepository {
 

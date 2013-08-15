@@ -8,7 +8,7 @@ import org.smartparam.engine.core.service.FunctionManager;
  * Single point of entry to get all parameters and call functions managed by
  * parameter engine.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface ParamEngine {
 

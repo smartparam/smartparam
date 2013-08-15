@@ -6,7 +6,7 @@ import org.smartparam.engine.bean.PackageList;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class PackageListTestBuilder {
 

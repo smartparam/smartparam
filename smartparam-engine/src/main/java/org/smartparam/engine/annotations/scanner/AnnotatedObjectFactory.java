@@ -13,7 +13,7 @@ import org.smartparam.engine.util.reflection.ReflectionsHelper;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class AnnotatedObjectFactory {
 

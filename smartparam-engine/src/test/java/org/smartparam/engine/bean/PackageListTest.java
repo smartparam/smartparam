@@ -6,7 +6,7 @@ import static org.fest.assertions.api.Assertions.*;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  * @since 0.1.0
  */
 public class PackageListTest {

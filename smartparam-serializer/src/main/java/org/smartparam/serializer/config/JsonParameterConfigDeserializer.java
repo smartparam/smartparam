@@ -11,7 +11,7 @@ import org.smartparam.engine.model.editable.EditableParameter;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class JsonParameterConfigDeserializer implements ParameterConfigDeserializer {
 

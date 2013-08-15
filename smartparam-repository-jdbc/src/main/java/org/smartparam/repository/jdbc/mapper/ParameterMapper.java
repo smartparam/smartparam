@@ -22,7 +22,7 @@ import org.smartparam.repository.jdbc.util.JdbcConverter;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ParameterMapper implements ObjectMapper<JdbcParameter> {
 

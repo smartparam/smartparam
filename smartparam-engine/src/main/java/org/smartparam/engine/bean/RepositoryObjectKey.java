@@ -12,7 +12,7 @@ package org.smartparam.engine.bean;
  * Only key is used to compute hash key and determine equality of two objects.
  * Only order is used in comparison method from {@link Comparable} interface.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  * @since 0.1.0
  */
 public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {

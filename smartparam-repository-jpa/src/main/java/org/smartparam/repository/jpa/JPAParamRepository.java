@@ -15,7 +15,7 @@ import org.smartparam.repository.jpa.model.JpaParameterEntry;
 /**
  * Loads parameters using provided connection.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  * @since 0.1.0
  */
 public class JPAParamRepository implements ParamRepository {

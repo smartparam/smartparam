@@ -24,7 +24,7 @@ import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.jdbcCon
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SchemaDefinitionPreparerTest {
 

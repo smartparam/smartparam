@@ -13,7 +13,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 /**
  *
  * @param <V>
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class MapRepository<V> {
 

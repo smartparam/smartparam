@@ -5,7 +5,7 @@ import org.smartparam.engine.core.index.LevelNode;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class LevelNodeAssert extends AbstractAssert<LevelNodeAssert, LevelNode<?>> {
 

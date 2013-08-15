@@ -17,7 +17,7 @@ import org.supercsv.io.CsvListWriter;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
 

@@ -18,7 +18,7 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
 

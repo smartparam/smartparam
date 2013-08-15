@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class BasicComponentInitializerRunner implements ComponentInitializerRunner {
 

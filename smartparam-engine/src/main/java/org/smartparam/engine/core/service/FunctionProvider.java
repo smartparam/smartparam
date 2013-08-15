@@ -7,7 +7,7 @@ import org.smartparam.engine.model.function.Function;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface FunctionProvider extends OrderedRepository<FunctionRepository> {
 

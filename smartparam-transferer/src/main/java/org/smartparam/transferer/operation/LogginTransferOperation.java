@@ -22,7 +22,7 @@ import org.smartparam.engine.core.repository.ParamRepository;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public abstract class LogginTransferOperation implements TransferOperation {
 

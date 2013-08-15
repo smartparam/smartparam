@@ -8,7 +8,7 @@ import org.smartparam.engine.bean.RepositoryObjectKey;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class RepositoryItemMapAssert<T> extends MapAssert<RepositoryObjectKey, T> {
 

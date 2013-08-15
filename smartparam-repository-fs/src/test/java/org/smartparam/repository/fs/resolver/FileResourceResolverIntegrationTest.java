@@ -24,7 +24,7 @@ import static org.smartparam.engine.test.assertions.Assertions.*;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class FileResourceResolverIntegrationTest {
 

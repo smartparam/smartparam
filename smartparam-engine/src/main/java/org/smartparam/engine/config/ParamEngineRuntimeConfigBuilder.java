@@ -10,7 +10,7 @@ import org.smartparam.engine.core.service.FunctionManager;
  * Traverses SmartParamEngine service tree and returns runtime configuration of
  * engine in form of immutable object.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ParamEngineRuntimeConfigBuilder {
 

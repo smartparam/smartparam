@@ -5,7 +5,7 @@ import java.util.Set;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SimpleParameter implements Parameter {
 

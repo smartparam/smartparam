@@ -17,7 +17,7 @@ package org.smartparam.engine.core.exception;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @SuppressWarnings("serial")
 public class ParamBatchLoadingException extends Exception {

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Marks function that should be included in Java function repository as a plugin.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

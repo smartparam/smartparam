@@ -2,7 +2,7 @@ package org.smartparam.serializer;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface CsvSerializationConfig extends SerializationConfig {
 

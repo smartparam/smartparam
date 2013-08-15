@@ -6,7 +6,7 @@ import org.smartparam.engine.model.function.Function;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @ParamFunctionInvoker(value = "", values = {"nameOne", "nameTwo"})
 public class DummyFunctionInvoker implements FunctionInvoker {

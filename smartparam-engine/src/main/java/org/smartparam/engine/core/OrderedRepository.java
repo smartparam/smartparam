@@ -8,7 +8,7 @@ import org.smartparam.engine.bean.RepositoryObjectKey;
  *
  * @param <TYPE> type of objects in repository
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface OrderedRepository<TYPE> extends ItemsContainer<RepositoryObjectKey, TYPE> {
 

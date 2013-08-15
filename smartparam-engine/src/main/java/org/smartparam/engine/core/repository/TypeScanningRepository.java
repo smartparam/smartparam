@@ -4,7 +4,7 @@ import org.smartparam.engine.annotations.scanner.TypeScanner;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface TypeScanningRepository {
 

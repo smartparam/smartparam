@@ -2,7 +2,7 @@ package org.smartparam.engine.config;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface ComponentInitializerRunner {
 

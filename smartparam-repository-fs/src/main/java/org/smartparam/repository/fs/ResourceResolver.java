@@ -5,7 +5,7 @@ import org.smartparam.engine.core.batch.ParameterBatchLoader;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public interface ResourceResolver {
 

@@ -4,7 +4,7 @@ import org.smartparam.engine.model.SimpleLevel;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SimpleEditableLevel extends SimpleLevel implements EditableLevel {
 

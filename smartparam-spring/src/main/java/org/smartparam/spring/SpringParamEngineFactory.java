@@ -12,7 +12,7 @@ import org.springframework.beans.factory.FactoryBean;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
 

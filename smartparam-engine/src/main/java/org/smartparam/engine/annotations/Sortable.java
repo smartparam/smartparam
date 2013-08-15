@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Marks annotation, that has sorting capabilities.
  * Sortable annotation should provide order() method.
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 @Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)

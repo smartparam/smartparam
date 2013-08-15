@@ -22,7 +22,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 
 /**
  *
- * @author Adam Dubiel <dubiel.adam@gmail.com>
+ * @author Adam Dubiel
  */
 public class ParameterEntryMapper implements ObjectMapper<ParameterEntry> {
 
