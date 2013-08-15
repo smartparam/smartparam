@@ -420,7 +420,6 @@ public class DefaultContext implements ParamContext {
         return this;
     }
 
-    @Override
     public Class<?> getResultClass() {
         return resultClass;
     }
@@ -439,7 +438,6 @@ public class DefaultContext implements ParamContext {
      *
      * @param resultClass klasa oczekiwanego obiektu wynikowego
      */
-    @Override
     public final void setResultClass(Class<?> resultClass) {
         this.resultClass = resultClass;
     }
