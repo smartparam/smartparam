@@ -170,18 +170,18 @@ public class DefaultContext implements ParamContext {
             userContext = new TreeMap<String, Object>();
         }
 
-        String k = lowercase(key);
-        if (userContext.containsKey(k) && !allowOverwrite) {
+        String lowerKey = lowercase(key);
+        if (userContext.containsKey(lowerKey) && !allowOverwrite) {
             throw new SmartParamUsageException(SmartParamErrorCode.ERROR_FILLING_CONTEXT,
                     "Trying to set duplicate key on userContext: key=" + key);
         }
 
-        userContext.put(k, value);
+        userContext.put(lowerKey, value);
         return this;
     }
 
-    private String lowercase(final String str) {
-        return str.toLowerCase(locale);
+    private String lowercase(final String string) {
+        return string.toLowerCase(locale);
     }
 
     /**

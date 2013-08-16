@@ -19,6 +19,7 @@ import java.util.Map;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.ItemsContainer;
 import org.smartparam.engine.core.MapRepository;
+import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.engine.ParamValue;
 import org.smartparam.engine.core.exception.SmartParamException;
@@ -40,8 +41,12 @@ public class Assertions extends org.fest.assertions.api.Assertions {
         return LevelAssert.assertThat(actual);
     }
 
-     public static ParamValueAssert assertThat(ParamValue actual) {
+    public static ParamValueAssert assertThat(ParamValue actual) {
         return ParamValueAssert.assertThat(actual);
+    }
+
+    public static DefaultContextAssert assertThat(DefaultContext actual) {
+        return DefaultContextAssert.assertThat(actual);
     }
 
     public static <T> RepositoryItemMapAssert<T> assertThatItemMap(Map<RepositoryObjectKey, T> actual) {
@@ -67,5 +72,4 @@ public class Assertions extends org.fest.assertions.api.Assertions {
     public static LevelNodeAssert assertThat(LevelNode<?> levelNode) {
         return LevelNodeAssert.assertThat(levelNode);
     }
-
 }

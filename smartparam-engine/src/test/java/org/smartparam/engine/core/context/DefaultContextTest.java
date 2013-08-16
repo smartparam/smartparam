@@ -21,11 +21,88 @@ import org.testng.annotations.Test;
 import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import static org.smartparam.engine.test.assertions.Assertions.*;
 
 /**
  * @author Przemek Hertel
  */
 public class DefaultContextTest {
+
+    @Test
+    public void shouldUseStringArrayAsLevelValuesWhenConstructingContext() {
+        // given
+        String[] levelValues = new String[]{"A", "B"};
+
+        // when
+        DefaultContext context = new DefaultContext((Object) levelValues);
+
+        // then
+        assertThat(context).hasLevelValues("A", "B");
+    }
+
+    @Test
+    public void shouldUseObjectArrayAsLevelValuesWhenConstructingContext() {
+        // given
+        Object[] levelValues = new Object[] { 1, "A" };
+
+        // when
+        DefaultContext context = new DefaultContext("DUMMY", 1, levelValues);
+
+        // then
+        assertThat(context).hasLevelValues("1", "A");
+    }
+
+    @Test
+    public void shouldUseStringAsKeyForNextValueWhenConstructingContext() {
+        // given
+        // when
+        DefaultContext context = new DefaultContext("TEST1", 1, "TEST2", "2");
+
+        // then
+        assertThat(context).hasValue("TEST1", 1).hasValue("TEST2", "2");
+    }
+
+    @Test
+    public void shouldPutValueIntoTheContextUnderGivenName() {
+        // given
+        DefaultContext context = new DefaultContext();
+
+        // when
+        context.set("TEST", "A");
+
+        // then
+        assertThat(context).hasValue("TEST", "A");
+    }
+
+    @Test
+    public void shouldThrowExceptionIfhereIsAlreadyValueRegisteredUnderTheSameKey() {
+        // given
+        DefaultContext context = new DefaultContext();
+        context.set("TEST", "B");
+
+        // when
+        try {
+            context.set("TEST", "A");
+            fail();
+        }
+        catch(SmartParamUsageException exception) {
+            // then
+            assertThat(exception).hasErrorCode(SmartParamErrorCode.ERROR_FILLING_CONTEXT);
+        }
+    }
+
+    @Test
+    public void shouldAllowOnOverwritingValuesInContextWhenCallingMethodWithOverwriteFlag() {
+        // given
+        DefaultContext context = new DefaultContext();
+        context.set("TEST", "B");
+
+        // when
+        context.set("TEST", "A", true);
+
+        // then
+        assertThat(context).hasValue("TEST", "A");
+    }
 
     @Test
     public void testConstructor() {
