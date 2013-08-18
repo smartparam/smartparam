@@ -34,9 +34,9 @@ public class SimpleParameter implements Parameter {
 
     protected char arraySeparator;
 
-    protected boolean cacheable;
+    protected boolean cacheable = true;
 
-    protected boolean nullable;
+    protected boolean nullable = false;
 
     @Override
     public String getName() {
