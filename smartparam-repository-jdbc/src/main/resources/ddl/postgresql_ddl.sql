@@ -5,7 +5,7 @@ CREATE TABLE :parameterTableName (
     input_levels INTEGER NOT NULL,
     cacheable BOOLEAN DEFAULT true NOT NULL,
     nullable BOOLEAN DEFAULT false NOT NULL,
-    array_separator CHAR DEFAULT ';' NOT NULL,
+    array_separator CHAR(1) DEFAULT ';' NOT NULL,
     CONSTRAINT pk_:parameterTableName PRIMARY KEY(id),
     CONSTRAINT u_:parameterTableName_name UNIQUE(name)
 );

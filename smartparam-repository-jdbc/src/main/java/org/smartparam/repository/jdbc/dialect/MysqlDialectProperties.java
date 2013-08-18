@@ -19,20 +19,21 @@ package org.smartparam.repository.jdbc.dialect;
  *
  * @author Adam Dubiel
  */
-public enum Dialect {
+public class MysqlDialectProperties implements DialectProperties {
 
-    ORACLE(null),
-    POSTGRESQL(new PostgresDialectProperties()),
-    MYSQL(new MysqlDialectProperties()),
-    H2(new H2DialectProperties());
-
-    private DialectProperties properties;
-
-    private Dialect(DialectProperties properties) {
-        this.properties = properties;
-}
-
-    public DialectProperties getProperties() {
-        return properties;
+    @Override
+    public String tableExistsQuery() {
+        return "select * from information_schema.tables where upper(table_name) = upper(:tableName)";
     }
+
+    @Override
+    public boolean hasSequences() {
+        return false;
+    }
+
+    @Override
+    public String sequenceExistsQuery() {
+        return null;
+    }
+
 }

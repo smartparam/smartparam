@@ -32,6 +32,7 @@ public class DataSourceFactory {
     static {
         DIALECT_DRIVER_CLASS.put(Dialect.H2, "org.h2.Driver");
         DIALECT_DRIVER_CLASS.put(Dialect.POSTGRESQL, "org.postgresql.Driver");
+        DIALECT_DRIVER_CLASS.put(Dialect.MYSQL, "com.mysql.jdbc.Driver");
     }
 
     public static DataSource create(Dialect dialect, String databaseUrl, String user, String password) {

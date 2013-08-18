@@ -46,11 +46,12 @@ public class DDLTest {
 
     private Configuration configuration;
 
-
     @DataProvider(name = "databases")
     public Object[][] databases() {
-        return new Object[][] {
-            {Dialect.H2, "jdbc:h2:mem:test", "smartparam", "smartparam"}
+        return new Object[][]{
+            {Dialect.H2, "jdbc:h2:mem:test", "smartparam", "smartparam"},
+            {Dialect.POSTGRESQL, "jdbc:postgresql://localhost/smartparam", "smartparam", "smartparam"},
+            {Dialect.MYSQL, "jdbc:mysql://localhost/smartparam?characterEncoding=UTF-8&allowMultiQueries=true", "smartparam", "smartparam"}
         };
     }
 
@@ -81,15 +82,17 @@ public class DDLTest {
         dynamicSetUpMethod(dialect, url, username, password);
         // given
         SchemaDescription description = new SchemaDescription().addTables("parameter", "level", "entry")
-                .addSequences("seq_parameter", "seq_level", "seq_entry").setDialect(Dialect.H2);
+                .addSequences("seq_parameter", "seq_level", "seq_entry").setDialect(dialect);
         dao.createSchema();
 
         // when
         SchemaLookupResult lookupResult = schemaManager.schemaExists(description);
 
         // then
-        assertThat(lookupResult).hasTable("parameter").hasTable("level").hasTable("entry")
-                .hasSequence("seq_parameter").hasSequence("seq_level").hasSequence("seq_entry");
+        assertThat(lookupResult).hasTable("parameter").hasTable("level").hasTable("entry");
+        if (dialect.getProperties().hasSequences()) {
+            assertThat(lookupResult).hasSequence("seq_parameter").hasSequence("seq_level").hasSequence("seq_entry");
+        }
 
         dynamicTearDownMethod(dialect);
     }

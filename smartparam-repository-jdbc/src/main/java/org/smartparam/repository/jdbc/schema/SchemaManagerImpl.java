@@ -35,11 +35,18 @@ public class SchemaManagerImpl implements SchemaManager {
     @Override
     public SchemaLookupResult schemaExists(SchemaDescription description) {
         SchemaLookupResult lookupResult = new SchemaLookupResult();
-        for(String tableName : description.getTables()) {
+        for (String tableName : description.getTables()) {
             lookupResult.addEntity(tableName, queryHelper.tableExists(description.getDialect(), tableName));
         }
-        for(String tableName : description.getSequences()) {
-            lookupResult.addEntity(tableName, queryHelper.sequenceExistst(description.getDialect(), tableName));
+
+        boolean hasSequences = description.getDialect().getProperties().hasSequences();
+        for (String sequenceName : description.getSequences()) {
+            if(hasSequences) {
+                lookupResult.addEntity(sequenceName, queryHelper.sequenceExistst(description.getDialect(), sequenceName));
+            }
+            else {
+                lookupResult.addExistingEntity(sequenceName);
+            }
         }
 
         return lookupResult;

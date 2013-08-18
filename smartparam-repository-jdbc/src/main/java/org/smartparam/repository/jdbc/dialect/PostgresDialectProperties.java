@@ -23,7 +23,7 @@ public class PostgresDialectProperties implements DialectProperties {
 
     @Override
     public String tableExistsQuery() {
-        return "select relname from pg_class where upper(relname) = upper(:tableName)";
+        return "select * from information_schema.tables where upper(table_name) = upper(:tableName)";
     }
 
     @Override
@@ -33,7 +33,7 @@ public class PostgresDialectProperties implements DialectProperties {
 
     @Override
     public String sequenceExistsQuery() {
-        return "select relname from pg_class where upper(relname) = upper(:sequenceName)";
+        return "select * from information_schema.sequences where upper(sequence_name) = upper(:sequenceName)";
     }
 
 }
