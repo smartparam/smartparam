@@ -15,12 +15,9 @@
  */
 package org.smartparam.repository.jdbc.schema.loader;
 
-import org.smartparam.repository.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
 import org.smartparam.repository.jdbc.dialect.Dialect;
-import org.smartparam.repository.jdbc.exception.SmartParamJdbcException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import static com.googlecode.catchexception.CatchException.*;
 import static org.fest.assertions.api.Assertions.*;
 
 /**
@@ -40,20 +37,10 @@ public class ClasspathSchemaDefinitionLoaderTest {
     public void shouldReadContentsOfDialectFilePerservingLinebreaks() {
         // given
         // when
-        String ddlQuery = classpathSchemaDefinitionLoader.getQuery(Dialect.ORACLE);
+        String ddlQuery = classpathSchemaDefinitionLoader.getQuery(Dialect.H2);
 
         // then
         assertThat(ddlQuery).startsWith("-- parameter\n"
                 + "CREATE TABLE :parameterTableName (");
-    }
-
-    @Test
-    public void shouldBailIfDDLFileDoesNotExist() {
-        // given
-        // when
-        catchException(classpathSchemaDefinitionLoader).getQuery(Dialect.POSTGRESQL);
-
-        // then
-        assertThat(caughtException()).isNotNull().isInstanceOf(SmartParamJdbcException.class);
     }
 }
