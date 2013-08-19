@@ -23,6 +23,9 @@ package org.smartparam.engine.config;
  */
 public interface InitializableComponent {
 
+    /**
+     * Initialization method for {@link ParamEngineFactory} use.
+     */
     void initialize();
 
 }

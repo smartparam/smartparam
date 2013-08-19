@@ -38,6 +38,7 @@ import org.smartparam.repository.jdbc.schema.SchemaManagerImpl;
 import org.smartparam.repository.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
 import org.smartparam.repository.jdbc.schema.loader.SchemaDefinitionLoader;
 import org.smartparam.repository.jdbc.config.SchemaDescriptionFactory;
+import org.smartparam.repository.jdbc.dialect.Dialect;
 import org.smartparam.repository.jdbc.schema.SchemaDefinitionPreparer;
 
 /**
@@ -46,7 +47,7 @@ import org.smartparam.repository.jdbc.schema.SchemaDefinitionPreparer;
  */
 public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
-    private Configuration configuration = new DefaultConfiguration();
+    private Configuration configuration;
 
     private JdbcQueryRunner queryRunner;
 
@@ -56,9 +57,22 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     private SchemaDefinitionPreparer schemaDefinitionPreparer = new SchemaDefinitionPreparer();
 
-    public JdbcProviderDAOImpl(DataSource dataSource) {
+    public JdbcProviderDAOImpl(Dialect dialect, DataSource dataSource) {
+        this(new DefaultConfiguration(dialect), dataSource);
+    }
+
+    public JdbcProviderDAOImpl(Configuration configuration, DataSource dataSource) {
+        this.configuration = configuration;
+        checkConfiguration();
         this.queryRunner = new JdbcQueryRunnerImpl(dataSource);
-        schemaManager = new SchemaManagerImpl(queryRunner);
+        this.schemaManager = new SchemaManagerImpl(queryRunner);
+    }
+
+    public JdbcProviderDAOImpl(Configuration configuration, JdbcQueryRunner queryRunner, SchemaManager schemaManager) {
+        this.configuration = configuration;
+        checkConfiguration();
+        this.queryRunner = queryRunner;
+        this.schemaManager = schemaManager;
     }
 
     @Override
@@ -75,6 +89,12 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
             throw new SmartParamException("JDBC repository detected partial SmartParam schema in database. "
                     + "This version of JDBC repository has no schema update capabilities, remove old SmartParam entities "
                     + "from the database or use different naming schema. Detected partial entities: " + result.getExistingEntities());
+        }
+    }
+
+    private void checkConfiguration() {
+        if(configuration.getDialect() == null) {
+            throw new SmartParamException("Provided JDBC repository configuration has no dialect defined!");
         }
     }
 
@@ -117,9 +137,5 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     public Configuration getConfiguration() {
         return configuration;
-    }
-
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
     }
 }

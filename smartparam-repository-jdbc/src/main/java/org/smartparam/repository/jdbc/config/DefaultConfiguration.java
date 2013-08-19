@@ -30,6 +30,13 @@ public class DefaultConfiguration implements Configuration {
 
     private String parameterEntryTable = "sp_parameter_entry";
 
+    public DefaultConfiguration() {
+    }
+
+    public DefaultConfiguration(Dialect dialect) {
+        this.dialect = dialect;
+    }
+
     @Override
     public Dialect getDialect() {
         return dialect;

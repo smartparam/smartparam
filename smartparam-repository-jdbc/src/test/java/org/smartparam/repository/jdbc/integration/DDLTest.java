@@ -64,8 +64,7 @@ public class DDLTest {
         JdbcQueryRunner jdbcQueryRunner = new JdbcQueryRunnerImpl(dataSource);
         schemaManager = new SchemaManagerImpl(jdbcQueryRunner);
 
-        dao = new JdbcProviderDAOImpl(dataSource);
-        dao.setConfiguration(configuration);
+        dao = new JdbcProviderDAOImpl(configuration, dataSource);
     }
 
     private void dynamicTearDownMethod(Dialect dialect) {
