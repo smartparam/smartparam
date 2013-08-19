@@ -18,6 +18,17 @@ package org.smartparam.repository.jdbc.config;
 import org.smartparam.repository.jdbc.dialect.Dialect;
 
 /**
+ * Java bean implementation of JDBC configuration, provides default values for
+ * table names (dialect has no default and is mandatory).
+ *
+ * Default table names are:
+ * <ul>
+ * <li>sp_parameter for parameter</li>
+ * <li>sp_parameter_level for parameter level</li>
+ * <li>sp_parameter_entry for parameter entry</li>
+ * </ul>
+ *
+ *
  * @author Przemek Hertel
  */
 public class DefaultConfiguration implements Configuration {

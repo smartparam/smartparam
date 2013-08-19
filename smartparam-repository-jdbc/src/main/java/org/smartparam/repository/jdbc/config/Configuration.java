@@ -18,10 +18,18 @@ package org.smartparam.repository.jdbc.config;
 import org.smartparam.repository.jdbc.dialect.Dialect;
 
 /**
+ * JDBC repository configuration.
+ *
  * @author Przemek Hertel
  */
 public interface Configuration {
 
+    /**
+     * What database dialect should be used - mandatory field, JDBC repository
+     * will throw an exception if left empty.
+     *
+     * @return
+     */
     Dialect getDialect();
 
     String getParameterTable();
