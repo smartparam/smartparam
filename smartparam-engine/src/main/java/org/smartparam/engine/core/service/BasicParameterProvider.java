@@ -54,10 +54,12 @@ public class BasicParameterProvider implements ParameterProvider {
         return entries;
     }
 
+    @Override
     public void register(ParamRepository repository) {
         innerRepository.register(repository);
     }
 
+    @Override
     public List<ParamRepository> registeredItems() {
         return innerRepository.getItems();
     }

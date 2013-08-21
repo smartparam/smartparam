@@ -21,6 +21,9 @@ import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 
 /**
+ * Basic equality matcher to compare two strings. It is possible to toggle
+ * case sensitivity.
+ *
  * @author Przemek Hertel
  */
 @ParamMatcher("eqMatcher")

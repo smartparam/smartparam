@@ -31,5 +31,9 @@ public interface ParameterProvider {
 
     Set<ParameterEntry> findEntries(String parameterName, String[] levelValues);
 
+    void register(ParamRepository repository);
+
     void registerAll(List<ParamRepository> repositories);
+
+    List<ParamRepository> registeredItems();
 }

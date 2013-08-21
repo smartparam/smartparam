@@ -20,17 +20,10 @@ import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.function.Function;
 
 /**
- * Przetworzony (skompilowany) poziom parametru.
- * Jest tworzony jako kopia obiektu poziomu wczytanego z bazy danych,
- * dzieki temu jest uwolniony od ewentualnych referencji do obiektow JPA.
- * <p>
- *
- * Przetworzony poziom zawiera m.in.:
- * <ol>
- * <li> obiekt typu poziomu (type),
- * <li> obiekt matchera,
- * <li> obiekt funkcji typu <i>levelCreator</i>
- * </ol>
+ * Compiled parameter level. After compilation, level object contains resolved
+ * references to type, matcher and levelCreator instead of their codes which
+ * makes the object smaller and easier to use (no need to resolve those fields
+ * each time parameter is called.
  *
  * @see org.smartparam.engine.model.Level
  *
@@ -39,85 +32,49 @@ import org.smartparam.engine.model.function.Function;
  */
 public class PreparedLevel {
 
-	/**
-	 * Optional level name.
-	 */
-	private String name;
+    private String name;
 
-    /**
-     * Typ wartosci dla tego poziomu (zgodny z systemem typow silnika).
-     * Musi byc <tt>not null</tt> jesli uzywamy niestandardowego matchera dla tego poziomu.
-     */
     private Type<?> type;
 
-    /**
-     * Flaga oznaczajaca, czy zawartosc tego poziomu moze byc traktowana jako tablica wartosci.
-     */
     private boolean array;
 
-    /**
-     * Matcher uzywany dla tego poziomu (jesli nie jest uzywany standardowy).
-     */
     private Matcher matcher;
 
-    /**
-     * Funkcja ustalajaca dynamicznie wartosc poziomu.
-     */
     private Function levelCreator;
 
     /**
-	 * Creates immutable instance.
+     * Creates immutable instance.
      *
-	 * @param name         level's name
+     * @param name         level's name
      * @param type         level's type code
      * @param array        whether this level contains array
      * @param matcher      level's matcher code
      * @param levelCreator function resolving actual level value
      */
     public PreparedLevel(String name, Type<?> type, boolean array, Matcher matcher, Function levelCreator) {
-		this.name = name;
+        this.name = name;
         this.type = type;
         this.array = array;
         this.matcher = matcher;
         this.levelCreator = levelCreator;
     }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	/**
-     * Getter dla flagi array.
-     *
-     * @return flaga array
-     */
     public boolean isArray() {
         return array;
     }
 
-    /**
-     * Getter dla matchera.
-     *
-     * @return matcher
-     */
     public Matcher getMatcher() {
         return matcher;
     }
 
-    /**
-     * Getter dla typu poziomu.
-     *
-     * @return typ poziomu
-     */
     public Type<?> getType() {
         return type;
     }
 
-    /**
-     * Getter dla funkcji levelCreatora.
-     *
-     * @return funkcja wyznaczajaca wartosc poziomu
-     */
     public Function getLevelCreator() {
         return levelCreator;
     }

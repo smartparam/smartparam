@@ -244,16 +244,8 @@ public class SmartParamPreparer implements ParamPreparer {
         return Arrays.copyOf(pe.getLevels(), k);
     }
 
-    private PreparedEntry prepareEntry(ParameterEntry pe) {
-        PreparedEntry e = new PreparedEntry();
-
-        e.setLevels(pe.getLevels());
-        e.setValue(pe.getValue());
-        if(pe.getFunction() != null) {
-            e.setFunction(functionProvider.getFunction(pe.getFunction()));
-        }
-
-        return e;
+    private PreparedEntry prepareEntry(ParameterEntry parameterEntry) {
+        return new PreparedEntry(parameterEntry);
     }
 
     @Override

@@ -103,7 +103,7 @@ public class ParamEngineFactory {
         parameterProvider.registerAll(config.getParameterRepositories());
 
         config.getInitializationRunner().runInitializers(parameterProvider);
-        config.getInitializationRunner().runInitializersOnList(parameterProvider.registeredItems().values());
+        config.getInitializationRunner().runInitializersOnList(parameterProvider.registeredItems());
 
         return parameterProvider;
     }

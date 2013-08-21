@@ -23,44 +23,35 @@ import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 
 /**
- * Matcher przedzialowy. Sprawdza, czy podana wartosc (uwzgledniajac typ)
- * znajduje sie w przedziale zdefiniowanym we wzorcu.
- * <p>
- * W zaleznosci od konfiguracji granice przedzialu moga byc ostre lub nieostre.
- * Dodatkwo konfigurowalne sa znaki, ktore moga byc separatorami.
+ * Range matcher, checks if value fits in range defined in pattern. Value type
+ * and pattern type must also match. It is possible to define range inclusiveness
+ * or exclusiveness, separately for each of range border value.
+ *
+ * Between matcher has a set of default separators, that will be used to
+ * separate values for beginning and end of range. These separators are (order matters):
+ * <pre>
+ * : - ,
+ * </pre>
+ * First separator that was found in pattern string is used to split it.
+ * Use {@link #setSeparators(java.lang.String) } to override defaults.
  *
  * @author Przemek Hertel
  * @since 1.0.0
  */
 @ParamMatcher(value = "", instances = {
-    @ObjectInstance(value = "between/ie", constructorArgs = { "true", "false" }),
-    @ObjectInstance(value = "between/ii", constructorArgs = { "true", "true" }),
-})
+    @ObjectInstance(value = "between/ie", constructorArgs = {"true", "false"}),
+    @ObjectInstance(value = "between/ei", constructorArgs = {"false", "true"}),
+    @ObjectInstance(value = "between/ii", constructorArgs = {"true", "true"}),})
 public class BetweenMatcher implements Matcher {
 
-    /**
-     * Domyslne separatory dzielace wzorzec na 2 tokeny.
-     */
     private static final char[] DEFAULT_SEPARATORS = {':', '-', ','};
 
-    /**
-     * Czy dolna granica przedzialu nalezy do przedzialu.
-     */
     private boolean lowerInclusive = true;
 
-    /**
-     * Czy gorna granica przedzialu nalezy do przedzialu.
-     */
     private boolean upperInclusive = false;
 
-    /**
-     * Tablica znakow, ktore beda wyprobowywane jako separatory.
-     */
     private char[] separators = DEFAULT_SEPARATORS;
 
-    /**
-     * Konstruktor domyslny.
-     */
     public BetweenMatcher() {
     }
 
@@ -68,17 +59,15 @@ public class BetweenMatcher implements Matcher {
         setLowerInclusive(Boolean.parseBoolean(lowerInclusive));
         setUpperInclusive(Boolean.parseBoolean(upperInclusive));
     }
-    
+
     public BetweenMatcher(String lowerInclusive, String upperInclusive, String separators) {
         this(Boolean.parseBoolean(lowerInclusive), Boolean.parseBoolean(upperInclusive), separators);
     }
 
     /**
-     * Konstruktor inicjalizujacy matcher.
-     *
-     * @param lowerInclusive przedzial wlacznie z dolnym ograniczeniem
-     * @param upperInclusive przedzial wlacznie z gornym ograniczeniem
-     * @param separators znaki separatora
+     * @param lowerInclusive range lower end should be inclusive?
+     * @param upperInclusive range upper end should be inclusive?
+     * @param separators     separators to use
      */
     public BetweenMatcher(boolean lowerInclusive, boolean upperInclusive, String separators) {
         setLowerInclusive(lowerInclusive);
@@ -88,29 +77,17 @@ public class BetweenMatcher implements Matcher {
 
     @Override
     public <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type) {
-
-        // znajduje znak separatora, ktory zostanie uzyty
         char separator = findSeparator(pattern);
 
-        // dzieli wzorzec wedlug schematu: (lower)(separator)(upper)
         String[] tokens = EngineUtil.split2(pattern, separator);
         String lower = tokens[0].trim();
         String upper = tokens[1].trim();
 
-        // zamienia wartosc ze stringa w obiekt holdera
         T v = type.decode(value);
 
-        // sprawdza warunki na dolne i gorne ograniczenie
         return lowerCondition(v, lower, type) && upperCondition(v, upper, type);
     }
 
-    /**
-     * Przeglada dostepne znaki separatorow w kolejnosci ich wystepowania w
-     * tablicy. Zwraca ten, ktory jako pierwszy zostal znaleziony we wzorcu.
-     *
-     * @param pattern wzorzec
-     * @return znak separatora, ktory zostanie zastosowany
-     */
     private char findSeparator(String pattern) {
         for (char ch : separators) {
             if (pattern.indexOf(ch) >= 0) {
@@ -125,7 +102,6 @@ public class BetweenMatcher implements Matcher {
             return true;
         }
 
-        // zamienia dolne ograniczenie ze stringa w obiekt holdera
         T l = type.decode(lower);
 
         return lowerInclusive ? l.compareTo(v) <= 0 : l.compareTo(v) < 0;
@@ -136,35 +112,22 @@ public class BetweenMatcher implements Matcher {
             return true;
         }
 
-        // zamienia gorne ograniczenie ze stringa w obiekt holdera
         T u = type.decode(upper);
 
         return upperInclusive ? v.compareTo(u) <= 0 : v.compareTo(u) < 0;
     }
 
-    /**
-     * Setter dla flagi lowerInclusive.
-     *
-     * @param lowerInclusive wartosc flagi
-     */
     public final void setLowerInclusive(boolean lowerInclusive) {
         this.lowerInclusive = lowerInclusive;
     }
 
-    /**
-     * Setter dla flagi upperInclusive.
-     *
-     * @param upperInclusive wartosc flagi
-     */
     public final void setUpperInclusive(boolean upperInclusive) {
         this.upperInclusive = upperInclusive;
     }
 
     /**
-     * Traktuje znaki zawarte w <tt>separators</tt>
-     * jako kolejne znaki dostepnych separatorow.
-     *
-     * @param separators string ze znakami separatorow
+     * Override default separators. Provided string is split into char array and
+     * each character is treated as a single separator.
      */
     public final void setSeparators(String separators) {
         if (separators != null) {

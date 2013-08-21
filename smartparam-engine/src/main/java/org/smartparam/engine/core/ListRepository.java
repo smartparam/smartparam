@@ -37,11 +37,14 @@ public class ListRepository<V> {
     }
 
     public void register(V value) {
+        logger.info("{} repository: registering {}", new Object[]{containedClass.getSimpleName(), value.getClass().getSimpleName()});
         repositoryList.add(value);
     }
 
     public void registerAll(List<V> values) {
-        repositoryList.addAll(values);
+        for(V value : values) {
+            register(value);
+        }
     }
 
     public List<V> getItems() {

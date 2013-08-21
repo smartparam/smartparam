@@ -16,29 +16,26 @@
 package org.smartparam.engine.core.engine;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
+ * PreparedEntry compiled form, without unnecessary information and with
+ * normalized levels array (never null, no trailing null values).
+ *
  * @author Przemek Hertel
  * @since 1.0.0
  */
 public class PreparedEntry {
 
-    //todo ph: par 2 clean, toString prepared entry
+    private static final String[] EMPTY_ARRAY = {};
+
     private String[] levels;
 
-    @Deprecated
-    private String value;
-
-    @Deprecated
-    private Function function;
-
-    public Function getFunction() {
-        return function;
+    public PreparedEntry() {
     }
 
-    public void setFunction(Function function) {
-        this.function = function;
+    public PreparedEntry(ParameterEntry parameterEntry) {
+        this.levels = trimRight(parameterEntry.getLevels());
     }
 
     public String[] getLevels() {
@@ -47,10 +44,9 @@ public class PreparedEntry {
 
     public void setLevels(String[] levels) {
         this.levels = trimRight(levels);
-        //todo ph: par 1 preparedEntry: level=null -> ""
     }
 
-    String[] trimRight(String[] array) {
+    private String[] trimRight(String[] array) {
         if (array == null) {
             return EMPTY_ARRAY;
         }
@@ -60,22 +56,10 @@ public class PreparedEntry {
             --len;
         }
 
-        // len to dlugosc tablicy z pominieciem koncowych null (jesli wystepuja)
         return len < array.length ? Arrays.copyOf(array, len) : array;
     }
 
     public String getLevel(int k) {
         return (k >= 1 && k <= levels.length) ? levels[k - 1] : null;
     }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    private static final String[] EMPTY_ARRAY = {};
-
 }

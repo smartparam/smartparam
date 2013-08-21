@@ -59,7 +59,7 @@ public class ParamEngineAssert extends AbstractAssert<ParamEngineAssert, ParamEn
     }
 
     public ParamEngineAssert hasRepository(ParamRepository repository) {
-        Assertions.assertThat(actual.getParamPreparer().getParameterProvider().registeredItems()).containsValue(repository);
+        Assertions.assertThat(actual.getParamPreparer().getParameterProvider().registeredItems()).contains(repository);
         return this;
     }
 }
