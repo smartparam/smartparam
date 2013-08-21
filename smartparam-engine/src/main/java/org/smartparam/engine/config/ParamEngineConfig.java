@@ -25,7 +25,7 @@ import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.engine.ParamPreparer;
-import org.smartparam.engine.core.engine.SmartParamPreparer;
+import org.smartparam.engine.core.engine.BasicParamPreparer;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.core.repository.FunctionRepository;
@@ -50,7 +50,7 @@ import org.smartparam.engine.core.type.Type;
  */
 public class ParamEngineConfig {
 
-    private ParamPreparer paramPreparer = new SmartParamPreparer();
+    private ParamPreparer paramPreparer = new BasicParamPreparer();
 
     private ParamCache paramCache = new MapParamCache();
 

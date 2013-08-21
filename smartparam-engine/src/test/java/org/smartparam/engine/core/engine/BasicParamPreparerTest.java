@@ -17,169 +17,128 @@ package org.smartparam.engine.core.engine;
 
 import org.testng.annotations.BeforeMethod;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.repository.BasicMatcherRepository;
+import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.repository.TypeRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
-import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.types.string.StringType;
 
-import static org.mockito.Mockito.mock;
-import org.smartparam.engine.core.repository.BasicTypeRepository;
-import org.smartparam.engine.core.service.BasicParameterProvider;
+import static org.mockito.Mockito.*;
+import org.smartparam.engine.core.repository.MatcherRepository;
+import org.smartparam.engine.core.service.FunctionProvider;
+import org.smartparam.engine.core.service.ParameterProvider;
+import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.function.Function;
+import org.testng.annotations.Test;
+import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
+import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.test.builder.PreparedParameterTestBuilder.preparedParameter;
 
 /**
  * @author Przemek Hertel
  */
-public class SmartParamPreparerTest {
+public class BasicParamPreparerTest {
 
     private ParamCache cache;
 
-    private ParamRepository repository;
+    private BasicParamPreparer paramPreparer;
 
-    private PreparedParameter pp1;
+    private TypeRepository typeRepository;
 
-    private Parameter p2;
+    private MatcherRepository matcherRepository;
 
-    private SmartParamPreparer paramPreparer;
+    private ParameterProvider paramProvider;
 
-    private TypeRepository typeProvider;
-
-    private BasicMatcherRepository matcherProvider;
-
-    private StringType type = new StringType();
-
+    private FunctionProvider functionProvider;
 
     @BeforeMethod
     public void initialize() {
-        typeProvider = new BasicTypeRepository();
-        typeProvider.register("string", type);
-
-        matcherProvider = new BasicMatcherRepository();
-        matcherProvider.register("between/ii", new BetweenMatcher(true, true, ":"));
-        matcherProvider.register("between/ie", new BetweenMatcher(true, false, ":"));
-
+        typeRepository = mock(TypeRepository.class);
+        matcherRepository = mock(MatcherRepository.class);
+        paramProvider = mock(ParameterProvider.class);
+        functionProvider = mock(FunctionProvider.class);
         cache = mock(ParamCache.class);
 
-        repository = mock(ParamRepository.class);
-
-        paramPreparer = new SmartParamPreparer();
+        paramPreparer = new BasicParamPreparer();
+        paramPreparer.setTypeRepository(typeRepository);
+        paramPreparer.setMatcherRepository(matcherRepository);
         paramPreparer.setParamCache(cache);
-        paramPreparer.setTypeRepository(typeProvider);
-        paramPreparer.setMatcherRepository(matcherProvider);
+        paramPreparer.setParameterProvider(paramProvider);
+        paramPreparer.setFunctionProvider(functionProvider);
 
-        BasicParameterProvider provider = new BasicParameterProvider();
-        provider.register(repository);
-        paramPreparer.setParameterProvider(provider);
+//        typeProvider = new BasicTypeRepository();
+//        typeProvider.register("string", type);
+//
+//        matcherProvider = new BasicMatcherRepository();
+//        matcherProvider.register("between/ii", new BetweenMatcher(true, true, ":"));
+//        matcherProvider.register("between/ie", new BetweenMatcher(true, false, ":"));
+//
+//        cache = mock(ParamCache.class);
+//
+//        repository = mock(ParamRepository.class);
+//
+//        paramPreparer = new BasicParamPreparer();
+//        paramPreparer.setParamCache(cache);
+//        paramPreparer.setTypeRepository(typeProvider);
+//        paramPreparer.setMatcherRepository(matcherProvider);
+//
+//        BasicParameterProvider provider = new BasicParameterProvider();
+//        provider.register(repository);
+//        paramPreparer.setParameterProvider(provider);
     }
 
-// FIXME #ad needs rewrite
-//    @Test
-//    public void testGetPreparedParameter__fromCache() {
-//
-//        // test
-//        PreparedParameter result = paramPreparer.getPreparedParameter("par1");
-//
-//        // weryfikacja
-//        assertSame(pp1, result);
-//    }
-//
-//    @Test
-//    public void testGetPreparedParameter__prepare() {
-//        // given
-//        Level[] levels = new Level[] {
-//            level().withType("string").build(),
-//            level().withType("string").build()
-//        };
-//        ParameterEntry[] entries = new ParameterEntry[] {
-//            parameterEntry().withLevels("A", "value-A").build(),
-//            parameterEntry().withLevels("*", "value-*").build()
-//        };
-//
-//        Parameter parameter = parameter().withName("param").withLevels(levels).withInputLevels(1).withEntries(entries).build();
-//        when(repository.load("param")).thenReturn(parameter);
-//
-//        // test
-//        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
-//
-//        // weryfikacja
-//        assertEquals(2, preparedParameter.getLevelCount());
-//        assertEquals(1, preparedParameter.getInputLevelsCount());
-//        assertEquals("param", preparedParameter.getName());
-//
-//        assertEquals(2, preparedParameter.getLevels().length);
-//        assertEquals(type, preparedParameter.getLevels()[0].getType());
-//        assertEquals(type, preparedParameter.getLevels()[1].getType());
-//    }
-//
-//    @Test
-//    public void testGetPreparedParameter__paramNotFound() {
-//
-//        // test
-//        PreparedParameter result = paramPreparer.getPreparedParameter("par3");
-//
-//        // weryfikacja
-//        assertNull(result);
-//    }
-//
-//    @Test
-//    public void testGetPreparedParameter__array() {
-//
-//        ParameterMockBuilder.parameter(p2).withName("par2")
-//                .withLevels(
-//                    LevelMockBuilder.level().withType("string").get(),
-//                    LevelMockBuilder.level().withType("string").get()
-//                )
-//                .inputLevels(1)
-//                .withEntries(
-//                    ParameterEntryMockBuilder.parameterEntry("*", "value")
-//                );
-//
-//        // test
-//        PreparedParameter result = paramPreparer.getPreparedParameter("par2");
-//
-//        // weryfikacja
-//        assertEquals(2, result.getLevelCount());
-//        assertEquals(1, result.getInputLevelsCount());
-//        assertEquals(',', result.getArraySeparator());
-//
-//        // test 2
-//        when(p2.getArraySeparator()).thenReturn('/');
-//        result = paramPreparer.getPreparedParameter("par2");
-//
-//        // weryfikacja 2
-//        assertEquals('/', result.getArraySeparator());
-//    }
-//
-//    @Test
-//    public void testGetPreparedParameter__prepare_withMatchers() {
-//
-//        ParameterMockBuilder.parameter(p2).withName("par2")
-//                .withLevels(
-//                    LevelMockBuilder.level().withType("string").withMatcherCode("between/ii").get(),
-//                    LevelMockBuilder.level().withType("string").withMatcherCode("between/ie").get(),
-//                    LevelMockBuilder.level().withType("string").get()
-//                )
-//                .inputLevels(2)
-//                .withEntries(
-//                    ParameterEntryMockBuilder.parameterEntry("A", "B", "value-AB")
-//                );
-//
-//        // test
-//        PreparedParameter result = paramPreparer.getPreparedParameter("par2");
-//
-//        // weryfikacja
-//        assertEquals(3, result.getLevelCount());
-//        assertEquals(2, result.getInputLevelsCount());
-//        assertEquals("par2", result.getName());
-//
-//        assertEquals(3, result.getLevels().length);
-//        for (int i = 0; i < 2; i++) {
-//            PreparedLevel pl = result.getLevels()[i];
-//            assertEquals(type, pl.getType());
-//            assertTrue(pl.getMatcher() instanceof BetweenMatcher);
-//        }
-//    }
+    @Test
+    @SuppressWarnings("unchecked")
+    public void shouldReturnPreparedParameterWithIndexForCacheableParameter() {
+        // given
+        Level level = level().withName("level").withMatcher("matcher").withLevelCreator("creator").withType("type").build();
+        Parameter parameter = parameter().withName("param").withInputLevels(1).withArraySeparator('^')
+                .withEntries().withLevels(level).build();
+        when(paramProvider.load("param")).thenReturn(parameter);
+
+        Matcher matcher = mock(Matcher.class);
+        when(matcherRepository.getMatcher("matcher")).thenReturn(matcher);
+        Function creator = mock(Function.class);
+        when(functionProvider.getFunction("creator")).thenReturn(creator);
+        Type type = mock(Type.class);
+        when(typeRepository.getType("type")).thenReturn(type);
+
+        // when
+        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+
+        // then
+        assertThat(preparedParameter).hasName("param").hasInputLevels(1).hasArraySeparator('^').hasIndex()
+                .level(0).hasMatcher(matcher).hasLevelCreator(creator).hasType(type);
+    }
+
+    @Test
+    public void shouldPrepareParameterOnlyOnceAndUseCacheInConsequentTries() {
+        // given
+        Parameter parameter = parameter().withEntries().build();
+        when(cache.get("param")).thenReturn(null).thenReturn(preparedParameter().forParameter(parameter).build());
+        when(paramProvider.load("param")).thenReturn(parameter);
+
+        // when
+        paramPreparer.getPreparedParameter("param");
+        paramPreparer.getPreparedParameter("param");
+
+        // then
+        verify(cache, times(2)).get("param");
+        verify(cache, times(1)).put(eq("param"), any(PreparedParameter.class));
+    }
+
+    @Test
+    public void shouldReturnNullWhenParameterNotFound() {
+        // given
+        when(paramProvider.load("param")).thenReturn(null);
+
+        // when
+        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+
+        // then
+        assertThat(preparedParameter).isNull();
+    }
+
 //
 //    @Test
 //    public void testGetPreparedParameter__prepare_illegalMatcher() {

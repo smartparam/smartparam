@@ -22,6 +22,8 @@ import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.engine.ParamValue;
+import org.smartparam.engine.core.engine.PreparedLevel;
+import org.smartparam.engine.core.engine.PreparedParameter;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.index.LevelNode;
 import org.smartparam.engine.model.Level;
@@ -47,6 +49,14 @@ public class Assertions extends org.fest.assertions.api.Assertions {
 
     public static DefaultContextAssert assertThat(DefaultContext actual) {
         return DefaultContextAssert.assertThat(actual);
+    }
+
+    public static PreparedParameterAssert assertThat(PreparedParameter actual) {
+        return PreparedParameterAssert.assertThat(actual);
+    }
+
+    public static PreparedLevelAssert assertThat(PreparedLevel actual) {
+        return PreparedLevelAssert.assertThat(actual);
     }
 
     public static <T> RepositoryItemMapAssert<T> assertThatItemMap(Map<RepositoryObjectKey, T> actual) {

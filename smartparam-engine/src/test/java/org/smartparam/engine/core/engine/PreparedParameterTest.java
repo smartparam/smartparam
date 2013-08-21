@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.test.builder.ParameterTestBuilder;
 import org.testng.annotations.Test;
 import static org.fest.assertions.api.Assertions.*;
 
@@ -26,10 +27,8 @@ public class PreparedParameterTest {
     @Test
     public void shouldAssureThatIsNullableAndIsNotNullReturnOppositeValues() {
         // given
-        PreparedParameter parameter = new PreparedParameter();
-
         // when
-        parameter.setNullable(true);
+        PreparedParameter parameter = new PreparedParameter(ParameterTestBuilder.parameter().nullable().build(), null);
 
         // then
         assertThat(parameter.isNotNull()).isFalse();

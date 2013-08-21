@@ -24,7 +24,8 @@ import org.smartparam.engine.core.service.ParameterProvider;
 
 /**
  * Interface for services building complete, in-memory representation of
- * parameter (preparing parameters).
+ * parameter (preparing parameters). Since parameter compilation is expensive,
+ * cache should be used to hold compilation result.
  *
  * @see PreparedParameter
  *

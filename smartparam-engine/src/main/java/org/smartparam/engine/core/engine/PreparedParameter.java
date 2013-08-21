@@ -18,6 +18,7 @@ package org.smartparam.engine.core.engine;
 import org.smartparam.engine.core.index.LevelIndex;
 
 import java.util.Map;
+import org.smartparam.engine.model.Parameter;
 
 /**
  * Compiled parameter object, which contains all resolved references and
@@ -65,6 +66,15 @@ public class PreparedParameter {
 
     private char arraySeparator;
 
+    public PreparedParameter(Parameter parameter, PreparedLevel[] levels) {
+        this.name = parameter.getName();
+        this.inputLevelsCount = parameter.getInputLevels();
+        this.nullable = parameter.isNullable();
+        this.cacheable = parameter.isCacheable();
+        this.arraySeparator = parameter.getArraySeparator();
+        this.levels = levels;
+    }
+
     /**
      * Returns prepared search index.
      *
@@ -82,16 +92,8 @@ public class PreparedParameter {
         return levels;
     }
 
-    public void setLevels(PreparedLevel[] levels) {
-        this.levels = levels;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getLevelCount() {
@@ -109,24 +111,12 @@ public class PreparedParameter {
         return inputLevelsCount;
     }
 
-    public void setInputLevelsCount(int inputLevelsCount) {
-        this.inputLevelsCount = inputLevelsCount;
-    }
-
     public boolean isNullable() {
         return nullable;
     }
 
-    public void setNullable(boolean nullable) {
-        this.nullable = nullable;
-    }
-
     public boolean isCacheable() {
         return cacheable;
-    }
-
-    public void setCacheable(boolean cacheable) {
-        this.cacheable = cacheable;
     }
 
     public boolean isNotNull() {
@@ -135,10 +125,6 @@ public class PreparedParameter {
 
     public char getArraySeparator() {
         return arraySeparator;
-    }
-
-    public void setArraySeparator(char arraySeparator) {
-        this.arraySeparator = arraySeparator;
     }
 
     public Map<String, Integer> getLevelNameMap() {

@@ -17,7 +17,7 @@ package org.smartparam.engine.core.engine;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
-import static org.testng.AssertJUnit.*; 
+import static org.testng.AssertJUnit.*;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
@@ -81,11 +81,11 @@ public class ParamEngineTest {
         return 1 / (a / a - 1);
     }
 
-    private PreparedParameter pp(PreparedLevel... levels) {
-        PreparedParameter pp = new PreparedParameter();
-        pp.setLevels(levels);
-        return pp;
-    }
+//    private PreparedParameter pp(PreparedLevel... levels) {
+//        PreparedParameter pp = new PreparedParameter(new SimpleParameter());
+//        pp.setLevels(levels);
+//        return pp;
+//    }
 
     private void checkArrays(AbstractHolder[] expected, AbstractHolder[] result) {
         assertEquals(expected.length, result.length);
