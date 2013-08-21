@@ -69,7 +69,7 @@ public class SmartParamPreparerTest {
         paramPreparer.setMatcherRepository(matcherProvider);
 
         BasicParameterProvider provider = new BasicParameterProvider();
-        provider.register("test", 0, repository);
+        provider.register(repository);
         paramPreparer.setParameterProvider(provider);
     }
 

@@ -16,11 +16,8 @@
 package org.smartparam.engine.core.service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.core.MapRepository;
+import org.smartparam.engine.core.ListRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -31,12 +28,12 @@ import org.smartparam.engine.model.ParameterEntry;
  */
 public class BasicParameterProvider implements ParameterProvider {
 
-    private MapRepository<ParamRepository> innerRepository = new MapRepository<ParamRepository>(ParamRepository.class, new TreeMap<RepositoryObjectKey, ParamRepository>());
+    private ListRepository<ParamRepository> innerRepository = new ListRepository<ParamRepository>(ParamRepository.class);
 
     @Override
     public Parameter load(String parameterName) {
         Parameter parameter = null;
-        for (ParamRepository repository : innerRepository.getItemsOrdered().values()) {
+        for (ParamRepository repository : innerRepository.getItems()) {
             parameter = repository.load(parameterName);
             if (parameter != null) {
                 break;
@@ -48,7 +45,7 @@ public class BasicParameterProvider implements ParameterProvider {
     @Override
     public Set<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
         Set<ParameterEntry> entries = null;
-        for (ParamRepository repository : innerRepository.getItemsOrdered().values()) {
+        for (ParamRepository repository : innerRepository.getItems()) {
             entries = repository.findEntries(parameterName, levelValues);
             if (entries != null) {
                 break;
@@ -57,29 +54,17 @@ public class BasicParameterProvider implements ParameterProvider {
         return entries;
     }
 
-    @Override
-    public void register(String type, int index, ParamRepository object) {
-        innerRepository.register(new RepositoryObjectKey(type, index), object);
+    public void register(ParamRepository repository) {
+        innerRepository.register(repository);
     }
 
-    @Override
-    public Map<String, ParamRepository> registeredItems() {
-        return innerRepository.getItemsOrdered();
-    }
-
-    @Override
-    public void registerAll(Map<String, ParamRepository> objects) {
-        innerRepository.registerAllOrdered(objects);
+    public List<ParamRepository> registeredItems() {
+        return innerRepository.getItems();
     }
 
     @Override
     public void registerAll(List<ParamRepository> repositories) {
-        int order = 10;
-        for(ParamRepository repository : repositories) {
-            innerRepository.register(new RepositoryObjectKey(repository.getClass().getSimpleName(), order), repository);
-            order++;
-        }
+        innerRepository.registerAll(repositories);
     }
-
 
 }
