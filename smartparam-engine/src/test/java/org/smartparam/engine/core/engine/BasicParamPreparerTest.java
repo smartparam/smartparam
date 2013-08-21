@@ -17,17 +17,11 @@ package org.smartparam.engine.core.engine;
 
 import org.testng.annotations.BeforeMethod;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.repository.TypeRepository;
 import org.smartparam.engine.model.Parameter;
 
 import static org.mockito.Mockito.*;
-import org.smartparam.engine.core.repository.MatcherRepository;
-import org.smartparam.engine.core.service.FunctionProvider;
 import org.smartparam.engine.core.service.ParameterProvider;
-import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.function.Function;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
@@ -43,28 +37,20 @@ public class BasicParamPreparerTest {
 
     private BasicParamPreparer paramPreparer;
 
-    private TypeRepository typeRepository;
-
-    private MatcherRepository matcherRepository;
-
     private ParameterProvider paramProvider;
 
-    private FunctionProvider functionProvider;
+    private LevelPreparer levelPreparer;
 
     @BeforeMethod
     public void initialize() {
-        typeRepository = mock(TypeRepository.class);
-        matcherRepository = mock(MatcherRepository.class);
+        levelPreparer = mock(LevelPreparer.class);
         paramProvider = mock(ParameterProvider.class);
-        functionProvider = mock(FunctionProvider.class);
         cache = mock(ParamCache.class);
 
         paramPreparer = new BasicParamPreparer();
-        paramPreparer.setTypeRepository(typeRepository);
-        paramPreparer.setMatcherRepository(matcherRepository);
         paramPreparer.setParamCache(cache);
         paramPreparer.setParameterProvider(paramProvider);
-        paramPreparer.setFunctionProvider(functionProvider);
+        paramPreparer.setLevelPreparer(levelPreparer);
 
 //        typeProvider = new BasicTypeRepository();
 //        typeProvider.register("string", type);
@@ -95,20 +81,13 @@ public class BasicParamPreparerTest {
         Parameter parameter = parameter().withName("param").withInputLevels(1).withArraySeparator('^')
                 .withEntries().withLevels(level).build();
         when(paramProvider.load("param")).thenReturn(parameter);
-
-        Matcher matcher = mock(Matcher.class);
-        when(matcherRepository.getMatcher("matcher")).thenReturn(matcher);
-        Function creator = mock(Function.class);
-        when(functionProvider.getFunction("creator")).thenReturn(creator);
-        Type type = mock(Type.class);
-        when(typeRepository.getType("type")).thenReturn(type);
+        when(levelPreparer.prepare(any(Level.class))).thenReturn(new PreparedLevel(null, null, false, null, null));
 
         // when
         PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
 
         // then
-        assertThat(preparedParameter).hasName("param").hasInputLevels(1).hasArraySeparator('^').hasIndex()
-                .level(0).hasMatcher(matcher).hasLevelCreator(creator).hasType(type);
+        assertThat(preparedParameter).hasName("param").hasInputLevels(1).hasArraySeparator('^').hasIndex();
     }
 
     @Test

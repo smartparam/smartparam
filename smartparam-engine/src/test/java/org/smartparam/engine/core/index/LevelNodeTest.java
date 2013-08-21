@@ -33,7 +33,7 @@ public class LevelNodeTest {
 
         // when
         int currentLevelNumber = 0;
-        node.add(new String[]{}, 10, null, currentLevelNumber);
+        node.add(new String[]{}, 10, currentLevelNumber);
 
         // then
         assertThat(node).hasLeaves(1).leavesEqualTo(10);
@@ -47,7 +47,7 @@ public class LevelNodeTest {
 
         // when
         int currentLevelNumber = 0;
-        root.add(new String[]{"A"}, 10, null, currentLevelNumber);
+        root.add(new String[]{"A"}, 10, currentLevelNumber);
 
         // then
         assertThat(root).hasNoLeaves().hasDirectChild("A");
@@ -58,8 +58,8 @@ public class LevelNodeTest {
         // given
         LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
         LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
-        root.add(new String[]{"*"}, 11, null, 0);
-        root.add(new String[]{"A"}, 42, null, 0);
+        root.add(new String[]{"*"}, 11, 0);
+        root.add(new String[]{"A"}, 42, 0);
 
         // when
         LevelNode<Integer> node = root.findNode(new String[]{"A"}, 0);
@@ -73,8 +73,8 @@ public class LevelNodeTest {
         // given
         LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
         LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
-        root.add(new String[]{"*"}, 42, null, 0);
-        root.add(new String[]{"A"}, 11, null, 0);
+        root.add(new String[]{"*"}, 42, 0);
+        root.add(new String[]{"A"}, 11, 0);
 
         // when
         LevelNode<Integer> node = root.findNode(new String[]{"B"}, 0);
@@ -88,7 +88,7 @@ public class LevelNodeTest {
         // given
         LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
         LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
-        root.add(new String[]{"A"}, 10, null, 0);
+        root.add(new String[]{"A"}, 10, 0);
 
         // when
         LevelNode<Integer> node = root.findNode(new String[]{"B"}, 0);
@@ -96,7 +96,7 @@ public class LevelNodeTest {
         // then
         assertThat(node).isNull();
     }
-    
+
     @DataProvider(name = "findNodeSearchSet")
     public Object[][] provideFindNodeSearchSets() {
         return new Object[][]{
@@ -117,14 +117,14 @@ public class LevelNodeTest {
         LevelIndex<Integer> levelindex = levelIndex().withLevelCount(3).build();
         LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
 
-        root.add(new String[]{"A", "B", "C"}, 1, null, 0);
-        root.add(new String[]{"A", "B", "*"}, 9, null, 0);
-        root.add(new String[]{"A", "E", "D"}, 11, null, 0);
-        root.add(new String[]{"A", "*", "D"}, 12, null, 0);
-        root.add(new String[]{"A", "*", "*"}, 13, null, 0);
-        root.add(new String[]{"*", "Z", "Z"}, 21, null, 0);
-        root.add(new String[]{"*", "Z", "*"}, 22, null, 0);
-        root.add(new String[]{"*", "*", "*"}, 99, null, 0);
+        root.add(new String[]{"A", "B", "C"}, 1, 0);
+        root.add(new String[]{"A", "B", "*"}, 9, 0);
+        root.add(new String[]{"A", "E", "D"}, 11, 0);
+        root.add(new String[]{"A", "*", "D"}, 12, 0);
+        root.add(new String[]{"A", "*", "*"}, 13, 0);
+        root.add(new String[]{"*", "Z", "Z"}, 21, 0);
+        root.add(new String[]{"*", "Z", "*"}, 22, 0);
+        root.add(new String[]{"*", "*", "*"}, 99, 0);
 
         // when
         LevelNode<Integer> node = root.findNode(levelValues, 0);

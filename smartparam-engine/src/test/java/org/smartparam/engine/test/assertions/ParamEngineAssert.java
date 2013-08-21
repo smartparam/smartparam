@@ -35,9 +35,9 @@ public class ParamEngineAssert extends AbstractAssert<ParamEngineAssert, ParamEn
 
     public ParamEngineAssert hasInitializedTree() {
         Assertions.assertThat(actual.getParamPreparer()).isNotNull();
-        Assertions.assertThat(actual.getParamPreparer().getMatcherRepository()).isNotNull();
-        Assertions.assertThat(actual.getParamPreparer().getTypeRepository()).isNotNull();
         Assertions.assertThat(actual.getParamPreparer().getParamCache()).isNotNull();
+        Assertions.assertThat(actual.getParamPreparer().getLevelPreparer().getMatcherRepository()).isNotNull();
+        Assertions.assertThat(actual.getParamPreparer().getLevelPreparer().getTypeRepository()).isNotNull();
 
         Assertions.assertThat(actual.getFunctionManager()).isNotNull();
         Assertions.assertThat(actual.getFunctionManager().getFunctionProvider()).isNotNull();
@@ -52,8 +52,8 @@ public class ParamEngineAssert extends AbstractAssert<ParamEngineAssert, ParamEn
 
         Assertions.assertThat(actual.getFunctionManager().getInvokerRepository()).hasItems();
         Assertions.assertThat(actual.getFunctionManager().getFunctionProvider()).hasItems();
-        Assertions.assertThat(actual.getParamPreparer().getTypeRepository()).hasItems();
-        Assertions.assertThat(actual.getParamPreparer().getMatcherRepository()).hasItems();
+        Assertions.assertThat(actual.getParamPreparer().getLevelPreparer().getTypeRepository()).hasItems();
+        Assertions.assertThat(actual.getParamPreparer().getLevelPreparer().getMatcherRepository()).hasItems();
 
         return this;
     }

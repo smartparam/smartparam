@@ -17,9 +17,6 @@ package org.smartparam.engine.core.engine;
 
 import java.util.List;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.repository.MatcherRepository;
-import org.smartparam.engine.core.repository.TypeRepository;
-import org.smartparam.engine.core.service.FunctionProvider;
 import org.smartparam.engine.core.service.ParameterProvider;
 
 /**
@@ -57,19 +54,11 @@ public interface ParamPreparer {
 
     void setParamCache(ParamCache cache);
 
-    FunctionProvider getFunctionProvider();
-
-    void setFunctionProvider(FunctionProvider functionProvider);
-
-    TypeRepository getTypeRepository();
-
-    void setTypeRepository(TypeRepository typeRepository);
-
-    MatcherRepository getMatcherRepository();
-
-    void setMatcherRepository(MatcherRepository matcherRepository);
-
     ParameterProvider getParameterProvider();
 
     void setParameterProvider(ParameterProvider parameterProvider);
+
+    LevelPreparer getLevelPreparer();
+
+    void setLevelPreparer(LevelPreparer levelPreparer);
 }

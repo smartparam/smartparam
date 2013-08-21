@@ -89,7 +89,7 @@ public class LevelIndex<T> {
      * @param leaf
      */
     public void add(String[] levelValues, T leaf) {
-        root.add(levelValues, leaf, matchers, 0);
+        root.add(levelValues, leaf, 0);
     }
 
     /**

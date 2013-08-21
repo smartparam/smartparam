@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.config;
 
+import org.smartparam.engine.core.engine.LevelPreparer;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.engine.ParamPreparer;
 import org.smartparam.engine.core.engine.SmartParamEngine;
@@ -88,14 +89,24 @@ public class ParamEngineFactory {
     private ParamPreparer prepareParamPreparer(ParamEngineConfig config) {
         ParamPreparer paramPreparer = config.getParamPreparer();
         paramPreparer.setParameterProvider(prepareParameterProvider(config));
-        paramPreparer.setFunctionProvider(config.getFunctionProvider());
         paramPreparer.setParamCache(config.getParamCache());
-        paramPreparer.setMatcherRepository(prepareMatcherRepository(config));
-        paramPreparer.setTypeRepository(prepareTypeRepository(config));
+        paramPreparer.setLevelPreparer(prepareLevelPreparer(config));
 
         config.getInitializationRunner().runInitializers(paramPreparer);
 
         return paramPreparer;
+    }
+
+    private LevelPreparer prepareLevelPreparer(ParamEngineConfig config) {
+        LevelPreparer levelPreparer = config.getLevelPreparer();
+
+        levelPreparer.setFunctionProvider(config.getFunctionProvider());
+        levelPreparer.setMatcherRepository(prepareMatcherRepository(config));
+        levelPreparer.setTypeRepository(prepareTypeRepository(config));
+
+        config.getInitializationRunner().runInitializers(levelPreparer);
+
+        return levelPreparer;
     }
 
     private ParameterProvider prepareParameterProvider(ParamEngineConfig config) {

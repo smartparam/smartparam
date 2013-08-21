@@ -25,19 +25,13 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.repository.MatcherRepository;
-import org.smartparam.engine.core.repository.TypeRepository;
-import org.smartparam.engine.core.exception.SmartParamDefinitionException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.service.FunctionProvider;
 import org.smartparam.engine.core.service.ParameterProvider;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.function.Function;
 
 /**
  *
@@ -48,13 +42,9 @@ public class BasicParamPreparer implements ParamPreparer {
 
     private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
-    private TypeRepository typeProvider;
-
-    private MatcherRepository matcherProvider;
-
     private ParameterProvider parameterProvider;
 
-    private FunctionProvider functionProvider;
+    private LevelPreparer levelPreparer;
 
     private ParamCache cache;
 
@@ -85,14 +75,11 @@ public class BasicParamPreparer implements ParamPreparer {
 
         for (int currentLevelIndex = 0; currentLevelIndex < levelCount; currentLevelIndex++) {
             Level level = getLevel(parameter, currentLevelIndex);
+            PreparedLevel preparedLevel = levelPreparer.prepare(level);
 
-            Type<?> type = resolveType(level.getType(), parameter.getName(), currentLevelIndex);
-            Matcher matcher = resolveMatcher(level.getMatcher(), parameter.getName(), currentLevelIndex);
-            Function levelCreator = resolveLevelCreator(level.getLevelCreator());
-
-            levels[currentLevelIndex] = new PreparedLevel(level.getName(), type, level.isArray(), matcher, levelCreator);
-            types[currentLevelIndex] = type;
-            matchers[currentLevelIndex] = matcher;
+            levels[currentLevelIndex] = preparedLevel;
+            types[currentLevelIndex] = preparedLevel.getType();
+            matchers[currentLevelIndex] = preparedLevel.getMatcher();
         }
 
         PreparedParameter preparedParameter = new PreparedParameter(parameter, levels);
@@ -103,44 +90,6 @@ public class BasicParamPreparer implements ParamPreparer {
         }
 
         return preparedParameter;
-    }
-
-    private Type<?> resolveType(String typeCode, String parameterName, int levelIndex) {
-        Type<?> type = null;
-        if (typeCode != null) {
-            type = typeProvider.getType(typeCode);
-
-            if (type == null) {
-                throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
-                        String.format("Level[%d] of parameter %s has unknown type %s. "
-                        + "To see all registered types, look for MapRepository logs on INFO level during startup.",
-                        levelIndex, parameterName, typeCode));
-            }
-        }
-        return type;
-    }
-
-    private Matcher resolveMatcher(String matcherCode, String parameterName, int levelIndex) {
-        Matcher matcher = null;
-        if (matcherCode != null) {
-            matcher = matcherProvider.getMatcher(matcherCode);
-
-            if (matcher == null) {
-                throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_MATCHER,
-                        String.format("Level[%d] of parameter %s has unknown matcher %s. "
-                        + "To see all registered matchers, look for MapRepository logs on INFO level during startup.",
-                        (levelIndex), parameterName, matcherCode));
-            }
-        }
-        return matcher;
-    }
-
-    private Function resolveLevelCreator(String levelCreatorCode) {
-        Function levelCreator = null;
-        if (levelCreatorCode != null) {
-            levelCreator = functionProvider.getFunction(levelCreatorCode);
-        }
-        return levelCreator;
     }
 
     private LevelIndex<PreparedEntry> buildIndex(Parameter parameter, Type<?>[] types, Matcher[] matchers) {
@@ -217,16 +166,6 @@ public class BasicParamPreparer implements ParamPreparer {
     }
 
     @Override
-    public FunctionProvider getFunctionProvider() {
-        return functionProvider;
-    }
-
-    @Override
-    public void setFunctionProvider(FunctionProvider functionProvider) {
-        this.functionProvider = functionProvider;
-    }
-
-    @Override
     public ParameterProvider getParameterProvider() {
         return parameterProvider;
     }
@@ -237,22 +176,12 @@ public class BasicParamPreparer implements ParamPreparer {
     }
 
     @Override
-    public TypeRepository getTypeRepository() {
-        return typeProvider;
+    public LevelPreparer getLevelPreparer() {
+        return this.levelPreparer;
     }
 
     @Override
-    public void setTypeRepository(TypeRepository typeRepository) {
-        this.typeProvider = typeRepository;
-    }
-
-    @Override
-    public MatcherRepository getMatcherRepository() {
-        return matcherProvider;
-    }
-
-    @Override
-    public void setMatcherRepository(MatcherRepository matcherRepository) {
-        this.matcherProvider = matcherRepository;
+    public void setLevelPreparer(LevelPreparer levelPreparer) {
+        this.levelPreparer = levelPreparer;
     }
 }

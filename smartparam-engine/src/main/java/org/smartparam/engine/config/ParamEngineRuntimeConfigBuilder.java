@@ -44,8 +44,8 @@ public class ParamEngineRuntimeConfigBuilder {
 
         ParamEngineRuntimeConfig runtmeConfig = new ParamEngineRuntimeConfig(functionCache, paramCache,
                 functionManager.getInvokerRepository().registeredItems(),
-                paramPreparer.getTypeRepository().registeredItems(),
-                paramPreparer.getMatcherRepository().registeredItems());
+                paramPreparer.getLevelPreparer().getTypeRepository().registeredItems(),
+                paramPreparer.getLevelPreparer().getMatcherRepository().registeredItems());
 
         return runtmeConfig;
     }

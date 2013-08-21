@@ -57,12 +57,12 @@ public class LevelNode<T> {
         this.leafList = null;
     }
 
-    public void add(List<String> levels, T leafValue, Matcher[] matchers, int depth) {
+    public void add(List<String> levels, T leafValue, int depth) {
         String[] levelsArray = levels.toArray(new String[levels.size()]);
-        add(levelsArray, leafValue, matchers, depth);
+        add(levelsArray, leafValue, depth);
     }
 
-    public void add(String[] levels, T leafValue, Matcher[] matchers, int depth) {
+    public void add(String[] levels, T leafValue, int depth) {
 
         if (!reachedLeafDepth(depth)) {
             String levelVal = levels[depth];
@@ -71,7 +71,7 @@ public class LevelNode<T> {
                 if (defaultNode == null) {
                     defaultNode = new LevelNode<T>(levelVal, this, index);
                 }
-                defaultNode.add(levels, leafValue, matchers, depth + 1);
+                defaultNode.add(levels, leafValue, depth + 1);
             } else {
                 ensureChildrenIsReady();
                 LevelNode<T> child = children.get(levelVal);
@@ -79,7 +79,7 @@ public class LevelNode<T> {
                     child = new LevelNode<T>(levelVal, this, index);
                     children.put(levelVal, child);
                 }
-                child.add(levels, leafValue, matchers, depth + 1);
+                child.add(levels, leafValue, depth + 1);
             }
         } else {
             if (leafList == null) {
@@ -109,7 +109,7 @@ public class LevelNode<T> {
      * Finds leaf node and returns its value.
      * Recurrent search algorithm:
      * <pre>
-     * 1. find tree path that matches query values descending one by one node
+     * 1. find tree path that matches query values descending by one node
      * 2. if none found, try default value if defined for this level
      * </pre>
      *
