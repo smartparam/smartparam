@@ -49,17 +49,4 @@ public interface ParameterEntry {
      * @return levels row values
      */
     String[] getLevels();
-
-    @Deprecated
-    String getValue();
-
-    @Deprecated
-    String getFunction();
-
-    /*
-     * getValue() and getFunctions() were used for single-value parameters.
-     * now there is no distinction between single-value, multi-value and multi-row.
-     * - getValue() behavior can be obtained thru defining 1 output levele
-     * - getFunction() cannot be achieved currently
-     */
 }

@@ -47,7 +47,6 @@ public class ParameterEntryMapper implements ObjectMapper<ParameterEntry> {
             resultSet.getString("level7"),
             resultSet.getString("level8")
         });
-        entry.setValue(resultSet.getString("value"));
         return entry;
     }
 }
