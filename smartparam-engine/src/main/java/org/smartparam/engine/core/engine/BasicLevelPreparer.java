@@ -43,7 +43,7 @@ public class BasicLevelPreparer implements LevelPreparer {
         Matcher matcher = resolveMatcher(level.getMatcher(), level.getName());
         Function levelCreator = resolveLevelCreator(level.getLevelCreator());
 
-        return new PreparedLevel(level.getName(), type, level.isArray(), matcher, levelCreator);
+        return new PreparedLevel(level.getName(), level.isArray(), type, matcher, levelCreator);
     }
 
     private Type<?> resolveType(String typeCode, String levelName) {

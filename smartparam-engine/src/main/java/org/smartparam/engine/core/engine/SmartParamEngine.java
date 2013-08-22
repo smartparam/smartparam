@@ -36,7 +36,6 @@ import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.ParamHelper;
 
 /**
- * in progress...
  *
  * @author Przemek Hertel
  * @since 0.1.0

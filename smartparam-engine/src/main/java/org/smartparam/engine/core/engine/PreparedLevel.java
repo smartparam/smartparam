@@ -46,12 +46,12 @@ public class PreparedLevel {
      * Creates immutable instance.
      *
      * @param name         level's name
-     * @param type         level's type code
      * @param array        whether this level contains array
+     * @param type         level's type code
      * @param matcher      level's matcher code
      * @param levelCreator function resolving actual level value
      */
-    public PreparedLevel(String name, Type<?> type, boolean array, Matcher matcher, Function levelCreator) {
+    public PreparedLevel(String name, boolean array, Type<?> type, Matcher matcher, Function levelCreator) {
         this.name = name;
         this.type = type;
         this.array = array;

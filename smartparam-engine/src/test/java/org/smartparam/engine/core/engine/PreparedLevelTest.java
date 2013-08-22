@@ -41,7 +41,7 @@ public class PreparedLevelTest {
 		String name = "levelName";
 
         // when
-        PreparedLevel pl = new PreparedLevel(name, type, true, matcher, levelCreator);
+        PreparedLevel pl = new PreparedLevel(name, true, type, matcher, levelCreator);
 
         // then
 		assertSame(name, pl.getName());

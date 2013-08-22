@@ -50,4 +50,9 @@ public class PreparedLevelAssert extends AbstractAssert<PreparedLevelAssert, Pre
         Assertions.assertThat(actual.getLevelCreator()).isSameAs(levelCreator);
         return this;
     }
+
+    public PreparedLevelAssert hasName(String name) {
+        Assertions.assertThat(actual.getName()).isEqualTo(name);
+        return this;
+    }
 }

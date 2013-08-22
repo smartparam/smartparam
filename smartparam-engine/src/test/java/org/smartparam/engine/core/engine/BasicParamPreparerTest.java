@@ -26,6 +26,7 @@ import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.test.builder.PreparedLevelTestBuilder.preparedLevel;
 import static org.smartparam.engine.test.builder.PreparedParameterTestBuilder.preparedParameter;
 
 /**
@@ -51,43 +52,40 @@ public class BasicParamPreparerTest {
         paramPreparer.setParamCache(cache);
         paramPreparer.setParameterProvider(paramProvider);
         paramPreparer.setLevelPreparer(levelPreparer);
-
-//        typeProvider = new BasicTypeRepository();
-//        typeProvider.register("string", type);
-//
-//        matcherProvider = new BasicMatcherRepository();
-//        matcherProvider.register("between/ii", new BetweenMatcher(true, true, ":"));
-//        matcherProvider.register("between/ie", new BetweenMatcher(true, false, ":"));
-//
-//        cache = mock(ParamCache.class);
-//
-//        repository = mock(ParamRepository.class);
-//
-//        paramPreparer = new BasicParamPreparer();
-//        paramPreparer.setParamCache(cache);
-//        paramPreparer.setTypeRepository(typeProvider);
-//        paramPreparer.setMatcherRepository(matcherProvider);
-//
-//        BasicParameterProvider provider = new BasicParameterProvider();
-//        provider.register(repository);
-//        paramPreparer.setParameterProvider(provider);
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void shouldReturnPreparedParameterWithIndexForCacheableParameter() {
         // given
-        Level level = level().withName("level").withMatcher("matcher").withLevelCreator("creator").withType("type").build();
+        Level[] levels = new Level[]{
+            level().withName("level").withMatcher("matcher").withLevelCreator("creator").withType("type").build(),
+            level().withName("outputLevel").withType("type").build(),
+            level().withName("outputLevel").build()
+        };
         Parameter parameter = parameter().withName("param").withInputLevels(1).withArraySeparator('^')
-                .withEntries().withLevels(level).build();
+                .withEntries().withLevels(levels).build();
         when(paramProvider.load("param")).thenReturn(parameter);
-        when(levelPreparer.prepare(any(Level.class))).thenReturn(new PreparedLevel(null, null, false, null, null));
+        when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
 
         // when
         PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
 
         // then
-        assertThat(preparedParameter).hasName("param").hasInputLevels(1).hasArraySeparator('^').hasIndex();
+        assertThat(preparedParameter).hasName("param").hasInputLevels(1).hasArraySeparator('^').hasIndex()
+                .hasLevelNameEntry("outputLevel", 2);
+    }
+
+    @Test
+    public void shouldNotBuildIndexForNoncacheableParameter() {
+        // given
+        Parameter parameter = parameter().withName("param").withInputLevels(1).noncacheable().withEntries().withLevels().build();
+        when(paramProvider.load("param")).thenReturn(parameter);
+
+        // when
+        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+
+        // then
+        assertThat(preparedParameter).hasName("param").hasNoIndex();
     }
 
     @Test
@@ -117,131 +115,4 @@ public class BasicParamPreparerTest {
         // then
         assertThat(preparedParameter).isNull();
     }
-
-//
-//    @Test
-//    public void testGetPreparedParameter__prepare_illegalMatcher() {
-//
-//        ParameterMockBuilder.parameter(p2).withName("par2")
-//                .withLevels(
-//                    LevelMockBuilder.level().withType("string").withMatcherCode("nonexisting").get()
-//                ).withEntries(
-//                    ParameterEntryMockBuilder.parameterEntry("A", "B", "value-AB")
-//                );
-//
-//        // test
-//        try {
-//            paramPreparer.getPreparedParameter("par2");
-//            fail();
-//        } catch (SmartParamDefinitionException e) {
-//            assertEquals(SmartParamErrorCode.UNKNOWN_MATCHER, e.getErrorCode());
-//        }
-//    }
-//
-//    @Test
-//    public void testGetPreparedParameter__prepare_nullTypeLevel() {
-//
-//        ParameterMockBuilder.parameter(p2).withName("par2")
-//                .withLevels(
-//                    LevelMockBuilder.level().get(),
-//                    LevelMockBuilder.level().withType("string").get()
-//                ).withEntries(
-//                    ParameterEntryMockBuilder.parameterEntry("A", "value-AB"),
-//                    ParameterEntryMockBuilder.parameterEntry("B", "value-CD")
-//                ).inputLevels(1);
-//
-//        // test
-//        PreparedParameter result = paramPreparer.getPreparedParameter("par2");
-//
-//        // weryfikacja
-//        assertEquals(2, result.getLevelCount());
-//        assertEquals(1, result.getInputLevelsCount());
-//        assertEquals("par2", result.getName());
-//        assertNull(result.getLevels()[0].getType());
-//    }
-//
-//    @Test
-//    public void testGetPreparedParameter__prepare_illegalLevelType() {
-//
-//        ParameterMockBuilder.parameter(p2).withName("par2")
-//                .withLevels(
-//                    LevelMockBuilder.level("unknown-type")
-//                ).withEntries(
-//                    ParameterEntryMockBuilder.parameterEntry("A", "value-AB")
-//                );
-//
-//        // test
-//        try {
-//            paramPreparer.getPreparedParameter("par2");
-//            fail();
-//        } catch (SmartParamDefinitionException e) {
-//            assertEquals(SmartParamErrorCode.UNKNOWN_PARAM_TYPE, e.getErrorCode());
-//        }
-//    }
-//
-//    @Test
-//    public void testFindEntries() {
-//        // given
-//        entries.add(ParameterEntryMockBuilder.parameterEntry("A", "A2", "A3", "A4"));
-//
-//        // test
-//        List<PreparedEntry> result = paramPreparer.findEntries("param", new String[]{"A"});
-//
-//        // weryfikacja
-//        assertEquals(1, result.size());
-//        assertArrayEquals(new String[]{"A", "A2", "A3", "A4"}, result.get(0).getLevels());
-//    }
-//
-//    @Test
-//    public void testGetPreparedParameter__prepare_cacheable() {
-//
-//        ParameterMockBuilder.parameter(p2).withName("par2")
-//                .inputLevels(1).cacheable(false)
-//                .withLevels(
-//                    LevelMockBuilder.level("string"),
-//                    LevelMockBuilder.level("string")
-//                ).withEntries(
-//                    ParameterEntryMockBuilder.parameterEntry("A", "B", "value-AB"),
-//                    ParameterEntryMockBuilder.parameterEntry("C", "D", "value-CD")
-//                );
-//
-//        // test
-//        PreparedParameter result = paramPreparer.getPreparedParameter("par2");
-//
-//        // weryfikacja
-//        assertEquals(2, result.getLevelCount());
-//        assertEquals(1, result.getInputLevelsCount());
-//        assertFalse(result.isCacheable());
-//        assertNull(result.getIndex());
-//    }
-//
-//    @Test
-//    public void testGetFirstLevels() {
-//
-//        // preparing big entry: 14 parameterEntry
-//        ParameterEntry pe = ParameterEntryMockBuilder.parameterEntryCsv("1;2;3;4;5;6;7;8;9;10;11;12;13;14");
-//
-//        // test cases
-//        Object[][] tests = {
-//            new Object[]{0, new String[]{}},
-//            new Object[]{1, new String[]{"1"}},
-//            new Object[]{4, new String[]{"1", "2", "3", "4"}},
-//            new Object[]{8, new String[]{"1", "2", "3", "4", "5", "6", "7", "8"}},
-//            new Object[]{11, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"}},
-//            new Object[]{14, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"}},
-//            new Object[]{15, new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", null}}
-//        };
-//
-//        // run test cases
-//        for (Object[] test : tests) {
-//            Integer n = (Integer) test[0];
-//            String[] expectedLevels = (String[]) test[1];
-//
-//            // when
-//            String[] result = paramPreparer.getFirstLevels(pe, n);
-//
-//            // then
-//            assertArrayEquals(expectedLevels, result);
-//        }
-//    }
 }

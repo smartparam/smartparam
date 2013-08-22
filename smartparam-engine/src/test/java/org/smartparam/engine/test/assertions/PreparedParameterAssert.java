@@ -16,6 +16,7 @@
 package org.smartparam.engine.test.assertions;
 
 import org.fest.assertions.api.AbstractAssert;
+import org.fest.assertions.data.MapEntry;
 import org.smartparam.engine.core.engine.PreparedParameter;
 
 /**
@@ -34,6 +35,16 @@ public class PreparedParameterAssert extends AbstractAssert<PreparedParameterAss
 
     public PreparedParameterAssert hasIndex() {
         Assertions.assertThat(actual.getIndex()).isNotNull();
+        return this;
+    }
+
+    public PreparedParameterAssert hasNoIndex() {
+        Assertions.assertThat(actual.getIndex()).isNull();
+        return this;
+    }
+
+    public PreparedParameterAssert hasLevelNameEntry(String levelName, int index) {
+        Assertions.assertThat(actual.getLevelNameMap()).contains(MapEntry.entry(levelName, index));
         return this;
     }
 
