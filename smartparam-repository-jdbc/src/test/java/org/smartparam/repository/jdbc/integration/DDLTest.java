@@ -64,7 +64,7 @@ public class DDLTest {
         QueryLoader queryLoader = new ClasspathQueryLoader();
         schemaManager = new DDLSchemaManager(jdbcQueryRunner, queryLoader);
 
-        dao = new JdbcProviderDAOImpl(configuration, dataSource);
+        dao = new JdbcProviderDAOImpl(configuration, new JdbcQueryRunnerImpl(dataSource), schemaManager);
     }
 
     private void dynamicTearDownMethod(SchemaDescription description) {

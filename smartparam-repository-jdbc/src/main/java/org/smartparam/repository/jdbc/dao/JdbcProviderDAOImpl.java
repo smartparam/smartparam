@@ -19,26 +19,19 @@ import org.smartparam.repository.jdbc.mapper.ParameterMapper;
 import org.smartparam.repository.jdbc.mapper.StringMapper;
 import java.util.List;
 import java.util.Set;
-import javax.sql.DataSource;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.config.Configuration;
-import org.smartparam.repository.jdbc.config.DefaultConfiguration;
 import org.smartparam.repository.jdbc.mapper.LevelMapper;
 import org.smartparam.repository.jdbc.mapper.ParameterEntryMapper;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.query.JdbcQuery;
 import org.smartparam.repository.jdbc.query.JdbcQueryRunner;
-import org.smartparam.repository.jdbc.query.JdbcQueryRunnerImpl;
 import org.smartparam.repository.jdbc.schema.SchemaDescription;
 import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 import org.smartparam.repository.jdbc.schema.SchemaManager;
-import org.smartparam.repository.jdbc.schema.DDLSchemaManager;
 import org.smartparam.repository.jdbc.schema.SchemaDescriptionFactory;
-import org.smartparam.repository.jdbc.dialect.Dialect;
-import org.smartparam.repository.jdbc.query.loader.ClasspathQueryLoader;
-import org.smartparam.repository.jdbc.query.loader.QueryLoader;
 
 /**
  * @author Przemek Hertel
@@ -50,21 +43,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     private JdbcQueryRunner queryRunner;
 
-    private QueryLoader queryLoader;
-
     private SchemaManager schemaManager;
-
-    public JdbcProviderDAOImpl(Dialect dialect, DataSource dataSource) {
-        this(new DefaultConfiguration(dialect), dataSource);
-    }
-
-    public JdbcProviderDAOImpl(Configuration configuration, DataSource dataSource) {
-        this.configuration = configuration;
-        checkConfiguration();
-        this.queryRunner = new JdbcQueryRunnerImpl(dataSource);
-        this.queryLoader = new ClasspathQueryLoader();
-        this.schemaManager = new DDLSchemaManager(queryRunner, queryLoader);
-    }
 
     public JdbcProviderDAOImpl(Configuration configuration, JdbcQueryRunner queryRunner, SchemaManager schemaManager) {
         this.configuration = configuration;

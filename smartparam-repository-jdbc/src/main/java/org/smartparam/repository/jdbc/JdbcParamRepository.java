@@ -16,7 +16,6 @@
 package org.smartparam.repository.jdbc;
 
 import java.util.Set;
-import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.InitializableComponent;
@@ -24,10 +23,7 @@ import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.dao.JdbcProviderDAO;
-import org.smartparam.repository.jdbc.dao.JdbcProviderDAOImpl;
-import org.smartparam.repository.jdbc.dialect.Dialect;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
@@ -48,14 +44,6 @@ public class JdbcParamRepository implements ParamRepository, InitializableCompon
      */
     //TODO #ph rethink default and comment
     private int fetchSize = 100;
-
-    public JdbcParamRepository(Dialect dialect, DataSource dataSource) {
-        this.dao = new JdbcProviderDAOImpl(dialect, dataSource);
-    }
-
-    public JdbcParamRepository(Configuration configuration, DataSource dataSource) {
-        this.dao = new JdbcProviderDAOImpl(configuration, dataSource);
-    }
 
     public JdbcParamRepository(JdbcProviderDAO dao) {
         this.dao = dao;

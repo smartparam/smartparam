@@ -15,10 +15,8 @@
  */
 package org.smartparam.engine.config.pico;
 
-import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
-import org.picocontainer.behaviors.Caching;
 import org.smartparam.engine.config.initialization.BasicComponentInitializerRunner;
 import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.config.ParamEngineConfig;
@@ -47,11 +45,9 @@ public class PicoParamEngineFactory implements ParamEngineFactory {
 
         ComponentInitializerRunner initializerRunner = prepareInitializerRunner(picoConfig);
 
-        MutablePicoContainer picoContainer = new DefaultPicoContainer(new Caching());
+        MutablePicoContainer picoContainer = PicoContainerUtil.createContainer();
         picoContainer.addComponent(SmartParamEngine.class);
-        for (Object object : picoConfig.getComponents()) {
-            picoContainer.addComponent(object);
-        }
+        PicoContainerUtil.injectImplementations(picoContainer, picoConfig.getComponents());
         picoContainer.addComponent(new PicoParamEngineRuntimeConfigBuilder(picoContainer));
 
         ParamEngine engine = picoContainer.getComponent(ParamEngine.class);
