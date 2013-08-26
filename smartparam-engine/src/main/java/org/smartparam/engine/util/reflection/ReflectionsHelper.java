@@ -30,6 +30,9 @@ import org.smartparam.engine.core.exception.SmartParamException;
  */
 public class ReflectionsHelper {
 
+    private ReflectionsHelper() {
+    }
+
     public static Class<?> loadClass(ClassLoader classLoader, String className) {
         try {
             return classLoader.loadClass(className);

@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class BasicComponentInitializerRunner implements ComponentInitializerRunner {
 
-    public List<ComponentInitializer> initializers;
+    private List<ComponentInitializer> initializers;
 
     public BasicComponentInitializerRunner(List<ComponentInitializer> initializers) {
         this.initializers = initializers;

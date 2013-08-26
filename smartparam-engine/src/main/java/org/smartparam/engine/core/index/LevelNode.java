@@ -170,8 +170,7 @@ public class LevelNode<T> {
     }
 
     private LevelNode<T> traverseChildNode(LevelNode<T> child, String[] levelValues, int depth) {
-        LevelNode<T> leaf = child.findNode(levelValues, depth + 1);
-        return leaf;
+        return child.findNode(levelValues, depth + 1);
     }
 
     public void printNode(StringBuilder sb, int level) {

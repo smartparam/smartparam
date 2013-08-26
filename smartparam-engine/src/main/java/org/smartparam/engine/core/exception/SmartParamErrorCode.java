@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.core.exception;
 
-import org.smartparam.engine.core.context.LevelValues;
-
 /**
  *
  * @author Adam Dubiel

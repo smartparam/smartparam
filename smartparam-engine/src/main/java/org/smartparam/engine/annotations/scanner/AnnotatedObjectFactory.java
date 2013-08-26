@@ -114,8 +114,7 @@ public class AnnotatedObjectFactory {
      */
     @SuppressWarnings("unchecked")
     private <T> T instantiateUsingDefaultConstructor(Class<T> objectClass) {
-        T object = ReflectionsHelper.createObject(objectClass);
-        return object;
+        return ReflectionsHelper.createObject(objectClass);
     }
 
     /**

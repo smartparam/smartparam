@@ -25,6 +25,9 @@ import org.smartparam.engine.model.Parameter;
  */
 public class ParameterEntryUnbatchUtil {
 
+    private ParameterEntryUnbatchUtil() {
+    }
+
     public static void loadEntriesIntoParameter(Parameter parameter, ParameterEntryBatchLoader entryBatchLoader, int batchSize) {
         try {
             while (entryBatchLoader.hasMore()) {

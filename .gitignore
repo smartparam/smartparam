@@ -7,3 +7,4 @@ nb-configuration.xml
 *.iws
 
 /smartparam-repository-transfer/nbproject/private/
+/nbactions.xml

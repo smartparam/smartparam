@@ -48,11 +48,11 @@ import org.smartparam.engine.util.reflection.ReflectionsScanner;
  * used for ordering.
  *
  *
- * @param <OBJECT> type of object to instantiate
+ * @param <T> type of object to instantiate
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public class AnnotatedObjectsScanner<OBJECT> {
+public class AnnotatedObjectsScanner<T> {
 
     private ReflectionsScanner reflectionsScanner = new ReflectionsScanner();
 
@@ -72,16 +72,16 @@ public class AnnotatedObjectsScanner<OBJECT> {
      * @return map of objects
      */
     @SuppressWarnings("unchecked")
-    public Map<RepositoryObjectKey, OBJECT> getAnnotatedObjects(Class<? extends Annotation> annotationClass, PackageList packagesToScan) {
+    public Map<RepositoryObjectKey, T> getAnnotatedObjects(Class<? extends Annotation> annotationClass, PackageList packagesToScan) {
         Set<Class<?>> annotatedObjectClasses = reflectionsScanner.findClassesAnnotatedWith(annotationClass, packagesToScan.getPackages());
-        Map<RepositoryObjectKey, OBJECT> objects = new HashMap<RepositoryObjectKey, OBJECT>();
+        Map<RepositoryObjectKey, T> objects = new HashMap<RepositoryObjectKey, T>();
 
         Annotation typeAnnotation;
         for (Class<?> type : annotatedObjectClasses) {
             typeAnnotation = type.getAnnotation(annotationClass);
 
             for (Entry<RepositoryObjectKey, ?> entry : annotatedObjectFactory.createObjects(type, typeAnnotation).entrySet()) {
-                objects.put(entry.getKey(), (OBJECT) entry.getValue());
+                objects.put(entry.getKey(), (T) entry.getValue());
             }
         }
 
@@ -97,12 +97,12 @@ public class AnnotatedObjectsScanner<OBJECT> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public List<OBJECT> getAnnotatedObjectsWithoutName(Class<? extends Annotation> annotationClass, PackageList packagesToScan) {
+    public List<T> getAnnotatedObjectsWithoutName(Class<? extends Annotation> annotationClass, PackageList packagesToScan) {
         Set<Class<?>> annotatedObjectClasses = reflectionsScanner.findClassesAnnotatedWith(annotationClass, packagesToScan.getPackages());
-        List<OBJECT> objects = new ArrayList<OBJECT>(annotatedObjectClasses.size());
+        List<T> objects = new ArrayList<T>(annotatedObjectClasses.size());
 
         for (Class<?> type : annotatedObjectClasses) {
-            objects.add((OBJECT) ReflectionsHelper.createObject(type));
+            objects.add((T) ReflectionsHelper.createObject(type));
         }
 
         return objects;

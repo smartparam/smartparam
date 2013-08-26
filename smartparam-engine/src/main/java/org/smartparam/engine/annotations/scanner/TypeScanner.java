@@ -26,7 +26,7 @@ import org.smartparam.engine.bean.RepositoryObjectKey;
  */
 public interface TypeScanner {
 
-    <REGISTERED_OBJECT> Map<RepositoryObjectKey, REGISTERED_OBJECT> scanTypes(Class<? extends Annotation> annotationType);
+    <T> Map<RepositoryObjectKey, T> scanTypes(Class<? extends Annotation> annotationType);
 
-    <REGISTERED_OBJECT> List<REGISTERED_OBJECT> scanTypesWithoutName(Class<? extends Annotation> annotationType);
+    <T> List<T> scanTypesWithoutName(Class<? extends Annotation> annotationType);
 }

@@ -26,12 +26,15 @@ import org.smartparam.engine.core.exception.SmartParamInitializationException;
  */
 public class AnnotationHelper {
 
+    private AnnotationHelper() {
+    }
+
     /**
      * Extract value from given annotation method, if anything goes wrong
      * throws {@link SmartParamInitializationException} with real reason as
      * cause.
      *
-     * @param <T> type of returned value
+     * @param <T>        type of returned value
      * @param annotation source annotation
      * @param methodName annotation method to look for
      *

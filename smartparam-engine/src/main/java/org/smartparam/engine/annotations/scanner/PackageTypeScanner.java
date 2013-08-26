@@ -34,11 +34,11 @@ public class PackageTypeScanner implements TypeScanner {
     }
 
     @Override
-    public <REGISTERED_OBJECT> Map<RepositoryObjectKey, REGISTERED_OBJECT> scanTypes(Class<? extends Annotation> annotationType) {
-        AnnotatedObjectsScanner<REGISTERED_OBJECT> scanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>();
+    public <T> Map<RepositoryObjectKey, T> scanTypes(Class<? extends Annotation> annotationType) {
+        AnnotatedObjectsScanner<T> scanner = new AnnotatedObjectsScanner<T>();
 
-        Map<RepositoryObjectKey, REGISTERED_OBJECT> objects = scanner.getAnnotatedObjects(annotationType, createPackagesForDefaults(packagesToScan));
-        Map<RepositoryObjectKey, REGISTERED_OBJECT> userObjects = scanner.getAnnotatedObjects(annotationType, packagesToScan);
+        Map<RepositoryObjectKey, T> objects = scanner.getAnnotatedObjects(annotationType, createPackagesForDefaults(packagesToScan));
+        Map<RepositoryObjectKey, T> userObjects = scanner.getAnnotatedObjects(annotationType, packagesToScan);
 
         // override defaults
         objects.putAll(userObjects);
@@ -47,8 +47,8 @@ public class PackageTypeScanner implements TypeScanner {
     }
 
     @Override
-    public <REGISTERED_OBJECT> List<REGISTERED_OBJECT> scanTypesWithoutName(Class<? extends Annotation> annotationType) {
-        AnnotatedObjectsScanner<REGISTERED_OBJECT> scanner = new AnnotatedObjectsScanner<REGISTERED_OBJECT>();
+    public <T> List<T> scanTypesWithoutName(Class<? extends Annotation> annotationType) {
+        AnnotatedObjectsScanner<T> scanner = new AnnotatedObjectsScanner<T>();
         return scanner.getAnnotatedObjectsWithoutName(annotationType, packagesToScan);
     }
 
