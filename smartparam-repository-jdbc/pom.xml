@@ -5,20 +5,14 @@
 
     <parent>
         <groupId>org.smartparam</groupId>
-        <artifactId>smartparam</artifactId>
-        <version>0.9.0</version>
+        <artifactId>smartparam-parent</artifactId>
+        <version>0.9.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>smartparam-repository-jdbc</artifactId>
 
     <name>smartparam-repository-jdbc</name>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
+    <description>SmartParam JDBC repository.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
