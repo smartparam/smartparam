@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.config.initialization;
 
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

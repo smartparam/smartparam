@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.config.initialization;
 
 import java.util.List;
 import org.smartparam.engine.annotations.scanner.PackageTypeScanner;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
+import org.smartparam.engine.config.ComponentInitializer;
 import org.smartparam.engine.core.repository.TypeScanningRepository;
 
 /**

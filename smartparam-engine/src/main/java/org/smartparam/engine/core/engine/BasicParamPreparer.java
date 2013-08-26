@@ -160,19 +160,4 @@ public class BasicParamPreparer implements ParamPreparer {
 
         return result;
     }
-
-    @Override
-    public ParamCache getParamCache() {
-        return cache;
-    }
-
-    @Override
-    public ParameterProvider getParameterProvider() {
-        return parameterProvider;
-    }
-
-    @Override
-    public LevelPreparer getLevelPreparer() {
-        return this.levelPreparer;
-    }
 }

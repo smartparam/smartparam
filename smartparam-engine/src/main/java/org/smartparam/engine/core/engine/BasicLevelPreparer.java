@@ -89,19 +89,4 @@ public class BasicLevelPreparer implements LevelPreparer {
         }
         return levelCreator;
     }
-
-    @Override
-    public MatcherRepository getMatcherRepository() {
-        return matcherRepository;
-    }
-
-    @Override
-    public TypeRepository getTypeRepository() {
-        return typeRepository;
-    }
-
-    @Override
-    public FunctionProvider getFunctionProvider() {
-        return functionProvider;
-    }
 }

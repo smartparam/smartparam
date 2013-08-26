@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.smartparam.spring;
 
 import org.junit.Before;
@@ -48,7 +47,7 @@ public class SpringParamEngineFactoryTest {
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 
         // then
-        assertThat(paramEngine).hasInitializedTree();
+        assertThat(paramEngine.getConfiguration()).hasParamCache().hasFunctionCache();
     }
 
     @Test
@@ -61,7 +60,8 @@ public class SpringParamEngineFactoryTest {
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 
         // then
-        assertThat(paramEngine).hasInitializedTreeWithScannedItems();
+        assertThat(paramEngine.getConfiguration()).hasFunctionRepositories().hasInvokers()
+                .hasMachers().hasTypes();
     }
 
     @Test
@@ -73,7 +73,7 @@ public class SpringParamEngineFactoryTest {
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 
         // then
-        assertThat(paramEngine).hasInitializedTree();
+        assertThat(paramEngine.getConfiguration()).hasParamCache().hasFunctionCache();
     }
 
     @Test
@@ -86,6 +86,6 @@ public class SpringParamEngineFactoryTest {
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 
         // then
-        assertThat(paramEngine).hasRepository(repository);
+        assertThat(paramEngine.getConfiguration()).hasRepository(repository);
     }
 }

@@ -15,15 +15,13 @@
  */
 package org.smartparam.engine.config;
 
-import org.smartparam.engine.core.engine.ParamEngine;
-
 /**
  * Traverses SmartParamEngine service tree and returns runtime configuration of
  * engine in form of immutable object.
  *
  * @author Adam Dubiel
  */
-public class ParamEngineRuntimeConfigBuilder {
+public interface ParamEngineRuntimeConfigBuilder {
 
     /**
      * Creates runtime configuration descriptor for given param engine.
@@ -31,19 +29,5 @@ public class ParamEngineRuntimeConfigBuilder {
      * @param paramEngine engine
      * @return configuration
      */
-    public ParamEngineRuntimeConfig buildConfig(ParamEngine paramEngine) {
-//        FunctionManager functionManager = paramEngine.getFunctionManager();
-//        ParamPreparer paramPreparer = paramEngine.getParamPreparer();
-//
-//        FunctionCache functionCache = functionManager.getFunctionProvider().getFunctionCache();
-//        ParamCache paramCache = paramPreparer.getParamCache();
-//
-//        ParamEngineRuntimeConfig runtmeConfig = new ParamEngineRuntimeConfig(functionCache, paramCache,
-//                functionManager.getInvokerRepository().registeredItems(),
-//                paramPreparer.getLevelPreparer().getTypeRepository().registeredItems(),
-//                paramPreparer.getLevelPreparer().getMatcherRepository().registeredItems());
-//
-//        return runtmeConfig;
-        return null;
-    }
+    ParamEngineRuntimeConfig buildConfig();
 }

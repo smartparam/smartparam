@@ -15,9 +15,6 @@
  */
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.repository.MatcherRepository;
-import org.smartparam.engine.core.repository.TypeRepository;
-import org.smartparam.engine.core.service.FunctionProvider;
 import org.smartparam.engine.model.Level;
 
 /**
@@ -28,10 +25,4 @@ import org.smartparam.engine.model.Level;
 public interface LevelPreparer {
 
     PreparedLevel prepare(Level level);
-
-    MatcherRepository getMatcherRepository();
-
-    TypeRepository getTypeRepository();
-
-    FunctionProvider getFunctionProvider();
 }

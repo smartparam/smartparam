@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.config.initialization;
+
+import org.smartparam.engine.config.ComponentInitializer;
+import org.smartparam.engine.config.InitializableComponent;
 
 /**
  * Initializer for handling simple post-construct like initialization.

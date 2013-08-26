@@ -19,7 +19,7 @@ import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.behaviors.Caching;
-import org.smartparam.engine.config.BasicComponentInitializerRunner;
+import org.smartparam.engine.config.initialization.BasicComponentInitializerRunner;
 import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineFactory;
@@ -52,6 +52,7 @@ public class PicoParamEngineFactory implements ParamEngineFactory {
         for (Object object : picoConfig.getComponents()) {
             picoContainer.addComponent(object);
         }
+        picoContainer.addComponent(new PicoParamEngineRuntimeConfigBuilder(picoContainer));
 
         ParamEngine engine = picoContainer.getComponent(ParamEngine.class);
 

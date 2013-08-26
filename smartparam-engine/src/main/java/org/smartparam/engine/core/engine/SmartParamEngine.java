@@ -44,20 +44,21 @@ public class SmartParamEngine implements ParamEngine {
 
     private Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
-    private ParamEngineRuntimeConfigBuilder configBuilder = new ParamEngineRuntimeConfigBuilder();
+    private ParamEngineRuntimeConfigBuilder configBuilder;
 
     private ParamPreparer paramPreparer;
 
     private FunctionManager functionManager;
 
-    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager) {
+    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager, ParamEngineRuntimeConfigBuilder configBuilder) {
         this.paramPreparer = paramPreparer;
         this.functionManager = functionManager;
+        this.configBuilder = configBuilder;
     }
 
     @Override
     public ParamEngineRuntimeConfig getConfiguration() {
-        return configBuilder.buildConfig(this);
+        return configBuilder.buildConfig();
     }
 
     @Override
@@ -265,13 +266,5 @@ public class SmartParamEngine implements ParamEngine {
                 SmartParamErrorCode.PARAM_VALUE_NOT_FOUND,
                 String.format("No value found for parameter [%s] using values from context %s.\n"
                 + "If parameter should return null values instead of throwing this exception, set nullable flag to true.", paramName, context));
-    }
-
-    public ParamPreparer getParamPreparer() {
-        return paramPreparer;
-    }
-
-    public FunctionManager getFunctionManager() {
-        return functionManager;
     }
 }

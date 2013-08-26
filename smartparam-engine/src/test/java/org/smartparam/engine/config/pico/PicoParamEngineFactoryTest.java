@@ -18,7 +18,6 @@ package org.smartparam.engine.config.pico;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.config.pico.PicoParamEngineConfig;
 import org.smartparam.engine.core.engine.ParamEngine;
-import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.core.repository.FunctionRepository;
@@ -34,6 +33,7 @@ import static org.smartparam.engine.config.pico.ParamEngineConfigBuilder.paramEn
  *
  * @author Adam Dubiel
  */
+@Test(groups = "integration")
 public class PicoParamEngineFactoryTest {
 
     private ParamEngineFactory paramEngineFactory;
@@ -52,7 +52,7 @@ public class PicoParamEngineFactoryTest {
         ParamEngine engine = paramEngineFactory.createParamEngine(config);
 
         // then
-        assertThat((SmartParamEngine) engine).hasInitializedTree();
+        assertThat(engine.getConfiguration()).hasParamCache().hasFunctionCache();
     }
 
     @Test
@@ -70,6 +70,7 @@ public class PicoParamEngineFactoryTest {
         ParamEngine engine = paramEngineFactory.createParamEngine(config);
 
         // then
-        assertThat((SmartParamEngine) engine).hasInitializedTreeWithScannedItems();
+        assertThat(engine.getConfiguration()).hasFunctionRepositories().hasInvokers()
+                .hasMachers().hasParamRepositories().hasTypes();
     }
 }

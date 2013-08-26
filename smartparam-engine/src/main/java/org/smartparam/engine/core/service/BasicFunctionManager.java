@@ -60,14 +60,4 @@ public class BasicFunctionManager implements FunctionManager {
             throw new SmartParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Failed to invoke function: " + function);
         }
     }
-
-    @Override
-    public FunctionProvider getFunctionProvider() {
-        return functionProvider;
-    }
-
-    @Override
-    public InvokerRepository getInvokerRepository() {
-        return invokerRepository;
-    }
 }

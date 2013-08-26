@@ -16,8 +16,6 @@
 package org.smartparam.engine.core.engine;
 
 import java.util.List;
-import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.service.ParameterProvider;
 
 /**
  * Interface for services building complete, in-memory representation of
@@ -49,10 +47,4 @@ public interface ParamPreparer {
      * @return list of matching prepared entries (or empty list)
      */
     List<PreparedEntry> findEntries(String paramName, String[] levelValues);
-
-    ParamCache getParamCache();
-
-    ParameterProvider getParameterProvider();
-
-    LevelPreparer getLevelPreparer();
 }
