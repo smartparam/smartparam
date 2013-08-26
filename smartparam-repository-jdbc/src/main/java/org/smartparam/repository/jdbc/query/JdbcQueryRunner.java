@@ -33,5 +33,5 @@ public interface JdbcQueryRunner {
 
     boolean queryForExistence(JdbcQuery query);
 
-    void execute(String ddl);
+    void execute(JdbcQuery query);
 }

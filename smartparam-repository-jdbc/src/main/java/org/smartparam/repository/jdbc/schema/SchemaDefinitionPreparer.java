@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.schema;
 
 import org.smartparam.repository.jdbc.config.Configuration;
+import org.smartparam.repository.jdbc.query.JdbcQuery;
 
 /**
  *
@@ -23,17 +24,18 @@ import org.smartparam.repository.jdbc.config.Configuration;
  */
 public class SchemaDefinitionPreparer {
 
-    private static final String PARAMETER_TABLE_NAME = "\\:parameterTableName";
+    private static final String PARAMETER_TABLE_NAME = "parameterTableName";
 
-    private static final String LEVEL_TABLE_NAME = "\\:levelTableName";
+    private static final String LEVEL_TABLE_NAME = "levelTableName";
 
-    private static final String PARAMETER_ENTRY_TABLE_NAME = "\\:parameterEntryTableName";
+    private static final String PARAMETER_ENTRY_TABLE_NAME = "parameterEntryTableName";
 
-    public String prepareQuery(String query, Configuration configuration) {
-        String preparedQuery = query.replaceAll(PARAMETER_TABLE_NAME, configuration.getParameterTable());
-        preparedQuery = preparedQuery.replaceAll(LEVEL_TABLE_NAME, configuration.getParameterLevelTable());
-        preparedQuery = preparedQuery.replaceAll(PARAMETER_ENTRY_TABLE_NAME, configuration.getParameterEntryTable());
+    private SchemaDefinitionPreparer() {
+    }
 
-        return preparedQuery;
+    public static void prepareQuery(JdbcQuery query, Configuration configuration) {
+        query.setRawString(PARAMETER_TABLE_NAME, configuration.getParameterTable());
+        query.setRawString(LEVEL_TABLE_NAME, configuration.getParameterLevelTable());
+        query.setRawString(PARAMETER_ENTRY_TABLE_NAME, configuration.getParameterEntryTable());
     }
 }

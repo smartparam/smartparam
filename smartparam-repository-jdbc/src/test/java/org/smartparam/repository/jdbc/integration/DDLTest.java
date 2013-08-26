@@ -22,12 +22,11 @@ import org.smartparam.repository.jdbc.query.JdbcQueryRunnerImpl;
 import org.smartparam.repository.jdbc.schema.SchemaDescription;
 import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 import org.smartparam.repository.jdbc.schema.SchemaManager;
-import org.smartparam.repository.jdbc.schema.SchemaManagerImpl;
-import org.smartparam.repository.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
-import org.smartparam.repository.jdbc.schema.loader.SchemaDefinitionLoader;
+import org.smartparam.repository.jdbc.schema.DDLSchemaManager;
 import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.dao.JdbcProviderDAOImpl;
-import org.smartparam.repository.jdbc.schema.SchemaDefinitionPreparer;
+import org.smartparam.repository.jdbc.query.loader.ClasspathQueryLoader;
+import org.smartparam.repository.jdbc.query.loader.QueryLoader;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.jdbcConfiguration;
@@ -62,18 +61,14 @@ public class DDLTest {
                 .withParameterTableName("parameter").withLevelTableName("level").withParameterEntryTableName("entry").build();
 
         JdbcQueryRunner jdbcQueryRunner = new JdbcQueryRunnerImpl(dataSource);
-        schemaManager = new SchemaManagerImpl(jdbcQueryRunner);
+        QueryLoader queryLoader = new ClasspathQueryLoader();
+        schemaManager = new DDLSchemaManager(jdbcQueryRunner, queryLoader);
 
         dao = new JdbcProviderDAOImpl(configuration, dataSource);
     }
 
-    private void dynamicTearDownMethod(Dialect dialect) {
-        SchemaDefinitionLoader schemaDefinitionLoader = new ClasspathSchemaDefinitionLoader("/ddl/", ":dialect_drop_ddl.sql", ":dialect");
-        SchemaDefinitionPreparer schemaDefinitionPreparer = new SchemaDefinitionPreparer();
-
-        String ddl = schemaDefinitionPreparer.prepareQuery(schemaDefinitionLoader.getQuery(dialect), configuration);
-
-        schemaManager.executeDDL(ddl);
+    private void dynamicTearDownMethod(SchemaDescription description) {
+        schemaManager.dropSchema(description);
     }
 
     @Test(dataProvider = "databases")
@@ -82,6 +77,7 @@ public class DDLTest {
         // given
         SchemaDescription description = new SchemaDescription().addTables("parameter", "level", "entry")
                 .addSequences("seq_parameter", "seq_level", "seq_entry").setDialect(dialect);
+        description.setConfiguration(configuration);
         dao.createSchema();
 
         // when
@@ -93,6 +89,6 @@ public class DDLTest {
             assertThat(lookupResult).hasSequence("seq_parameter").hasSequence("seq_level").hasSequence("seq_entry");
         }
 
-        dynamicTearDownMethod(dialect);
+        dynamicTearDownMethod(description);
     }
 }

@@ -18,6 +18,7 @@ package org.smartparam.repository.jdbc.schema;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.dialect.Dialect;
 
 /**
@@ -25,6 +26,8 @@ import org.smartparam.repository.jdbc.dialect.Dialect;
  * @author Adam Dubiel
  */
 public class SchemaDescription {
+
+    private Configuration configuration;
 
     private Dialect dialect;
 
@@ -57,5 +60,13 @@ public class SchemaDescription {
     public SchemaDescription setDialect(Dialect dialect) {
         this.dialect = dialect;
         return this;
+    }
+
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
     }
 }

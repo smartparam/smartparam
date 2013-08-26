@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
+package org.smartparam.repository.jdbc.schema;
 
+import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.schema.SchemaDescription;
 
 /**
@@ -29,6 +30,7 @@ public class SchemaDescriptionFactory {
                 configuration.getParameterLevelTable(),
                 configuration.getParameterEntryTable());
         description.setDialect(configuration.getDialect());
+        description.setConfiguration(configuration);
 
         return description;
     }

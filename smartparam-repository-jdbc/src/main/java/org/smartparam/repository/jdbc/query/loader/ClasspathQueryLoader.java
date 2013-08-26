@@ -13,54 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.schema.loader;
+package org.smartparam.repository.jdbc.query.loader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import org.smartparam.repository.jdbc.dialect.Dialect;
 import org.smartparam.repository.jdbc.exception.SmartParamJdbcException;
+import org.smartparam.repository.jdbc.query.JdbcQuery;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ClasspathSchemaDefinitionLoader implements SchemaDefinitionLoader {
-
-    private String classpathLocation;
-
-    private String definitionFileFormat;
-
-    private String dialectPlaceholder;
-
-    public ClasspathSchemaDefinitionLoader(String classpathLocation, String definitionFileFormat, String dialectPlaceholder) {
-        this.classpathLocation = classpathLocation;
-        this.definitionFileFormat = definitionFileFormat;
-        this.dialectPlaceholder = dialectPlaceholder;
-    }
+public class ClasspathQueryLoader implements QueryLoader {
 
     @Override
-    public String getQuery(Dialect dialect) {
-        return readFileContents(dialect);
-    }
-
-    private String readFileContents(Dialect dialect) {
-        String ddlFileName = createDefinitionFileName(dialect);
+    public JdbcQuery getQuery(String resourceName) {
         InputStream stream;
         BufferedReader fileStream = null;
         try {
-            stream = this.getClass().getResourceAsStream(ddlFileName);
+            stream = this.getClass().getResourceAsStream(resourceName);
             if (stream == null) {
-                throw new IOException("resource " + ddlFileName + " not found");
+                throw new IOException("resource " + resourceName + " not found");
             }
             fileStream = new BufferedReader(new InputStreamReader(stream));
 
-            return readAsString(fileStream);
+            return JdbcQuery.query(readAsString(fileStream));
         } catch (IOException exception) {
-            throw new SmartParamJdbcException("Exception wile reading DDL file for dialect " + dialect + ","
-                    + " make sure dialect is valid and DDL file" + ddlFileName + " exists.", exception);
+            throw new SmartParamJdbcException("Exception wile reading query from file " + resourceName, exception);
         } finally {
             closeStream(fileStream);
         }
@@ -74,10 +56,6 @@ public class ClasspathSchemaDefinitionLoader implements SchemaDefinitionLoader {
         } catch (IOException exception) {
             throw new SmartParamJdbcException("Failed to close stream after reading schema definition!", exception);
         }
-    }
-
-    private String createDefinitionFileName(Dialect dialect) {
-        return classpathLocation + definitionFileFormat.replaceFirst(dialectPlaceholder, dialect.name().toLowerCase());
     }
 
     private String readAsString(BufferedReader source) throws IOException {

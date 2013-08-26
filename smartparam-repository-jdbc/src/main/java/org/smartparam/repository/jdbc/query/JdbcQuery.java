@@ -52,11 +52,15 @@ public class JdbcQuery {
         setValue(argumentName, "'" + value + "'");
     }
 
+    public void setRawString(String argumentName, String value) {
+        setValue(argumentName, value);
+    }
+
     private void setValue(String argumentName, String value) {
         if(!query.contains(":" + argumentName)) {
             throw new SmartParamJdbcException("Could not set JdbcQuery value for argument " + argumentName + ". Argument does not exist in query: " + originalQuery);
         }
-        query = query.replaceFirst("\\:" + argumentName, value);
+        query = query.replaceAll("\\:" + argumentName, value);
     }
 
     @Override

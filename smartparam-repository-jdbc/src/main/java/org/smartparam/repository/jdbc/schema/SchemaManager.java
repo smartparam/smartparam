@@ -23,9 +23,7 @@ public interface SchemaManager {
 
     SchemaLookupResult schemaExists(SchemaDescription description);
 
-    void createSchema(String ddl);
+    void createSchema(SchemaDescription description);
 
     void dropSchema(SchemaDescription description);
-
-    void executeDDL(String ddl);
 }

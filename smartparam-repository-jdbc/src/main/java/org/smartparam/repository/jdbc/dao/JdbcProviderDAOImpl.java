@@ -34,12 +34,11 @@ import org.smartparam.repository.jdbc.query.JdbcQueryRunnerImpl;
 import org.smartparam.repository.jdbc.schema.SchemaDescription;
 import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 import org.smartparam.repository.jdbc.schema.SchemaManager;
-import org.smartparam.repository.jdbc.schema.SchemaManagerImpl;
-import org.smartparam.repository.jdbc.schema.loader.ClasspathSchemaDefinitionLoader;
-import org.smartparam.repository.jdbc.schema.loader.SchemaDefinitionLoader;
-import org.smartparam.repository.jdbc.config.SchemaDescriptionFactory;
+import org.smartparam.repository.jdbc.schema.DDLSchemaManager;
+import org.smartparam.repository.jdbc.schema.SchemaDescriptionFactory;
 import org.smartparam.repository.jdbc.dialect.Dialect;
-import org.smartparam.repository.jdbc.schema.SchemaDefinitionPreparer;
+import org.smartparam.repository.jdbc.query.loader.ClasspathQueryLoader;
+import org.smartparam.repository.jdbc.query.loader.QueryLoader;
 
 /**
  * @author Przemek Hertel
@@ -51,11 +50,9 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     private JdbcQueryRunner queryRunner;
 
+    private QueryLoader queryLoader;
+
     private SchemaManager schemaManager;
-
-    private SchemaDefinitionLoader schemaDefinitionLoader = new ClasspathSchemaDefinitionLoader("/ddl/", ":dialect_ddl.sql", ":dialect");
-
-    private SchemaDefinitionPreparer schemaDefinitionPreparer = new SchemaDefinitionPreparer();
 
     public JdbcProviderDAOImpl(Dialect dialect, DataSource dataSource) {
         this(new DefaultConfiguration(dialect), dataSource);
@@ -65,7 +62,8 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         this.configuration = configuration;
         checkConfiguration();
         this.queryRunner = new JdbcQueryRunnerImpl(dataSource);
-        this.schemaManager = new SchemaManagerImpl(queryRunner);
+        this.queryLoader = new ClasspathQueryLoader();
+        this.schemaManager = new DDLSchemaManager(queryRunner, queryLoader);
     }
 
     public JdbcProviderDAOImpl(Configuration configuration, JdbcQueryRunner queryRunner, SchemaManager schemaManager) {
@@ -81,11 +79,8 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         SchemaLookupResult result = schemaManager.schemaExists(description);
 
         if (result.noEntityExisting()) {
-            String rawDDL = schemaDefinitionLoader.getQuery(configuration.getDialect());
-            String ddl = schemaDefinitionPreparer.prepareQuery(rawDDL, configuration);
-            schemaManager.createSchema(ddl);
-        }
-        else if(!result.noEntityMissing()) {
+            schemaManager.createSchema(description);
+        } else if (!result.noEntityMissing()) {
             throw new SmartParamException("JDBC repository detected partial SmartParam schema in database. "
                     + "This version of JDBC repository has no schema update capabilities, remove old SmartParam entities "
                     + "from the database or use different naming schema. Detected partial entities: " + result.getExistingEntities());
@@ -93,7 +88,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
     }
 
     private void checkConfiguration() {
-        if(configuration.getDialect() == null) {
+        if (configuration.getDialect() == null) {
             throw new SmartParamException("Provided JDBC repository configuration has no dialect defined!");
         }
     }

@@ -94,11 +94,11 @@ public class JdbcQueryRunnerImpl implements JdbcQueryRunner {
     }
 
     @Override
-    public void execute(String ddl) {
+    public void execute(JdbcQuery query) {
         Connection connection = openConnection();
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement(ddl);
+            preparedStatement = connection.prepareStatement(query.getQuery());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new SmartParamJdbcException("Failed to execute DDL", e);

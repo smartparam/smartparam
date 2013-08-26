@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.schema.loader;
+package org.smartparam.repository.jdbc.query.loader;
 
-import org.smartparam.repository.jdbc.dialect.Dialect;
+import org.smartparam.repository.jdbc.query.JdbcQuery;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface SchemaDefinitionLoader {
+public interface QueryLoader {
 
-    String getQuery(Dialect dialect);
+    JdbcQuery getQuery(String resourceName);
 }
