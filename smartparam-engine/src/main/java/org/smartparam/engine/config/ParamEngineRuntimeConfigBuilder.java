@@ -15,11 +15,7 @@
  */
 package org.smartparam.engine.config;
 
-import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.engine.ParamEngine;
-import org.smartparam.engine.core.engine.ParamPreparer;
-import org.smartparam.engine.core.service.FunctionManager;
 
 /**
  * Traverses SmartParamEngine service tree and returns runtime configuration of
@@ -36,17 +32,18 @@ public class ParamEngineRuntimeConfigBuilder {
      * @return configuration
      */
     public ParamEngineRuntimeConfig buildConfig(ParamEngine paramEngine) {
-        FunctionManager functionManager = paramEngine.getFunctionManager();
-        ParamPreparer paramPreparer = paramEngine.getParamPreparer();
-
-        FunctionCache functionCache = functionManager.getFunctionProvider().getFunctionCache();
-        ParamCache paramCache = paramPreparer.getParamCache();
-
-        ParamEngineRuntimeConfig runtmeConfig = new ParamEngineRuntimeConfig(functionCache, paramCache,
-                functionManager.getInvokerRepository().registeredItems(),
-                paramPreparer.getLevelPreparer().getTypeRepository().registeredItems(),
-                paramPreparer.getLevelPreparer().getMatcherRepository().registeredItems());
-
-        return runtmeConfig;
+//        FunctionManager functionManager = paramEngine.getFunctionManager();
+//        ParamPreparer paramPreparer = paramEngine.getParamPreparer();
+//
+//        FunctionCache functionCache = functionManager.getFunctionProvider().getFunctionCache();
+//        ParamCache paramCache = paramPreparer.getParamCache();
+//
+//        ParamEngineRuntimeConfig runtmeConfig = new ParamEngineRuntimeConfig(functionCache, paramCache,
+//                functionManager.getInvokerRepository().registeredItems(),
+//                paramPreparer.getLevelPreparer().getTypeRepository().registeredItems(),
+//                paramPreparer.getLevelPreparer().getMatcherRepository().registeredItems());
+//
+//        return runtmeConfig;
+        return null;
     }
 }

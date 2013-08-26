@@ -48,6 +48,12 @@ public class BasicParamPreparer implements ParamPreparer {
 
     private ParamCache cache;
 
+    public BasicParamPreparer(ParameterProvider parameterProvider, LevelPreparer levelPreparer, ParamCache cache) {
+        this.parameterProvider = parameterProvider;
+        this.levelPreparer = levelPreparer;
+        this.cache = cache;
+    }
+
     @Override
     public PreparedParameter getPreparedParameter(String paramName) {
         PreparedParameter preparedParameter = cache.get(paramName);
@@ -161,27 +167,12 @@ public class BasicParamPreparer implements ParamPreparer {
     }
 
     @Override
-    public void setParamCache(ParamCache cache) {
-        this.cache = cache;
-    }
-
-    @Override
     public ParameterProvider getParameterProvider() {
         return parameterProvider;
     }
 
     @Override
-    public void setParameterProvider(ParameterProvider parameterProvider) {
-        this.parameterProvider = parameterProvider;
-    }
-
-    @Override
     public LevelPreparer getLevelPreparer() {
         return this.levelPreparer;
-    }
-
-    @Override
-    public void setLevelPreparer(LevelPreparer levelPreparer) {
-        this.levelPreparer = levelPreparer;
     }
 }

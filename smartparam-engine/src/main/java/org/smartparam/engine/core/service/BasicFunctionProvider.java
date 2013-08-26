@@ -38,6 +38,10 @@ public class BasicFunctionProvider implements FunctionProvider, TypeScanningRepo
 
     private FunctionCache functionCache;
 
+    public BasicFunctionProvider(FunctionCache functionCache) {
+        this.functionCache = functionCache;
+    }
+
     @Override
     public void scanAnnotations(TypeScanner scanner) {
         Map<RepositoryObjectKey, FunctionRepository> repositories = scanner.scanTypes(ParamFunctionRepository.class);
@@ -93,10 +97,5 @@ public class BasicFunctionProvider implements FunctionProvider, TypeScanningRepo
     @Override
     public FunctionCache getFunctionCache() {
         return functionCache;
-    }
-
-    @Override
-    public void setFunctionCache(FunctionCache cache) {
-        this.functionCache = cache;
     }
 }

@@ -52,13 +52,7 @@ public interface ParamPreparer {
 
     ParamCache getParamCache();
 
-    void setParamCache(ParamCache cache);
-
     ParameterProvider getParameterProvider();
 
-    void setParameterProvider(ParameterProvider parameterProvider);
-
     LevelPreparer getLevelPreparer();
-
-    void setLevelPreparer(LevelPreparer levelPreparer);
 }

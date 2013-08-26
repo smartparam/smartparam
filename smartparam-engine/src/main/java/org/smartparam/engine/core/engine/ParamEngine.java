@@ -17,7 +17,6 @@ package org.smartparam.engine.core.engine;
 
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.service.FunctionManager;
 
 /**
  * Single point of entry to get all parameters and call functions managed by
@@ -64,12 +63,4 @@ public interface ParamEngine {
      * @return runtime config
      */
     ParamEngineRuntimeConfig getConfiguration();
-
-    FunctionManager getFunctionManager();
-
-    void setFunctionManager(FunctionManager functionManager);
-
-    ParamPreparer getParamPreparer();
-
-    void setParamPreparer(ParamPreparer paramPreparer);
 }

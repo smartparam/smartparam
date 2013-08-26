@@ -18,7 +18,7 @@ package org.smartparam.spring;
 import java.util.List;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.config.MethodScannerInitializer;
-import org.smartparam.engine.config.ParamEngineConfig;
+import org.smartparam.engine.config.pico.PicoParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.config.TypeScannerInitializer;
 import org.smartparam.engine.core.engine.ParamEngine;
@@ -31,7 +31,7 @@ import org.springframework.beans.factory.FactoryBean;
  */
 public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
 
-    private ParamEngineConfig config;
+    private PicoParamEngineConfig config;
 
     private ParamRepository paramRepository;
 
@@ -42,7 +42,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
     @Override
     public ParamEngine getObject() throws Exception {
         if (config == null) {
-            config = new ParamEngineConfig();
+            config = new PicoParamEngineConfig();
         }
         if (paramRepository != null) {
             config.getParameterRepositories().add(paramRepository);
@@ -78,7 +78,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
         this.paramRepository = paramRepository;
     }
 
-    public void setConfig(ParamEngineConfig config) {
+    public void setConfig(PicoParamEngineConfig config) {
         this.config = config;
     }
 

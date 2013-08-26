@@ -19,10 +19,10 @@ package org.smartparam.spring;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.smartparam.engine.config.ParamEngineConfig;
+import org.smartparam.engine.config.pico.PicoParamEngineConfig;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.repository.ParamRepository;
-import static org.smartparam.engine.config.ParamEngineConfigBuilder.paramEngineConfig;
+import static org.smartparam.engine.config.pico.ParamEngineConfigBuilder.paramEngineConfig;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 
 /**
@@ -41,7 +41,7 @@ public class SpringParamEngineFactoryTest {
     @Test
     public void shouldReturnParamEngineCreatedUsingProvidedConfig() throws Exception {
         // given
-        ParamEngineConfig config = paramEngineConfig().build();
+        PicoParamEngineConfig config = paramEngineConfig().build();
         springParamEngineFactory.setConfig(config);
 
         // when
@@ -54,7 +54,7 @@ public class SpringParamEngineFactoryTest {
     @Test
     public void shouldReturnParamEngineWithAnnotationScanningEnabled() throws Exception {
         // given
-        ParamEngineConfig config = paramEngineConfig().withAnnotationScanEnabled("test").build();
+        PicoParamEngineConfig config = paramEngineConfig().withAnnotationScanEnabled("test").build();
         springParamEngineFactory.setConfig(config);
 
         // when

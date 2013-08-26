@@ -33,9 +33,5 @@ public interface FunctionManager {
 
     InvokerRepository getInvokerRepository();
 
-    void setInvokerRepository(InvokerRepository invokerRepository);
-
     FunctionProvider getFunctionProvider();
-
-    void setFunctionProvider(FunctionProvider functionProvider);
 }

@@ -13,23 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.config.pico;
 
 import java.util.Arrays;
 import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.engine.ParamPreparer;
+import org.smartparam.engine.config.ComponentInitializer;
+import org.smartparam.engine.config.ComponentInitializerRunner;
+import org.smartparam.engine.config.MethodScannerInitializer;
+import org.smartparam.engine.config.PostConstructInitializer;
+import org.smartparam.engine.config.TypeScannerInitializer;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.InvokerRepository;
-import org.smartparam.engine.core.repository.MatcherRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
-import org.smartparam.engine.core.repository.TypeRepository;
-import org.smartparam.engine.core.service.FunctionManager;
-import org.smartparam.engine.core.service.FunctionProvider;
-import org.smartparam.engine.core.service.ParameterProvider;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -38,17 +34,17 @@ import org.smartparam.engine.core.type.Type;
  */
 public class ParamEngineConfigBuilder {
 
-    private ParamEngineConfig paramEngineConfig;
+    private PicoParamEngineConfig paramEngineConfig;
 
     private ParamEngineConfigBuilder() {
-        paramEngineConfig = new ParamEngineConfig();
+        paramEngineConfig = new PicoParamEngineConfig();
     }
 
     public static ParamEngineConfigBuilder paramEngineConfig() {
         return new ParamEngineConfigBuilder();
     }
 
-    public ParamEngineConfig build() {
+    public PicoParamEngineConfig build() {
         withComponentInitializers(new PostConstructInitializer());
         return paramEngineConfig;
     }
@@ -60,38 +56,8 @@ public class ParamEngineConfigBuilder {
         return withComponentInitializers(new TypeScannerInitializer(packageList), new MethodScannerInitializer(packageList));
     }
 
-    public ParamEngineConfigBuilder withParamPreparer(ParamPreparer paramPreparer) {
-        paramEngineConfig.setParamPreparer(paramPreparer);
-        return this;
-    }
-
-    public ParamEngineConfigBuilder withParamCache(ParamCache paramCache) {
-        paramEngineConfig.setParamCache(paramCache);
-        return this;
-    }
-
-    public ParamEngineConfigBuilder withFunctionManager(FunctionManager functionManager) {
-        paramEngineConfig.setFunctionManager(functionManager);
-        return this;
-    }
-
-    public ParamEngineConfigBuilder withFunctionProvider(FunctionProvider functionProvider) {
-        paramEngineConfig.setFunctionProvider(functionProvider);
-        return this;
-    }
-
-    public ParamEngineConfigBuilder withFunctionCache(FunctionCache functionCache) {
-        paramEngineConfig.setFunctionCache(functionCache);
-        return this;
-    }
-
-    public ParamEngineConfigBuilder withInvokerRepository(InvokerRepository invokerRepository) {
-        paramEngineConfig.setInvokerRepository(invokerRepository);
-        return this;
-    }
-
-    public ParamEngineConfigBuilder withParameterProvider(ParameterProvider parameterProvider) {
-        paramEngineConfig.setParameterProvider(parameterProvider);
+    public ParamEngineConfigBuilder withComponent(Object component) {
+        paramEngineConfig.addComponent(component);
         return this;
     }
 
@@ -105,22 +71,12 @@ public class ParamEngineConfigBuilder {
         return this;
     }
 
-    public ParamEngineConfigBuilder withTypeRepository(TypeRepository typeRepository) {
-        paramEngineConfig.setTypeRepository(typeRepository);
-        return this;
-    }
-
-    public ParamEngineConfigBuilder withMatcherRepository(MatcherRepository matcherRepository) {
-        paramEngineConfig.setMatcherRepository(matcherRepository);
-        return this;
-    }
-
     public ParamEngineConfigBuilder withFunctionInvoker(String functionType, FunctionInvoker invoker) {
         paramEngineConfig.getFunctionInvokers().put(functionType, invoker);
         return this;
     }
 
-    public  ParamEngineConfigBuilder withType(String code, Type<?> type) {
+    public ParamEngineConfigBuilder withType(String code, Type<?> type) {
         paramEngineConfig.getTypes().put(code, type);
         return this;
     }

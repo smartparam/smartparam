@@ -20,10 +20,10 @@ import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.ItemsContainer;
 import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.context.DefaultContext;
-import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.engine.ParamValue;
 import org.smartparam.engine.core.engine.PreparedLevel;
 import org.smartparam.engine.core.engine.PreparedParameter;
+import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.index.LevelNode;
 import org.smartparam.engine.model.Level;
@@ -71,7 +71,7 @@ public class Assertions extends org.fest.assertions.api.Assertions {
         return ItemsContainerAssert.assertThat(container);
     }
 
-    public static ParamEngineAssert assertThat(ParamEngine engine) {
+    public static ParamEngineAssert assertThat(SmartParamEngine engine) {
         return ParamEngineAssert.assertThat(engine);
     }
 

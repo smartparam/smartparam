@@ -50,6 +50,11 @@ public class SmartParamEngine implements ParamEngine {
 
     private FunctionManager functionManager;
 
+    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager) {
+        this.paramPreparer = paramPreparer;
+        this.functionManager = functionManager;
+    }
+
     @Override
     public ParamEngineRuntimeConfig getConfiguration() {
         return configBuilder.buildConfig(this);
@@ -255,30 +260,18 @@ public class SmartParamEngine implements ParamEngine {
         return param;
     }
 
-    @Override
-    public ParamPreparer getParamPreparer() {
-        return paramPreparer;
-    }
-
-    @Override
-    public FunctionManager getFunctionManager() {
-        return functionManager;
-    }
-
-    @Override
-    public void setParamPreparer(ParamPreparer paramPreparer) {
-        this.paramPreparer = paramPreparer;
-    }
-
-    @Override
-    public void setFunctionManager(FunctionManager functionManager) {
-        this.functionManager = functionManager;
-    }
-
     private SmartParamException raiseValueNotFoundException(String paramName, ParamContext context) {
         return new SmartParamException(
                 SmartParamErrorCode.PARAM_VALUE_NOT_FOUND,
                 String.format("No value found for parameter [%s] using values from context %s.\n"
                 + "If parameter should return null values instead of throwing this exception, set nullable flag to true.", paramName, context));
+    }
+
+    public ParamPreparer getParamPreparer() {
+        return paramPreparer;
+    }
+
+    public FunctionManager getFunctionManager() {
+        return functionManager;
     }
 }

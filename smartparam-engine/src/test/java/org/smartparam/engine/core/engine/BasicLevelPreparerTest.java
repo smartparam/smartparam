@@ -47,15 +47,11 @@ public class BasicLevelPreparerTest {
 
     @BeforeMethod
     public void initialize() {
-        basicLevelPreparer = new BasicLevelPreparer();
-
         matcherRepository = mock(MatcherRepository.class);
         typeRepository = mock(TypeRepository.class);
         functionProvider = mock(FunctionProvider.class);
 
-        basicLevelPreparer.setMatcherRepository(matcherRepository);
-        basicLevelPreparer.setTypeRepository(typeRepository);
-        basicLevelPreparer.setFunctionProvider(functionProvider);
+        basicLevelPreparer = new BasicLevelPreparer(matcherRepository, typeRepository, functionProvider);
     }
 
     @Test

@@ -18,6 +18,12 @@
     </properties>
 
     <dependencies>
+        <!-- dependency injection -->
+        <dependency>
+            <groupId>org.picocontainer</groupId>
+            <artifactId>picocontainer</artifactId>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>

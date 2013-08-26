@@ -29,6 +29,4 @@ public interface FunctionProvider extends OrderedRepository<FunctionRepository> 
     Function getFunction(String functionName);
 
     FunctionCache getFunctionCache();
-
-    void setFunctionCache(FunctionCache functionCache);
 }

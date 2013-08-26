@@ -32,6 +32,11 @@ public class BasicFunctionManager implements FunctionManager {
 
     private FunctionProvider functionProvider;
 
+    public BasicFunctionManager(InvokerRepository invokerRepository, FunctionProvider functionProvider) {
+        this.invokerRepository = invokerRepository;
+        this.functionProvider = functionProvider;
+    }
+
     @Override
     public Object invokeFunction(String name, Object... args) {
         Function function = functionProvider.getFunction(name);
@@ -62,17 +67,7 @@ public class BasicFunctionManager implements FunctionManager {
     }
 
     @Override
-    public void setFunctionProvider(FunctionProvider functionProvider) {
-        this.functionProvider = functionProvider;
-    }
-
-    @Override
     public InvokerRepository getInvokerRepository() {
         return invokerRepository;
-    }
-
-    @Override
-    public void setInvokerRepository(InvokerRepository invokerRepository) {
-        this.invokerRepository = invokerRepository;
     }
 }

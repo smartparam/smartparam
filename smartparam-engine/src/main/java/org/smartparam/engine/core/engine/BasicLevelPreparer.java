@@ -37,6 +37,12 @@ public class BasicLevelPreparer implements LevelPreparer {
 
     private FunctionProvider functionProvider;
 
+    public BasicLevelPreparer(MatcherRepository matcherRepository, TypeRepository typeRepository, FunctionProvider functionProvider) {
+        this.matcherRepository = matcherRepository;
+        this.typeRepository = typeRepository;
+        this.functionProvider = functionProvider;
+    }
+
     @Override
     public PreparedLevel prepare(Level level) {
         Type<?> type = resolveType(level.getType(), level.getName());
@@ -90,27 +96,12 @@ public class BasicLevelPreparer implements LevelPreparer {
     }
 
     @Override
-    public void setMatcherRepository(MatcherRepository matcherRepository) {
-        this.matcherRepository = matcherRepository;
-    }
-
-    @Override
     public TypeRepository getTypeRepository() {
         return typeRepository;
     }
 
     @Override
-    public void setTypeRepository(TypeRepository typeRepository) {
-        this.typeRepository = typeRepository;
-    }
-
-    @Override
     public FunctionProvider getFunctionProvider() {
         return functionProvider;
-    }
-
-    @Override
-    public void setFunctionProvider(FunctionProvider functionProvider) {
-        this.functionProvider = functionProvider;
     }
 }

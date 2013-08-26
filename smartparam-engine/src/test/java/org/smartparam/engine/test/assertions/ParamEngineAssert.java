@@ -16,20 +16,20 @@
 package org.smartparam.engine.test.assertions;
 
 import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.core.engine.ParamEngine;
+import org.smartparam.engine.core.engine.SmartParamEngine;
 import org.smartparam.engine.core.repository.ParamRepository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ParamEngineAssert extends AbstractAssert<ParamEngineAssert, ParamEngine> {
+public class ParamEngineAssert extends AbstractAssert<ParamEngineAssert, SmartParamEngine> {
 
-    private ParamEngineAssert(ParamEngine actual) {
+    private ParamEngineAssert(SmartParamEngine actual) {
         super(actual, ParamEngineAssert.class);
     }
 
-    public static ParamEngineAssert assertThat(ParamEngine actual) {
+    public static ParamEngineAssert assertThat(SmartParamEngine actual) {
         return new ParamEngineAssert(actual);
     }
 

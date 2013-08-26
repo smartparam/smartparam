@@ -48,10 +48,7 @@ public class BasicParamPreparerTest {
         paramProvider = mock(ParameterProvider.class);
         cache = mock(ParamCache.class);
 
-        paramPreparer = new BasicParamPreparer();
-        paramPreparer.setParamCache(cache);
-        paramPreparer.setParameterProvider(paramProvider);
-        paramPreparer.setLevelPreparer(levelPreparer);
+        paramPreparer = new BasicParamPreparer(paramProvider, levelPreparer, cache);
     }
 
     @Test

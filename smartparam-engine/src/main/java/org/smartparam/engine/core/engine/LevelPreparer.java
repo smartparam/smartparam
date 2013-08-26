@@ -31,13 +31,7 @@ public interface LevelPreparer {
 
     MatcherRepository getMatcherRepository();
 
-    void setMatcherRepository(MatcherRepository matcherRepository);
-
     TypeRepository getTypeRepository();
 
-    void setTypeRepository(TypeRepository typeRepository);
-
     FunctionProvider getFunctionProvider();
-
-    void setFunctionProvider(FunctionProvider functionProvider);
 }
