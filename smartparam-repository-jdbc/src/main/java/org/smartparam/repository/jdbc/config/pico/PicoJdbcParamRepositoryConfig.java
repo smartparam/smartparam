@@ -35,6 +35,11 @@ public class PicoJdbcParamRepositoryConfig extends ComponentConfig implements Jd
 
     private Configuration configuration;
 
+    public PicoJdbcParamRepositoryConfig(DataSource dataSource, Configuration configuration) {
+        this.dataSource = dataSource;
+        this.configuration = configuration;
+    }
+
     @Override
     protected void injectDefaults(List<Object> components) {
         components.add(JdbcProviderDAOImpl.class);
