@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
+package org.smartparam.repository.jdbc.core.query;
 
-import org.smartparam.repository.jdbc.core.dialect.Dialect;
+import java.util.List;
+import java.util.Set;
+import org.smartparam.repository.jdbc.core.mapper.ObjectMapper;
+import org.smartparam.repository.jdbc.core.transaction.Transaction;
 
 /**
- * JDBC repository configuration.
  *
- * @author Przemek Hertel
+ * @author Adam Dubiel
  */
-public interface Configuration {
+public interface QueryRunner {
 
-    /**
-     * What database dialect should be used - mandatory field, JDBC repository
-     * will throw an exception if left empty.
-     *
-     * @return
-     */
-    Dialect getDialect();
+    <T> List<T> queryForList(Query query, ObjectMapper<T> mapper);
 
-    String getParameterTable();
+    <T> Set<T> queryForSet(Query query, ObjectMapper<T> mapper);
 
-    String getParameterLevelTable();
+    <T> T queryForObject(Query query, ObjectMapper<T> mapper);
 
-    String getParameterEntryTable();
+    boolean queryForExistence(Query query);
+
+    void execute(Transaction transaction, Query... queries);
+
+    void execute(Query... queries);
 }

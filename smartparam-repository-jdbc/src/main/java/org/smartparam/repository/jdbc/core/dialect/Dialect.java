@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.dialect;
+package org.smartparam.repository.jdbc.core.dialect;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class MysqlDialectProperties implements DialectProperties {
+public enum Dialect {
 
-    @Override
-    public String tableExistsQuery() {
-        return "select * from information_schema.tables where upper(table_name) = upper(:tableName)";
+    ORACLE(null),
+    POSTGRESQL(new PostgresDialectProperties()),
+    MYSQL(new MysqlDialectProperties()),
+    H2(new H2DialectProperties());
+
+    private DialectProperties properties;
+
+    private Dialect(DialectProperties properties) {
+        this.properties = properties;
+}
+
+    public DialectProperties getProperties() {
+        return properties;
     }
-
-    @Override
-    public boolean hasSequences() {
-        return false;
-    }
-
-    @Override
-    public String sequenceExistsQuery() {
-        return null;
-    }
-
 }

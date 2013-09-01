@@ -13,20 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.mapper;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+package org.smartparam.repository.jdbc.core.dialect;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class EmptyMapper implements ObjectMapper<Object> {
+public class PostgresDialectProperties implements DialectProperties {
 
     @Override
-    public Object createObject(ResultSet resultSet) throws SQLException {
-        return new Object();
+    public String tableExistsQuery() {
+        return "select * from information_schema.tables where upper(table_name) = upper(:tableName)";
+    }
+
+    @Override
+    public boolean hasSequences() {
+        return true;
+    }
+
+    @Override
+    public String sequenceExistsQuery() {
+        return "select * from information_schema.sequences where upper(sequence_name) = upper(:sequenceName)";
     }
 
 }

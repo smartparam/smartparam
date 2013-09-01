@@ -15,10 +15,10 @@
  */
 package org.smartparam.repository.jdbc.schema;
 
-import org.smartparam.repository.jdbc.dialect.Dialect;
-import org.smartparam.repository.jdbc.dialect.DialectProperties;
-import org.smartparam.repository.jdbc.query.JdbcQuery;
-import org.smartparam.repository.jdbc.query.JdbcQueryRunner;
+import org.smartparam.repository.jdbc.core.dialect.Dialect;
+import org.smartparam.repository.jdbc.core.dialect.DialectProperties;
+import org.smartparam.repository.jdbc.core.query.Query;
+import org.smartparam.repository.jdbc.core.query.QueryRunner;
 import org.smartparam.repository.jdbc.query.loader.QueryLoader;
 
 /**
@@ -33,11 +33,11 @@ public class DDLSchemaManager implements SchemaManager {
 
     private static final String DDL_DIALECT_PLACEHOLDER = ":dialect";
 
-    private JdbcQueryRunner jdbcQueryRunner;
+    private QueryRunner jdbcQueryRunner;
 
     private QueryLoader queryLoader;
 
-    public DDLSchemaManager(JdbcQueryRunner jdbcQueryRunner, QueryLoader queryLoader) {
+    public DDLSchemaManager(QueryRunner jdbcQueryRunner, QueryLoader queryLoader) {
         this.jdbcQueryRunner = jdbcQueryRunner;
         this.queryLoader = queryLoader;
     }
@@ -70,14 +70,14 @@ public class DDLSchemaManager implements SchemaManager {
     }
 
     private boolean tableExists(Dialect dialect, String entityName) {
-        JdbcQuery query = JdbcQuery.query(dialect.getProperties().tableExistsQuery().replaceAll(":tableName", "'" + entityName + "'"));
+        Query query = Query.query(dialect.getProperties().tableExistsQuery().replaceAll(":tableName", "'" + entityName + "'"));
         return jdbcQueryRunner.queryForExistence(query);
     }
 
     private boolean sequenceExistst(Dialect dialect, String entityName) {
         DialectProperties properties = dialect.getProperties();
         if (properties.hasSequences()) {
-            JdbcQuery query = JdbcQuery.query(properties.sequenceExistsQuery().replaceAll(":sequenceName", "'" + entityName + "'"));
+            Query query = Query.query(properties.sequenceExistsQuery().replaceAll(":sequenceName", "'" + entityName + "'"));
             return jdbcQueryRunner.queryForExistence(query);
         }
         return true;
@@ -86,7 +86,7 @@ public class DDLSchemaManager implements SchemaManager {
     @Override
     public void createSchema(SchemaDescription description) {
         String resource = createDefinitionResourceName(DDL_QUERY_LOCATION, description.getDialect());
-        JdbcQuery schemaQueries = queryLoader.getQuery(resource);
+        Query schemaQueries = queryLoader.getQuery(resource);
         SchemaDefinitionPreparer.prepareQuery(schemaQueries, description.getConfiguration());
 
         jdbcQueryRunner.execute(schemaQueries);
@@ -99,7 +99,7 @@ public class DDLSchemaManager implements SchemaManager {
     @Override
     public void dropSchema(SchemaDescription description) {
         String resource = createDefinitionResourceName(DDL_DROP_QUERY_LOCATION, description.getDialect());
-        JdbcQuery schemaQueries = queryLoader.getQuery(resource);
+        Query schemaQueries = queryLoader.getQuery(resource);
         SchemaDefinitionPreparer.prepareQuery(schemaQueries, description.getConfiguration());
 
         jdbcQueryRunner.execute(schemaQueries);

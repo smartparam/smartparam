@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.smartparam.repository.jdbc.config.Configuration;
-import org.smartparam.repository.jdbc.dialect.Dialect;
+import org.smartparam.repository.jdbc.core.dialect.Dialect;
 
 /**
  *

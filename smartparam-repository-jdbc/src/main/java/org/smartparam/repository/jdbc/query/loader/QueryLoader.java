@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.query.loader;
 
-import org.smartparam.repository.jdbc.query.JdbcQuery;
+import org.smartparam.repository.jdbc.core.query.Query;
 
 /**
  *
@@ -23,5 +23,5 @@ import org.smartparam.repository.jdbc.query.JdbcQuery;
  */
 public interface QueryLoader {
 
-    JdbcQuery getQuery(String resourceName);
+    Query getQuery(String resourceName);
 }

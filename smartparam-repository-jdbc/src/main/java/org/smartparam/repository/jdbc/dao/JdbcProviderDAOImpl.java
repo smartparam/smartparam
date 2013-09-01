@@ -16,22 +16,25 @@
 package org.smartparam.repository.jdbc.dao;
 
 import org.smartparam.repository.jdbc.mapper.ParameterMapper;
-import org.smartparam.repository.jdbc.mapper.StringMapper;
+import org.smartparam.repository.jdbc.core.mapper.StringMapper;
 import java.util.List;
 import java.util.Set;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.mapper.LevelMapper;
 import org.smartparam.repository.jdbc.mapper.ParameterEntryMapper;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
-import org.smartparam.repository.jdbc.query.JdbcQuery;
-import org.smartparam.repository.jdbc.query.JdbcQueryRunner;
+import org.smartparam.repository.jdbc.core.query.Query;
+import org.smartparam.repository.jdbc.core.query.QueryRunner;
 import org.smartparam.repository.jdbc.schema.SchemaDescription;
 import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 import org.smartparam.repository.jdbc.schema.SchemaManager;
 import org.smartparam.repository.jdbc.schema.SchemaDescriptionFactory;
+import org.smartparam.repository.jdbc.core.transaction.Transaction;
+import org.smartparam.repository.jdbc.core.transaction.TransactionManager;
 
 /**
  * @author Przemek Hertel
@@ -41,15 +44,24 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     private Configuration configuration;
 
-    private JdbcQueryRunner queryRunner;
+    private QueryRunner queryRunner;
 
     private SchemaManager schemaManager;
 
-    public JdbcProviderDAOImpl(Configuration configuration, JdbcQueryRunner queryRunner, SchemaManager schemaManager) {
+    private TransactionManager transactionManager;
+
+    public JdbcProviderDAOImpl(Configuration configuration, QueryRunner queryRunner, SchemaManager schemaManager, TransactionManager transactionManager) {
         this.configuration = configuration;
         checkConfiguration();
         this.queryRunner = queryRunner;
         this.schemaManager = schemaManager;
+        this.transactionManager = transactionManager;
+    }
+
+    private void checkConfiguration() {
+        if (configuration.getDialect() == null) {
+            throw new SmartParamException("Provided JDBC repository configuration has no dialect defined!");
+        }
     }
 
     @Override
@@ -66,15 +78,32 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         }
     }
 
-    private void checkConfiguration() {
-        if (configuration.getDialect() == null) {
-            throw new SmartParamException("Provided JDBC repository configuration has no dialect defined!");
+    @Override
+    public void createParameter(Parameter parameter) {
+        Transaction transaction = transactionManager.openTransaction();
+        try {
+            Query query = Query.query("insert into :parameter (id, name) "
+                    + "values(:id, :name)");
+            query.setInt("id", 1).setString("hello", parameter.getName());
+
+            transaction.executeQuery(query);
+            transaction.commit();
+        }
+        finally {
+            transaction.closeWithArtifacts();
         }
     }
 
     @Override
+    public boolean parameterExists(String parameterName) {
+        Query query = Query.query("select * from " + configuration.getParameterTable() + " where name = :name");
+        query.setString("name", parameterName);
+        return queryRunner.queryForExistence(query);
+    }
+
+    @Override
     public JdbcParameter getParameter(String parameterName) {
-        JdbcQuery query = JdbcQuery.query(" select id, input_levels, cacheable, nullable, array_separator"
+        Query query = Query.query(" select id, input_levels, cacheable, nullable, array_separator"
                 + " from " + configuration.getParameterTable()
                 + " where name = :name");
         query.setString("name", parameterName);
@@ -84,14 +113,14 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     @Override
     public Set<String> getParameterNames() {
-        JdbcQuery query = JdbcQuery.query("select name from " + configuration.getParameterTable());
+        Query query = Query.query("select name from " + configuration.getParameterTable());
 
         return queryRunner.queryForSet(query, new StringMapper());
     }
 
     @Override
     public List<Level> getParameterLevels(int parameterId) {
-        JdbcQuery query = JdbcQuery.query(" select id, order_no, label, type, matcher, level_creator, array_flag"
+        Query query = Query.query(" select id, order_no, label, type, matcher, level_creator, array_flag"
                 + " from " + configuration.getParameterLevelTable()
                 + " where param_id = :parameterId");
         query.setInt("parameterId", parameterId);
@@ -101,7 +130,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     @Override
     public Set<ParameterEntry> getParameterEntries(int parameterId) {
-        JdbcQuery query = JdbcQuery.query("select id, level1, level2, level3, level4, level5, level6, level7, level8, value"
+        Query query = Query.query("select id, level1, level2, level3, level4, level5, level6, level7, level8, value"
                 + " from " + configuration.getParameterEntryTable()
                 + " where param_id = :parameterId");
         query.setInt("parameterId", parameterId);
@@ -109,7 +138,17 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         return queryRunner.queryForSet(query, new ParameterEntryMapper(parameterId));
     }
 
-    public Configuration getConfiguration() {
-        return configuration;
+    @Override
+    public void dropParameter(String parameterName) {
+        JdbcParameter parameter = getParameter(parameterName);
+
+        Query dropEntriesQuery = Query.query("delete from " + configuration.getParameterEntryTable() + " where param_id = :parameterId");
+        dropEntriesQuery.setInt("parameterId", parameter.getId());
+        Query dropLevelsQuery = Query.query("delete from " + configuration.getParameterLevelTable() + " where param_id = :parameterId");
+        dropLevelsQuery.setInt("parameterId", parameter.getId());
+        Query dropParameterQuery = Query.query("delete from " + configuration.getParameterTable() + " where id = :id");
+        dropParameterQuery.setInt("id", parameter.getId());
+
+        queryRunner.execute(dropEntriesQuery, dropLevelsQuery, dropParameterQuery);
     }
 }

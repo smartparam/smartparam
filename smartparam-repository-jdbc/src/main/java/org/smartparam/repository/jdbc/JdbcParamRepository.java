@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.InitializableComponent;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.JdbcProviderDAO;
@@ -30,7 +31,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParamRepository implements ParamRepository, InitializableComponent {
+public class JdbcParamRepository implements ParamRepository, WritableParamRepository, InitializableComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
 
@@ -86,15 +87,21 @@ public class JdbcParamRepository implements ParamRepository, InitializableCompon
         return null;
     }
 
+    @Override
+    public void write(Parameter parameter) {
+        String parameterName = parameter.getName();
+
+        if (dao.parameterExists(parameterName)) {
+            dao.dropParameter(parameterName);
+        }
+        dao.createParameter(parameter);
+    }
+
     public int getFetchSize() {
         return fetchSize;
     }
 
     public void setFetchSize(int fetchSize) {
         this.fetchSize = fetchSize;
-    }
-
-    public void setJdbcProviderDao(JdbcProviderDAO dao) {
-        this.dao = dao;
     }
 }

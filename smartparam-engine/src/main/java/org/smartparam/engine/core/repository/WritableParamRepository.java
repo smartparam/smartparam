@@ -13,25 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.query;
+package org.smartparam.engine.core.repository;
 
-import org.smartparam.repository.jdbc.mapper.ObjectMapper;
-import java.util.List;
-import java.util.Set;
+import org.smartparam.engine.model.Parameter;
 
 /**
+ * Writable repository is a repository without fine-grained control of what is
+ * being saved into it. When writing a parameter, repository should drop any
+ * parameter with same name (if exists) and write provided parameter as a new one.
  *
  * @author Adam Dubiel
  */
-public interface JdbcQueryRunner {
+public interface WritableParamRepository {
 
-    <T> List<T> queryForList(JdbcQuery query, ObjectMapper<T> mapper);
+    /**
+     * Deletes any existing instance of parameter with same name and
+     * writes (persists) provided parameter.
+     */
+    void write(Parameter parameter);
 
-    <T> Set<T> queryForSet(JdbcQuery query, ObjectMapper<T> mapper);
-
-    <T> T queryForObject(JdbcQuery query, ObjectMapper<T> mapper);
-
-    boolean queryForExistence(JdbcQuery query);
-
-    void execute(JdbcQuery query);
 }

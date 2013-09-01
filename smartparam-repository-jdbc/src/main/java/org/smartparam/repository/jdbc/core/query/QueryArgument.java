@@ -13,17 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.mapper;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+package org.smartparam.repository.jdbc.core.query;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ObjectMapper<T> {
+public class QueryArgument {
 
-    T createObject(ResultSet resultSet) throws SQLException;
+    private Object value;
 
+    private QueryArgumentType type;
+
+    public QueryArgument(Object value, QueryArgumentType type) {
+        this.value = value;
+        this.type = type;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public QueryArgumentType getType() {
+        return type;
+    }
+
+    public int getSqlType() {
+        return type.getSqlType();
+    }
 }

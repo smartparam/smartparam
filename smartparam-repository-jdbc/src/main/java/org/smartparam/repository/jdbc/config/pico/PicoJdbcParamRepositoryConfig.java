@@ -21,9 +21,10 @@ import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.dao.JdbcProviderDAOImpl;
-import org.smartparam.repository.jdbc.query.JdbcQueryRunnerImpl;
+import org.smartparam.repository.jdbc.core.query.JdbcQueryRunner;
 import org.smartparam.repository.jdbc.query.loader.ClasspathQueryLoader;
 import org.smartparam.repository.jdbc.schema.DDLSchemaManager;
+import org.smartparam.repository.jdbc.core.transaction.DataSourceTransactionManager;
 
 /**
  *
@@ -43,9 +44,10 @@ public class PicoJdbcParamRepositoryConfig extends ComponentConfig implements Jd
     @Override
     protected void injectDefaults(List<Object> components) {
         components.add(JdbcProviderDAOImpl.class);
-        components.add(JdbcQueryRunnerImpl.class);
+        components.add(JdbcQueryRunner.class);
         components.add(DDLSchemaManager.class);
         components.add(ClasspathQueryLoader.class);
+        components.add(DataSourceTransactionManager.class);
     }
 
     @Override

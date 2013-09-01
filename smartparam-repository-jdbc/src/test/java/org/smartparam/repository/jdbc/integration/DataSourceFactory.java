@@ -19,7 +19,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
-import org.smartparam.repository.jdbc.dialect.Dialect;
+import org.smartparam.repository.jdbc.core.dialect.Dialect;
 
 /**
  *

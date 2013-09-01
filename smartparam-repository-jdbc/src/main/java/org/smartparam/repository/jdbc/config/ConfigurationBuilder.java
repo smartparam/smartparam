@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.config;
 
-import org.smartparam.repository.jdbc.dialect.Dialect;
+import org.smartparam.repository.jdbc.core.dialect.Dialect;
 
 /**
  *

@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
+package org.smartparam.repository.jdbc.core.query;
 
-import org.smartparam.repository.jdbc.core.dialect.Dialect;
+import java.sql.Types;
 
 /**
- * JDBC repository configuration.
  *
- * @author Przemek Hertel
+ * @author Adam Dubiel
  */
-public interface Configuration {
+public enum QueryArgumentType {
 
-    /**
-     * What database dialect should be used - mandatory field, JDBC repository
-     * will throw an exception if left empty.
-     *
-     * @return
-     */
-    Dialect getDialect();
+    STRING(Types.VARCHAR),
+    INT(Types.INTEGER),
+    LONG(Types.BIGINT);
 
-    String getParameterTable();
+    private int sqlType;
 
-    String getParameterLevelTable();
+    private QueryArgumentType(int sqlType) {
+        this.sqlType = sqlType;
+    }
 
-    String getParameterEntryTable();
+    public int getSqlType() {
+        return sqlType;
+    }
 }

@@ -16,9 +16,9 @@
 package org.smartparam.repository.jdbc.integration;
 
 import javax.sql.DataSource;
-import org.smartparam.repository.jdbc.dialect.Dialect;
-import org.smartparam.repository.jdbc.query.JdbcQueryRunner;
-import org.smartparam.repository.jdbc.query.JdbcQueryRunnerImpl;
+import org.smartparam.repository.jdbc.core.dialect.Dialect;
+import org.smartparam.repository.jdbc.core.query.QueryRunner;
+import org.smartparam.repository.jdbc.core.query.JdbcQueryRunner;
 import org.smartparam.repository.jdbc.schema.SchemaDescription;
 import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 import org.smartparam.repository.jdbc.schema.SchemaManager;
@@ -27,6 +27,8 @@ import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.dao.JdbcProviderDAOImpl;
 import org.smartparam.repository.jdbc.query.loader.ClasspathQueryLoader;
 import org.smartparam.repository.jdbc.query.loader.QueryLoader;
+import org.smartparam.repository.jdbc.core.transaction.DataSourceTransactionManager;
+import org.smartparam.repository.jdbc.core.transaction.TransactionManager;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.jdbcConfiguration;
@@ -49,8 +51,8 @@ public class DDLTest {
     public Object[][] databases() {
         return new Object[][]{
             {Dialect.H2, "jdbc:h2:mem:test", "smartparam", "smartparam"},
-            {Dialect.POSTGRESQL, "jdbc:postgresql://localhost/smartparam", "smartparam", "smartparam"},
-            {Dialect.MYSQL, "jdbc:mysql://localhost/smartparam?characterEncoding=UTF-8&allowMultiQueries=true", "smartparam", "smartparam"}
+//            {Dialect.POSTGRESQL, "jdbc:postgresql://localhost/smartparam", "smartparam", "smartparam"},
+//            {Dialect.MYSQL, "jdbc:mysql://localhost/smartparam?characterEncoding=UTF-8&allowMultiQueries=true", "smartparam", "smartparam"}
         };
     }
 
@@ -60,11 +62,12 @@ public class DDLTest {
         configuration = jdbcConfiguration().withDialect(dialect)
                 .withParameterTableName("parameter").withLevelTableName("level").withParameterEntryTableName("entry").build();
 
-        JdbcQueryRunner jdbcQueryRunner = new JdbcQueryRunnerImpl(dataSource);
+        TransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+        QueryRunner jdbcQueryRunner = new JdbcQueryRunner(transactionManager);
         QueryLoader queryLoader = new ClasspathQueryLoader();
         schemaManager = new DDLSchemaManager(jdbcQueryRunner, queryLoader);
 
-        dao = new JdbcProviderDAOImpl(configuration, new JdbcQueryRunnerImpl(dataSource), schemaManager);
+        dao = new JdbcProviderDAOImpl(configuration, jdbcQueryRunner, schemaManager, transactionManager);
     }
 
     private void dynamicTearDownMethod(SchemaDescription description) {

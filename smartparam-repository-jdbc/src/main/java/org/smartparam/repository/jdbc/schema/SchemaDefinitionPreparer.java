@@ -16,7 +16,7 @@
 package org.smartparam.repository.jdbc.schema;
 
 import org.smartparam.repository.jdbc.config.Configuration;
-import org.smartparam.repository.jdbc.query.JdbcQuery;
+import org.smartparam.repository.jdbc.core.query.Query;
 
 /**
  *
@@ -33,9 +33,9 @@ public class SchemaDefinitionPreparer {
     private SchemaDefinitionPreparer() {
     }
 
-    public static void prepareQuery(JdbcQuery query, Configuration configuration) {
-        query.setRawString(PARAMETER_TABLE_NAME, configuration.getParameterTable());
-        query.setRawString(LEVEL_TABLE_NAME, configuration.getParameterLevelTable());
-        query.setRawString(PARAMETER_ENTRY_TABLE_NAME, configuration.getParameterEntryTable());
+    public static void prepareQuery(Query query, Configuration configuration) {
+        query.replaceString(PARAMETER_TABLE_NAME, configuration.getParameterTable());
+        query.replaceString(LEVEL_TABLE_NAME, configuration.getParameterLevelTable());
+        query.replaceString(PARAMETER_ENTRY_TABLE_NAME, configuration.getParameterEntryTable());
     }
 }

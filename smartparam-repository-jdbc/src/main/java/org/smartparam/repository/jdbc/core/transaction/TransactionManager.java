@@ -13,28 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
-
-import org.smartparam.repository.jdbc.core.dialect.Dialect;
+package org.smartparam.repository.jdbc.core.transaction;
 
 /**
- * JDBC repository configuration.
  *
- * @author Przemek Hertel
+ * @author Adam Dubiel
  */
-public interface Configuration {
+public interface TransactionManager {
 
-    /**
-     * What database dialect should be used - mandatory field, JDBC repository
-     * will throw an exception if left empty.
-     *
-     * @return
-     */
-    Dialect getDialect();
+    Transaction openTransaction();
 
-    String getParameterTable();
-
-    String getParameterLevelTable();
-
-    String getParameterEntryTable();
+    Transaction openTransaction(boolean autoCommit);
 }

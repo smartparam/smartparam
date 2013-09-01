@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import org.smartparam.repository.jdbc.exception.SmartParamJdbcException;
-import org.smartparam.repository.jdbc.query.JdbcQuery;
+import org.smartparam.repository.jdbc.core.query.Query;
 
 /**
  *
@@ -30,7 +30,7 @@ import org.smartparam.repository.jdbc.query.JdbcQuery;
 public class ClasspathQueryLoader implements QueryLoader {
 
     @Override
-    public JdbcQuery getQuery(String resourceName) {
+    public Query getQuery(String resourceName) {
         InputStream stream;
         BufferedReader fileStream = null;
         try {
@@ -40,7 +40,7 @@ public class ClasspathQueryLoader implements QueryLoader {
             }
             fileStream = new BufferedReader(new InputStreamReader(stream));
 
-            return JdbcQuery.query(readAsString(fileStream));
+            return Query.query(readAsString(fileStream));
         } catch (IOException exception) {
             throw new SmartParamJdbcException("Exception wile reading query from file " + resourceName, exception);
         } finally {
