@@ -25,6 +25,7 @@ import org.smartparam.repository.jdbc.core.query.JdbcQueryRunner;
 import org.smartparam.repository.jdbc.query.loader.ClasspathQueryLoader;
 import org.smartparam.repository.jdbc.schema.DDLSchemaManager;
 import org.smartparam.repository.jdbc.core.transaction.DataSourceTransactionManager;
+import org.smartparam.repository.jdbc.dao.ParameterDAO;
 
 /**
  *
@@ -48,6 +49,7 @@ public class PicoJdbcParamRepositoryConfig extends ComponentConfig implements Jd
         components.add(DDLSchemaManager.class);
         components.add(ClasspathQueryLoader.class);
         components.add(DataSourceTransactionManager.class);
+        components.add(ParameterDAO.class);
     }
 
     @Override

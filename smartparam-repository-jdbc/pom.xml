@@ -37,6 +37,14 @@
 
         <!-- TEST -->
         <dependency>
+            <groupId>org.smartparam</groupId>
+            <artifactId>smartparam-engine</artifactId>
+            <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
@@ -97,7 +105,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.15</version>
                 <configuration>
-                   <!--<excludedGroups>nativeDatabase</excludedGroups>-->
+                    <trimStackTrace>false</trimStackTrace>
+                    <!--<excludedGroups>nativeDatabase</excludedGroups>-->
                 </configuration>
             </plugin>
             <plugin>

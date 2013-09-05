@@ -26,4 +26,6 @@ public interface DialectProperties {
     boolean hasSequences();
 
     String sequenceExistsQuery();
+
+    String nextFromSequence(String sequenceName);
 }

@@ -46,16 +46,19 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
 
     private QueryRunner queryRunner;
 
+    private ParameterDAO parameterDAO;
+
     private SchemaManager schemaManager;
 
     private TransactionManager transactionManager;
 
-    public JdbcProviderDAOImpl(Configuration configuration, QueryRunner queryRunner, SchemaManager schemaManager, TransactionManager transactionManager) {
+    public JdbcProviderDAOImpl(Configuration configuration, QueryRunner queryRunner, SchemaManager schemaManager, TransactionManager transactionManager, ParameterDAO parameterDAO) {
         this.configuration = configuration;
         checkConfiguration();
         this.queryRunner = queryRunner;
         this.schemaManager = schemaManager;
         this.transactionManager = transactionManager;
+        this.parameterDAO = parameterDAO;
     }
 
     private void checkConfiguration() {
@@ -82,11 +85,7 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
     public void createParameter(Parameter parameter) {
         Transaction transaction = transactionManager.openTransaction();
         try {
-            Query query = Query.query("insert into :parameter (id, name) "
-                    + "values(:id, :name)");
-            query.setInt("id", 1).setString("hello", parameter.getName());
-
-            transaction.executeQuery(query);
+            parameterDAO.insert(transaction, parameter);
             transaction.commit();
         }
         finally {

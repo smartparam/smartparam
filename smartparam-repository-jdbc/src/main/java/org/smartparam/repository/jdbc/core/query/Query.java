@@ -41,6 +41,8 @@ public class Query {
 
     private Map<String, QueryArgument> arguments = new HashMap<String, QueryArgument>();
 
+    private List<QueryArgument> orderedArguments;
+
     private Query(String query) {
         this.originalQuery = query;
         this.query = query;
@@ -85,17 +87,16 @@ public class Query {
         arguments.put(placeholderName, new QueryArgument(value, type));
     }
 
-    public void compile(PreparedStatement preparedStatement) throws SQLException {
-        List<QueryArgument> orderedArguments = orderArguments();
-        int index = 0;
+    public void injectValues(PreparedStatement preparedStatement) throws SQLException {
+        int index = 1;
         for (QueryArgument argument : orderedArguments) {
             preparedStatement.setObject(index, argument.getValue(), argument.getSqlType());
             index++;
         }
     }
 
-    private List<QueryArgument> orderArguments() {
-        List<QueryArgument> orderedArguments = new ArrayList<QueryArgument>();
+    public void compile() {
+        orderedArguments = new ArrayList<QueryArgument>();
 
         Matcher matcher = ARGUMENT_PATTERN.matcher(query);
         String foundPattern;
@@ -104,8 +105,6 @@ public class Query {
             orderedArguments.add(arguments.get(foundPattern.replace(":", "")));
         }
         query = matcher.replaceAll(QUERY_PLACEHOLDER);
-
-        return orderedArguments;
     }
 
     @Override

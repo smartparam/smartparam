@@ -36,4 +36,8 @@ public class MysqlDialectProperties implements DialectProperties {
         return null;
     }
 
+    @Override
+    public String nextFromSequence(String sequence) {
+        return "DEFAULT";
+    }
 }

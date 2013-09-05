@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.config.pico;
 
 import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
 import org.smartparam.repository.jdbc.JdbcParamRepository;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
@@ -31,10 +32,16 @@ public class PicoJdbcParamRepositoryFactory implements JdbcParamRepositoryFactor
     public JdbcParamRepository createRepository(JdbcParamRepositoryConfig config) {
         PicoJdbcParamRepositoryConfig picoConfig = (PicoJdbcParamRepositoryConfig) config;
 
-        MutablePicoContainer container = PicoContainerUtil.createContainer();
-        PicoContainerUtil.injectImplementations(container, JdbcParamRepository.class, picoConfig.getConfiguration(), picoConfig.getDataSource());
-        PicoContainerUtil.injectImplementations(container, picoConfig.getComponents());
+        PicoContainer container = createContainer(picoConfig);
 
         return container.getComponent(JdbcParamRepository.class);
+    }
+
+    public PicoContainer createContainer(PicoJdbcParamRepositoryConfig config) {
+        MutablePicoContainer container = PicoContainerUtil.createContainer();
+        PicoContainerUtil.injectImplementations(container, JdbcParamRepository.class, config.getConfiguration(), config.getDataSource());
+        PicoContainerUtil.injectImplementations(container, config.getComponents());
+
+        return container;
     }
 }

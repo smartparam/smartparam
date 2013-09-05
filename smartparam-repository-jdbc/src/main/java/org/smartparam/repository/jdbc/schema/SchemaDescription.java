@@ -66,7 +66,8 @@ public class SchemaDescription {
         return configuration;
     }
 
-    public void setConfiguration(Configuration configuration) {
+    public SchemaDescription setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
     }
 }

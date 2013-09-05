@@ -39,7 +39,7 @@ public class QueryTest {
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
         // when
-        query.compile(preparedStatement);
+        query.injectValues(preparedStatement);
 
         // then
         assertThat(query.getQuery()).isEqualTo("select * from test where count = ?");
@@ -54,7 +54,7 @@ public class QueryTest {
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
         // when
-        query.compile(preparedStatement);
+        query.injectValues(preparedStatement);
 
         // then
         assertThat(query.getQuery()).isEqualTo("select * from test where name = ?");
@@ -70,7 +70,7 @@ public class QueryTest {
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
         // when
-        query.compile(preparedStatement);
+        query.injectValues(preparedStatement);
 
         // then
         assertThat(query.getQuery()).isEqualTo("select * from test where name = ? and count = ?");
@@ -86,7 +86,7 @@ public class QueryTest {
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
         // when
-        query.compile(preparedStatement);
+        query.injectValues(preparedStatement);
 
         // then
         assertThat(query.getOriginalQuery()).isEqualTo("select * from test where name = :name");

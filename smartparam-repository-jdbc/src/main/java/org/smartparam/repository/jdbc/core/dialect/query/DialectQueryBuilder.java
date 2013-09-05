@@ -13,31 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.core.dialect;
+package org.smartparam.repository.jdbc.core.dialect.query;
+
+import org.smartparam.repository.jdbc.core.dialect.Dialect;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class PostgresDialectProperties implements DialectProperties {
+public final class DialectQueryBuilder {
 
-    @Override
-    public String tableExistsQuery() {
-        return "select * from information_schema.tables where upper(table_name) = upper(:tableName)";
-    }
-
-    @Override
-    public boolean hasSequences() {
-        return true;
-    }
-
-    @Override
-    public String sequenceExistsQuery() {
-        return "select * from information_schema.sequences where upper(sequence_name) = upper(:sequenceName)";
-    }
-
-    @Override
-    public String nextFromSequence(String sequence) {
-        return "nextval(" + sequence + ")";
+    public static InsertQueryBuilder insert(Dialect dialect) {
+        return InsertQueryBuilder.query(dialect);
     }
 }

@@ -49,9 +49,10 @@ public class Transaction {
 
     public int executeUpdate(Query query) {
         try {
+            query.compile();
             PreparedStatement preparedStatement = connection.prepareStatement(query.getQuery());
             registerPrepareStatement(preparedStatement);
-            query.compile(preparedStatement);
+            query.injectValues(preparedStatement);
             return preparedStatement.executeUpdate();
         }
         catch(SQLException exception) {
@@ -62,8 +63,9 @@ public class Transaction {
 
     public ResultSet executeQuery(Query query) {
         try {
+            query.compile();
             PreparedStatement preparedStatement = connection.prepareStatement(query.getQuery());
-            query.compile(preparedStatement);
+            query.injectValues(preparedStatement);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             registerCursor(resultSet);

@@ -15,71 +15,30 @@
  */
 package org.smartparam.repository.jdbc.integration;
 
-import javax.sql.DataSource;
-import org.smartparam.repository.jdbc.core.dialect.Dialect;
-import org.smartparam.repository.jdbc.core.query.QueryRunner;
-import org.smartparam.repository.jdbc.core.query.JdbcQueryRunner;
+import org.picocontainer.PicoContainer;
 import org.smartparam.repository.jdbc.schema.SchemaDescription;
 import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 import org.smartparam.repository.jdbc.schema.SchemaManager;
-import org.smartparam.repository.jdbc.schema.DDLSchemaManager;
 import org.smartparam.repository.jdbc.config.Configuration;
-import org.smartparam.repository.jdbc.dao.JdbcProviderDAOImpl;
-import org.smartparam.repository.jdbc.query.loader.ClasspathQueryLoader;
-import org.smartparam.repository.jdbc.query.loader.QueryLoader;
-import org.smartparam.repository.jdbc.core.transaction.DataSourceTransactionManager;
-import org.smartparam.repository.jdbc.core.transaction.TransactionManager;
-import org.testng.annotations.DataProvider;
+import org.smartparam.repository.jdbc.dao.JdbcProviderDAO;
 import org.testng.annotations.Test;
-import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.jdbcConfiguration;
 import static org.smartparam.repository.jdbc.test.assertions.Assertions.*;
 
 /**
  *
  * @author Adam Dubiel
  */
-@Test(groups = {"nativeDatabase"})
 public class DDLTest {
 
-    private SchemaManager schemaManager;
-
-    private JdbcProviderDAOImpl dao;
-
-    private Configuration configuration;
-
-    @DataProvider(name = "databases")
-    public Object[][] databases() {
-        return new Object[][]{
-            {Dialect.H2, "jdbc:h2:mem:test", "smartparam", "smartparam"},
-//            {Dialect.POSTGRESQL, "jdbc:postgresql://localhost/smartparam", "smartparam", "smartparam"},
-//            {Dialect.MYSQL, "jdbc:mysql://localhost/smartparam?characterEncoding=UTF-8&allowMultiQueries=true", "smartparam", "smartparam"}
-        };
-    }
-
-    private void dynamicSetUpMethod(Dialect dialect, String url, String username, String password) {
-        DataSource dataSource = DataSourceFactory.create(dialect, url, username, password);
-
-        configuration = jdbcConfiguration().withDialect(dialect)
-                .withParameterTableName("parameter").withLevelTableName("level").withParameterEntryTableName("entry").build();
-
-        TransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
-        QueryRunner jdbcQueryRunner = new JdbcQueryRunner(transactionManager);
-        QueryLoader queryLoader = new ClasspathQueryLoader();
-        schemaManager = new DDLSchemaManager(jdbcQueryRunner, queryLoader);
-
-        dao = new JdbcProviderDAOImpl(configuration, jdbcQueryRunner, schemaManager, transactionManager);
-    }
-
-    private void dynamicTearDownMethod(SchemaDescription description) {
-        schemaManager.dropSchema(description);
-    }
-
-    @Test(dataProvider = "databases")
-    public void shouldCreateSchemaOnEmptyDatabase(Dialect dialect, String url, String username, String password) throws Exception {
-        dynamicSetUpMethod(dialect, url, username, password);
+    @Test(dataProvider = "databases", dataProviderClass = TestIntegrationDataProvider.class, groups = "integration.setUp")
+    public void shouldCreateSchemaOnEmptyDatabase(PicoContainer container) throws Exception {
         // given
+        Configuration configuration = container.getComponent(Configuration.class);
+        JdbcProviderDAO dao = container.getComponent(JdbcProviderDAO.class);
+        SchemaManager schemaManager = container.getComponent(SchemaManager.class);
+
         SchemaDescription description = new SchemaDescription().addTables("parameter", "level", "entry")
-                .addSequences("seq_parameter", "seq_level", "seq_entry").setDialect(dialect);
+                .addSequences("seq_parameter", "seq_level", "seq_entry").setDialect(configuration.getDialect());
         description.setConfiguration(configuration);
         dao.createSchema();
 
@@ -88,10 +47,23 @@ public class DDLTest {
 
         // then
         assertThat(lookupResult).hasTable("parameter").hasTable("level").hasTable("entry");
-        if (dialect.getProperties().hasSequences()) {
+        if (configuration.getDialect().getProperties().hasSequences()) {
             assertThat(lookupResult).hasSequence("seq_parameter").hasSequence("seq_level").hasSequence("seq_entry");
         }
+    }
 
-        dynamicTearDownMethod(description);
+    @Test(dataProvider = "databases", dataProviderClass = TestIntegrationDataProvider.class, groups = "integration.tearDown", dependsOnGroups = "integration")
+    public void shouldDropSchemaFromPopoulatedDatabase(PicoContainer container) {
+        // given
+        Configuration configuration = container.getComponent(Configuration.class);
+        SchemaManager schemaManager = container.getComponent(SchemaManager.class);
+        SchemaDescription description = new SchemaDescription().addTables("parameter", "level", "entry")
+                .addSequences("seq_parameter", "seq_level", "seq_entry").setDialect(configuration.getDialect())
+                .setConfiguration(configuration);
+
+        // when
+        schemaManager.dropSchema(description);
+
+        // then
     }
 }

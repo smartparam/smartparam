@@ -36,4 +36,8 @@ public class H2DialectProperties implements DialectProperties {
         return "select * from information_schema.sequences where upper(sequence_name) = upper(:sequenceName)";
     }
 
+    @Override
+    public String nextFromSequence(String sequence) {
+        return sequence + ".nextval";
+    }
 }

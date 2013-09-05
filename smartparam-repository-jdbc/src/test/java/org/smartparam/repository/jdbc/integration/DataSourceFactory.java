@@ -25,7 +25,7 @@ import org.smartparam.repository.jdbc.core.dialect.Dialect;
  *
  * @author Adam Dubiel
  */
-public class DataSourceFactory {
+public final class DataSourceFactory {
 
     private static final Map<Dialect, String> DIALECT_DRIVER_CLASS = new EnumMap<Dialect, String>(Dialect.class);
 
@@ -33,6 +33,9 @@ public class DataSourceFactory {
         DIALECT_DRIVER_CLASS.put(Dialect.H2, "org.h2.Driver");
         DIALECT_DRIVER_CLASS.put(Dialect.POSTGRESQL, "org.postgresql.Driver");
         DIALECT_DRIVER_CLASS.put(Dialect.MYSQL, "com.mysql.jdbc.Driver");
+    }
+
+    private DataSourceFactory() {
     }
 
     public static DataSource create(Dialect dialect, String databaseUrl, String user, String password) {
