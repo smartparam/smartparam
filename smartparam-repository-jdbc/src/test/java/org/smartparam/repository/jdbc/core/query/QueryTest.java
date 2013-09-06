@@ -15,7 +15,6 @@
  */
 package org.smartparam.repository.jdbc.core.query;
 
-import org.smartparam.repository.jdbc.core.query.Query;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -34,16 +33,17 @@ public class QueryTest {
     @Test
     public void shouldSetIntegerValueInPlaceholder() throws SQLException {
         // given
-        Query query = Query.query("select * from test where count = :count");
-        query.setInt("count", 1);
+        Query query = Query.query("select * from test where input_levels = :inputLevels");
+        query.setInt("inputLevels", 1);
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
         // when
+        query.compile();
         query.injectValues(preparedStatement);
 
         // then
-        assertThat(query.getQuery()).isEqualTo("select * from test where count = ?");
-        verify(preparedStatement, times(1)).setObject(0, 1, Types.INTEGER);
+        assertThat(query.getQuery()).isEqualTo("select * from test where input_levels = ?");
+        verify(preparedStatement, times(1)).setObject(1, 1, Types.INTEGER);
     }
 
     @Test
@@ -54,28 +54,62 @@ public class QueryTest {
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
         // when
+        query.compile();
         query.injectValues(preparedStatement);
 
         // then
         assertThat(query.getQuery()).isEqualTo("select * from test where name = ?");
-        verify(preparedStatement, times(1)).setObject(0, "test", Types.VARCHAR);
+        verify(preparedStatement, times(1)).setObject(1, "test", Types.VARCHAR);
+    }
+
+    @Test
+    public void shouldSetCharValueInPlaceholder() throws SQLException {
+        // given
+        Query query = Query.query("select * from test where array_separator = :arraySeparator");
+        query.setChar("arraySeparator", ';');
+        PreparedStatement preparedStatement = mock(PreparedStatement.class);
+
+        // when
+        query.compile();
+        query.injectValues(preparedStatement);
+
+        // then
+        assertThat(query.getQuery()).isEqualTo("select * from test where array_separator = ?");
+        verify(preparedStatement, times(1)).setObject(1, ';', Types.CHAR);
+    }
+
+    @Test
+    public void shouldSetBooleanValueInPlaceholder() throws SQLException {
+        // given
+        Query query = Query.query("select * from test where nullable = :nullable");
+        query.setBoolean("nullable", true);
+        PreparedStatement preparedStatement = mock(PreparedStatement.class);
+
+        // when
+        query.compile();
+        query.injectValues(preparedStatement);
+
+        // then
+        assertThat(query.getQuery()).isEqualTo("select * from test where nullable = ?");
+        verify(preparedStatement, times(1)).setObject(1, true, Types.BOOLEAN);
     }
 
     @Test
     public void shouldSetMultipleValuesDuringCompilation() throws SQLException {
-            // given
-        Query query = Query.query("select * from test where name = :name and count = :count");
+        // given
+        Query query = Query.query("select * from test where name = :name and input_levels = :inputLevels");
         query.setString("name", "test");
-        query.setInt("count", 1);
+        query.setInt("inputLevels", 1);
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
         // when
+        query.compile();
         query.injectValues(preparedStatement);
 
         // then
-        assertThat(query.getQuery()).isEqualTo("select * from test where name = ? and count = ?");
-        verify(preparedStatement, times(1)).setObject(0, "test", Types.VARCHAR);
-        verify(preparedStatement, times(1)).setObject(1, 1, Types.INTEGER);
+        assertThat(query.getQuery()).isEqualTo("select * from test where name = ? and input_levels = ?");
+        verify(preparedStatement, times(1)).setObject(1, "test", Types.VARCHAR);
+        verify(preparedStatement, times(1)).setObject(2, 1, Types.INTEGER);
     }
 
     @Test
@@ -86,6 +120,7 @@ public class QueryTest {
         PreparedStatement preparedStatement = mock(PreparedStatement.class);
 
         // when
+        query.compile();
         query.injectValues(preparedStatement);
 
         // then

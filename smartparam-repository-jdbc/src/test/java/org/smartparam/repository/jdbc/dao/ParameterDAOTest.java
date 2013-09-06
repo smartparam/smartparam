@@ -19,7 +19,7 @@ import org.picocontainer.PicoContainer;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.jdbc.core.transaction.Transaction;
 import org.smartparam.repository.jdbc.core.transaction.TransactionManager;
-import org.smartparam.repository.jdbc.integration.TestIntegrationDataProvider;
+import org.smartparam.repository.jdbc.integration.ContainerDataProvider;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
@@ -31,12 +31,12 @@ import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 @Test(groups = "integration", dependsOnGroups = "integration.setUp")
 public class ParameterDAOTest {
 
-    @Test(dataProvider = "databases", dataProviderClass = TestIntegrationDataProvider.class)
-    public void shouldInsertNewParameterIntoTheDatabase(PicoContainer container) {
+    @Test(dataProvider = "containers", dataProviderClass = ContainerDataProvider.class)
+    public void shouldInsertNewParameterIntoDatabase(PicoContainer container) {
         // given
         Transaction transaction = container.getComponent(TransactionManager.class).openTransaction();
         ParameterDAO parameterDAO = container.getComponent(ParameterDAO.class);
-        Parameter parameter = parameter().withName("test").build();
+        Parameter parameter = parameter().withName("test").withInputLevels(1).build();
 
         // when
         parameterDAO.insert(transaction, parameter);

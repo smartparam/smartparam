@@ -41,4 +41,9 @@ public class QueryArgument {
     public int getSqlType() {
         return type.getSqlType();
     }
+
+    @Override
+    public String toString() {
+        return "[" + type + ", " + value + "]";
+    }
 }

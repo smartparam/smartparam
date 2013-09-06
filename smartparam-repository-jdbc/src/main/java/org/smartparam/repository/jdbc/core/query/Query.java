@@ -70,6 +70,16 @@ public class Query {
         return this;
     }
 
+    public Query setBoolean(String argumentName, boolean value) {
+        addArgument(argumentName, value, QueryArgumentType.BOOLEAN);
+        return this;
+    }
+
+    public Query setChar(String argumentName, char value) {
+        addArgument(argumentName, value, QueryArgumentType.CHAR);
+        return this;
+    }
+
     public Query setString(String argumentName, String value) {
         addArgument(argumentName, value, QueryArgumentType.STRING);
         return this;

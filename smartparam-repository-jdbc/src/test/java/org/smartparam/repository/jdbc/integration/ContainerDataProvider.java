@@ -31,7 +31,7 @@ import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.jdbcCon
  *
  * @author Adam Dubiel
  */
-public final class TestIntegrationDataProvider {
+public class ContainerDataProvider {
 
     private static final String[][] databases = new String[][]{
         {"H2", "jdbc:h2:mem:test", "smartparam", "smartparam"}
@@ -39,12 +39,30 @@ public final class TestIntegrationDataProvider {
 //        {Dialect.MYSQL, "jdbc:mysql://localhost/smartparam?characterEncoding=UTF-8&allowMultiQueries=true", "smartparam", "smartparam"}
     };
 
-    private TestIntegrationDataProvider() {
+    private static final ContainerDataProvider provider;
+
+    private PicoContainer[] containers;
+
+    static {
+        provider = new ContainerDataProvider();
+        provider.initializeContainers();
     }
 
-    @DataProvider(name = "databases")
+    public ContainerDataProvider() {
+    }
+
+    @DataProvider(name = "containers")
     public static Iterator<Object[]> databaseProvider() {
         List<Object[]> testData = new ArrayList<Object[]>();
+        for (PicoContainer container : provider.getContainers()) {
+            testData.add(new Object[]{container});
+        }
+
+        return testData.iterator();
+    }
+
+    public void initializeContainers() {
+        List<PicoContainer> containerList = new ArrayList<PicoContainer>(databases.length);
         for (String[] database : databases) {
             Dialect dialect = Dialect.valueOf(database[0]);
 
@@ -55,9 +73,14 @@ public final class TestIntegrationDataProvider {
 
             PicoJdbcParamRepositoryFactory factory = new PicoJdbcParamRepositoryFactory();
             PicoContainer container = factory.createContainer(new PicoJdbcParamRepositoryConfig(dataSource, configuration));
-            testData.add(new Object[]{container});
+
+            containerList.add(container);
         }
 
-        return testData.iterator();
+        this.containers = containerList.toArray(new PicoContainer[databases.length]);
+    }
+
+    public PicoContainer[] getContainers() {
+        return containers;
     }
 }

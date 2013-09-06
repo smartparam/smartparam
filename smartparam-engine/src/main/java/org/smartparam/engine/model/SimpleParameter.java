@@ -32,7 +32,7 @@ public class SimpleParameter implements Parameter {
 
     protected Set<ParameterEntry> entries;
 
-    protected char arraySeparator;
+    protected char arraySeparator = ';';
 
     protected boolean cacheable = true;
 

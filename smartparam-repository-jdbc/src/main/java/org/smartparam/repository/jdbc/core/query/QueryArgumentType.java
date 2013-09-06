@@ -25,7 +25,9 @@ public enum QueryArgumentType {
 
     STRING(Types.VARCHAR),
     INT(Types.INTEGER),
-    LONG(Types.BIGINT);
+    LONG(Types.BIGINT),
+    CHAR(Types.CHAR),
+    BOOLEAN(Types.BOOLEAN);
 
     private int sqlType;
 

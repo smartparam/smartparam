@@ -30,7 +30,7 @@ import static org.smartparam.repository.jdbc.test.assertions.Assertions.*;
  */
 public class DDLTest {
 
-    @Test(dataProvider = "databases", dataProviderClass = TestIntegrationDataProvider.class, groups = "integration.setUp")
+    @Test(dataProvider = "containers", dataProviderClass = ContainerDataProvider.class, groups = "integration.setUp")
     public void shouldCreateSchemaOnEmptyDatabase(PicoContainer container) throws Exception {
         // given
         Configuration configuration = container.getComponent(Configuration.class);
@@ -52,7 +52,7 @@ public class DDLTest {
         }
     }
 
-    @Test(dataProvider = "databases", dataProviderClass = TestIntegrationDataProvider.class, groups = "integration.tearDown", dependsOnGroups = "integration")
+    @Test(dataProvider = "containers", dataProviderClass = ContainerDataProvider.class, groups = "integration.tearDown", dependsOnGroups = "integration")
     public void shouldDropSchemaFromPopoulatedDatabase(PicoContainer container) {
         // given
         Configuration configuration = container.getComponent(Configuration.class);

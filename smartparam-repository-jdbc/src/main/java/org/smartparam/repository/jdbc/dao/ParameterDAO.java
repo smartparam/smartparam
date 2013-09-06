@@ -45,14 +45,26 @@ public class ParameterDAO {
         this.queryRunner = queryRunner;
 
         this.insertQuery = DialectQueryBuilder.insert(configuration.getDialect()).into(configuration.getParameterTable())
-                .id("id", "seq_parameter").value("name", ":name").build();
+                .id("id", "seq_parameter")
+                .value("name", ":name")
+                .value("input_levels", ":inputLevels")
+                .value("cacheable", ":cacheable")
+                .value("nullable", ":nullable")
+                .value("array_separator", ":arraySeparator")
+                .build();
+
         this.deleteQuery = "DELETE FROM " + configuration.getParameterTable() + " WHERE name = :name";
         this.listNamesQuery = "SELECT name FROM " + configuration.getParameterTable();
         this.selectQuery = "SELECT * FROM " + configuration.getParameterTable() + " where name = :name";
     }
 
     public void insert(Transaction transaction, Parameter parameter) {
-        Query query = Query.query(insertQuery).setString("name", parameter.getName());
+        Query query = Query.query(insertQuery)
+                .setString("name", parameter.getName())
+                .setLong("inputLevels", parameter.getInputLevels())
+                .setBoolean("cacheable", parameter.isCacheable())
+                .setBoolean("nullable", parameter.isNullable())
+                .setChar("arraySeparator", parameter.getArraySeparator());
         transaction.executeUpdate(query);
     }
 
@@ -67,7 +79,7 @@ public class ParameterDAO {
     }
 
     public Parameter getParameter(String parameterName) {
-        Query query = Query.query(selectQuery);
+        Query query = Query.query(selectQuery).setString("name", parameterName);
         return queryRunner.queryForObject(query, new ParameterMapper());
     }
 }
