@@ -57,6 +57,16 @@ public class ParameterAssert extends AbstractAssert<ParameterAssert, Parameter> 
         return this;
     }
 
+    public ParameterAssert isNotCacheable() {
+        Assertions.assertThat(actual.isCacheable()).isFalse();
+        return this;
+    }
+
+    public ParameterAssert hasArraySeparator(char arraySeparator) {
+        Assertions.assertThat(actual.getArraySeparator()).isEqualTo(arraySeparator);
+        return this;
+    }
+
     public ParameterAssert hasInputLevels(int inputLevels) {
         Assertions.assertThat(actual.getInputLevels()).isEqualTo(inputLevels);
         return this;

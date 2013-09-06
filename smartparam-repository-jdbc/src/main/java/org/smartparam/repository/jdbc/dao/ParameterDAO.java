@@ -68,8 +68,8 @@ public class ParameterDAO {
         transaction.executeUpdate(query);
     }
 
-    public void delete(Transaction transaction, Parameter parameter) {
-        Query query = Query.query(deleteQuery).setString("name", parameter.getName());
+    public void delete(Transaction transaction, String parameterName) {
+        Query query = Query.query(deleteQuery).setString("name", parameterName);
         transaction.executeUpdate(query);
     }
 

@@ -15,6 +15,7 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.Set;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.jdbc.core.transaction.Transaction;
@@ -36,7 +37,8 @@ public class ParameterDAOTest {
         // given
         Transaction transaction = container.getComponent(TransactionManager.class).openTransaction();
         ParameterDAO parameterDAO = container.getComponent(ParameterDAO.class);
-        Parameter parameter = parameter().withName("test").withInputLevels(1).build();
+        Parameter parameter = parameter().withName("test").withInputLevels(5)
+                .nullable().noncacheable().withArraySeparator('*').build();
 
         // when
         parameterDAO.insert(transaction, parameter);
@@ -45,7 +47,43 @@ public class ParameterDAOTest {
         Parameter resultingParameter = parameterDAO.getParameter("test");
 
         // then
-        assertThat(resultingParameter).isNotNull().hasName("test");
+        assertThat(resultingParameter).isNotNull().hasName("test")
+                .hasInputLevels(5).hasArraySeparator('*').isNullable().isNotCacheable();
     }
 
+    @Test(dataProvider = "containers", dataProviderClass = ContainerDataProvider.class)
+    public void shouldDeleteParameterFromDatabase(PicoContainer container) {
+        // given
+        Transaction transaction = container.getComponent(TransactionManager.class).openTransaction();
+        ParameterDAO parameterDAO = container.getComponent(ParameterDAO.class);
+        parameterDAO.insert(transaction, parameter().withName("test").build());
+        transaction.commit();
+        transaction.closeWithArtifacts();
+
+        // when
+        Transaction deleteTransaction = container.getComponent(TransactionManager.class).openTransaction();
+        parameterDAO.delete(deleteTransaction, "test");
+        deleteTransaction.commit();
+        deleteTransaction.closeWithArtifacts();
+
+        // then
+        assertThat(parameterDAO.getParameter("test")).isNull();
+    }
+
+    @Test(dataProvider = "containers", dataProviderClass = ContainerDataProvider.class)
+    public void shouldReturnListOfParameterNamesStoredInDB(PicoContainer container) {
+        // given
+        Transaction transaction = container.getComponent(TransactionManager.class).openTransaction();
+        ParameterDAO parameterDAO = container.getComponent(ParameterDAO.class);
+        parameterDAO.insert(transaction, parameter().withName("test1").build());
+        parameterDAO.insert(transaction, parameter().withName("test2").build());
+        transaction.commit();
+        transaction.closeWithArtifacts();
+
+        // when
+        Set<String> parameters = parameterDAO.getParameterNames();
+
+        // then
+        assertThat(parameters).isNotEmpty().hasSize(2).containsOnly("test1", "test2");
+    }
 }
