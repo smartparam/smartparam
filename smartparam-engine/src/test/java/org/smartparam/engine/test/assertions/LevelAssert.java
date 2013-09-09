@@ -52,4 +52,9 @@ public class LevelAssert extends AbstractAssert<LevelAssert, Level> {
         Assertions.assertThat(actual.getLevelCreator()).isEqualTo(levelCreator);
         return this;
     }
+
+    public LevelAssert isArray() {
+        Assertions.assertThat(actual.isArray()).isTrue();
+        return this;
+    }
 }

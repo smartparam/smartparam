@@ -38,9 +38,9 @@ public interface JdbcProviderDAO {
 
     Set<String> getParameterNames();
 
-    List<Level> getParameterLevels(int parameterId);
+    List<Level> getParameterLevels(long parameterId);
 
-    Set<ParameterEntry> getParameterEntries(int parameterId);
+    Set<ParameterEntry> getParameterEntries(long parameterId);
 
     void dropParameter(String parameterName);
 }

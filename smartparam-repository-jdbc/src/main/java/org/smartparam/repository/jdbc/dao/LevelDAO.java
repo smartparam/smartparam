@@ -63,8 +63,8 @@ public class LevelDAO {
         transaction.executeUpdate(query);
     }
 
-    public Level getLevel(long parameterId, long id) {
+    public Level getLevel(long id) {
         Query query = Query.query(selectQuery).setLong("id", id);
-        return queryRunner.queryForObject(query, new LevelMapper(parameterId));
+        return queryRunner.queryForObject(query, new LevelMapper());
     }
 }

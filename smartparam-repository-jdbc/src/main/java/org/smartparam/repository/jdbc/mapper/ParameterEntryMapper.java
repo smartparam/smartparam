@@ -27,9 +27,9 @@ import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
  */
 public class ParameterEntryMapper implements ObjectMapper<ParameterEntry> {
 
-    private int parameterId;
+    private long parameterId;
 
-    public ParameterEntryMapper(int parameterId) {
+    public ParameterEntryMapper(long parameterId) {
         this.parameterId = parameterId;
     }
 

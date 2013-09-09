@@ -27,17 +27,11 @@ import org.smartparam.repository.jdbc.model.JdbcParameterLevel;
  */
 public class LevelMapper implements ObjectMapper<Level> {
 
-    private int parameterId;
-
-    public LevelMapper(int parameterId) {
-        this.parameterId = parameterId;
-    }
-
     @Override
     public Level createObject(ResultSet resultSet) throws SQLException {
         JdbcParameterLevel level = new JdbcParameterLevel();
-        level.setId(resultSet.getInt("id"));
-        level.setParameterId(parameterId);
+        level.setId(resultSet.getLong("id"));
+        level.setParameterId(resultSet.getLong("param_id"));
         level.setOrderNo(resultSet.getInt("order_no"));
         level.setName(resultSet.getString("label"));
         level.setType(resultSet.getString("type"));

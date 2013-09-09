@@ -24,9 +24,9 @@ import org.smartparam.engine.model.ParameterEntry;
  */
 public class JdbcParameterEntry implements ParameterEntry {
 
-    private int id;
+    private long id;
 
-    private int parameterId;
+    private long parameterId;
 
     private String[] levels;
 
@@ -35,19 +35,19 @@ public class JdbcParameterEntry implements ParameterEntry {
         return levels;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public int getParameterId() {
+    public long getParameterId() {
         return parameterId;
     }
 
-    public void setParameterId(int parameterId) {
+    public void setParameterId(long parameterId) {
         this.parameterId = parameterId;
     }
 

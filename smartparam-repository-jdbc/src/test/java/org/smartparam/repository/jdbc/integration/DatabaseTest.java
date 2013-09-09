@@ -15,23 +15,58 @@
  */
 package org.smartparam.repository.jdbc.integration;
 
+import javax.sql.DataSource;
 import org.picocontainer.PicoContainer;
+import org.smartparam.repository.jdbc.config.Configuration;
+import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryConfig;
+import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryFactory;
+import org.smartparam.repository.jdbc.core.dialect.Dialect;
+import org.smartparam.repository.jdbc.core.query.QueryRunner;
+import org.smartparam.repository.jdbc.dao.JdbcProviderDAO;
 import org.smartparam.repository.jdbc.schema.SchemaDescription;
 import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
 import org.smartparam.repository.jdbc.schema.SchemaManager;
-import org.smartparam.repository.jdbc.config.Configuration;
-import org.smartparam.repository.jdbc.dao.JdbcProviderDAO;
-import org.testng.annotations.Test;
-import static org.smartparam.repository.jdbc.test.assertions.Assertions.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
+import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.jdbcConfiguration;
+import static org.smartparam.repository.jdbc.test.assertions.Assertions.assertThat;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class DDLTest {
+public class DatabaseTest {
 
-    @Test(dataProvider = "containers", dataProviderClass = ContainerDataProvider.class, groups = "integration.setUp")
-    public void shouldCreateSchemaOnEmptyDatabase(PicoContainer container) throws Exception {
+    private PicoContainer container;
+
+    private TheCleaner cleaner;
+
+    protected <T> T get(Class<T> objectClass) {
+        return container.getComponent(objectClass);
+    }
+
+    @Parameters({"dialect", "url", "user", "password"})
+    @BeforeClass(alwaysRun = true)
+    public void setUpDatabase(@Optional("H2") String dialectString, @Optional("jdbc:h2:mem:test") String url, @Optional("smartpara") String user, @Optional("smartpara") String password) throws Exception {
+        Dialect dialect = Dialect.valueOf(dialectString);
+
+        Configuration configuration = jdbcConfiguration().withDialect(dialect)
+                .withParameterTableName("parameter").withLevelTableName("level")
+                .withParameterEntryTableName("entry").build();
+        DataSource dataSource = DataSourceFactory.create(dialect, url, user, password);
+
+        PicoJdbcParamRepositoryFactory factory = new PicoJdbcParamRepositoryFactory();
+        this.container = factory.createContainer(new PicoJdbcParamRepositoryConfig(dataSource, configuration));
+
+        this.cleaner = new TheCleaner(container.getComponent(QueryRunner.class));
+
+        createSchema(container);
+    }
+
+    private void createSchema(PicoContainer container) throws Exception {
         // given
         Configuration configuration = container.getComponent(Configuration.class);
         JdbcProviderDAO dao = container.getComponent(JdbcProviderDAO.class);
@@ -52,8 +87,18 @@ public class DDLTest {
         }
     }
 
-    @Test(dataProvider = "containers", dataProviderClass = ContainerDataProvider.class, groups = "integration.tearDown", dependsOnGroups = "integration")
-    public void shouldDropSchemaFromPopoulatedDatabase(PicoContainer container) {
+    @BeforeMethod(alwaysRun = true)
+    public void cleanDatabase() {
+        cleaner.cleanDB(get(Configuration.class));
+    }
+
+    @AfterClass(alwaysRun = true)
+    public void tearDownDatabase() throws Exception {
+        dropSchema(container);
+        this.container = null;
+    }
+
+    private void dropSchema(PicoContainer container) {
         // given
         Configuration configuration = container.getComponent(Configuration.class);
         SchemaManager schemaManager = container.getComponent(SchemaManager.class);

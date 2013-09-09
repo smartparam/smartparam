@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="integration">
+
+    <test name="h2">
+        <groups>
+            <run>
+                <include name="integration"/>
+            </run>
+        </groups>
+
+        <parameter name="dialect" value="H2"/>
+        <parameter name="url" value="jdbc:h2:mem:test"/>
+        <parameter name="user" value="smartparam"/>
+        <parameter name="password" value="smartparam"/>
+        
+        <packages>
+            <package name="org.smartparam.repository.jdbc.*"/>
+        </packages>
+    </test>
+
+</suite>

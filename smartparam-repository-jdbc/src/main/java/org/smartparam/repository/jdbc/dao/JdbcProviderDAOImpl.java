@@ -118,21 +118,21 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
     }
 
     @Override
-    public List<Level> getParameterLevels(int parameterId) {
-        Query query = Query.query(" select id, order_no, label, type, matcher, level_creator, array_flag"
+    public List<Level> getParameterLevels(long parameterId) {
+        Query query = Query.query(" select id, order_no, label, type, matcher, level_creator, array_flag, param_id"
                 + " from " + configuration.getParameterLevelTable()
                 + " where param_id = :parameterId");
-        query.setInt("parameterId", parameterId);
+        query.setLong("parameterId", parameterId);
 
-        return queryRunner.queryForList(query, new LevelMapper(parameterId));
+        return queryRunner.queryForList(query, new LevelMapper());
     }
 
     @Override
-    public Set<ParameterEntry> getParameterEntries(int parameterId) {
+    public Set<ParameterEntry> getParameterEntries(long parameterId) {
         Query query = Query.query("select id, level1, level2, level3, level4, level5, level6, level7, level8, value"
                 + " from " + configuration.getParameterEntryTable()
                 + " where param_id = :parameterId");
-        query.setInt("parameterId", parameterId);
+        query.setLong("parameterId", parameterId);
 
         return queryRunner.queryForSet(query, new ParameterEntryMapper(parameterId));
     }
@@ -142,11 +142,11 @@ public class JdbcProviderDAOImpl implements JdbcProviderDAO {
         JdbcParameter parameter = getParameter(parameterName);
 
         Query dropEntriesQuery = Query.query("delete from " + configuration.getParameterEntryTable() + " where param_id = :parameterId");
-        dropEntriesQuery.setInt("parameterId", parameter.getId());
+        dropEntriesQuery.setLong("parameterId", parameter.getId());
         Query dropLevelsQuery = Query.query("delete from " + configuration.getParameterLevelTable() + " where param_id = :parameterId");
-        dropLevelsQuery.setInt("parameterId", parameter.getId());
+        dropLevelsQuery.setLong("parameterId", parameter.getId());
         Query dropParameterQuery = Query.query("delete from " + configuration.getParameterTable() + " where id = :id");
-        dropParameterQuery.setInt("id", parameter.getId());
+        dropParameterQuery.setLong("id", parameter.getId());
 
         queryRunner.execute(dropEntriesQuery, dropLevelsQuery, dropParameterQuery);
     }
