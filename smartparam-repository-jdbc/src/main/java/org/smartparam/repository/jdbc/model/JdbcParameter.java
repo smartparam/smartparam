@@ -35,7 +35,7 @@ public class JdbcParameter implements Parameter {
     /**
      * Unique identifier.
      */
-    private int id;
+    private long id;
 
     /**
      * Unique parameter name (code).
@@ -54,7 +54,7 @@ public class JdbcParameter implements Parameter {
 
     private char arraySeparator = DEFAULT_ARRAY_SEPARATOR;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -114,7 +114,7 @@ public class JdbcParameter implements Parameter {
         return sb.toString();
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

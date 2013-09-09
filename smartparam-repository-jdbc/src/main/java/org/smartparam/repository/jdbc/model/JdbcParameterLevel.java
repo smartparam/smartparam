@@ -23,9 +23,9 @@ import org.smartparam.engine.model.Level;
  */
 public class JdbcParameterLevel implements Level {
 
-    private int id;
+    private long id;
 
-    private int parameterId;
+    private long parameterId;
 
     private int orderNo;
 
@@ -92,7 +92,7 @@ public class JdbcParameterLevel implements Level {
         this.array = array;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -100,11 +100,11 @@ public class JdbcParameterLevel implements Level {
         this.id = id;
     }
 
-    public int getParameterId() {
+    public long getParameterId() {
         return parameterId;
     }
 
-    public void setParameterId(int parameterId) {
+    public void setParameterId(long parameterId) {
         this.parameterId = parameterId;
     }
 
