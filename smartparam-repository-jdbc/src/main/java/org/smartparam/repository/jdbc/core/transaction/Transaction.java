@@ -46,7 +46,6 @@ public class Transaction {
         return connection;
     }
 
-
     public int executeUpdate(Query query) {
         try {
             query.compile();

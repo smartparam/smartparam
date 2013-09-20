@@ -43,7 +43,7 @@ public class DataSourceTransactionManager implements TransactionManager {
 
     @Override
     public Transaction openTransaction(boolean autoCommit) {
-        Connection connection = null;
+        Connection connection;
         try {
             connection = dataSource.getConnection();
             connection.setAutoCommit(autoCommit);
