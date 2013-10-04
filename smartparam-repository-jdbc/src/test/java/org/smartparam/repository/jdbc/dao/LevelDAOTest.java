@@ -15,13 +15,13 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.test.builder.LevelTestBuilder;
-import org.smartparam.repository.jdbc.core.transaction.Transaction;
-import org.smartparam.repository.jdbc.core.transaction.TransactionManager;
+import java.util.List;
+import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
+import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
+import static org.smartparam.repository.jdbc.test.builder.JdbcLevelTestBuilder.jdbcLevel;
 
 /**
  *
@@ -32,21 +32,22 @@ public class LevelDAOTest extends DatabaseTest {
 
     public void shouldInsertNewLevelIntoDatabase() {
         // given
-        Transaction transaction = get(TransactionManager.class).openTransaction();
         LevelDAO levelDAO = get(LevelDAO.class);
-        Level level = LevelTestBuilder.level().withName("test").withLevelCreator("testCreator")
+        JdbcLevel level = jdbcLevel().withName("test").withLevelCreator("testCreator")
                 .withMatcher("testMatcher").withType("testType").array().build();
+        QueryRunner runner = queryRunner();
 
         // when
-        levelDAO.insert(transaction, level);
-        transaction.commit();
-        transaction.closeWithArtifacts();
-        Level resultingLevel = levelDAO.getLevel(1);
+        levelDAO.insert(runner, level, 1);
+        runner.commit();
+
+        List<JdbcLevel> levels = levelDAO.getParameterLevels(runner, 1);
+        runner.close();
 
         // then
-        assertThat(resultingLevel).isNotNull().hasName("test")
+        assertThat(levels).hasSize(1);
+        assertThat(levels.get(0)).isNotNull().hasName("test")
                 .hasLevelCreator("testCreator").hasMatcher("testMatcher")
                 .hasType("testType").isArray();
     }
-
 }

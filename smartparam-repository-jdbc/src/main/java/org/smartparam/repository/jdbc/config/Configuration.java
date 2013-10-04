@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.config;
 
-import org.smartparam.repository.jdbc.core.dialect.Dialect;
+import org.polyjdbc.core.dialect.Dialect;
 
 /**
  * JDBC repository configuration.
@@ -34,7 +34,9 @@ public interface Configuration {
 
     String getParameterTable();
 
-    String getParameterLevelTable();
+    String getLevelTable();
 
     String getParameterEntryTable();
+
+    String getSequencePrefix();
 }

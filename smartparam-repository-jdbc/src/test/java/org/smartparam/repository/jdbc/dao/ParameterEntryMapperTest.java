@@ -1,0 +1,81 @@
+/*
+ * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.smartparam.repository.jdbc.dao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.smartparam.engine.test.assertions.Assertions;
+import org.smartparam.repository.jdbc.config.DefaultConfiguration;
+import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
+import org.testng.annotations.Test;
+import static org.smartparam.repository.jdbc.test.builder.DefaultConfigurationTestBuilder.defaultConfiguration;
+import static org.smartparam.repository.jdbc.test.builder.ResultSetMockBuilder.resultSet;
+
+/**
+ *
+ * @author Adam Dubiel
+ */
+public class ParameterEntryMapperTest {
+
+    @Test
+    public void shouldReturnEntryWithSameAmountOfLevelsWhenLevelsBelowLimit() throws SQLException {
+        // given
+        DefaultConfiguration configuration = defaultConfiguration().withLevelColumnCount(10).build();
+        ParameterEntryMapper mapper = new ParameterEntryMapper(configuration);
+        ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
+                .withString("level1", "1").withString("level2", "2").build();
+
+        // when
+        JdbcParameterEntry entry = mapper.createObject(resultSet);
+
+        // then
+        Assertions.assertThat(entry).hasLevels(2);
+    }
+
+    @Test
+    public void shouldReturnEntryWithMaximumLevelsWhenLevelsEqualsLimit() throws SQLException {
+        // given
+        DefaultConfiguration configuration = defaultConfiguration().withLevelColumnCount(2).build();
+        ParameterEntryMapper mapper = new ParameterEntryMapper(configuration);
+        ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
+                .withString("level1", "1").withString("level2", "2")
+                .build();
+
+        // when
+        JdbcParameterEntry entry = mapper.createObject(resultSet);
+
+        // then
+        Assertions.assertThat(entry).hasLevels(2);
+    }
+
+    @Test
+    public void shouldReturnEntryWithLevelsExtractedFromSplitLastLevelWhenLevelCountGreaterThanLimit() throws SQLException {
+        // given
+        DefaultConfiguration configuration = defaultConfiguration()
+                .withLevelColumnCount(3).withExcessLevelSeparator('|').build();
+        ParameterEntryMapper mapper = new ParameterEntryMapper(configuration);
+        ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
+                .withString("level1", "1").withString("level2", "2")
+                .withString("level3", "3|4|5")
+                .build();
+
+        // when
+        JdbcParameterEntry entry = mapper.createObject(resultSet);
+
+        // then
+        Assertions.assertThat(entry).hasLevels(5);
+    }
+}

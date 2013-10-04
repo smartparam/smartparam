@@ -13,54 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.smartparam.engine.test.builder;
 
-import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.editable.EditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
-
 
 /**
  *
  * @author Adam Dubiel
  */
-public class LevelTestBuilder {
-
-    private SimpleEditableLevel level = new SimpleEditableLevel();
+public class LevelTestBuilder extends AbstractLevelTestBuilder<EditableLevel, LevelTestBuilder> {
 
     private LevelTestBuilder() {
+        super(new SimpleEditableLevel());
     }
 
     public static LevelTestBuilder level() {
         return new LevelTestBuilder();
     }
 
-    public Level build() {
-        return level;
-    }
-
-    public LevelTestBuilder withName(String name) {
-        level.setName(name);
-        return this;
-    }
-
-    public LevelTestBuilder withMatcher(String matcher) {
-        level.setMatcher(matcher);
-        return this;
-    }
-
-    public LevelTestBuilder withLevelCreator(String levelCreator) {
-        level.setLevelCreator(levelCreator);
-        return this;
-    }
-
-    public LevelTestBuilder withType(String type) {
-        level.setType(type);
-        return this;
-    }
-
-    public LevelTestBuilder array() {
-        level.setArray(true);
+    @Override
+    protected LevelTestBuilder self() {
         return this;
     }
 }

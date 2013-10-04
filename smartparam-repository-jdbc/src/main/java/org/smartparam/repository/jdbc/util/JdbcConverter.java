@@ -19,7 +19,10 @@ package org.smartparam.repository.jdbc.util;
  *
  * @author Adam Dubiel
  */
-public class JdbcConverter {
+public final class JdbcConverter {
+
+    private JdbcConverter() {
+    }
 
     public static char toChar(String str) {
         return str != null && str.length() > 0 ? str.charAt(0) : ',';

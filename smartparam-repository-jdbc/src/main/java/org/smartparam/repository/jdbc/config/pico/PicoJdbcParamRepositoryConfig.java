@@ -17,14 +17,11 @@ package org.smartparam.repository.jdbc.config.pico;
 
 import java.util.List;
 import javax.sql.DataSource;
+import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
-import org.smartparam.repository.jdbc.dao.JdbcProviderDAOImpl;
-import org.smartparam.repository.jdbc.core.query.JdbcQueryRunner;
-import org.smartparam.repository.jdbc.query.loader.ClasspathQueryLoader;
-import org.smartparam.repository.jdbc.schema.DDLSchemaManager;
-import org.smartparam.repository.jdbc.core.transaction.DataSourceTransactionManager;
+import org.smartparam.repository.jdbc.dao.JdbcRepositoryDAOImpl;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 
@@ -45,10 +42,7 @@ public class PicoJdbcParamRepositoryConfig extends ComponentConfig implements Jd
 
     @Override
     protected void injectDefaults(List<Object> components) {
-        components.add(JdbcProviderDAOImpl.class);
-        components.add(JdbcQueryRunner.class);
-        components.add(DDLSchemaManager.class);
-        components.add(ClasspathQueryLoader.class);
+        components.add(JdbcRepositoryDAOImpl.class);
         components.add(DataSourceTransactionManager.class);
         components.add(ParameterDAO.class);
         components.add(LevelDAO.class);

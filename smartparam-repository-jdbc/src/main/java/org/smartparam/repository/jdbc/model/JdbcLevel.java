@@ -16,12 +16,13 @@
 package org.smartparam.repository.jdbc.model;
 
 import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.editable.EditableLevel;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameterLevel implements Level {
+public class JdbcLevel implements EditableLevel {
 
     private long id;
 
@@ -39,8 +40,27 @@ public class JdbcParameterLevel implements Level {
 
     private boolean array;
 
+    public JdbcLevel() {
+    }
+
+    public JdbcLevel(long id, Level level) {
+        name = level.getName();
+        type = level.getType();
+        matcher = level.getMatcher();
+        levelCreator = level.getLevelCreator();
+        array = level.isArray();
+    }
+
     public int getOrderNo() {
         return orderNo;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
@@ -72,32 +92,29 @@ public class JdbcParameterLevel implements Level {
         this.orderNo = orderNo;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public void setLevelCreator(String levelCreator) {
         this.levelCreator = levelCreator;
     }
 
+    @Override
     public void setType(String type) {
         this.type = type;
     }
 
+    @Override
     public void setMatcher(String matcher) {
         this.matcher = matcher;
     }
 
+    @Override
     public void setArray(boolean array) {
         this.array = array;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getParameterId() {

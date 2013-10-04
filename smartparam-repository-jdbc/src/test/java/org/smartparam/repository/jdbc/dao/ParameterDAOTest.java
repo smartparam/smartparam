@@ -15,14 +15,8 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
-import java.util.Set;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.repository.jdbc.core.transaction.Transaction;
-import org.smartparam.repository.jdbc.core.transaction.TransactionManager;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 
 /**
  *
@@ -31,55 +25,55 @@ import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 @Test(groups = "integration")
 public class ParameterDAOTest extends DatabaseTest {
 
-    public void shouldInsertNewParameterIntoDatabase() {
-        // given
-        Transaction transaction = get(TransactionManager.class).openTransaction();
-        ParameterDAO parameterDAO = get(ParameterDAO.class);
-        Parameter parameter = parameter().withName("test").withInputLevels(5)
-                .nullable().noncacheable().withArraySeparator('*').build();
-
-        // when
-        parameterDAO.insert(transaction, parameter);
-        transaction.commit();
-        transaction.closeWithArtifacts();
-        Parameter resultingParameter = parameterDAO.getParameter("test");
-
-        // then
-        assertThat(resultingParameter).isNotNull().hasName("test")
-                .hasInputLevels(5).hasArraySeparator('*').isNullable().isNotCacheable();
-    }
-
-    public void shouldDeleteParameterFromDatabase() {
-        // given
-        Transaction transaction = get(TransactionManager.class).openTransaction();
-        ParameterDAO parameterDAO = get(ParameterDAO.class);
-        parameterDAO.insert(transaction, parameter().withName("test").build());
-        transaction.commit();
-        transaction.closeWithArtifacts();
-
-        // when
-        Transaction deleteTransaction = get(TransactionManager.class).openTransaction();
-        parameterDAO.delete(deleteTransaction, "test");
-        deleteTransaction.commit();
-        deleteTransaction.closeWithArtifacts();
-
-        // then
-        assertThat(parameterDAO.getParameter("test")).isNull();
-    }
-
-    public void shouldReturnListOfParameterNamesStoredInDB() {
-        // given
-        Transaction transaction = get(TransactionManager.class).openTransaction();
-        ParameterDAO parameterDAO = get(ParameterDAO.class);
-        parameterDAO.insert(transaction, parameter().withName("test1").build());
-        parameterDAO.insert(transaction, parameter().withName("test2").build());
-        transaction.commit();
-        transaction.closeWithArtifacts();
-
-        // when
-        Set<String> parameters = parameterDAO.getParameterNames();
-
-        // then
-        assertThat(parameters).isNotEmpty().hasSize(2).containsOnly("test1", "test2");
-    }
+//    public void shouldInsertNewParameterIntoDatabase() {
+//        // given
+//        Transaction transaction = get(TransactionManager.class).openTransaction();
+//        ParameterDAO parameterDAO = get(ParameterDAO.class);
+//        Parameter parameter = parameter().withName("test").withInputLevels(5)
+//                .nullable().noncacheable().withArraySeparator('*').build();
+//
+//        // when
+//        parameterDAO.insert(transaction, parameter);
+//        transaction.commit();
+//        transaction.closeWithArtifacts();
+//        Parameter resultingParameter = parameterDAO.getParameter("test");
+//
+//        // then
+//        assertThat(resultingParameter).isNotNull().hasName("test")
+//                .hasInputLevels(5).hasArraySeparator('*').isNullable().isNotCacheable();
+//    }
+//
+//    public void shouldDeleteParameterFromDatabase() {
+//        // given
+//        Transaction transaction = get(TransactionManager.class).openTransaction();
+//        ParameterDAO parameterDAO = get(ParameterDAO.class);
+//        parameterDAO.insert(transaction, parameter().withName("test").build());
+//        transaction.commit();
+//        transaction.closeWithArtifacts();
+//
+//        // when
+//        Transaction deleteTransaction = get(TransactionManager.class).openTransaction();
+//        parameterDAO.delete(deleteTransaction, "test");
+//        deleteTransaction.commit();
+//        deleteTransaction.closeWithArtifacts();
+//
+//        // then
+//        assertThat(parameterDAO.getParameter("test")).isNull();
+//    }
+//
+//    public void shouldReturnListOfParameterNamesStoredInDB() {
+//        // given
+//        Transaction transaction = get(TransactionManager.class).openTransaction();
+//        ParameterDAO parameterDAO = get(ParameterDAO.class);
+//        parameterDAO.insert(transaction, parameter().withName("test1").build());
+//        parameterDAO.insert(transaction, parameter().withName("test2").build());
+//        transaction.commit();
+//        transaction.closeWithArtifacts();
+//
+//        // when
+//        Set<String> parameters = parameterDAO.getParameterNames();
+//
+//        // then
+//        assertThat(parameters).isNotEmpty().hasSize(2).containsOnly("test1", "test2");
+//    }
 }

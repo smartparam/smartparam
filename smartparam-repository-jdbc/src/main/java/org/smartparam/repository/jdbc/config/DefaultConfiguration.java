@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.config;
 
-import org.smartparam.repository.jdbc.core.dialect.Dialect;
+import org.polyjdbc.core.dialect.Dialect;
 
 /**
  * Java bean implementation of JDBC configuration, provides default values for
@@ -41,6 +41,12 @@ public class DefaultConfiguration implements Configuration {
 
     private String parameterEntryTable = "sp_parameter_entry";
 
+    private String sequencePrefix = "seq_";
+
+    private char excessLevelsSeparator = ';';
+
+    private int levelColumnCount = 8;
+
     public DefaultConfiguration() {
     }
 
@@ -53,14 +59,26 @@ public class DefaultConfiguration implements Configuration {
         return dialect;
     }
 
+    public void setDialect(Dialect dialect) {
+        this.dialect = dialect;
+    }
+
     @Override
     public String getParameterTable() {
         return parameterTable;
     }
 
+    public void setParameterTable(String parameterTable) {
+        this.parameterTable = parameterTable;
+    }
+
     @Override
-    public String getParameterLevelTable() {
+    public String getLevelTable() {
         return parameterLevelTable;
+    }
+
+    public void setLevelTable(String parameterLevelTable) {
+        this.parameterLevelTable = parameterLevelTable;
     }
 
     @Override
@@ -68,19 +86,32 @@ public class DefaultConfiguration implements Configuration {
         return parameterEntryTable;
     }
 
-    public void setDialect(Dialect dialect) {
-        this.dialect = dialect;
+    @Override
+    public String getSequencePrefix() {
+        return sequencePrefix;
     }
 
-    public void setParameterTable(String parameterTable) {
-        this.parameterTable = parameterTable;
-    }
-
-    public void setParameterLevelTable(String parameterLevelTable) {
-        this.parameterLevelTable = parameterLevelTable;
+    public void setSequencePrefix(String sequencePrefix) {
+        this.sequencePrefix = sequencePrefix;
     }
 
     public void setParameterEntryTable(String parameterEntryTable) {
         this.parameterEntryTable = parameterEntryTable;
+    }
+
+    public char getExcessLevelsSeparator() {
+        return excessLevelsSeparator;
+    }
+
+    public void setExcessLevelsSeparator(char excessLevelsSeparator) {
+        this.excessLevelsSeparator = excessLevelsSeparator;
+    }
+
+    public int getLevelColumnCount() {
+        return levelColumnCount;
+    }
+
+    public void setLevelColumnCount(int levelColumnCount) {
+        this.levelColumnCount = levelColumnCount;
     }
 }

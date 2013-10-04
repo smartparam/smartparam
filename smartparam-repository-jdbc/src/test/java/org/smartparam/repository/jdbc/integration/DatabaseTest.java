@@ -17,28 +17,34 @@ package org.smartparam.repository.jdbc.integration;
 
 import javax.sql.DataSource;
 import org.picocontainer.PicoContainer;
+import org.polyjdbc.core.dialect.Dialect;
+import org.polyjdbc.core.dialect.DialectRegistry;
+import org.polyjdbc.core.integration.DataSourceFactory;
+import org.polyjdbc.core.integration.TestSchemaManager;
+import org.polyjdbc.core.integration.TheCleaner;
+import org.polyjdbc.core.query.QueryRunner;
+import org.polyjdbc.core.query.TransactionalQueryRunner;
+import org.polyjdbc.core.transaction.DataSourceTransactionManager;
+import org.polyjdbc.core.transaction.Transaction;
+import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryFactory;
-import org.smartparam.repository.jdbc.core.dialect.Dialect;
-import org.smartparam.repository.jdbc.core.query.QueryRunner;
-import org.smartparam.repository.jdbc.dao.JdbcProviderDAO;
-import org.smartparam.repository.jdbc.schema.SchemaDescription;
-import org.smartparam.repository.jdbc.schema.SchemaLookupResult;
-import org.smartparam.repository.jdbc.schema.SchemaManager;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.jdbcConfiguration;
-import static org.smartparam.repository.jdbc.test.assertions.Assertions.assertThat;
 
 /**
  *
  * @author Adam Dubiel
  */
 public class DatabaseTest {
+
+    private TransactionManager transactionManager;
+
+    private TestSchemaManager schemaManager;
 
     private PicoContainer container;
 
@@ -48,48 +54,37 @@ public class DatabaseTest {
         return container.getComponent(objectClass);
     }
 
+    protected Transaction transaction() {
+        return transactionManager.openTransaction();
+    }
+
+    protected QueryRunner queryRunner() {
+        return new TransactionalQueryRunner(transaction());
+    }
+
     @Parameters({"dialect", "url", "user", "password"})
     @BeforeClass(alwaysRun = true)
-    public void setUpDatabase(@Optional("H2") String dialectString, @Optional("jdbc:h2:mem:test") String url, @Optional("smartpara") String user, @Optional("smartpara") String password) throws Exception {
-        Dialect dialect = Dialect.valueOf(dialectString);
+    public void setUpDatabase() throws Exception {
+        Dialect dialect = DialectRegistry.dialect("H2");
 
         Configuration configuration = jdbcConfiguration().withDialect(dialect)
                 .withParameterTableName("parameter").withLevelTableName("level")
                 .withParameterEntryTableName("entry").build();
-        DataSource dataSource = DataSourceFactory.create(dialect, url, user, password);
+        DataSource dataSource = DataSourceFactory.create(dialect, "jdbc:h2:mem:test", "smartparam", "smartparam");
+        this.transactionManager = new DataSourceTransactionManager(dialect, dataSource);
+        this.schemaManager = new TestSchemaManager(dialect);
 
         PicoJdbcParamRepositoryFactory factory = new PicoJdbcParamRepositoryFactory();
         this.container = factory.createContainer(new PicoJdbcParamRepositoryConfig(dataSource, configuration));
 
-        this.cleaner = new TheCleaner(container.getComponent(QueryRunner.class));
-
-        createSchema(container);
-    }
-
-    private void createSchema(PicoContainer container) throws Exception {
-        // given
-        Configuration configuration = container.getComponent(Configuration.class);
-        JdbcProviderDAO dao = container.getComponent(JdbcProviderDAO.class);
-        SchemaManager schemaManager = container.getComponent(SchemaManager.class);
-
-        SchemaDescription description = new SchemaDescription().addTables("parameter", "level", "entry")
-                .addSequences("seq_parameter", "seq_level", "seq_entry").setDialect(configuration.getDialect());
-        description.setConfiguration(configuration);
-        dao.createSchema();
-
-        // when
-        SchemaLookupResult lookupResult = schemaManager.schemaExists(description);
-
-        // then
-        assertThat(lookupResult).hasTable("parameter").hasTable("level").hasTable("entry");
-        if (configuration.getDialect().getProperties().hasSequences()) {
-            assertThat(lookupResult).hasSequence("seq_parameter").hasSequence("seq_level").hasSequence("seq_entry");
-        }
+        this.cleaner = new TheCleaner(transactionManager);
+        this.schemaManager.createSchema(transactionManager);
     }
 
     @BeforeMethod(alwaysRun = true)
     public void cleanDatabase() {
-        cleaner.cleanDB(get(Configuration.class));
+        Configuration config = get(Configuration.class);
+        cleaner.cleanDB(config.getParameterEntryTable(), config.getLevelTable(), config.getParameterTable());
     }
 
     @AfterClass(alwaysRun = true)
@@ -99,16 +94,6 @@ public class DatabaseTest {
     }
 
     private void dropSchema(PicoContainer container) {
-        // given
-        Configuration configuration = container.getComponent(Configuration.class);
-        SchemaManager schemaManager = container.getComponent(SchemaManager.class);
-        SchemaDescription description = new SchemaDescription().addTables("parameter", "level", "entry")
-                .addSequences("seq_parameter", "seq_level", "seq_entry").setDialect(configuration.getDialect())
-                .setConfiguration(configuration);
-
-        // when
-        schemaManager.dropSchema(description);
-
-        // then
+        schemaManager.dropSchema(transactionManager);
     }
 }

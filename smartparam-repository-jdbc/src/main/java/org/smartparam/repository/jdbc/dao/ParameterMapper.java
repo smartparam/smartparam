@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.mapper;
+package org.smartparam.repository.jdbc.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.smartparam.repository.jdbc.core.mapper.ObjectMapper;
+import org.polyjdbc.core.query.mapper.ObjectMapper;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.util.JdbcConverter;
 

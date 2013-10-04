@@ -26,6 +26,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.polyjdbc</groupId>
+            <artifactId>polyjdbc</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.picocontainer</groupId>
             <artifactId>picocontainer</artifactId>
         </dependency>
@@ -40,6 +45,14 @@
             <groupId>org.smartparam</groupId>
             <artifactId>smartparam-engine</artifactId>
             <version>${project.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.polyjdbc</groupId>
+            <artifactId>polyjdbc</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -100,7 +113,7 @@
 
     <build>
         <plugins>
-            <plugin>
+<!--            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.16</version>
@@ -110,9 +123,9 @@
                         <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
                         <suiteXmlFile>src/test/resources/testng-integration.xml</suiteXmlFile>
                     </suiteXmlFiles>
-                    <!--<excludedGroups>nativeDatabase</excludedGroups>-->
+                    <excludedGroups>nativeDatabase</excludedGroups>
                 </configuration>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

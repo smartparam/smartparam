@@ -28,6 +28,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.index.LevelNode;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
@@ -41,6 +42,10 @@ public class Assertions extends org.fest.assertions.api.Assertions {
 
     public static LevelAssert assertThat(Level actual) {
         return LevelAssert.assertThat(actual);
+    }
+
+    public static ParameterEntryAssert assertThat(ParameterEntry actual) {
+        return ParameterEntryAssert.assertThat(actual);
     }
 
     public static ParamValueAssert assertThat(ParamValue actual) {

@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.config;
 
-import org.smartparam.repository.jdbc.core.dialect.Dialect;
+import org.polyjdbc.core.dialect.Dialect;
 
 /**
  *
@@ -52,7 +52,7 @@ public class ConfigurationBuilder {
     }
 
     public ConfigurationBuilder withLevelTableName(String levelTableName) {
-        configuration.setParameterLevelTable(levelTableName);
+        configuration.setLevelTable(levelTableName);
         return this;
     }
 }

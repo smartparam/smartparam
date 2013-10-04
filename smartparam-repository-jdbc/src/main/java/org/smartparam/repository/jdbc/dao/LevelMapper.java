@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.mapper;
+package org.smartparam.repository.jdbc.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.smartparam.engine.model.Level;
-import org.smartparam.repository.jdbc.core.mapper.ObjectMapper;
-import org.smartparam.repository.jdbc.model.JdbcParameterLevel;
+import org.polyjdbc.core.query.mapper.ObjectMapper;
+import org.smartparam.repository.jdbc.model.JdbcLevel;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class LevelMapper implements ObjectMapper<Level> {
+public class LevelMapper implements ObjectMapper<JdbcLevel> {
 
     @Override
-    public Level createObject(ResultSet resultSet) throws SQLException {
-        JdbcParameterLevel level = new JdbcParameterLevel();
+    public JdbcLevel createObject(ResultSet resultSet) throws SQLException {
+        JdbcLevel level = new JdbcLevel();
         level.setId(resultSet.getLong("id"));
         level.setParameterId(resultSet.getLong("param_id"));
         level.setOrderNo(resultSet.getInt("order_no"));

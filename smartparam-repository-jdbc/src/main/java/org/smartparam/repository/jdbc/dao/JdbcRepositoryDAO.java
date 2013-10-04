@@ -26,7 +26,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public interface JdbcProviderDAO {
+public interface JdbcRepositoryDAO {
 
     void createSchema();
 
@@ -42,5 +42,5 @@ public interface JdbcProviderDAO {
 
     Set<ParameterEntry> getParameterEntries(long parameterId);
 
-    void dropParameter(String parameterName);
+    void deleteParameter(String parameterName);
 }

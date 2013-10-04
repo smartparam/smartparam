@@ -15,15 +15,17 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.HashSet;
 import java.util.Set;
+import org.polyjdbc.core.query.mapper.StringMapper;
+import org.polyjdbc.core.query.DeleteQuery;
+import org.polyjdbc.core.query.InsertQuery;
+import org.polyjdbc.core.query.QueryFactory;
+import org.polyjdbc.core.query.QueryRunner;
+import org.polyjdbc.core.query.SelectQuery;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.jdbc.config.Configuration;
-import org.smartparam.repository.jdbc.core.dialect.query.DialectQueryBuilder;
-import org.smartparam.repository.jdbc.core.mapper.StringMapper;
-import org.smartparam.repository.jdbc.core.query.Query;
-import org.smartparam.repository.jdbc.core.query.QueryRunner;
-import org.smartparam.repository.jdbc.core.transaction.Transaction;
-import org.smartparam.repository.jdbc.mapper.ParameterMapper;
+import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
  *
@@ -31,55 +33,42 @@ import org.smartparam.repository.jdbc.mapper.ParameterMapper;
  */
 public class ParameterDAO {
 
-    private QueryRunner queryRunner;
+    private final Configuration configuration;
 
-    private final String insertQuery;
+    public ParameterDAO(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
-    private final String deleteQuery;
-
-    private final String listNamesQuery;
-
-    private final String selectQuery;
-
-    public ParameterDAO(Configuration configuration, QueryRunner queryRunner) {
-        this.queryRunner = queryRunner;
-
-        this.insertQuery = DialectQueryBuilder.insert(configuration.getDialect()).into(configuration.getParameterTable())
-                .id("id", "seq_parameter")
+    public long insert(QueryRunner queryRunner, Parameter parameter) {
+        InsertQuery query = QueryFactory.insert().into(configuration.getParameterTable())
+                .sequence("id", "seq_parameter")
                 .value("name", ":name")
                 .value("input_levels", ":inputLevels")
                 .value("cacheable", ":cacheable")
                 .value("nullable", ":nullable")
-                .value("array_separator", ":arraySeparator")
-                .build();
-
-        this.deleteQuery = "DELETE FROM " + configuration.getParameterTable() + " WHERE name = :name";
-        this.listNamesQuery = "SELECT name FROM " + configuration.getParameterTable();
-        this.selectQuery = "SELECT * FROM " + configuration.getParameterTable() + " where name = :name";
+                .value("array_separator", ":arraySeparator");
+        return queryRunner.insert(query);
     }
 
-    public void insert(Transaction transaction, Parameter parameter) {
-        Query query = Query.query(insertQuery)
-                .setString("name", parameter.getName())
-                .setLong("inputLevels", parameter.getInputLevels())
-                .setBoolean("cacheable", parameter.isCacheable())
-                .setBoolean("nullable", parameter.isNullable())
-                .setChar("arraySeparator", parameter.getArraySeparator());
-        transaction.executeUpdate(query);
+    public void delete(QueryRunner queryRunner, String parameterName) {
+        DeleteQuery query = QueryFactory.delete().from(configuration.getParameterTable()).where("name = :name").withArgument("name", parameterName);
+        queryRunner.delete(query);
     }
 
-    public void delete(Transaction transaction, String parameterName) {
-        Query query = Query.query(deleteQuery).setString("name", parameterName);
-        transaction.executeUpdate(query);
+    public Set<String> getParameterNames(QueryRunner queryRunner) {
+        SelectQuery query = QueryFactory.select().query("select name from " + configuration.getParameterTable());
+        return new HashSet<String>(queryRunner.queryList(query, new StringMapper()));
     }
 
-    public Set<String> getParameterNames() {
-        Query query = Query.query(listNamesQuery);
-        return queryRunner.queryForSet(query, new StringMapper());
+    public JdbcParameter getParameter(QueryRunner queryRunner, String parameterName) {
+        SelectQuery query = QueryFactory.select().query("select * from " + configuration.getParameterTable() + " where name = :name")
+                .withArgument("name", parameterName);
+        return queryRunner.queryUnique(query, new ParameterMapper());
     }
 
-    public Parameter getParameter(String parameterName) {
-        Query query = Query.query(selectQuery).setString("name", parameterName);
-        return queryRunner.queryForObject(query, new ParameterMapper());
+    public boolean parameterExistst(QueryRunner queryRunner, String parameterName) {
+        SelectQuery query = QueryFactory.select().query("select * from " + configuration.getParameterTable() + " where name = :name")
+                .withArgument("name", parameterName);
+        return queryRunner.queryExistence(query);
     }
 }

@@ -24,7 +24,7 @@ import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.dao.JdbcProviderDAO;
+import org.smartparam.repository.jdbc.dao.JdbcRepositoryDAO;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
@@ -35,7 +35,7 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
 
-    private JdbcProviderDAO dao;
+    private JdbcRepositoryDAO dao;
 
     /**
      * This variable will be used to set the fetchSize property on jdbc statements.
@@ -46,7 +46,7 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
     //TODO #ph rethink default and comment
     private int fetchSize = 100;
 
-    public JdbcParamRepository(JdbcProviderDAO dao) {
+    public JdbcParamRepository(JdbcRepositoryDAO dao) {
         this.dao = dao;
     }
 
@@ -92,7 +92,7 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
         String parameterName = parameter.getName();
 
         if (dao.parameterExists(parameterName)) {
-            dao.dropParameter(parameterName);
+            dao.deleteParameter(parameterName);
         }
         dao.createParameter(parameter);
     }

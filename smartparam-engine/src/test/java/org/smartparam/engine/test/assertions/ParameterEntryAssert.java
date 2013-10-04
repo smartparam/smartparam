@@ -13,31 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.core.dialect;
+
+package org.smartparam.engine.test.assertions;
+
+import org.fest.assertions.api.AbstractAssert;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class PostgresDialectProperties implements DialectProperties {
+public class ParameterEntryAssert extends AbstractAssert<ParameterEntryAssert, ParameterEntry> {
 
-    @Override
-    public String tableExistsQuery() {
-        return "select * from information_schema.tables where upper(table_name) = upper(:tableName)";
+    private ParameterEntryAssert(ParameterEntry actual) {
+        super(actual, ParameterEntryAssert.class);
     }
 
-    @Override
-    public boolean hasSequences() {
-        return true;
+    public static ParameterEntryAssert assertThat(ParameterEntry actual) {
+        return new ParameterEntryAssert(actual);
     }
 
-    @Override
-    public String sequenceExistsQuery() {
-        return "select * from information_schema.sequences where upper(sequence_name) = upper(:sequenceName)";
-    }
-
-    @Override
-    public String nextFromSequence(String sequence) {
-        return "nextval(" + sequence + ")";
+    public ParameterEntryAssert hasLevels(int levelCount) {
+        Assertions.assertThat(actual.getLevels()).hasSize(levelCount);
+        return this;
     }
 }

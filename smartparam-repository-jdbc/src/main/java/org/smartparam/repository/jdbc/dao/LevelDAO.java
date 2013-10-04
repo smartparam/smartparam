@@ -15,13 +15,14 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.List;
+import org.polyjdbc.core.query.DeleteQuery;
+import org.polyjdbc.core.query.InsertQuery;
+import org.polyjdbc.core.query.QueryFactory;
+import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Level;
 import org.smartparam.repository.jdbc.config.Configuration;
-import org.smartparam.repository.jdbc.core.dialect.query.DialectQueryBuilder;
-import org.smartparam.repository.jdbc.core.query.Query;
-import org.smartparam.repository.jdbc.core.query.QueryRunner;
-import org.smartparam.repository.jdbc.core.transaction.Transaction;
-import org.smartparam.repository.jdbc.mapper.LevelMapper;
+import org.smartparam.repository.jdbc.model.JdbcLevel;
 
 /**
  *
@@ -29,42 +30,36 @@ import org.smartparam.repository.jdbc.mapper.LevelMapper;
  */
 public class LevelDAO {
 
-    private QueryRunner queryRunner;
+    private final Configuration configuration;
 
-    private final String insertQuery;
-
-    private final String deleteFromParameterQuery;
-
-    private final String selectQuery;
-
-    public LevelDAO(Configuration configuration, QueryRunner queryRunner) {
-        this.queryRunner = queryRunner;
-
-        this.insertQuery = DialectQueryBuilder.insert(configuration.getDialect()).into(configuration.getParameterLevelTable())
-                .id("id", "seq_level")
-                .value("name", ":name")
-                .value("level_creator", ":levelCreator")
-                .value("type", ":type")
-                .value("matcher", ":matcher")
-                .value("array_flag", ":array")
-                .build();
-
-        this.deleteFromParameterQuery = "DELETE FROM " + configuration.getParameterLevelTable() + " WHERE fk_parameter = :parameterId";
-        this.selectQuery = "SELECT * FROM " + configuration.getParameterLevelTable() + " where id = :id";
+    public LevelDAO(Configuration configuration) {
+        this.configuration = configuration;
     }
 
-    public void insert(Transaction transaction, Level level) {
-        Query query = Query.query(insertQuery)
-                .setString("name", level.getName())
-                .setString("levelCreator", level.getLevelCreator())
-                .setString("matcher", level.getMatcher())
-                .setString("type", level.getType())
-                .setBoolean("array", level.isArray());
-        transaction.executeUpdate(query);
+    public long insert(QueryRunner queryRunner, Level level, long parameterId) {
+        InsertQuery query = QueryFactory.insert().into(configuration.getLevelTable())
+                .sequence("id", "seq_level")
+                .value("paramId", parameterId)
+                .value("name", level.getName())
+                .value("level_creator", level.getLevelCreator())
+                .value("type", level.getType())
+                .value("matcher", level.getMatcher())
+                .value("array_flag", level.isArray());
+        return queryRunner.insert(query);
     }
 
-    public Level getLevel(long id) {
-        Query query = Query.query(selectQuery).setLong("id", id);
-        return queryRunner.queryForObject(query, new LevelMapper());
+    public JdbcLevel getLevel(QueryRunner queryRunner, long id) {
+        return queryRunner.queryUnique(QueryFactory.select().query("select * from " + configuration.getLevelTable() + " where id = :id").withArgument("id", id), new LevelMapper());
+    }
+
+    public List<JdbcLevel> getParameterLevels(QueryRunner queryRunner, long parameterId) {
+        return queryRunner.queryList(QueryFactory.select().query("select * from " + configuration.getLevelTable() + " where param_id = :param_id order by order_no asc").withArgument("param_id", parameterId), new LevelMapper());
+    }
+
+    public void deleteParameterLevels(QueryRunner queryRunner, String parameterName) {
+        DeleteQuery query = QueryFactory.delete().from(configuration.getLevelTable())
+                .where("paramId = (select id from " + configuration.getParameterTable() + " where name = :name)")
+                .withArgument("name", parameterName);
+        queryRunner.delete(query);
     }
 }

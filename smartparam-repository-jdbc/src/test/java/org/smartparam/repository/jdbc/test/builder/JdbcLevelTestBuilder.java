@@ -13,31 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.core.dialect;
+package org.smartparam.repository.jdbc.test.builder;
+
+import org.smartparam.engine.test.builder.AbstractLevelTestBuilder;
+import org.smartparam.repository.jdbc.model.JdbcLevel;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class MysqlDialectProperties implements DialectProperties {
+public class JdbcLevelTestBuilder extends AbstractLevelTestBuilder<JdbcLevel, JdbcLevelTestBuilder> {
 
-    @Override
-    public String tableExistsQuery() {
-        return "select * from information_schema.tables where upper(table_name) = upper(:tableName)";
+    private JdbcLevelTestBuilder() {
+        super(new JdbcLevel());
+    }
+
+    public static JdbcLevelTestBuilder jdbcLevel() {
+        return new JdbcLevelTestBuilder();
     }
 
     @Override
-    public boolean hasSequences() {
-        return false;
+    protected JdbcLevelTestBuilder self() {
+        return this;
     }
 
-    @Override
-    public String sequenceExistsQuery() {
-        return null;
-    }
-
-    @Override
-    public String nextFromSequence(String sequence) {
-        return "DEFAULT";
+    public JdbcLevelTestBuilder forParameter(long parameterId) {
+        level.setParameterId(parameterId);
+        return this;
     }
 }
