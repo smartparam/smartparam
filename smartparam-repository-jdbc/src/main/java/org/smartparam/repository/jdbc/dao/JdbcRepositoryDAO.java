@@ -28,8 +28,6 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public interface JdbcRepositoryDAO {
 
-    void createSchema();
-
     void createParameter(Parameter parameter);
 
     boolean parameterExists(String parameterName);

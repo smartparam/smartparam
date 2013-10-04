@@ -20,7 +20,6 @@ import org.picocontainer.PicoContainer;
 import org.polyjdbc.core.dialect.Dialect;
 import org.polyjdbc.core.dialect.DialectRegistry;
 import org.polyjdbc.core.integration.DataSourceFactory;
-import org.polyjdbc.core.integration.TestSchemaManager;
 import org.polyjdbc.core.integration.TheCleaner;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.TransactionalQueryRunner;
@@ -28,13 +27,20 @@ import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.polyjdbc.core.transaction.Transaction;
 import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.repository.jdbc.config.Configuration;
+import org.smartparam.repository.jdbc.config.DefaultConfiguration;
 import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryFactory;
+import org.smartparam.repository.jdbc.dao.LevelDAO;
+import org.smartparam.repository.jdbc.dao.ParameterDAO;
+import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
+import org.smartparam.repository.jdbc.schema.DefaultSchemaCreator;
+import org.smartparam.repository.jdbc.schema.SchemaCreator;
+import org.smartparam.repository.jdbc.test.assertions.DatabaseAssert;
+import org.smartparam.repository.jdbc.test.builder.DatabaseBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
-import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.jdbcConfiguration;
+import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.defaultConfiguration;
 
 /**
  *
@@ -44,7 +50,7 @@ public class DatabaseTest {
 
     private TransactionManager transactionManager;
 
-    private TestSchemaManager schemaManager;
+    private SchemaCreator schemaCreator;
 
     private PicoContainer container;
 
@@ -62,29 +68,37 @@ public class DatabaseTest {
         return new TransactionalQueryRunner(transaction());
     }
 
-    @Parameters({"dialect", "url", "user", "password"})
+    protected DatabaseBuilder database() {
+        return DatabaseBuilder.database(get(ParameterDAO.class), get(LevelDAO.class), get(ParameterEntryDAO.class), transactionManager);
+    }
+
+    protected DatabaseAssert assertDatabase() {
+        return DatabaseAssert.assertThat(transactionManager, get(ParameterDAO.class), get(LevelDAO.class), get(ParameterEntryDAO.class));
+    }
+
     @BeforeClass(alwaysRun = true)
     public void setUpDatabase() throws Exception {
         Dialect dialect = DialectRegistry.dialect("H2");
 
-        Configuration configuration = jdbcConfiguration().withDialect(dialect)
+        DefaultConfiguration configuration = defaultConfiguration().withDialect(dialect)
                 .withParameterTableName("parameter").withLevelTableName("level")
                 .withParameterEntryTableName("entry").build();
         DataSource dataSource = DataSourceFactory.create(dialect, "jdbc:h2:mem:test", "smartparam", "smartparam");
         this.transactionManager = new DataSourceTransactionManager(dialect, dataSource);
-        this.schemaManager = new TestSchemaManager(dialect);
+
+        this.schemaCreator = new DefaultSchemaCreator(configuration, transactionManager);
+        schemaCreator.createSchema();
 
         PicoJdbcParamRepositoryFactory factory = new PicoJdbcParamRepositoryFactory();
         this.container = factory.createContainer(new PicoJdbcParamRepositoryConfig(dataSource, configuration));
 
         this.cleaner = new TheCleaner(transactionManager);
-        this.schemaManager.createSchema(transactionManager);
     }
 
     @BeforeMethod(alwaysRun = true)
     public void cleanDatabase() {
         Configuration config = get(Configuration.class);
-        cleaner.cleanDB(config.getParameterEntryTable(), config.getLevelTable(), config.getParameterTable());
+        cleaner.cleanDB(config.getManagedTables());
     }
 
     @AfterClass(alwaysRun = true)
@@ -94,6 +108,6 @@ public class DatabaseTest {
     }
 
     private void dropSchema(PicoContainer container) {
-        schemaManager.dropSchema(transactionManager);
+        schemaCreator.dropSchema();
     }
 }

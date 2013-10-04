@@ -39,7 +39,8 @@ public class PicoJdbcParamRepositoryFactory implements JdbcParamRepositoryFactor
 
     public PicoContainer createContainer(PicoJdbcParamRepositoryConfig config) {
         MutablePicoContainer container = PicoContainerUtil.createContainer();
-        PicoContainerUtil.injectImplementations(container, JdbcParamRepository.class, config.getConfiguration(), config.getDataSource());
+        PicoContainerUtil.injectImplementations(container, JdbcParamRepository.class,
+                config.getConfiguration(), config.getConfiguration().getDialect(), config.getDataSource());
         PicoContainerUtil.injectImplementations(container, config.getComponents());
 
         return container;

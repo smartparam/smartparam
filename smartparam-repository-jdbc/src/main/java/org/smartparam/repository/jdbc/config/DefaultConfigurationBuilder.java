@@ -13,37 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.test.builder;
-
-import org.smartparam.engine.test.builder.AbstractLevelTestBuilder;
-import org.smartparam.repository.jdbc.model.JdbcLevel;
+package org.smartparam.repository.jdbc.config;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JdbcLevelTestBuilder extends AbstractLevelTestBuilder<JdbcLevel, JdbcLevelTestBuilder> {
+public class DefaultConfigurationBuilder extends AbstractConfigurationBuilder<DefaultConfiguration, DefaultConfigurationBuilder> {
 
-    private JdbcLevelTestBuilder() {
-        super(new JdbcLevel());
+    private DefaultConfigurationBuilder() {
+        super(new DefaultConfiguration());
     }
 
-    public static JdbcLevelTestBuilder jdbcLevel() {
-        return new JdbcLevelTestBuilder();
+    public static DefaultConfigurationBuilder defaultConfiguration() {
+        return new DefaultConfigurationBuilder();
     }
 
     @Override
-    protected JdbcLevelTestBuilder self() {
+    protected DefaultConfigurationBuilder self() {
         return this;
     }
 
-    public JdbcLevelTestBuilder forParameter(long parameterId) {
-        level.setParameterId(parameterId);
+    public DefaultConfigurationBuilder withLevelColumnCount(int levelColumnCount) {
+        configuration().setLevelColumnCount(levelColumnCount);
         return this;
     }
 
-    public JdbcLevelTestBuilder withOrder(int order) {
-        level.setOrderNo(order);
+    public DefaultConfigurationBuilder withExcessLevelSeparator(char separaotor) {
+        configuration().setExcessLevelsSeparator(separaotor);
         return this;
     }
 }

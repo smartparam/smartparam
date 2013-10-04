@@ -17,6 +17,7 @@ package org.smartparam.repository.jdbc.config.pico;
 
 import java.util.List;
 import javax.sql.DataSource;
+import org.polyjdbc.core.query.SimpleQueryRunner;
 import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.repository.jdbc.config.Configuration;
@@ -24,6 +25,8 @@ import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.dao.JdbcRepositoryDAOImpl;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
+import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
+import org.smartparam.repository.jdbc.schema.DefaultSchemaCreator;
 
 /**
  *
@@ -46,6 +49,9 @@ public class PicoJdbcParamRepositoryConfig extends ComponentConfig implements Jd
         components.add(DataSourceTransactionManager.class);
         components.add(ParameterDAO.class);
         components.add(LevelDAO.class);
+        components.add(ParameterEntryDAO.class);
+        components.add(SimpleQueryRunner.class);
+        components.add(DefaultSchemaCreator.class);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class LevelDAOTest extends DatabaseTest {
         // given
         LevelDAO levelDAO = get(LevelDAO.class);
         JdbcLevel level = jdbcLevel().withName("test").withLevelCreator("testCreator")
-                .withMatcher("testMatcher").withType("testType").array().build();
+                .withMatcher("testMatcher").withType("testType").withOrder(0).array().build();
         QueryRunner runner = queryRunner();
 
         // when

@@ -13,32 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
-
-import org.polyjdbc.core.dialect.Dialect;
+package org.smartparam.repository.jdbc.schema;
 
 /**
- * JDBC repository configuration.
  *
- * @author Przemek Hertel
+ * @author Adam Dubiel
  */
-public interface Configuration {
+public final class SchemaNamePolicy {
 
-    /**
-     * What database dialect should be used - mandatory field, JDBC repository
-     * will throw an exception if left empty.
-     *
-     * @return
-     */
-    Dialect getDialect();
+    private SchemaNamePolicy() {
+    }
 
-    String getParameterTable();
+    public static String primaryKey(String sufix) {
+        return "pk_" + sufix;
+    }
 
-    String getLevelTable();
-
-    String getParameterEntryTable();
-
-    String getSequencePrefix();
-
-    String[] getManagedTables();
+    public static String foreignKey(String sufix) {
+        return "fk_" + sufix;
+    }
 }

@@ -36,14 +36,27 @@ public class LevelDAO {
         this.configuration = configuration;
     }
 
-    public long insert(QueryRunner queryRunner, Level level, long parameterId) {
+    public void insertParameterLevels(QueryRunner queryRunner, List<Level> levels, long parameterId) {
+        int order = 0;
+        for (Level level : levels) {
+            insert(queryRunner, level, parameterId, order);
+            order++;
+        }
+    }
+
+    public long insert(QueryRunner queryRunner, JdbcLevel level, long parameterId) {
+        return insert(queryRunner, level, parameterId, level.getOrderNo());
+    }
+
+    private long insert(QueryRunner queryRunner, Level level, long parameterId, int order) {
         InsertQuery query = QueryFactory.insert().into(configuration.getLevelTable())
                 .sequence("id", "seq_level")
-                .value("paramId", parameterId)
+                .value("fk_parameter", parameterId)
                 .value("name", level.getName())
                 .value("level_creator", level.getLevelCreator())
                 .value("type", level.getType())
                 .value("matcher", level.getMatcher())
+                .value("order_no", order)
                 .value("array_flag", level.isArray());
         return queryRunner.insert(query);
     }

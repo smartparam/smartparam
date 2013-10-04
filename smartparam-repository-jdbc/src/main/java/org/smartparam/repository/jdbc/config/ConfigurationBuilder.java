@@ -15,44 +15,16 @@
  */
 package org.smartparam.repository.jdbc.config;
 
-import org.polyjdbc.core.dialect.Dialect;
-
 /**
  *
  * @author Adam Dubiel
  */
 public class ConfigurationBuilder {
 
-    private DefaultConfiguration configuration = new DefaultConfiguration();
-
     private ConfigurationBuilder() {
     }
 
-    public static ConfigurationBuilder jdbcConfiguration() {
-        return new ConfigurationBuilder();
-    }
-
-    public Configuration build() {
-        return configuration;
-    }
-
-    public ConfigurationBuilder withDialect(Dialect dialect) {
-        configuration.setDialect(dialect);
-        return this;
-    }
-
-    public ConfigurationBuilder withParameterTableName(String parameterTableName) {
-        configuration.setParameterTable(parameterTableName);
-        return this;
-    }
-
-    public ConfigurationBuilder withParameterEntryTableName(String parameterEntryTableName) {
-        configuration.setParameterEntryTable(parameterEntryTableName);
-        return this;
-    }
-
-    public ConfigurationBuilder withLevelTableName(String levelTableName) {
-        configuration.setLevelTable(levelTableName);
-        return this;
+    public static DefaultConfigurationBuilder defaultConfiguration() {
+        return DefaultConfigurationBuilder.defaultConfiguration();
     }
 }

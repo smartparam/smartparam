@@ -37,7 +37,7 @@ public class DefaultConfiguration implements Configuration {
 
     private String parameterTable = "sp_parameter";
 
-    private String parameterLevelTable = "sp_parameter_level";
+    private String levelTable = "sp_parameter_level";
 
     private String parameterEntryTable = "sp_parameter_entry";
 
@@ -64,6 +64,11 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
+    public String[] getManagedTables() {
+        return new String[] { parameterTable, levelTable, parameterEntryTable };
+    }
+
+    @Override
     public String getParameterTable() {
         return parameterTable;
     }
@@ -74,11 +79,11 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public String getLevelTable() {
-        return parameterLevelTable;
+        return levelTable;
     }
 
     public void setLevelTable(String parameterLevelTable) {
-        this.parameterLevelTable = parameterLevelTable;
+        this.levelTable = parameterLevelTable;
     }
 
     @Override

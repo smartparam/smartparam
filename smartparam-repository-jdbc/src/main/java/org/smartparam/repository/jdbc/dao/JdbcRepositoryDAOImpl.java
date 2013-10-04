@@ -62,25 +62,6 @@ public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
         }
     }
 
-    @Override
-    public void createSchema() {
-        SchemaManager schemaManager = new SchemaManagerImpl(transactionManager.openTransaction());
-        Schema schema = new Schema(configuration.getDialect());
-
-        schema.addRelation(configuration.getParameterTable())
-                .withAttribute().longAttr("id").notNull().and()
-                .withAttribute().string("name").withMaxLength(200).notNull().unique().and()
-                .withAttribute().integer("input_levels").notNull().and()
-                .withAttribute().booleanAttr("cacheable").notNull().withDefaultValue(true).and()
-                .withAttribute().booleanAttr("nullable").notNull().withDefaultValue(false).and()
-                .withAttribute().character("array_separator").notNull().withDefaultValue(';').and()
-                .primaryKey("pk_" + configuration.getParameterTable()).using("id").and()
-                .build();
-        schema.addSequence("seq_" + configuration.getParameterTable());
-        schemaManager.create(schema);
-        schemaManager.close();
-    }
-
     private QueryRunner queryRunner() {
         return new TransactionalQueryRunner(transactionManager.openTransaction());
     }
@@ -90,20 +71,14 @@ public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
         QueryRunner runner = queryRunner();
 
         long parameterId = parameterDAO.insert(runner, parameter);
-        for (Level level : parameter.getLevels()) {
-            levelDAO.insert(runner, level, parameterId);
-        }
+        levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameterId);
 
         runner.close();
     }
 
     @Override
     public boolean parameterExists(String parameterName) {
-        QueryRunner runner = queryRunner();
-        boolean exists = parameterDAO.parameterExistst(runner, parameterName);
-        runner.close();
-
-        return exists;
+        return parameterDAO.parameterExistst(parameterName);
     }
 
     @Override

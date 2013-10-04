@@ -26,6 +26,7 @@ import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.JdbcRepositoryDAO;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
+import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
 /**
  * @author Przemek Hertel
@@ -37,6 +38,8 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
 
     private JdbcRepositoryDAO dao;
 
+    private SchemaCreator schemaCreator;
+
     /**
      * This variable will be used to set the fetchSize property on jdbc statements.
      * ...
@@ -46,13 +49,14 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
     //TODO #ph rethink default and comment
     private int fetchSize = 100;
 
-    public JdbcParamRepository(JdbcRepositoryDAO dao) {
+    public JdbcParamRepository(JdbcRepositoryDAO dao, SchemaCreator schemaCreator) {
         this.dao = dao;
+        this.schemaCreator = schemaCreator;
     }
 
     @Override
     public void initialize() {
-        dao.createSchema();
+        schemaCreator.createSchema();
     }
 
     @Override
@@ -90,7 +94,6 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
     @Override
     public void write(Parameter parameter) {
         String parameterName = parameter.getName();
-
         if (dao.parameterExists(parameterName)) {
             dao.deleteParameter(parameterName);
         }

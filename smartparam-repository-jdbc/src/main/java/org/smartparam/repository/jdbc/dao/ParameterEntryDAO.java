@@ -22,6 +22,7 @@ import org.polyjdbc.core.query.DeleteQuery;
 import org.polyjdbc.core.query.InsertQuery;
 import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
+import org.polyjdbc.core.query.SimpleQueryRunner;
 import org.polyjdbc.core.util.StringUtils;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultConfiguration;
@@ -35,8 +36,11 @@ public class ParameterEntryDAO {
 
     private final DefaultConfiguration configuration;
 
-    public ParameterEntryDAO(DefaultConfiguration configuration) {
+    private final SimpleQueryRunner simpleQueryRunner;
+
+    public ParameterEntryDAO(DefaultConfiguration configuration, SimpleQueryRunner simpleQueryRunner) {
         this.configuration = configuration;
+        this.simpleQueryRunner = simpleQueryRunner;
     }
 
     public void insert(QueryRunner queryRunner, Collection<ParameterEntry> parameterEntries, long parameterId) {

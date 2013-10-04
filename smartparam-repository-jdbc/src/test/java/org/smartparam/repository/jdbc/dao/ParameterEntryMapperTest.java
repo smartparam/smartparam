@@ -21,7 +21,7 @@ import org.smartparam.engine.test.assertions.Assertions;
 import org.smartparam.repository.jdbc.config.DefaultConfiguration;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
-import static org.smartparam.repository.jdbc.test.builder.DefaultConfigurationTestBuilder.defaultConfiguration;
+import static org.smartparam.repository.jdbc.config.DefaultConfigurationBuilder.defaultConfiguration;
 import static org.smartparam.repository.jdbc.test.builder.ResultSetMockBuilder.resultSet;
 
 /**

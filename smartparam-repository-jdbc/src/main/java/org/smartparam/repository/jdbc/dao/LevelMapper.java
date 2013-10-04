@@ -30,7 +30,7 @@ public class LevelMapper implements ObjectMapper<JdbcLevel> {
     public JdbcLevel createObject(ResultSet resultSet) throws SQLException {
         JdbcLevel level = new JdbcLevel();
         level.setId(resultSet.getLong("id"));
-        level.setParameterId(resultSet.getLong("param_id"));
+        level.setParameterId(resultSet.getLong("fk_parameter"));
         level.setOrderNo(resultSet.getInt("order_no"));
         level.setName(resultSet.getString("label"));
         level.setType(resultSet.getString("type"));
