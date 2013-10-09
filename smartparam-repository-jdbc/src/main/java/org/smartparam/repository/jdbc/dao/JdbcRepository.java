@@ -26,7 +26,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public interface JdbcRepositoryDAO {
+public interface JdbcRepository {
 
     void createParameter(Parameter parameter);
 

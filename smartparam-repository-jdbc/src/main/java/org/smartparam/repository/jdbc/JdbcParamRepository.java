@@ -24,7 +24,7 @@ import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.dao.JdbcRepositoryDAO;
+import org.smartparam.repository.jdbc.dao.JdbcRepository;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
@@ -36,20 +36,11 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
 
-    private JdbcRepositoryDAO dao;
+    private JdbcRepository dao;
 
     private SchemaCreator schemaCreator;
 
-    /**
-     * This variable will be used to set the fetchSize property on jdbc statements.
-     * ...
-     * If this variable is set to a non-zero value, it will be used for setting the
-     * fetchSize property on statements used for query processing.
-     */
-    //TODO #ph rethink default and comment
-    private int fetchSize = 100;
-
-    public JdbcParamRepository(JdbcRepositoryDAO dao, SchemaCreator schemaCreator) {
+    public JdbcParamRepository(JdbcRepository dao, SchemaCreator schemaCreator) {
         this.dao = dao;
         this.schemaCreator = schemaCreator;
     }
@@ -66,22 +57,15 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
 
     @Override
     public Parameter load(String parameterName) {
-        JdbcParameter parameter = loadMetadata(parameterName);
-        parameter.setEntries(dao.getParameterEntries(parameter.getId()));
-
-        return parameter;
+        return dao.getParameter(parameterName);
     }
 
     @Override
     public ParameterBatchLoader batchLoad(String parameterName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    private JdbcParameter loadMetadata(String parameterName) {
         JdbcParameter parameter = dao.getParameter(parameterName);
         parameter.setLevels(dao.getParameterLevels(parameter.getId()));
 
-        return parameter;
+        return null;
     }
 
     //TODO #ph finish findEntries for non-cachable parameters
@@ -98,13 +82,5 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
             dao.deleteParameter(parameterName);
         }
         dao.createParameter(parameter);
-    }
-
-    public int getFetchSize() {
-        return fetchSize;
-    }
-
-    public void setFetchSize(int fetchSize) {
-        this.fetchSize = fetchSize;
     }
 }

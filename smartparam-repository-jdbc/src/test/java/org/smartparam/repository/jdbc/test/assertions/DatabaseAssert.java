@@ -15,14 +15,19 @@
  */
 package org.smartparam.repository.jdbc.test.assertions;
 
+import java.util.List;
+import java.util.Set;
 import org.fest.assertions.api.AbstractAssert;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.TransactionalQueryRunner;
 import org.polyjdbc.core.transaction.TransactionManager;
+import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.test.assertions.Assertions;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
+import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
  *
@@ -80,6 +85,28 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
             public void run() {
                 boolean exists = parameterDAO.parameterExists(name);
                 Assertions.assertThat(exists).isFalse();
+            }
+        });
+    }
+
+    public DatabaseAssert hasLevelsForParameter(final String parameterName, final int count) {
+        return performOperation(new Operation() {
+            @Override
+            public void run() {
+                JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
+                List<Level> levels = levelDAO.getLevels(queryRunner, parameter.getId());
+                Assertions.assertThat(levels).hasSize(count);
+            }
+        });
+    }
+
+    public DatabaseAssert hasEntriesForParameter(final String parameterName, final int count) {
+        return performOperation(new Operation() {
+            @Override
+            public void run() {
+                JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
+                Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(queryRunner, parameter.getId());
+                Assertions.assertThat(entries).hasSize(count);
             }
         });
     }

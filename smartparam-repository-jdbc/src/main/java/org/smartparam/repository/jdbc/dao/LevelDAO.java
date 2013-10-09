@@ -20,6 +20,7 @@ import org.polyjdbc.core.query.DeleteQuery;
 import org.polyjdbc.core.query.InsertQuery;
 import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
+import org.polyjdbc.core.query.SelectQuery;
 import org.smartparam.engine.model.Level;
 import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
@@ -62,11 +63,19 @@ public class LevelDAO {
     }
 
     public JdbcLevel getLevel(QueryRunner queryRunner, long id) {
-        return queryRunner.queryUnique(QueryFactory.select().query("select * from " + configuration.getLevelTable() + " where id = :id").withArgument("id", id), new LevelMapper());
+        return queryRunner.queryUnique(QueryFactory.select().query("select * from " + configuration.getLevelTable() + " where id = :id").withArgument("id", id), new JdbcLevelMapper());
     }
 
-    public List<JdbcLevel> getParameterLevels(QueryRunner queryRunner, long parameterId) {
-        return queryRunner.queryList(QueryFactory.select().query("select * from " + configuration.getLevelTable() + " where fk_parameter = :param_id order by order_no asc").withArgument("param_id", parameterId), new LevelMapper());
+    public List<Level> getLevels(QueryRunner queryRunner, long parameterId) {
+        return queryRunner.queryList(createSelectQuery(parameterId), new LevelMapper());
+    }
+
+    public List<JdbcLevel> getJdbcLevels(QueryRunner queryRunner, long parameterId) {
+        return queryRunner.queryList(createSelectQuery(parameterId), new JdbcLevelMapper());
+    }
+
+    private SelectQuery createSelectQuery(long parameterId) {
+        return QueryFactory.select().query("select * from " + configuration.getLevelTable() + " where fk_parameter = :param_id order by order_no asc").withArgument("param_id", parameterId);
     }
 
     public void deleteParameterLevels(QueryRunner queryRunner, String parameterName) {

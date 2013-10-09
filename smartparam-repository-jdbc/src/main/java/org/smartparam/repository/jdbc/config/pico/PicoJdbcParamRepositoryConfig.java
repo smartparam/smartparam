@@ -22,7 +22,7 @@ import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
-import org.smartparam.repository.jdbc.dao.JdbcRepositoryDAOImpl;
+import org.smartparam.repository.jdbc.dao.SimpleJdbcRepository;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
@@ -45,7 +45,7 @@ public class PicoJdbcParamRepositoryConfig extends ComponentConfig implements Jd
 
     @Override
     protected void injectDefaults(List<Object> components) {
-        components.add(JdbcRepositoryDAOImpl.class);
+        components.add(SimpleJdbcRepository.class);
         components.add(DataSourceTransactionManager.class);
         components.add(ParameterDAO.class);
         components.add(LevelDAO.class);

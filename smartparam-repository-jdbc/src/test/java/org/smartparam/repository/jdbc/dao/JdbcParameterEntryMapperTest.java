@@ -28,13 +28,13 @@ import static org.smartparam.repository.jdbc.test.builder.ResultSetMockBuilder.r
  *
  * @author Adam Dubiel
  */
-public class ParameterEntryMapperTest {
+public class JdbcParameterEntryMapperTest {
 
     @Test
     public void shouldReturnEntryWithSameAmountOfLevelsWhenLevelsBelowLimit() throws SQLException {
         // given
         DefaultConfiguration configuration = defaultConfiguration().withLevelColumnCount(10).build();
-        ParameterEntryMapper mapper = new ParameterEntryMapper(configuration);
+        JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
                 .withString("level1", "1").withString("level2", "2").build();
 
@@ -49,7 +49,7 @@ public class ParameterEntryMapperTest {
     public void shouldReturnEntryWithMaximumLevelsWhenLevelsEqualsLimit() throws SQLException {
         // given
         DefaultConfiguration configuration = defaultConfiguration().withLevelColumnCount(2).build();
-        ParameterEntryMapper mapper = new ParameterEntryMapper(configuration);
+        JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
                 .withString("level1", "1").withString("level2", "2")
                 .build();
@@ -66,7 +66,7 @@ public class ParameterEntryMapperTest {
         // given
         DefaultConfiguration configuration = defaultConfiguration()
                 .withLevelColumnCount(3).withExcessLevelSeparator('|').build();
-        ParameterEntryMapper mapper = new ParameterEntryMapper(configuration);
+        JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
                 .withString("level1", "1").withString("level2", "2")
                 .withString("level3", "3|4|5")

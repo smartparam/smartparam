@@ -20,12 +20,14 @@ import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.TransactionalQueryRunner;
 import org.polyjdbc.core.transaction.TransactionManager;
+import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.test.builder.LevelTestBuilder;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
+import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterTestBuilder.jdbcParameter;
 
 /**
@@ -65,15 +67,16 @@ public class DatabaseBuilder {
     }
 
     public DatabaseBuilder withParameter(String name) {
-        parameterDAO.insert(queryRunner, parameter()
-                .withName(name)
-                .build());
-        return this;
+        return withParameter(0, name);
     }
 
     public DatabaseBuilder withParameter(long id) {
+        return withParameter(id, "test" + id);
+    }
+
+    public DatabaseBuilder withParameter(long id, String name) {
         parameterDAO.insert(queryRunner, jdbcParameter()
-                .withName("test" + id)
+                .withName(name)
                 .withId(id)
                 .build());
         return this;
@@ -85,6 +88,15 @@ public class DatabaseBuilder {
             entries.add(parameterEntry().withLevels("entry" + i).build());
         }
         parameterEntryDAO.insert(queryRunner, entries, parameterId);
+        return this;
+    }
+
+    public DatabaseBuilder withLevels(long parameterId, int count) {
+        List<Level> levels = new ArrayList<Level>();
+        for (int i = 0; i < count; ++i) {
+            levels.add(level().withName("level" + i).withType("string").build());
+        }
+        levelDAO.insertParameterLevels(queryRunner, levels, parameterId);
         return this;
     }
 }

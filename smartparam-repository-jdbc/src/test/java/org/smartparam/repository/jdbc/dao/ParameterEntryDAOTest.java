@@ -51,7 +51,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         parameterEntryDAO.insert(runner, Arrays.asList(entry), 1);
         runner.commit();
 
-        Set<JdbcParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, 1);
+        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, 1);
         runner.close();
 
         // then
@@ -70,7 +70,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         parameterEntryDAO.insert(runner, Arrays.asList(entry), 1);
         runner.commit();
 
-        Set<JdbcParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, 1);
+        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, 1);
         runner.close();
 
         // then
@@ -85,7 +85,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         QueryRunner runner = queryRunner();
 
         // when
-        Set<JdbcParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, 1);
+        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, 1);
         runner.close();
 
         // then

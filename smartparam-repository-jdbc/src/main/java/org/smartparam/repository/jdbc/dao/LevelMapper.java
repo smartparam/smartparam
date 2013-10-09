@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Adam Dubiel, Przemek Hertel.
  *
- * Licensed under the Apache License, VeresultSetion 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -18,25 +18,19 @@ package org.smartparam.repository.jdbc.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.polyjdbc.core.query.mapper.ObjectMapper;
-import org.smartparam.repository.jdbc.model.JdbcLevel;
+import org.smartparam.engine.model.Level;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class LevelMapper implements ObjectMapper<JdbcLevel> {
+public class LevelMapper implements ObjectMapper<Level> {
+
+    private JdbcLevelMapper jdbcMapper = new JdbcLevelMapper();
 
     @Override
-    public JdbcLevel createObject(ResultSet resultSet) throws SQLException {
-        JdbcLevel level = new JdbcLevel();
-        level.setId(resultSet.getLong("id"));
-        level.setName(resultSet.getString("name"));
-        level.setParameterId(resultSet.getLong("fk_parameter"));
-        level.setOrderNo(resultSet.getInt("order_no"));
-        level.setType(resultSet.getString("type"));
-        level.setMatcher(resultSet.getString("matcher"));
-        level.setLevelCreator(resultSet.getString("level_creator"));
-        level.setArray(resultSet.getBoolean("array_flag"));
-        return level;
+    public Level createObject(ResultSet resultSet) throws SQLException {
+        return jdbcMapper.createObject(resultSet);
     }
+
 }

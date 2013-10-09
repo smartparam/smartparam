@@ -45,7 +45,7 @@ public class LevelDAOTest extends DatabaseTest {
         levelDAO.insert(runner, level, 1);
         runner.commit();
 
-        List<JdbcLevel> levels = levelDAO.getParameterLevels(runner, 1);
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, 1);
         runner.close();
 
         // then
@@ -67,7 +67,7 @@ public class LevelDAOTest extends DatabaseTest {
         levelDAO.insertParameterLevels(runner, Arrays.asList(level), 1);
         runner.commit();
 
-        List<JdbcLevel> levels = levelDAO.getParameterLevels(runner, 1);
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, 1);
         runner.close();
 
         // then

@@ -20,9 +20,6 @@ import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.TransactionalQueryRunner;
-import org.polyjdbc.core.schema.SchemaManager;
-import org.polyjdbc.core.schema.SchemaManagerImpl;
-import org.polyjdbc.core.schema.model.Schema;
 import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
@@ -35,7 +32,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
+public class SimpleJdbcRepository implements JdbcRepository {
 
     private Configuration configuration;
 
@@ -47,7 +44,7 @@ public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
 
     private TransactionManager transactionManager;
 
-    public JdbcRepositoryDAOImpl(Configuration configuration, TransactionManager transactionManager, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
+    public SimpleJdbcRepository(Configuration configuration, TransactionManager transactionManager, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
         this.configuration = configuration;
         checkConfiguration();
         this.transactionManager = transactionManager;
@@ -72,6 +69,7 @@ public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
 
         long parameterId = parameterDAO.insert(runner, parameter);
         levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameterId);
+        parameterEntryDAO.insert(runner, parameter.getEntries(), parameterId);
 
         runner.close();
     }
@@ -86,8 +84,11 @@ public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
         QueryRunner runner = queryRunner();
 
         JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
-        List<Level> levels = new ArrayList<Level>(levelDAO.getParameterLevels(runner, parameter.getId()));
+        List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameter.getId()));
+        Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameter.getId());
+
         parameter.setLevels(levels);
+        parameter.setEntries(entries);
 
         runner.close();
         return parameter;
@@ -105,7 +106,7 @@ public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
     @Override
     public List<Level> getParameterLevels(long parameterId) {
         QueryRunner runner = queryRunner();
-        List<Level> levels = new ArrayList<Level>(levelDAO.getParameterLevels(runner, parameterId));
+        List<Level> levels = levelDAO.getLevels(runner, parameterId);
         runner.close();
         return levels;
     }
@@ -113,7 +114,7 @@ public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
     @Override
     public Set<ParameterEntry> getParameterEntries(long parameterId) {
         QueryRunner runner = queryRunner();
-        Set<ParameterEntry> entries = getParameterEntries(parameterId);
+        Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameterId);
         runner.close();
 
         return entries;

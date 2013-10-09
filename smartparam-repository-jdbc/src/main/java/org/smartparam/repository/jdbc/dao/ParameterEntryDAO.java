@@ -22,6 +22,7 @@ import org.polyjdbc.core.query.DeleteQuery;
 import org.polyjdbc.core.query.InsertQuery;
 import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
+import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.util.StringUtils;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultConfiguration;
@@ -69,9 +70,17 @@ public class ParameterEntryDAO {
         return lastLevelValue;
     }
 
-    public Set<JdbcParameterEntry> getParameterEntries(QueryRunner queryRunner, long parameterId) {
-        return queryRunner.querySet(QueryFactory.select().query("select * from " + configuration.getParameterEntryTable() + " where fk_parameter = :parameterId")
-                .withArgument("parameterId", parameterId), new ParameterEntryMapper(configuration));
+    public Set<ParameterEntry> getParameterEntries(QueryRunner queryRunner, long parameterId) {
+        return queryRunner.querySet(createSelectQuery(parameterId), new ParameterEntryMapper(configuration));
+    }
+
+    public Set<JdbcParameterEntry> getJdbcParameterEntries(QueryRunner queryRunner, long parameterId) {
+        return queryRunner.querySet(createSelectQuery(parameterId), new JdbcParameterEntryMapper(configuration));
+    }
+
+    private SelectQuery createSelectQuery(long parameterId) {
+        return QueryFactory.select().query("select * from " + configuration.getParameterEntryTable() + " where fk_parameter = :parameterId")
+                .withArgument("parameterId", parameterId);
     }
 
     public void deleteParameterEntries(QueryRunner queryRunner, String parameterName) {
