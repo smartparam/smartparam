@@ -22,7 +22,6 @@ import org.polyjdbc.core.query.DeleteQuery;
 import org.polyjdbc.core.query.InsertQuery;
 import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
-import org.polyjdbc.core.query.SimpleQueryRunner;
 import org.polyjdbc.core.util.StringUtils;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultConfiguration;
@@ -36,31 +35,28 @@ public class ParameterEntryDAO {
 
     private final DefaultConfiguration configuration;
 
-    private final SimpleQueryRunner simpleQueryRunner;
-
-    public ParameterEntryDAO(DefaultConfiguration configuration, SimpleQueryRunner simpleQueryRunner) {
+    public ParameterEntryDAO(DefaultConfiguration configuration) {
         this.configuration = configuration;
-        this.simpleQueryRunner = simpleQueryRunner;
     }
 
     public void insert(QueryRunner queryRunner, Collection<ParameterEntry> parameterEntries, long parameterId) {
-        int maxDistinceLevels = configuration.getLevelColumnCount();
+        int maxDistinctLevels = configuration.getLevelColumnCount();
 
         InsertQuery query;
         int levelIndex;
         for (ParameterEntry entry : parameterEntries) {
             query = QueryFactory.insert().into(configuration.getParameterEntryTable())
-                    .sequence("id", "seq_parameter_entry")
+                    .sequence("id", configuration.getParameterEntrySequence())
                     .value("fk_parameter", parameterId);
 
-            for (levelIndex = 0; levelIndex < maxDistinceLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
+            for (levelIndex = 0; levelIndex < maxDistinctLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
                 query.value("level" + (levelIndex + 1), entry.getLevels()[levelIndex]);
             }
 
-            if (entry.getLevels().length > maxDistinceLevels) {
-                query.value("level" + maxDistinceLevels, concatenateLastLevels(entry.getLevels(), maxDistinceLevels));
-            } else if (entry.getLevels().length == maxDistinceLevels) {
-                query.value("level" + maxDistinceLevels, entry.getLevels()[maxDistinceLevels - 1]);
+            if (entry.getLevels().length > maxDistinctLevels) {
+                query.value("level" + maxDistinctLevels, concatenateLastLevels(entry.getLevels(), maxDistinctLevels));
+            } else if (entry.getLevels().length == maxDistinctLevels) {
+                query.value("level" + maxDistinctLevels, entry.getLevels()[maxDistinctLevels - 1]);
             }
 
             queryRunner.insert(query);

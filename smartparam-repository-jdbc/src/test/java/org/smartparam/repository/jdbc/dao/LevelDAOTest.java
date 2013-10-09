@@ -15,12 +15,15 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.Arrays;
 import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
+import org.smartparam.engine.model.Level;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
+import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.repository.jdbc.test.builder.JdbcLevelTestBuilder.jdbcLevel;
 
 /**
@@ -32,6 +35,7 @@ public class LevelDAOTest extends DatabaseTest {
 
     public void shouldInsertNewLevelIntoDatabase() {
         // given
+        database().withParameter(1).build();
         LevelDAO levelDAO = get(LevelDAO.class);
         JdbcLevel level = jdbcLevel().withName("test").withLevelCreator("testCreator")
                 .withMatcher("testMatcher").withType("testType").withOrder(0).array().build();
@@ -49,5 +53,25 @@ public class LevelDAOTest extends DatabaseTest {
         assertThat(levels.get(0)).isNotNull().hasName("test")
                 .hasLevelCreator("testCreator").hasMatcher("testMatcher")
                 .hasType("testType").isArray();
+    }
+
+    @Test
+    public void shouldInsertLevelsForParameterOverridingOrder() {
+        // given
+        database().withParameter(1).build();
+        LevelDAO levelDAO = get(LevelDAO.class);
+        Level level = level().withName("test").withType("string").build();
+        QueryRunner runner = queryRunner();
+
+        // when
+        levelDAO.insertParameterLevels(runner, Arrays.asList(level), 1);
+        runner.commit();
+
+        List<JdbcLevel> levels = levelDAO.getParameterLevels(runner, 1);
+        runner.close();
+
+        // then
+        assertThat(levels).hasSize(1);
+        assertThat(levels.get(0).getOrderNo()).isEqualTo(0);
     }
 }

@@ -13,27 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.builder;
+package org.smartparam.repository.jdbc.test.builder;
 
-import org.smartparam.engine.model.editable.EditableParameter;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
+import org.smartparam.engine.test.builder.AbstractParameterTestBuilder;
+import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ParameterTestBuilder extends AbstractParameterTestBuilder<EditableParameter, ParameterTestBuilder> {
+public class JdbcParameterTestBuilder extends AbstractParameterTestBuilder<JdbcParameter, JdbcParameterTestBuilder> {
 
-    private ParameterTestBuilder() {
-        super(new SimpleEditableParameter());
+    private JdbcParameterTestBuilder() {
+        super(new JdbcParameter());
     }
 
-    public static ParameterTestBuilder parameter() {
-        return new ParameterTestBuilder();
+    public static JdbcParameterTestBuilder jdbcParameter() {
+        return new JdbcParameterTestBuilder();
     }
 
     @Override
-    protected ParameterTestBuilder self() {
+    protected JdbcParameterTestBuilder self() {
+        return this;
+    }
+
+    public JdbcParameterTestBuilder withId(long id) {
+        parameter.setId(id);
         return this;
     }
 }

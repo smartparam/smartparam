@@ -96,6 +96,21 @@ public class DefaultConfiguration implements Configuration {
         return sequencePrefix;
     }
 
+    @Override
+    public String getParameterSequence() {
+        return sequencePrefix + parameterTable;
+    }
+
+    @Override
+    public String getLevelSequence() {
+        return sequencePrefix + levelTable;
+    }
+
+    @Override
+    public String getParameterEntrySequence() {
+        return sequencePrefix + parameterEntryTable;
+    }
+
     public void setSequencePrefix(String sequencePrefix) {
         this.sequencePrefix = sequencePrefix;
     }

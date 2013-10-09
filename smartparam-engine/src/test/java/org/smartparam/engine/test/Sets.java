@@ -13,27 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.builder;
+package org.smartparam.engine.test;
 
-import org.smartparam.engine.model.editable.EditableParameter;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
+import java.util.Set;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ParameterTestBuilder extends AbstractParameterTestBuilder<EditableParameter, ParameterTestBuilder> {
+public final class Sets {
 
-    private ParameterTestBuilder() {
-        super(new SimpleEditableParameter());
+    private Sets() {
     }
 
-    public static ParameterTestBuilder parameter() {
-        return new ParameterTestBuilder();
-    }
-
-    @Override
-    protected ParameterTestBuilder self() {
-        return this;
+    public static <T> T onlyElement(Set<T> set) {
+        return set.iterator().next();
     }
 }

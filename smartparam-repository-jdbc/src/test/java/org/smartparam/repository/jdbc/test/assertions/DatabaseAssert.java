@@ -68,7 +68,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
         return performOperation(new Operation() {
             @Override
             public void run() {
-                boolean exists = parameterDAO.parameterExistst(name);
+                boolean exists = parameterDAO.parameterExists(name);
                 Assertions.assertThat(exists).isTrue();
             }
         });
@@ -78,7 +78,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
         return performOperation(new Operation() {
             @Override
             public void run() {
-                boolean exists = parameterDAO.parameterExistst(name);
+                boolean exists = parameterDAO.parameterExists(name);
                 Assertions.assertThat(exists).isFalse();
             }
         });

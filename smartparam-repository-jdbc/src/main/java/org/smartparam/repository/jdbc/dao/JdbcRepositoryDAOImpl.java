@@ -78,7 +78,7 @@ public class JdbcRepositoryDAOImpl implements JdbcRepositoryDAO {
 
     @Override
     public boolean parameterExists(String parameterName) {
-        return parameterDAO.parameterExistst(parameterName);
+        return parameterDAO.parameterExists(parameterName);
     }
 
     @Override

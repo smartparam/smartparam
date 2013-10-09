@@ -16,6 +16,7 @@
 package org.smartparam.engine.test.assertions;
 
 import java.util.Map;
+import java.util.Set;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.ItemsContainer;

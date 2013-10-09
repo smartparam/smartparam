@@ -18,14 +18,14 @@ package org.smartparam.repository.jdbc.model;
 import java.util.List;
 import java.util.Set;
 import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.EditableParameter;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameter implements Parameter {
+public class JdbcParameter implements EditableParameter {
 
     /**
      * Default value for {@link #arraySeparator} field.
@@ -118,30 +118,37 @@ public class JdbcParameter implements Parameter {
         this.id = id;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public void setLevels(List<Level> levels) {
         this.levels = levels;
     }
 
+    @Override
     public void setEntries(Set<ParameterEntry> entries) {
         this.entries = entries;
     }
 
+    @Override
     public void setInputLevels(int inputLevels) {
         this.inputLevels = inputLevels;
     }
 
+    @Override
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }
 
+    @Override
     public void setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
     }
 
+    @Override
     public void setArraySeparator(char arraySeparator) {
         this.arraySeparator = arraySeparator;
     }

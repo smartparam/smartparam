@@ -50,7 +50,7 @@ public class LevelDAO {
 
     private long insert(QueryRunner queryRunner, Level level, long parameterId, int order) {
         InsertQuery query = QueryFactory.insert().into(configuration.getLevelTable())
-                .sequence("id", "seq_level")
+                .sequence("id", configuration.getLevelSequence())
                 .value("fk_parameter", parameterId)
                 .value("name", level.getName())
                 .value("level_creator", level.getLevelCreator())
@@ -66,7 +66,7 @@ public class LevelDAO {
     }
 
     public List<JdbcLevel> getParameterLevels(QueryRunner queryRunner, long parameterId) {
-        return queryRunner.queryList(QueryFactory.select().query("select * from " + configuration.getLevelTable() + " where param_id = :param_id order by order_no asc").withArgument("param_id", parameterId), new LevelMapper());
+        return queryRunner.queryList(QueryFactory.select().query("select * from " + configuration.getLevelTable() + " where fk_parameter = :param_id order by order_no asc").withArgument("param_id", parameterId), new LevelMapper());
     }
 
     public void deleteParameterLevels(QueryRunner queryRunner, String parameterName) {

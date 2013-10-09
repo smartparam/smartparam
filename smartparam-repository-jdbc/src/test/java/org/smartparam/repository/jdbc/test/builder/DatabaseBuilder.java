@@ -15,14 +15,18 @@
  */
 package org.smartparam.repository.jdbc.test.builder;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.TransactionalQueryRunner;
 import org.polyjdbc.core.transaction.TransactionManager;
-import org.smartparam.engine.test.builder.ParameterTestBuilder;
+import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
+import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.repository.jdbc.test.builder.JdbcParameterTestBuilder.jdbcParameter;
 
 /**
  *
@@ -54,7 +58,7 @@ public class DatabaseBuilder {
     }
 
     public DatabaseBuilder withParameters(int count) {
-        for(int i = 0; i < count; ++i) {
+        for (int i = 0; i < count; ++i) {
             withParameter("parameter" + i);
         }
         return this;
@@ -64,6 +68,23 @@ public class DatabaseBuilder {
         parameterDAO.insert(queryRunner, parameter()
                 .withName(name)
                 .build());
+        return this;
+    }
+
+    public DatabaseBuilder withParameter(long id) {
+        parameterDAO.insert(queryRunner, jdbcParameter()
+                .withName("test" + id)
+                .withId(id)
+                .build());
+        return this;
+    }
+
+    public DatabaseBuilder withParameterEntries(long parameterId, int count) {
+        List<ParameterEntry> entries = new ArrayList<ParameterEntry>();
+        for (int i = 0; i < count; ++i) {
+            entries.add(parameterEntry().withLevels("entry" + i).build());
+        }
+        parameterEntryDAO.insert(queryRunner, entries, parameterId);
         return this;
     }
 }

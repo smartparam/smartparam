@@ -72,7 +72,7 @@ public class DefaultSchemaCreator implements SchemaCreator {
                     .withAttribute().character("array_separator").notNull().withDefaultValue(';').and()
                     .primaryKey(primaryKey(relationName)).using("id").and()
                     .build();
-            schema.addSequence(configuration.getSequencePrefix() + relationName).build();
+            schema.addSequence(configuration.getParameterSequence()).build();
         }
     }
 
@@ -91,7 +91,7 @@ public class DefaultSchemaCreator implements SchemaCreator {
                     .primaryKey(primaryKey(relationName)).using("id").and()
                     .foreignKey(foreignKey(configuration.getParameterTable() + "_id")).references(configuration.getParameterTable(), "id").on(foreignKey("parameter")).and()
                     .build();
-            schema.addSequence(configuration.getSequencePrefix() + relationName).build();
+            schema.addSequence(configuration.getLevelSequence()).build();
         }
     }
 
@@ -102,15 +102,15 @@ public class DefaultSchemaCreator implements SchemaCreator {
             builder.withAttribute().longAttr("id").withAdditionalModifiers("AUTO_INCREMENT").notNull().and()
                     .withAttribute().longAttr(foreignKey("parameter")).notNull().and();
 
-            for (int levelindex = 0; levelindex < configuration.getLevelColumnCount(); ++levelindex) {
-                builder.string("level" + levelindex).withMaxLength(255);
+            for (int levelIndex = 0; levelIndex < configuration.getLevelColumnCount(); ++levelIndex) {
+                builder.string("level" + (levelIndex + 1)).withMaxLength(255).and();
             }
 
             builder.primaryKey(primaryKey(relationName)).using("id").and()
                     .foreignKey(foreignKey(configuration.getParameterTable() + "id")).references(configuration.getParameterTable(), "id").on(foreignKey("parameter")).and()
                     .build();
 
-            schema.addSequence(configuration.getSequencePrefix() + relationName).build();
+            schema.addSequence(configuration.getParameterEntrySequence()).build();
         }
     }
 
@@ -119,14 +119,14 @@ public class DefaultSchemaCreator implements SchemaCreator {
         SchemaManager manager = new SchemaManagerImpl(transactionManager.openTransaction());
         try {
             Schema schema = new Schema(configuration.getDialect());
-            schema.addRelation(configuration.getParameterTable());
-            schema.addSequence(configuration.getSequencePrefix() + configuration.getParameterTable());
+            schema.addRelation(configuration.getParameterTable()).build();
+            schema.addSequence(configuration.getParameterSequence()).build();
 
-            schema.addRelation(configuration.getLevelTable());
-            schema.addSequence(configuration.getSequencePrefix() + configuration.getLevelTable());
+            schema.addRelation(configuration.getLevelTable()).build();
+            schema.addSequence(configuration.getLevelSequence()).build();
 
-            schema.addRelation(configuration.getParameterEntryTable());
-            schema.addSequence(configuration.getSequencePrefix() + configuration.getParameterEntryTable());
+            schema.addRelation(configuration.getParameterEntryTable()).build();
+            schema.addSequence(configuration.getParameterEntrySequence()).build();
 
             manager.drop(schema);
         } finally {

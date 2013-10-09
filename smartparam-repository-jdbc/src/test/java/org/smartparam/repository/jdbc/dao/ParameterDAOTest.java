@@ -83,7 +83,7 @@ public class ParameterDAOTest extends DatabaseTest {
         QueryRunner runner = queryRunner();
 
         // when
-        boolean exists = parameterDAO.parameterExistst("test");
+        boolean exists = parameterDAO.parameterExists("test");
         runner.close();
 
         // then
@@ -96,7 +96,7 @@ public class ParameterDAOTest extends DatabaseTest {
         QueryRunner runner = queryRunner();
 
         // when
-        boolean exists = parameterDAO.parameterExistst("test");
+        boolean exists = parameterDAO.parameterExists("test");
         runner.close();
 
         // then

@@ -34,9 +34,15 @@ public interface Configuration {
 
     String getParameterTable();
 
+    String getParameterSequence();
+
     String getLevelTable();
 
+    String getLevelSequence();
+
     String getParameterEntryTable();
+
+    String getParameterEntrySequence();
 
     String getSequencePrefix();
 
