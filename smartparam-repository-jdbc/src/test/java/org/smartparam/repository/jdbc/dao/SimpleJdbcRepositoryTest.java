@@ -15,6 +15,7 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.Set;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -46,6 +47,20 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
     }
 
     @Test
+    public void shouldReturnParameterMetadataWithoutEntries() {
+        // given
+        database().withParameter(1, "test").withParameterEntries(1, 5)
+                .withLevels(1, 4).build();
+        SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
+
+        // when
+        Parameter metadata = repository.getParameterMetadata("test");
+
+        // then
+        assertThat(metadata).hasName("test").hasLevels(4).hasNoEntries();
+    }
+
+    @Test
     public void shouldInsertNewParameterWithLevelsAndEntries() {
         // given
         Level[] levels = new Level[]{
@@ -67,5 +82,44 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
         // then
         assertDatabase().hasParameter("test").hasLevelsForParameter("test", 2)
                 .hasEntriesForParameter("test", 3).close();
+    }
+
+    @Test
+    public void shouldReturnSetOfParameterNames() {
+        // given
+        database().withParameter("test1").withParameter("test2").build();
+        SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
+
+        // when
+        Set<String> parameters = repository.getParameterNames();
+
+        // then
+        assertThat(parameters).hasSize(2);
+    }
+
+    @Test
+    public void shouldCheckIfParameterExists() {
+        // given
+        database().withParameter("test").build();
+        SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
+
+        // when
+        boolean exists = repository.parameterExists("test");
+
+        // then
+        assertThat(exists).isTrue();
+    }
+
+    @Test
+    public void shouldDeleteParameterWithLevelsAndEntries() {
+        // given
+        database().withParameter(1, "test").withLevels(1, 5).withParameterEntries(1, 5).build();
+        SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
+
+        // when
+        repository.deleteParameter("test");
+
+        // then
+        assertDatabase().hasNoParameter("test").close();
     }
 }

@@ -62,15 +62,13 @@ public class ParameterDAOTest extends DatabaseTest {
         assertDatabase().hasNoParameter("toDelete").close();
     }
 
-    public void shouldReturnListOfParameterNamesStoredInDB() {
+    public void shouldReturnListOfParameterNames() {
         // given
         database().withParameters(10).build();
         ParameterDAO parameterDAO = get(ParameterDAO.class);
-        QueryRunner runner = queryRunner();
 
         // when
-        Set<String> parameters = parameterDAO.getParameterNames(runner);
-        runner.close();
+        Set<String> parameters = parameterDAO.getParameterNames();
 
         // then
         assertThat(parameters).isNotEmpty().hasSize(10);

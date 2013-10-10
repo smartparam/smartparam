@@ -15,9 +15,7 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
-import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -34,9 +32,9 @@ public interface JdbcRepository {
 
     JdbcParameter getParameter(String parameterName);
 
-    Set<String> getParameterNames();
+    JdbcParameter getParameterMetadata(String parameterName);
 
-    List<Level> getParameterLevels(long parameterId);
+    Set<String> getParameterNames();
 
     Set<ParameterEntry> getParameterEntries(long parameterId);
 

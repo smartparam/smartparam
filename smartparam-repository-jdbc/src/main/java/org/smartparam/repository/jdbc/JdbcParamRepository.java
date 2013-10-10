@@ -62,8 +62,7 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
 
     @Override
     public ParameterBatchLoader batchLoad(String parameterName) {
-        JdbcParameter parameter = dao.getParameter(parameterName);
-        parameter.setLevels(dao.getParameterLevels(parameter.getId()));
+        JdbcParameter parameter = dao.getParameterMetadata(parameterName);
 
         return null;
     }

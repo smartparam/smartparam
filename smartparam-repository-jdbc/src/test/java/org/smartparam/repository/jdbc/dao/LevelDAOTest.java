@@ -74,4 +74,19 @@ public class LevelDAOTest extends DatabaseTest {
         assertThat(levels).hasSize(1);
         assertThat(levels.get(0).getOrderNo()).isEqualTo(0);
     }
+
+    @Test
+    public void shouldDeleteLevelsForParameter() {
+        // given
+        database().withParameter(1, "test").withLevels(1, 2).build();
+        LevelDAO levelDAO = get(LevelDAO.class);
+        QueryRunner runner = queryRunner();
+
+        // when
+        levelDAO.deleteParameterLevels(runner, "test");
+        runner.commit();
+
+        // then
+        assertDatabase().hasNoLevelsForParameter("test");
+    }
 }

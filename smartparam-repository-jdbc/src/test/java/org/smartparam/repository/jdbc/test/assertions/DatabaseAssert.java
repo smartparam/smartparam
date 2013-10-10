@@ -100,6 +100,10 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
         });
     }
 
+    public DatabaseAssert hasNoLevelsForParameter(final String parameterName) {
+        return hasLevelsForParameter(parameterName, 0);
+    }
+
     public DatabaseAssert hasEntriesForParameter(final String parameterName, final int count) {
         return performOperation(new Operation() {
             @Override

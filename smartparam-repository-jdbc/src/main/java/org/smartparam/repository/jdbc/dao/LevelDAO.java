@@ -80,7 +80,7 @@ public class LevelDAO {
 
     public void deleteParameterLevels(QueryRunner queryRunner, String parameterName) {
         DeleteQuery query = QueryFactory.delete().from(configuration.getLevelTable())
-                .where("paramId = (select id from " + configuration.getParameterTable() + " where name = :name)")
+                .where("fk_parameter = (select id from " + configuration.getParameterTable() + " where name = :name)")
                 .withArgument("name", parameterName);
         queryRunner.delete(query);
     }

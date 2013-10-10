@@ -15,6 +15,8 @@
  */
 package org.smartparam.repository.jdbc.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.smartparam.engine.model.Level;
@@ -42,9 +44,9 @@ public class JdbcParameter implements EditableParameter {
      */
     private String name;
 
-    private List<Level> levels;
+    private List<Level> levels = new ArrayList<Level>();
 
-    private Set<ParameterEntry> entries;
+    private Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
     private int inputLevels;
 
@@ -125,12 +127,14 @@ public class JdbcParameter implements EditableParameter {
 
     @Override
     public void setLevels(List<Level> levels) {
-        this.levels = levels;
+        this.levels.clear();
+        this.levels.addAll(levels);
     }
 
     @Override
     public void setEntries(Set<ParameterEntry> entries) {
-        this.entries = entries;
+        this.entries.clear();
+        this.entries.addAll(entries);
     }
 
     @Override

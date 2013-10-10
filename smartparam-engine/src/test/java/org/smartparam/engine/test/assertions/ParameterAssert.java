@@ -81,4 +81,9 @@ public class ParameterAssert extends AbstractAssert<ParameterAssert, Parameter> 
         Assertions.assertThat(actual.getEntries()).hasSize(entryCount);
         return this;
     }
+
+    public ParameterAssert hasNoEntries() {
+        Assertions.assertThat(actual.getEntries()).isEmpty();
+        return this;
+    }
 }

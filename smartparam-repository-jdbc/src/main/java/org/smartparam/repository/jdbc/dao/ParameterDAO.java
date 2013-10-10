@@ -75,9 +75,9 @@ public class ParameterDAO {
         queryRunner.delete(query);
     }
 
-    public Set<String> getParameterNames(QueryRunner queryRunner) {
+    public Set<String> getParameterNames() {
         SelectQuery query = QueryFactory.select().query("select name from " + configuration.getParameterTable());
-        return new HashSet<String>(queryRunner.queryList(query, new StringMapper()));
+        return new HashSet<String>(simpleQueryRunner.queryList(query, new StringMapper()));
     }
 
     public JdbcParameter getParameter(QueryRunner queryRunner, String parameterName) {

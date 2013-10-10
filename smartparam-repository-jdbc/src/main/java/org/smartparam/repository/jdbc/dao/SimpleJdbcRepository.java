@@ -83,11 +83,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
     public JdbcParameter getParameter(String parameterName) {
         QueryRunner runner = queryRunner();
 
-        JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
-        List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameter.getId()));
+        JdbcParameter parameter = getParameterMetadata(runner, parameterName);
         Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameter.getId());
-
-        parameter.setLevels(levels);
         parameter.setEntries(entries);
 
         runner.close();
@@ -95,20 +92,26 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public Set<String> getParameterNames() {
+    public JdbcParameter getParameterMetadata(String parameterName) {
         QueryRunner runner = queryRunner();
-        Set<String> parameterNames = parameterDAO.getParameterNames(runner);
-        runner.close();
 
-        return parameterNames;
+        JdbcParameter parameterMetadata = getParameterMetadata(runner, parameterName);
+
+        runner.close();
+        return parameterMetadata;
+    }
+
+    private JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName) {
+        JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
+        List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameter.getId()));
+        parameter.setLevels(levels);
+
+        return parameter;
     }
 
     @Override
-    public List<Level> getParameterLevels(long parameterId) {
-        QueryRunner runner = queryRunner();
-        List<Level> levels = levelDAO.getLevels(runner, parameterId);
-        runner.close();
-        return levels;
+    public Set<String> getParameterNames() {
+        return parameterDAO.getParameterNames();
     }
 
     @Override
