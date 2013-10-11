@@ -64,7 +64,6 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
         return dao.batchLoad(parameterName);
     }
 
-    //TODO #ph finish findEntries for non-cachable parameters
     @Override
     public Set<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
         logger.info("trying to load parameter {}, but {} does not support non-cacheable parameters", parameterName, getClass().getSimpleName());
