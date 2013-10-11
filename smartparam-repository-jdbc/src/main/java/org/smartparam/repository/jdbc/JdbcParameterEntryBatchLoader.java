@@ -16,10 +16,15 @@
 package org.smartparam.repository.jdbc;
 
 import java.util.Collection;
+import java.util.List;
+import org.polyjdbc.core.query.QueryRunner;
+import org.polyjdbc.core.query.TransactionalQueryRunner;
+import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
+import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 
 /**
  *
@@ -27,21 +32,52 @@ import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
  */
 public class JdbcParameterEntryBatchLoader implements ParameterEntryBatchLoader {
 
+    private QueryRunner queryRunner;
+
     private ParameterEntryDAO parameterEntryDAO;
+
+    private long parameterId;
+
+    private long lastEntryId;
+
+    private boolean hasMore = true;
+
+    public JdbcParameterEntryBatchLoader(TransactionManager transactionManager, ParameterEntryDAO parameterEntryDAO, long parameterId) {
+        this.parameterEntryDAO = parameterEntryDAO;
+        this.parameterId = parameterId;
+        this.queryRunner = new TransactionalQueryRunner(transactionManager.openTransaction());
+    }
 
     @Override
     public boolean hasMore() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return hasMore;
     }
 
     @Override
     public Collection<ParameterEntry> nextBatch(int batchSize) throws ParamBatchLoadingException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<ParameterEntry> entries = parameterEntryDAO.getParameterEntriesBatch(queryRunner, parameterId, lastEntryId, batchSize);
+        queryRunner.commit();
+
+        JdbcParameterEntry lastEntry = getLastEntry(entries);
+        if(lastEntry != null) {
+            lastEntryId = lastEntry.getId();
+        }
+
+        hasMore = entries.size() == batchSize;
+
+        return entries;
+    }
+
+    private JdbcParameterEntry getLastEntry(List<ParameterEntry> entries) {
+        if(entries.isEmpty()) {
+            return null;
+        }
+        return (JdbcParameterEntry) entries.get(entries.size() - 1);
     }
 
     @Override
     public void close() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        queryRunner.close();
     }
 
 }

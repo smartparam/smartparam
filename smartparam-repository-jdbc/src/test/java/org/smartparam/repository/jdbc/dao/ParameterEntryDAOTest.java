@@ -16,14 +16,18 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.DefaultConfigurationBuilder;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.Sets.onlyElement;
+
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.smartparam.engine.test.Iterables.onlyElement;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
 import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
 
@@ -90,5 +94,22 @@ public class ParameterEntryDAOTest extends DatabaseTest {
 
         // then
         assertThat(entries).hasSize(5);
+    }
+
+    @Test
+    public void shouldReturnBatchOfParameterEntriesOfGivenSize() {
+        // given
+        database().withParameter(1).withParameterEntries(1, 100).build();
+
+        // when
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        // when
+        List<ParameterEntry> entries = parameterEntryDAO.getParameterEntriesBatch(runner, 1, 0, 20);
+        runner.close();
+
+        // then
+        assertThat(entries).hasSize(20);
     }
 }

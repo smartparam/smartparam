@@ -16,13 +16,13 @@
 package org.smartparam.repository.jdbc.model;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.EditableParameterEntry;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameterEntry implements ParameterEntry {
+public class JdbcParameterEntry implements EditableParameterEntry {
 
     private long id;
 
@@ -51,6 +51,7 @@ public class JdbcParameterEntry implements ParameterEntry {
         this.parameterId = parameterId;
     }
 
+    @Override
     public void setLevels(String[] levels) {
         this.levels = levels;
     }

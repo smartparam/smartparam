@@ -15,24 +15,29 @@
  */
 package org.smartparam.engine.test.builder;
 
-import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
+import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.EditableParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ParameterEntryTestBuilder extends AbstractParameterEntryTestBuilder<SimpleEditableParameterEntry, ParameterEntryTestBuilder> {
+public abstract class AbstractParameterEntryTestBuilder<T extends EditableParameterEntry, B extends AbstractParameterEntryTestBuilder<?, ?>> {
 
-    private ParameterEntryTestBuilder() {
-        super(new SimpleEditableParameterEntry());
+    protected T entry;
+
+    protected AbstractParameterEntryTestBuilder(T entry) {
+        this.entry = entry;
     }
 
-    public static ParameterEntryTestBuilder parameterEntry() {
-        return new ParameterEntryTestBuilder();
+    protected abstract B self();
+
+    public ParameterEntry build() {
+        return entry;
     }
 
-    @Override
-    protected ParameterEntryTestBuilder self() {
-        return this;
+    public B withLevels(String... levelValues) {
+        entry.setLevels(levelValues);
+        return self();
     }
 }

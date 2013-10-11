@@ -15,18 +15,20 @@
  */
 package org.smartparam.engine.test;
 
-import java.util.Set;
-
 /**
  *
  * @author Adam Dubiel
  */
-public final class Sets {
+public final class Iterables {
 
-    private Sets() {
+    private Iterables() {
     }
 
-    public static <T> T onlyElement(Set<T> set) {
-        return set.iterator().next();
+    public static <T> T onlyElement(Iterable<T> iterable) {
+        return iterable.iterator().next();
+    }
+
+    public static <T> T firstItem(Iterable<T> iterable) {
+        return onlyElement(iterable);
     }
 }

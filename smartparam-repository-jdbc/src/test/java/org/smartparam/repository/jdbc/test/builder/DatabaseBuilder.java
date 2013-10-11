@@ -22,12 +22,12 @@ import org.polyjdbc.core.query.TransactionalQueryRunner;
 import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.test.builder.LevelTestBuilder;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.repository.jdbc.test.builder.JdbcParameterEntryTestBuilder.jdbcParameterEntry;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterTestBuilder.jdbcParameter;
 
 /**
@@ -83,9 +83,20 @@ public class DatabaseBuilder {
     }
 
     public DatabaseBuilder withParameterEntries(long parameterId, int count) {
+        return withParameterEntries(parameterId, -1, count);
+    }
+
+    public DatabaseBuilder withParameterEntries(long parameterId, long baseId, int count) {
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>();
+
+        boolean definedIds = baseId >= 0;
+        JdbcParameterEntryTestBuilder entryBuilder;
         for (int i = 0; i < count; ++i) {
-            entries.add(parameterEntry().withLevels("entry" + i).build());
+            entryBuilder = jdbcParameterEntry().withLevels("entry" + i);
+            if (definedIds) {
+                entryBuilder.withId(baseId + i);
+            }
+            entries.add(entryBuilder.build());
         }
         parameterEntryDAO.insert(queryRunner, entries, parameterId);
         return this;

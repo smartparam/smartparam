@@ -17,9 +17,11 @@ package org.smartparam.repository.jdbc.dao;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.DeleteQuery;
 import org.polyjdbc.core.query.InsertQuery;
+import org.polyjdbc.core.query.Order;
 import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
@@ -76,6 +78,12 @@ public class ParameterEntryDAO {
 
     public Set<JdbcParameterEntry> getJdbcParameterEntries(QueryRunner queryRunner, long parameterId) {
         return queryRunner.querySet(createSelectQuery(parameterId), new JdbcParameterEntryMapper(configuration));
+    }
+
+    public List<ParameterEntry> getParameterEntriesBatch(QueryRunner queryRunner, long parameterId, long lastEntryId, int batchSize) {
+        SelectQuery query = createSelectQuery(parameterId);
+        query.append(" and id > :lastId ").withArgument("lastId", lastEntryId).orderBy("id", Order.ASC).limit(batchSize);
+        return queryRunner.queryList(query, new ParameterEntryMapper(configuration));
     }
 
     private SelectQuery createSelectQuery(long parameterId) {

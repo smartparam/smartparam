@@ -66,6 +66,10 @@ public class DatabaseTest {
         return transactionManager.openTransaction();
     }
 
+    protected TransactionManager transactionManager() {
+        return transactionManager;
+    }
+
     protected QueryRunner queryRunner() {
         return new TransactionalQueryRunner(transaction());
     }
