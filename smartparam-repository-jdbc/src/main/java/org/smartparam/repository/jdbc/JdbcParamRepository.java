@@ -25,7 +25,6 @@ import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
-import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
 /**
@@ -62,9 +61,7 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
 
     @Override
     public ParameterBatchLoader batchLoad(String parameterName) {
-        JdbcParameter parameter = dao.getParameterMetadata(parameterName);
-
-        return null;
+        return dao.batchLoad(parameterName);
     }
 
     //TODO #ph finish findEntries for non-cachable parameters

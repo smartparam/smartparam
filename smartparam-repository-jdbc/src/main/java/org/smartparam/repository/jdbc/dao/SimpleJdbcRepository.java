@@ -21,6 +21,7 @@ import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.TransactionalQueryRunner;
 import org.polyjdbc.core.transaction.TransactionManager;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
@@ -121,6 +122,14 @@ public class SimpleJdbcRepository implements JdbcRepository {
         runner.close();
 
         return entries;
+    }
+
+    @Override
+    public ParameterBatchLoader batchLoad(String parameterName) {
+        JdbcParameter parameter = getParameterMetadata(parameterName);
+        JdbcParameterEntryBatchLoader batchLoader = new JdbcParameterEntryBatchLoader(transactionManager, parameterEntryDAO, parameter.getId());
+
+        return new ParameterBatchLoader(parameter, batchLoader);
     }
 
     @Override

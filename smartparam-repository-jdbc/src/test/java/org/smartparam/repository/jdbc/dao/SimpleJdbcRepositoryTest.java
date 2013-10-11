@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.Set;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -121,5 +122,18 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
 
         // then
         assertDatabase().hasNoParameter("test").close();
+    }
+
+    @Test
+    public void shouldReturnBatchLoaderForParameterWithParameterMetadataAndEntriesBatchLoader() {
+        // given
+        database().withParameter(1, "test").withLevels(1, 5).withParameterEntries(1, 5).build();
+        SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
+
+        // when
+        ParameterBatchLoader batchLoader = repository.batchLoad("test");
+
+        // then
+        assertThat(batchLoader).hasMetadataFor("test").hasMetadataWithLevels(5).hasEntryLoader();
     }
 }

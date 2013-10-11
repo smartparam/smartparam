@@ -16,11 +16,11 @@
 package org.smartparam.engine.test.assertions;
 
 import java.util.Map;
-import java.util.Set;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.ItemsContainer;
 import org.smartparam.engine.core.MapRepository;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.engine.ParamValue;
 import org.smartparam.engine.core.engine.PreparedLevel;
@@ -87,5 +87,9 @@ public class Assertions extends org.fest.assertions.api.Assertions {
 
     public static LevelNodeAssert assertThat(LevelNode<?> levelNode) {
         return LevelNodeAssert.assertThat(levelNode);
+    }
+
+    public static ParameterBatchLoaderAssert assertThat(ParameterBatchLoader actual) {
+        return ParameterBatchLoaderAssert.assertThat(actual);
     }
 }

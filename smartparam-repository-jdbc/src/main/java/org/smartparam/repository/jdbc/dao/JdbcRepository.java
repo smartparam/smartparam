@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.Set;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -37,6 +38,8 @@ public interface JdbcRepository {
     Set<String> getParameterNames();
 
     Set<ParameterEntry> getParameterEntries(long parameterId);
+
+    ParameterBatchLoader batchLoad(String parameterName);
 
     void deleteParameter(String parameterName);
 }
