@@ -16,7 +16,6 @@
 package org.smartparam.repository.jdbc;
 
 import java.util.Arrays;
-import org.polyjdbc.core.query.TransactionRunner;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
