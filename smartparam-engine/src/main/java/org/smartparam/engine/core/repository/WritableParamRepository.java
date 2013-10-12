@@ -16,6 +16,7 @@
 package org.smartparam.engine.core.repository;
 
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  * Writable repository is a repository without fine-grained control of what is
@@ -32,4 +33,15 @@ public interface WritableParamRepository {
      */
     void write(Parameter parameter);
 
+    /**
+     * Performs multiple write in single session/batch. Implementations
+     * should allocate resources once and free them after writing whole
+     * parameters.
+     */
+    void writeAll(Iterable<Parameter> parameters);
+
+    /**
+     * Append additional entries to given parameter.
+     */
+    void writeParameterEntries(String parameterName, Iterable<ParameterEntry> parameterEntries);
 }

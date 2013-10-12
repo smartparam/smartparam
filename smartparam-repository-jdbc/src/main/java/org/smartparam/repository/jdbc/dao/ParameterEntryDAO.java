@@ -42,7 +42,7 @@ public class ParameterEntryDAO {
         this.configuration = configuration;
     }
 
-    public void insert(QueryRunner queryRunner, Collection<ParameterEntry> parameterEntries, long parameterId) {
+    public void insert(QueryRunner queryRunner, Iterable<ParameterEntry> parameterEntries, long parameterId) {
         int maxDistinctLevels = configuration.getLevelColumnCount();
 
         InsertQuery query;

@@ -16,7 +16,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.Set;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -27,19 +27,19 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public interface JdbcRepository {
 
-    void createParameter(Parameter parameter);
+    void createParameter(QueryRunner runner, Parameter parameter);
 
-    boolean parameterExists(String parameterName);
+    boolean parameterExists(QueryRunner runner, String parameterName);
 
-    JdbcParameter getParameter(String parameterName);
+    JdbcParameter getParameter(QueryRunner runner, String parameterName);
 
-    JdbcParameter getParameterMetadata(String parameterName);
+    JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName);
 
     Set<String> getParameterNames();
 
-    Set<ParameterEntry> getParameterEntries(long parameterId);
+    Set<ParameterEntry> getParameterEntries(QueryRunner runner, long parameterId);
 
-    ParameterBatchLoader batchLoad(String parameterName);
+    void writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries);
 
-    void deleteParameter(String parameterName);
+    void deleteParameter(QueryRunner runner, String parameterName);
 }

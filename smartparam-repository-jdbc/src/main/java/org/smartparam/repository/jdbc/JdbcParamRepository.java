@@ -15,7 +15,12 @@
  */
 package org.smartparam.repository.jdbc;
 
+import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoaderFactory;
 import java.util.Set;
+import org.polyjdbc.core.query.TransactionWrapper;
+import org.polyjdbc.core.query.TransactionRunner;
+import org.polyjdbc.core.query.QueryRunner;
+import org.polyjdbc.core.query.VoidTransactionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.InitializableComponent;
@@ -24,7 +29,9 @@ import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
+import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
 /**
@@ -35,13 +42,20 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
 
+    private TransactionRunner transactionRunner;
+
+    private JdbcParameterEntryBatchLoaderFactory batchLoaderFactory;
+
     private JdbcRepository dao;
 
     private SchemaCreator schemaCreator;
 
-    public JdbcParamRepository(JdbcRepository dao, SchemaCreator schemaCreator) {
+    public JdbcParamRepository(TransactionRunner operationRunner, JdbcParameterEntryBatchLoaderFactory batchLoaderFactory,
+                               JdbcRepository dao, SchemaCreator schemaCreator) {
         this.dao = dao;
         this.schemaCreator = schemaCreator;
+        this.batchLoaderFactory = batchLoaderFactory;
+        this.transactionRunner = operationRunner;
     }
 
     @Override
@@ -55,13 +69,26 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
     }
 
     @Override
-    public Parameter load(String parameterName) {
-        return dao.getParameter(parameterName);
+    public Parameter load(final String parameterName) {
+        return transactionRunner.run(new TransactionWrapper<Parameter>() {
+            @Override
+            public Parameter perform(QueryRunner queryRunner) {
+                return dao.getParameter(queryRunner, parameterName);
+            }
+        });
     }
 
     @Override
-    public ParameterBatchLoader batchLoad(String parameterName) {
-        return dao.batchLoad(parameterName);
+    public ParameterBatchLoader batchLoad(final String parameterName) {
+        return transactionRunner.run(new TransactionWrapper<ParameterBatchLoader>() {
+            @Override
+            public ParameterBatchLoader perform(QueryRunner queryRunner) {
+                JdbcParameter metadata = dao.getParameterMetadata(queryRunner, parameterName);
+                JdbcParameterEntryBatchLoader entryLoader = batchLoaderFactory.create(metadata.getId());
+
+                return new ParameterBatchLoader(metadata, entryLoader);
+            }
+        });
     }
 
     @Override
@@ -71,11 +98,42 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
     }
 
     @Override
-    public void write(Parameter parameter) {
+    public void write(final Parameter parameter) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                write(queryRunner, parameter);
+            }
+        });
+    }
+
+    @Override
+    public void writeAll(final Iterable<Parameter> parameters) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                for (Parameter parameter : parameters) {
+                    write(queryRunner, parameter);
+                }
+            }
+        });
+    }
+
+    private void write(QueryRunner queryRunner, Parameter parameter) {
         String parameterName = parameter.getName();
-        if (dao.parameterExists(parameterName)) {
-            dao.deleteParameter(parameterName);
+        if (dao.parameterExists(queryRunner, parameterName)) {
+            dao.deleteParameter(queryRunner, parameterName);
         }
-        dao.createParameter(parameter);
+        dao.createParameter(queryRunner, parameter);
+    }
+
+    @Override
+    public void writeParameterEntries(final String parameterName, final Iterable<ParameterEntry> parameterEntries) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.writeParameterEntries(queryRunner, parameterName, parameterEntries);
+            }
+        });
     }
 }

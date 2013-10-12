@@ -19,9 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
-import org.polyjdbc.core.query.TransactionalQueryRunner;
-import org.polyjdbc.core.transaction.TransactionManager;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
@@ -43,12 +40,9 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     private ParameterEntryDAO parameterEntryDAO;
 
-    private TransactionManager transactionManager;
-
-    public SimpleJdbcRepository(Configuration configuration, TransactionManager transactionManager, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
+    public SimpleJdbcRepository(Configuration configuration, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
         this.configuration = configuration;
         checkConfiguration();
-        this.transactionManager = transactionManager;
         this.parameterDAO = parameterDAO;
         this.levelDAO = levelDAO;
         this.parameterEntryDAO = parameterEntryDAO;
@@ -60,49 +54,28 @@ public class SimpleJdbcRepository implements JdbcRepository {
         }
     }
 
-    private QueryRunner queryRunner() {
-        return new TransactionalQueryRunner(transactionManager.openTransaction());
-    }
-
     @Override
-    public void createParameter(Parameter parameter) {
-        QueryRunner runner = queryRunner();
-
+    public void createParameter(QueryRunner runner, Parameter parameter) {
         long parameterId = parameterDAO.insert(runner, parameter);
         levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameterId);
         parameterEntryDAO.insert(runner, parameter.getEntries(), parameterId);
-
-        runner.close();
     }
 
     @Override
-    public boolean parameterExists(String parameterName) {
+    public boolean parameterExists(QueryRunner runner, String parameterName) {
         return parameterDAO.parameterExists(parameterName);
     }
 
     @Override
-    public JdbcParameter getParameter(String parameterName) {
-        QueryRunner runner = queryRunner();
-
+    public JdbcParameter getParameter(QueryRunner runner, String parameterName) {
         JdbcParameter parameter = getParameterMetadata(runner, parameterName);
         Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameter.getId());
         parameter.setEntries(entries);
-
-        runner.close();
         return parameter;
     }
 
     @Override
-    public JdbcParameter getParameterMetadata(String parameterName) {
-        QueryRunner runner = queryRunner();
-
-        JdbcParameter parameterMetadata = getParameterMetadata(runner, parameterName);
-
-        runner.close();
-        return parameterMetadata;
-    }
-
-    private JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName) {
+    public JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName) {
         JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
         List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameter.getId()));
         parameter.setLevels(levels);
@@ -116,30 +89,20 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public Set<ParameterEntry> getParameterEntries(long parameterId) {
-        QueryRunner runner = queryRunner();
-        Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameterId);
-        runner.close();
-
-        return entries;
+    public Set<ParameterEntry> getParameterEntries(QueryRunner runner, long parameterId) {
+        return parameterEntryDAO.getParameterEntries(runner, parameterId);
     }
 
     @Override
-    public ParameterBatchLoader batchLoad(String parameterName) {
-        JdbcParameter parameter = getParameterMetadata(parameterName);
-        JdbcParameterEntryBatchLoader batchLoader = new JdbcParameterEntryBatchLoader(transactionManager, parameterEntryDAO, parameter.getId());
-
-        return new ParameterBatchLoader(parameter, batchLoader);
+    public void writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries) {
+        JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
+        parameterEntryDAO.insert(runner, entries, parameter.getId());
     }
 
     @Override
-    public void deleteParameter(String parameterName) {
-        QueryRunner runner = queryRunner();
-
+    public void deleteParameter(QueryRunner runner, String parameterName) {
         parameterEntryDAO.deleteParameterEntries(runner, parameterName);
         levelDAO.deleteParameterLevels(runner, parameterName);
         parameterDAO.delete(runner, parameterName);
-
-        runner.close();
     }
 }

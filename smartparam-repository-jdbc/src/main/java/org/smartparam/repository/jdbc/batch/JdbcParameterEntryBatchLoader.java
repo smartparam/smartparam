@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.dao;
+package org.smartparam.repository.jdbc.batch;
 
 import java.util.Collection;
 import java.util.List;
