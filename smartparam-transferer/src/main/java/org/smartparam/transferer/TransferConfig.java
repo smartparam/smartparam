@@ -27,6 +27,10 @@ public class TransferConfig {
         this.operationsToPerform = operationsToPerform;
     }
 
+    public static TransferConfig allOperations() {
+        return new TransferConfig(TransferOperationType.CREATE, TransferOperationType.DELETE, TransferOperationType.OVERRIDE);
+    }
+
     public TransferOperationType[] getOperationsToPerform() {
         return operationsToPerform;
     }

@@ -15,7 +15,7 @@
  */
 package org.smartparam.transferer;
 
-import org.smartparam.engine.core.repository.EditableParamRepository;
+import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
 
 /**
@@ -24,6 +24,6 @@ import org.smartparam.engine.core.repository.ParamRepository;
  */
 public interface Transferer {
 
-    void transfer(TransferConfig config, ParamRepository from, EditableParamRepository to);
+    void transfer(TransferConfig config, ParamRepository from, WritableParamRepository to);
 
 }

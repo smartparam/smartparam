@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.repository.EditableParamRepository;
+import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.transferer.operation.TransferOperation;
 import org.smartparam.transferer.sort.ParameterSorter;
@@ -43,7 +43,7 @@ public class StandardTransferer implements Transferer {
     }
 
     @Override
-    public void transfer(TransferConfig config, ParamRepository source, EditableParamRepository target) {
+    public void transfer(TransferConfig config, ParamRepository source, WritableParamRepository target) {
         long startTime = System.currentTimeMillis();
         logger.info("starting transfer from repository {} to repository {}", source.getClass().getSimpleName(), target.getClass().getSimpleName());
 
@@ -54,13 +54,13 @@ public class StandardTransferer implements Transferer {
         logger.info("done transfering parameters, took {}ms", endTime - startTime);
     }
 
-    private void runTransferOperations(SortedParameters parameters, TransferConfig config, ParamRepository source, EditableParamRepository target) {
+    private void runTransferOperations(SortedParameters parameters, TransferConfig config, ParamRepository source, WritableParamRepository target) {
         for (TransferOperationType operationType : config.getOperationsToPerform()) {
             runOperationOnParameters(operations.get(operationType), parameters.getParameterNames(operationType), source, target);
         }
     }
 
-    private void runOperationOnParameters(TransferOperation operation, Set<String> parameters, ParamRepository source, EditableParamRepository target) {
+    private void runOperationOnParameters(TransferOperation operation, Set<String> parameters, ParamRepository source, WritableParamRepository target) {
         for (String parameter : parameters) {
             operation.run(parameter, source, target);
         }

@@ -17,7 +17,7 @@ package org.smartparam.transferer;
 
 import java.util.EnumMap;
 import java.util.Map;
-import org.smartparam.engine.core.repository.EditableParamRepository;
+import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.transferer.operation.TransferOperation;
 import org.smartparam.transferer.sort.ParameterSorter;
@@ -59,11 +59,11 @@ public class StandardTransfererTest {
         when(sorter.sort(anySetOf(String.class), anySetOf(String.class))).thenReturn(sortedParameters);
 
         // when
-        standardTransferer.transfer(config, mock(ParamRepository.class), mock(EditableParamRepository.class));
+        standardTransferer.transfer(config, mock(ParamRepository.class), mock(WritableParamRepository.class));
 
         // then
-        verify(operations.get(TransferOperationType.CREATE), times(1)).run(eq("create"), any(ParamRepository.class), any(EditableParamRepository.class));
-        verify(operations.get(TransferOperationType.DELETE), never()).run(anyString(), any(ParamRepository.class), any(EditableParamRepository.class));
-        verify(operations.get(TransferOperationType.OVERRIDE), never()).run(anyString(), any(ParamRepository.class), any(EditableParamRepository.class));
+        verify(operations.get(TransferOperationType.CREATE), times(1)).run(eq("create"), any(ParamRepository.class), any(WritableParamRepository.class));
+        verify(operations.get(TransferOperationType.DELETE), never()).run(anyString(), any(ParamRepository.class), any(WritableParamRepository.class));
+        verify(operations.get(TransferOperationType.OVERRIDE), never()).run(anyString(), any(ParamRepository.class), any(WritableParamRepository.class));
     }
 }

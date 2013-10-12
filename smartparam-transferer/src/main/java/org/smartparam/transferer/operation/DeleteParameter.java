@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2013 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
  */
 package org.smartparam.transferer.operation;
 
-import org.smartparam.engine.core.repository.EditableParamRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.repository.WritableParamRepository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class DeleteParameter extends LogginTransferOperation {
+public class DeleteParameter extends LoggingTransferOperation {
 
     @Override
-    protected void performOperation(String parameterName, ParamRepository source, EditableParamRepository target) {
+    protected void performOperation(String parameterName, ParamRepository source, WritableParamRepository target) {
         target.delete(parameterName);
     }
 }

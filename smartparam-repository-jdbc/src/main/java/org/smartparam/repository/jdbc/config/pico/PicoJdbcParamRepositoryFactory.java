@@ -15,10 +15,12 @@
  */
 package org.smartparam.repository.jdbc.config.pico;
 
+import javax.sql.DataSource;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
 import org.smartparam.repository.jdbc.JdbcParamRepository;
+import org.smartparam.repository.jdbc.config.Configuration;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryFactory;
 
@@ -27,6 +29,14 @@ import org.smartparam.repository.jdbc.config.JdbcParamRepositoryFactory;
  * @author Adam Dubiel
  */
 public class PicoJdbcParamRepositoryFactory implements JdbcParamRepositoryFactory {
+
+    public static JdbcParamRepository jdbcRepository(DataSource dataSource, Configuration config) {
+        return new PicoJdbcParamRepositoryFactory().createRepository(dataSource, config);
+    }
+
+    public JdbcParamRepository createRepository(DataSource dataSource, Configuration config) {
+        return createRepository(new PicoJdbcParamRepositoryConfig(dataSource, config));
+    }
 
     @Override
     public JdbcParamRepository createRepository(JdbcParamRepositoryConfig config) {
@@ -40,7 +50,7 @@ public class PicoJdbcParamRepositoryFactory implements JdbcParamRepositoryFactor
     public PicoContainer createContainer(PicoJdbcParamRepositoryConfig config) {
         MutablePicoContainer container = PicoContainerUtil.createContainer();
         PicoContainerUtil.injectImplementations(container, JdbcParamRepository.class,
-                config.getConfiguration(), config.getConfiguration().getDialect(), config.getDataSource());
+                                                config.getConfiguration(), config.getConfiguration().getDialect(), config.getDataSource());
         PicoContainerUtil.injectImplementations(container, config.getComponents());
 
         return container;

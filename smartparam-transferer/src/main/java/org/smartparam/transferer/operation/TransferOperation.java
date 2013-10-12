@@ -15,7 +15,7 @@
  */
 package org.smartparam.transferer.operation;
 
-import org.smartparam.engine.core.repository.EditableParamRepository;
+import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
 
 /**
@@ -24,6 +24,6 @@ import org.smartparam.engine.core.repository.ParamRepository;
  */
 public interface TransferOperation {
 
-    void run(String parameterName, ParamRepository source, EditableParamRepository target);
+    void run(String parameterName, ParamRepository source, WritableParamRepository target);
 
 }

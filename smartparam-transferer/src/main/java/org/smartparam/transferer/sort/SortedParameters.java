@@ -39,6 +39,11 @@ public class SortedParameters {
     }
 
     public Set<String> getParameterNames(TransferOperationType operationType) {
-        return buckets.get(operationType);
+        Set<String> parameters = buckets.get(operationType);
+        if (parameters == null) {
+            parameters = new HashSet<String>();
+        }
+
+        return parameters;
     }
 }

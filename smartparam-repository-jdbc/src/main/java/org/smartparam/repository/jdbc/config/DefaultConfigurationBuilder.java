@@ -39,8 +39,8 @@ public class DefaultConfigurationBuilder extends AbstractConfigurationBuilder<De
         return this;
     }
 
-    public DefaultConfigurationBuilder withExcessLevelSeparator(char separaotor) {
-        configuration().setExcessLevelsSeparator(separaotor);
+    public DefaultConfigurationBuilder withExcessLevelSeparator(char separator) {
+        configuration().setExcessLevelsSeparator(separator);
         return this;
     }
 }

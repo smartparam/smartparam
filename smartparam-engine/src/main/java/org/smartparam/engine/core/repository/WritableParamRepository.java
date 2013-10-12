@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.repository;
 
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 
@@ -25,13 +26,19 @@ import org.smartparam.engine.model.ParameterEntry;
  *
  * @author Adam Dubiel
  */
-public interface WritableParamRepository {
+public interface WritableParamRepository extends ParamRepository {
 
     /**
      * Deletes any existing instance of parameter with same name and
      * writes (persists) provided parameter.
      */
     void write(Parameter parameter);
+
+    /**
+     * Deletes any existing instance of parameter and writes new
+     * one by reading batches from batch loader.
+     */
+    void write(ParameterBatchLoader batchLoader);
 
     /**
      * Performs multiple write in single session/batch. Implementations
@@ -44,4 +51,9 @@ public interface WritableParamRepository {
      * Append additional entries to given parameter.
      */
     void writeParameterEntries(String parameterName, Iterable<ParameterEntry> parameterEntries);
+
+    /**
+     * Delete parameter from repository.
+     */
+    void delete(String parameterName);
 }

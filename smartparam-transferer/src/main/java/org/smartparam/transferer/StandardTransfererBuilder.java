@@ -45,14 +45,14 @@ public class StandardTransfererBuilder {
         if (sorter == null) {
             sorter = new SimpleParameterSorter();
         }
-        if (operations.containsKey(TransferOperationType.CREATE)) {
+        if (!operations.containsKey(TransferOperationType.CREATE)) {
             operations.put(TransferOperationType.CREATE, new CreateParameter());
         }
-        if (operations.containsKey(TransferOperationType.DELETE)) {
-            operations.put(TransferOperationType.DELETE, new DeleteParameter());
-        }
-        if (operations.containsKey(TransferOperationType.OVERRIDE)) {
+        if (!operations.containsKey(TransferOperationType.OVERRIDE)) {
             operations.put(TransferOperationType.OVERRIDE, new OverrideParameter());
+        }
+        if (!operations.containsKey(TransferOperationType.DELETE)) {
+            operations.put(TransferOperationType.DELETE, new DeleteParameter());
         }
 
         return new StandardTransferer(sorter, operations);

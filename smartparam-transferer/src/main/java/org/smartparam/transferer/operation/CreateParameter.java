@@ -16,19 +16,19 @@
 package org.smartparam.transferer.operation;
 
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.core.repository.EditableParamRepository;
+import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class CreateParameter extends LogginTransferOperation {
+public class CreateParameter extends LoggingTransferOperation {
 
     @Override
-    protected void performOperation(String parameterName, ParamRepository source, EditableParamRepository target) {
+    protected void performOperation(String parameterName, ParamRepository source, WritableParamRepository target) {
         ParameterBatchLoader batchLoader = source.batchLoad(parameterName);
-        target.save(batchLoader);
+        target.write(batchLoader);
     }
 
 }

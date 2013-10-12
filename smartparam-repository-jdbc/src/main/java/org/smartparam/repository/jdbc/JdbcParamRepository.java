@@ -17,6 +17,7 @@ package org.smartparam.repository.jdbc;
 
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoaderFactory;
 import java.util.Set;
+import org.polyjdbc.core.exception.TransactionInterruptedException;
 import org.polyjdbc.core.query.TransactionWrapper;
 import org.polyjdbc.core.query.TransactionRunner;
 import org.polyjdbc.core.query.QueryRunner;
@@ -25,6 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.InitializableComponent;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.model.Parameter;
@@ -41,6 +44,8 @@ import org.smartparam.repository.jdbc.schema.SchemaCreator;
 public class JdbcParamRepository implements ParamRepository, WritableParamRepository, InitializableComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
+
+    private static final int LOADED_BATCH_SIZE = 500;
 
     private TransactionRunner transactionRunner;
 
@@ -108,6 +113,30 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
     }
 
     @Override
+    public void write(final ParameterBatchLoader batchLoader) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) throws TransactionInterruptedException {
+                String parameterName = batchLoader.getMetadata().getName();
+
+                try {
+                    write(queryRunner, batchLoader.getMetadata());
+                    queryRunner.commit();
+
+                    ParameterEntryBatchLoader entryLoader = batchLoader.getEntryLoader();
+                    while (entryLoader.hasMore()) {
+                        dao.writeParameterEntries(queryRunner, parameterName, entryLoader.nextBatch(LOADED_BATCH_SIZE));
+                        queryRunner.commit();
+                    }
+                } catch (ParamBatchLoadingException batchException) {
+                    queryRunner.rollback();
+                    throw new TransactionInterruptedException(batchException);
+                }
+            }
+        });
+    }
+
+    @Override
     public void writeAll(final Iterable<Parameter> parameters) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
@@ -133,6 +162,16 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
             @Override
             public void performVoid(QueryRunner queryRunner) {
                 dao.writeParameterEntries(queryRunner, parameterName, parameterEntries);
+            }
+        });
+    }
+
+    @Override
+    public void delete(final String parameterName) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.deleteParameter(queryRunner, parameterName);
             }
         });
     }

@@ -20,7 +20,7 @@ package org.smartparam.engine.core.exception;
  * @author Adam Dubiel
  */
 @SuppressWarnings("serial")
-public class ParamBatchLoadingException extends Exception {
+public class ParamBatchLoadingException extends SmartParamException {
 
     public ParamBatchLoadingException(String message, Throwable cause) {
         super(message, cause);
