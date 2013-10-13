@@ -17,6 +17,9 @@ package org.smartparam.serializer.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
+import java.io.StringReader;
 import java.util.HashSet;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
@@ -46,7 +49,10 @@ public class JsonParameterConfigDeserializer implements ParameterConfigDeseriali
 
     @Override
     public Parameter deserialize(String configText) {
-        EditableParameter parameter = gson.fromJson(configText, parameterInstanceClass);
+        JsonReader reader = new JsonReader(new StringReader(configText));
+        reader.setLenient(true);
+
+        EditableParameter parameter = gson.fromJson(reader, parameterInstanceClass);
         parameter.setEntries(new HashSet<ParameterEntry>());
         return parameter;
     }

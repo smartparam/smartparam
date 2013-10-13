@@ -57,11 +57,10 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
     }
 
     private void readEntries(Parameter parameter, ParameterEntryBatchLoader loader) throws SmartParamSerializationException {
-        while(loader.hasMore()) {
+        while (loader.hasMore()) {
             try {
                 parameter.getEntries().addAll(loader.nextBatch(PARAMETER_ENTRIES_BATCH_SIZE));
-            }
-            catch(ParamBatchLoadingException exception) {
+            } catch (ParamBatchLoadingException exception) {
                 throw new SmartParamSerializationException("error while loading batch of entries", exception);
             }
         }

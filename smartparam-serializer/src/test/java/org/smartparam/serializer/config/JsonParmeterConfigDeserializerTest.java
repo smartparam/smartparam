@@ -15,6 +15,8 @@
  */
 package org.smartparam.serializer.config;
 
+import com.google.gson.stream.JsonReader;
+import java.io.InputStreamReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.Parameter;
@@ -36,7 +38,7 @@ public class JsonParmeterConfigDeserializerTest {
     }
 
     @Test
-    public void shouldDeserializeParaeterConfigSectionFromJSON() {
+    public void shouldDeserializeParameterConfigSectionFromJSON() {
         // given
         String json = "{ \"name\": \"parameter\", \"cacheable\": \"true\","
                 + "\"nullable\": \"true\", \"inputLevels\": 1, \"levels\": ["
@@ -57,6 +59,19 @@ public class JsonParmeterConfigDeserializerTest {
     public void shouldDeserializeNonStrictJSON() {
         // given
         String json = "{ name: \"parameter\" }";
+
+        // when
+        Parameter parameter = deserializer.deserialize(json);
+
+        // then
+        assertThat(parameter).isNotNull().hasName("parameter");
+    }
+
+    @Test
+    public void shouldDeserializeOnlyFirstJSONObject() throws Exception {
+        // given
+        String json = "{ name: \"parameter\" }\n"
+                + "hello;hello";
 
         // when
         Parameter parameter = deserializer.deserialize(json);
