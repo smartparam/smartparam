@@ -30,8 +30,6 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  */
 public class RawSmartParamDeserializer implements ParamDeserializer {
 
-    private static final int PROBABLE_CONFIG_LENGTH = 400;
-
     private static final int PARAMETER_ENTRIES_BATCH_SIZE = 1000;
 
     private SerializationConfig serializationConfig;
@@ -48,10 +46,8 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
 
     @Override
     public Parameter deserialize(BufferedReader reader) throws SmartParamSerializationException {
-        BufferedReader bufferedReader = new BufferedReader(reader);
-
-        Parameter deserialiedParameter = deserializeConfig(bufferedReader);
-        readEntries(deserialiedParameter, deserializeEntries(bufferedReader));
+        Parameter deserialiedParameter = deserializeConfig(reader);
+        readEntries(deserialiedParameter, deserializeEntries(reader));
 
         return deserialiedParameter;
     }
@@ -68,33 +64,7 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
 
     @Override
     public Parameter deserializeConfig(BufferedReader reader) throws SmartParamSerializationException {
-        try {
-            String configString = readConfig(serializationConfig.getCommentChar(), reader);
-            Parameter deserializedParameter = configDeserializer.deserialize(configString);
-
-            return deserializedParameter;
-        } catch (IOException exception) {
-            throw new SmartParamSerializationException("error while deserializing parameter", exception);
-        }
-
-    }
-
-    private String readConfig(char commentChar, BufferedReader reader) throws IOException {
-        StringBuilder config = new StringBuilder(PROBABLE_CONFIG_LENGTH);
-
-        String endOfConfigTag = commentChar + String.valueOf(commentChar);
-
-        String line = reader.readLine();
-        while (line != null) {
-            if (line.startsWith(endOfConfigTag)) {
-                break;
-            }
-
-            config.append(line.substring(1));
-            line = reader.readLine();
-        }
-
-        return config.toString();
+        return configDeserializer.deserialize(reader);
     }
 
     @Override

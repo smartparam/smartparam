@@ -34,12 +34,12 @@ public class PropertyExclusionStrategy implements ExclusionStrategy {
     }
 
     @Override
-    public boolean shouldSkipField(FieldAttributes arg0) {
-        return propertiesToExclude.contains(arg0.getName());
+    public boolean shouldSkipField(FieldAttributes field) {
+        return propertiesToExclude.contains(field.getName());
     }
 
     @Override
-    public boolean shouldSkipClass(Class<?> arg0) {
+    public boolean shouldSkipClass(Class<?> clazz) {
         return false;
     }
 }

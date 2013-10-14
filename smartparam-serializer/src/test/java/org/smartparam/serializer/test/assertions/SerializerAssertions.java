@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2013 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.test.assertions;
 
-import java.io.BufferedReader;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+import java.io.Reader;
+import org.smartparam.engine.test.assertions.Assertions;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParameterConfigDeserializer {
+public final class SerializerAssertions extends Assertions {
 
-    Parameter deserialize(BufferedReader reader) throws SmartParamSerializationException;
+    private SerializerAssertions() {
+    }
+
+    public static ReaderAssert assertThat(Reader reader) {
+        return ReaderAssert.assertThat(reader);
+    }
 }

@@ -15,8 +15,8 @@
  */
 package org.smartparam.serializer.util;
 
+import java.io.Closeable;
 import java.io.IOException;
-import java.io.Reader;
 import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
@@ -25,7 +25,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
  */
 public class StreamCloser {
 
-    public static void closeStream(Reader reader) {
+    public static void closeStream(Closeable reader) {
         try {
             if (reader != null) {
                 reader.close();

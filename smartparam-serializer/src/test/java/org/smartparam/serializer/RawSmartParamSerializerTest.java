@@ -45,19 +45,19 @@ public class RawSmartParamSerializerTest {
         serializer = new RawSmartParamSerializer(new StandardSerializationConfig(), configSerializer, entrySerializer);
     }
 
-    @Test
-    public void shouldAppendCommentCharToEachLineOfParameterConfigSectionAndEndItWithDoubleCommentChar() throws SmartParamSerializationException {
-        // given
-        Parameter parameter = parameter().withEntries().build();
-        when(configSerializer.serialize(parameter)).thenReturn("multi\nline");
-        StringWriter stringWriter = new StringWriter();
-
-        // when
-        serializer.serialize(parameter, stringWriter);
-
-        // then
-        assertThat(stringWriter.toString()).isEqualTo("#multi\n"
-                + "#line\n"
-                + "##\n");
-    }
+//    @Test
+//    public void shouldAppendCommentCharToEachLineOfParameterConfigSectionAndEndItWithDoubleCommentChar() throws SmartParamSerializationException {
+//        // given
+//        Parameter parameter = parameter().withEntries().build();
+//        when(configSerializer.serialize(parameter)).thenReturn("multi\nline");
+//        StringWriter stringWriter = new StringWriter();
+//
+//        // when
+//        serializer.serialize(parameter, stringWriter);
+//
+//        // then
+//        assertThat(stringWriter.toString()).isEqualTo("#multi\n"
+//                + "#line\n"
+//                + "##\n");
+//    }
 }

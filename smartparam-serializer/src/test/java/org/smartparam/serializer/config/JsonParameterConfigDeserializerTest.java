@@ -15,20 +15,21 @@
  */
 package org.smartparam.serializer.config;
 
-import com.google.gson.stream.JsonReader;
-import java.io.InputStreamReader;
+import java.io.BufferedReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.test.builder.StringStreamUtil;
+import static org.smartparam.serializer.test.assertions.SerializerAssertions.*;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JsonParmeterConfigDeserializerTest {
+public class JsonParameterConfigDeserializerTest {
 
     private JsonParameterConfigDeserializer deserializer;
 
@@ -38,7 +39,7 @@ public class JsonParmeterConfigDeserializerTest {
     }
 
     @Test
-    public void shouldDeserializeParameterConfigSectionFromJSON() {
+    public void shouldDeserializeParameterConfigSectionFromJSON() throws SmartParamSerializationException {
         // given
         String json = "{ \"name\": \"parameter\", \"cacheable\": \"true\","
                 + "\"nullable\": \"true\", \"inputLevels\": 1, \"levels\": ["
@@ -47,7 +48,7 @@ public class JsonParmeterConfigDeserializerTest {
                 + "]}";
 
         // when
-        Parameter parameter = deserializer.deserialize(json);
+        Parameter parameter = deserializer.deserialize(StringStreamUtil.reader(json));
 
         // then
         assertThat(parameter).hasName("parameter").isCacheable().isNullable().hasInputLevels(1).hasLevels(2)
@@ -56,12 +57,12 @@ public class JsonParmeterConfigDeserializerTest {
     }
 
     @Test
-    public void shouldDeserializeNonStrictJSON() {
+    public void shouldDeserializeNonStrictJSON() throws SmartParamSerializationException {
         // given
         String json = "{ name: \"parameter\" }";
 
         // when
-        Parameter parameter = deserializer.deserialize(json);
+        Parameter parameter = deserializer.deserialize(StringStreamUtil.reader(json));
 
         // then
         assertThat(parameter).isNotNull().hasName("parameter");
@@ -72,11 +73,13 @@ public class JsonParmeterConfigDeserializerTest {
         // given
         String json = "{ name: \"parameter\" }\n"
                 + "hello;hello";
+        BufferedReader reader = StringStreamUtil.reader(json);
 
         // when
-        Parameter parameter = deserializer.deserialize(json);
+        Parameter parameter = deserializer.deserialize(reader);
 
         // then
         assertThat(parameter).isNotNull().hasName("parameter");
+        assertThat(reader).hasTextLeft("\nhello;hello");
     }
 }

@@ -15,12 +15,15 @@
  */
 package org.smartparam.serializer.config;
 
+import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
+import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.test.builder.StringStreamUtil;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
@@ -37,12 +40,12 @@ public class JsonParameterConfigSerializerIntegrationTest {
 
     @Before
     public void initialize() {
-        serializer = new JsonParameterConfigSerializer();
+        serializer = new JsonParameterConfigSerializer(SimpleEditableParameter.class);
         deserializer = new JsonParameterConfigDeserializer(SimpleEditableParameter.class, SimpleEditableLevel.class);
     }
 
     @Test
-    public void shouldBeAbleToDeserialieSerializedParameter() {
+    public void shouldBeAbleToDeserialieSerializedParameter() throws SmartParamSerializationException {
         // given
         Level[] levels = new Level[] {
             level().withName("level1").build(),
@@ -51,10 +54,12 @@ public class JsonParameterConfigSerializerIntegrationTest {
         Parameter parameter = parameter().withName("parameter").withInputLevels(3)
                 .withLevels(levels)
                 .build();
+        StringWriter output = new StringWriter();
 
         // when
-        String serializedConfig = serializer.serialize(parameter);
-        Parameter deserializedParameter = deserializer.deserialize(serializedConfig);
+        serializer.serialize(parameter, output);
+        output.flush();
+        Parameter deserializedParameter = deserializer.deserialize(StringStreamUtil.reader(output.toString()));
 
         // then
         assertThat(deserializedParameter).hasName("parameter").isNotNullable()

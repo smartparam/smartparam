@@ -24,8 +24,6 @@ import java.nio.charset.Charset;
  */
 public interface SerializationConfig {
 
-    char getCommentChar();
-
     String getEndOfLine();
 
     Charset getCharset();

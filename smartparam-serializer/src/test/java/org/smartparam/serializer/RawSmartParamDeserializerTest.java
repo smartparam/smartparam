@@ -43,18 +43,18 @@ public class RawSmartParamDeserializerTest {
         deserializer = new RawSmartParamDeserializer(new StandardSerializationConfig(), configDeserializer, entryDeserializer);
     }
 
-    @Test
-    public void shouldStripCommentCharsFromParameterConfigSectionBeforeDeserialization() throws SmartParamSerializationException {
-        // given
-        String config = "#{\n"
-                + "#name: \"parameter\"\n"
-                + "#}\n";
-        StringReader stringReader = new StringReader(config);
-
-        // when
-        deserializer.deserializeConfig(new BufferedReader(stringReader));
-
-        // then
-        verify(configDeserializer).deserialize("{name: \"parameter\"}");
-    }
+//    @Test
+//    public void shouldStripCommentCharsFromParameterConfigSectionBeforeDeserialization() throws SmartParamSerializationException {
+//        // given
+//        String config = "#{\n"
+//                + "#name: \"parameter\"\n"
+//                + "#}\n";
+//        StringReader stringReader = new StringReader(config);
+//
+//        // when
+//        deserializer.deserializeConfig(new BufferedReader(stringReader));
+//
+//        // then
+//        verify(configDeserializer).deserialize("{name: \"parameter\"}");
+//    }
 }

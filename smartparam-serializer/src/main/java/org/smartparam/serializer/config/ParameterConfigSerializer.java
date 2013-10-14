@@ -15,6 +15,7 @@
  */
 package org.smartparam.serializer.config;
 
+import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
 
 /**
@@ -23,5 +24,5 @@ import org.smartparam.engine.model.Parameter;
  */
 public interface ParameterConfigSerializer {
 
-    String serialize(Parameter parameter);
+    void serialize(Parameter parameter, Writer writer);
 }

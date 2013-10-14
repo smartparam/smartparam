@@ -29,28 +29,23 @@ public class StandardSerializationConfig implements CsvSerializationConfig {
 
     public static final char DEFAULT_CSV_QUOTE = '"';
 
-    public static final char DEFAULT_COMMENT = '#';
-
     public static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
     private char csvQuote;
 
     private char csvDelimiter;
 
-    private char comment;
-
     private String endOfLine;
 
     private Charset charset;
 
     public StandardSerializationConfig() {
-        this(DEFAULT_CSV_QUOTE, DEFAULT_CSV_DELIMITER, DEFAULT_COMMENT, DEFAULT_END_OF_LINE, DEFAULT_CHARSET_NAME);
+        this(DEFAULT_CSV_QUOTE, DEFAULT_CSV_DELIMITER, DEFAULT_END_OF_LINE, DEFAULT_CHARSET_NAME);
     }
 
-    public StandardSerializationConfig(char csvQuote, char csvDelimiter, char comment, String endOfLine, String charset) {
+    public StandardSerializationConfig(char csvQuote, char csvDelimiter, String endOfLine, String charset) {
         this.csvQuote = csvQuote;
         this.csvDelimiter = csvDelimiter;
-        this.comment = comment;
         this.endOfLine = endOfLine;
         this.charset = Charset.forName(charset);
     }
@@ -68,11 +63,6 @@ public class StandardSerializationConfig implements CsvSerializationConfig {
     @Override
     public String getEndOfLine() {
         return endOfLine;
-    }
-
-    @Override
-    public char getCommentChar() {
-        return comment;
     }
 
     @Override

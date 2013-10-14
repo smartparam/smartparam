@@ -17,15 +17,16 @@ package org.smartparam.serializer.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
-import java.io.StringReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.HashSet;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableLevel;
 import org.smartparam.engine.model.editable.EditableParameter;
+import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.util.StreamPartReader;
 
 /**
  *
@@ -48,12 +49,17 @@ public class JsonParameterConfigDeserializer implements ParameterConfigDeseriali
     }
 
     @Override
-    public Parameter deserialize(String configText) {
-        JsonReader reader = new JsonReader(new StringReader(configText));
-        reader.setLenient(true);
+    public Parameter deserialize(BufferedReader reader) throws SmartParamSerializationException {
+        String jsonConfig = null;
+        try {
+            jsonConfig = StreamPartReader.readPart(reader, '{', '}');
+        } catch (IOException exception) {
+            throw new SmartParamSerializationException("Unable to read config part from stream.", exception);
+        }
 
-        EditableParameter parameter = gson.fromJson(reader, parameterInstanceClass);
+        EditableParameter parameter = gson.fromJson(jsonConfig, parameterInstanceClass);
         parameter.setEntries(new HashSet<ParameterEntry>());
+
         return parameter;
     }
 }

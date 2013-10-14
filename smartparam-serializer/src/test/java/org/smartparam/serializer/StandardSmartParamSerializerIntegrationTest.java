@@ -44,8 +44,8 @@ public class StandardSmartParamSerializerIntegrationTest {
 
     @Before
     public void initialize() {
-        SerializationConfig config = new StandardSerializationConfig('"', ';', '#', "\n", "UTF-8");
-        serializer = new StandardParamSerializer(config, SimpleEditableParameterEntry.class);
+        SerializationConfig config = new StandardSerializationConfig('"', ';', "\n", "UTF-8");
+        serializer = new StandardParamSerializer(config, SimpleEditableParameter.class, SimpleEditableParameterEntry.class);
         deserializer = new StandardParamDeserializer(config, SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
     }
 
@@ -65,11 +65,11 @@ public class StandardSmartParamSerializerIntegrationTest {
     @Test
     public void shouldBeAbleToDeserializeOnceSerializedParameter() throws Exception {
         // given
-        Level[] levels = new Level[] {
+        Level[] levels = new Level[]{
             level().withName("level1").build(),
             level().withName("level2").build()
         };
-        ParameterEntry[] entries = new ParameterEntry[] {
+        ParameterEntry[] entries = new ParameterEntry[]{
             parameterEntry().withLevels("level1").build(),
             parameterEntry().withLevels("level1").build()
         };

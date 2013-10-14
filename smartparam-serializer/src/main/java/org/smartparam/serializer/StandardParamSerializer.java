@@ -15,6 +15,7 @@
  */
 package org.smartparam.serializer;
 
+import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.config.JsonParameterConfigSerializer;
 import org.smartparam.serializer.entries.CsvParameterEntrySerializer;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
@@ -27,7 +28,8 @@ public class StandardParamSerializer extends RawSmartParamSerializer {
 
     public StandardParamSerializer(
             SerializationConfig serializationConfig,
+            Class<? extends Parameter> parameterInstanceClass,
             Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
-        super(serializationConfig, new JsonParameterConfigSerializer(), new CsvParameterEntrySerializer());
+        super(serializationConfig, new JsonParameterConfigSerializer(parameterInstanceClass), new CsvParameterEntrySerializer());
     }
 }

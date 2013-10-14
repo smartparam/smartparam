@@ -15,11 +15,13 @@
  */
 package org.smartparam.serializer.config;
 
+import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.SimpleEditableParameter;
 import static org.fest.assertions.api.Assertions.*;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
@@ -35,7 +37,7 @@ public class JsonParameterConfigSerializerTest {
 
     @Before
     public void initialize() {
-        serializer = new JsonParameterConfigSerializer();
+        serializer = new JsonParameterConfigSerializer(SimpleEditableParameter.class);
     }
 
     @Test
@@ -51,12 +53,14 @@ public class JsonParameterConfigSerializerTest {
         Parameter parameter = parameter().withName("parameter").withInputLevels(3)
                 .withLevels(levels).withEntries(entries)
                 .build();
+        StringWriter output = new StringWriter();
 
         // when
-        String serializedConfig = serializer.serialize(parameter);
+        serializer.serialize(parameter, output);
+        output.flush();
 
         // then
-        assertThat(serializedConfig).isNotEmpty().contains("levels").contains("parameter")
+        assertThat(output.toString()).isNotEmpty().contains("levels").contains("parameter")
                 .doesNotContain("entries");
     }
 }

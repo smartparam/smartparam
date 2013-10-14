@@ -1,7 +1,6 @@
 {
     name: "testParameter",
     cacheable: "true",
-    multivalue: "true",
     nullable: "false",
     inputLevels: 4,
     levels: [
