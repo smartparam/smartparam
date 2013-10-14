@@ -20,7 +20,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
 import org.smartparam.repository.jdbc.JdbcParamRepository;
-import org.smartparam.repository.jdbc.config.Configuration;
+import org.smartparam.repository.jdbc.config.JdbcConfiguration;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryFactory;
 
@@ -30,11 +30,11 @@ import org.smartparam.repository.jdbc.config.JdbcParamRepositoryFactory;
  */
 public class PicoJdbcParamRepositoryFactory implements JdbcParamRepositoryFactory {
 
-    public static JdbcParamRepository jdbcRepository(DataSource dataSource, Configuration config) {
+    public static JdbcParamRepository jdbcRepository(DataSource dataSource, JdbcConfiguration config) {
         return new PicoJdbcParamRepositoryFactory().createRepository(dataSource, config);
     }
 
-    public JdbcParamRepository createRepository(DataSource dataSource, Configuration config) {
+    public JdbcParamRepository createRepository(DataSource dataSource, JdbcConfiguration config) {
         return createRepository(new PicoJdbcParamRepositoryConfig(dataSource, config));
     }
 

@@ -21,7 +21,7 @@ import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.test.Iterables;
-import org.smartparam.repository.jdbc.config.DefaultConfigurationBuilder;
+import org.smartparam.repository.jdbc.config.DefaultJdbcConfigurationBuilder;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
@@ -39,7 +39,7 @@ import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.param
 public class ParameterEntryDAOTest extends DatabaseTest {
 
     @Override
-    protected void customizeConfiguraion(DefaultConfigurationBuilder builder) {
+    protected void customizeConfiguraion(DefaultJdbcConfigurationBuilder builder) {
         builder.withExcessLevelSeparator('|').withLevelColumnCount(2);
     }
 

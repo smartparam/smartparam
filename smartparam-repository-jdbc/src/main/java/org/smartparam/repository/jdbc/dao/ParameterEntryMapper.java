@@ -19,7 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.polyjdbc.core.query.mapper.ObjectMapper;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.config.DefaultConfiguration;
+import org.smartparam.repository.jdbc.config.DefaultJdbcConfiguration;
 
 /**
  *
@@ -29,7 +29,7 @@ public class ParameterEntryMapper implements ObjectMapper<ParameterEntry> {
 
     private JdbcParameterEntryMapper jdbcMapper;
 
-    public ParameterEntryMapper(DefaultConfiguration configuration) {
+    public ParameterEntryMapper(DefaultJdbcConfiguration configuration) {
         jdbcMapper = new JdbcParameterEntryMapper(configuration);
     }
 

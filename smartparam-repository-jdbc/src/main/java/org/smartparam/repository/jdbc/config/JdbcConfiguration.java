@@ -22,7 +22,7 @@ import org.polyjdbc.core.dialect.Dialect;
  *
  * @author Przemek Hertel
  */
-public interface Configuration {
+public interface JdbcConfiguration {
 
     /**
      * What database dialect should be used - mandatory field, JDBC repository

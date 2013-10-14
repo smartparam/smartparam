@@ -25,5 +25,5 @@ public interface JdbcParamRepositoryConfig {
 
     DataSource getDataSource();
 
-    Configuration getConfiguration();
+    JdbcConfiguration getConfiguration();
 }

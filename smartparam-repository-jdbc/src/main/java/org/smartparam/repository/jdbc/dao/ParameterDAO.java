@@ -25,7 +25,7 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.SimpleQueryRunner;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.repository.jdbc.config.Configuration;
+import org.smartparam.repository.jdbc.config.JdbcConfiguration;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
@@ -34,11 +34,11 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public class ParameterDAO {
 
-    private final Configuration configuration;
+    private final JdbcConfiguration configuration;
 
     private final SimpleQueryRunner simpleQueryRunner;
 
-    public ParameterDAO(Configuration configuration, SimpleQueryRunner simpleQueryRunner) {
+    public ParameterDAO(JdbcConfiguration configuration, SimpleQueryRunner simpleQueryRunner) {
         this.configuration = configuration;
         this.simpleQueryRunner = simpleQueryRunner;
     }

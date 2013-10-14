@@ -21,7 +21,7 @@ import org.polyjdbc.core.dialect.Dialect;
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractConfigurationBuilder<C extends DefaultConfiguration, B extends AbstractConfigurationBuilder<?, ?>> {
+public abstract class AbstractConfigurationBuilder<C extends DefaultJdbcConfiguration, B extends AbstractConfigurationBuilder<?, ?>> {
 
     private C configuration;
 
