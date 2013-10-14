@@ -13,56 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.metadata;
 
 import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.editable.SimpleEditableLevel;
+import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
-import org.smartparam.serializer.test.builder.StringStreamUtil;
-import static org.smartparam.engine.test.assertions.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.*;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
+import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JsonParameterConfigSerializerIntegrationTest {
+public class JsonParameterMetadataSerializerTest {
 
-    private JsonParameterConfigSerializer serializer;
-
-    private JsonParameterConfigDeserializer deserializer;
+    private JsonParameterMetadataSerializer serializer;
 
     @Before
     public void initialize() {
-        serializer = new JsonParameterConfigSerializer(SimpleEditableParameter.class);
-        deserializer = new JsonParameterConfigDeserializer(SimpleEditableParameter.class, SimpleEditableLevel.class);
+        serializer = new JsonParameterMetadataSerializer(SimpleEditableParameter.class);
     }
 
     @Test
-    public void shouldBeAbleToDeserialieSerializedParameter() throws SmartParamSerializationException {
+    public void shouldSerializeParameterMetadataWithoutEntriesToJSON() {
         // given
-        Level[] levels = new Level[] {
+        Level[] levels = new Level[]{
             level().withName("level1").build(),
             level().withName("level2").build()
         };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("1").build()
+        };
         Parameter parameter = parameter().withName("parameter").withInputLevels(3)
-                .withLevels(levels)
+                .withLevels(levels).withEntries(entries)
                 .build();
         StringWriter output = new StringWriter();
 
         // when
         serializer.serialize(parameter, output);
         output.flush();
-        Parameter deserializedParameter = deserializer.deserialize(StringStreamUtil.reader(output.toString()));
 
         // then
-        assertThat(deserializedParameter).hasName("parameter").isNotNullable()
-                .isCacheable().hasInputLevels(3).hasLevels(2);
+        assertThat(output.toString()).isNotEmpty().contains("levels").contains("parameter")
+                .doesNotContain("entries");
     }
 }

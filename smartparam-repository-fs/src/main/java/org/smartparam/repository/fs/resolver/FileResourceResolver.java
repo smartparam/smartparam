@@ -72,7 +72,7 @@ public class FileResourceResolver implements ResourceResolver {
         BufferedReader reader;
         try {
             reader = StreamReaderOpener.openReaderForFile(parameterResourceName, deserializer.getSerializationConfig().getCharset());
-            Parameter metadata = deserializer.deserializeConfig(reader);
+            Parameter metadata = deserializer.deserializeMetadata(reader);
             ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(reader);
 
             return new ParameterBatchLoader(metadata, entriesLoader);

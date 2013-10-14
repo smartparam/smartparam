@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.metadata;
 
 import java.io.BufferedReader;
 import org.junit.Before;
@@ -29,17 +29,17 @@ import static org.smartparam.serializer.test.assertions.SerializerAssertions.*;
  *
  * @author Adam Dubiel
  */
-public class JsonParameterConfigDeserializerTest {
+public class JsonParameterMetadataDeserializerTest {
 
-    private JsonParameterConfigDeserializer deserializer;
+    private JsonParameterMetadataDeserializer deserializer;
 
     @Before
     public void initialize() {
-        deserializer = new JsonParameterConfigDeserializer(SimpleEditableParameter.class, SimpleEditableLevel.class);
+        deserializer = new JsonParameterMetadataDeserializer(SimpleEditableParameter.class, SimpleEditableLevel.class);
     }
 
     @Test
-    public void shouldDeserializeParameterConfigSectionFromJSON() throws SmartParamSerializationException {
+    public void shouldDeserializeParameterMetadataSectionFromJSON() throws SmartParamSerializationException {
         // given
         String json = "{ \"name\": \"parameter\", \"cacheable\": \"true\","
                 + "\"nullable\": \"true\", \"inputLevels\": 1, \"levels\": ["

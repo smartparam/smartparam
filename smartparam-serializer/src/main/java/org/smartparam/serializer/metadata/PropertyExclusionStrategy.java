@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.metadata;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

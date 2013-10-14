@@ -116,7 +116,7 @@ public class ClasspathResourceResolver implements ResourceResolver {
         BufferedReader reader = null;
         try {
             reader = StreamReaderOpener.openReaderForResource(this.getClass(), resourceName);
-            return deserializer.deserializeConfig(reader);
+            return deserializer.deserializeMetadata(reader);
         } finally {
             StreamCloser.closeStream(reader);
         }
@@ -127,7 +127,7 @@ public class ClasspathResourceResolver implements ResourceResolver {
         BufferedReader reader = null;
         try {
             reader = StreamReaderOpener.openReaderForResource(this.getClass(), parameterResourceName);
-            Parameter metadata = deserializer.deserializeConfig(reader);
+            Parameter metadata = deserializer.deserializeMetadata(reader);
             ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(reader);
 
             return new ParameterBatchLoader(metadata, entriesLoader);

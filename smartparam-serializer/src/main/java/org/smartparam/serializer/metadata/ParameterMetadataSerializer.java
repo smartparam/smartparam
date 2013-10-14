@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.metadata;
 
-import java.io.BufferedReader;
+import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParameterConfigDeserializer {
+public interface ParameterMetadataSerializer {
 
-    Parameter deserialize(BufferedReader reader) throws SmartParamSerializationException;
+    void serialize(Parameter parameter, Writer writer);
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.metadata;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,7 +24,7 @@ import org.smartparam.engine.model.Parameter;
  *
  * @author Adam Dubiel
  */
-public class JsonParameterConfigSerializer implements ParameterConfigSerializer {
+public class JsonParameterMetadataSerializer implements ParameterMetadataSerializer {
 
     private static final String[] IGNORED_PROPERTIES = new String[]{"entries"};
 
@@ -32,7 +32,7 @@ public class JsonParameterConfigSerializer implements ParameterConfigSerializer 
 
     private Class<? extends Parameter> parameterClass;
 
-    public JsonParameterConfigSerializer(Class<? extends Parameter> parameterClass) {
+    public JsonParameterMetadataSerializer(Class<? extends Parameter> parameterClass) {
         this.parameterClass = parameterClass;
 
         PropertyExclusionStrategy exclusionStrategy = new PropertyExclusionStrategy(IGNORED_PROPERTIES);

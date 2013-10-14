@@ -17,7 +17,7 @@ package org.smartparam.serializer;
 
 import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.config.ParameterConfigSerializer;
+import org.smartparam.serializer.metadata.ParameterMetadataSerializer;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.serializer.entries.ParameterEntrySerializer;
 import org.smartparam.serializer.entries.SimpleParameterEntryBatchLoader;
@@ -31,13 +31,13 @@ public class RawSmartParamSerializer implements ParamSerializer {
 
     private SerializationConfig serializationConfig;
 
-    private ParameterConfigSerializer configSerializer;
+    private ParameterMetadataSerializer metadataSerializer;
 
     private ParameterEntrySerializer entriesSerializer;
 
-    public RawSmartParamSerializer(SerializationConfig serializationConfig, ParameterConfigSerializer configSerializer, ParameterEntrySerializer entriesSerializer) {
+    public RawSmartParamSerializer(SerializationConfig serializationConfig, ParameterMetadataSerializer metadataSerializer, ParameterEntrySerializer entriesSerializer) {
         this.serializationConfig = serializationConfig;
-        this.configSerializer = configSerializer;
+        this.metadataSerializer = metadataSerializer;
         this.entriesSerializer = entriesSerializer;
     }
 
@@ -49,7 +49,7 @@ public class RawSmartParamSerializer implements ParamSerializer {
 
     @Override
     public void serialize(Parameter parameter, Writer writer, ParameterEntryBatchLoader entryBatchLoader) throws SmartParamSerializationException {
-        configSerializer.serialize(parameter, writer);
+        metadataSerializer.serialize(parameter, writer);
         entriesSerializer.serialize(serializationConfig, writer, parameter, entryBatchLoader);
     }
 

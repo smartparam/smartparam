@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.metadata;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,13 +32,13 @@ import org.smartparam.serializer.util.StreamPartReader;
  *
  * @author Adam Dubiel
  */
-public class JsonParameterConfigDeserializer implements ParameterConfigDeserializer {
+public class JsonParameterMetadataDeserializer implements ParameterMetadataDeserializer {
 
     private Class<? extends EditableParameter> parameterInstanceClass;
 
     private Gson gson;
 
-    public JsonParameterConfigDeserializer(Class<? extends EditableParameter> parameterInstanceClass, Class<? extends EditableLevel> levelInstanceClass) {
+    public JsonParameterMetadataDeserializer(Class<? extends EditableParameter> parameterInstanceClass, Class<? extends EditableLevel> levelInstanceClass) {
         this.parameterInstanceClass = parameterInstanceClass;
 
         LevelSerializationAdapter levelAdapter = new LevelSerializationAdapter(levelInstanceClass);

@@ -20,7 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.config.ParameterConfigSerializer;
+import org.smartparam.serializer.metadata.ParameterMetadataSerializer;
 import org.smartparam.serializer.entries.ParameterEntrySerializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 import static org.smartparam.engine.test.assertions.Assertions.*;
@@ -32,7 +32,7 @@ import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
  */
 public class RawSmartParamSerializerTest {
 
-    private ParameterConfigSerializer configSerializer;
+    private ParameterMetadataSerializer configSerializer;
 
     private ParameterEntrySerializer entrySerializer;
 
@@ -40,7 +40,7 @@ public class RawSmartParamSerializerTest {
 
     @Before
     public void initialize() {
-        configSerializer = mock(ParameterConfigSerializer.class);
+        configSerializer = mock(ParameterMetadataSerializer.class);
         entrySerializer = mock(ParameterEntrySerializer.class);
         serializer = new RawSmartParamSerializer(new StandardSerializationConfig(), configSerializer, entrySerializer);
     }

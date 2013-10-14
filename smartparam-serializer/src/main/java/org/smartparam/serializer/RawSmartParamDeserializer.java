@@ -18,7 +18,7 @@ package org.smartparam.serializer;
 import java.io.BufferedReader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.config.ParameterConfigDeserializer;
+import org.smartparam.serializer.metadata.ParameterMetadataDeserializer;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
@@ -33,19 +33,19 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
 
     private SerializationConfig serializationConfig;
 
-    private ParameterConfigDeserializer configDeserializer;
+    private ParameterMetadataDeserializer metadataDeserializer;
 
     private ParameterEntryDeserializer entriesDeserializer;
 
-    public RawSmartParamDeserializer(SerializationConfig serializationConfig, ParameterConfigDeserializer configDeserializer, ParameterEntryDeserializer entriesDeserializer) {
+    public RawSmartParamDeserializer(SerializationConfig serializationConfig, ParameterMetadataDeserializer metadataDeserializer, ParameterEntryDeserializer entriesDeserializer) {
         this.serializationConfig = serializationConfig;
-        this.configDeserializer = configDeserializer;
+        this.metadataDeserializer = metadataDeserializer;
         this.entriesDeserializer = entriesDeserializer;
     }
 
     @Override
     public Parameter deserialize(BufferedReader reader) throws SmartParamSerializationException {
-        Parameter deserialiedParameter = deserializeConfig(reader);
+        Parameter deserialiedParameter = deserializeMetadata(reader);
         readEntries(deserialiedParameter, deserializeEntries(reader));
 
         return deserialiedParameter;
@@ -62,8 +62,8 @@ public class RawSmartParamDeserializer implements ParamDeserializer {
     }
 
     @Override
-    public Parameter deserializeConfig(BufferedReader reader) throws SmartParamSerializationException {
-        return configDeserializer.deserialize(reader);
+    public Parameter deserializeMetadata(BufferedReader reader) throws SmartParamSerializationException {
+        return metadataDeserializer.deserialize(reader);
     }
 
     @Override

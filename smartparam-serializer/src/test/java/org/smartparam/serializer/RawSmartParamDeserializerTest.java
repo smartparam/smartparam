@@ -20,7 +20,8 @@ import java.io.StringReader;
 import org.junit.Before;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
-import org.smartparam.serializer.config.ParameterConfigDeserializer;
+
+import org.smartparam.serializer.metadata.ParameterMetadataDeserializer;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
@@ -30,7 +31,7 @@ import org.smartparam.serializer.exception.SmartParamSerializationException;
  */
 public class RawSmartParamDeserializerTest {
 
-    private ParameterConfigDeserializer configDeserializer;
+    private ParameterMetadataDeserializer configDeserializer;
 
     private ParameterEntryDeserializer entryDeserializer;
 
@@ -38,7 +39,7 @@ public class RawSmartParamDeserializerTest {
 
     @Before
     public void initialize() {
-        configDeserializer = mock(ParameterConfigDeserializer.class);
+        configDeserializer = mock(ParameterMetadataDeserializer.class);
         entryDeserializer = mock(ParameterEntryDeserializer.class);
         deserializer = new RawSmartParamDeserializer(new StandardSerializationConfig(), configDeserializer, entryDeserializer);
     }
@@ -52,7 +53,7 @@ public class RawSmartParamDeserializerTest {
 //        StringReader stringReader = new StringReader(config);
 //
 //        // when
-//        deserializer.deserializeConfig(new BufferedReader(stringReader));
+//        deserializer.deserializeMetadata(new BufferedReader(stringReader));
 //
 //        // then
 //        verify(configDeserializer).deserialize("{name: \"parameter\"}");

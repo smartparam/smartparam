@@ -18,7 +18,7 @@ package org.smartparam.serializer;
 import org.smartparam.engine.model.editable.EditableLevel;
 import org.smartparam.engine.model.editable.EditableParameter;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
-import org.smartparam.serializer.config.JsonParameterConfigDeserializer;
+import org.smartparam.serializer.metadata.JsonParameterMetadataDeserializer;
 import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
 
 /**
@@ -34,7 +34,7 @@ public class StandardParamDeserializer extends RawSmartParamDeserializer {
             Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
 
         super(serializationConfig,
-                new JsonParameterConfigDeserializer(parameterInstanceClass, levelInstanceClass),
-                new CsvParameterEntryDeserializer(parameterEntryInstanceClass));
+              new JsonParameterMetadataDeserializer(parameterInstanceClass, levelInstanceClass),
+              new CsvParameterEntryDeserializer(parameterEntryInstanceClass));
     }
 }

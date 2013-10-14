@@ -65,7 +65,7 @@ public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
         BufferedReader reader = null;
         try {
             reader = Files.newBufferedReader(file, deserializer.getSerializationConfig().getCharset());
-            Parameter parameter = deserializer.deserializeConfig(reader);
+            Parameter parameter = deserializer.deserializeMetadata(reader);
             parameters.put(parameter.getName(), fileName);
 
             logger.debug("found parameter {} in file {}", parameter.getName(), fileName);
