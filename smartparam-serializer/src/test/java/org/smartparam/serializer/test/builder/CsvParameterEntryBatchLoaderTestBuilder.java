@@ -18,7 +18,7 @@ package org.smartparam.serializer.test.builder;
 
 import java.io.StringReader;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.entries.CsvParameterEntryBatchLoader;
 import org.smartparam.serializer.entries.CsvPreferenceBuilder;
 import org.supercsv.io.CsvListReader;

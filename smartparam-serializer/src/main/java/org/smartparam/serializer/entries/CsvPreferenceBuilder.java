@@ -15,8 +15,8 @@
  */
 package org.smartparam.serializer.entries;
 
-import org.smartparam.serializer.CsvSerializationConfig;
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.CsvSerializationConfig;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.supercsv.prefs.CsvPreference;
 
 /**

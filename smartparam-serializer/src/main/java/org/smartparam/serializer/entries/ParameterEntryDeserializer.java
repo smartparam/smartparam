@@ -17,7 +17,7 @@ package org.smartparam.serializer.entries;
 
 import java.io.BufferedReader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.exception.SmartParamSerializationException;
 
 /**

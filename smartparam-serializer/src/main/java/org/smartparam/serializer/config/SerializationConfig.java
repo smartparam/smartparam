@@ -13,15 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer;
+package org.smartparam.serializer.config;
+
+import java.nio.charset.Charset;
+import org.smartparam.engine.model.editable.EditableLevel;
+import org.smartparam.engine.model.editable.EditableParameter;
+import org.smartparam.engine.model.editable.EditableParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface CsvSerializationConfig extends SerializationConfig {
+public interface SerializationConfig {
 
-    char getCsvDelimiter();
+    Class<? extends EditableParameter> parameterInstanceClass();
 
-    char getCsvQuote();
+    Class<? extends EditableLevel> levelInstanceClass();
+
+    Class<? extends EditableParameterEntry> parameterEntryInstanceClass();
+
+    String getEndOfLine();
+
+    Charset getCharset();
 }

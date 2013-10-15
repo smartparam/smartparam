@@ -30,7 +30,7 @@ import org.smartparam.engine.model.editable.SimpleEditableParameter;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardParamDeserializer;
-import org.smartparam.serializer.StandardSerializationConfig;
+import org.smartparam.serializer.config.StandardSerializationConfig;
 
 /**
  *

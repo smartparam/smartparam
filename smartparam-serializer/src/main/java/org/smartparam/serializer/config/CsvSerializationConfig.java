@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer;
-
-import java.nio.charset.Charset;
+package org.smartparam.serializer.config;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface SerializationConfig {
+public interface CsvSerializationConfig extends SerializationConfig {
 
-    String getEndOfLine();
+    char getCsvDelimiter();
 
-    Charset getCharset();
+    char getCsvQuote();
 }

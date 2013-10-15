@@ -17,7 +17,7 @@ package org.smartparam.serializer.entries;
 
 import org.junit.Before;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
-import org.smartparam.serializer.StandardSerializationConfig;
+import org.smartparam.serializer.config.StandardSerializationConfig;
 
 /**
  *

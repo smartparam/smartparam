@@ -15,6 +15,7 @@
  */
 package org.smartparam.serializer;
 
+import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.engine.model.editable.EditableLevel;
 import org.smartparam.engine.model.editable.EditableParameter;
 import org.smartparam.engine.model.editable.EditableParameterEntry;

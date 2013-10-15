@@ -15,6 +15,7 @@
  */
 package org.smartparam.serializer;
 
+import org.smartparam.serializer.config.StandardSerializationConfig;
 import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
