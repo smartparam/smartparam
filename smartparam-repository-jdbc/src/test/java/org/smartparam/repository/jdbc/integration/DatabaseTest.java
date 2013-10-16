@@ -27,9 +27,9 @@ import org.polyjdbc.core.query.TransactionalQueryRunner;
 import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.polyjdbc.core.transaction.Transaction;
 import org.polyjdbc.core.transaction.TransactionManager;
-import org.smartparam.repository.jdbc.config.JdbcConfiguration;
-import org.smartparam.repository.jdbc.config.DefaultJdbcConfiguration;
-import org.smartparam.repository.jdbc.config.JdbcConfigurationBuilder;
+import org.smartparam.repository.jdbc.config.JdbcConfig;
+import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
+import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
 import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryFactory;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
@@ -86,11 +86,11 @@ public class DatabaseTest {
     public void setUpDatabase() throws Exception {
         Dialect dialect = DialectRegistry.dialect("H2");
 
-        JdbcConfigurationBuilder configurationBuilder = defaultConfiguration().withDialect(dialect)
+        JdbcConfigBuilder configurationBuilder = defaultConfiguration().withDialect(dialect)
                 .withParameterTableName("parameter").withLevelTableName("level")
                 .withParameterEntryTableName("entry");
         customizeConfiguraion(configurationBuilder);
-        DefaultJdbcConfiguration configuration = configurationBuilder.build();
+        DefaultJdbcConfig configuration = configurationBuilder.build();
 
         DataSource dataSource = DataSourceFactory.create(dialect, "jdbc:h2:mem:test", "smartparam", "smartparam");
         this.transactionManager = new DataSourceTransactionManager(dialect, dataSource);
@@ -104,12 +104,12 @@ public class DatabaseTest {
         this.cleaner = new TheCleaner(transactionManager);
     }
 
-    protected void customizeConfiguraion(JdbcConfigurationBuilder builder) {
+    protected void customizeConfiguraion(JdbcConfigBuilder builder) {
     }
 
     @BeforeMethod(alwaysRun = true)
     public void cleanDatabase() {
-        JdbcConfiguration config = get(JdbcConfiguration.class);
+        JdbcConfig config = get(JdbcConfig.class);
         String[] relationsToDelete = config.getManagedTables();
         ArrayUtils.reverse(relationsToDelete);
         cleaner.cleanDB(relationsToDelete);

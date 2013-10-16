@@ -23,7 +23,7 @@ import org.polyjdbc.core.schema.model.RelationBuilder;
 import org.polyjdbc.core.schema.model.Schema;
 import org.polyjdbc.core.transaction.Transaction;
 import org.polyjdbc.core.transaction.TransactionManager;
-import org.smartparam.repository.jdbc.config.DefaultJdbcConfiguration;
+import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import static org.smartparam.repository.jdbc.schema.SchemaNamePolicy.*;
 
 /**
@@ -32,11 +32,11 @@ import static org.smartparam.repository.jdbc.schema.SchemaNamePolicy.*;
  */
 public class DefaultSchemaCreator implements SchemaCreator {
 
-    private DefaultJdbcConfiguration configuration;
+    private DefaultJdbcConfig configuration;
 
     private TransactionManager transactionManager;
 
-    public DefaultSchemaCreator(DefaultJdbcConfiguration configuration, TransactionManager transactionManager) {
+    public DefaultSchemaCreator(DefaultJdbcConfig configuration, TransactionManager transactionManager) {
         this.configuration = configuration;
         this.transactionManager = transactionManager;
     }

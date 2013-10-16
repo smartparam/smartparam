@@ -18,11 +18,11 @@ package org.smartparam.repository.jdbc.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.smartparam.engine.test.assertions.Assertions;
-import org.smartparam.repository.jdbc.config.DefaultJdbcConfiguration;
+import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
 
-import static org.smartparam.repository.jdbc.config.JdbcConfigurationBuilder.jdbcConfiguration;
+import static org.smartparam.repository.jdbc.config.JdbcConfigBuilder.jdbcConfiguration;
 import static org.smartparam.repository.jdbc.test.builder.ResultSetMockBuilder.resultSet;
 
 /**
@@ -34,7 +34,7 @@ public class JdbcParameterEntryMapperTest {
     @Test
     public void shouldReturnEntryWithSameAmountOfLevelsWhenLevelsBelowLimit() throws SQLException {
         // given
-        DefaultJdbcConfiguration configuration = jdbcConfiguration().withLevelColumnCount(10).build();
+        DefaultJdbcConfig configuration = jdbcConfiguration().withLevelColumnCount(10).build();
         JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
                 .withString("level1", "1").withString("level2", "2").build();
@@ -49,7 +49,7 @@ public class JdbcParameterEntryMapperTest {
     @Test
     public void shouldReturnEntryWithMaximumLevelsWhenLevelsEqualsLimit() throws SQLException {
         // given
-        DefaultJdbcConfiguration configuration = jdbcConfiguration().withLevelColumnCount(2).build();
+        DefaultJdbcConfig configuration = jdbcConfiguration().withLevelColumnCount(2).build();
         JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
                 .withString("level1", "1").withString("level2", "2")
@@ -65,7 +65,7 @@ public class JdbcParameterEntryMapperTest {
     @Test
     public void shouldReturnEntryWithLevelsExtractedFromSplitLastLevelWhenLevelCountGreaterThanLimit() throws SQLException {
         // given
-        DefaultJdbcConfiguration configuration = jdbcConfiguration()
+        DefaultJdbcConfig configuration = jdbcConfiguration()
                 .withLevelColumnCount(3).withExcessLevelSeparator('|').build();
         JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)

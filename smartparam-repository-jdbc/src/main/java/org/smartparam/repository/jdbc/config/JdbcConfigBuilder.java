@@ -19,27 +19,27 @@ package org.smartparam.repository.jdbc.config;
  *
  * @author Adam Dubiel
  */
-public class JdbcConfigurationBuilder extends AbstractConfigurationBuilder<DefaultJdbcConfiguration, JdbcConfigurationBuilder> {
+public class JdbcConfigBuilder extends AbstractConfigurationBuilder<DefaultJdbcConfig, JdbcConfigBuilder> {
 
-    private JdbcConfigurationBuilder() {
-        super(new DefaultJdbcConfiguration());
+    private JdbcConfigBuilder() {
+        super(new DefaultJdbcConfig());
     }
 
-    public static JdbcConfigurationBuilder jdbcConfiguration() {
-        return new JdbcConfigurationBuilder();
+    public static JdbcConfigBuilder jdbcConfiguration() {
+        return new JdbcConfigBuilder();
     }
 
     @Override
-    protected JdbcConfigurationBuilder self() {
+    protected JdbcConfigBuilder self() {
         return this;
     }
 
-    public JdbcConfigurationBuilder withLevelColumnCount(int levelColumnCount) {
+    public JdbcConfigBuilder withLevelColumnCount(int levelColumnCount) {
         configuration().setLevelColumnCount(levelColumnCount);
         return this;
     }
 
-    public JdbcConfigurationBuilder withExcessLevelSeparator(char separator) {
+    public JdbcConfigBuilder withExcessLevelSeparator(char separator) {
         configuration().setExcessLevelsSeparator(separator);
         return this;
     }

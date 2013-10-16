@@ -23,7 +23,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.config.JdbcConfiguration;
+import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
@@ -32,7 +32,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public class SimpleJdbcRepository implements JdbcRepository {
 
-    private JdbcConfiguration configuration;
+    private JdbcConfig configuration;
 
     private ParameterDAO parameterDAO;
 
@@ -40,7 +40,7 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     private ParameterEntryDAO parameterEntryDAO;
 
-    public SimpleJdbcRepository(JdbcConfiguration configuration, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
+    public SimpleJdbcRepository(JdbcConfig configuration, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
         this.configuration = configuration;
         checkConfiguration();
         this.parameterDAO = parameterDAO;

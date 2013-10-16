@@ -27,7 +27,7 @@ import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
 import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.config.StandardSerializationConfig;
+import org.smartparam.serializer.config.DefaultSerializationConfig;
 import org.smartparam.serializer.StandardParamDeserializer;
 import org.smartparam.serializer.config.pico.PicoParamSerializerFactory;
 import org.testng.annotations.AfterClass;
@@ -90,7 +90,7 @@ public class FileResourceResolverIntegrationTest {
 
     @BeforeMethod
     public void setUp() {
-        SerializationConfig config = new StandardSerializationConfig();
+        SerializationConfig config = new DefaultSerializationConfig();
         ParamDeserializer deserializer = PicoParamSerializerFactory.paramDeserializer(config);
 
         resolver = new FileResourceResolver(basePath, ".*csv$", deserializer);

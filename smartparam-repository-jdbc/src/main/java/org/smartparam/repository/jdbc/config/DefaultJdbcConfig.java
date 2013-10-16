@@ -31,7 +31,7 @@ import org.polyjdbc.core.dialect.Dialect;
  *
  * @author Przemek Hertel
  */
-public class DefaultJdbcConfiguration implements JdbcConfiguration {
+public class DefaultJdbcConfig implements JdbcConfig {
 
     private Dialect dialect;
 
@@ -47,10 +47,10 @@ public class DefaultJdbcConfiguration implements JdbcConfiguration {
 
     private int levelColumnCount = 8;
 
-    public DefaultJdbcConfiguration() {
+    public DefaultJdbcConfig() {
     }
 
-    public DefaultJdbcConfiguration(Dialect dialect) {
+    public DefaultJdbcConfig(Dialect dialect) {
         this.dialect = dialect;
     }
 

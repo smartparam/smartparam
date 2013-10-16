@@ -27,7 +27,7 @@ import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardParamDeserializer;
-import org.smartparam.serializer.config.StandardSerializationConfig;
+import org.smartparam.serializer.config.DefaultSerializationConfig;
 import org.smartparam.serializer.config.pico.PicoParamSerializerFactory;
 
 /**
@@ -64,7 +64,7 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
     public void initialize() {
         if (deserializer == null) {
             logger.debug("no custom deserializer provided, using {}", StandardParamDeserializer.class.getSimpleName());
-            this.deserializer = PicoParamSerializerFactory.paramDeserializer(new StandardSerializationConfig());
+            this.deserializer = PicoParamSerializerFactory.paramDeserializer(new DefaultSerializationConfig());
         }
 
         resourceResolver = createResourceResolver(basePath, filePattern, deserializer);

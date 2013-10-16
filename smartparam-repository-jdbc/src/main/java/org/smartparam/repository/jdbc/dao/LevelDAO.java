@@ -22,7 +22,7 @@ import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.smartparam.engine.model.Level;
-import org.smartparam.repository.jdbc.config.JdbcConfiguration;
+import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 
 /**
@@ -31,9 +31,9 @@ import org.smartparam.repository.jdbc.model.JdbcLevel;
  */
 public class LevelDAO {
 
-    private final JdbcConfiguration configuration;
+    private final JdbcConfig configuration;
 
-    public LevelDAO(JdbcConfiguration configuration) {
+    public LevelDAO(JdbcConfig configuration) {
         this.configuration = configuration;
     }
 

@@ -27,7 +27,7 @@ import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
  *
  * @author Adam Dubiel
  */
-public class StandardSerializationConfig implements CsvSerializationConfig {
+public class DefaultSerializationConfig implements CsvSerializationConfig {
 
     public static final String DEFAULT_END_OF_LINE = "\n";
 

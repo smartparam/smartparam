@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.polyjdbc.core.query.mapper.ObjectMapper;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.config.DefaultJdbcConfiguration;
+import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 
 /**
@@ -31,9 +31,9 @@ import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
  */
 public class JdbcParameterEntryMapper implements ObjectMapper<JdbcParameterEntry> {
 
-    private DefaultJdbcConfiguration configuration;
+    private DefaultJdbcConfig configuration;
 
-    public JdbcParameterEntryMapper(DefaultJdbcConfiguration configuration) {
+    public JdbcParameterEntryMapper(DefaultJdbcConfig configuration) {
         this.configuration = configuration;
     }
 

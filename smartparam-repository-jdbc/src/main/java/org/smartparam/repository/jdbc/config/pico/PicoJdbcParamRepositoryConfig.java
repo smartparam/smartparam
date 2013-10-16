@@ -22,7 +22,7 @@ import org.polyjdbc.core.query.SimpleQueryRunner;
 import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoaderFactory;
-import org.smartparam.repository.jdbc.config.JdbcConfiguration;
+import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.dao.SimpleJdbcRepository;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
@@ -38,9 +38,9 @@ public class PicoJdbcParamRepositoryConfig extends ComponentConfig implements Jd
 
     private DataSource dataSource;
 
-    private JdbcConfiguration configuration;
+    private JdbcConfig configuration;
 
-    public PicoJdbcParamRepositoryConfig(DataSource dataSource, JdbcConfiguration configuration) {
+    public PicoJdbcParamRepositoryConfig(DataSource dataSource, JdbcConfig configuration) {
         this.dataSource = dataSource;
         this.configuration = configuration;
     }
@@ -64,7 +64,7 @@ public class PicoJdbcParamRepositoryConfig extends ComponentConfig implements Jd
     }
 
     @Override
-    public JdbcConfiguration getConfiguration() {
+    public JdbcConfig getConfiguration() {
         return configuration;
     }
 }

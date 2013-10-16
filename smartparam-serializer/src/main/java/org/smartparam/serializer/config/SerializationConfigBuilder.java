@@ -25,7 +25,7 @@ import org.smartparam.engine.model.editable.EditableParameterEntry;
  */
 public class SerializationConfigBuilder {
 
-    private StandardSerializationConfig config = new StandardSerializationConfig();
+    private DefaultSerializationConfig config = new DefaultSerializationConfig();
 
     private SerializationConfigBuilder() {
     }
@@ -34,7 +34,7 @@ public class SerializationConfigBuilder {
         return new SerializationConfigBuilder();
     }
 
-    public StandardSerializationConfig build() {
+    public DefaultSerializationConfig build() {
         return config;
     }
 

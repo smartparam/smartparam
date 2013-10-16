@@ -24,7 +24,7 @@ public class ConfigurationBuilder {
     private ConfigurationBuilder() {
     }
 
-    public static JdbcConfigurationBuilder defaultConfiguration() {
-        return JdbcConfigurationBuilder.jdbcConfiguration();
+    public static JdbcConfigBuilder defaultConfiguration() {
+        return JdbcConfigBuilder.jdbcConfiguration();
     }
 }

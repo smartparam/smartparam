@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
-import org.smartparam.serializer.config.StandardSerializationConfig;
+import org.smartparam.serializer.config.DefaultSerializationConfig;
 import org.supercsv.io.CsvListReader;
 import static org.fest.assertions.api.Assertions.*;
 import static org.smartparam.serializer.entries.CsvPreferenceBuilder.csvPreference;
@@ -34,7 +34,7 @@ import static org.smartparam.serializer.test.builder.CsvEntriesReaderTestBuilder
  */
 public class CsvParameterEntryBatchLoaderTest {
 
-    private StandardSerializationConfig config = new StandardSerializationConfig();
+    private DefaultSerializationConfig config = new DefaultSerializationConfig();
 
     @Before
     public void initialize() {
