@@ -17,14 +17,11 @@ package org.smartparam.repository.fs.resolver;
 
 import java.util.Map;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.model.editable.SimpleEditableLevel;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
 import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.config.StandardSerializationConfig;
-import org.smartparam.serializer.StandardParamDeserializer;
+import org.smartparam.serializer.config.pico.PicoParamSerializerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -51,10 +48,7 @@ public class ClasspathResourceResolverIntegrationTest {
     @BeforeMethod
     public void setUp() {
         SerializationConfig config = new StandardSerializationConfig();
-        deserializer = new StandardParamDeserializer(
-                config,
-                SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
-
+        deserializer = PicoParamSerializerFactory.paramDeserializer(config);
     }
 
     @Test

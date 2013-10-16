@@ -21,8 +21,10 @@ import org.junit.Test;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.config.SerializationConfig;
+import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.test.builder.StringStreamUtil;
+import static org.smartparam.serializer.config.SerializationConfigBuilder.serializationConfig;
 import static org.smartparam.serializer.test.assertions.SerializerAssertions.*;
 
 /**
@@ -35,11 +37,13 @@ public class JsonParameterMetadataDeserializerTest {
 
     @Before
     public void initialize() {
-        deserializer = new JsonParameterMetadataDeserializer(SimpleEditableParameter.class, SimpleEditableLevel.class);
+        SerializationConfig config = serializationConfig()
+                .producesParameter(SimpleEditableParameter.class).producesLevel(SimpleEditableLevel.class).build();
+        deserializer = new JsonParameterMetadataDeserializer(config);
     }
 
     @Test
-    public void shouldDeserializeParameterMetadataSectionFromJSON() throws SmartParamSerializationException {
+    public void shouldDeserializeParameterMetadataSectionFromJSON() throws ParamSerializationException {
         // given
         String json = "{ \"name\": \"parameter\", \"cacheable\": \"true\","
                 + "\"nullable\": \"true\", \"inputLevels\": 1, \"levels\": ["
@@ -57,7 +61,7 @@ public class JsonParameterMetadataDeserializerTest {
     }
 
     @Test
-    public void shouldDeserializeNonStrictJSON() throws SmartParamSerializationException {
+    public void shouldDeserializeNonStrictJSON() throws ParamSerializationException {
         // given
         String json = "{ name: \"parameter\" }";
 

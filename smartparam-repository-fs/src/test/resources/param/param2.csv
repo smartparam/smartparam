@@ -1,14 +1,12 @@
-#{
-#    name: "param2",
-#    cacheable: "true",
-#    multivalue: "true",
-#    nullable: "false",
-#    inputLevels: 1,
-#    levels: [
-#        { matcherCode: "matcher1", levelCreator: "levelCreator1", type: "type1" },
-#    ]
-# }
-##
+{
+    name: "param2",
+    cacheable: "true",
+    nullable: "false",
+    inputLevels: 1,
+    levels: [
+        { matcherCode: "matcher1", levelCreator: "levelCreator1", type: "type1" },
+    ]
+}
 sample;data
 1;1
 2;2

@@ -29,7 +29,7 @@ import org.polyjdbc.core.transaction.Transaction;
 import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.repository.jdbc.config.JdbcConfiguration;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfiguration;
-import org.smartparam.repository.jdbc.config.DefaultJdbcConfigurationBuilder;
+import org.smartparam.repository.jdbc.config.JdbcConfigurationBuilder;
 import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryConfig;
 import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryFactory;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
@@ -86,7 +86,7 @@ public class DatabaseTest {
     public void setUpDatabase() throws Exception {
         Dialect dialect = DialectRegistry.dialect("H2");
 
-        DefaultJdbcConfigurationBuilder configurationBuilder = defaultConfiguration().withDialect(dialect)
+        JdbcConfigurationBuilder configurationBuilder = defaultConfiguration().withDialect(dialect)
                 .withParameterTableName("parameter").withLevelTableName("level")
                 .withParameterEntryTableName("entry");
         customizeConfiguraion(configurationBuilder);
@@ -104,7 +104,7 @@ public class DatabaseTest {
         this.cleaner = new TheCleaner(transactionManager);
     }
 
-    protected void customizeConfiguraion(DefaultJdbcConfigurationBuilder builder) {
+    protected void customizeConfiguraion(JdbcConfigurationBuilder builder) {
     }
 
     @BeforeMethod(alwaysRun = true)

@@ -25,12 +25,10 @@ import org.smartparam.engine.core.batch.ParameterEntryUnbatchUtil;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.SimpleEditableLevel;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardParamDeserializer;
 import org.smartparam.serializer.config.StandardSerializationConfig;
+import org.smartparam.serializer.config.pico.PicoParamSerializerFactory;
 
 /**
  *
@@ -66,8 +64,7 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
     public void initialize() {
         if (deserializer == null) {
             logger.debug("no custom deserializer provided, using {}", StandardParamDeserializer.class.getSimpleName());
-            this.deserializer = new StandardParamDeserializer(new StandardSerializationConfig(),
-                    SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
+            this.deserializer = PicoParamSerializerFactory.paramDeserializer(new StandardSerializationConfig());
         }
 
         resourceResolver = createResourceResolver(basePath, filePattern, deserializer);
@@ -81,7 +78,7 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
     @Override
     public Parameter load(String parameterName) {
         ParameterBatchLoader parameterBatch = batchLoad(parameterName);
-        if(parameterBatch != null) {
+        if (parameterBatch != null) {
             ParameterEntryUnbatchUtil.loadEntriesIntoParameter(parameterBatch.getMetadata(), parameterBatch.getEntryLoader(), DEFAULT_BATCH_LOADER_SIZE);
             return parameterBatch.getMetadata();
         }
@@ -107,5 +104,4 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
     public Set<String> listParameters() {
         return parameters.keySet();
     }
-
 }

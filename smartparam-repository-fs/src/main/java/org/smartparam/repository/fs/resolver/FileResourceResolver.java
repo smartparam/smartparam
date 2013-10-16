@@ -30,7 +30,7 @@ import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.exception.ParamSerializationException;
 
 /**
  *
@@ -76,7 +76,7 @@ public class FileResourceResolver implements ResourceResolver {
             ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(reader);
 
             return new ParameterBatchLoader(metadata, entriesLoader);
-        } catch (SmartParamSerializationException serializationException) {
+        } catch (ParamSerializationException serializationException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
         }
     }

@@ -16,7 +16,6 @@
 package org.smartparam.serializer;
 
 import org.smartparam.serializer.config.SerializationConfig;
-import org.smartparam.serializer.config.StandardSerializationConfig;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
@@ -26,29 +25,29 @@ import org.junit.Test;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.SimpleEditableLevel;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
+import org.smartparam.serializer.config.pico.PicoParamSerializerFactory;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.serializer.config.SerializationConfigBuilder.serializationConfig;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class StandardSmartParamSerializerIntegrationTest {
+public class ParamSerializerIntegrationTest {
 
-    private StandardParamSerializer serializer;
+    private ParamSerializer serializer;
 
-    private StandardParamDeserializer deserializer;
+    private ParamDeserializer deserializer;
 
     @Before
     public void initialize() {
-        SerializationConfig config = new StandardSerializationConfig('"', ';', "\n", "UTF-8");
-        serializer = new StandardParamSerializer(config, SimpleEditableParameter.class, SimpleEditableParameterEntry.class);
-        deserializer = new StandardParamDeserializer(config, SimpleEditableParameter.class, SimpleEditableLevel.class, SimpleEditableParameterEntry.class);
+        SerializationConfig config = serializationConfig()
+                .withCharset("UTF-8").withCsvDelimiter(';').withCsvQuote('"').withEndOfLine("\n").build();
+        serializer = PicoParamSerializerFactory.paramSerializer(config);
+        deserializer = PicoParamSerializerFactory.paramDeserializer(config);
     }
 
     @Test

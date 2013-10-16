@@ -22,11 +22,14 @@ import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.editable.SimpleEditableLevel;
 import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
+import org.smartparam.serializer.config.SerializationConfig;
+import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.test.builder.StringStreamUtil;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.serializer.config.SerializationConfigBuilder.serializationConfig;
 
 /**
  *
@@ -40,12 +43,15 @@ public class JsonParameterMetadataSerializerIntegrationTest {
 
     @Before
     public void initialize() {
-        serializer = new JsonParameterMetadataSerializer(SimpleEditableParameter.class);
-        deserializer = new JsonParameterMetadataDeserializer(SimpleEditableParameter.class, SimpleEditableLevel.class);
+        SerializationConfig config = serializationConfig()
+                .producesParameter(SimpleEditableParameter.class).producesLevel(SimpleEditableLevel.class)
+                .producesParameterEntry(SimpleEditableParameterEntry.class).build();
+        serializer = new JsonParameterMetadataSerializer(config);
+        deserializer = new JsonParameterMetadataDeserializer(config);
     }
 
     @Test
-    public void shouldBeAbleToDeserialieSerializedParameterMetadata() throws SmartParamSerializationException {
+    public void shouldBeAbleToDeserialieSerializedParameterMetadata() throws ParamSerializationException {
         // given
         Level[] levels = new Level[]{
             level().withName("level1").build(),

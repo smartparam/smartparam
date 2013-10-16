@@ -20,6 +20,7 @@ import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.config.initialization.MethodScannerInitializer;
 import org.smartparam.engine.config.pico.PicoParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineFactory;
+import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.config.initialization.TypeScannerInitializer;
 import org.smartparam.engine.config.pico.PicoParamEngineFactory;
 import org.smartparam.engine.core.engine.ParamEngine;
@@ -61,6 +62,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
         PackageList packageList = new PackageList();
         packageList.setPackages(packagesToScan);
 
+        config.getComponentInitializers().add(new PostConstructInitializer());
         config.getComponentInitializers().add(new TypeScannerInitializer(packageList));
         config.getComponentInitializers().add(new MethodScannerInitializer(packageList));
     }

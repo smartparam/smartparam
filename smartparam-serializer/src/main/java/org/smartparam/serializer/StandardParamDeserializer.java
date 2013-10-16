@@ -16,26 +16,64 @@
 package org.smartparam.serializer;
 
 import org.smartparam.serializer.config.SerializationConfig;
-import org.smartparam.engine.model.editable.EditableLevel;
-import org.smartparam.engine.model.editable.EditableParameter;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
-import org.smartparam.serializer.metadata.JsonParameterMetadataDeserializer;
-import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
+import java.io.BufferedReader;
+import org.smartparam.engine.core.exception.ParamBatchLoadingException;
+import org.smartparam.engine.model.Parameter;
+import org.smartparam.serializer.metadata.ParameterMetadataDeserializer;
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
+import org.smartparam.serializer.entries.ParameterEntryDeserializer;
+import org.smartparam.serializer.exception.ParamSerializationException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class StandardParamDeserializer extends RawSmartParamDeserializer {
+public class StandardParamDeserializer implements ParamDeserializer {
 
-    public StandardParamDeserializer(
-            SerializationConfig serializationConfig,
-            Class<? extends EditableParameter> parameterInstanceClass,
-            Class<? extends EditableLevel> levelInstanceClass,
-            Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
+    private static final int PARAMETER_ENTRIES_BATCH_SIZE = 1000;
 
-        super(serializationConfig,
-              new JsonParameterMetadataDeserializer(parameterInstanceClass, levelInstanceClass),
-              new CsvParameterEntryDeserializer(parameterEntryInstanceClass));
+    private SerializationConfig serializationConfig;
+
+    private ParameterMetadataDeserializer metadataDeserializer;
+
+    private ParameterEntryDeserializer entriesDeserializer;
+
+    public StandardParamDeserializer(SerializationConfig serializationConfig, ParameterMetadataDeserializer metadataDeserializer, ParameterEntryDeserializer entriesDeserializer) {
+        this.serializationConfig = serializationConfig;
+        this.metadataDeserializer = metadataDeserializer;
+        this.entriesDeserializer = entriesDeserializer;
+    }
+
+    @Override
+    public Parameter deserialize(BufferedReader reader) throws ParamSerializationException {
+        Parameter deserialiedParameter = deserializeMetadata(reader);
+        readEntries(deserialiedParameter, deserializeEntries(reader));
+
+        return deserialiedParameter;
+    }
+
+    private void readEntries(Parameter parameter, ParameterEntryBatchLoader loader) throws ParamSerializationException {
+        while (loader.hasMore()) {
+            try {
+                parameter.getEntries().addAll(loader.nextBatch(PARAMETER_ENTRIES_BATCH_SIZE));
+            } catch (ParamBatchLoadingException exception) {
+                throw new ParamSerializationException("error while loading batch of entries", exception);
+            }
+        }
+    }
+
+    @Override
+    public Parameter deserializeMetadata(BufferedReader reader) throws ParamSerializationException {
+        return metadataDeserializer.deserialize(reader);
+    }
+
+    @Override
+    public ParameterEntryBatchLoader deserializeEntries(BufferedReader reader) throws ParamSerializationException {
+        return entriesDeserializer.deserialize(reader);
+    }
+
+    @Override
+    public SerializationConfig getSerializationConfig() {
+        return serializationConfig;
     }
 }

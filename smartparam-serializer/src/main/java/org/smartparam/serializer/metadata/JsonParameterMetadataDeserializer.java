@@ -23,9 +23,9 @@ import java.util.HashSet;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.EditableLevel;
 import org.smartparam.engine.model.editable.EditableParameter;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.config.SerializationConfig;
+import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.util.StreamPartReader;
 
 /**
@@ -38,10 +38,10 @@ public class JsonParameterMetadataDeserializer implements ParameterMetadataDeser
 
     private Gson gson;
 
-    public JsonParameterMetadataDeserializer(Class<? extends EditableParameter> parameterInstanceClass, Class<? extends EditableLevel> levelInstanceClass) {
-        this.parameterInstanceClass = parameterInstanceClass;
+    public JsonParameterMetadataDeserializer(SerializationConfig serializationConfig) {
+        this.parameterInstanceClass = serializationConfig.parameterInstanceClass();
 
-        LevelSerializationAdapter levelAdapter = new LevelSerializationAdapter(levelInstanceClass);
+        LevelSerializationAdapter levelAdapter = new LevelSerializationAdapter(serializationConfig.levelInstanceClass());
 
         gson = (new GsonBuilder()).registerTypeAdapter(Level.class, levelAdapter).create();
 
@@ -49,12 +49,12 @@ public class JsonParameterMetadataDeserializer implements ParameterMetadataDeser
     }
 
     @Override
-    public Parameter deserialize(BufferedReader reader) throws SmartParamSerializationException {
+    public Parameter deserialize(BufferedReader reader) throws ParamSerializationException {
         String jsonConfig = null;
         try {
             jsonConfig = StreamPartReader.readPart(reader, '{', '}');
         } catch (IOException exception) {
-            throw new SmartParamSerializationException("Unable to read config part from stream.", exception);
+            throw new ParamSerializationException("Unable to read config part from stream.", exception);
         }
 
         EditableParameter parameter = gson.fromJson(jsonConfig, parameterInstanceClass);

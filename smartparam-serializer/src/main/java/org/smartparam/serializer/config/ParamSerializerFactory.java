@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer;
+package org.smartparam.serializer.config;
 
-import org.smartparam.serializer.config.SerializationConfig;
-import java.io.Writer;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
-import org.smartparam.serializer.exception.ParamSerializationException;
+import org.smartparam.serializer.ParamDeserializer;
+import org.smartparam.serializer.ParamSerializer;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParamSerializer {
+public interface ParamSerializerFactory {
 
-    public void serialize(Parameter parameter, Writer writer) throws ParamSerializationException;
+    ParamSerializer createSerializer(ParamSerializerConfig config);
 
-    public void serialize(Parameter parameter, Writer writer, ParameterEntryBatchLoader entryBatchLoader) throws ParamSerializationException;
-
-    SerializationConfig getSerializationConfig();
+    ParamDeserializer createDeserializer(ParamSerializerConfig config);
 }

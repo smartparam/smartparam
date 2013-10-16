@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.exception.ParamSerializationException;
 
 /**
  *
@@ -69,7 +69,7 @@ public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
             parameters.put(parameter.getName(), fileName);
 
             logger.debug("found parameter {} in file {}", parameter.getName(), fileName);
-        } catch (SmartParamSerializationException exception) {
+        } catch (ParamSerializationException exception) {
             throw new IOException(exception);
         } finally {
             if (reader != null) {

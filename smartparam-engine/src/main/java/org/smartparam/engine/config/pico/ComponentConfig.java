@@ -16,6 +16,7 @@
 package org.smartparam.engine.config.pico;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public abstract class ComponentConfig {
             components = createFinalComponents();
         }
 
-        return components;
+        return Collections.unmodifiableList(components);
     }
 
     public void addComponent(Object component) {
@@ -52,6 +53,7 @@ public abstract class ComponentConfig {
     }
 
     public void setComponents(List<Object> components) {
+        this.userComponents.clear();
         this.userComponents.addAll(components);
     }
 }

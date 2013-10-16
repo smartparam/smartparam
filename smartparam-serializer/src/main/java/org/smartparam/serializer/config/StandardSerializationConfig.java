@@ -16,23 +16,18 @@
 package org.smartparam.serializer.config;
 
 import java.nio.charset.Charset;
-import java.util.List;
-import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.engine.model.editable.EditableLevel;
 import org.smartparam.engine.model.editable.EditableParameter;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
-import org.smartparam.serializer.StandardParamDeserializer;
-import org.smartparam.serializer.StandardParamSerializer;
-import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
-import org.smartparam.serializer.entries.CsvParameterEntrySerializer;
-import org.smartparam.serializer.metadata.JsonParameterMetadataDeserializer;
-import org.smartparam.serializer.metadata.JsonParameterMetadataSerializer;
+import org.smartparam.engine.model.editable.SimpleEditableLevel;
+import org.smartparam.engine.model.editable.SimpleEditableParameter;
+import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class StandardSerializationConfig extends ComponentConfig implements CsvSerializationConfig {
+public class StandardSerializationConfig implements CsvSerializationConfig {
 
     public static final String DEFAULT_END_OF_LINE = "\n";
 
@@ -42,11 +37,11 @@ public class StandardSerializationConfig extends ComponentConfig implements CsvS
 
     public static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
-    private Class<? extends EditableParameter> parameterInstanceClass;
+    private Class<? extends EditableParameter> parameterInstanceClass = SimpleEditableParameter.class;
 
-    private Class<? extends EditableLevel> levelInstanceClass;
+    private Class<? extends EditableLevel> levelInstanceClass = SimpleEditableLevel.class;
 
-    private Class<? extends EditableParameterEntry> parameterEntryInstanceClass;
+    private Class<? extends EditableParameterEntry> parameterEntryInstanceClass = SimpleEditableParameterEntry.class;
 
     private char csvQuote = DEFAULT_CSV_QUOTE;
 
@@ -55,16 +50,6 @@ public class StandardSerializationConfig extends ComponentConfig implements CsvS
     private String endOfLine = DEFAULT_END_OF_LINE;
 
     private Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
-
-    @Override
-    protected void injectDefaults(List<Object> components) {
-        components.add(JsonParameterMetadataDeserializer.class);
-        components.add(JsonParameterMetadataSerializer.class);
-        components.add(CsvParameterEntryDeserializer.class);
-        components.add(CsvParameterEntrySerializer.class);
-        components.add(StandardParamSerializer.class);
-        components.add(StandardParamDeserializer.class);
-    }
 
     @Override
     public Class<? extends EditableParameter> parameterInstanceClass() {

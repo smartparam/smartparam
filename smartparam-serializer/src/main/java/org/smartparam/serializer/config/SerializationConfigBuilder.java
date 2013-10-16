@@ -23,52 +23,52 @@ import org.smartparam.engine.model.editable.EditableParameterEntry;
  *
  * @author Adam Dubiel
  */
-public class StandardSerializationConfigBuilder {
+public class SerializationConfigBuilder {
 
     private StandardSerializationConfig config = new StandardSerializationConfig();
 
-    private StandardSerializationConfigBuilder() {
+    private SerializationConfigBuilder() {
     }
 
-    public static StandardSerializationConfigBuilder standardSerializationConfig() {
-        return new StandardSerializationConfigBuilder();
+    public static SerializationConfigBuilder serializationConfig() {
+        return new SerializationConfigBuilder();
     }
 
     public StandardSerializationConfig build() {
         return config;
     }
 
-    public StandardSerializationConfigBuilder producesParameter(Class<? extends EditableParameter> parameterClass) {
+    public SerializationConfigBuilder producesParameter(Class<? extends EditableParameter> parameterClass) {
         config.setParameterInstanceClass(parameterClass);
         return this;
     }
 
-    public StandardSerializationConfigBuilder producesParameterEntry(Class<? extends EditableParameterEntry> parameterEntryClass) {
+    public SerializationConfigBuilder producesParameterEntry(Class<? extends EditableParameterEntry> parameterEntryClass) {
         config.setParameterEntryInstanceClass(parameterEntryClass);
         return this;
     }
 
-    public StandardSerializationConfigBuilder producesLevel(Class<? extends EditableLevel> levelClass) {
+    public SerializationConfigBuilder producesLevel(Class<? extends EditableLevel> levelClass) {
         config.setLevelInstanceClass(levelClass);
         return this;
     }
 
-    public StandardSerializationConfigBuilder withCharset(String charset) {
+    public SerializationConfigBuilder withCharset(String charset) {
         config.setCharset(charset);
         return this;
     }
 
-    public StandardSerializationConfigBuilder withEndOfLine(String endOfLine) {
+    public SerializationConfigBuilder withEndOfLine(String endOfLine) {
         config.setEndOfLine(endOfLine);
         return this;
     }
 
-    public StandardSerializationConfigBuilder withCsvQuote(char quoteChar) {
+    public SerializationConfigBuilder withCsvQuote(char quoteChar) {
         config.setCsvQuote(quoteChar);
         return this;
     }
 
-    public StandardSerializationConfigBuilder withCsvDelimiter(char delimiter) {
+    public SerializationConfigBuilder withCsvDelimiter(char delimiter) {
         config.setCsvDelimiter(delimiter);
         return this;
     }

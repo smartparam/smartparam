@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.serializer.config.SerializationConfig;
 
 /**
  *
@@ -32,8 +33,8 @@ public class JsonParameterMetadataSerializer implements ParameterMetadataSeriali
 
     private Class<? extends Parameter> parameterClass;
 
-    public JsonParameterMetadataSerializer(Class<? extends Parameter> parameterClass) {
-        this.parameterClass = parameterClass;
+    public JsonParameterMetadataSerializer(SerializationConfig serializationConfig) {
+        this.parameterClass = serializationConfig.parameterInstanceClass();
 
         PropertyExclusionStrategy exclusionStrategy = new PropertyExclusionStrategy(IGNORED_PROPERTIES);
         gson = (new GsonBuilder()).setExclusionStrategies(exclusionStrategy).setPrettyPrinting().create();

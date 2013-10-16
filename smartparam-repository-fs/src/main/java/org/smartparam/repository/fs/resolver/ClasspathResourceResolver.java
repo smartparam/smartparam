@@ -35,7 +35,7 @@ import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.util.StreamCloser;
 
 /**
@@ -107,12 +107,12 @@ public class ClasspathResourceResolver implements ResourceResolver {
     private String readParameterNameFromResource(String resourceName) {
         try {
             return readParameterConfigFromResource(resourceName).getName();
-        } catch (SmartParamSerializationException serializationException) {
+        } catch (ParamSerializationException serializationException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + resourceName, serializationException);
         }
     }
 
-    private Parameter readParameterConfigFromResource(String resourceName) throws SmartParamSerializationException {
+    private Parameter readParameterConfigFromResource(String resourceName) throws ParamSerializationException {
         BufferedReader reader = null;
         try {
             reader = StreamReaderOpener.openReaderForResource(this.getClass(), resourceName);
@@ -131,7 +131,7 @@ public class ClasspathResourceResolver implements ResourceResolver {
             ParameterEntryBatchLoader entriesLoader = deserializer.deserializeEntries(reader);
 
             return new ParameterBatchLoader(metadata, entriesLoader);
-        } catch (SmartParamSerializationException serializationException) {
+        } catch (ParamSerializationException serializationException) {
             throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
         }
     }

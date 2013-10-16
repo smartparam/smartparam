@@ -18,9 +18,8 @@ package org.smartparam.serializer.entries;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
 import org.smartparam.serializer.config.SerializationConfig;
-import org.smartparam.serializer.exception.SmartParamSerializationException;
+import org.smartparam.serializer.exception.ParamSerializationException;
 import org.supercsv.io.CsvListReader;
 
 /**
@@ -29,21 +28,21 @@ import org.supercsv.io.CsvListReader;
  */
 public class CsvParameterEntryDeserializer implements ParameterEntryDeserializer {
 
-    private Class<? extends EditableParameterEntry> instanceClass;
+    private SerializationConfig serializationConfig;
 
-    public CsvParameterEntryDeserializer(Class<? extends EditableParameterEntry> instanceClass) {
-        this.instanceClass = instanceClass;
+    public CsvParameterEntryDeserializer(SerializationConfig serializationConfig) {
+        this.serializationConfig = serializationConfig;
     }
 
     @Override
-    public ParameterEntryBatchLoader deserialize(SerializationConfig config, BufferedReader reader) throws SmartParamSerializationException {
-        CsvListReader csvListReader = new CsvListReader(reader, CsvPreferenceBuilder.csvPreference(config));
+    public ParameterEntryBatchLoader deserialize(BufferedReader reader) throws ParamSerializationException {
+        CsvListReader csvListReader = new CsvListReader(reader, CsvPreferenceBuilder.csvPreference(serializationConfig));
         try {
             // drop header
             csvListReader.read();
-            return new CsvParameterEntryBatchLoader(instanceClass, csvListReader);
+            return new CsvParameterEntryBatchLoader(serializationConfig.parameterEntryInstanceClass(), csvListReader);
         } catch (IOException exception) {
-            throw new SmartParamSerializationException("failed to read header from parameter CSV stream", exception);
+            throw new ParamSerializationException("failed to read header from parameter CSV stream", exception);
         }
     }
 }

@@ -16,6 +16,7 @@
 package org.smartparam.engine.bean;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class PackageList implements Iterable<String> {
      * @return package names
      */
     public List<String> getPackages() {
-        return packages;
+        return Collections.unmodifiableList(packages);
     }
 
     /**

@@ -16,21 +16,46 @@
 package org.smartparam.serializer;
 
 import org.smartparam.serializer.config.SerializationConfig;
+import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.serializer.metadata.JsonParameterMetadataSerializer;
-import org.smartparam.serializer.entries.CsvParameterEntrySerializer;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
+import org.smartparam.serializer.metadata.ParameterMetadataSerializer;
+import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
+import org.smartparam.serializer.entries.ParameterEntrySerializer;
+import org.smartparam.serializer.entries.SimpleParameterEntryBatchLoader;
+import org.smartparam.serializer.exception.ParamSerializationException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class StandardParamSerializer extends RawSmartParamSerializer {
+public class StandardParamSerializer implements ParamSerializer {
 
-    public StandardParamSerializer(
-            SerializationConfig serializationConfig,
-            Class<? extends Parameter> parameterInstanceClass,
-            Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
-        super(serializationConfig, new JsonParameterMetadataSerializer(parameterInstanceClass), new CsvParameterEntrySerializer());
+    private SerializationConfig serializationConfig;
+
+    private ParameterMetadataSerializer metadataSerializer;
+
+    private ParameterEntrySerializer entriesSerializer;
+
+    public StandardParamSerializer(SerializationConfig serializationConfig, ParameterMetadataSerializer metadataSerializer, ParameterEntrySerializer entriesSerializer) {
+        this.serializationConfig = serializationConfig;
+        this.metadataSerializer = metadataSerializer;
+        this.entriesSerializer = entriesSerializer;
+    }
+
+    @Override
+    public void serialize(Parameter parameter, Writer writer) throws ParamSerializationException {
+        ParameterEntryBatchLoader batchLoader = new SimpleParameterEntryBatchLoader(parameter);
+        serialize(parameter, writer, batchLoader);
+    }
+
+    @Override
+    public void serialize(Parameter parameter, Writer writer, ParameterEntryBatchLoader entryBatchLoader) throws ParamSerializationException {
+        metadataSerializer.serialize(parameter, writer);
+        entriesSerializer.serialize(serializationConfig, writer, parameter, entryBatchLoader);
+    }
+
+    @Override
+    public SerializationConfig getSerializationConfig() {
+        return serializationConfig;
     }
 }
