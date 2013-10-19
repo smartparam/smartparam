@@ -19,6 +19,7 @@ import java.util.Map;
 import org.smartparam.engine.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
+import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
@@ -32,7 +33,7 @@ public class BasicInvokerRepository implements InvokerRepository, TypeScanningRe
     private MapRepository<FunctionInvoker> innerRepository = new MapRepository<FunctionInvoker>(FunctionInvoker.class);
 
     @Override
-    public void scanAnnotations(TypeScanner scanner) {
+    public void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner initializer) {
         Map<RepositoryObjectKey, FunctionInvoker> invokers = scanner.scanTypes(ParamFunctionInvoker.class);
         innerRepository.registerAll(invokers);
     }

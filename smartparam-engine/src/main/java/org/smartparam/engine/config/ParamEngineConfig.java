@@ -17,6 +17,7 @@ package org.smartparam.engine.config;
 
 import java.util.List;
 import java.util.Map;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.core.repository.FunctionRepository;
@@ -33,7 +34,7 @@ public interface ParamEngineConfig {
 
     Map<String, FunctionInvoker> getFunctionInvokers();
 
-    Map<String, FunctionRepository> getFunctionRepositories();
+    Map<RepositoryObjectKey, FunctionRepository> getFunctionRepositories();
 
     ComponentInitializerRunner getInitializationRunner();
 

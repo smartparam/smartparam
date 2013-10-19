@@ -20,6 +20,7 @@ import org.smartparam.engine.annotations.scanner.PackageMethodScanner;
 import org.smartparam.engine.annotations.scanner.MethodScanner;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.config.ComponentInitializer;
+import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MethodScanningRepository;
 
 /**
@@ -42,7 +43,7 @@ public class MethodScannerInitializer implements ComponentInitializer {
     }
 
     @Override
-    public void initializeObject(Object configObject) {
+    public void initializeObject(Object configObject, ComponentInitializerRunner runner) {
         MethodScanningRepository repository = (MethodScanningRepository) configObject;
         repository.scanMethods(methodScanner);
     }

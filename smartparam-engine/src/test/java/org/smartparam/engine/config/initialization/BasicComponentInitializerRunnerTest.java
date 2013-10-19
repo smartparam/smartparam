@@ -17,6 +17,7 @@ package org.smartparam.engine.config.initialization;
 
 import java.util.Arrays;
 import org.smartparam.engine.config.ComponentInitializer;
+import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
@@ -39,13 +40,14 @@ public class BasicComponentInitializerRunnerTest {
         Object initialiedObject = new Object();
         ComponentInitializer initializer = mock(ComponentInitializer.class);
         when(initializer.acceptsObject(initialiedObject)).thenReturn(true);
-        basicComponentInitializerRunner = new BasicComponentInitializerRunner(Arrays.asList(initializer));
+        basicComponentInitializerRunner = new BasicComponentInitializerRunner();
+        basicComponentInitializerRunner.registerInitializers(Arrays.asList(initializer));
 
         // when
         basicComponentInitializerRunner.runInitializers(initialiedObject);
 
         // then
-        verify(initializer, times(1)).initializeObject(initialiedObject);
+        verify(initializer, times(1)).initializeObject(initialiedObject, basicComponentInitializerRunner);
     }
 
     @Test
@@ -54,13 +56,14 @@ public class BasicComponentInitializerRunnerTest {
         Object initialiedObject = new Object();
         ComponentInitializer initializer = mock(ComponentInitializer.class);
         when(initializer.acceptsObject(initialiedObject)).thenReturn(false);
-        basicComponentInitializerRunner = new BasicComponentInitializerRunner(Arrays.asList(initializer));
+        basicComponentInitializerRunner = new BasicComponentInitializerRunner();
+        basicComponentInitializerRunner.registerInitializers(Arrays.asList(initializer));
 
         // when
         basicComponentInitializerRunner.runInitializers(initialiedObject);
 
         // then
-        verify(initializer, never()).initializeObject(initialiedObject);
+        verify(initializer, never()).initializeObject(initialiedObject, basicComponentInitializerRunner);
     }
 
     @Test
@@ -68,12 +71,13 @@ public class BasicComponentInitializerRunnerTest {
         // given
         ComponentInitializer initializer = mock(ComponentInitializer.class);
         when(initializer.acceptsObject(anyObject())).thenReturn(true);
-        basicComponentInitializerRunner = new BasicComponentInitializerRunner(Arrays.asList(initializer));
+        basicComponentInitializerRunner = new BasicComponentInitializerRunner();
+        basicComponentInitializerRunner.registerInitializers(Arrays.asList(initializer));
 
         // when
         basicComponentInitializerRunner.runInitializersOnList(Arrays.asList(new Object(), new Object()));
 
         // then
-        verify(initializer, times(2)).initializeObject(anyObject());
+        verify(initializer, times(2)).initializeObject(anyObject(), eq(basicComponentInitializerRunner));
     }
 }

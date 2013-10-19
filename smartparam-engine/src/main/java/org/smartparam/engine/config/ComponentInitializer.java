@@ -21,7 +21,7 @@ package org.smartparam.engine.config;
  */
 public interface ComponentInitializer {
 
-    void initializeObject(Object configObject);
+    void initializeObject(Object configObject, ComponentInitializerRunner initializerRunner);
 
     boolean acceptsObject(Object configObject);
 }

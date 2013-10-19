@@ -20,6 +20,7 @@ import java.util.TreeMap;
 import org.smartparam.engine.annotations.ParamFunctionRepository;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
+import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.exception.SmartParamDefinitionException;
@@ -43,8 +44,9 @@ public class BasicFunctionProvider implements FunctionProvider, TypeScanningRepo
     }
 
     @Override
-    public void scanAnnotations(TypeScanner scanner) {
+    public void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner componentInitializerRunner) {
         Map<RepositoryObjectKey, FunctionRepository> repositories = scanner.scanTypes(ParamFunctionRepository.class);
+        componentInitializerRunner.runInitializersOnList(repositories.values());
         innerRepository.registerAll(repositories);
     }
 
@@ -62,6 +64,11 @@ public class BasicFunctionProvider implements FunctionProvider, TypeScanningRepo
     @Override
     public void registerAll(Map<String, FunctionRepository> items) {
         innerRepository.registerAllOrdered(items);
+    }
+
+    @Override
+    public void registerWithKeys(Map<RepositoryObjectKey, FunctionRepository> objects) {
+        innerRepository.registerAll(objects);
     }
 
     @Override

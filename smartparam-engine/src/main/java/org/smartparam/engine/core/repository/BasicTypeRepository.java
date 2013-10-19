@@ -19,6 +19,7 @@ import java.util.Map;
 import org.smartparam.engine.annotations.ParamType;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
+import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.core.MapRepository;
 import org.smartparam.engine.core.type.Type;
 
@@ -31,7 +32,7 @@ public class BasicTypeRepository implements TypeRepository, TypeScanningReposito
     private MapRepository<Type<?>> innerRepository = new MapRepository<Type<?>>(Type.class);
 
     @Override
-    public void scanAnnotations(TypeScanner scanner) {
+    public void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner initializer) {
         Map<RepositoryObjectKey, Type<?>> types = scanner.scanTypes(ParamType.class);
         innerRepository.registerAll(types);
     }

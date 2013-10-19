@@ -17,6 +17,7 @@ package org.smartparam.engine.config.pico;
 
 import java.util.Arrays;
 import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.config.ComponentInitializer;
 import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.config.initialization.MethodScannerInitializer;
@@ -66,8 +67,8 @@ public class ParamEngineConfigBuilder {
         return this;
     }
 
-    public ParamEngineConfigBuilder withFunctionRepository(String functionType, FunctionRepository repository) {
-        paramEngineConfig.getFunctionRepositories().put(functionType, repository);
+    public ParamEngineConfigBuilder withFunctionRepository(String functionType, int priority, FunctionRepository repository) {
+        paramEngineConfig.getFunctionRepositories().put(new RepositoryObjectKey(functionType, priority), repository);
         return this;
     }
 

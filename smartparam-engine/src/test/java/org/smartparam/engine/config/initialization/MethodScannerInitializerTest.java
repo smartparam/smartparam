@@ -41,7 +41,7 @@ public class MethodScannerInitializerTest {
         MethodScanningRepository repository = mock(MethodScanningRepository.class);
 
         // when
-        methodScannerInitializer.initializeObject(repository);
+        methodScannerInitializer.initializeObject(repository, null);
 
         // then
         verify(repository, times(1)).scanMethods(any(MethodScanner.class));

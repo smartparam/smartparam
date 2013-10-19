@@ -68,7 +68,7 @@ public class ParamEngineIntegrationTest {
                 .withType("string", new StringType())
                 .withType("integer", new IntegerType())
                 .withParameterRepositories(paramRepository)
-                .withFunctionRepository("java", functionRepository)
+                .withFunctionRepository("java", 1, functionRepository)
                 .withFunctionInvoker("java", functionInvoker)
                 .withMatcher("between", new BetweenMatcher())
                 .build();

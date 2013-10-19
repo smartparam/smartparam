@@ -60,7 +60,7 @@ public class PicoParamEngineFactoryTest {
         // given
         PicoParamEngineConfig config = paramEngineConfig()
                 .withFunctionInvoker("test", mock(FunctionInvoker.class))
-                .withFunctionRepository("test", mock(FunctionRepository.class))
+                .withFunctionRepository("test", 1, mock(FunctionRepository.class))
                 .withParameterRepositories(mock(ParamRepository.class))
                 .withMatcher("test", mock(Matcher.class))
                 .withType("test", mock(Type.class))

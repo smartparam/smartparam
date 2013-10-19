@@ -20,6 +20,7 @@ import org.smartparam.engine.annotations.scanner.PackageTypeScanner;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.annotations.scanner.TypeScanner;
 import org.smartparam.engine.config.ComponentInitializer;
+import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.TypeScanningRepository;
 
 /**
@@ -40,9 +41,9 @@ public class TypeScannerInitializer implements ComponentInitializer {
     }
 
     @Override
-    public void initializeObject(Object configObject) {
+    public void initializeObject(Object configObject, ComponentInitializerRunner runner) {
         TypeScanningRepository repository = (TypeScanningRepository) configObject;
-        repository.scanAnnotations(typeScanner);
+        repository.scanAnnotations(typeScanner, runner);
     }
 
     @Override

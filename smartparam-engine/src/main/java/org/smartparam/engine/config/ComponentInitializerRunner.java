@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.config;
 
+import java.util.Collection;
+
 /**
  *
  * @author Adam Dubiel
@@ -24,4 +26,6 @@ public interface ComponentInitializerRunner {
     void runInitializers(Object objectToInitialize);
 
     void runInitializersOnList(Iterable<?> objectsToInitialize);
+
+    void registerInitializers(Collection<ComponentInitializer> intializers);
 }

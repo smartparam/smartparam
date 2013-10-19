@@ -15,6 +15,9 @@
  */
 package org.smartparam.engine.config.initialization;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import org.smartparam.engine.config.ComponentInitializer;
 import org.smartparam.engine.config.ComponentInitializerRunner;
@@ -25,11 +28,7 @@ import org.smartparam.engine.config.ComponentInitializerRunner;
  */
 public class BasicComponentInitializerRunner implements ComponentInitializerRunner {
 
-    private List<ComponentInitializer> initializers;
-
-    public BasicComponentInitializerRunner(List<ComponentInitializer> initializers) {
-        this.initializers = initializers;
-    }
+    private List<ComponentInitializer> initializers = new ArrayList<ComponentInitializer>();
 
     @Override
     public void runInitializersOnList(Iterable<?> objectsToInitialize) {
@@ -42,8 +41,12 @@ public class BasicComponentInitializerRunner implements ComponentInitializerRunn
     public void runInitializers(Object initializedObject) {
         for (ComponentInitializer initializer : initializers) {
             if (initializer.acceptsObject(initializedObject)) {
-                initializer.initializeObject(initializedObject);
+                initializer.initializeObject(initializedObject, this);
             }
         }
+    }
+
+    public void registerInitializers(Collection<ComponentInitializer> intializers) {
+        initializers.addAll(intializers);
     }
 }

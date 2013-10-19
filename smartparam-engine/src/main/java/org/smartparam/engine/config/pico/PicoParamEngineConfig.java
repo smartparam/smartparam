@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.config.ComponentInitializer;
 import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.core.cache.MapFunctionCache;
@@ -47,7 +48,7 @@ public class PicoParamEngineConfig extends ComponentConfig implements ParamEngin
 
     private List<ParamRepository> parameterRepositories = new ArrayList<ParamRepository>();
 
-    private Map<String, FunctionRepository> functionRepositories = new LinkedHashMap<String, FunctionRepository>();
+    private Map<RepositoryObjectKey, FunctionRepository> functionRepositories = new HashMap<RepositoryObjectKey, FunctionRepository>();
 
     private Map<String, FunctionInvoker> functionInvokers = new HashMap<String, FunctionInvoker>();
 
@@ -83,11 +84,11 @@ public class PicoParamEngineConfig extends ComponentConfig implements ParamEngin
     }
 
     @Override
-    public Map<String, FunctionRepository> getFunctionRepositories() {
+    public Map<RepositoryObjectKey, FunctionRepository> getFunctionRepositories() {
         return functionRepositories;
     }
 
-    public void setFunctionRepositories(Map<String, FunctionRepository> functionRepositories) {
+    public void setFunctionRepositories(Map<RepositoryObjectKey, FunctionRepository> functionRepositories) {
         this.functionRepositories = functionRepositories;
     }
 

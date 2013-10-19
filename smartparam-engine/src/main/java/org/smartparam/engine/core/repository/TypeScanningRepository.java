@@ -16,6 +16,7 @@
 package org.smartparam.engine.core.repository;
 
 import org.smartparam.engine.annotations.scanner.TypeScanner;
+import org.smartparam.engine.config.ComponentInitializerRunner;
 
 /**
  *
@@ -23,5 +24,5 @@ import org.smartparam.engine.annotations.scanner.TypeScanner;
  */
 public interface TypeScanningRepository {
 
-    void scanAnnotations(TypeScanner scanner);
+    void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner componentInitializerRunner);
 }

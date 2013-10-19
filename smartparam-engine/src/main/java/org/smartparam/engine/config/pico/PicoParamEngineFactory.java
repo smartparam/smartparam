@@ -69,7 +69,8 @@ public class PicoParamEngineFactory implements ParamEngineFactory {
 
     private ComponentInitializerRunner prepareInitializerRunner(PicoParamEngineConfig config) {
         if (config.getInitializationRunner() == null) {
-            ComponentInitializerRunner initializerRunner = new BasicComponentInitializerRunner(config.getComponentInitializers());
+            ComponentInitializerRunner initializerRunner = new BasicComponentInitializerRunner();
+            initializerRunner.registerInitializers(config.getComponentInitializers());
             config.setInitializationRunner(initializerRunner);
         }
         return config.getInitializationRunner();
@@ -80,7 +81,7 @@ public class PicoParamEngineFactory implements ParamEngineFactory {
         container.getComponent(ParameterProvider.class).registerAll(config.getParameterRepositories());
 
         initializerRunner.runInitializersOnList(config.getFunctionRepositories().values());
-        container.getComponent(FunctionProvider.class).registerAll(config.getFunctionRepositories());
+        container.getComponent(FunctionProvider.class).registerWithKeys(config.getFunctionRepositories());
 
         container.getComponent(InvokerRepository.class).registerAll(config.getFunctionInvokers());
         container.getComponent(TypeRepository.class).registerAll(config.getTypes());

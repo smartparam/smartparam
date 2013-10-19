@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core;
 
+import java.util.Map;
 import org.smartparam.engine.bean.RepositoryObjectKey;
 
 /**
@@ -35,4 +36,6 @@ public interface OrderedRepository<TYPE> extends ItemsContainer<RepositoryObject
      * @param object object
      */
     void register(String type, int index, TYPE object);
+
+    void registerWithKeys(Map<RepositoryObjectKey, TYPE> objects);
 }

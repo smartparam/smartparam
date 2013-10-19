@@ -16,6 +16,7 @@
 package org.smartparam.engine.config.initialization;
 
 import org.smartparam.engine.config.ComponentInitializer;
+import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.config.InitializableComponent;
 
 /**
@@ -27,7 +28,7 @@ import org.smartparam.engine.config.InitializableComponent;
 public class PostConstructInitializer implements ComponentInitializer {
 
     @Override
-    public void initializeObject(Object configObject) {
+    public void initializeObject(Object configObject, ComponentInitializerRunner runner) {
         InitializableComponent component = (InitializableComponent) configObject;
         component.initialize();
     }
