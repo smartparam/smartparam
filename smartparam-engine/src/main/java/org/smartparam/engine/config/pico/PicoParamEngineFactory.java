@@ -35,6 +35,15 @@ import org.smartparam.engine.core.service.ParameterProvider;
  */
 public class PicoParamEngineFactory implements ParamEngineFactory {
 
+    public static ParamEngine paramEngine(ParamEngineConfig config) {
+        if (config instanceof PicoParamEngineConfig) {
+            return new PicoParamEngineFactory().createParamEngine(config);
+
+        } else {
+            throw new IllegalArgumentException("Expected instance of PicoParamEngineConfig but got " + config.getClass().getCanonicalName());
+        }
+    }
+
     public static ParamEngine paramEngine(PicoParamEngineConfig config) {
         return new PicoParamEngineFactory().createParamEngine(config);
     }
