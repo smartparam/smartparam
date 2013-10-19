@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.scan;
+package org.smartparamtestscan;
 
 import org.smartparam.engine.annotations.ObjectInstance;
 import org.smartparam.engine.annotations.ParamType;

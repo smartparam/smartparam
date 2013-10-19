@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.scan.annotation;
+package org.smartparamtestscan.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.smartparam.engine.annotations.ObjectInstance;
 
 /**
  *
@@ -26,6 +27,9 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DummyAnnotationWithoutInstances {
+public @interface DummyAnnotationWithoutValue {
 
+    ObjectInstance[] instances() default {};
+
+    String[] values() default {};
 }

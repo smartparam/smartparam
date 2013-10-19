@@ -33,14 +33,16 @@ import org.smartparam.engine.core.exception.SmartParamException;
 public class ReflectionsScanner {
 
     public Set<Class<?>> findClassesAnnotatedWith(Class<? extends Annotation> annotationType, List<String> packagesToScan) {
-        AnnotatedTypeReporter typeReporter = new AnnotatedTypeReporter(annotationType);
-        runDetector(typeReporter, convertPackagesToArray(packagesToScan));
+        String[] packagesArray = convertPackagesToArray(packagesToScan);
+        AnnotatedTypeReporter typeReporter = new AnnotatedTypeReporter(annotationType, packagesArray);
+        runDetector(typeReporter, packagesArray);
         return typeReporter.getAnnotatedClasses();
     }
 
     public Set<Method> findMethodsAnnotatedWith(Class<? extends Annotation> annotationType, List<String> packagesToScan) {
-        AnnotatedMethodReporter methodReporter = new AnnotatedMethodReporter(annotationType);
-        runDetector(methodReporter, convertPackagesToArray(packagesToScan));
+        String[] packagesArray = convertPackagesToArray(packagesToScan);
+        AnnotatedMethodReporter methodReporter = new AnnotatedMethodReporter(annotationType, packagesArray);
+        runDetector(methodReporter, packagesArray);
         return methodReporter.getAnnotatedMethods();
     }
 

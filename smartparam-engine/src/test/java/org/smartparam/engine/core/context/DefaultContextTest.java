@@ -116,7 +116,7 @@ public class DefaultContextTest {
         DefaultContext context = new DefaultContext();
 
         // when
-        context.set("TEST", "A");
+        context.with("TEST", "A");
 
         // then
         assertThat(context).hasValue("TEST", "A");
@@ -126,11 +126,11 @@ public class DefaultContextTest {
     public void shouldThrowExceptionIfhereIsAlreadyValueRegisteredUnderTheSameKey() {
         // given
         DefaultContext context = new DefaultContext();
-        context.set("TEST", "B");
+        context.with("TEST", "B");
 
         // when, cant use CatchException cos context uses static fields
         try {
-            context.set("TEST", "A");
+            context.with("TEST", "A");
             fail();
         }
         catch(SmartParamUsageException exception) {
@@ -143,10 +143,10 @@ public class DefaultContextTest {
     public void shouldAllowOnOverwritingValuesInContextWhenCallingMethodWithOverwriteFlag() {
         // given
         DefaultContext context = new DefaultContext();
-        context.set("TEST", "B");
+        context.with("TEST", "B");
 
         // when
-        context.set("TEST", "A", true);
+        context.with("TEST", "A", true);
 
         // then
         assertThat(context).hasValue("TEST", "A");
@@ -156,7 +156,7 @@ public class DefaultContextTest {
     public void shouldReturnObjectUnderClassSimpleNameAndMatchingTypeWhenAskingByClass() {
         // given
         DefaultContext context = new DefaultContext();
-        context.set("BigDecimal", BigDecimal.ONE);
+        context.with("BigDecimal", BigDecimal.ONE);
 
         // when
         BigDecimal value = context.get(BigDecimal.class);
@@ -169,7 +169,7 @@ public class DefaultContextTest {
     public void shouldReturnFirstObjectWithMatchingClassFromContextIfNoValueWithClassSimpleNameKey() {
         // given
         DefaultContext context = new DefaultContext();
-        context.set("TEST", BigDecimal.ONE);
+        context.with("TEST", BigDecimal.ONE);
 
         // when
         BigDecimal value = context.get(BigDecimal.class);
@@ -194,7 +194,7 @@ public class DefaultContextTest {
     public void shouldBeNullValuesProofWhenSearchingByClass() {
         // given
         DefaultContext context = new DefaultContext();
-        context.set("TEST", null);
+        context.with("TEST", null);
 
         // when
         BigDecimal value = context.get(BigDecimal.class);

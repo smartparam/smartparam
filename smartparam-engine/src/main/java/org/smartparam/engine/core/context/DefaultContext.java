@@ -128,7 +128,7 @@ public class DefaultContext implements ParamContext {
             } else if (arg instanceof String) {
                 // skip one, cos it is being consumed now
                 argumentIndex++;
-                set((String) arg, getArgumentAt(args, argumentIndex));
+                with((String) arg, getArgumentAt(args, argumentIndex));
             } else if (arg != null) {
                 boolean setterFound = findAndInvokeSetter(arg);
                 if(!setterFound) {
@@ -148,8 +148,8 @@ public class DefaultContext implements ParamContext {
      *
      * @see #set(java.lang.String, java.lang.Object, boolean)
      */
-    public final DefaultContext set(String key, Object value) {
-        return set(key, value, false);
+    public final DefaultContext with(String key, Object value) {
+        return with(key, value, false);
     }
 
     /**
@@ -165,7 +165,7 @@ public class DefaultContext implements ParamContext {
      *
      * @see Locale#getDefault()
      */
-    public final DefaultContext set(String key, Object value, boolean allowOverwrite) {
+    public final DefaultContext with(String key, Object value, boolean allowOverwrite) {
         if (userContext == null) {
             userContext = new TreeMap<String, Object>();
         }
@@ -192,7 +192,7 @@ public class DefaultContext implements ParamContext {
      * @return
      */
     public final DefaultContext set(Object value) {
-        return set(value.getClass().getSimpleName(), value);
+        return with(value.getClass().getSimpleName(), value);
     }
 
     /**
@@ -204,6 +204,30 @@ public class DefaultContext implements ParamContext {
      */
     public Object get(String key) {
         return userContext != null ? userContext.get(lowercase(key)) : null;
+    }
+
+    /**
+     * Return object stored under key and cast it to given class.
+     *
+     * @param <T>
+     * @param key
+     * @param targetClass
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T get(String key, Class<T> targetClass) {
+        return (T) get(key);
+    }
+
+    /**
+     * Return object stored under key as String.
+     *
+     * @see #get(java.lang.String)
+     * @param key
+     * @return
+     */
+    public String getString(String key) {
+        return get(key, String.class);
     }
 
     /**

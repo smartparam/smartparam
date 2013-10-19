@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.scan;
+package org.smartparamtestscan;
 
-import org.smartparam.engine.annotations.ParamFunctionRepository;
-import org.smartparam.engine.core.repository.FunctionRepository;
+import org.smartparam.engine.annotations.ParamFunctionInvoker;
+import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.model.function.Function;
 
 /**
  *
  * @author Adam Dubiel
  */
-@ParamFunctionRepository(value = "secondaryRepsitory", order = 2)
-public class DummySecondaryRepository implements FunctionRepository {
+@ParamFunctionInvoker(value = "", values = {"nameOne", "nameTwo"})
+public class DummyFunctionInvoker implements FunctionInvoker {
 
     @Override
-    public Function loadFunction(String functionName) {
+    public Object invoke(Function function, Object... args) {
         throw new UnsupportedOperationException("Dummy implementation");
     }
+
 }

@@ -13,23 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.scan.annotation;
+package org.smartparamtestscan;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import org.smartparam.engine.annotations.ObjectInstance;
+import org.smartparam.engine.annotations.ParamFunctionRepository;
+import org.smartparam.engine.core.repository.FunctionRepository;
+import org.smartparam.engine.model.function.Function;
 
 /**
  *
  * @author Adam Dubiel
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface DummyAnnotationWithoutValue {
+@ParamFunctionRepository(value = "secondaryRepsitory", order = 2)
+public class DummySecondaryRepository implements FunctionRepository {
 
-    ObjectInstance[] instances() default {};
-
-    String[] values() default {};
+    @Override
+    public Function loadFunction(String functionName) {
+        throw new UnsupportedOperationException("Dummy implementation");
+    }
 }

@@ -13,16 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.scan.annotation;
+
+package org.smartparamtestscan.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import org.smartparam.engine.annotations.ObjectInstance;
+import org.smartparam.engine.annotations.Sortable;
 
 /**
  *
  * @author Adam Dubiel
  */
-@DummyAnnotationWithoutInstances
-@DummyAnnotationWithoutOrder("A")
-@DummyAnnotationWithoutValue
-@DummyAnnotationWithoutValues
-public class DummyInvalidAnnotationBearer {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Sortable
+public @interface DummyAnnotationWithoutOrder {
+
+    String value();
+
+    String[] values() default {};
+
+    ObjectInstance[] instances() default {};
 
 }

@@ -13,22 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.scan;
+package org.smartparamtestscan.annotation;
 
-import org.smartparam.engine.annotations.ParamMatcher;
-import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.core.type.Type;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  *
  * @author Adam Dubiel
  */
-@ParamMatcher("dummyMatcher")
-public class DummyMatcher implements Matcher {
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DummyAnnotationWithoutInstances {
 
-    @Override
-    public <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type) {
-        throw new UnsupportedOperationException("Dummy implementation");
-    }
 }

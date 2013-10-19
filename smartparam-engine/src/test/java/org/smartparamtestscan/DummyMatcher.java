@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.scan;
+package org.smartparamtestscan;
 
-import org.smartparam.engine.annotations.ParamFunctionRepository;
-import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.annotations.ParamMatcher;
+import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.Type;
 
 /**
  *
  * @author Adam Dubiel
  */
-@ParamFunctionRepository(value = "primaryRepository", order = 1)
-public class DummyPrimaryRepository implements FunctionRepository {
+@ParamMatcher("dummyMatcher")
+public class DummyMatcher implements Matcher {
 
     @Override
-    public Function loadFunction(String functionName) {
+    public <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type) {
         throw new UnsupportedOperationException("Dummy implementation");
     }
-
 }

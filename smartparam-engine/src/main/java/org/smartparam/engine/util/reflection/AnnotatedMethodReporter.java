@@ -25,32 +25,30 @@ import java.util.Set;
  *
  * @author Adam Dubiel
  */
-public class AnnotatedMethodReporter implements AnnotationDetector.MethodReporter {
+public class AnnotatedMethodReporter extends PackageFilteringReporter implements AnnotationDetector.MethodReporter {
 
     private Class<? extends Annotation> reportedClass;
-
-    private ClassLoader classLoader;
 
     private Set<Method> annotatedMethods = new HashSet<Method>();
 
     private Set<String> scannedClasses = new HashSet<String>();
 
-    public AnnotatedMethodReporter(Class<? extends Annotation> reportedClass) {
+    public AnnotatedMethodReporter(Class<? extends Annotation> reportedClass, String... packagesToScan) {
+        super(reportedClass.getClassLoader(), packagesToScan);
         this.reportedClass = reportedClass;
-        this.classLoader = reportedClass.getClassLoader();
     }
 
-    public AnnotatedMethodReporter(ClassLoader classLoader, Class<? extends Annotation> reportedClass) {
+    public AnnotatedMethodReporter(ClassLoader classLoader, Class<? extends Annotation> reportedClass, String... packagesToScan) {
+        super(classLoader, packagesToScan);
         this.reportedClass = reportedClass;
-        this.classLoader = classLoader;
     }
 
     @Override
     public void reportMethodAnnotation(Class<? extends Annotation> annotation, String className, String methodName) {
-        if (!scannedClasses.contains(className)) {
+        if (!scannedClasses.contains(className) && isWanted(className)) {
             scannedClasses.add(className);
 
-            Class<?> classInstance = ReflectionsHelper.loadClass(classLoader, className);
+            Class<?> classInstance = loadClass(className);
             annotatedMethods.addAll(ReflectionsHelper.findMethodsAnnotatedWith(annotation, classInstance));
         }
     }

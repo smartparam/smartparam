@@ -22,7 +22,7 @@ import org.smartparam.engine.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.annotations.ParamFunctionRepository;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutInstances;
+import org.smartparamtestscan.annotation.DummyAnnotationWithoutInstances;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.PackageListTestBuilder.*;
 import static com.googlecode.catchexception.CatchException.*;
@@ -30,9 +30,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutOrder;
-import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutValue;
-import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutValues;
+import org.smartparamtestscan.annotation.DummyAnnotationWithoutOrder;
+import org.smartparamtestscan.annotation.DummyAnnotationWithoutValue;
+import org.smartparamtestscan.annotation.DummyAnnotationWithoutValues;
 
 /**
  *
@@ -41,7 +41,7 @@ import org.smartparam.engine.test.scan.annotation.DummyAnnotationWithoutValues;
  */
 public class PackageObjectScannerIntegrationTest {
 
-    private static final String TEST_PACKAGE = "org.smartparam.engine.test.scan";
+    private static final String TEST_PACKAGE = "org.smartparamtestscan";
 
     private PackageList packageList;
 
