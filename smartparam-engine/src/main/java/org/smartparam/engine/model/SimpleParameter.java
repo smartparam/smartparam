@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -26,11 +28,11 @@ public class SimpleParameter implements Parameter {
 
     protected String name;
 
-    protected List<Level> levels;
+    protected List<Level> levels = new ArrayList<Level>();
 
     protected int inputLevels;
 
-    protected Set<ParameterEntry> entries;
+    protected Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
     protected char arraySeparator = ';';
 

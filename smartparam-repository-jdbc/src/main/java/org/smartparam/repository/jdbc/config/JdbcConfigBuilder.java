@@ -25,7 +25,7 @@ public class JdbcConfigBuilder extends AbstractConfigurationBuilder<DefaultJdbcC
         super(new DefaultJdbcConfig());
     }
 
-    public static JdbcConfigBuilder jdbcConfiguration() {
+    public static JdbcConfigBuilder jdbcConfig() {
         return new JdbcConfigBuilder();
     }
 

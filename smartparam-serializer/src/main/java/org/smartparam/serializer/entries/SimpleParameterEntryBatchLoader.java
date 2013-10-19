@@ -35,7 +35,11 @@ public class SimpleParameterEntryBatchLoader implements ParameterEntryBatchLoade
     private int lastReadPosition = 0;
 
     public SimpleParameterEntryBatchLoader(Parameter parameter) {
-        this.allEntriesList = new ArrayList<ParameterEntry>(parameter.getEntries());
+        if (parameter.getEntries() == null || parameter.getEntries().isEmpty()) {
+            hasMore = false;
+        } else {
+            this.allEntriesList = new ArrayList<ParameterEntry>(parameter.getEntries());
+        }
     }
 
     @Override
