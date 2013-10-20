@@ -18,6 +18,7 @@ package org.smartparam.engine.core.engine;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -42,6 +43,8 @@ public class MultiValue {
      */
     private Object[] values;
 
+    private Map<String, Integer> indexMap;
+
     /**
      * Keeps iteration state, used to power next* methods.
      */
@@ -49,6 +52,11 @@ public class MultiValue {
 
     public MultiValue(Object[] values) {
         this.values = values;
+    }
+
+    public MultiValue(Object[] values, Map<String, Integer> indexMap) {
+        this.values = values;
+        this.indexMap = indexMap;
     }
 
     /**
@@ -109,6 +117,41 @@ public class MultiValue {
         return getValue(position).getLong();
     }
 
+    public AbstractHolder getValue(String name) {
+        return getValue(index(name));
+    }
+
+    public String getString(String name) {
+        return getString(index(name));
+    }
+
+    public BigDecimal getBigDecimal(String name) {
+        return getBigDecimal(index(name));
+    }
+
+    public Date getDate(String name) {
+        return getDate(index(name));
+    }
+
+    public Integer getInteger(String name) {
+        return getInteger(index(name));
+    }
+
+    public Long getLong(String name) {
+        return getLong(index(name));
+    }
+
+    private int index(String name) {
+        if (indexMap != null) {
+            Integer k = indexMap.get(name);
+            if (k != null) {
+                return k;
+            }
+        }
+
+        throw new SmartParamException("Unknown level name: " + name);
+    }
+
     /**
      * Parses string value as enum entry, using {@link Enum#valueOf(java.lang.Class, java.lang.String) } method.
      *
@@ -122,10 +165,13 @@ public class MultiValue {
         return code != null ? codeToEnum(code, enumClass) : null;
     }
 
+    public <T extends Enum<T>> T getEnum(String name, Class<T> enumClass) {
+        return getEnum(index(name), enumClass);
+    }
+
     private <T extends Enum<T>> T codeToEnum(String code, Class<T> enumClass) {
         try {
             return Enum.valueOf(enumClass, code);
-
         } catch (IllegalArgumentException e) {
             throw new SmartParamException(SmartParamErrorCode.GETTING_WRONG_TYPE, e, "Requested enum has no such constant: " + code);
         }

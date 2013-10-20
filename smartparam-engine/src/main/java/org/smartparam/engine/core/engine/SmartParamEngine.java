@@ -112,7 +112,7 @@ public class SmartParamEngine implements ParamEngine {
                 vector[j] = cellValue;
             }
 
-            mv[i] = new MultiValue(vector);
+            mv[i] = new MultiValue(vector, param.getLevelNameMap());
         }
 
         ParamValue result = new ParamValueImpl(mv, param.getLevelNameMap());

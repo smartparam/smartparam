@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.engine;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import org.smartparam.engine.core.type.AbstractHolder;
 
 /**
@@ -88,12 +90,72 @@ public interface ParamValue {
     AbstractHolder get(String name);
 
     /**
+     * Get string from first row and column with given name.
+     */
+    String getString(String name);
+
+    /**
+     * Get BigDecimal from first row and column with given name.
+     */
+    BigDecimal getBigDecimal(String name);
+
+    /**
+     * Get Date from first row and column with given name.
+     */
+    Date getDate(String name);
+
+    /**
+     * Get Integer from first row and column with given name.
+     */
+    Integer getInteger(String name);
+
+    /**
+     * Get Long from first row and column with given name.
+     */
+    Long getLong(String name);
+
+    /**
+     * Get enum of given class from first row and column with given name.
+     */
+    <T extends Enum<T>> T getEnum(String name, Class<T> enumClass);
+
+    /**
      * Return first value from first row, useful if parameter returns only
      * single value.
      *
      * @return value held in first cell of first row
      */
     AbstractHolder get();
+
+    /**
+     * Return value from first column of first row as string.
+     */
+    String getString();
+
+    /**
+     * Return value from first column of first row as BigDecimal.
+     */
+    BigDecimal getBigDecimal();
+
+    /**
+     * Return value from first column of first row as Date.
+     */
+    Date getDate();
+
+    /**
+     * Return value from first column of first row as Ineger.
+     */
+    Integer getInteger();
+
+    /**
+     * Return value from first column of first row as Long.
+     */
+    Long getLong();
+
+    /**
+     * Return value from first column of first row as enum.
+     */
+    <T extends Enum<T>> T getEnum(Class<T> enumClass);
 
     /**
      *

@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.engine;
 
+import java.math.BigDecimal;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
@@ -23,6 +24,7 @@ import org.smartparam.engine.util.Formatter;
 import org.smartparam.engine.util.Printer;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -48,7 +50,7 @@ public class ParamValueImpl implements ParamValue {
 
         throw new SmartParamUsageException(
                 SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
-                String.format("Trying to get non-existing row: %d. Available rows: %d..%d", rowNo, 1, size()));
+                String.format("Trying to get non-existing row: %d. Available rows: %d..%d. Remeber that rows are 1-based!", rowNo, 1, size()));
     }
 
     @Override
@@ -82,8 +84,68 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
+    public String getString(String name) {
+        return row().getString(name);
+    }
+
+    @Override
+    public BigDecimal getBigDecimal(String name) {
+        return row().getBigDecimal(name);
+    }
+
+    @Override
+    public Date getDate(String name) {
+        return row().getDate(name);
+    }
+
+    @Override
+    public Integer getInteger(String name) {
+        return row().getInteger(name);
+    }
+
+    @Override
+    public Long getLong(String name) {
+        return row().getLong(name);
+    }
+
+    @Override
+    public <T extends Enum<T>> T getEnum(String name, Class<T> enumClass) {
+        return row().getEnum(name, enumClass);
+    }
+
+    @Override
     public AbstractHolder get() {
         return row().getValue(1);
+    }
+
+    @Override
+    public String getString() {
+        return row().getString(1);
+    }
+
+    @Override
+    public BigDecimal getBigDecimal() {
+        return row().getBigDecimal(1);
+    }
+
+    @Override
+    public Date getDate() {
+        return row().getDate(1);
+    }
+
+    @Override
+    public Integer getInteger() {
+        return row().getInteger(1);
+    }
+
+    @Override
+    public Long getLong() {
+        return row().getLong(1);
+    }
+
+    @Override
+    public <T extends Enum<T>> T getEnum(Class<T> enumClass) {
+        return row().getEnum(1, enumClass);
     }
 
     @Override
