@@ -31,13 +31,15 @@ public class TypeScannerInitializer implements ComponentInitializer {
 
     private PackageList packagesToScan = new PackageList();
 
-    private TypeScanner typeScanner = new PackageTypeScanner(packagesToScan);
+    private TypeScanner typeScanner;
 
     public TypeScannerInitializer() {
+        typeScanner = new PackageTypeScanner(packagesToScan);
     }
 
     public TypeScannerInitializer(PackageList packagesToScan) {
         this.packagesToScan = packagesToScan;
+        typeScanner = new PackageTypeScanner(this.packagesToScan);
     }
 
     @Override

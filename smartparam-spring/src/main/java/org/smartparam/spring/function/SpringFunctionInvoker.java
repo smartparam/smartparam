@@ -15,22 +15,22 @@
  */
 package org.smartparam.spring.function;
 
-import org.smartparam.engine.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.core.invoker.AbstractJavaFunctionInvoker;
 import org.smartparam.engine.model.function.Function;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  *
  * @author Adam Dubiel
  * @since 0.1.0
  */
-@ParamFunctionInvoker("spring")
-public class SpringFunctionInvoker extends AbstractJavaFunctionInvoker implements ApplicationContextAware {
+public class SpringFunctionInvoker extends AbstractJavaFunctionInvoker {
 
-    private ApplicationContext appContext = null;
+    private ApplicationContext appContext;
+
+    public SpringFunctionInvoker(ApplicationContext appContext) {
+        this.appContext = appContext;
+    }
 
     @Override
     public Object invoke(Function function, Object... args) {
@@ -39,10 +39,5 @@ public class SpringFunctionInvoker extends AbstractJavaFunctionInvoker implement
         Object bean = appContext.getBean(springFunction.getBeanName());
 
         return invokeMethod(bean, springFunction.getMethod(), args);
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext ac) throws BeansException {
-        this.appContext = ac;
     }
 }

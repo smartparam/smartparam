@@ -19,25 +19,31 @@ import java.util.List;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.config.initialization.MethodScannerInitializer;
 import org.smartparam.engine.config.pico.PicoParamEngineConfig;
-import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.config.initialization.TypeScannerInitializer;
 import org.smartparam.engine.config.pico.PicoParamEngineFactory;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.spring.function.SpringFunctionInvoker;
+import org.smartparam.spring.function.SpringFunctionRepository;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
+public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, ApplicationContextAware {
+
+    private ApplicationContext appContext;
 
     private PicoParamEngineConfig config;
 
     private ParamRepository paramRepository;
 
-    private boolean scanAnnotations;
+    private boolean scanAnnotations = true;
 
     private List<String> packagesToScan;
 
@@ -54,8 +60,9 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
             injectComponentInitializers();
         }
 
-        ParamEngineFactory factory = new PicoParamEngineFactory();
-        return factory.createParamEngine(config);
+        config.getFunctionInvokers().put(SpringFunctionRepository.FUNCTION_TYPE, new SpringFunctionInvoker(appContext));
+
+        return new PicoParamEngineFactory().createParamEngine(config);
     }
 
     private void injectComponentInitializers() {
@@ -91,5 +98,9 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine> {
 
     public void setPackagesToScan(List<String> packagesToScan) {
         this.packagesToScan = packagesToScan;
+    }
+
+    public void setApplicationContext(ApplicationContext appContext) throws BeansException {
+        this.appContext = appContext;
     }
 }

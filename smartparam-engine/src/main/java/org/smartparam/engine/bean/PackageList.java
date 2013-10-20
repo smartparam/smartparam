@@ -77,7 +77,9 @@ public class PackageList implements Iterable<String> {
      */
     public void setPackages(List<String> packages) {
         this.packages.clear();
-        this.packages.addAll(packages);
+        if (packages != null) {
+            this.packages.addAll(packages);
+        }
     }
 
     @Override
