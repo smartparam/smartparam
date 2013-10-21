@@ -24,7 +24,10 @@ import org.picocontainer.behaviors.Caching;
  *
  * @author Adam Dubiel
  */
-public class PicoContainerUtil {
+public final class PicoContainerUtil {
+
+    private PicoContainerUtil() {
+    }
 
     public static MutablePicoContainer createContainer() {
         return new DefaultPicoContainer(new Caching());

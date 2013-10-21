@@ -19,7 +19,7 @@ package org.smartparam.repository.jdbc.config;
  *
  * @author Adam Dubiel
  */
-public class JdbcConfigBuilder extends AbstractConfigurationBuilder<DefaultJdbcConfig, JdbcConfigBuilder> {
+public final class JdbcConfigBuilder extends AbstractConfigurationBuilder<DefaultJdbcConfig, JdbcConfigBuilder> {
 
     private JdbcConfigBuilder() {
         super(new DefaultJdbcConfig());

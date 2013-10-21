@@ -23,7 +23,7 @@ import org.smartparam.engine.model.Parameter;
  *
  * @author Adam Dubiel
  */
-public class ParameterEntryUnbatchUtil {
+public final class ParameterEntryUnbatchUtil {
 
     private ParameterEntryUnbatchUtil() {
     }

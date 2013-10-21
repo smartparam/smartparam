@@ -15,7 +15,6 @@
  */
 package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.editable.EditableLevel;
 
 /**
@@ -41,14 +40,6 @@ public class JdbcLevel implements EditableLevel {
     private boolean array;
 
     public JdbcLevel() {
-    }
-
-    public JdbcLevel(long id, Level level) {
-        name = level.getName();
-        type = level.getType();
-        matcher = level.getMatcher();
-        levelCreator = level.getLevelCreator();
-        array = level.isArray();
     }
 
     public int getOrderNo() {

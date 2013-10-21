@@ -16,7 +16,9 @@
 package org.smartparam.engine.model;
 
 /**
- * Klasa reprezenuje definicje poziomu na poziomie parametru.
+ * Depth of parameter.
+ * In tabular view: how many columns there are.
+ * In "if"-tree: indentation depth.
  *
  * @author Przemek Hertel
  * @author Adam Dubiel
@@ -24,6 +26,12 @@ package org.smartparam.engine.model;
  */
 public interface Level {
 
+    /**
+     * Returns name of level, internally used to load value by output parameter
+     * name.
+     *
+     * @return level name
+     */
     String getName();
 
     /**

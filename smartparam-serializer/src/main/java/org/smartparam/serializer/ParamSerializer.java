@@ -27,9 +27,9 @@ import org.smartparam.serializer.exception.ParamSerializationException;
  */
 public interface ParamSerializer {
 
-    public void serialize(Parameter parameter, Writer writer) throws ParamSerializationException;
+    void serialize(Parameter parameter, Writer writer) throws ParamSerializationException;
 
-    public void serialize(Parameter parameter, Writer writer, ParameterEntryBatchLoader entryBatchLoader) throws ParamSerializationException;
+    void serialize(Parameter parameter, Writer writer, ParameterEntryBatchLoader entryBatchLoader) throws ParamSerializationException;
 
     SerializationConfig getSerializationConfig();
 }

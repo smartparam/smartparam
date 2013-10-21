@@ -18,8 +18,6 @@ package org.smartparam.engine.config;
 import java.util.Arrays;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.config.ComponentInitializer;
-import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.config.initialization.MethodScannerInitializer;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.config.initialization.TypeScannerInitializer;
@@ -33,7 +31,7 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class ParamEngineConfigBuilder {
+public final class ParamEngineConfigBuilder {
 
     private ParamEngineConfig paramEngineConfig;
 

@@ -28,7 +28,7 @@ import org.smartparam.transferer.sort.SimpleParameterSorter;
  *
  * @author Adam Dubiel
  */
-public class StandardTransfererBuilder {
+public final class StandardTransfererBuilder {
 
     private ParameterSorter sorter;
 

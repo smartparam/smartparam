@@ -116,7 +116,7 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
     public void write(final ParameterBatchLoader batchLoader) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
-            public void performVoid(QueryRunner queryRunner) throws TransactionInterruptedException {
+            public void performVoid(QueryRunner queryRunner) {
                 String parameterName = batchLoader.getMetadata().getName();
 
                 try {

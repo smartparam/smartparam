@@ -28,7 +28,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
  *
  * @author Adam Dubiel
  */
-public class ReflectionsHelper {
+public final class ReflectionsHelper {
 
     private ReflectionsHelper() {
     }

@@ -25,5 +25,5 @@ import org.smartparam.serializer.exception.ParamSerializationException;
  */
 public interface ParameterEntryDeserializer {
 
-    public ParameterEntryBatchLoader deserialize(BufferedReader reader) throws ParamSerializationException;
+    ParameterEntryBatchLoader deserialize(BufferedReader reader) throws ParamSerializationException;
 }

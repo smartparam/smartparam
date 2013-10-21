@@ -23,7 +23,10 @@ import org.smartparam.engine.core.exception.SmartParamException;
  *
  * @author Adam Dubiel
  */
-public class StreamCloser {
+public final class StreamCloser {
+
+    private StreamCloser() {
+    }
 
     public static void closeStream(Closeable reader) {
         try {
@@ -34,5 +37,4 @@ public class StreamCloser {
             throw new SmartParamException("exception while closing stream", exception);
         }
     }
-
 }

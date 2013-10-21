@@ -26,7 +26,6 @@ import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.spring.function.SpringFunctionInvoker;
 import org.smartparam.spring.function.SpringFunctionRepository;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -48,7 +47,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
     private List<String> packagesToScan;
 
     @Override
-    public ParamEngine getObject() throws Exception {
+    public ParamEngine getObject() {
         if (config == null) {
             config = new ParamEngineConfig();
         }
@@ -100,7 +99,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
         this.packagesToScan = packagesToScan;
     }
 
-    public void setApplicationContext(ApplicationContext appContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext appContext) {
         this.appContext = appContext;
     }
 }

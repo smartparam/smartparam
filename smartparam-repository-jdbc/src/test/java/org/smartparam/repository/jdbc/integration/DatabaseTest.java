@@ -42,7 +42,7 @@ import org.smartparam.repository.jdbc.test.builder.DatabaseBuilder;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import static org.smartparam.repository.jdbc.config.ConfigurationBuilder.defaultConfiguration;
+import static org.smartparam.repository.jdbc.config.JdbcConfigBuilder.jdbcConfig;
 
 /**
  *
@@ -86,7 +86,7 @@ public class DatabaseTest {
     public void setUpDatabase() throws Exception {
         Dialect dialect = DialectRegistry.dialect("H2");
 
-        JdbcConfigBuilder configurationBuilder = defaultConfiguration().withDialect(dialect)
+        JdbcConfigBuilder configurationBuilder = jdbcConfig().withDialect(dialect)
                 .withParameterTableName("parameter").withLevelTableName("level")
                 .withParameterEntryTableName("entry");
         customizeConfiguraion(configurationBuilder);

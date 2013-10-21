@@ -23,7 +23,7 @@ import org.supercsv.prefs.CsvPreference;
  *
  * @author Adam Dubiel
  */
-public class CsvPreferenceBuilder {
+public final class CsvPreferenceBuilder {
 
     private CsvPreferenceBuilder() {
     }

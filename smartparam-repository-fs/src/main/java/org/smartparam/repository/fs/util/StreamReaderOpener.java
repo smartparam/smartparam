@@ -28,7 +28,10 @@ import org.smartparam.repository.fs.exception.SmartParamResourceResolverExceptio
  *
  * @author Adam Dubiel
  */
-public class StreamReaderOpener {
+public final class StreamReaderOpener {
+
+    private StreamReaderOpener() {
+    }
 
     public static BufferedReader openReaderForFile(String filePath, Charset charset) {
         try {

@@ -21,7 +21,6 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.TransactionalQueryRunner;
 import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
-import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
@@ -54,12 +53,12 @@ public class JdbcParameterEntryBatchLoader implements ParameterEntryBatchLoader 
     }
 
     @Override
-    public Collection<ParameterEntry> nextBatch(int batchSize) throws ParamBatchLoadingException {
+    public Collection<ParameterEntry> nextBatch(int batchSize) {
         List<ParameterEntry> entries = parameterEntryDAO.getParameterEntriesBatch(queryRunner, parameterId, lastEntryId, batchSize);
         queryRunner.commit();
 
         JdbcParameterEntry lastEntry = getLastEntry(entries);
-        if(lastEntry != null) {
+        if (lastEntry != null) {
             lastEntryId = lastEntry.getId();
         }
 
@@ -69,7 +68,7 @@ public class JdbcParameterEntryBatchLoader implements ParameterEntryBatchLoader 
     }
 
     private JdbcParameterEntry getLastEntry(List<ParameterEntry> entries) {
-        if(entries.isEmpty()) {
+        if (entries.isEmpty()) {
             return null;
         }
         return (JdbcParameterEntry) entries.get(entries.size() - 1);
@@ -79,5 +78,4 @@ public class JdbcParameterEntryBatchLoader implements ParameterEntryBatchLoader 
     public void close() {
         queryRunner.close();
     }
-
 }

@@ -24,7 +24,7 @@ import org.smartparam.engine.core.exception.SmartParamInitializationException;
  *
  * @author Adam Dubiel
  */
-public class AnnotationHelper {
+public final class AnnotationHelper {
 
     private AnnotationHelper() {
     }

@@ -16,7 +16,6 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.DeleteQuery;
@@ -68,8 +67,7 @@ public class ParameterEntryDAO {
 
     private String concatenateLastLevels(String[] entryLevels, int maxDistinctLevels) {
         String[] excessLevels = Arrays.copyOfRange(entryLevels, maxDistinctLevels - 1, entryLevels.length);
-        String lastLevelValue = StringUtils.concatenate(configuration.getExcessLevelsSeparator(), (Object[]) excessLevels);
-        return lastLevelValue;
+        return StringUtils.concatenate(configuration.getExcessLevelsSeparator(), (Object[]) excessLevels);
     }
 
     public Set<ParameterEntry> getParameterEntries(QueryRunner queryRunner, long parameterId) {

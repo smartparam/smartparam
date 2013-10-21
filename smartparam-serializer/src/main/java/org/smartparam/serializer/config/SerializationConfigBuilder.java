@@ -23,7 +23,7 @@ import org.smartparam.engine.model.editable.EditableParameterEntry;
  *
  * @author Adam Dubiel
  */
-public class SerializationConfigBuilder {
+public final class SerializationConfigBuilder {
 
     private DefaultSerializationConfig config = new DefaultSerializationConfig();
 

@@ -33,6 +33,8 @@ import org.polyjdbc.core.dialect.Dialect;
  */
 public class DefaultJdbcConfig implements JdbcConfig {
 
+    private static final int DEFAULT_LEVEL_COUNT = 8;
+
     private Dialect dialect;
 
     private String parameterTable = "sp_parameter";
@@ -45,7 +47,7 @@ public class DefaultJdbcConfig implements JdbcConfig {
 
     private char excessLevelsSeparator = ';';
 
-    private int levelColumnCount = 8;
+    private int levelColumnCount = DEFAULT_LEVEL_COUNT;
 
     public DefaultJdbcConfig() {
     }
@@ -65,7 +67,7 @@ public class DefaultJdbcConfig implements JdbcConfig {
 
     @Override
     public String[] getManagedTables() {
-        return new String[] { parameterTable, levelTable, parameterEntryTable };
+        return new String[]{parameterTable, levelTable, parameterEntryTable};
     }
 
     @Override

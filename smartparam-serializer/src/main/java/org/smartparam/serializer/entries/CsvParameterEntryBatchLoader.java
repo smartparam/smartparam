@@ -49,7 +49,7 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
     }
 
     @Override
-    public Collection<ParameterEntry> nextBatch(int batchSize) throws ParamBatchLoadingException {
+    public Collection<ParameterEntry> nextBatch(int batchSize) {
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>(batchSize);
 
         try {
@@ -94,6 +94,4 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
             throw new SmartParamException("exception while closing stream", exception);
         }
     }
-
-
 }

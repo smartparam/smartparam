@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 import org.smartparam.engine.annotations.ObjectInstance;
 import org.smartparam.engine.annotations.Sortable;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.core.exception.SmartParamInitializationException;
 import org.smartparam.engine.util.reflection.AnnotationHelper;
 import org.smartparam.engine.util.reflection.ReflectionsHelper;
 
@@ -105,7 +104,7 @@ public class AnnotatedObjectFactory {
      * Create new object of given class using its default constructor. If class
      * implements {@link AnnotationScanner}, scanner properties are injected.
      *
-     * Will throw {@link SmartParamInitializationException} if there is no
+     * Will throw {@link org.smartparam.engine.core.exception.SmartParamInitializationException} if there is no
      * default constructor or it is unreachable.
      *
      * @param objectClass class of object to create
@@ -143,8 +142,7 @@ public class AnnotatedObjectFactory {
             constructorArgs[i] = constructorArg;
         }
 
-        T object = ReflectionsHelper.createObject(objectClass, constructorArgClasses, constructorArgs);
-        return object;
+        return ReflectionsHelper.createObject(objectClass, constructorArgClasses, constructorArgs);
     }
 
     private String extractValue(Annotation annotation) {

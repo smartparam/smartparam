@@ -16,7 +16,6 @@
 package org.smartparam.engine.core.batch;
 
 import java.util.Collection;
-import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.ParameterEntry;
 
 /**
@@ -27,7 +26,7 @@ public interface ParameterEntryBatchLoader {
 
     boolean hasMore();
 
-    Collection<ParameterEntry> nextBatch(int batchSize) throws ParamBatchLoadingException;
+    Collection<ParameterEntry> nextBatch(int batchSize);
 
     void close();
 }

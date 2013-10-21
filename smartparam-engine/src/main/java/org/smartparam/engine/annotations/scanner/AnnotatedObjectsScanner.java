@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.core.exception.SmartParamInitializationException;
 import org.smartparam.engine.util.reflection.ReflectionsHelper;
 import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
@@ -62,7 +61,7 @@ public class AnnotatedObjectsScanner<T> {
      * Scan for classes annotated with given annotation type, instantiate them
      * using hints from annotation and return a map of those objects.
      *
-     * Might throw {@link SmartParamInitializationException} if any reflective
+     * Might throw {@link org.smartparam.engine.core.exception.SmartParamInitializationException} if any reflective
      * operation fails.
      *
      * @see RepositoryObjectKey
