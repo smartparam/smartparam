@@ -81,7 +81,7 @@ public class DefaultSchemaCreator implements SchemaCreator {
         if (!schemaInspector.relationExists(relationName)) {
             schema.addRelation(relationName)
                     .withAttribute().longAttr("id").withAdditionalModifiers("AUTO_INCREMENT").notNull().and()
-                    .withAttribute().string("name").withMaxLength(200).notNull().and()
+                    .withAttribute().string("name").withMaxLength(200).and()
                     .withAttribute().string("type").withMaxLength(100).notNull().and()
                     .withAttribute().string("matcher").withMaxLength(100).and()
                     .withAttribute().string("level_creator").withMaxLength(200).and()
