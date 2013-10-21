@@ -15,11 +15,39 @@
  */
 package org.smartparam.serializer.config;
 
+import java.util.List;
+import org.smartparam.engine.config.pico.ComponentConfig;
+import org.smartparam.serializer.StandardParamDeserializer;
+import org.smartparam.serializer.StandardParamSerializer;
+import org.smartparam.serializer.config.SerializationConfig;
+import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
+import org.smartparam.serializer.entries.CsvParameterEntrySerializer;
+import org.smartparam.serializer.metadata.JsonParameterMetadataDeserializer;
+import org.smartparam.serializer.metadata.JsonParameterMetadataSerializer;
+
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParamSerializerConfig {
+public class ParamSerializerConfig extends ComponentConfig {
 
-    SerializationConfig getSerializationConfig();
+    private SerializationConfig serializationConfig;
+
+    public ParamSerializerConfig(SerializationConfig serializationConfig) {
+        this.serializationConfig = serializationConfig;
+    }
+
+    @Override
+    protected void injectDefaults(List<Object> components) {
+        components.add(JsonParameterMetadataDeserializer.class);
+        components.add(JsonParameterMetadataSerializer.class);
+        components.add(CsvParameterEntryDeserializer.class);
+        components.add(CsvParameterEntrySerializer.class);
+        components.add(StandardParamSerializer.class);
+        components.add(StandardParamDeserializer.class);
+    }
+
+    public SerializationConfig getSerializationConfig() {
+        return serializationConfig;
+    }
 }

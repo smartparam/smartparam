@@ -21,7 +21,7 @@ import org.smartparam.repository.fs.exception.SmartParamResourceResolverExceptio
 import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.config.DefaultSerializationConfig;
-import org.smartparam.serializer.config.pico.PicoParamSerializerFactory;
+import org.smartparam.serializer.config.ParamSerializerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -48,7 +48,7 @@ public class ClasspathResourceResolverIntegrationTest {
     @BeforeMethod
     public void setUp() {
         SerializationConfig config = new DefaultSerializationConfig();
-        deserializer = PicoParamSerializerFactory.paramDeserializer(config);
+        deserializer = ParamSerializerFactory.paramDeserializer(config);
     }
 
     @Test

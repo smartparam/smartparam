@@ -30,8 +30,8 @@ import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
-import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryConfig;
-import org.smartparam.repository.jdbc.config.pico.PicoJdbcParamRepositoryFactory;
+import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
+import org.smartparam.repository.jdbc.config.JdbcParamRepositoryFactory;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
@@ -98,8 +98,8 @@ public class DatabaseTest {
         this.schemaCreator = new DefaultSchemaCreator(configuration, transactionManager);
         schemaCreator.createSchema();
 
-        PicoJdbcParamRepositoryFactory factory = new PicoJdbcParamRepositoryFactory();
-        this.container = factory.createContainer(new PicoJdbcParamRepositoryConfig(dataSource, configuration));
+        JdbcParamRepositoryFactory factory = new JdbcParamRepositoryFactory();
+        this.container = factory.createContainer(new JdbcParamRepositoryConfig(dataSource, configuration));
 
         this.cleaner = new TheCleaner(transactionManager);
     }

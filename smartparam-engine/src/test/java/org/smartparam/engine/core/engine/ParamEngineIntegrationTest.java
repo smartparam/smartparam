@@ -20,9 +20,9 @@ import java.util.HashSet;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.testng.annotations.BeforeMethod;
 import static org.mockito.Mockito.*;
-import org.smartparam.engine.config.pico.PicoParamEngineConfig;
-import org.smartparam.engine.config.pico.ParamEngineConfigBuilder;
-import org.smartparam.engine.config.pico.PicoParamEngineFactory;
+import org.smartparam.engine.config.ParamEngineConfig;
+import org.smartparam.engine.config.ParamEngineConfigBuilder;
+import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -63,7 +63,7 @@ public class ParamEngineIntegrationTest {
         functionRepository = mock(FunctionRepository.class);
         functionInvoker = mock(FunctionInvoker.class);
 
-        PicoParamEngineConfig config;
+        ParamEngineConfig config;
         config = ParamEngineConfigBuilder.paramEngineConfig()
                 .withType("string", new StringType())
                 .withType("integer", new IntegerType())
@@ -72,7 +72,7 @@ public class ParamEngineIntegrationTest {
                 .withFunctionInvoker("java", functionInvoker)
                 .withMatcher("between", new BetweenMatcher())
                 .build();
-        engine = (SmartParamEngine) PicoParamEngineFactory.paramEngine(config);
+        engine = (SmartParamEngine) ParamEngineFactory.paramEngine(config);
     }
 
     @Test

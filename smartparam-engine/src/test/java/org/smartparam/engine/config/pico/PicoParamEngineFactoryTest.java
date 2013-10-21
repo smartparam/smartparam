@@ -16,7 +16,7 @@
 package org.smartparam.engine.config.pico;
 
 import org.smartparam.engine.config.ParamEngineFactory;
-import org.smartparam.engine.config.pico.PicoParamEngineConfig;
+import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.index.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
@@ -27,7 +27,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
 import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.config.pico.ParamEngineConfigBuilder.paramEngineConfig;
+import static org.smartparam.engine.config.ParamEngineConfigBuilder.paramEngineConfig;
 
 /**
  *
@@ -40,13 +40,13 @@ public class PicoParamEngineFactoryTest {
 
     @BeforeMethod
     public void setUp() {
-        paramEngineFactory = new PicoParamEngineFactory();
+        paramEngineFactory = new ParamEngineFactory();
     }
 
     @Test
     public void shouldCreateParamEngineInstanceWithDefaults() {
         // given
-        PicoParamEngineConfig config = paramEngineConfig().build();
+        ParamEngineConfig config = paramEngineConfig().build();
 
         // when
         ParamEngine engine = paramEngineFactory.createParamEngine(config);
@@ -58,7 +58,7 @@ public class PicoParamEngineFactoryTest {
     @Test
     public void shouldCreateParamEngineInstanceWithTypesInjectedIntoRepositories() {
         // given
-        PicoParamEngineConfig config = paramEngineConfig()
+        ParamEngineConfig config = paramEngineConfig()
                 .withFunctionInvoker("test", mock(FunctionInvoker.class))
                 .withFunctionRepository("test", 1, mock(FunctionRepository.class))
                 .withParameterRepositories(mock(ParamRepository.class))

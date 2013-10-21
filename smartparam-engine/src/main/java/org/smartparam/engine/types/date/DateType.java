@@ -29,7 +29,7 @@ import org.smartparam.engine.util.EngineUtil;
 @ParamType("date")
 public class DateType implements Type<DateHolder> {
 
-    private static String defaultOutputPattern = "dd-MM-yyyy";
+    private static String defaultOutputPattern = "yyyy-MM-dd";
 
     @Override
     public String encode(DateHolder holder) {

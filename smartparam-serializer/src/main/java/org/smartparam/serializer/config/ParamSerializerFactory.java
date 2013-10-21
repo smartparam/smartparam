@@ -15,6 +15,9 @@
  */
 package org.smartparam.serializer.config;
 
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.smartparam.engine.config.pico.PicoContainerUtil;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.ParamSerializer;
 
@@ -22,9 +25,34 @@ import org.smartparam.serializer.ParamSerializer;
  *
  * @author Adam Dubiel
  */
-public interface ParamSerializerFactory {
+public class ParamSerializerFactory {
 
-    ParamSerializer createSerializer(ParamSerializerConfig config);
+    public static ParamSerializer paramSerializer(SerializationConfig config) {
+        ParamSerializerFactory factory = new ParamSerializerFactory();
+        return factory.createSerializer(new ParamSerializerConfig(config));
+    }
 
-    ParamDeserializer createDeserializer(ParamSerializerConfig config);
+    public static ParamDeserializer paramDeserializer(SerializationConfig config) {
+        ParamSerializerFactory factory = new ParamSerializerFactory();
+        return factory.createDeserializer(new ParamSerializerConfig(config));
+    }
+
+    public ParamSerializer createSerializer(ParamSerializerConfig config) {
+        PicoContainer container = createContainer(config);
+        return container.getComponent(ParamSerializer.class);
+    }
+
+    public ParamDeserializer createDeserializer(ParamSerializerConfig config) {
+        PicoContainer container = createContainer(config);
+        return container.getComponent(ParamDeserializer.class);
+    }
+
+    public PicoContainer createContainer(ParamSerializerConfig config) {
+        MutablePicoContainer container = PicoContainerUtil.createContainer();
+        PicoContainerUtil.injectImplementations(container, config.getSerializationConfig());
+
+        PicoContainerUtil.injectImplementations(container, config.getComponents());
+
+        return container;
+    }
 }

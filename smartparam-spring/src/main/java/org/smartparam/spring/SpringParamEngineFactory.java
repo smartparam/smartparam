@@ -18,10 +18,10 @@ package org.smartparam.spring;
 import java.util.List;
 import org.smartparam.engine.bean.PackageList;
 import org.smartparam.engine.config.initialization.MethodScannerInitializer;
-import org.smartparam.engine.config.pico.PicoParamEngineConfig;
+import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.config.initialization.TypeScannerInitializer;
-import org.smartparam.engine.config.pico.PicoParamEngineFactory;
+import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.spring.function.SpringFunctionInvoker;
@@ -39,7 +39,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
 
     private ApplicationContext appContext;
 
-    private PicoParamEngineConfig config;
+    private ParamEngineConfig config;
 
     private ParamRepository paramRepository;
 
@@ -50,7 +50,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
     @Override
     public ParamEngine getObject() throws Exception {
         if (config == null) {
-            config = new PicoParamEngineConfig();
+            config = new ParamEngineConfig();
         }
         if (paramRepository != null) {
             config.getParameterRepositories().add(paramRepository);
@@ -62,7 +62,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
 
         config.getFunctionInvokers().put(SpringFunctionRepository.FUNCTION_TYPE, new SpringFunctionInvoker(appContext));
 
-        return new PicoParamEngineFactory().createParamEngine(config);
+        return new ParamEngineFactory().createParamEngine(config);
     }
 
     private void injectComponentInitializers() {
@@ -88,7 +88,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
         this.paramRepository = paramRepository;
     }
 
-    public void setConfig(PicoParamEngineConfig config) {
+    public void setConfig(ParamEngineConfig config) {
         this.config = config;
     }
 

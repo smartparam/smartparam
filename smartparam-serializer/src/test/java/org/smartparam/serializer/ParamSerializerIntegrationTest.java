@@ -25,7 +25,7 @@ import org.junit.Test;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.serializer.config.pico.PicoParamSerializerFactory;
+import org.smartparam.serializer.config.ParamSerializerFactory;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
 import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
@@ -46,8 +46,8 @@ public class ParamSerializerIntegrationTest {
     public void initialize() {
         SerializationConfig config = serializationConfig()
                 .withCharset("UTF-8").withCsvDelimiter(';').withCsvQuote('"').withEndOfLine("\n").build();
-        serializer = PicoParamSerializerFactory.paramSerializer(config);
-        deserializer = PicoParamSerializerFactory.paramDeserializer(config);
+        serializer = ParamSerializerFactory.paramSerializer(config);
+        deserializer = ParamSerializerFactory.paramDeserializer(config);
     }
 
     @Test

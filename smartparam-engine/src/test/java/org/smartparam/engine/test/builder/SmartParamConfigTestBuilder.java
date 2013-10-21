@@ -17,7 +17,7 @@ package org.smartparam.engine.test.builder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.smartparam.engine.config.pico.PicoParamEngineConfig;
+import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.type.Type;
@@ -28,17 +28,17 @@ import org.smartparam.engine.core.type.Type;
  */
 public class SmartParamConfigTestBuilder {
 
-    private PicoParamEngineConfig config;
+    private ParamEngineConfig config;
 
     private SmartParamConfigTestBuilder() {
-        config = new PicoParamEngineConfig();
+        config = new ParamEngineConfig();
     }
 
     public static SmartParamConfigTestBuilder config() {
         return new SmartParamConfigTestBuilder();
     }
 
-    public PicoParamEngineConfig build() {
+    public ParamEngineConfig build() {
         return config;
     }
 

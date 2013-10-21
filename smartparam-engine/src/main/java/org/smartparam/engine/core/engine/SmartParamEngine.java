@@ -186,7 +186,6 @@ public class SmartParamEngine implements ParamEngine {
         String[] values = new String[param.getInputLevelsCount()];
 
         for (int i = 0; i < values.length; ++i) {
-
             PreparedLevel level = levels[i];
             Function levelCreator = level.getLevelCreator();
 

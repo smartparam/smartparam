@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config.pico;
+package org.smartparam.engine.config;
 
 import java.util.Arrays;
 import org.smartparam.engine.bean.PackageList;
@@ -35,17 +35,17 @@ import org.smartparam.engine.core.type.Type;
  */
 public class ParamEngineConfigBuilder {
 
-    private PicoParamEngineConfig paramEngineConfig;
+    private ParamEngineConfig paramEngineConfig;
 
     private ParamEngineConfigBuilder() {
-        paramEngineConfig = new PicoParamEngineConfig();
+        paramEngineConfig = new ParamEngineConfig();
     }
 
     public static ParamEngineConfigBuilder paramEngineConfig() {
         return new ParamEngineConfigBuilder();
     }
 
-    public PicoParamEngineConfig build() {
+    public ParamEngineConfig build() {
         withComponentInitializers(new PostConstructInitializer());
         return paramEngineConfig;
     }

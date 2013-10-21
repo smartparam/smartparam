@@ -15,14 +15,37 @@
  */
 package org.smartparam.repository.jdbc.config;
 
+import javax.sql.DataSource;
+import org.picocontainer.MutablePicoContainer;
+import org.picocontainer.PicoContainer;
+import org.smartparam.engine.config.pico.PicoContainerUtil;
 import org.smartparam.repository.jdbc.JdbcParamRepository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface JdbcParamRepositoryFactory {
+public class JdbcParamRepositoryFactory {
 
-    JdbcParamRepository createRepository(JdbcParamRepositoryConfig config);
+    public static JdbcParamRepository jdbcRepository(DataSource dataSource, JdbcConfig config) {
+        return new JdbcParamRepositoryFactory().createRepository(dataSource, config);
+    }
 
+    public JdbcParamRepository createRepository(DataSource dataSource, JdbcConfig config) {
+        return createRepository(new JdbcParamRepositoryConfig(dataSource, config));
+    }
+
+    public JdbcParamRepository createRepository(JdbcParamRepositoryConfig config) {
+        PicoContainer container = createContainer(config);
+        return container.getComponent(JdbcParamRepository.class);
+    }
+
+    public PicoContainer createContainer(JdbcParamRepositoryConfig config) {
+        MutablePicoContainer container = PicoContainerUtil.createContainer();
+        PicoContainerUtil.injectImplementations(container, JdbcParamRepository.class,
+                                                config.getConfiguration(), config.getConfiguration().getDialect(), config.getDataSource());
+        PicoContainerUtil.injectImplementations(container, config.getComponents());
+
+        return container;
+    }
 }
