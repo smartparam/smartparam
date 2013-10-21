@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.config;
 
 import org.polyjdbc.core.dialect.Dialect;
+import org.polyjdbc.core.dialect.DialectRegistry;
 
 /**
  *
@@ -42,6 +43,10 @@ public abstract class AbstractConfigurationBuilder<C extends DefaultJdbcConfig, 
     public B withDialect(Dialect dialect) {
         configuration.setDialect(dialect);
         return self();
+    }
+
+    public B withDialect(String dialectCode) {
+        return withDialect(DialectRegistry.dialect(dialectCode));
     }
 
     public B withParameterTableName(String parameterTableName) {
