@@ -85,7 +85,7 @@ public class ParameterEntryDAO {
     }
 
     private SelectQuery createSelectQuery(long parameterId) {
-        return QueryFactory.select().query("select * from " + configuration.getParameterEntryTable() + " where fk_parameter = :parameterId")
+        return QueryFactory.selectAll().from(configuration.getParameterEntryTable()).where("fk_parameter = :parameterId")
                 .withArgument("parameterId", parameterId);
     }
 

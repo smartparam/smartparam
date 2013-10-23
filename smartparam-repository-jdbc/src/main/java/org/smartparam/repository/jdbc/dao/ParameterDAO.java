@@ -76,18 +76,18 @@ public class ParameterDAO {
     }
 
     public Set<String> getParameterNames() {
-        SelectQuery query = QueryFactory.select().query("select name from " + configuration.getParameterTable());
+        SelectQuery query = QueryFactory.select("name").from(configuration.getParameterTable());
         return new HashSet<String>(simpleQueryRunner.queryList(query, new StringMapper()));
     }
 
     public JdbcParameter getParameter(QueryRunner queryRunner, String parameterName) {
-        SelectQuery query = QueryFactory.select().query("select * from " + configuration.getParameterTable() + " where name = :name")
+        SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterTable()).where("name = :name")
                 .withArgument("name", parameterName);
         return queryRunner.queryUnique(query, new ParameterMapper(), false);
     }
 
     public boolean parameterExists(String parameterName) {
-        SelectQuery query = QueryFactory.select().query("select * from " + configuration.getParameterTable() + " where name = :name")
+        SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterTable()).where("name = :name")
                 .withArgument("name", parameterName);
         return simpleQueryRunner.queryExistence(query);
     }
