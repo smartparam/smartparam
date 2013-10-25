@@ -35,8 +35,8 @@
         <url>https://bitbucket.org/smartparam/smartparam</url>
         <connection>scm:git:git@bitbucket.org:smartparam/smartparam.git</connection>
         <developerConnection>scm:git:git@bitbucket.org:smartparam/smartparam.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,6 +49,7 @@
         <module>smartparam-repository-fs</module>
         <module>smartparam-spring</module>
         <module>smartparam-transferer</module>
+        <module>smartparam-test</module>
     </modules>
 
     <dependencyManagement>
