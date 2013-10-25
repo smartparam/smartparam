@@ -72,7 +72,7 @@ public class ParamValueAssert extends AbstractAssert<ParamValueAssert, ParamValu
 
     public ParamValueAssert hasArray(int levelIndex, Object... values) {
         int index = 0;
-        for (AbstractHolder holder : actual.row().getArray(1)) {
+        for (AbstractHolder holder : actual.row().getArray(levelIndex)) {
             Assertions.assertThat(holder.getValue()).isEqualTo(values[index]);
             index++;
         }

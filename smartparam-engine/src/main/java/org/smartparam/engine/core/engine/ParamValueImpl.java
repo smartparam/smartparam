@@ -44,18 +44,18 @@ public class ParamValueImpl implements ParamValue {
 
     @Override
     public MultiValue row(int rowNo) {
-        if (rowNo >= 1 && rowNo <= size()) {
-            return rows[rowNo - 1];
+        if (rowNo >= 0 && rowNo < size()) {
+            return rows[rowNo];
         }
 
         throw new SmartParamUsageException(
                 SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
-                String.format("Trying to get non-existing row: %d. Available rows: %d..%d. Remeber that rows are 1-based!", rowNo, 1, size()));
+                String.format("Trying to get non-existing row: %d. Available rows: %d..%d.", rowNo, 0, size() - 1));
     }
 
     @Override
     public MultiValue row() {
-        return row(1);
+        return row(0);
     }
 
     @Override
@@ -115,37 +115,37 @@ public class ParamValueImpl implements ParamValue {
 
     @Override
     public AbstractHolder get() {
-        return row().getValue(1);
+        return row().getValue(0);
     }
 
     @Override
     public String getString() {
-        return row().getString(1);
+        return row().getString(0);
     }
 
     @Override
     public BigDecimal getBigDecimal() {
-        return row().getBigDecimal(1);
+        return row().getBigDecimal(0);
     }
 
     @Override
     public Date getDate() {
-        return row().getDate(1);
+        return row().getDate(0);
     }
 
     @Override
     public Integer getInteger() {
-        return row().getInteger(1);
+        return row().getInteger(0);
     }
 
     @Override
     public Long getLong() {
-        return row().getLong(1);
+        return row().getLong(0);
     }
 
     @Override
     public <T extends Enum<T>> T getEnum(Class<T> enumClass) {
-        return row().getEnum(1, enumClass);
+        return row().getEnum(0, enumClass);
     }
 
     @Override

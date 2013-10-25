@@ -27,14 +27,13 @@ import org.smartparam.engine.util.Printer;
 
 /**
  * Represents single row of matrix returned from parameter querying. Immutable.
- * All method accept 1-based arguments, meaning to get first value all getValue(1).
  * Each method returning value can throw {@link SmartParamException} with:
  *
  * * {@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS} when trying to access wrong index
  * * {@link SmartParamErrorCode#GETTING_WRONG_TYPE} when trying to get wrong type from position
  *
  * @author Przemek Hertel
- * @since 1.0.0
+ * @since 0.9.0
  */
 public class MultiValue {
 
@@ -48,7 +47,7 @@ public class MultiValue {
     /**
      * Keeps iteration state, used to power next* methods.
      */
-    private int last;
+    private int last = 0;
 
     public MultiValue(Object[] values) {
         this.values = values;
@@ -61,9 +60,6 @@ public class MultiValue {
 
     /**
      * Returns value stored at position.
-     *
-     * @param position value position, 1-based
-     * @return value holder, throws exception if array is stored
      */
     public AbstractHolder getValue(int position) {
         Object obj = getHolder(position);
@@ -78,7 +74,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return string representation of value
      */
     public String getString(int position) {
@@ -86,7 +81,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return big decimal value, if supported by holder
      */
     public BigDecimal getBigDecimal(int position) {
@@ -94,7 +88,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return date value, if supported by holder
      */
     public Date getDate(int position) {
@@ -102,7 +95,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return integer value, if supported by holder
      */
     public Integer getInteger(int position) {
@@ -110,7 +102,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return long value, if supported by holder
      */
     public Long getLong(int position) {
@@ -154,11 +145,6 @@ public class MultiValue {
 
     /**
      * Parses string value as enum entry, using {@link Enum#valueOf(java.lang.Class, java.lang.String) } method.
-     *
-     * @param <T>       enum type
-     * @param position  1-based
-     * @param enumClass enum class
-     * @return enum value
      */
     public <T extends Enum<T>> T getEnum(int position, Class<T> enumClass) {
         String code = getString(position);
@@ -183,9 +169,6 @@ public class MultiValue {
      * This string list is split into array of values using separator defined at
      * parameter level ({@link org.smartparam.engine.model.Parameter#getArraySeparator()}).
      * Type of each value holder in array is the same, defined by level type.
-     *
-     * @param position 1-based
-     * @return array of value holders of same type
      */
     public AbstractHolder[] getArray(int position) {
         Object obj = getHolder(position);
@@ -212,13 +195,13 @@ public class MultiValue {
         for (int i = 0; i < values.length; i++) {
             Object val = values[i];
 
-            // jesli i-ty element jest holderem
+            // if object at i is holder
             if (val instanceof AbstractHolder) {
                 AbstractHolder cell = (AbstractHolder) val;
                 result[i] = cell.getValue();
             }
 
-            // jesli i-ty element jest tablica holderow
+            // if object at i is holder array
             if (val instanceof AbstractHolder[]) {
                 AbstractHolder[] cell = (AbstractHolder[]) val;
                 Object[] array = new Object[cell.length];
@@ -233,7 +216,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return string array, if supported by holder
      */
     public String[] getStringArray(int position) {
@@ -246,7 +228,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return date array, if supported by holder
      */
     public Date[] getDateArray(int position) {
@@ -259,7 +240,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return integer array, if supported by holder
      */
     public Integer[] getIntegerArray(int position) {
@@ -272,7 +252,6 @@ public class MultiValue {
     }
 
     /**
-     * @param position 1-based
      * @return big decimal array, if supported by holder
      */
     public BigDecimal[] getBigDecimalArray(int position) {
@@ -285,12 +264,12 @@ public class MultiValue {
     }
 
     private Object getHolder(int position) {
-        if (position >= 1 && position <= values.length) {
-            return values[position - 1];
+        if (position >= 0 && position < values.length) {
+            return values[position];
         }
         throw new SmartParamUsageException(
                 SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
-                "Getting element from non-existing position: " + position);
+                String.format("Getting element from non-existing position: %d. Valid positions: %d..%d", position, 0, values.length - 1));
     }
 
     /**
@@ -302,7 +281,7 @@ public class MultiValue {
     public String[] asStrings() {
         String[] array = new String[values.length];
         for (int i = 0; i < array.length; i++) {
-            array[i] = getString(i + 1);
+            array[i] = getString(i);
         }
         return array;
     }
@@ -316,7 +295,7 @@ public class MultiValue {
     public BigDecimal[] asBigDecimals() {
         BigDecimal[] array = new BigDecimal[values.length];
         for (int i = 0; i < array.length; i++) {
-            array[i] = getBigDecimal(i + 1);
+            array[i] = getBigDecimal(i);
         }
         return array;
     }
@@ -359,8 +338,9 @@ public class MultiValue {
     }
 
     private int nextPosition() {
+        int position = last;
         last++;
-        return last;
+        return position;
     }
 
     /**

@@ -177,7 +177,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A", "C");
 
         // then
-        assertThat(value).hasValue(42l);
+        assertThat(value).hasValue(42L);
     }
 
     @Test
@@ -199,7 +199,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A", "F");
 
         // then
-        assertThat(value).hasValue(42l);
+        assertThat(value).hasValue(42L);
     }
 
     @Test
@@ -225,7 +225,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "6", "B", "E");
 
         // then
-        assertThat(value).hasValue(42l);
+        assertThat(value).hasValue(42L);
     }
 
     @Test
@@ -247,7 +247,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A", null);
 
         // then
-        assertThat(value).hasValue(11l);
+        assertThat(value).hasValue(11L);
     }
 
     @Test
@@ -268,7 +268,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A");
 
         // then
-        assertThat(value).hasSingleRow(1l, 11l);
+        assertThat(value).hasSingleRow(1L, 11L);
     }
 
     @Test
@@ -370,7 +370,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A");
 
         // then
-        assertThat(value).hasArray(1, "B", "C");
+        assertThat(value).hasArray(0, "B", "C");
     }
 
     @Test
@@ -420,7 +420,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A", "B");
 
         // when
-        catchException(value.row()).getArray(1);
+        catchException(value.row()).getArray(0);
 
         // then
         assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.GETTING_WRONG_TYPE);

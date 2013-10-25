@@ -125,7 +125,7 @@ public class BasicParamPreparer implements ParamPreparer {
         for (int currentLevelIndex = inputLevelCount; currentLevelIndex < levelCount; currentLevelIndex++) {
             PreparedLevel level = levels[currentLevelIndex];
             if (level.getName() != null) {
-                nameMap.put(level.getName(), currentLevelIndex + 1 - inputLevelCount);
+                nameMap.put(level.getName(), currentLevelIndex - inputLevelCount);
             }
         }
 

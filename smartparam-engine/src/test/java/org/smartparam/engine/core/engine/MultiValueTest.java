@@ -47,9 +47,9 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(values);
 
         // oczekiwane wartosci
-        assertSame(h1, mv.getValue(1));
-        assertSame(h2, mv.getValue(2));
-        assertSame(h3, mv.getValue(3));
+        assertSame(h1, mv.getValue(0));
+        assertSame(h2, mv.getValue(1));
+        assertSame(h3, mv.getValue(2));
     }
 
     @Test
@@ -96,9 +96,9 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(new Object[]{h1, h2, h3});
 
         // oczekiwane wartosci
-        assertEquals("a", mv.getString(1));
-        assertEquals("1", mv.getString(2));
-        assertEquals("9", mv.getString(3));
+        assertEquals("a", mv.getString(0));
+        assertEquals("1", mv.getString(1));
+        assertEquals("9", mv.getString(2));
     }
 
     @Test
@@ -112,8 +112,8 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(new Object[]{h1, h2});
 
         // oczekiwane wartosci
-        assertEquals(BigDecimal.ONE, mv.getBigDecimal(1));
-        assertEquals(BigDecimal.TEN, mv.getBigDecimal(2));
+        assertEquals(BigDecimal.ONE, mv.getBigDecimal(0));
+        assertEquals(BigDecimal.TEN, mv.getBigDecimal(1));
     }
 
     @Test
@@ -129,8 +129,8 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(new Object[]{h1, h2});
 
         // oczekiwane wartosci
-        assertEquals(d1, mv.getDate(1));
-        assertEquals(d2, mv.getDate(2));
+        assertEquals(d1, mv.getDate(0));
+        assertEquals(d2, mv.getDate(1));
     }
 
     @Test
@@ -143,7 +143,7 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(new Object[]{h1});
 
         // oczekiwane wartosci
-        assertEquals(new Integer(123), mv.getInteger(1));
+        assertEquals(new Integer(123), mv.getInteger(0));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(new Object[]{h1});
 
         // oczekiwane wartosci
-        assertEquals(new Long(123), mv.getLong(1));
+        assertEquals(new Long(123), mv.getLong(0));
     }
 
     @Test
@@ -184,7 +184,7 @@ public class MultiValueTest {
             MultiValue mv = new MultiValue(new Object[]{h});
 
             // test
-            LetterType result = mv.getEnum(1, LetterType.class);
+            LetterType result = mv.getEnum(0, LetterType.class);
 
             // weryfikacja
             assertEquals(expectedResult, result);
@@ -207,7 +207,7 @@ public class MultiValueTest {
 
             // test
             try {
-                mv.getEnum(1, LetterType.class);
+                mv.getEnum(0, LetterType.class);
                 fail();
 
             } catch (SmartParamException e) {
@@ -230,7 +230,7 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(new Object[]{e1});       // 1 poziom typu tablicowego
 
         // oczekiwane wartosci
-        assertArrayEquals(new AbstractHolder[]{h1, h2}, mv.getArray(1));
+        assertArrayEquals(new AbstractHolder[]{h1, h2}, mv.getArray(0));
     }
 
     @Test
@@ -313,7 +313,7 @@ public class MultiValueTest {
         String[] expectedResult = {"100", "200"};
 
         // weryfikacja
-        assertArrayEquals(expectedResult, mv.getStringArray(1));
+        assertArrayEquals(expectedResult, mv.getStringArray(0));
     }
 
     @Test
@@ -337,7 +337,7 @@ public class MultiValueTest {
         Date[] expectedResult = {d1, d2};
 
         // weryfikacja
-        assertArrayEquals(expectedResult, mv.getDateArray(1));
+        assertArrayEquals(expectedResult, mv.getDateArray(0));
     }
 
     @Test
@@ -357,7 +357,7 @@ public class MultiValueTest {
         Integer[] expectedResult = {100, 200};
 
         // weryfikacja
-        assertArrayEquals(expectedResult, mv.getIntegerArray(1));
+        assertArrayEquals(expectedResult, mv.getIntegerArray(0));
     }
 
     @Test
@@ -377,7 +377,7 @@ public class MultiValueTest {
         BigDecimal[] expectedResult = {BigDecimal.ZERO, BigDecimal.ONE};
 
         // weryfikacja
-        assertArrayEquals(expectedResult, mv.getBigDecimalArray(1));
+        assertArrayEquals(expectedResult, mv.getBigDecimalArray(0));
     }
 
     @Test
@@ -533,7 +533,7 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(new Object[]{h1});
 
         // oczekiwane wartosci
-        assertEquals(new Long(123), mv.getLong(1));
+        assertEquals(new Long(123), mv.getLong(0));
     }
 
     @Test

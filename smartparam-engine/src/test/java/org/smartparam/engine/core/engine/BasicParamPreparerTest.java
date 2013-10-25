@@ -56,8 +56,7 @@ public class BasicParamPreparerTest {
         // given
         Level[] levels = new Level[]{
             level().withName("level").withMatcher("matcher").withLevelCreator("creator").withType("type").build(),
-            level().withName("outputLevel").withType("type").build(),
-            level().withName("outputLevel").build()
+            level().withName("outputLevel").withType("type").build()
         };
         Parameter parameter = parameter().withName("param").withInputLevels(1).withArraySeparator('^')
                 .withEntries().withLevels(levels).build();
@@ -69,7 +68,7 @@ public class BasicParamPreparerTest {
 
         // then
         assertThat(preparedParameter).hasName("param").hasInputLevels(1).hasArraySeparator('^').hasIndex()
-                .hasLevelNameEntry("outputLevel", 2);
+                .hasLevelNameEntry("outputLevel", 0);
     }
 
     @Test
