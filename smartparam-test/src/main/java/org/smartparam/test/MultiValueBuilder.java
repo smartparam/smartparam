@@ -69,8 +69,8 @@ public final class MultiValueBuilder {
         if (object instanceof Date) {
             return new DateHolder((Date) object);
         }
-        if (object instanceof Long || object instanceof Integer) {
-            return new IntegerHolder((Long) object);
+        if (object instanceof Number) {
+            return new IntegerHolder(((Number) object).longValue());
         }
         if (object == null) {
             return new StringHolder(null);
