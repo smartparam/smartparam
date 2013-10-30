@@ -16,6 +16,7 @@
 package org.smartparam.engine.util.reflection;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,34 +40,6 @@ public final class ReflectionsHelper {
         } catch (ClassNotFoundException exception) {
             throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception, String.format("Unable to load class %s using %s classloader.", className, classLoader));
         }
-    }
-
-    public static <T> T createObject(Class<T> objectClass) {
-        return createObject(objectClass, new Class<?>[]{}, new Object[]{});
-    }
-
-    public static <T> T createObject(Class<T> objectClass, Class<?>[] constructorArgsClasses, Object[] construtorArgs) {
-        try {
-            return objectClass.getConstructor(constructorArgsClasses).newInstance(construtorArgs);
-        } catch (IllegalAccessException illegalAccessException) {
-            throwSmartParamExceptionForObjectConstruction(illegalAccessException, objectClass, construtorArgs);
-        } catch (IllegalArgumentException illegalArgumentException) {
-            throwSmartParamExceptionForObjectConstruction(illegalArgumentException, objectClass, construtorArgs);
-        } catch (InstantiationException instantiationException) {
-            throwSmartParamExceptionForObjectConstruction(instantiationException, objectClass, construtorArgs);
-        } catch (NoSuchMethodException noSuchMethodException) {
-            throwSmartParamExceptionForObjectConstruction(noSuchMethodException, objectClass, construtorArgs);
-        } catch (SecurityException securityException) {
-            throwSmartParamExceptionForObjectConstruction(securityException, objectClass, construtorArgs);
-        } catch (InvocationTargetException invoicationTargetException) {
-            throwSmartParamExceptionForObjectConstruction(invoicationTargetException, objectClass, construtorArgs);
-        }
-        return null;
-    }
-
-    private static void throwSmartParamExceptionForObjectConstruction(Exception exception, Class<?> objectClass, Object[] construtorArgs) {
-        throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception,
-                String.format("no String[%d] constructor found for class %s", construtorArgs.length, objectClass.getCanonicalName()));
     }
 
     public static Set<Method> findMethodsAnnotatedWith(Class<? extends Annotation> annotationType, Class<?> parentClass) {
@@ -93,15 +66,15 @@ public final class ReflectionsHelper {
         try {
             setter.invoke(setterHostObject, argument);
         } catch (IllegalAccessException illegalAccessException) {
-            throwSmartParamExceptionForSetterInvocation(illegalAccessException, setter, setterHostObject, argument);
+            throwExceptionForSetterInvocation(illegalAccessException, setter, setterHostObject, argument);
         } catch (IllegalArgumentException illeagalArgumentException) {
-            throwSmartParamExceptionForSetterInvocation(illeagalArgumentException, setter, setterHostObject, argument);
+            throwExceptionForSetterInvocation(illeagalArgumentException, setter, setterHostObject, argument);
         } catch (InvocationTargetException illegalTargetException) {
-            throwSmartParamExceptionForSetterInvocation(illegalTargetException, setter, setterHostObject, argument);
+            throwExceptionForSetterInvocation(illegalTargetException, setter, setterHostObject, argument);
         }
     }
 
-    private static void throwSmartParamExceptionForSetterInvocation(Exception exception, Method setter, Object setterHostObject, Object argument) {
+    private static void throwExceptionForSetterInvocation(Exception exception, Method setter, Object setterHostObject, Object argument) {
         throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception,
                 String.format("Could not invoke setter %s on object %s using %s as argument", setter.getName(), setterHostObject.getClass().getSimpleName(), argument.getClass().getSimpleName()));
     }

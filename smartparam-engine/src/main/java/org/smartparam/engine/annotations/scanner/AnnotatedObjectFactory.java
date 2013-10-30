@@ -22,8 +22,9 @@ import java.util.Map.Entry;
 import org.smartparam.engine.annotations.ObjectInstance;
 import org.smartparam.engine.annotations.Sortable;
 import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.core.exception.SmartParamInitializationException;
 import org.smartparam.engine.util.reflection.AnnotationHelper;
-import org.smartparam.engine.util.reflection.ReflectionsHelper;
+import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
 
 /**
  *
@@ -113,7 +114,7 @@ public class AnnotatedObjectFactory {
      */
     @SuppressWarnings("unchecked")
     private <T> T instantiateUsingDefaultConstructor(Class<T> objectClass) {
-        return ReflectionsHelper.createObject(objectClass);
+        return ReflectionsConstructorUtil.createObject(objectClass);
     }
 
     /**
@@ -142,7 +143,7 @@ public class AnnotatedObjectFactory {
             constructorArgs[i] = constructorArg;
         }
 
-        return ReflectionsHelper.createObject(objectClass, constructorArgClasses, constructorArgs);
+        return ReflectionsConstructorUtil.createObject(objectClass, constructorArgClasses, constructorArgs);
     }
 
     private String extractValue(Annotation annotation) {

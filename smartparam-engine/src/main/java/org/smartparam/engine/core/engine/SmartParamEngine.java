@@ -18,11 +18,13 @@ package org.smartparam.engine.core.engine;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.service.FunctionManager;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 import org.smartparam.engine.config.ParamEngineRuntimeConfigBuilder;
+import org.smartparam.engine.core.assembler.ObjectAssembler;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
@@ -50,9 +52,12 @@ public class SmartParamEngine implements ParamEngine {
 
     private FunctionManager functionManager;
 
-    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager, ParamEngineRuntimeConfigBuilder configBuilder) {
+    private ObjectAssembler objectAssembler;
+
+    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager, ObjectAssembler objectAssembler, ParamEngineRuntimeConfigBuilder configBuilder) {
         this.paramPreparer = paramPreparer;
         this.functionManager = functionManager;
+        this.objectAssembler = objectAssembler;
         this.configBuilder = configBuilder;
     }
 
@@ -125,6 +130,30 @@ public class SmartParamEngine implements ParamEngine {
     public ParamValue get(String paramName, Object... inputLevels) {
         ParamContext ctx = new LevelValues(inputLevels);
         return get(paramName, ctx);
+    }
+
+    @Override
+    public <T> T getObject(String paramName, Class<T> outputClass, ParamContext context) {
+        ParamValue paramValue = get(paramName, context);
+        return objectAssembler.assemble(outputClass, paramValue.row());
+    }
+
+    @Override
+    public <T> T getObject(String paramName, Class<T> outputClass, Object... inputLevels) {
+        ParamContext context = new LevelValues(inputLevels);
+        return getObject(paramName, outputClass, context);
+    }
+
+    @Override
+    public <T> Collection<T> getObjects(String paramName, Class<T> outputClass, ParamContext context) {
+        ParamValue paramValue = get(paramName, context);
+        return objectAssembler.assemble(outputClass, paramValue);
+    }
+
+    @Override
+    public <T> Collection<T> getObjects(String paramName, Class<T> outputClass, Object... inputLevels) {
+        ParamContext context = new LevelValues(inputLevels);
+        return getObjects(paramName, outputClass, context);
     }
 
     @Override

@@ -22,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.smartparam.engine.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.function.JavaFunction;
+import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
 import org.smartparam.engine.util.reflection.ReflectionsHelper;
 
 /**
@@ -52,7 +53,7 @@ public class JavaFunctionInvoker extends AbstractJavaFunctionInvoker {
     private Object findInstance(Class<?> objectClass) {
         Object obj = instanceMap.get(objectClass);
         if (obj == null) {
-            obj = ReflectionsHelper.createObject(objectClass);
+            obj = ReflectionsConstructorUtil.createObject(objectClass);
             instanceMap.put(objectClass, obj);
         }
         return obj;

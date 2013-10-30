@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.util.reflection.ReflectionsHelper;
+import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
 import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
 /**
@@ -101,7 +101,7 @@ public class AnnotatedObjectsScanner<T> {
         List<T> objects = new ArrayList<T>(annotatedObjectClasses.size());
 
         for (Class<?> type : annotatedObjectClasses) {
-            objects.add((T) ReflectionsHelper.createObject(type));
+            objects.add((T) ReflectionsConstructorUtil.createObject(type));
         }
 
         return objects;

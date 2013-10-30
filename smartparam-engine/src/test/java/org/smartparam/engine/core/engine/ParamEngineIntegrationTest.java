@@ -16,6 +16,7 @@
 package org.smartparam.engine.core.engine;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.testng.annotations.BeforeMethod;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.*;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
+import org.smartparam.engine.core.assembler.FromParamLevel;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -456,7 +458,7 @@ public class ParamEngineIntegrationTest {
             level().withType("integer").build()
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-            parameterEntry().withLevels("A", "42").build(),};
+            parameterEntry().withLevels("A", "42").build()};
         Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
 
@@ -465,5 +467,56 @@ public class ParamEngineIntegrationTest {
 
         // then
         assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.ILLEGAL_API_USAGE);
+    }
+
+    @Test
+    public void shouldAssembleObjectFromParameterData() {
+        // given
+        Level[] levels = new Level[]{
+            level().withType("string").withName("code").build(),
+            level().withType("integer").withName("count").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("A", "42").build()};
+        Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(0).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        AssembledObject object = engine.getObject("parameter", AssembledObject.class);
+
+        // then
+        assertThat(object).isNotNull();
+    }
+
+    @Test
+    public void shouldAssembleMultipleObjectsFromParameterData() {
+        // given
+        Level[] levels = new Level[]{
+            level().withType("string").withName("code").build(),
+            level().withType("integer").withName("count").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("A", "42").build(),
+            parameterEntry().withLevels("B", "42").build()};
+        Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(0).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        Collection<AssembledObject> objects = engine.getObjects("parameter", AssembledObject.class);
+
+        // then
+        assertThat(objects).hasSize(2);
+    }
+
+    private static class AssembledObject {
+
+        String code;
+
+        int count;
+
+        private AssembledObject(@FromParamLevel("code") String code, @FromParamLevel("count") int count) {
+            this.code = code;
+            this.count = count;
+        }
     }
 }

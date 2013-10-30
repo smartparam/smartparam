@@ -15,12 +15,9 @@
  */
 package org.smartparam.engine.matchers;
 
-import org.smartparam.engine.matchers.EqMatcher;
 import org.testng.annotations.Test;
-import static org.testng.AssertJUnit.*; 
-import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 /**
  * @author Przemek Hertel
@@ -28,47 +25,50 @@ import org.smartparam.engine.types.string.StringType;
 public class EqMatcherTest {
 
     @Test
-    public void testMatches__caseSensitive() {
+    public void shouldMatchValueWithPatternWhenEqual() {
+        // given
+        EqMatcher matcher = new EqMatcher(true);
 
-        // obiekty pomocnicze
-        StringType strType = new StringType();
-        IntegerType intType = new IntegerType();
+        // when
+        boolean equals = matcher.matches("ABC", "ABC", new StringType());
 
-        // utworzenie testowanego obiektu
-        Matcher matcher = new EqMatcher();
-
-        // konfiguracja testu (key = string, value = oczekiwany wynik matchowania)
-        String[] pattern = {"ABC", "ABC", "",   ""};        // wzorzec wartosci levelu
-        String[] value   = {"ABC", "abc", "",   null};      // wartosc dla danego levelu
-        boolean[] result = {true,  false, true, false};     // oczekiwany wynik matchowania
-
-        // sprawdzenie wynikow testu
-        for(int i=0; i<pattern.length; ++i) {
-            assertEquals(result[i], matcher.matches(value[i], pattern[i], strType));
-            assertEquals(result[i], matcher.matches(value[i], pattern[i], intType));
-        }
+        // then
+        assertThat(equals).isTrue();
     }
 
     @Test
-    public void testMatches__ignoreCase() {
+    public void shouldNotMatchValueWithPatternWhenCaseDoesNotMatch() {
+        // given
+        EqMatcher matcher = new EqMatcher(true);
 
-        // obiekty pomocnicze
-        StringType strType = new StringType();
-        IntegerType intType = new IntegerType();
+        // when
+        boolean equals = matcher.matches("abc", "ABC", new StringType());
 
-        // utworzenie testowanego obiektu
-        Matcher matcher = new EqMatcher(false);
-
-        // konfiguracja testu (key = string, value = oczekiwany wynik matchowania)
-        String[] pattern = {"ABC", "ABC", "Aa", "",   ""};        // wzorzec wartosci levelu
-        String[] value   = {"ABC", "abc", "aA", "",   null};      // wartosc dla danego levelu
-        boolean[] result = {true,  true,  true, true, false};     // oczekiwany wynik matchowania
-
-        // sprawdzenie wynikow testu
-        for(int i=0; i<pattern.length; ++i) {
-            assertEquals(result[i], matcher.matches(value[i], pattern[i], strType));
-            assertEquals(result[i], matcher.matches(value[i], pattern[i], intType));
-        }
+        // then
+        assertThat(equals).isFalse();
     }
 
+    @Test
+    public void shouldMatchValueWhenCaseDoesNotMatchButIsCaseInsensitive() {
+        // given
+        EqMatcher matcher = new EqMatcher(false);
+
+        // when
+        boolean equals = matcher.matches("abc", "ABC", new StringType());
+
+        // then
+        assertThat(equals).isTrue();
+    }
+
+    @Test
+    public void shouldNotMatchValueWhenValueIsNull() {
+        // given
+        EqMatcher matcher = new EqMatcher(false);
+
+        // when
+        boolean equals = matcher.matches(null, "ABC", new StringType());
+
+        // then
+        assertThat(equals).isFalse();
+    }
 }
