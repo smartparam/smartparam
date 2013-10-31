@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 import org.smartparam.engine.annotations.ObjectInstance;
 import org.smartparam.engine.annotations.Sortable;
 import org.smartparam.engine.bean.RepositoryObjectKey;
-import org.smartparam.engine.core.exception.SmartParamInitializationException;
 import org.smartparam.engine.util.reflection.AnnotationHelper;
 import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
 
@@ -120,7 +119,7 @@ public class AnnotatedObjectFactory {
     /**
      * Create object instance using instructions from object descriptor.
      *
-     * Will throw {@link SmartParamInitializationException} if there is no
+     * Will throw {@link org.smartparam.engine.core.exception.SmartParamInitializationException} if there is no
      * constructor matching descriptor.
      *
      * @see SmartParamObjectInstance

@@ -23,7 +23,6 @@ import org.smartparam.engine.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.model.function.Function;
 import org.smartparam.engine.model.function.JavaFunction;
 import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
-import org.smartparam.engine.util.reflection.ReflectionsHelper;
 
 /**
  *
