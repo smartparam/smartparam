@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Set;
 import org.fest.assertions.api.AbstractAssert;
 import org.polyjdbc.core.query.QueryRunner;
-import org.polyjdbc.core.query.TransactionalQueryRunner;
-import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.test.assertions.Assertions;
@@ -43,16 +41,16 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
 
     private QueryRunner queryRunner;
 
-    private DatabaseAssert(TransactionManager transactionManager, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
+    private DatabaseAssert(QueryRunner queryRunner, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
         super(new Object(), DatabaseAssert.class);
         this.parameterDAO = parameterDAO;
         this.levelDAO = levelDAO;
         this.parameterEntryDAO = parameterEntryDAO;
-        this.queryRunner = new TransactionalQueryRunner(transactionManager.openTransaction());
+        this.queryRunner = queryRunner;
     }
 
-    public static DatabaseAssert assertThat(TransactionManager transactionManager, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
-        return new DatabaseAssert(transactionManager, parameterDAO, levelDAO, parameterEntryDAO);
+    public static DatabaseAssert assertThat(QueryRunner queryRunner, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
+        return new DatabaseAssert(queryRunner, parameterDAO, levelDAO, parameterEntryDAO);
     }
 
     public void close() {

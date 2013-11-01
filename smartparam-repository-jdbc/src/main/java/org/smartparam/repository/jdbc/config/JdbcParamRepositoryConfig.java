@@ -17,12 +17,13 @@ package org.smartparam.repository.jdbc.config;
 
 import java.util.List;
 import javax.sql.DataSource;
+import org.polyjdbc.core.query.QueryRunnerFactory;
 import org.polyjdbc.core.query.TransactionRunner;
 import org.polyjdbc.core.query.SimpleQueryRunner;
+import org.polyjdbc.core.schema.SchemaManagerFactory;
 import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoaderFactory;
-import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.dao.SimpleJdbcRepository;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
@@ -48,6 +49,8 @@ public class JdbcParamRepositoryConfig extends ComponentConfig {
     protected void injectDefaults(List<Object> components) {
         components.add(SimpleJdbcRepository.class);
         components.add(DataSourceTransactionManager.class);
+        components.add(QueryRunnerFactory.class);
+        components.add(SchemaManagerFactory.class);
         components.add(ParameterDAO.class);
         components.add(LevelDAO.class);
         components.add(ParameterEntryDAO.class);

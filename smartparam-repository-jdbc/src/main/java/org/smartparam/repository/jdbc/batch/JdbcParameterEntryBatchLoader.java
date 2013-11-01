@@ -18,8 +18,6 @@ package org.smartparam.repository.jdbc.batch;
 import java.util.Collection;
 import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
-import org.polyjdbc.core.query.TransactionalQueryRunner;
-import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
@@ -31,20 +29,20 @@ import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
  */
 public class JdbcParameterEntryBatchLoader implements ParameterEntryBatchLoader {
 
-    private QueryRunner queryRunner;
+    private final QueryRunner queryRunner;
 
-    private ParameterEntryDAO parameterEntryDAO;
+    private final ParameterEntryDAO parameterEntryDAO;
 
-    private long parameterId;
+    private final long parameterId;
 
     private long lastEntryId;
 
     private boolean hasMore = true;
 
-    public JdbcParameterEntryBatchLoader(TransactionManager transactionManager, ParameterEntryDAO parameterEntryDAO, long parameterId) {
+    public JdbcParameterEntryBatchLoader(QueryRunner queryRunner, ParameterEntryDAO parameterEntryDAO, long parameterId) {
         this.parameterEntryDAO = parameterEntryDAO;
         this.parameterId = parameterId;
-        this.queryRunner = new TransactionalQueryRunner(transactionManager.openTransaction());
+        this.queryRunner = queryRunner;
     }
 
     @Override

@@ -15,8 +15,7 @@
  */
 package org.smartparam.repository.jdbc.batch;
 
-import org.polyjdbc.core.transaction.TransactionManager;
-import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
+import org.polyjdbc.core.query.QueryRunnerFactory;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 
 /**
@@ -25,16 +24,16 @@ import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
  */
 public class JdbcParameterEntryBatchLoaderFactory {
 
-    private TransactionManager transactionManager;
+    private final QueryRunnerFactory queryRunnerFactory;
 
-    private ParameterEntryDAO parameterEntryDAO;
+    private final ParameterEntryDAO parameterEntryDAO;
 
-    public JdbcParameterEntryBatchLoaderFactory(TransactionManager transactionManager, ParameterEntryDAO parameterEntryDAO) {
-        this.transactionManager = transactionManager;
+    public JdbcParameterEntryBatchLoaderFactory(QueryRunnerFactory queryRunnerFactory, ParameterEntryDAO parameterEntryDAO) {
+        this.queryRunnerFactory = queryRunnerFactory;
         this.parameterEntryDAO = parameterEntryDAO;
     }
 
     public JdbcParameterEntryBatchLoader create(long parameterId) {
-        return new JdbcParameterEntryBatchLoader(transactionManager, parameterEntryDAO, parameterId);
+        return new JdbcParameterEntryBatchLoader(queryRunnerFactory.create(), parameterEntryDAO, parameterId);
     }
 }

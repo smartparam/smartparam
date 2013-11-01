@@ -16,14 +16,12 @@
 package org.smartparam.repository.jdbc.schema;
 
 import org.polyjdbc.core.schema.SchemaInspector;
-import org.polyjdbc.core.schema.SchemaInspectorImpl;
 import org.polyjdbc.core.schema.SchemaManager;
-import org.polyjdbc.core.schema.SchemaManagerImpl;
+import org.polyjdbc.core.schema.SchemaManagerFactory;
 import org.polyjdbc.core.schema.model.RelationBuilder;
 import org.polyjdbc.core.schema.model.Schema;
-import org.polyjdbc.core.transaction.Transaction;
-import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
+import org.polyjdbc.core.util.TheCloser;
 import static org.smartparam.repository.jdbc.schema.SchemaNamePolicy.*;
 
 /**
@@ -34,29 +32,29 @@ public class DefaultSchemaCreator implements SchemaCreator {
 
     private DefaultJdbcConfig configuration;
 
-    private TransactionManager transactionManager;
+    private SchemaManagerFactory schemaManagerFactory;
 
-    public DefaultSchemaCreator(DefaultJdbcConfig configuration, TransactionManager transactionManager) {
+    public DefaultSchemaCreator(DefaultJdbcConfig configuration, SchemaManagerFactory schemaManagerFactory) {
         this.configuration = configuration;
-        this.transactionManager = transactionManager;
+        this.schemaManagerFactory = schemaManagerFactory;
     }
 
     @Override
     public void createSchema() {
-        Transaction transaction = transactionManager.openTransaction();
+        SchemaManager schemaManager = null;
+        SchemaInspector schemaInspector = null;
         try {
-            SchemaManager manager = new SchemaManagerImpl(transaction);
-            SchemaInspector inspector = new SchemaInspectorImpl(transaction);
+            schemaManager = schemaManagerFactory.createManager();
+            schemaInspector = schemaManagerFactory.createInspector();
 
             Schema schema = new Schema(configuration.getDialect());
-            createParameterRelation(schema, inspector);
-            createLevelRelation(schema, inspector);
-            createParameterEntryRelation(schema, inspector);
+            createParameterRelation(schema, schemaInspector);
+            createLevelRelation(schema, schemaInspector);
+            createParameterEntryRelation(schema, schemaInspector);
 
-            manager.create(schema);
+            schemaManager.create(schema);
         } finally {
-            transaction.commit();
-            transaction.closeWithArtifacts();
+            TheCloser.close(schemaManager, schemaInspector);
         }
     }
 
@@ -116,8 +114,10 @@ public class DefaultSchemaCreator implements SchemaCreator {
 
     @Override
     public void dropSchema() {
-        SchemaManager manager = new SchemaManagerImpl(transactionManager.openTransaction());
+        SchemaManager schemaManager = null;
         try {
+            schemaManager = schemaManagerFactory.createManager();
+
             Schema schema = new Schema(configuration.getDialect());
             schema.addRelation(configuration.getParameterTable()).build();
             schema.addSequence(configuration.getParameterSequence()).build();
@@ -128,9 +128,9 @@ public class DefaultSchemaCreator implements SchemaCreator {
             schema.addRelation(configuration.getParameterEntryTable()).build();
             schema.addSequence(configuration.getParameterEntrySequence()).build();
 
-            manager.drop(schema);
+            schemaManager.drop(schema);
         } finally {
-            manager.close();
+            TheCloser.close(schemaManager);
         }
     }
 }

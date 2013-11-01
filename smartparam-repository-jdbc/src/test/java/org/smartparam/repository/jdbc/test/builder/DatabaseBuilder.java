@@ -18,15 +18,12 @@ package org.smartparam.repository.jdbc.test.builder;
 import java.util.ArrayList;
 import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
-import org.polyjdbc.core.query.TransactionalQueryRunner;
-import org.polyjdbc.core.transaction.TransactionManager;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
-import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterEntryTestBuilder.jdbcParameterEntry;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterTestBuilder.jdbcParameter;
 
@@ -44,15 +41,15 @@ public class DatabaseBuilder {
 
     private QueryRunner queryRunner;
 
-    private DatabaseBuilder(ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO, TransactionManager tranactionManager) {
+    private DatabaseBuilder(ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO, QueryRunner queryRunner) {
         this.parameterDAO = parameterDAO;
         this.levelDAO = levelDAO;
         this.parameterEntryDAO = parameterEntryDAO;
-        this.queryRunner = new TransactionalQueryRunner(tranactionManager.openTransaction());
+        this.queryRunner = queryRunner;
     }
 
-    public static DatabaseBuilder database(ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO, TransactionManager tranactionManager) {
-        return new DatabaseBuilder(parameterDAO, levelDAO, parameterEntryDAO, tranactionManager);
+    public static DatabaseBuilder database(ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO, QueryRunner queryRunner) {
+        return new DatabaseBuilder(parameterDAO, levelDAO, parameterEntryDAO, queryRunner);
     }
 
     public void build() {

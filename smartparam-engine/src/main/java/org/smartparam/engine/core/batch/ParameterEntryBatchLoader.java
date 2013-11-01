@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.batch;
 
+import java.io.Closeable;
 import java.util.Collection;
 import org.smartparam.engine.model.ParameterEntry;
 
@@ -22,7 +23,7 @@ import org.smartparam.engine.model.ParameterEntry;
  *
  * @author Adam Dubiel
  */
-public interface ParameterEntryBatchLoader {
+public interface ParameterEntryBatchLoader extends Closeable {
 
     boolean hasMore();
 

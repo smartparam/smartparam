@@ -15,6 +15,7 @@
  */
 package org.smartparam.repository.jdbc.integration;
 
+import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.apache.commons.lang.ArrayUtils;
 import org.picocontainer.PicoContainer;
@@ -22,11 +23,14 @@ import org.polyjdbc.core.dialect.Dialect;
 import org.polyjdbc.core.dialect.DialectRegistry;
 import org.polyjdbc.core.integration.DataSourceFactory;
 import org.polyjdbc.core.integration.TheCleaner;
+import org.polyjdbc.core.key.KeyGeneratorRegistry;
 import org.polyjdbc.core.query.QueryRunner;
-import org.polyjdbc.core.query.TransactionalQueryRunner;
+import org.polyjdbc.core.query.QueryRunnerFactory;
+import org.polyjdbc.core.schema.SchemaManagerFactory;
 import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.polyjdbc.core.transaction.Transaction;
 import org.polyjdbc.core.transaction.TransactionManager;
+import org.polyjdbc.core.util.TheCloser;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
@@ -50,7 +54,11 @@ import static org.smartparam.repository.jdbc.config.JdbcConfigBuilder.jdbcConfig
  */
 public class DatabaseTest {
 
+    private Dialect dialect;
+
     private TransactionManager transactionManager;
+
+    private QueryRunnerFactory queryRunnerFactory;
 
     private SchemaCreator schemaCreator;
 
@@ -62,29 +70,37 @@ public class DatabaseTest {
         return container.getComponent(objectClass);
     }
 
-    protected Transaction transaction() {
-        return transactionManager.openTransaction();
-    }
-
-    protected TransactionManager transactionManager() {
-        return transactionManager;
+    protected QueryRunnerFactory queryRunnerFactory() {
+        return queryRunnerFactory;
     }
 
     protected QueryRunner queryRunner() {
-        return new TransactionalQueryRunner(transaction());
+        return queryRunnerFactory.create();
+    }
+
+    protected void databaseInterface() {
+        Transaction transaction = null;
+        try {
+            transaction = transactionManager.openTransaction();
+            org.h2.tools.Server.startWebServer(transaction.getConnection());
+        } catch (SQLException exception) {
+            throw new IllegalStateException(exception);
+        } finally {
+            TheCloser.close(transaction);
+        }
     }
 
     protected DatabaseBuilder database() {
-        return DatabaseBuilder.database(get(ParameterDAO.class), get(LevelDAO.class), get(ParameterEntryDAO.class), transactionManager);
+        return DatabaseBuilder.database(get(ParameterDAO.class), get(LevelDAO.class), get(ParameterEntryDAO.class), queryRunner());
     }
 
     protected DatabaseAssert assertDatabase() {
-        return DatabaseAssert.assertThat(transactionManager, get(ParameterDAO.class), get(LevelDAO.class), get(ParameterEntryDAO.class));
+        return DatabaseAssert.assertThat(queryRunner(), get(ParameterDAO.class), get(LevelDAO.class), get(ParameterEntryDAO.class));
     }
 
     @BeforeClass(alwaysRun = true)
     public void setUpDatabase() throws Exception {
-        Dialect dialect = DialectRegistry.dialect("H2");
+        dialect = DialectRegistry.dialect("H2");
 
         JdbcConfigBuilder configurationBuilder = jdbcConfig().withDialect(dialect)
                 .withParameterTableName("parameter").withLevelTableName("level")
@@ -93,15 +109,17 @@ public class DatabaseTest {
         DefaultJdbcConfig configuration = configurationBuilder.build();
 
         DataSource dataSource = DataSourceFactory.create(dialect, "jdbc:h2:mem:test", "smartparam", "smartparam");
-        this.transactionManager = new DataSourceTransactionManager(dialect, dataSource);
+        this.transactionManager = new DataSourceTransactionManager(dataSource);
+        this.queryRunnerFactory = new QueryRunnerFactory(dialect, transactionManager);
 
-        this.schemaCreator = new DefaultSchemaCreator(configuration, transactionManager);
+        SchemaManagerFactory schemaManagerFactory = new SchemaManagerFactory(transactionManager);
+        this.schemaCreator = new DefaultSchemaCreator(configuration, schemaManagerFactory);
         schemaCreator.createSchema();
 
         JdbcParamRepositoryFactory factory = new JdbcParamRepositoryFactory();
         this.container = factory.createContainer(new JdbcParamRepositoryConfig(dataSource, configuration));
 
-        this.cleaner = new TheCleaner(transactionManager);
+        this.cleaner = new TheCleaner(queryRunnerFactory);
     }
 
     protected void customizeConfiguraion(JdbcConfigBuilder builder) {
@@ -118,6 +136,7 @@ public class DatabaseTest {
     @AfterClass(alwaysRun = true)
     public void tearDownDatabase() throws Exception {
         schemaCreator.dropSchema();
+        KeyGeneratorRegistry.keyGenerator(dialect).reset();
         this.container = null;
     }
 }
