@@ -30,9 +30,9 @@ import static org.smartparam.repository.jdbc.schema.SchemaNamePolicy.*;
  */
 public class DefaultSchemaCreator implements SchemaCreator {
 
-    private DefaultJdbcConfig configuration;
+    private final DefaultJdbcConfig configuration;
 
-    private SchemaManagerFactory schemaManagerFactory;
+    private final SchemaManagerFactory schemaManagerFactory;
 
     public DefaultSchemaCreator(DefaultJdbcConfig configuration, SchemaManagerFactory schemaManagerFactory) {
         this.configuration = configuration;
