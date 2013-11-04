@@ -24,7 +24,9 @@ import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.SimpleQueryRunner;
+import org.polyjdbc.core.query.UpdateQuery;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.metadata.ParameterMetadata;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
@@ -90,5 +92,16 @@ public class ParameterDAO {
         SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterTable()).where("name = :name")
                 .withArgument("name", parameterName);
         return simpleQueryRunner.queryExistence(query);
+    }
+
+    public void update(QueryRunner queryRunner, String parameterName, ParameterMetadata parameter) {
+        UpdateQuery query = QueryFactory.update(configuration.getParameterTable()).where("name = :name")
+                .withArgument("name", parameterName)
+                .set("name", parameter.getName())
+                .set("input_levels", parameter.getInputLevels())
+                .set("cacheable", parameter.isCacheable())
+                .set("nullable", parameter.isNullable())
+                .set("array_separator", parameter.getArraySeparator());
+        queryRunner.update(query);
     }
 }

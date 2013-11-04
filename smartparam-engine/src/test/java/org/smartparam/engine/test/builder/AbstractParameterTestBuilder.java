@@ -22,7 +22,6 @@ import java.util.Set;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableParameter;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 
 /**
  *
@@ -58,8 +57,13 @@ public abstract class AbstractParameterTestBuilder<T extends EditableParameter, 
         parameter.setNullable(nullable);
         parameter.setInputLevels(inputLevels);
         parameter.setArraySeparator(separator);
-        parameter.setLevels(levels);
-        parameter.setEntries(entries);
+        if (levels != null) {
+            parameter.setLevels(levels);
+        }
+
+        if (entries != null) {
+            parameter.setEntries(entries);
+        }
 
         return parameter;
     }

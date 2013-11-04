@@ -28,10 +28,10 @@ import org.smartparam.engine.config.InitializableComponent;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
-import org.smartparam.engine.core.repository.ParamRepository;
-import org.smartparam.engine.core.repository.WritableParamRepository;
+import org.smartparam.engine.core.repository.EditableParamRepository;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.metadata.ParameterMetadata;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -41,7 +41,7 @@ import org.smartparam.repository.jdbc.schema.SchemaCreator;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParamRepository implements ParamRepository, WritableParamRepository, InitializableComponent {
+public class JdbcParamRepository implements EditableParamRepository, InitializableComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
 
@@ -172,6 +172,15 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
             @Override
             public void performVoid(QueryRunner queryRunner) {
                 dao.deleteParameter(queryRunner, parameterName);
+            }
+        });
+    }
+
+    public void updateParameter(final String parameterName, final ParameterMetadata parameterMetadata) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.updateParameter(queryRunner, parameterName, parameterMetadata);
             }
         });
     }

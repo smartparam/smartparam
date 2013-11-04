@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.exception;
+package org.smartparam.engine.model.metadata;
+
+import java.util.Arrays;
 
 /**
  *
  * @author Adam Dubiel
  */
-@SuppressWarnings("serial")
-public class SmartParamJdbcException extends RuntimeException {
+public class ParameterEntryMetadata {
 
-    public SmartParamJdbcException(String message) {
-        super(message);
+    private final String[] levelValues;
+
+    public ParameterEntryMetadata(String[] levelValues) {
+        this.levelValues = levelValues;
     }
 
-    public SmartParamJdbcException(String message, Throwable cause) {
-        super(message, cause);
+    public String[] getLevelValues() {
+        return Arrays.copyOf(levelValues, levelValues.length);
     }
+
 }

@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.dao;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import org.polyjdbc.core.query.mapper.ObjectMapper;
-import org.smartparam.engine.model.Level;
+package org.smartparam.repository.jdbc.exception;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class LevelMapper implements ObjectMapper<Level> {
+@SuppressWarnings("serial")
+public class JdbcRepositoryException extends RuntimeException {
 
-    private final JdbcLevelMapper jdbcMapper = new JdbcLevelMapper();
-
-    @Override
-    public Level createObject(ResultSet resultSet) throws SQLException {
-        return jdbcMapper.createObject(resultSet);
+    public JdbcRepositoryException(String message) {
+        super(message);
     }
 
+    public JdbcRepositoryException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

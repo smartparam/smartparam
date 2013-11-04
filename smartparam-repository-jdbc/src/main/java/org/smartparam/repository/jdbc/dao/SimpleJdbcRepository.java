@@ -23,6 +23,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.metadata.ParameterMetadata;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
@@ -32,13 +33,13 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public class SimpleJdbcRepository implements JdbcRepository {
 
-    private JdbcConfig configuration;
+    private final JdbcConfig configuration;
 
-    private ParameterDAO parameterDAO;
+    private final ParameterDAO parameterDAO;
 
-    private LevelDAO levelDAO;
+    private final LevelDAO levelDAO;
 
-    private ParameterEntryDAO parameterEntryDAO;
+    private final ParameterEntryDAO parameterEntryDAO;
 
     public SimpleJdbcRepository(JdbcConfig configuration, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
         this.configuration = configuration;
@@ -104,5 +105,10 @@ public class SimpleJdbcRepository implements JdbcRepository {
         parameterEntryDAO.deleteParameterEntries(runner, parameterName);
         levelDAO.deleteParameterLevels(runner, parameterName);
         parameterDAO.delete(runner, parameterName);
+    }
+
+    @Override
+    public void updateParameter(QueryRunner runner, String parameterName, ParameterMetadata parameterMetadata) {
+        parameterDAO.update(runner, parameterName, parameterMetadata);
     }
 }

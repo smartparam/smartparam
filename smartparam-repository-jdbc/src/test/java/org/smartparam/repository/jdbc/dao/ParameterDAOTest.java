@@ -18,6 +18,7 @@ package org.smartparam.repository.jdbc.dao;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.metadata.ParameterMetadata;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.testng.annotations.Test;
@@ -99,5 +100,21 @@ public class ParameterDAOTest extends DatabaseTest {
 
         // then
         assertThat(exists).isFalse();
+    }
+
+    @Test
+    public void shouldUpdateContentsOfParameter() {
+        // given
+        database().withParameter("test").build();
+
+        ParameterDAO parameterDAO = get(ParameterDAO.class);
+        QueryRunner runner = queryRunner();
+
+        // when
+        parameterDAO.update(runner, "test", new ParameterMetadata("updatedTest", 0, true, true, ';'));
+        runner.close();
+
+        // then
+        assertDatabase().hasNoParameter("test").hasParameter("updatedTest");
     }
 }
