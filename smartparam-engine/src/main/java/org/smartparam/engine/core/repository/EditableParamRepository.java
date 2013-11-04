@@ -15,8 +15,12 @@
  */
 package org.smartparam.engine.core.repository;
 
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import java.util.Collection;
+import java.util.List;
+import org.smartparam.engine.model.EntityKey;
+import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  * Warning! This interface will be undergoing big changes in near future
@@ -26,14 +30,24 @@ import org.smartparam.engine.model.Parameter;
  */
 public interface EditableParamRepository extends ParamRepository {
 
-    void save(Parameter parameter);
+    void updateParameter(String parameterName, Parameter parameter);
 
-    void save(ParameterBatchLoader batchLoader);
+    Level getLevel(EntityKey entityKey);
 
-    void delete(String parameterName);
+    EntityKey addLevel(Level level);
 
-    void reload(Parameter parameter);
+    void updateLevel(EntityKey levelKey, Level level);
 
-    void reload(ParameterBatchLoader batchLoader);
+    void deleteLevel(EntityKey levelKey);
+
+    EntityKey addEntry(ParameterEntry entry);
+
+    List<EntityKey> addEntries(List<ParameterEntry> entries);
+
+    void updateEntry(EntityKey entryKey, ParameterEntry entry);
+
+    void deleteEntry(EntityKey entryKey);
+
+    void deleteEntries(Collection<EntityKey> entryKeys);
 
 }
