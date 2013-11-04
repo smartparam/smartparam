@@ -17,9 +17,12 @@ package org.smartparam.engine.test.builder;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableParameter;
+import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 
 /**
  *
@@ -27,50 +30,72 @@ import org.smartparam.engine.model.editable.EditableParameter;
  */
 public abstract class AbstractParameterTestBuilder<T extends EditableParameter, B extends AbstractParameterTestBuilder<?, ?>> {
 
-    protected T parameter;
+    private String name;
 
-    protected AbstractParameterTestBuilder(T parameter) {
-        this.parameter = parameter;
-    }
+    private boolean cacheable = true;
 
-    public T build() {
-        return parameter;
+    private boolean nullable;
+
+    private int inputLevels;
+
+    private char separator = ';';
+
+    private List<Level> levels;
+
+    private Set<ParameterEntry> entries;
+
+    protected AbstractParameterTestBuilder() {
     }
 
     protected abstract B self();
 
-    public B withName(String name) {
+    protected abstract T buildParameter();
+
+    public T build() {
+        T parameter = buildParameter();
         parameter.setName(name);
+        parameter.setCacheable(cacheable);
+        parameter.setNullable(nullable);
+        parameter.setInputLevels(inputLevels);
+        parameter.setArraySeparator(separator);
+        parameter.setLevels(levels);
+        parameter.setEntries(entries);
+
+        return parameter;
+    }
+
+    public B withName(String name) {
+        this.name = name;
         return self();
     }
 
     public B noncacheable() {
-        parameter.setCacheable(false);
+        this.cacheable = false;
         return self();
     }
 
     public B nullable() {
-        parameter.setNullable(true);
+        this.nullable = true;
         return self();
     }
 
     public B withInputLevels(int inputLevels) {
-        parameter.setInputLevels(inputLevels);
+        this.inputLevels = inputLevels;
         return self();
     }
 
     public B withArraySeparator(char separator) {
-        parameter.setArraySeparator(separator);
+        this.separator = separator;
         return self();
     }
 
     public B withLevels(Level... levels) {
-        parameter.setLevels(Arrays.asList(levels));
+        this.levels = Arrays.asList(levels);
         return self();
     }
 
     public B withEntries(ParameterEntry... entries) {
-        parameter.setEntries(new HashSet<ParameterEntry>(Arrays.asList(entries)));
+        this.entries = new HashSet<ParameterEntry>(Arrays.asList(entries));
         return self();
     }
 }

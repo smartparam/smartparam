@@ -24,12 +24,16 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public class JdbcParameterTestBuilder extends AbstractParameterTestBuilder<JdbcParameter, JdbcParameterTestBuilder> {
 
-    private JdbcParameterTestBuilder() {
-        super(new JdbcParameter());
-    }
+    private long id;
 
     public static JdbcParameterTestBuilder jdbcParameter() {
         return new JdbcParameterTestBuilder();
+    }
+
+    @Override
+    protected JdbcParameter buildParameter() {
+        JdbcParameter parameter = new JdbcParameter(id, null, 0);
+        return parameter;
     }
 
     @Override
@@ -38,7 +42,7 @@ public class JdbcParameterTestBuilder extends AbstractParameterTestBuilder<JdbcP
     }
 
     public JdbcParameterTestBuilder withId(long id) {
-        parameter.setId(id);
+        this.id = id;
         return this;
     }
 }

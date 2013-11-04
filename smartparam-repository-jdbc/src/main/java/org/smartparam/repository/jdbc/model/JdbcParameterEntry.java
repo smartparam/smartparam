@@ -16,19 +16,30 @@
 package org.smartparam.repository.jdbc.model;
 
 import java.util.Arrays;
+import org.smartparam.engine.model.IdentifiableEntity;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameterEntry implements EditableParameterEntry {
+public class JdbcParameterEntry implements EditableParameterEntry, IdentifiableEntity {
 
-    private long id;
+    private final JdbcEntityKey key;
 
-    private long parameterId;
+    private final long parameterId;
 
     private String[] levels;
+
+    public JdbcParameterEntry(long id, long parameterId, String[] levels) {
+        this.key = new JdbcEntityKey(id);
+        this.parameterId = parameterId;
+        this.levels = levels;
+    }
+
+    public JdbcEntityKey getEntityKey() {
+        return key;
+    }
 
     @Override
     public String[] getLevels() {
@@ -36,19 +47,11 @@ public class JdbcParameterEntry implements EditableParameterEntry {
     }
 
     public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        return key.getId();
     }
 
     public long getParameterId() {
         return parameterId;
-    }
-
-    public void setParameterId(long parameterId) {
-        this.parameterId = parameterId;
     }
 
     @Override
@@ -59,7 +62,7 @@ public class JdbcParameterEntry implements EditableParameterEntry {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(100);
-        sb.append("JdbcParameterEntry[#").append(id);
+        sb.append("JdbcParameterEntry[#").append(getId());
         sb.append(' ');
         sb.append(Arrays.toString(levels));
         sb.append(']');

@@ -24,13 +24,19 @@ import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
  */
 public class JdbcParameterEntryTestBuilder extends AbstractParameterEntryTestBuilder<JdbcParameterEntry, JdbcParameterEntryTestBuilder> {
 
-    private JdbcParameterEntryTestBuilder() {
-        super(new JdbcParameterEntry());
-    }
+    private long id;
+
+    private long parameterId;
 
     public static JdbcParameterEntryTestBuilder jdbcParameterEntry() {
         return new JdbcParameterEntryTestBuilder();
     }
+
+    @Override
+    protected JdbcParameterEntry buildEntry() {
+        return new JdbcParameterEntry(id, parameterId, null);
+    }
+
 
     @Override
     protected JdbcParameterEntryTestBuilder self() {
@@ -38,7 +44,7 @@ public class JdbcParameterEntryTestBuilder extends AbstractParameterEntryTestBui
     }
 
     public JdbcParameterEntryTestBuilder withId(long id) {
-        entry.setId(id);
+        this.id = id;
         return this;
     }
 }

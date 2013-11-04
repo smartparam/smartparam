@@ -23,12 +23,13 @@ import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
  */
 public class ParameterEntryTestBuilder extends AbstractParameterEntryTestBuilder<SimpleEditableParameterEntry, ParameterEntryTestBuilder> {
 
-    private ParameterEntryTestBuilder() {
-        super(new SimpleEditableParameterEntry());
-    }
-
     public static ParameterEntryTestBuilder parameterEntry() {
         return new ParameterEntryTestBuilder();
+    }
+
+    @Override
+    protected SimpleEditableParameterEntry buildEntry() {
+        return new SimpleEditableParameterEntry();
     }
 
     @Override

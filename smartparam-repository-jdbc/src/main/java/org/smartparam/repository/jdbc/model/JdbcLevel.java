@@ -15,17 +15,19 @@
  */
 package org.smartparam.repository.jdbc.model;
 
+import org.smartparam.engine.model.EntityKey;
+import org.smartparam.engine.model.IdentifiableEntity;
 import org.smartparam.engine.model.editable.EditableLevel;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcLevel implements EditableLevel {
+public class JdbcLevel implements EditableLevel, IdentifiableEntity {
 
-    private long id;
+    private final JdbcEntityKey key;
 
-    private long parameterId;
+    private final long parameterId;
 
     private int orderNo;
 
@@ -39,19 +41,22 @@ public class JdbcLevel implements EditableLevel {
 
     private boolean array;
 
-    public JdbcLevel() {
+    public JdbcLevel(long id, long parameterId) {
+        this.key = new JdbcEntityKey(id);
+        this.parameterId = parameterId;
+    }
+
+    @Override
+    public JdbcEntityKey getEntityKey() {
+        return key;
+    }
+
+    public long getId() {
+        return key.getId();
     }
 
     public int getOrderNo() {
         return orderNo;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     @Override
@@ -112,15 +117,11 @@ public class JdbcLevel implements EditableLevel {
         return parameterId;
     }
 
-    public void setParameterId(long parameterId) {
-        this.parameterId = parameterId;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("JdbcParameterLevel[");
-        sb.append("id=").append(id);
+        sb.append("id=").append(getId());
         sb.append(", orderNo=").append(orderNo);
         sb.append(", type=").append(type);
 

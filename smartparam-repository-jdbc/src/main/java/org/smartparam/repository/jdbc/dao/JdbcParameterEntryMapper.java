@@ -30,7 +30,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
  */
 public class JdbcParameterEntryMapper implements ObjectMapper<JdbcParameterEntry> {
 
-    private DefaultJdbcConfig configuration;
+    private final DefaultJdbcConfig configuration;
 
     public JdbcParameterEntryMapper(DefaultJdbcConfig configuration) {
         this.configuration = configuration;
@@ -38,10 +38,6 @@ public class JdbcParameterEntryMapper implements ObjectMapper<JdbcParameterEntry
 
     @Override
     public JdbcParameterEntry createObject(ResultSet resultSet) throws SQLException {
-        JdbcParameterEntry entry = new JdbcParameterEntry();
-        entry.setId(resultSet.getInt("id"));
-        entry.setParameterId(resultSet.getLong("fk_parameter"));
-
         List<String> levels = new ArrayList<String>();
         String currentLevelValue;
         boolean doneBeforeLimit = false;
@@ -61,7 +57,9 @@ public class JdbcParameterEntryMapper implements ObjectMapper<JdbcParameterEntry
             }
         }
 
-        entry.setLevels(levels.toArray(new String[levels.size()]));
+        String[] levelValues = levels.toArray(new String[levels.size()]);
+        JdbcParameterEntry entry = new JdbcParameterEntry(resultSet.getLong("id"), resultSet.getLong("fk_parameter"), levelValues);
+
         return entry;
     }
 }

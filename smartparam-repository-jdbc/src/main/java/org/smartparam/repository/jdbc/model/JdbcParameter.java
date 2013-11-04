@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.smartparam.engine.model.IdentifiableEntity;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableParameter;
@@ -27,26 +28,20 @@ import org.smartparam.engine.model.editable.EditableParameter;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameter implements EditableParameter {
+public class JdbcParameter implements EditableParameter, IdentifiableEntity {
 
     /**
      * Default value for {@link #arraySeparator} field.
      */
     public static final char DEFAULT_ARRAY_SEPARATOR = ',';
 
-    /**
-     * Unique identifier.
-     */
-    private long id;
+    private final JdbcEntityKey key;
 
-    /**
-     * Unique parameter name (code).
-     */
     private String name;
 
-    private List<Level> levels = new ArrayList<Level>();
+    private final List<Level> levels = new ArrayList<Level>();
 
-    private Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
+    private final Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
     private int inputLevels;
 
@@ -56,8 +51,19 @@ public class JdbcParameter implements EditableParameter {
 
     private char arraySeparator = DEFAULT_ARRAY_SEPARATOR;
 
+    public JdbcParameter(long id, String name, int inputLevels) {
+        this.key = new JdbcEntityKey(id);
+        this.name = name;
+        this.inputLevels = inputLevels;
+    }
+
+    @Override
+    public JdbcEntityKey getEntityKey() {
+        return key;
+    }
+
     public long getId() {
-        return id;
+        return key.getId();
     }
 
     @Override
@@ -71,7 +77,7 @@ public class JdbcParameter implements EditableParameter {
     }
 
     public int getLevelCount() {
-        return levels != null ? levels.size() : 0;
+        return levels.size();
     }
 
     @Override
@@ -102,7 +108,7 @@ public class JdbcParameter implements EditableParameter {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Parameter#").append(id);
+        sb.append("Parameter#").append(getId());
         sb.append('[').append(name);
         sb.append(", levels=").append(getLevelCount());
         sb.append(", inputLevels=").append(getInputLevels());
@@ -114,10 +120,6 @@ public class JdbcParameter implements EditableParameter {
 
         sb.append(']');
         return sb.toString();
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     @Override

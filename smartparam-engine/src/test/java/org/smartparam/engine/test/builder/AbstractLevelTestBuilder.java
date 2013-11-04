@@ -23,40 +23,56 @@ import org.smartparam.engine.model.editable.EditableLevel;
  */
 public abstract class AbstractLevelTestBuilder<T extends EditableLevel, B extends AbstractLevelTestBuilder<?, ?>> {
 
-    protected final T level;
+    private String name;
 
-    protected AbstractLevelTestBuilder(T instance) {
-        this.level = instance;
+    private String matcher;
+
+    private String levelCreator;
+
+    private String type;
+
+    private boolean array;
+
+    protected AbstractLevelTestBuilder() {
     }
 
     protected abstract B self();
 
+    protected abstract T buildLevel();
+
     public T build() {
+        T level = buildLevel();
+        level.setName(name);
+        level.setMatcher(matcher);
+        level.setLevelCreator(levelCreator);
+        level.setType(type);
+        level.setArray(array);
+
         return level;
     }
 
     public B withName(String name) {
-        level.setName(name);
+        this.name = name;
         return self();
     }
 
     public B withMatcher(String matcher) {
-        level.setMatcher(matcher);
+        this.matcher = matcher;
         return self();
     }
 
     public B withLevelCreator(String levelCreator) {
-        level.setLevelCreator(levelCreator);
+        this.levelCreator = levelCreator;
         return self();
     }
 
     public B withType(String type) {
-        level.setType(type);
+        this.type = type;
         return self();
     }
 
     public B array() {
-        level.setArray(true);
+        this.array = true;
         return self();
     }
 }

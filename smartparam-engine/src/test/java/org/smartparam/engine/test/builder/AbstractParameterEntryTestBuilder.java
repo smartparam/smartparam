@@ -24,20 +24,24 @@ import org.smartparam.engine.model.editable.EditableParameterEntry;
  */
 public abstract class AbstractParameterEntryTestBuilder<T extends EditableParameterEntry, B extends AbstractParameterEntryTestBuilder<?, ?>> {
 
-    protected T entry;
+    private String[] levels;
 
-    protected AbstractParameterEntryTestBuilder(T entry) {
-        this.entry = entry;
+    protected AbstractParameterEntryTestBuilder() {
     }
 
     protected abstract B self();
 
+    protected abstract T buildEntry();
+
     public ParameterEntry build() {
+        T entry = buildEntry();
+        entry.setLevels(levels);
+
         return entry;
     }
 
     public B withLevels(String... levelValues) {
-        entry.setLevels(levelValues);
+        this.levels = levelValues;
         return self();
     }
 }

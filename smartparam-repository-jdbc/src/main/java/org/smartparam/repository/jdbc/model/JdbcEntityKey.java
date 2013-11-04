@@ -13,28 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.builder;
+package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.engine.model.editable.EditableParameter;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
+import org.smartparam.engine.model.EntityKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ParameterTestBuilder extends AbstractParameterTestBuilder<EditableParameter, ParameterTestBuilder> {
+public class JdbcEntityKey implements EntityKey {
 
-    public static ParameterTestBuilder parameter() {
-        return new ParameterTestBuilder();
+    private final long id;
+
+    public JdbcEntityKey(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override
-    protected EditableParameter buildParameter() {
-        return new SimpleEditableParameter();
+    public String getKey() {
+        return Long.toString(id);
     }
 
     @Override
-    protected ParameterTestBuilder self() {
-        return this;
+    public String toString() {
+        return "[JDBC entity key: " + getKey() + "]";
     }
 }

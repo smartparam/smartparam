@@ -24,12 +24,13 @@ import org.smartparam.engine.model.editable.SimpleEditableLevel;
  */
 public class LevelTestBuilder extends AbstractLevelTestBuilder<EditableLevel, LevelTestBuilder> {
 
-    private LevelTestBuilder() {
-        super(new SimpleEditableLevel());
-    }
-
     public static LevelTestBuilder level() {
         return new LevelTestBuilder();
+    }
+
+    @Override
+    protected EditableLevel buildLevel() {
+        return new SimpleEditableLevel();
     }
 
     @Override
