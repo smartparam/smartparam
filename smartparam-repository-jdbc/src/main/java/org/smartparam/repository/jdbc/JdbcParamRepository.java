@@ -29,11 +29,14 @@ import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.core.repository.EditableParamRepository;
+import org.smartparam.engine.model.EntityKey;
+import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.metadata.ParameterMetadata;
+import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
+import org.smartparam.repository.jdbc.model.JdbcEntityKey;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
@@ -176,11 +179,33 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
         });
     }
 
-    public void updateParameter(final String parameterName, final ParameterMetadata parameterMetadata) {
+    @Override
+    public void createParameter(final ParameterForm parameterMetadata) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
-                dao.updateParameter(queryRunner, parameterName, parameterMetadata);
+                dao.createParameter(queryRunner, parameterMetadata);
+            }
+        });
+    }
+
+    @Override
+    public void updateParameter(final String parameterName, final ParameterForm parameterForm) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.updateParameter(queryRunner, parameterName, parameterForm);
+            }
+        });
+    }
+
+    @Override
+    public Level getLevel(EntityKey entityKey) {
+        final long levelId = JdbcEntityKey.parseKey(entityKey).getId();
+        return transactionRunner.run(new TransactionWrapper<Level>() {
+            @Override
+            public Level perform(QueryRunner queryRunner) {
+                return dao.getLevel(queryRunner, levelId);
             }
         });
     }

@@ -49,7 +49,7 @@ public class JdbcParameter implements EditableParameter {
     private char arraySeparator = DEFAULT_ARRAY_SEPARATOR;
 
     public JdbcParameter(String name, int inputLevels) {
-        this.name = name;
+        this.setName(name);
         this.inputLevels = inputLevels;
     }
 
@@ -110,6 +110,9 @@ public class JdbcParameter implements EditableParameter {
 
     @Override
     public void setName(String name) {
+        if(name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Parameter name can't be empty.");
+        }
         this.name = name;
     }
 

@@ -23,9 +23,11 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.metadata.ParameterMetadata;
+import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
+import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
+import org.smartparam.repository.jdbc.model.ParameterFormConverter;
 
 /**
  * @author Przemek Hertel
@@ -60,6 +62,12 @@ public class SimpleJdbcRepository implements JdbcRepository {
         parameterDAO.insert(runner, parameter);
         levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameter.getName());
         parameterEntryDAO.insert(runner, parameter.getEntries(), parameter.getName());
+    }
+
+    @Override
+    public void createParameter(QueryRunner runner, ParameterForm parameterForm) {
+        Parameter parameter = ParameterFormConverter.convertToParameter(parameterForm);
+        parameterDAO.insert(runner, parameter);
     }
 
     @Override
@@ -107,7 +115,12 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public void updateParameter(QueryRunner runner, String parameterName, ParameterMetadata parameterMetadata) {
+    public void updateParameter(QueryRunner runner, String parameterName, ParameterForm parameterMetadata) {
         parameterDAO.update(runner, parameterName, parameterMetadata);
+    }
+
+    @Override
+    public JdbcLevel getLevel(QueryRunner runner, long id) {
+        return levelDAO.getLevel(runner, id);
     }
 }

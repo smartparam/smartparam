@@ -19,7 +19,8 @@ import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.metadata.ParameterMetadata;
+import org.smartparam.engine.model.metadata.ParameterForm;
+import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
@@ -42,7 +43,11 @@ public interface JdbcRepository {
 
     void writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries);
 
+    void createParameter(QueryRunner runner, ParameterForm parameterMetadata);
+
     void deleteParameter(QueryRunner runner, String parameterName);
 
-    void updateParameter(QueryRunner runner, String parameterName, ParameterMetadata parameter);
+    void updateParameter(QueryRunner runner, String parameterName, ParameterForm parameterMetadata);
+
+    JdbcLevel getLevel(QueryRunner runner, long id);
 }

@@ -19,24 +19,32 @@ package org.smartparam.engine.model.metadata;
  *
  * @author Adam Dubiel
  */
-public class LevelMetadata {
+public class LevelForm {
 
-    private final String name;
+    private String name;
 
-    private final String levelCreator;
+    private boolean nameChanged;
 
-    private final String matcher;
+    private String levelCreator;
 
-    private final String type;
+    private boolean levelCreatorChanged;
 
-    private final boolean array;
+    private String matcher;
 
-    public LevelMetadata(String name, String levelCreator, String matcher, String type, boolean array) {
-        this.name = name;
-        this.levelCreator = levelCreator;
-        this.matcher = matcher;
-        this.type = type;
-        this.array = array;
+    private boolean matcherChanged;
+
+    private String type;
+
+    private boolean typeChanged;
+
+    private boolean array;
+
+    private boolean arrayChanged;
+
+    private int order;
+
+    public LevelForm(int order) {
+        this.order = order;
     }
 
     public String getName() {
@@ -57,5 +65,9 @@ public class LevelMetadata {
 
     public boolean isArray() {
         return array;
+    }
+
+    public int getOrder() {
+        return order;
     }
 }

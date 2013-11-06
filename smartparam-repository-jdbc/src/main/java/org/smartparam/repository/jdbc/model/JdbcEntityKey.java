@@ -16,6 +16,8 @@
 package org.smartparam.repository.jdbc.model;
 
 import org.smartparam.engine.model.EntityKey;
+import org.smartparam.engine.util.EngineUtil;
+import org.smartparam.engine.core.exception.InvalidEntityKeyException;
 
 /**
  *
@@ -23,13 +25,45 @@ import org.smartparam.engine.model.EntityKey;
  */
 public class JdbcEntityKey implements EntityKey {
 
+    private static final char SEPARATOR = '#';
+
+    private static final String JDBC_PREFIX = "jdbc";
+
     private final long id;
 
     private final String parameterName;
 
+    private final String key;
+
     public JdbcEntityKey(long id, String parameterName) {
         this.id = id;
         this.parameterName = parameterName;
+        this.key = constructKey(id, parameterName);
+    }
+
+    private String constructKey(long id, String parameterName) {
+        return JDBC_PREFIX + SEPARATOR + parameterName + SEPARATOR + Long.toString(id);
+    }
+
+    public static JdbcEntityKey parseKey(EntityKey entityKey) throws InvalidEntityKeyException {
+        if (entityKey instanceof JdbcEntityKey) {
+            return (JdbcEntityKey) entityKey;
+        } else if (entityKey.getKey().startsWith(JDBC_PREFIX)) {
+            String[] parts = EngineUtil.split(entityKey.getKey(), '#', 3);
+            if (parts.length != 3) {
+                throw createException(entityKey);
+            }
+
+            String parameterName = parts[1];
+            long id = Long.parseLong(parts[2]);
+
+            return new JdbcEntityKey(id, parameterName);
+        }
+        throw createException(entityKey);
+    }
+
+    private static InvalidEntityKeyException createException(EntityKey entityKey) {
+        return new InvalidEntityKeyException("Provided key can't be parsed as JdbcEntityKey. Key: " + entityKey);
     }
 
     public long getId() {
@@ -42,7 +76,7 @@ public class JdbcEntityKey implements EntityKey {
 
     @Override
     public String getKey() {
-        return Long.toString(id);
+        return key;
     }
 
     @Override

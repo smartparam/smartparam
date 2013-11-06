@@ -18,7 +18,7 @@ package org.smartparam.repository.jdbc.dao;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.metadata.ParameterMetadata;
+import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.testng.annotations.Test;
@@ -110,8 +110,10 @@ public class ParameterDAOTest extends DatabaseTest {
         ParameterDAO parameterDAO = get(ParameterDAO.class);
         QueryRunner runner = queryRunner();
 
+        ParameterForm metadataToUpdate = new ParameterForm().updateName("updatedTest");
+
         // when
-        parameterDAO.update(runner, "test", new ParameterMetadata("updatedTest", 0, true, true, ';'));
+        parameterDAO.update(runner, "test", metadataToUpdate);
         runner.close();
 
         // then

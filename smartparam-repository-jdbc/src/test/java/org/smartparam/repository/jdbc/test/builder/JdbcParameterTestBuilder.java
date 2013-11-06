@@ -30,7 +30,7 @@ public class JdbcParameterTestBuilder extends AbstractParameterTestBuilder<JdbcP
 
     @Override
     protected JdbcParameter buildParameter() {
-        JdbcParameter parameter = new JdbcParameter(null, 0);
+        JdbcParameter parameter = new JdbcParameter("dummy", 0);
         return parameter;
     }
 

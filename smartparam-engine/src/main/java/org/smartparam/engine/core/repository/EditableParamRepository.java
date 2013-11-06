@@ -15,7 +15,11 @@
  */
 package org.smartparam.engine.core.repository;
 
-import org.smartparam.engine.model.metadata.ParameterMetadata;
+import java.util.Collection;
+import org.smartparam.engine.model.EntityKey;
+import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.metadata.LevelForm;
+import org.smartparam.engine.model.metadata.ParameterForm;
 
 /**
  * Warning! This interface will be undergoing big changes in near future
@@ -25,11 +29,16 @@ import org.smartparam.engine.model.metadata.ParameterMetadata;
  */
 public interface EditableParamRepository extends WritableParamRepository {
 
-    void updateParameter(String parameterName, ParameterMetadata parameterMetadata);
+    void createParameter(ParameterForm parameterForm);
 
-//    Level getLevel(EntityKey entityKey);
-//
-//    EntityKey addLevel(Level level);
+    void updateParameter(String parameterName, ParameterForm parameterForm);
+
+    Level getLevel(EntityKey entityKey);
+
+    /**
+     * Adds new level to existing parameter,
+     */
+//    EntityKey addLevel(String parameterName, Collection<LevelForm> levelForms);
 //
 //    void updateLevel(EntityKey levelKey, Level level);
 //
