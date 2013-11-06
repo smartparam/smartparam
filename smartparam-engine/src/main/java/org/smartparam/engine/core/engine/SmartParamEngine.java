@@ -273,6 +273,17 @@ public class SmartParamEngine implements ParamEngine {
         if (ctx.getLevelValues() == null) {
             evaluateLevelValues(param, ctx);
         }
+        else {
+            // normalize given level values
+            String[] levelValues = ctx.getLevelValues();
+            int len = Math.min(levelValues.length, param.getInputLevelsCount());    //todo ph
+
+            for (int i = 0; i < len; i++) {
+                PreparedLevel level = param.getLevels()[i];
+                Type<?> type = level.getType();
+                levelValues[i] = type.decode(levelValues[i]).getString();
+            }
+        }
 
         return findParameterEntries(param, ctx.getLevelValues());
     }

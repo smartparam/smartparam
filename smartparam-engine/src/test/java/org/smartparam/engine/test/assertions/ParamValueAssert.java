@@ -39,6 +39,11 @@ public class ParamValueAssert extends AbstractAssert<ParamValueAssert, ParamValu
         return this;
     }
 
+    public ParamValueAssert hasIntValue(int value) {
+        Assertions.assertThat(actual.get().getInteger()).isEqualTo(value);
+        return this;
+    }
+
     public ParamValueAssert hasRowWithValues(Object... values) {
         boolean anyMatches = false;
         for(MultiValue row : actual.rows()) {

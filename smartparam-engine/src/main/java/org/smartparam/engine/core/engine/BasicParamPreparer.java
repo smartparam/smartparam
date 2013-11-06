@@ -36,7 +36,7 @@ import org.smartparam.engine.model.ParameterEntry;
 /**
  *
  * @author Przemek Hertel
- * @since 0.1.0
+ * @since 0.9.0
  */
 public class BasicParamPreparer implements ParamPreparer {
 
@@ -107,7 +107,23 @@ public class BasicParamPreparer implements ParamPreparer {
 
         String[] keys;
         for (ParameterEntry parameterEntry : parameter.getEntries()) {
+
+            // raw level patterns (read from repository)
             keys = getFirstNLevels(parameterEntry, inputLevelCount);
+
+            // normalize level patters
+            for (int i = 0; i < inputLevelCount; i++) {
+                if (matchers[i] == null) {
+                    try {
+                        String norm = types[i].decode(keys[i]).getString();
+                        System.out.println("normalized ::: " + norm);
+                        keys[i] = norm;
+                    } catch (Exception e) {
+                        System.err.println("failed norm");
+                    }
+                }
+            }
+
             index.add(keys, prepareEntry(parameterEntry));
         }
 

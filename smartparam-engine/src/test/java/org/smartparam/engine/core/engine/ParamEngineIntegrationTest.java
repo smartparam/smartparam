@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.types.date.DateType;
 import org.testng.annotations.BeforeMethod;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.config.ParamEngineConfig;
@@ -69,11 +70,13 @@ public class ParamEngineIntegrationTest {
         config = ParamEngineConfigBuilder.paramEngineConfig()
                 .withType("string", new StringType())
                 .withType("integer", new IntegerType())
+                .withType("date", new DateType())
                 .withParameterRepositories(paramRepository)
                 .withFunctionRepository("java", 1, functionRepository)
                 .withFunctionInvoker("java", functionInvoker)
                 .withMatcher("between", new BetweenMatcher())
                 .build();
+
         engine = (SmartParamEngine) ParamEngineFactory.paramEngine(config);
     }
 
@@ -395,6 +398,34 @@ public class ParamEngineIntegrationTest {
 
         // then
         assertThat(value).hasRows(2).hasRowWithValues(42l, 43l).hasRowWithValues(43l, 44l);
+    }
+
+    @Test
+    public void shouldReturnValueOfParameterWithLevelValuesPassedInAnotherFormat() {
+
+        // given
+        Level[] levels = new Level[]{
+                level().withType("date").build(), // input
+                level().withType("integer").build() // output
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+                parameterEntry().withLevels("2013-01-27", "5").build(),
+                parameterEntry().withLevels("*", "9").build()
+        };
+        Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        ParamValue v1 = engine.get("parameter", "2013-01-27");
+        ParamValue v2 = engine.get("parameter", "2013.01.27");
+        ParamValue v3 = engine.get("parameter", "27/01/2013");
+        ParamValue v4 = engine.get("parameter", "27/01/1999");
+
+        // then
+        assertThat(v1).hasIntValue(5);
+        assertThat(v2).hasIntValue(5);
+        assertThat(v3).hasIntValue(5);
+        assertThat(v4).hasIntValue(9);
     }
 
     @Test
