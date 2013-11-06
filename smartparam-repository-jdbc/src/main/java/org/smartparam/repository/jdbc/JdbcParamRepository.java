@@ -89,7 +89,7 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
             @Override
             public ParameterBatchLoader perform(QueryRunner queryRunner) {
                 JdbcParameter metadata = dao.getParameterMetadata(queryRunner, parameterName);
-                JdbcParameterEntryBatchLoader entryLoader = batchLoaderFactory.create(metadata.getId());
+                JdbcParameterEntryBatchLoader entryLoader = batchLoaderFactory.create(parameterName);
 
                 return new ParameterBatchLoader(metadata, entryLoader);
             }

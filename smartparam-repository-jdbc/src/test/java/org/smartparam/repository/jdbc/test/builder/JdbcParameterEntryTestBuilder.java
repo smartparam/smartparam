@@ -26,7 +26,7 @@ public class JdbcParameterEntryTestBuilder extends AbstractParameterEntryTestBui
 
     private long id;
 
-    private long parameterId;
+    private String parameterName;
 
     public static JdbcParameterEntryTestBuilder jdbcParameterEntry() {
         return new JdbcParameterEntryTestBuilder();
@@ -34,7 +34,7 @@ public class JdbcParameterEntryTestBuilder extends AbstractParameterEntryTestBui
 
     @Override
     protected JdbcParameterEntry buildEntry() {
-        return new JdbcParameterEntry(id, parameterId, null);
+        return new JdbcParameterEntry(id, parameterName, null);
     }
 
 

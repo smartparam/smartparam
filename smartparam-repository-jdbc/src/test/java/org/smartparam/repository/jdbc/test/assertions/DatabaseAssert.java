@@ -25,7 +25,6 @@ import org.smartparam.engine.test.assertions.Assertions;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
-import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
  *
@@ -33,13 +32,13 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
 
-    private ParameterDAO parameterDAO;
+    private final ParameterDAO parameterDAO;
 
-    private LevelDAO levelDAO;
+    private final LevelDAO levelDAO;
 
-    private ParameterEntryDAO parameterEntryDAO;
+    private final ParameterEntryDAO parameterEntryDAO;
 
-    private QueryRunner queryRunner;
+    private final QueryRunner queryRunner;
 
     private DatabaseAssert(QueryRunner queryRunner, ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO) {
         super(new Object(), DatabaseAssert.class);
@@ -91,8 +90,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
         return performOperation(new Operation() {
             @Override
             public void run() {
-                JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
-                List<Level> levels = levelDAO.getLevels(queryRunner, parameter.getId());
+                List<Level> levels = levelDAO.getLevels(queryRunner, parameterName);
                 Assertions.assertThat(levels).hasSize(count);
             }
         });
@@ -106,8 +104,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
         return performOperation(new Operation() {
             @Override
             public void run() {
-                JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
-                Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(queryRunner, parameter.getId());
+                Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(queryRunner, parameterName);
                 Assertions.assertThat(entries).hasSize(count);
             }
         });

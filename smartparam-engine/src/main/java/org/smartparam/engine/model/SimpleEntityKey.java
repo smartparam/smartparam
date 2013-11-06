@@ -31,4 +31,8 @@ public class SimpleEntityKey implements EntityKey {
         return key;
     }
 
+    public String getParameterName() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

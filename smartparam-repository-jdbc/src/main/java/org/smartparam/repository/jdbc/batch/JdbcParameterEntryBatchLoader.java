@@ -33,15 +33,15 @@ public class JdbcParameterEntryBatchLoader implements ParameterEntryBatchLoader 
 
     private final ParameterEntryDAO parameterEntryDAO;
 
-    private final long parameterId;
+    private final String parameterName;
 
     private long lastEntryId;
 
     private boolean hasMore = true;
 
-    public JdbcParameterEntryBatchLoader(QueryRunner queryRunner, ParameterEntryDAO parameterEntryDAO, long parameterId) {
+    public JdbcParameterEntryBatchLoader(QueryRunner queryRunner, ParameterEntryDAO parameterEntryDAO, String parameterName) {
         this.parameterEntryDAO = parameterEntryDAO;
-        this.parameterId = parameterId;
+        this.parameterName = parameterName;
         this.queryRunner = queryRunner;
     }
 
@@ -52,7 +52,7 @@ public class JdbcParameterEntryBatchLoader implements ParameterEntryBatchLoader 
 
     @Override
     public Collection<ParameterEntry> nextBatch(int batchSize) {
-        List<ParameterEntry> entries = parameterEntryDAO.getParameterEntriesBatch(queryRunner, parameterId, lastEntryId, batchSize);
+        List<ParameterEntry> entries = parameterEntryDAO.getParameterEntriesBatch(queryRunner, parameterName, lastEntryId, batchSize);
         queryRunner.commit();
 
         JdbcParameterEntry lastEntry = getLastEntry(entries);

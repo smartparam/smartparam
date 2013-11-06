@@ -13,34 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
 
-import org.polyjdbc.core.dialect.Dialect;
+package org.smartparam.engine.core.exception;
 
 /**
- * JDBC repository configuration.
  *
- * @author Przemek Hertel
+ * @author Adam Dubiel
  */
-public interface JdbcConfig {
+@SuppressWarnings("serial")
+public class InvalidEntityKeyException extends SmartParamException {
 
-    /**
-     * What database dialect should be used - mandatory field, JDBC repository
-     * will throw an exception if left empty.
-     */
-    Dialect getDialect();
+    public InvalidEntityKeyException(String message) {
+        super(message);
+    }
 
-    String getParameterTable();
-
-    String getLevelTable();
-
-    String getLevelSequence();
-
-    String getParameterEntryTable();
-
-    String getParameterEntrySequence();
-
-    String getSequencePrefix();
-
-    String[] getManagedTables();
 }

@@ -20,13 +20,11 @@ import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
 
-import static org.fest.assertions.api.Assertions.assertThat;
 import static org.smartparam.engine.test.Iterables.onlyElement;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
 import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
@@ -46,16 +44,16 @@ public class ParameterEntryDAOTest extends DatabaseTest {
     @Test
     public void shouldInsertNewParameterEntry() {
         // given
-        database().withParameter(1).build();
+        database().withParameter("parameter").build();
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         ParameterEntry entry = parameterEntry().withLevels("1", "2").build();
         QueryRunner runner = queryRunner();
 
         // when
-        parameterEntryDAO.insert(runner, Arrays.asList(entry), 1);
+        parameterEntryDAO.insert(runner, Arrays.asList(entry), "parameter");
         runner.commit();
 
-        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, 1);
+        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, "parameter");
         runner.close();
 
         // then
@@ -65,16 +63,16 @@ public class ParameterEntryDAOTest extends DatabaseTest {
     @Test
     public void shouldConcatenateContentsOfExcessLevelsInLastLevelWhenInserting() {
         // given
-        database().withParameter(1).build();
+        database().withParameter("parameter").build();
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         ParameterEntry entry = parameterEntry().withLevels("1", "2", "3", "4").build();
         QueryRunner runner = queryRunner();
 
         // when
-        parameterEntryDAO.insert(runner, Arrays.asList(entry), 1);
+        parameterEntryDAO.insert(runner, Arrays.asList(entry), "parameter");
         runner.commit();
 
-        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, 1);
+        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, "parameter");
         runner.close();
 
         // then
@@ -84,12 +82,12 @@ public class ParameterEntryDAOTest extends DatabaseTest {
     @Test
     public void shouldListAllEntriesForParameter() {
         // given
-        database().withParameter(1).withParameterEntries(1, 5).build();
+        database().withParameter("parameter").withParameterEntries("parameter", 5).build();
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
         // when
-        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, 1);
+        Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, "parameter");
         runner.close();
 
         // then
@@ -99,14 +97,14 @@ public class ParameterEntryDAOTest extends DatabaseTest {
     @Test
     public void shouldReturnBatchOfParameterEntriesOfGivenSize() {
         // given
-        database().withParameter(1).withParameterEntries(1, 100).build();
+        database().withParameter("parameter").withParameterEntries("parameter", 100).build();
 
         // when
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
         // when
-        List<ParameterEntry> entries = parameterEntryDAO.getParameterEntriesBatch(runner, 1, 0, 20);
+        List<ParameterEntry> entries = parameterEntryDAO.getParameterEntriesBatch(runner, "parameter", 0, 20);
         runner.close();
 
         // then

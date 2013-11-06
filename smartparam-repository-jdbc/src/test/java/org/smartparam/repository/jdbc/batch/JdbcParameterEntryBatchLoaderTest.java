@@ -35,7 +35,7 @@ public class JdbcParameterEntryBatchLoaderTest extends DatabaseTest {
     public void shouldAlwaysRunAtLeastOneLoop() {
         // given
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
-        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, 1);
+        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, "parameter");
 
         // when
         boolean initialCheck = loader.hasMore();
@@ -49,7 +49,7 @@ public class JdbcParameterEntryBatchLoaderTest extends DatabaseTest {
     public void shouldReturnFalseWhenNoMoreEntriesToLoad() throws ParamBatchLoadingException {
         // given
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
-        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, 1);
+        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, "empty");
 
         // when
         loader.nextBatch(10);
@@ -63,9 +63,9 @@ public class JdbcParameterEntryBatchLoaderTest extends DatabaseTest {
     @Test
     public void shouldLoadBatchOfGivenSizeWhenLotOfEntriesAvailable() throws ParamBatchLoadingException {
         // given
-        database().withParameter(1).withParameterEntries(1, 100).build();
+        database().withParameter("parameter").withParameterEntries("parameter", 100).build();
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
-        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, 1);
+        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, "parameter");
 
         // when
         Collection<ParameterEntry> entries = loader.nextBatch(50);
@@ -78,9 +78,9 @@ public class JdbcParameterEntryBatchLoaderTest extends DatabaseTest {
     @Test
     public void shouldLoadBatchSmallerThanDefinedWhenNoMoreEntriesToLoad() throws ParamBatchLoadingException {
         // given
-        database().withParameter(1).withParameterEntries(1, 20).build();
+        database().withParameter("parameter").withParameterEntries("parameter", 20).build();
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
-        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, 1);
+        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, "parameter");
 
         // when
         Collection<ParameterEntry> entries = loader.nextBatch(50);
@@ -95,9 +95,9 @@ public class JdbcParameterEntryBatchLoaderTest extends DatabaseTest {
         // given
         //databaseInterface();
 
-        database().withParameter(1).withParameterEntries(1, 110).build();
+        database().withParameter("parameter").withParameterEntries("parameter", 110).build();
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
-        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, 1);
+        JdbcParameterEntryBatchLoader loader = new JdbcParameterEntryBatchLoader(queryRunner(), parameterEntryDAO, "parameter");
 
         // when
         Collection<ParameterEntry> entries = new LinkedList<ParameterEntry>();

@@ -15,7 +15,6 @@
  */
 package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.engine.model.EntityKey;
 import org.smartparam.engine.model.IdentifiableEntity;
 import org.smartparam.engine.model.editable.EditableLevel;
 
@@ -26,8 +25,6 @@ import org.smartparam.engine.model.editable.EditableLevel;
 public class JdbcLevel implements EditableLevel, IdentifiableEntity {
 
     private final JdbcEntityKey key;
-
-    private final long parameterId;
 
     private int orderNo;
 
@@ -41,9 +38,8 @@ public class JdbcLevel implements EditableLevel, IdentifiableEntity {
 
     private boolean array;
 
-    public JdbcLevel(long id, long parameterId) {
-        this.key = new JdbcEntityKey(id);
-        this.parameterId = parameterId;
+    public JdbcLevel(long id, String parameterName) {
+        this.key = new JdbcEntityKey(id, parameterName);
     }
 
     @Override
@@ -111,10 +107,6 @@ public class JdbcLevel implements EditableLevel, IdentifiableEntity {
     @Override
     public void setArray(boolean array) {
         this.array = array;
-    }
-
-    public long getParameterId() {
-        return parameterId;
     }
 
     @Override

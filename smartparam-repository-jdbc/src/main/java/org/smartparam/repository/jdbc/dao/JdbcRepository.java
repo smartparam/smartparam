@@ -38,7 +38,7 @@ public interface JdbcRepository {
 
     Set<String> getParameterNames();
 
-    Set<ParameterEntry> getParameterEntries(QueryRunner runner, long parameterId);
+    Set<ParameterEntry> getParameterEntries(QueryRunner runner, String parameterName);
 
     void writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries);
 

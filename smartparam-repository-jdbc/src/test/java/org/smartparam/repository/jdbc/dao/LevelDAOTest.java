@@ -35,17 +35,17 @@ public class LevelDAOTest extends DatabaseTest {
 
     public void shouldInsertNewLevelIntoDatabase() {
         // given
-        database().withParameter(1).build();
+        database().withParameter("parameter").build();
         LevelDAO levelDAO = get(LevelDAO.class);
         JdbcLevel level = jdbcLevel().withName("test").withLevelCreator("testCreator")
                 .withMatcher("testMatcher").withType("testType").withOrder(0).array().build();
         QueryRunner runner = queryRunner();
 
         // when
-        levelDAO.insert(runner, level, 1);
+        levelDAO.insert(runner, level, "parameter");
         runner.commit();
 
-        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, 1);
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
         runner.close();
 
         // then
@@ -58,16 +58,16 @@ public class LevelDAOTest extends DatabaseTest {
     @Test
     public void shouldInsertLevelsForParameterOverridingOrder() {
         // given
-        database().withParameter(1).build();
+        database().withParameter("parameter").build();
         LevelDAO levelDAO = get(LevelDAO.class);
         Level level = level().withName("test").withType("string").build();
         QueryRunner runner = queryRunner();
 
         // when
-        levelDAO.insertParameterLevels(runner, Arrays.asList(level), 1);
+        levelDAO.insertParameterLevels(runner, Arrays.asList(level), "parameter");
         runner.commit();
 
-        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, 1);
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
         runner.close();
 
         // then
@@ -78,15 +78,15 @@ public class LevelDAOTest extends DatabaseTest {
     @Test
     public void shouldDeleteLevelsForParameter() {
         // given
-        database().withParameter(1, "test").withLevels(1, 2).build();
+        database().withParameter("parameter").withLevels("parameter", 2).build();
         LevelDAO levelDAO = get(LevelDAO.class);
         QueryRunner runner = queryRunner();
 
         // when
-        levelDAO.deleteParameterLevels(runner, "test");
+        levelDAO.deleteParameterLevels(runner, "parameter");
         runner.commit();
 
         // then
-        assertDatabase().hasNoLevelsForParameter("test");
+        assertDatabase().hasNoLevelsForParameter("parameter");
     }
 }

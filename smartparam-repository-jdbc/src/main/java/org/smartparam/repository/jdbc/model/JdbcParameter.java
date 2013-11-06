@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.model.IdentifiableEntity;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableParameter;
@@ -28,14 +27,12 @@ import org.smartparam.engine.model.editable.EditableParameter;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameter implements EditableParameter, IdentifiableEntity {
+public class JdbcParameter implements EditableParameter {
 
     /**
      * Default value for {@link #arraySeparator} field.
      */
     public static final char DEFAULT_ARRAY_SEPARATOR = ',';
-
-    private final JdbcEntityKey key;
 
     private String name;
 
@@ -51,19 +48,9 @@ public class JdbcParameter implements EditableParameter, IdentifiableEntity {
 
     private char arraySeparator = DEFAULT_ARRAY_SEPARATOR;
 
-    public JdbcParameter(long id, String name, int inputLevels) {
-        this.key = new JdbcEntityKey(id);
+    public JdbcParameter(String name, int inputLevels) {
         this.name = name;
         this.inputLevels = inputLevels;
-    }
-
-    @Override
-    public JdbcEntityKey getEntityKey() {
-        return key;
-    }
-
-    public long getId() {
-        return key.getId();
     }
 
     @Override
@@ -108,9 +95,8 @@ public class JdbcParameter implements EditableParameter, IdentifiableEntity {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Parameter#").append(getId());
-        sb.append('[').append(name);
-        sb.append(", levels=").append(getLevelCount());
+        sb.append("Parameter#").append(name);
+        sb.append("[levels=").append(getLevelCount());
         sb.append(", inputLevels=").append(getInputLevels());
         sb.append(nullable ? ", nullable" : ", notnull");
 

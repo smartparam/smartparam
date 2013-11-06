@@ -57,9 +57,9 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     @Override
     public void createParameter(QueryRunner runner, Parameter parameter) {
-        long parameterId = parameterDAO.insert(runner, parameter);
-        levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameterId);
-        parameterEntryDAO.insert(runner, parameter.getEntries(), parameterId);
+        parameterDAO.insert(runner, parameter);
+        levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameter.getName());
+        parameterEntryDAO.insert(runner, parameter.getEntries(), parameter.getName());
     }
 
     @Override
@@ -70,7 +70,7 @@ public class SimpleJdbcRepository implements JdbcRepository {
     @Override
     public JdbcParameter getParameter(QueryRunner runner, String parameterName) {
         JdbcParameter parameter = getParameterMetadata(runner, parameterName);
-        Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameter.getId());
+        Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameterName);
         parameter.setEntries(entries);
         return parameter;
     }
@@ -78,7 +78,7 @@ public class SimpleJdbcRepository implements JdbcRepository {
     @Override
     public JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName) {
         JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
-        List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameter.getId()));
+        List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameterName));
         parameter.setLevels(levels);
 
         return parameter;
@@ -90,14 +90,13 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public Set<ParameterEntry> getParameterEntries(QueryRunner runner, long parameterId) {
-        return parameterEntryDAO.getParameterEntries(runner, parameterId);
+    public Set<ParameterEntry> getParameterEntries(QueryRunner runner, String parameterName) {
+        return parameterEntryDAO.getParameterEntries(runner, parameterName);
     }
 
     @Override
     public void writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries) {
-        JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
-        parameterEntryDAO.insert(runner, entries, parameter.getId());
+        parameterEntryDAO.insert(runner, entries, parameterName);
     }
 
     @Override

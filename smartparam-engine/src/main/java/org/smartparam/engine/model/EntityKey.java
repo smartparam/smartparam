@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.smartparam.engine.model;
 
 /**
@@ -23,5 +22,7 @@ package org.smartparam.engine.model;
 public interface EntityKey {
 
     String getKey();
-    
+
+    String getParameterName();
+
 }

@@ -24,7 +24,7 @@ import org.smartparam.repository.jdbc.model.JdbcLevel;
  */
 public class JdbcLevelTestBuilder extends AbstractLevelTestBuilder<JdbcLevel, JdbcLevelTestBuilder> {
 
-    private long parameterId;
+    private String parameterName;
 
     private int order;
 
@@ -34,7 +34,7 @@ public class JdbcLevelTestBuilder extends AbstractLevelTestBuilder<JdbcLevel, Jd
 
     @Override
     protected JdbcLevel buildLevel() {
-        JdbcLevel level = new JdbcLevel(0, parameterId);
+        JdbcLevel level = new JdbcLevel(0, parameterName);
         level.setOrderNo(order);
         return level;
     }

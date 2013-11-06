@@ -58,7 +58,7 @@ public class JdbcParameterEntryMapper implements ObjectMapper<JdbcParameterEntry
         }
 
         String[] levelValues = levels.toArray(new String[levels.size()]);
-        JdbcParameterEntry entry = new JdbcParameterEntry(resultSet.getLong("id"), resultSet.getLong("fk_parameter"), levelValues);
+        JdbcParameterEntry entry = new JdbcParameterEntry(resultSet.getLong("id"), resultSet.getString("fk_parameter"), levelValues);
 
         return entry;
     }

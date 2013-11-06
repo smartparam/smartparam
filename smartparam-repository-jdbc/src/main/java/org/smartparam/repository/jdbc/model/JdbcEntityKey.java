@@ -25,12 +25,19 @@ public class JdbcEntityKey implements EntityKey {
 
     private final long id;
 
-    public JdbcEntityKey(long id) {
+    private final String parameterName;
+
+    public JdbcEntityKey(long id, String parameterName) {
         this.id = id;
+        this.parameterName = parameterName;
     }
 
     public long getId() {
         return id;
+    }
+
+    public String getParameterName() {
+        return parameterName;
     }
 
     @Override

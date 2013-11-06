@@ -27,16 +27,14 @@ public class JdbcParameterEntry implements EditableParameterEntry, IdentifiableE
 
     private final JdbcEntityKey key;
 
-    private final long parameterId;
-
     private String[] levels;
 
-    public JdbcParameterEntry(long id, long parameterId, String[] levels) {
-        this.key = new JdbcEntityKey(id);
-        this.parameterId = parameterId;
+    public JdbcParameterEntry(long id, String parameterName, String[] levels) {
+        this.key = new JdbcEntityKey(id, parameterName);
         this.levels = levels;
     }
 
+    @Override
     public JdbcEntityKey getEntityKey() {
         return key;
     }
@@ -48,10 +46,6 @@ public class JdbcParameterEntry implements EditableParameterEntry, IdentifiableE
 
     public long getId() {
         return key.getId();
-    }
-
-    public long getParameterId() {
-        return parameterId;
     }
 
     @Override

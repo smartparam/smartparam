@@ -38,22 +38,22 @@ public class LevelDAO {
         this.configuration = configuration;
     }
 
-    public void insertParameterLevels(QueryRunner queryRunner, List<Level> levels, long parameterId) {
+    public void insertParameterLevels(QueryRunner queryRunner, List<Level> levels, String parameterName) {
         int order = 0;
         for (Level level : levels) {
-            insert(queryRunner, level, parameterId, order);
+            insert(queryRunner, level, parameterName, order);
             order++;
         }
     }
 
-    public long insert(QueryRunner queryRunner, JdbcLevel level, long parameterId) {
-        return insert(queryRunner, level, parameterId, level.getOrderNo());
+    public long insert(QueryRunner queryRunner, JdbcLevel level, String parameterName) {
+        return insert(queryRunner, level, parameterName, level.getOrderNo());
     }
 
-    private long insert(QueryRunner queryRunner, Level level, long parameterId, int order) {
+    private long insert(QueryRunner queryRunner, Level level, String parameterName, int order) {
         InsertQuery query = QueryFactory.insert().into(configuration.getLevelTable())
                 .sequence("id", configuration.getLevelSequence())
-                .value("fk_parameter", parameterId)
+                .value("fk_parameter", parameterName)
                 .value("name", level.getName())
                 .value("level_creator", level.getLevelCreator())
                 .value("type", level.getType())
@@ -67,22 +67,22 @@ public class LevelDAO {
         return queryRunner.queryUnique(QueryFactory.selectAll().from(configuration.getLevelTable()).where("id = :id").withArgument("id", id), new JdbcLevelMapper());
     }
 
-    public List<Level> getLevels(QueryRunner queryRunner, long parameterId) {
-        return queryRunner.queryList(createSelectQuery(parameterId), new LevelMapper());
+    public List<Level> getLevels(QueryRunner queryRunner, String parameterName) {
+        return queryRunner.queryList(createSelectQuery(parameterName), new LevelMapper());
     }
 
-    public List<JdbcLevel> getJdbcLevels(QueryRunner queryRunner, long parameterId) {
-        return queryRunner.queryList(createSelectQuery(parameterId), new JdbcLevelMapper());
+    public List<JdbcLevel> getJdbcLevels(QueryRunner queryRunner, String parameterName) {
+        return queryRunner.queryList(createSelectQuery(parameterName), new JdbcLevelMapper());
     }
 
-    private SelectQuery createSelectQuery(long parameterId) {
-        return QueryFactory.selectAll().from(configuration.getLevelTable()).where("fk_parameter = :param_id").orderBy("order_no", Order.ASC).withArgument("param_id", parameterId);
+    private SelectQuery createSelectQuery(String parameterName) {
+        return QueryFactory.selectAll().from(configuration.getLevelTable()).where("fk_parameter = :parameterName").orderBy("order_no", Order.ASC).withArgument("parameterName", parameterName);
     }
 
     public void deleteParameterLevels(QueryRunner queryRunner, String parameterName) {
         DeleteQuery query = QueryFactory.delete().from(configuration.getLevelTable())
-                .where("fk_parameter = (select id from " + configuration.getParameterTable() + " where name = :name)")
-                .withArgument("name", parameterName);
+                .where("fk_parameter = :parameterName")
+                .withArgument("parameterName", parameterName);
         queryRunner.delete(query);
     }
 }

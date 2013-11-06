@@ -41,7 +41,7 @@ public class ParameterEntryDAO {
         this.configuration = configuration;
     }
 
-    public void insert(QueryRunner queryRunner, Iterable<ParameterEntry> parameterEntries, long parameterId) {
+    public void insert(QueryRunner queryRunner, Iterable<ParameterEntry> parameterEntries, String parameterName) {
         int maxDistinctLevels = configuration.getLevelColumnCount();
 
         InsertQuery query;
@@ -49,7 +49,7 @@ public class ParameterEntryDAO {
         for (ParameterEntry entry : parameterEntries) {
             query = QueryFactory.insert().into(configuration.getParameterEntryTable())
                     .sequence("id", configuration.getParameterEntrySequence())
-                    .value("fk_parameter", parameterId);
+                    .value("fk_parameter", parameterName);
 
             for (levelIndex = 0; levelIndex < maxDistinctLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
                 query.value("level" + (levelIndex + 1), entry.getLevels()[levelIndex]);
@@ -70,29 +70,29 @@ public class ParameterEntryDAO {
         return StringUtils.concatenate(configuration.getExcessLevelsSeparator(), (Object[]) excessLevels);
     }
 
-    public Set<ParameterEntry> getParameterEntries(QueryRunner queryRunner, long parameterId) {
-        return queryRunner.querySet(createSelectQuery(parameterId), new ParameterEntryMapper(configuration));
+    public Set<ParameterEntry> getParameterEntries(QueryRunner queryRunner, String parameterName) {
+        return queryRunner.querySet(createSelectQuery(parameterName), new ParameterEntryMapper(configuration));
     }
 
-    public Set<JdbcParameterEntry> getJdbcParameterEntries(QueryRunner queryRunner, long parameterId) {
-        return queryRunner.querySet(createSelectQuery(parameterId), new JdbcParameterEntryMapper(configuration));
+    public Set<JdbcParameterEntry> getJdbcParameterEntries(QueryRunner queryRunner, String parameterName) {
+        return queryRunner.querySet(createSelectQuery(parameterName), new JdbcParameterEntryMapper(configuration));
     }
 
-    public List<ParameterEntry> getParameterEntriesBatch(QueryRunner queryRunner, long parameterId, long lastEntryId, int batchSize) {
-        SelectQuery query = createSelectQuery(parameterId);
+    public List<ParameterEntry> getParameterEntriesBatch(QueryRunner queryRunner, String parameterName, long lastEntryId, int batchSize) {
+        SelectQuery query = createSelectQuery(parameterName);
         query.append(" and id > :lastId ").withArgument("lastId", lastEntryId).orderBy("id", Order.ASC).limit(batchSize);
         return queryRunner.queryList(query, new ParameterEntryMapper(configuration));
     }
 
-    private SelectQuery createSelectQuery(long parameterId) {
-        return QueryFactory.selectAll().from(configuration.getParameterEntryTable()).where("fk_parameter = :parameterId")
-                .withArgument("parameterId", parameterId);
+    private SelectQuery createSelectQuery(String parameterName) {
+        return QueryFactory.selectAll().from(configuration.getParameterEntryTable()).where("fk_parameter = :parameterName")
+                .withArgument("parameterName", parameterName);
     }
 
     public void deleteParameterEntries(QueryRunner queryRunner, String parameterName) {
         DeleteQuery query = QueryFactory.delete().from(configuration.getParameterEntryTable())
-                .where("fk_parameter = (select id from " + configuration.getParameterTable() + " where name = :name)")
-                .withArgument("name", parameterName);
+                .where("fk_parameter = :parameterName")
+                .withArgument("parameterName", parameterName);
         queryRunner.delete(query);
     }
 }

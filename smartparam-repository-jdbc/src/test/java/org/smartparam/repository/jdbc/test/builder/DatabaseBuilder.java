@@ -33,13 +33,13 @@ import static org.smartparam.repository.jdbc.test.builder.JdbcParameterTestBuild
  */
 public class DatabaseBuilder {
 
-    private ParameterDAO parameterDAO;
+    private final ParameterDAO parameterDAO;
 
-    private LevelDAO levelDAO;
+    private final LevelDAO levelDAO;
 
-    private ParameterEntryDAO parameterEntryDAO;
+    private final ParameterEntryDAO parameterEntryDAO;
 
-    private QueryRunner queryRunner;
+    private final QueryRunner queryRunner;
 
     private DatabaseBuilder(ParameterDAO parameterDAO, LevelDAO levelDAO, ParameterEntryDAO parameterEntryDAO, QueryRunner queryRunner) {
         this.parameterDAO = parameterDAO;
@@ -64,26 +64,17 @@ public class DatabaseBuilder {
     }
 
     public DatabaseBuilder withParameter(String name) {
-        return withParameter(0, name);
-    }
-
-    public DatabaseBuilder withParameter(long id) {
-        return withParameter(id, "test" + id);
-    }
-
-    public DatabaseBuilder withParameter(long id, String name) {
         parameterDAO.insert(queryRunner, jdbcParameter()
                 .withName(name)
-                .withId(id)
                 .build());
         return this;
     }
 
-    public DatabaseBuilder withParameterEntries(long parameterId, int count) {
-        return withParameterEntries(parameterId, -1, count);
+    public DatabaseBuilder withParameterEntries(String parameterName, int count) {
+        return withParameterEntries(parameterName, -1, count);
     }
 
-    public DatabaseBuilder withParameterEntries(long parameterId, long baseId, int count) {
+    public DatabaseBuilder withParameterEntries(String parameterName, long baseId, int count) {
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>();
 
         boolean definedIds = baseId >= 0;
@@ -95,16 +86,16 @@ public class DatabaseBuilder {
             }
             entries.add(entryBuilder.build());
         }
-        parameterEntryDAO.insert(queryRunner, entries, parameterId);
+        parameterEntryDAO.insert(queryRunner, entries, parameterName);
         return this;
     }
 
-    public DatabaseBuilder withLevels(long parameterId, int count) {
+    public DatabaseBuilder withLevels(String parameterName, int count) {
         List<Level> levels = new ArrayList<Level>();
         for (int i = 0; i < count; ++i) {
             levels.add(level().withName("level" + i).withType("string").build());
         }
-        levelDAO.insertParameterLevels(queryRunner, levels, parameterId);
+        levelDAO.insertParameterLevels(queryRunner, levels, parameterName);
         return this;
     }
 }
