@@ -45,23 +45,25 @@ public class ParameterDAO {
 
     public long insert(QueryRunner queryRunner, Parameter parameter) {
         InsertQuery query = createInsertQuery(parameter);
+        query.sequence("id", configuration.getParameterSequence());
         return queryRunner.insert(query);
     }
 
     public long insert(QueryRunner queryRunner, JdbcParameter parameter) {
         InsertQuery query = createInsertQuery(parameter);
-        if (parameter.getId() > 0) {
-            query.sequenceValue(parameter.getId());
-            queryRunner.insertWithoutKey(query);
-            return parameter.getId();
+
+        boolean generateSequenceId = parameter.getId() == 0;
+        if (generateSequenceId) {
+            query.sequence("id", configuration.getParameterSequence());
         } else {
-            return queryRunner.insert(query);
+            query.value("id", parameter.getId());
         }
+
+        return queryRunner.insert(query);
     }
 
     private InsertQuery createInsertQuery(Parameter parameter) {
         InsertQuery query = QueryFactory.insert().into(configuration.getParameterTable())
-                .sequence("id", configuration.getParameterSequence())
                 .value("name", parameter.getName())
                 .value("input_levels", parameter.getInputLevels())
                 .value("cacheable", parameter.isCacheable())
