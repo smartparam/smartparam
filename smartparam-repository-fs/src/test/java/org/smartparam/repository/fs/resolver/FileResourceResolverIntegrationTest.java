@@ -15,28 +15,26 @@
  */
 package org.smartparam.repository.fs.resolver;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.model.editable.SimpleEditableLevel;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
-import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.config.DefaultSerializationConfig;
-import org.smartparam.serializer.StandardParamDeserializer;
 import org.smartparam.serializer.config.ParamSerializerFactory;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
-import static com.googlecode.catchexception.CatchException.*;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import org.smartparam.serializer.config.SerializationConfig;
+import org.testng.annotations.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Map;
+
+import static com.googlecode.catchexception.CatchException.catchException;
+import static com.googlecode.catchexception.CatchException.caughtException;
+import static java.lang.System.err;
+import static org.smartparam.engine.test.assertions.Assertions.assertThat;
+import static org.smartparam.engine.test.assertions.Assertions.entry;
 
 /**
  *
@@ -85,7 +83,11 @@ public class FileResourceResolverIntegrationTest {
 
     @AfterClass
     public void tearDownTest() throws Exception {
-        FileUtils.forceDelete(new File(basePath));
+        try {
+            FileUtils.forceDelete(new File(basePath));
+        } catch (IOException e) {
+            err.println("ignored exception: " + e);
+        }
     }
 
     @BeforeMethod
