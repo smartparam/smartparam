@@ -36,12 +36,13 @@ import org.smartparam.engine.util.EngineUtil;
  * Use {@link #setSeparators(java.lang.String) } to override defaults.
  *
  * @author Przemek Hertel
- * @since 1.0.0
+ * @since 0.9.0
  */
 @ParamMatcher(value = "", instances = {
     @ObjectInstance(value = "between/ie", constructorArgs = {"true", "false"}),
     @ObjectInstance(value = "between/ei", constructorArgs = {"false", "true"}),
-    @ObjectInstance(value = "between/ii", constructorArgs = {"true", "true"}),})
+    @ObjectInstance(value = "between/ii", constructorArgs = {"true", "true"})
+})
 public class BetweenMatcher implements Matcher {
 
     private static final char[] DEFAULT_SEPARATORS = {':', '-', ','};

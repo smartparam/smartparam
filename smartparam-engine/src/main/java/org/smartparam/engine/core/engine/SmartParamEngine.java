@@ -40,7 +40,7 @@ import org.smartparam.engine.util.ParamHelper;
 /**
  *
  * @author Przemek Hertel
- * @since 0.1.0
+ * @since 0.9.0
  */
 public class SmartParamEngine implements ParamEngine {
 
@@ -212,7 +212,7 @@ public class SmartParamEngine implements ParamEngine {
         logger.trace("evaluating level values");
 
         PreparedLevel[] levels = param.getLevels();
-        String[] values = new String[param.getInputLevelsCount()];
+        Object[] values = new Object[param.getInputLevelsCount()];
 
         for (int i = 0; i < values.length; ++i) {
             PreparedLevel level = levels[i];
@@ -228,18 +228,12 @@ public class SmartParamEngine implements ParamEngine {
             Object result = functionManager.invokeFunction(levelCreator, ctx);
             logger.trace("L{}: evaluated: {}", i + 1, result);
 
-            if (result == null) {
-                values[i] = null;
-            } else if (result instanceof String) {
-                values[i] = (String) result;
-            } else if (level.getType() != null) {
-                values[i] = level.getType().convert(result).getString();
-            } else {
-                values[i] = result.toString();
-            }
+            values[i] = result;
         }
 
-        logger.debug("discovered level values: {}", Arrays.toString(values));
+        if (logger.isDebugEnabled()) {
+            logger.debug("discovered level values: {}", Arrays.toString(values));
+        }
 
         ctx.setLevelValues(values);
     }
@@ -250,7 +244,6 @@ public class SmartParamEngine implements ParamEngine {
 
         if (param.isCacheable()) {
             LevelIndex<PreparedEntry> index = param.getIndex();
-            validateLevelValues(levelValues, index.getLevelCount());
             entries = index.find(levelValues);
         } else {
             entries = paramPreparer.findEntries(param.getName(), levelValues);
@@ -259,7 +252,7 @@ public class SmartParamEngine implements ParamEngine {
         return entries != null ? entries.toArray(new PreparedEntry[entries.size()]) : new PreparedEntry[0];
     }
 
-    private void validateLevelValues(String[] levelValues, int parameterLevelCount) {
+    private void validateLevelValues(Object[] levelValues, int parameterLevelCount) {
 
         if (levelValues.length != parameterLevelCount) {
             throw new SmartParamUsageException(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
@@ -273,19 +266,11 @@ public class SmartParamEngine implements ParamEngine {
         if (ctx.getLevelValues() == null) {
             evaluateLevelValues(param, ctx);
         }
-        else {
-            // normalize given level values
-            String[] levelValues = ctx.getLevelValues();
-            int len = Math.min(levelValues.length, param.getInputLevelsCount());    //todo ph
 
-            for (int i = 0; i < len; i++) {
-                PreparedLevel level = param.getLevels()[i];
-                Type<?> type = level.getType();
-                levelValues[i] = type.decode(levelValues[i]).getString();
-            }
-        }
+        validateLevelValues(ctx.getLevelValues(), param.getInputLevelsCount());
 
-        return findParameterEntries(param, ctx.getLevelValues());
+        String[] normalizedInputValues = ParamHelper.normalize(param, ctx.getLevelValues());
+        return findParameterEntries(param, normalizedInputValues);
     }
 
     private PreparedParameter getPreparedParameter(String paramName) {

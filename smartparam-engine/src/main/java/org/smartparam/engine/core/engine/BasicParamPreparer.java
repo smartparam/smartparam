@@ -32,6 +32,7 @@ import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.util.ParamHelper;
 
 /**
  *
@@ -114,13 +115,7 @@ public class BasicParamPreparer implements ParamPreparer {
             // normalize level patters
             for (int i = 0; i < inputLevelCount; i++) {
                 if (matchers[i] == null) {
-                    try {
-                        String norm = types[i].decode(keys[i]).getString();
-                        System.out.println("normalized ::: " + norm);
-                        keys[i] = norm;
-                    } catch (Exception e) {
-                        System.err.println("failed norm");
-                    }
+                    keys[i] = ParamHelper.normalize(types[i], keys[i]);
                 }
             }
 

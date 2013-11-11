@@ -50,7 +50,7 @@ public class DefaultContextTest {
         DefaultContext context = new DefaultContext("DUMMY", 1, levelValues);
 
         // then
-        assertThat(context).hasLevelValues("1", "A");
+        assertThat(context).hasLevelValues(1, "A");
     }
 
     @Test

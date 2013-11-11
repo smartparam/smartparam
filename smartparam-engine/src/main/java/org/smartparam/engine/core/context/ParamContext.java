@@ -31,7 +31,7 @@ public interface ParamContext {
      * @return array of values that form parameter query, has length equal to queried
      *         parameter input level count
      */
-    String[] getLevelValues();
+    Object[] getLevelValues();
 
     /**
      * Can be used to inject query values directly to the context.
@@ -39,5 +39,5 @@ public interface ParamContext {
      * @param levelValues array of values that form parameter query, should have
      *                    length equal to queried parameter input level count
      */
-    void setLevelValues(String... levelValues);
+    void setLevelValues(Object... levelValues);
 }

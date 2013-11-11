@@ -15,15 +15,19 @@
  */
 package org.smartparam.engine.util;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.core.engine.PreparedLevel;
+import org.smartparam.engine.core.engine.PreparedParameter;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
+import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.types.string.StringType;
+
+import java.util.Collection;
 
 /**
  * @author Przemek Hertel
+ * @since 0.9.0
  */
 public abstract class ParamHelper {
 
@@ -57,16 +61,52 @@ public abstract class ParamHelper {
         return result;
     }
 
-    public static AbstractHolder[] convertNonObjectArray(Type<?> type, Object array) {
-        int arrayLen = Array.getLength(array);
-        AbstractHolder[] result = type.newArray(arrayLen);
-        for (int i = 0; i < result.length; i++) {
-            result[i] = convert(type, Array.get(array, i));
-        }
-        return result;
-    }
-
     public static AbstractHolder[] convert(Type<?> type, Collection<?> coll) {
         return convert(type, coll.toArray());
     }
+
+    public static <T extends AbstractHolder> String normalize(Type<T> type, String levelValue) {
+        if ("*".equals(levelValue)) {
+            return levelValue;
+        }
+
+        if (type.getClass() == StringType.class) {
+            return levelValue;
+        }
+
+        try {
+            // if level value can be properly decoded - return normalized value
+            T decoded = type.decode(levelValue);
+            return type.encode(decoded);
+
+        } catch (Exception e) {
+
+            // if level value is corrupted and cannot be decoded - leave it untouched
+            return levelValue;
+        }
+    }
+
+    public static <T extends AbstractHolder> String normalize(Type<T> type, Object levelObject) {
+        if (levelObject instanceof String) {
+            return normalize(type, (String) levelObject);
+        }
+
+        T decoded = type.convert(levelObject);
+        return type.encode(decoded);
+    }
+
+    public static String[] normalize(PreparedParameter param, Object[] levelValues) {
+
+        int size = Math.min(levelValues.length, param.getInputLevelsCount());
+        String[] normalized = new String[size];
+
+        for (int i = 0; i < size; i++) {
+            PreparedLevel level = param.getLevels()[i];
+            Type<?> type = level.getType();
+            normalized[i] = normalize(type, levelValues[i]);
+        }
+
+        return normalized;
+    }
+
 }
