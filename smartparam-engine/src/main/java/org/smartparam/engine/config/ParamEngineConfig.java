@@ -23,8 +23,6 @@ import org.smartparam.engine.bean.RepositoryObjectKey;
 import org.smartparam.engine.config.ComponentInitializer;
 import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.config.pico.ComponentConfig;
-import org.smartparam.engine.core.assembler.BasicObjectAssembler;
-import org.smartparam.engine.core.assembler.ConstructorAssemblyStrategy;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
 import org.smartparam.engine.core.engine.BasicLevelPreparer;
@@ -73,8 +71,6 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(BasicParameterProvider.class);
         components.add(BasicTypeRepository.class);
         components.add(BasicMatcherRepository.class);
-        components.add(BasicObjectAssembler.class);
-        components.add(ConstructorAssemblyStrategy.class);
     }
 
     public List<ParamRepository> getParameterRepositories() {

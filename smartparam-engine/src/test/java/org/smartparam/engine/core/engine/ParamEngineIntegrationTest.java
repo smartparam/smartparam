@@ -18,7 +18,6 @@ package org.smartparam.engine.core.engine;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
-import org.smartparam.engine.core.assembler.FromParamLevel;
 import org.smartparam.engine.core.context.DefaultContext;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
@@ -40,7 +39,6 @@ import org.testng.annotations.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -411,12 +409,12 @@ public class ParamEngineIntegrationTest {
 
         // given
         Level[] levels = new Level[]{
-                level().withType("date").build(), // input
-                level().withType("integer").build() // output
+            level().withType("date").build(), // input
+            level().withType("integer").build() // output
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-                parameterEntry().withLevels("2013-01-27", "5").build(),
-                parameterEntry().withLevels("*", "9").build()
+            parameterEntry().withLevels("2013-01-27", "5").build(),
+            parameterEntry().withLevels("*", "9").build()
         };
         Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
@@ -432,11 +430,11 @@ public class ParamEngineIntegrationTest {
     public void shouldAsteriskDoNotPreventLevelNormalization() {
         // given
         Level[] levels = new Level[]{
-                level().withType("date").build(), // input
-                level().withType("integer").build() // output
+            level().withType("date").build(), // input
+            level().withType("integer").build() // output
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-                parameterEntry().withLevels("*", "9").build()
+            parameterEntry().withLevels("*", "9").build()
         };
         Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
@@ -453,12 +451,12 @@ public class ParamEngineIntegrationTest {
 
         // given
         Level[] levels = new Level[]{
-                level().withType("date").build(), // input
-                level().withType("integer").build() // output
+            level().withType("date").build(), // input
+            level().withType("integer").build() // output
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-                parameterEntry().withLevels("27/01/2013", "5").build(),
-                parameterEntry().withLevels("*", "9").build()
+            parameterEntry().withLevels("27/01/2013", "5").build(),
+            parameterEntry().withLevels("*", "9").build()
         };
         Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
@@ -477,12 +475,12 @@ public class ParamEngineIntegrationTest {
 
         // given
         Level[] levels = new Level[]{
-                level().withType("date").build(), // input
-                level().withType("integer").build() // output
+            level().withType("date").build(), // input
+            level().withType("integer").build() // output
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-                parameterEntry().withLevels("27/01/2013", "5").build(),
-                parameterEntry().withLevels("*", "9").build()
+            parameterEntry().withLevels("27/01/2013", "5").build(),
+            parameterEntry().withLevels("*", "9").build()
         };
         Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
@@ -501,12 +499,12 @@ public class ParamEngineIntegrationTest {
 
         // given
         Level[] levels = new Level[]{
-                level().withType("date").withMatcher("between").build(), // input
-                level().withType("integer").build() // output
+            level().withType("date").withMatcher("between").build(), // input
+            level().withType("integer").build() // output
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-                parameterEntry().withLevels("01/01/2013 - 05/01/2013", "1").build(),
-                parameterEntry().withLevels("*", "2").build()
+            parameterEntry().withLevels("01/01/2013 - 05/01/2013", "1").build(),
+            parameterEntry().withLevels("*", "2").build()
         };
         Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
@@ -524,12 +522,12 @@ public class ParamEngineIntegrationTest {
 
         // given
         Level[] levels = new Level[]{
-                level().withType("date").build(), // input
-                level().withType("integer").build() // output
+            level().withType("date").build(), // input
+            level().withType("integer").build() // output
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-                parameterEntry().withLevels("2013-01-27", "5").build(),
-                parameterEntry().withLevels("*", "9").build()
+            parameterEntry().withLevels("2013-01-27", "5").build(),
+            parameterEntry().withLevels("*", "9").build()
         };
         Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
@@ -546,23 +544,22 @@ public class ParamEngineIntegrationTest {
 
         // given
         Level[] levels = new Level[]{
-                level().withType("date").build(), // input
-                level().withType("integer").build() // output
+            level().withType("date").build(), // input
+            level().withType("integer").build() // output
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-                parameterEntry().withLevels(null, "5").build(),
-                parameterEntry().withLevels("*", "9").build()
+            parameterEntry().withLevels(null, "5").build(),
+            parameterEntry().withLevels("*", "9").build()
         };
         Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(1).build();
         when(paramRepository.load("parameter")).thenReturn(parameter);
 
         // when
-        ParamValue value = engine.get("parameter", (Object)null);
+        ParamValue value = engine.get("parameter", (Object) null);
 
         // then
         assertThat(value).hasIntValue(5);
     }
-
 
     private Date parseDate(String text) throws ParseException {
         return new SimpleDateFormat("yyyy-MM-dd").parse(text);
@@ -638,56 +635,5 @@ public class ParamEngineIntegrationTest {
 
         // then
         assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.ILLEGAL_API_USAGE);
-    }
-
-    @Test
-    public void shouldAssembleObjectFromParameterData() {
-        // given
-        Level[] levels = new Level[]{
-            level().withType("string").withName("code").build(),
-            level().withType("integer").withName("count").build()
-        };
-        ParameterEntry[] entries = new ParameterEntry[]{
-            parameterEntry().withLevels("A", "42").build()};
-        Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(0).build();
-        when(paramRepository.load("parameter")).thenReturn(parameter);
-
-        // when
-        AssembledObject object = engine.getObject("parameter", AssembledObject.class);
-
-        // then
-        assertThat(object).isNotNull();
-    }
-
-    @Test
-    public void shouldAssembleMultipleObjectsFromParameterData() {
-        // given
-        Level[] levels = new Level[]{
-            level().withType("string").withName("code").build(),
-            level().withType("integer").withName("count").build()
-        };
-        ParameterEntry[] entries = new ParameterEntry[]{
-            parameterEntry().withLevels("A", "42").build(),
-            parameterEntry().withLevels("B", "42").build()};
-        Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(0).build();
-        when(paramRepository.load("parameter")).thenReturn(parameter);
-
-        // when
-        Collection<AssembledObject> objects = engine.getObjects("parameter", AssembledObject.class);
-
-        // then
-        assertThat(objects).hasSize(2);
-    }
-
-    private static class AssembledObject {
-
-        String code;
-
-        int count;
-
-        private AssembledObject(@FromParamLevel("code") String code, @FromParamLevel("count") int count) {
-            this.code = code;
-            this.count = count;
-        }
     }
 }
