@@ -94,7 +94,7 @@ public class DatabaseBuilder {
         List<Level> levels = new ArrayList<Level>();
         for (int i = 0; i < count; ++i) {
             levels.add(level().withName("level" + i).withType("string").build());
-        }
+            }
         levelDAO.insertParameterLevels(queryRunner, levels, parameterName);
         return this;
     }

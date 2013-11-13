@@ -20,9 +20,11 @@ import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.model.EntityKey;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.metadata.LevelForm;
 import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
@@ -122,5 +124,25 @@ public class SimpleJdbcRepository implements JdbcRepository {
     @Override
     public JdbcLevel getLevel(QueryRunner runner, long id) {
         return levelDAO.getLevel(runner, id);
+    }
+
+    @Override
+    public long addLevel(QueryRunner runner, String parameterName, Level level) {
+        return levelDAO.insert(runner, level, parameterName);
+    }
+
+    @Override
+    public void updateLevel(QueryRunner runner, long levelId, LevelForm levelForm) {
+        levelDAO.update(runner, levelId, levelForm);
+    }
+
+    @Override
+    public void reorderLevels(QueryRunner runner, long[] orderedLevelIds) {
+        levelDAO.reorder(runner, orderedLevelIds);
+    }
+
+    @Override
+    public void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId) {
+        levelDAO.delete(queryRunner, parameterName, levelId);
     }
 }

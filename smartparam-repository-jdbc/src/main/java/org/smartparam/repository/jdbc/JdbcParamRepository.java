@@ -15,6 +15,7 @@
  */
 package org.smartparam.repository.jdbc;
 
+import java.util.List;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoaderFactory;
 import java.util.Set;
 import org.polyjdbc.core.exception.TransactionInterruptedException;
@@ -33,6 +34,7 @@ import org.smartparam.engine.model.EntityKey;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.metadata.LevelForm;
 import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
@@ -206,6 +208,52 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
             @Override
             public Level perform(QueryRunner queryRunner) {
                 return dao.getLevel(queryRunner, levelId);
+            }
+        });
+    }
+
+    @Override
+    public EntityKey addLevel(final String parameterName, final Level level) {
+        return transactionRunner.run(new TransactionWrapper<EntityKey>() {
+            @Override
+            public EntityKey perform(QueryRunner queryRunner) {
+                long levelId = dao.addLevel(queryRunner, parameterName, level);
+                return new JdbcEntityKey(levelId, parameterName);
+            }
+        });
+    }
+
+    @Override
+    public void updateLevel(final EntityKey levelKey, final LevelForm levelForm) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.updateLevel(queryRunner, levelKey.asNumber(), levelForm);
+            }
+        });
+    }
+
+    @Override
+    public void reorderLevels(final List<EntityKey> orderedLevels) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                long[] orderedLevelIds = new long[orderedLevels.size()];
+                for(int index = 0; index < orderedLevelIds.length; ++index) {
+                    orderedLevelIds[index] = orderedLevels.get(index).asNumber();
+                }
+
+                dao.reorderLevels(queryRunner, orderedLevelIds);
+            }
+        });
+    }
+
+    @Override
+    public void deleteLevel(final String parameterName, final EntityKey levelKey) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.deleteLevel(queryRunner, parameterName, levelKey.asNumber());
             }
         });
     }

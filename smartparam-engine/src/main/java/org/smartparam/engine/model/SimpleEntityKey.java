@@ -23,8 +23,11 @@ public class SimpleEntityKey implements EntityKey {
 
     private final String key;
 
-    public SimpleEntityKey(String key) {
+    private final String parameterName;
+
+    public SimpleEntityKey(String key, String parameterName) {
         this.key = key;
+        this.parameterName = parameterName;
     }
 
     public String getKey() {
@@ -32,7 +35,11 @@ public class SimpleEntityKey implements EntityKey {
     }
 
     public String getParameterName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return parameterName;
+    }
+
+    public long asNumber() {
+        throw new UnsupportedOperationException("SimpleEntityKey has no long representation.");
     }
 
 }

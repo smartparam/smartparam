@@ -41,33 +41,76 @@ public class LevelForm {
 
     private boolean arrayChanged;
 
-    private int order;
-
-    public LevelForm(int order) {
-        this.order = order;
+    public LevelForm() {
     }
 
     public String getName() {
         return name;
     }
 
+    public LevelForm rename(String name) {
+        this.name = name;
+        nameChanged = true;
+        return this;
+    }
+
+    public boolean nameChanged() {
+        return nameChanged;
+    }
+
     public String getLevelCreator() {
         return levelCreator;
+    }
+
+    public LevelForm udpateLevelCreator(String levelCreator) {
+        this.levelCreator = levelCreator;
+        levelCreatorChanged = true;
+        return this;
+    }
+
+    public boolean hasLevelCreatorChanged() {
+        return levelCreatorChanged;
     }
 
     public String getMatcher() {
         return matcher;
     }
 
+    public LevelForm udpateMatcher(String matcher) {
+        this.matcher = matcher;
+        matcherChanged = true;
+        return this;
+    }
+
+    public boolean hasMatcherChanged() {
+        return matcherChanged;
+    }
+
     public String getType() {
         return type;
+    }
+
+    public LevelForm udpateType(String type) {
+        this.type = type;
+        typeChanged = true;
+        return this;
+    }
+
+    public boolean hasTypeChanged() {
+        return typeChanged;
     }
 
     public boolean isArray() {
         return array;
     }
 
-    public int getOrder() {
-        return order;
+    public LevelForm udpateArray(boolean array) {
+        this.array = array;
+        arrayChanged = true;
+        return this;
+    }
+
+    public boolean hasArrayChanged() {
+        return arrayChanged;
     }
 }

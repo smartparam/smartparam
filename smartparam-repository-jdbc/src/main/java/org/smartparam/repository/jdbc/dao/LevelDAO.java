@@ -22,7 +22,9 @@ import org.polyjdbc.core.query.Order;
 import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
+import org.polyjdbc.core.query.UpdateQuery;
 import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.metadata.LevelForm;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 
@@ -48,6 +50,11 @@ public class LevelDAO {
 
     public long insert(QueryRunner queryRunner, JdbcLevel level, String parameterName) {
         return insert(queryRunner, level, parameterName, level.getOrderNo());
+    }
+
+    public long insert(QueryRunner queryRunner, Level level, String parameterName) {
+        List<Level> levels = getLevels(queryRunner, parameterName);
+        return insert(queryRunner, level, parameterName, levels.size());
     }
 
     private long insert(QueryRunner queryRunner, Level level, String parameterName, int order) {
@@ -84,5 +91,56 @@ public class LevelDAO {
                 .where("fk_parameter = :parameterName")
                 .withArgument("parameterName", parameterName);
         queryRunner.delete(query);
+    }
+
+    public void delete(QueryRunner queryRunner, String parameterName, long levelId) {
+        DeleteQuery query = QueryFactory.delete().from(configuration.getLevelTable())
+                .where("id = :id and fk_parameter = :parameterName")
+                .withArgument("id", levelId)
+                .withArgument("parameterName", parameterName);
+        queryRunner.delete(query);
+
+
+        List<JdbcLevel> parameterLevels = getJdbcLevels(queryRunner, parameterName);
+        long[] parameterLevelsIds = new long[parameterLevels.size()];
+        for(int index = 0; index < parameterLevels.size(); ++index) {
+            parameterLevelsIds[index] = parameterLevels.get(index).getId();
+        }
+        reorder(queryRunner, parameterLevelsIds);
+    }
+
+    public void update(QueryRunner queryRunner, long levelId, LevelForm levelForm) {
+        UpdateQuery query = QueryFactory.update(configuration.getLevelTable())
+                .where("id = :id").withArgument("id", levelId);
+
+        if(levelForm.nameChanged()) {
+            query.set("name", levelForm.getName());
+        }
+        if(levelForm.hasLevelCreatorChanged()) {
+            query.set("level_creator", levelForm.getLevelCreator());
+        }
+        if(levelForm.hasMatcherChanged()) {
+            query.set("matcher", levelForm.getMatcher());
+        }
+        if(levelForm.hasTypeChanged()) {
+            query.set("type", levelForm.getType());
+        }
+        if(levelForm.hasArrayChanged()) {
+            query.set("array_flag", levelForm.isArray());
+        }
+
+        queryRunner.update(query);
+    }
+
+    public void reorder(QueryRunner queryRunner, long[] reorderedLevelIds) {
+        UpdateQuery query;
+        int order = 0;
+        for(long levelId : reorderedLevelIds) {
+            query = QueryFactory.update(configuration.getLevelTable())
+                    .set("order_no", order)
+                    .where("id = :id").withArgument("id", levelId);
+            queryRunner.update(query);
+            order++;
+        }
     }
 }

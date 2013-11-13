@@ -80,6 +80,11 @@ public class JdbcEntityKey implements EntityKey {
     }
 
     @Override
+    public long asNumber() {
+        return getId();
+    }
+
+    @Override
     public String toString() {
         return "[JDBC entity key: " + getKey() + "]";
     }

@@ -25,4 +25,6 @@ public interface EntityKey {
 
     String getParameterName();
 
+    long asNumber();
+
 }
