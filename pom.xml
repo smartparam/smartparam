@@ -4,7 +4,7 @@
 
     <groupId>org.smartparam</groupId>
     <artifactId>smartparam-parent</artifactId>
-    <version>0.9.1-SNAPSHOT</version>
+    <version>0.9.1</version>
 
     <packaging>pom</packaging>
 
@@ -35,7 +35,7 @@
         <url>https://bitbucket.org/smartparam/smartparam</url>
         <connection>scm:git:git@bitbucket.org:smartparam/smartparam.git</connection>
         <developerConnection>scm:git:git@bitbucket.org:smartparam/smartparam.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>smartparam-0.9.1</tag>
     </scm>
 
     <properties>
