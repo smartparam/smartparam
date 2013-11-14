@@ -26,7 +26,6 @@ import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.SimpleQueryRunner;
 import org.polyjdbc.core.query.UpdateQuery;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
@@ -77,25 +76,14 @@ public class ParameterDAO {
         return simpleQueryRunner.queryExistence(query);
     }
 
-    public void update(QueryRunner queryRunner, String parameterName, ParameterForm parameterMetadata) {
+    public void update(QueryRunner queryRunner, String parameterName, Parameter parameter) {
         UpdateQuery query = QueryFactory.update(configuration.getParameterTable()).where("name = :name")
-                .withArgument("name", parameterName);
-
-        if (parameterMetadata.hasNameChanged()) {
-            query.set("name", parameterMetadata.getName());
-        }
-        if (parameterMetadata.hasInputLevelsChanged()) {
-            query.set("input_levels", parameterMetadata.getInputLevels());
-        }
-        if (parameterMetadata.hasCacheableChanged()) {
-            query.set("cacheable", parameterMetadata.isCacheable());
-        }
-        if (parameterMetadata.hasNullableChanged()) {
-            query.set("nullable", parameterMetadata.isNullable());
-        }
-        if (parameterMetadata.hasArraySeparatorChanged()) {
-            query.set("array_separator", parameterMetadata.getArraySeparator());
-        }
+                .withArgument("name", parameterName)
+                .set("name", parameter.getName())
+                .set("input_levels", parameter.getInputLevels())
+                .set("cacheable", parameter.isCacheable())
+                .set("nullable", parameter.isNullable())
+                .set("array_separator", parameter.getArraySeparator());
 
         queryRunner.update(query);
     }

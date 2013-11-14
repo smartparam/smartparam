@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.DeleteQuery;
@@ -24,6 +25,7 @@ import org.polyjdbc.core.query.Order;
 import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
+import org.polyjdbc.core.query.UpdateQuery;
 import org.polyjdbc.core.util.StringUtils;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
@@ -41,8 +43,13 @@ public class ParameterEntryDAO {
         this.configuration = configuration;
     }
 
-    public void insert(QueryRunner queryRunner, Iterable<ParameterEntry> parameterEntries, String parameterName) {
+    public long insert(QueryRunner queryRunner, ParameterEntry parameterEntry, String parameterName) {
+        return insert(queryRunner, Arrays.asList(parameterEntry), parameterName).get(0);
+    }
+
+    public List<Long> insert(QueryRunner queryRunner, Iterable<ParameterEntry> parameterEntries, String parameterName) {
         int maxDistinctLevels = configuration.getLevelColumnCount();
+        List<Long> insertedEntriesIds = new LinkedList<Long>();
 
         InsertQuery query;
         int levelIndex;
@@ -61,8 +68,10 @@ public class ParameterEntryDAO {
                 query.value("level" + maxDistinctLevels, entry.getLevels()[maxDistinctLevels - 1]);
             }
 
-            queryRunner.insert(query);
+            insertedEntriesIds.add(queryRunner.insert(query));
         }
+
+        return insertedEntriesIds;
     }
 
     private String concatenateLastLevels(String[] entryLevels, int maxDistinctLevels) {
@@ -94,5 +103,37 @@ public class ParameterEntryDAO {
                 .where("fk_parameter = :parameterName")
                 .withArgument("parameterName", parameterName);
         queryRunner.delete(query);
+    }
+
+    public void delete(QueryRunner queryRunner, long entryId) {
+        DeleteQuery query = QueryFactory.delete().from(configuration.getParameterEntryTable())
+                .where("id = :id").withArgument("id", entryId);
+        queryRunner.delete(query);
+    }
+
+    public void delete(QueryRunner queryRunner, Iterable<Long> entriesIds) {
+        DeleteQuery query = QueryFactory.delete().from(configuration.getParameterEntryTable())
+                .where("id in (:ids)").withArgument("ids", entriesIds);
+        queryRunner.delete(query);
+    }
+
+    public void update(QueryRunner queryRunner, long entryId, ParameterEntry entry) {
+        UpdateQuery query = QueryFactory.update(configuration.getParameterEntryTable())
+                .where("id = :id").withArgument("id", entryId);
+
+        int maxDistinctLevels = configuration.getLevelColumnCount();
+        int levelIndex;
+
+        for (levelIndex = 0; levelIndex < maxDistinctLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
+            query.set("level" + (levelIndex + 1), entry.getLevels()[levelIndex]);
+        }
+
+        if (entry.getLevels().length > maxDistinctLevels) {
+            query.set("level" + maxDistinctLevels, concatenateLastLevels(entry.getLevels(), maxDistinctLevels));
+        } else if (entry.getLevels().length == maxDistinctLevels) {
+            query.set("level" + maxDistinctLevels, entry.getLevels()[maxDistinctLevels - 1]);
+        }
+
+        queryRunner.update(query);
     }
 }

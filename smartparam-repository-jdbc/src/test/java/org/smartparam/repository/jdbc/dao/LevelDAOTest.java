@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.metadata.LevelForm;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.testng.annotations.Test;
@@ -137,8 +136,8 @@ public class LevelDAOTest extends DatabaseTest {
         long levelToUpdate = levelDAO.insert(runner, level().withName("level").withType("string").build(), "parameter");
 
         // when
-        LevelForm levelForm = new LevelForm().rename("renamedLevel");
-        levelDAO.update(runner, levelToUpdate, levelForm);
+        Level updatedLevelData = level().withName("renamedLevel").withType("string").build();
+        levelDAO.update(runner, levelToUpdate, updatedLevelData);
 
         Level level = levelDAO.getLevel(runner, levelToUpdate);
         runner.close();
@@ -158,7 +157,7 @@ public class LevelDAOTest extends DatabaseTest {
         long level2Id = levelDAO.insert(runner, level().withName("level2").withType("string").build(), "parameter");
 
         // when
-        levelDAO.reorder(runner, new long[] {level2Id, level1Id});
+        levelDAO.reorder(runner, new long[]{level2Id, level1Id});
 
         List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
         runner.close();

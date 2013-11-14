@@ -43,9 +43,6 @@ public abstract class AbstractParameterTestBuilder<T extends EditableParameter, 
 
     private Set<ParameterEntry> entries;
 
-    protected AbstractParameterTestBuilder() {
-    }
-
     protected abstract B self();
 
     protected abstract T buildParameter();

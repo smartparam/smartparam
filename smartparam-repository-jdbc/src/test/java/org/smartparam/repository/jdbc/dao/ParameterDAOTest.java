@@ -110,10 +110,10 @@ public class ParameterDAOTest extends DatabaseTest {
         ParameterDAO parameterDAO = get(ParameterDAO.class);
         QueryRunner runner = queryRunner();
 
-        ParameterForm metadataToUpdate = new ParameterForm().updateName("updatedTest");
+        Parameter updatedParameterData = parameter().withName("updatedTest").build();
 
         // when
-        parameterDAO.update(runner, "test", metadataToUpdate);
+        parameterDAO.update(runner, "test", updatedParameterData);
         runner.close();
 
         // then

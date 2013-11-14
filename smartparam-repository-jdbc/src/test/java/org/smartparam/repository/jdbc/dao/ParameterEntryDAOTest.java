@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
@@ -110,4 +111,86 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         // then
         assertThat(entries).hasSize(20);
     }
+
+    @Test
+    public void shouldDeleteEntryWithGivenId() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        long entryIdToDelete = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), "parameter");
+        runner.commit();
+
+        // when
+        parameterEntryDAO.delete(runner, entryIdToDelete);
+        runner.close();
+
+        // then
+        assertDatabase().hasNoEntriesForParameter("parameter").close();
+    }
+
+    @Test
+    public void shouldUpdateInformationOnParameterEntry() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        long entryIdToUpdate = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), "parameter");
+        runner.commit();
+
+        // when
+        parameterEntryDAO.update(runner, entryIdToUpdate, parameterEntry().withLevels("1", "2").build());
+        runner.commit();
+
+        // then
+        ParameterEntry updatedEntry = Iterables.firstItem(parameterEntryDAO.getParameterEntries(runner, "parameter"));
+        runner.close();
+
+        assertThat(updatedEntry).hasLevels("1", "2");
+    }
+
+    @Test
+    public void shouldConcatenateContentsOfExcessLevelsInLastLevelWhenUpdating() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        long entryIdToUpdate = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), "parameter");
+        runner.commit();
+
+        // when
+        parameterEntryDAO.update(runner, entryIdToUpdate, parameterEntry().withLevels("1", "2", "3", "4").build());
+        runner.commit();
+
+        // then
+        ParameterEntry updatedEntry = Iterables.firstItem(parameterEntryDAO.getParameterEntries(runner, "parameter"));
+        runner.close();
+
+        assertThat(updatedEntry).hasLevels("1", "2", "3", "4");
+    }
+
+// waiting for IN(..) SQL support in PolyJDBC
+//    @Test
+//    public void shouldDeleteEntriesWithGivenIds() {
+//    // given
+//        database().withParameter("parameter").build();
+//        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+//        QueryRunner runner = queryRunner();
+//
+//        List<ParameterEntry> entries = Arrays.asList(
+//                parameterEntry().withLevels("1").build(),
+//                parameterEntry().withLevels("2").build());
+//        List<Long> entriesIdsToDelete = parameterEntryDAO.insert(runner, entries, "parameter");
+//        runner.commit();
+//
+//        // when
+//        parameterEntryDAO.delete(runner, entriesIdsToDelete);
+//        runner.close();
+//
+//        // then
+//        assertDatabase().hasNoEntriesForParameter("parameter").close();
+//    }
 }

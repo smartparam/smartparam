@@ -33,9 +33,6 @@ public abstract class AbstractLevelTestBuilder<T extends EditableLevel, B extend
 
     private boolean array;
 
-    protected AbstractLevelTestBuilder() {
-    }
-
     protected abstract B self();
 
     protected abstract T buildLevel();

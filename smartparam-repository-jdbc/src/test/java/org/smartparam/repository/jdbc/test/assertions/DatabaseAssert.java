@@ -110,6 +110,10 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
         });
     }
 
+    public DatabaseAssert hasNoEntriesForParameter(String parameterName) {
+        return hasEntriesForParameter(parameterName, 0);
+    }
+
     private static interface Operation {
 
         void run();

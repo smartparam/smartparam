@@ -38,6 +38,11 @@ public class ParameterEntryAssert extends AbstractAssert<ParameterEntryAssert, P
         return this;
     }
 
+    public ParameterEntryAssert hasLevels(String... values) {
+        Assertions.assertThat(actual.getLevels()).containsExactly(values);
+        return this;
+    }
+
     public ParameterEntryAssert levelAtEquals(int levelIndex, String value) {
         Assertions.assertThat(actual.getLevels()[levelIndex]).isEqualTo(value);
         return this;

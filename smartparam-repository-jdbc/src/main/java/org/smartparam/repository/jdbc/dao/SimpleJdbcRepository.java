@@ -16,20 +16,17 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.model.EntityKey;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.metadata.LevelForm;
-import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
-import org.smartparam.repository.jdbc.model.ParameterFormConverter;
 
 /**
  * @author Przemek Hertel
@@ -67,12 +64,6 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public void createParameter(QueryRunner runner, ParameterForm parameterForm) {
-        Parameter parameter = ParameterFormConverter.convertToParameter(parameterForm);
-        parameterDAO.insert(runner, parameter);
-    }
-
-    @Override
     public boolean parameterExists(QueryRunner runner, String parameterName) {
         return parameterDAO.parameterExists(parameterName);
     }
@@ -105,8 +96,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public void writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries) {
-        parameterEntryDAO.insert(runner, entries, parameterName);
+    public List<Long> writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries) {
+        return parameterEntryDAO.insert(runner, entries, parameterName);
     }
 
     @Override
@@ -117,8 +108,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public void updateParameter(QueryRunner runner, String parameterName, ParameterForm parameterMetadata) {
-        parameterDAO.update(runner, parameterName, parameterMetadata);
+    public void updateParameter(QueryRunner runner, String parameterName, Parameter parameter) {
+        parameterDAO.update(runner, parameterName, parameter);
     }
 
     @Override
@@ -132,8 +123,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public void updateLevel(QueryRunner runner, long levelId, LevelForm levelForm) {
-        levelDAO.update(runner, levelId, levelForm);
+    public void updateLevel(QueryRunner runner, long levelId, Level level) {
+        levelDAO.update(runner, levelId, level);
     }
 
     @Override
@@ -144,5 +135,25 @@ public class SimpleJdbcRepository implements JdbcRepository {
     @Override
     public void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId) {
         levelDAO.delete(queryRunner, parameterName, levelId);
+    }
+
+    @Override
+    public long addParameterEntry(QueryRunner runner, String parameterName, ParameterEntry entry) {
+        return parameterEntryDAO.insert(runner, entry, parameterName);
+    }
+
+    @Override
+    public void updateParameterEntry(QueryRunner runner, long entryId, ParameterEntry entry) {
+        parameterEntryDAO.update(runner, entryId, entry);
+    }
+
+    @Override
+    public void deleteParameterEntry(QueryRunner runner, long entryId) {
+        parameterEntryDAO.delete(runner, entryId);
+    }
+
+    @Override
+    public void deleteParameterEntries(QueryRunner runner, Iterable<Long> entriesIds) {
+        parameterEntryDAO.delete(runner, entriesIds);
     }
 }

@@ -15,13 +15,12 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.metadata.LevelForm;
-import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
@@ -43,21 +42,27 @@ public interface JdbcRepository {
 
     Set<ParameterEntry> getParameterEntries(QueryRunner runner, String parameterName);
 
-    void writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries);
-
-    void createParameter(QueryRunner runner, ParameterForm parameterMetadata);
+    List<Long> writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries);
 
     void deleteParameter(QueryRunner runner, String parameterName);
 
-    void updateParameter(QueryRunner runner, String parameterName, ParameterForm parameterMetadata);
+    void updateParameter(QueryRunner runner, String parameterName, Parameter parameter);
 
     JdbcLevel getLevel(QueryRunner runner, long id);
 
     long addLevel(QueryRunner runner, String parameterName, Level level);
 
-    void updateLevel(QueryRunner runner, long levelId, LevelForm levelForm);
+    void updateLevel(QueryRunner runner, long levelId, Level level);
 
     void reorderLevels(QueryRunner runner, long[] orderedLevelIds);
 
     void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId);
+
+    long addParameterEntry(QueryRunner runner, String parameterName, ParameterEntry entry);
+
+    void updateParameterEntry(QueryRunner runner, long entryId, ParameterEntry entry);
+
+    void deleteParameterEntry(QueryRunner runner, long entryId);
+
+    void deleteParameterEntries(QueryRunner runner, Iterable<Long> entriesIds);
 }

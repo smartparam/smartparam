@@ -24,7 +24,6 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.UpdateQuery;
 import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.metadata.LevelForm;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 
@@ -100,34 +99,22 @@ public class LevelDAO {
                 .withArgument("parameterName", parameterName);
         queryRunner.delete(query);
 
-
         List<JdbcLevel> parameterLevels = getJdbcLevels(queryRunner, parameterName);
         long[] parameterLevelsIds = new long[parameterLevels.size()];
-        for(int index = 0; index < parameterLevels.size(); ++index) {
+        for (int index = 0; index < parameterLevels.size(); ++index) {
             parameterLevelsIds[index] = parameterLevels.get(index).getId();
         }
         reorder(queryRunner, parameterLevelsIds);
     }
 
-    public void update(QueryRunner queryRunner, long levelId, LevelForm levelForm) {
+    public void update(QueryRunner queryRunner, long levelId, Level level) {
         UpdateQuery query = QueryFactory.update(configuration.getLevelTable())
-                .where("id = :id").withArgument("id", levelId);
-
-        if(levelForm.nameChanged()) {
-            query.set("name", levelForm.getName());
-        }
-        if(levelForm.hasLevelCreatorChanged()) {
-            query.set("level_creator", levelForm.getLevelCreator());
-        }
-        if(levelForm.hasMatcherChanged()) {
-            query.set("matcher", levelForm.getMatcher());
-        }
-        if(levelForm.hasTypeChanged()) {
-            query.set("type", levelForm.getType());
-        }
-        if(levelForm.hasArrayChanged()) {
-            query.set("array_flag", levelForm.isArray());
-        }
+                .where("id = :id").withArgument("id", levelId)
+                .set("name", level.getName())
+                .set("level_creator", level.getLevelCreator())
+                .set("matcher", level.getMatcher())
+                .set("type", level.getType())
+                .set("array_flag", level.isArray());
 
         queryRunner.update(query);
     }
@@ -135,7 +122,7 @@ public class LevelDAO {
     public void reorder(QueryRunner queryRunner, long[] reorderedLevelIds) {
         UpdateQuery query;
         int order = 0;
-        for(long levelId : reorderedLevelIds) {
+        for (long levelId : reorderedLevelIds) {
             query = QueryFactory.update(configuration.getLevelTable())
                     .set("order_no", order)
                     .where("id = :id").withArgument("id", levelId);
