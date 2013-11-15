@@ -172,25 +172,24 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         assertThat(updatedEntry).hasLevels("1", "2", "3", "4");
     }
 
-// waiting for IN(..) SQL support in PolyJDBC
-//    @Test
-//    public void shouldDeleteEntriesWithGivenIds() {
-//    // given
-//        database().withParameter("parameter").build();
-//        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
-//        QueryRunner runner = queryRunner();
-//
-//        List<ParameterEntry> entries = Arrays.asList(
-//                parameterEntry().withLevels("1").build(),
-//                parameterEntry().withLevels("2").build());
-//        List<Long> entriesIdsToDelete = parameterEntryDAO.insert(runner, entries, "parameter");
-//        runner.commit();
-//
-//        // when
-//        parameterEntryDAO.delete(runner, entriesIdsToDelete);
-//        runner.close();
-//
-//        // then
-//        assertDatabase().hasNoEntriesForParameter("parameter").close();
-//    }
+    @Test
+    public void shouldDeleteEntriesWithGivenIds() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        List<ParameterEntry> entries = Arrays.asList(
+                parameterEntry().withLevels("1").build(),
+                parameterEntry().withLevels("2").build());
+        List<Long> entriesIdsToDelete = parameterEntryDAO.insert(runner, entries, "parameter");
+        runner.commit();
+
+        // when
+        parameterEntryDAO.delete(runner, entriesIdsToDelete);
+        runner.close();
+
+        // then
+        assertDatabase().hasNoEntriesForParameter("parameter").close();
+    }
 }
