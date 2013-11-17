@@ -16,26 +16,25 @@
 package org.smartparam.repository.jdbc.model;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.IdentifiableEntity;
 import org.smartparam.engine.model.editable.EditableParameterEntry;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameterEntry implements EditableParameterEntry, IdentifiableEntity {
+public class JdbcParameterEntry implements EditableParameterEntry {
 
-    private final JdbcEntityKey key;
+    private final JdbcParameterEntryKey key;
 
     private String[] levels;
 
     public JdbcParameterEntry(long id, String parameterName, String[] levels) {
-        this.key = new JdbcEntityKey(id, parameterName);
+        this.key = new JdbcParameterEntryKey(parameterName, id);
         this.levels = levels;
     }
 
     @Override
-    public JdbcEntityKey getEntityKey() {
+    public JdbcParameterEntryKey getKey() {
         return key;
     }
 
@@ -45,7 +44,7 @@ public class JdbcParameterEntry implements EditableParameterEntry, IdentifiableE
     }
 
     public long getId() {
-        return key.getId();
+        return key.entryId();
     }
 
     @Override

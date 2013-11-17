@@ -13,18 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.model;
+
+package org.smartparam.engine.model.editable;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface EntityKey {
+public class SimpleParameterEntryKey extends AbstractEntityKey implements ParameterEntryKey {
 
-    String getKey();
+    static final String SYMBOL = "simple";
 
-    String getParameterName();
+    private final String value;
 
-    long asNumber();
+    public SimpleParameterEntryKey(String parameterName) {
+        this.value = format(SYMBOL, parameterName);
+    }
+
+    @Override
+    public String value() {
+        return value;
+    }
 
 }

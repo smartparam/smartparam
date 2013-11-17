@@ -22,6 +22,7 @@ import java.util.Set;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.EditableParameter;
+import org.smartparam.engine.model.editable.ParameterKey;
 
 /**
  * @author Przemek Hertel
@@ -33,6 +34,8 @@ public class JdbcParameter implements EditableParameter {
      * Default value for {@link #arraySeparator} field.
      */
     public static final char DEFAULT_ARRAY_SEPARATOR = ',';
+
+    private final JdbcParameterKey key;
 
     private String name;
 
@@ -49,8 +52,14 @@ public class JdbcParameter implements EditableParameter {
     private char arraySeparator = DEFAULT_ARRAY_SEPARATOR;
 
     public JdbcParameter(String name, int inputLevels) {
-        this.setName(name);
+        this.key = new JdbcParameterKey(name);
+        this.name = name;
         this.inputLevels = inputLevels;
+    }
+
+    @Override
+    public JdbcParameterKey getKey() {
+        return key;
     }
 
     @Override

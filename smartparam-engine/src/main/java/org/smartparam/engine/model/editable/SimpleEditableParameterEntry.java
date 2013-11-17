@@ -24,6 +24,12 @@ import org.smartparam.engine.model.SimpleParameterEntry;
 public class SimpleEditableParameterEntry extends SimpleParameterEntry implements EditableParameterEntry {
 
     @Override
+    public ParameterEntryKey getKey() {
+        return new SimpleParameterEntryKey("");
+    }
+
+
+    @Override
     public void setLevels(String[] levels) {
         this.levels = levels;
     }

@@ -28,6 +28,11 @@ import org.smartparam.engine.model.SimpleParameter;
 public class SimpleEditableParameter extends SimpleParameter implements EditableParameter {
 
     @Override
+    public ParameterKey getKey() {
+        return new SimpleParameterKey(name);
+    }
+
+    @Override
     public void setName(String name) {
         this.name = name;
     }

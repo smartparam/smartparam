@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.model;
+
+package org.smartparam.repository.jdbc.exception;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface IdentifiableEntity {
+@SuppressWarnings("serial")
+public class ParameterAlreadyExistsException extends JdbcRepositoryException {
 
-    EntityKey getEntityKey();
+    public ParameterAlreadyExistsException(String message) {
+        super(message);
+    }
 
 }

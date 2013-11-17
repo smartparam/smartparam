@@ -27,6 +27,8 @@ import org.smartparam.engine.model.ParameterEntry;
  */
 public interface EditableParameter extends Parameter {
 
+    ParameterKey getKey();
+
     void setName(String name);
 
     void setLevels(List<Level> levels);

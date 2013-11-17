@@ -31,14 +31,17 @@ import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.core.repository.EditableParamRepository;
-import org.smartparam.engine.model.EntityKey;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.LevelKey;
+import org.smartparam.engine.model.editable.ParameterEntryKey;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
-import org.smartparam.repository.jdbc.model.JdbcEntityKey;
+import org.smartparam.repository.jdbc.exception.ParameterAlreadyExistsException;
+import org.smartparam.repository.jdbc.model.JdbcLevelKey;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
+import org.smartparam.repository.jdbc.model.JdbcParameterEntryKey;
 import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
 /**
@@ -185,6 +188,9 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
+                if (dao.parameterExists(queryRunner, parameter.getName())) {
+                    throw new ParameterAlreadyExistsException("Parameter with name " + parameter.getName() + " already exists in this repository.");
+                }
                 dao.createParameter(queryRunner, parameter);
             }
         });
@@ -201,45 +207,44 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
     }
 
     @Override
-    public Level getLevel(EntityKey entityKey) {
-        final long levelId = JdbcEntityKey.parseKey(entityKey).getId();
+    public Level getLevel(final LevelKey entityKey) {
         return transactionRunner.run(new TransactionWrapper<Level>() {
             @Override
             public Level perform(QueryRunner queryRunner) {
-                return dao.getLevel(queryRunner, levelId);
+                return dao.getLevel(queryRunner, new JdbcLevelKey(entityKey).levelId());
             }
         });
     }
 
     @Override
-    public EntityKey addLevel(final String parameterName, final Level level) {
-        return transactionRunner.run(new TransactionWrapper<EntityKey>() {
+    public LevelKey addLevel(final String parameterName, final Level level) {
+        return transactionRunner.run(new TransactionWrapper<LevelKey>() {
             @Override
-            public EntityKey perform(QueryRunner queryRunner) {
+            public LevelKey perform(QueryRunner queryRunner) {
                 long levelId = dao.addLevel(queryRunner, parameterName, level);
-                return new JdbcEntityKey(levelId, parameterName);
+                return new JdbcLevelKey(parameterName, levelId);
             }
         });
     }
 
     @Override
-    public void updateLevel(final EntityKey levelKey, final Level level) {
+    public void updateLevel(final LevelKey levelKey, final Level level) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
-                dao.updateLevel(queryRunner, levelKey.asNumber(), level);
+                dao.updateLevel(queryRunner, new JdbcLevelKey(levelKey).levelId(), level);
             }
         });
     }
 
     @Override
-    public void reorderLevels(final List<EntityKey> orderedLevels) {
+    public void reorderLevels(final List<LevelKey> orderedLevels) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
                 long[] orderedLevelIds = new long[orderedLevels.size()];
                 for (int index = 0; index < orderedLevelIds.length; ++index) {
-                    orderedLevelIds[index] = orderedLevels.get(index).asNumber();
+                    orderedLevelIds[index] = new JdbcLevelKey(orderedLevels.get(index)).levelId();
                 }
 
                 dao.reorderLevels(queryRunner, orderedLevelIds);
@@ -248,36 +253,36 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
     }
 
     @Override
-    public void deleteLevel(final String parameterName, final EntityKey levelKey) {
+    public void deleteLevel(final String parameterName, final LevelKey levelKey) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
-                dao.deleteLevel(queryRunner, parameterName, levelKey.asNumber());
+                dao.deleteLevel(queryRunner, parameterName, new JdbcLevelKey(levelKey).levelId());
             }
         });
     }
 
     @Override
-    public EntityKey addEntry(final String parameterName, final ParameterEntry entry) {
-        return transactionRunner.run(new TransactionWrapper<EntityKey>() {
+    public ParameterEntryKey addEntry(final String parameterName, final ParameterEntry entry) {
+        return transactionRunner.run(new TransactionWrapper<ParameterEntryKey>() {
             @Override
-            public EntityKey perform(QueryRunner queryRunner) {
+            public ParameterEntryKey perform(QueryRunner queryRunner) {
                 long entryId = dao.addParameterEntry(queryRunner, parameterName, entry);
-                return new JdbcEntityKey(entryId, parameterName);
+                return new JdbcParameterEntryKey(parameterName, entryId);
             }
         });
     }
 
     @Override
-    public List<EntityKey> addEntries(final String parameterName, final List<ParameterEntry> entries) {
-        return transactionRunner.run(new TransactionWrapper<List<EntityKey>>() {
+    public List<ParameterEntryKey> addEntries(final String parameterName, final List<ParameterEntry> entries) {
+        return transactionRunner.run(new TransactionWrapper<List<ParameterEntryKey>>() {
             @Override
-            public List<EntityKey> perform(QueryRunner queryRunner) {
+            public List<ParameterEntryKey> perform(QueryRunner queryRunner) {
                 List<Long> entriesIds = dao.writeParameterEntries(queryRunner, parameterName, entries);
 
-                List<EntityKey> keys = new ArrayList<EntityKey>(entries.size());
+                List<ParameterEntryKey> keys = new ArrayList<ParameterEntryKey>(entries.size());
                 for (Long entryId : entriesIds) {
-                    keys.add(new JdbcEntityKey(entryId, parameterName));
+                    keys.add(new JdbcParameterEntryKey(parameterName, entryId));
                 }
 
                 return keys;
@@ -286,38 +291,37 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
     }
 
     @Override
-    public void updateEntry(final EntityKey entryKey, final ParameterEntry entry) {
+    public void updateEntry(final ParameterEntryKey entryKey, final ParameterEntry entry) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
-                dao.updateParameterEntry(queryRunner, entryKey.asNumber(), entry);
+                dao.updateParameterEntry(queryRunner, new JdbcParameterEntryKey(entryKey).entryId(), entry);
             }
         });
     }
 
     @Override
-    public void deleteEntry(final EntityKey entryKey) {
+    public void deleteEntry(final ParameterEntryKey entryKey) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
-                dao.deleteParameterEntry(queryRunner, entryKey.asNumber());
+                dao.deleteParameterEntry(queryRunner, new JdbcParameterEntryKey(entryKey).entryId());
             }
         });
     }
 
     @Override
-    public void deleteEntries(final Iterable<EntityKey> entryKeys) {
-        throw new UnsupportedOperationException("Please start with implementing IN(...) SQL syntax in PolyJDBC before using this one!");
-//        transactionRunner.run(new VoidTransactionWrapper() {
-//            @Override
-//            public void performVoid(QueryRunner queryRunner) {
-//                List<Long> ids = new ArrayList<Long>();
-//                for (EntityKey key : entryKeys) {
-//                    ids.add(key.asNumber());
-//                }
-//
-//                dao.deleteParameterEntries(queryRunner, ids);
-//            }
-//        });
+    public void deleteEntries(final Iterable<ParameterEntryKey> entryKeys) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                List<Long> ids = new ArrayList<Long>();
+                for (ParameterEntryKey key : entryKeys) {
+                    ids.add(new JdbcParameterEntryKey(key).entryId());
+                }
+
+                dao.deleteParameterEntries(queryRunner, ids);
+            }
+        });
     }
 }

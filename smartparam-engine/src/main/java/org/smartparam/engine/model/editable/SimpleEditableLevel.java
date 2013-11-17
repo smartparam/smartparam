@@ -24,6 +24,11 @@ import org.smartparam.engine.model.SimpleLevel;
 public class SimpleEditableLevel extends SimpleLevel implements EditableLevel {
 
     @Override
+    public LevelKey getKey() {
+        return new SimpleLevelKey(name);
+    }
+
+    @Override
     public void setName(String name) {
         this.name = name;
     }

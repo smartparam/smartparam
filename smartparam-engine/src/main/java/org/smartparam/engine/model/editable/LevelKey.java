@@ -15,16 +15,12 @@
  */
 package org.smartparam.engine.model.editable;
 
-import org.smartparam.engine.model.ParameterEntry;
-
 /**
  *
  * @author Adam Dubiel
  */
-public interface EditableParameterEntry extends ParameterEntry {
+public interface LevelKey {
 
-    ParameterEntryKey getKey();
-
-    void setLevels(String[] levels);
+    String value();
 
 }

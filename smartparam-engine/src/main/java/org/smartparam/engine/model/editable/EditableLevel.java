@@ -23,6 +23,8 @@ import org.smartparam.engine.model.Level;
  */
 public interface EditableLevel extends Level {
 
+    LevelKey getKey();
+
     void setName(String name);
 
     void setLevelCreator(String levelCreator);

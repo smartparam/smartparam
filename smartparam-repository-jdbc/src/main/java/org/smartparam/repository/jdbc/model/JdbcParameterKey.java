@@ -13,33 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.model;
+package org.smartparam.repository.jdbc.model;
+
+import org.smartparam.engine.model.editable.AbstractEntityKey;
+import org.smartparam.engine.model.editable.ParameterKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleEntityKey implements EntityKey {
+public class JdbcParameterKey extends AbstractEntityKey implements ParameterKey {
 
-    private final String key;
+    static final String SYMBOL = "jdbc";
+
+    private final String value;
 
     private final String parameterName;
 
-    public SimpleEntityKey(String key, String parameterName) {
-        this.key = key;
+    public JdbcParameterKey(String parameterName) {
+        this.value = format(SYMBOL, parameterName);
         this.parameterName = parameterName;
     }
 
-    public String getKey() {
-        return key;
+    public JdbcParameterKey(ParameterKey parameterKey) {
+        String[] segments = parse(SYMBOL, parameterKey.value());
+        value = parameterKey.value();
+        parameterName = segments[0];
     }
 
-    public String getParameterName() {
+    @Override
+    public String value() {
+        return value;
+    }
+
+    public String parameterName() {
         return parameterName;
-    }
-
-    public long asNumber() {
-        throw new UnsupportedOperationException("SimpleEntityKey has no long representation.");
     }
 
 }

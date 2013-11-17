@@ -16,10 +16,11 @@
 package org.smartparam.engine.core.repository;
 
 import java.util.List;
-import org.smartparam.engine.model.EntityKey;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.LevelKey;
+import org.smartparam.engine.model.editable.ParameterEntryKey;
 
 /**
  * Warning! This interface will be undergoing big changes in near future
@@ -33,24 +34,24 @@ public interface EditableParamRepository extends WritableParamRepository {
 
     void updateParameter(String parameterName, Parameter parameter);
 
-    Level getLevel(EntityKey entityKey);
+    Level getLevel(LevelKey entityKey);
 
-    EntityKey addLevel(String parameterName, Level level);
+    LevelKey addLevel(String parameterName, Level level);
 
-    void reorderLevels(List<EntityKey> orderedLevels);
+    void reorderLevels(List<LevelKey> orderedLevels);
 
-    void updateLevel(EntityKey levelKey, Level level);
+    void updateLevel(LevelKey levelKey, Level level);
 
-    void deleteLevel(String parameterName, EntityKey levelKey);
+    void deleteLevel(String parameterName, LevelKey levelKey);
 
-    EntityKey addEntry(String parameterName, ParameterEntry entry);
+    ParameterEntryKey addEntry(String parameterName, ParameterEntry entry);
 
-    List<EntityKey> addEntries(String parameterName, List<ParameterEntry> entries);
+    List<ParameterEntryKey> addEntries(String parameterName, List<ParameterEntry> entries);
 
-    void updateEntry(EntityKey entryKey, ParameterEntry entry);
+    void updateEntry(ParameterEntryKey entryKey, ParameterEntry entry);
 
-    void deleteEntry(EntityKey entryKey);
+    void deleteEntry(ParameterEntryKey entryKey);
 
-    void deleteEntries(Iterable<EntityKey> entryKeys);
+    void deleteEntries(Iterable<ParameterEntryKey> entryKeys);
 
 }

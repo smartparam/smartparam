@@ -15,16 +15,22 @@
  */
 package org.smartparam.engine.model.editable;
 
-import org.smartparam.engine.model.ParameterEntry;
-
 /**
  *
  * @author Adam Dubiel
  */
-public interface EditableParameterEntry extends ParameterEntry {
+public class SimpleParameterKey extends AbstractEntityKey implements ParameterKey {
 
-    ParameterEntryKey getKey();
+    static final String SYMBOL = "simple";
 
-    void setLevels(String[] levels);
+    private final String value;
 
+    public SimpleParameterKey(String parameterName) {
+        this.value = format(SYMBOL, parameterName);
+    }
+
+    @Override
+    public String value() {
+        return value;
+    }
 }
