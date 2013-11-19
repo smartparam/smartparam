@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.model.editable;
 
-import org.smartparam.engine.model.Level;
+package org.smartparam.engine.model.editable;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface EditableLevel extends Level, IdentifiableLevel {
+public interface IdentifiableLevel {
 
-    void setName(String name);
+    LevelKey getKey();
 
-    void setLevelCreator(String levelCreator);
-
-    void setType(String type);
-
-    void setMatcher(String matcher);
-
-    void setArray(boolean array);
 }

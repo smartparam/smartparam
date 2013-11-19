@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.model.editable;
 
-import org.smartparam.engine.model.Level;
+package org.smartparam.engine.core.repository;
+
+import java.util.List;
+import org.smartparam.engine.editor.ParameterEntriesFilter;
+import org.smartparam.engine.model.editable.IdentifiableParameter;
+import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface EditableLevel extends Level, IdentifiableLevel {
+public interface ViewableParamRepository extends ParamRepository {
 
-    void setName(String name);
+    IdentifiableParameter getParameterMetadata(String parameterName);
 
-    void setLevelCreator(String levelCreator);
+    List<IdentifiableParameterEntry> listEntries(String parameterName, ParameterEntriesFilter filter);
 
-    void setType(String type);
-
-    void setMatcher(String matcher);
-
-    void setArray(boolean array);
 }

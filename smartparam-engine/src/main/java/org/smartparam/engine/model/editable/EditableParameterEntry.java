@@ -21,9 +21,7 @@ import org.smartparam.engine.model.ParameterEntry;
  *
  * @author Adam Dubiel
  */
-public interface EditableParameterEntry extends ParameterEntry {
-
-    ParameterEntryKey getKey();
+public interface EditableParameterEntry extends ParameterEntry, IdentifiableParameterEntry {
 
     void setLevels(String[] levels);
 
