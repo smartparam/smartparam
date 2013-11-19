@@ -31,9 +31,14 @@ import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.core.repository.EditableParamRepository;
+import org.smartparam.engine.core.repository.ViewableParamRepository;
+import org.smartparam.engine.core.repository.WritableParamRepository;
+import org.smartparam.engine.editor.ParameterEntriesFilter;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.IdentifiableParameter;
+import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.engine.model.editable.LevelKey;
 import org.smartparam.engine.model.editable.ParameterEntryKey;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
@@ -48,7 +53,7 @@ import org.smartparam.repository.jdbc.schema.SchemaCreator;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParamRepository implements EditableParamRepository, InitializableComponent {
+public class JdbcParamRepository implements WritableParamRepository, EditableParamRepository, ViewableParamRepository, InitializableComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
 
@@ -184,6 +189,16 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
     }
 
     @Override
+    public IdentifiableParameter getParameterMetadata(final String prameterName) {
+        return transactionRunner.run(new TransactionWrapper<IdentifiableParameter>() {
+            @Override
+            public IdentifiableParameter perform(QueryRunner queryRunner) {
+                return dao.getParameterMetadata(queryRunner, prameterName);
+            }
+        });
+    }
+
+    @Override
     public void createParameter(final Parameter parameter) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
@@ -263,6 +278,16 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
     }
 
     @Override
+    public List<IdentifiableParameterEntry> listEntries(final String parameterName, final ParameterEntriesFilter filter) {
+        return transactionRunner.run(new TransactionWrapper<List<IdentifiableParameterEntry>>() {
+            @Override
+            public List<IdentifiableParameterEntry> perform(QueryRunner queryRunner) {
+                return dao.listEntries(queryRunner, parameterName, filter);
+            }
+        });
+    }
+
+    @Override
     public ParameterEntryKey addEntry(final String parameterName, final ParameterEntry entry) {
         return transactionRunner.run(new TransactionWrapper<ParameterEntryKey>() {
             @Override
@@ -324,4 +349,5 @@ public class JdbcParamRepository implements EditableParamRepository, Initializab
             }
         });
     }
+
 }

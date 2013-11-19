@@ -27,7 +27,9 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.UpdateQuery;
 import org.polyjdbc.core.util.StringUtils;
+import org.smartparam.engine.editor.ParameterEntriesFilter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 
@@ -135,5 +137,23 @@ public class ParameterEntryDAO {
         }
 
         queryRunner.update(query);
+    }
+
+    public List<IdentifiableParameterEntry> list(QueryRunner queryRunner, String parameterName, ParameterEntriesFilter filter) {
+        SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterEntryTable())
+                .where("fk_parameter = :parameterName ")
+                .withArgument("parameterName", parameterName);
+
+        int maxDistinctLevels = configuration.getLevelColumnCount();
+        for(int levelIndex = 0; levelIndex < filter.levelFiltersLength() && levelIndex < maxDistinctLevels; ++levelIndex) {
+            if(filter.hasFilter(levelIndex)) {
+                query.append("and level" + (levelIndex + 1)).append(" = :level" + (levelIndex + 1));
+                query.withArgument("level" + (levelIndex + 1), filter.levelFilter(levelIndex));
+            }
+        }
+
+        query.limit(filter.pageSize(), filter.offset());
+
+        return queryRunner.queryList(query, new IdentifiableParameterEntryMapper(configuration));
     }
 }

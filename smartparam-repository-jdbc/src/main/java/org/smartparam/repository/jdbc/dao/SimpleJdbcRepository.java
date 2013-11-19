@@ -16,14 +16,15 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.editor.ParameterEntriesFilter;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -135,6 +136,11 @@ public class SimpleJdbcRepository implements JdbcRepository {
     @Override
     public void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId) {
         levelDAO.delete(queryRunner, parameterName, levelId);
+    }
+
+    @Override
+    public List<IdentifiableParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter) {
+        return parameterEntryDAO.list(runner, parameterName, filter);
     }
 
     @Override
