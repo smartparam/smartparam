@@ -57,7 +57,7 @@ public class DefaultContext implements ParamContext {
 
     private Map<String, Object> userContext;
 
-    private String[] levelValues;
+    private Object[] levelValues;
 
     /**
      * Puts provided values into context using algorithm:
@@ -284,14 +284,8 @@ public class DefaultContext implements ParamContext {
         }
     }
 
-    @Override
-    public String[] getLevelValues() {
+    public Object[] getLevelValues() {
         return levelValues;
-    }
-
-    @Override
-    public final void setLevelValues(String... levelValues) {
-        this.levelValues = levelValues;
     }
 
     /**
@@ -306,18 +300,11 @@ public class DefaultContext implements ParamContext {
     }
 
     /**
-     * Set level values directly, without using user context. Objects are
-     * transformed to level values by calling toString on each of them. Method
-     * is null safe, puts null value into level values.
-     *
-     * @param levelValues
+     * Set level values directly as objects.
+     * Method is null safe, puts null value into level values.
      */
-    protected final void setLevelValues(Object... levelValues) {
-        this.levelValues = new String[levelValues.length];
-        for (int i = 0; i < levelValues.length; ++i) {
-            Object value = levelValues[i];
-            this.levelValues[i] = value != null ? value.toString() : null;
-        }
+    public void setLevelValues(Object... levelValues) {
+        this.levelValues = levelValues;
     }
 
     public DefaultContext withLevelValues(String... levelValues) {

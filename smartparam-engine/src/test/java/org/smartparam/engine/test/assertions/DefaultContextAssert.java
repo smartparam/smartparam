@@ -33,7 +33,7 @@ public class DefaultContextAssert extends AbstractAssert<DefaultContextAssert, D
         return new DefaultContextAssert(actual);
     }
 
-    public DefaultContextAssert hasLevelValues(String... levelValues) {
+    public DefaultContextAssert hasLevelValues(Object... levelValues) {
         Assertions.assertThat(actual.getLevelValues()).containsExactly(levelValues);
         return this;
     }

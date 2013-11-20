@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.core.engine;
 
-import java.util.Collection;
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 
 import org.smartparam.engine.core.context.ParamContext;
@@ -48,31 +47,6 @@ public interface ParamEngine {
      * @return resulting submatrix
      */
     ParamValue get(String paramName, Object... inputLevels);
-
-    /**
-     * Assemble object of given class out of value returned by parameter. Always
-     * takes values from first row.
-     *
-     * @see org.smartparam.engine.core.assembler.AssemblyStrategy;
-     */
-    <T> T getObject(String paramName, Class<T> outputClass, ParamContext context);
-
-    /**
-     * Assemble object of given class out of value returned by parameter using
-     * explicitly provided values.
-     */
-    <T> T getObject(String paramName, Class<T> outputClass, Object... inputLevels);
-
-    /**
-     * Returns collection of objects assembled from matrix returned by parameter.
-     */
-    <T> Collection<T> getObjects(String paramName, Class<T> outputClass, ParamContext context);
-
-    /**
-     * Returns collection of objects assembled from matrix returned by parameter
-     * using explicitly provided values.
-     */
-    <T> Collection<T> getObjects(String paramName, Class<T> outputClass, Object... inputLevels);
 
     /**
      * Use function engine to call function registered under provided name,

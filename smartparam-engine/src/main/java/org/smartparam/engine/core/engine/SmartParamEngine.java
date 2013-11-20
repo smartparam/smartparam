@@ -18,13 +18,11 @@ package org.smartparam.engine.core.engine;
 import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.service.FunctionManager;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 import org.smartparam.engine.config.ParamEngineRuntimeConfigBuilder;
-import org.smartparam.engine.core.assembler.ObjectAssembler;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamUsageException;
@@ -40,7 +38,7 @@ import org.smartparam.engine.util.ParamHelper;
 /**
  *
  * @author Przemek Hertel
- * @since 0.1.0
+ * @since 0.9.0
  */
 public class SmartParamEngine implements ParamEngine {
 
@@ -52,12 +50,9 @@ public class SmartParamEngine implements ParamEngine {
 
     private FunctionManager functionManager;
 
-    private ObjectAssembler objectAssembler;
-
-    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager, ObjectAssembler objectAssembler, ParamEngineRuntimeConfigBuilder configBuilder) {
+    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager, ParamEngineRuntimeConfigBuilder configBuilder) {
         this.paramPreparer = paramPreparer;
         this.functionManager = functionManager;
-        this.objectAssembler = objectAssembler;
         this.configBuilder = configBuilder;
     }
 
@@ -133,30 +128,6 @@ public class SmartParamEngine implements ParamEngine {
     }
 
     @Override
-    public <T> T getObject(String paramName, Class<T> outputClass, ParamContext context) {
-        ParamValue paramValue = get(paramName, context);
-        return objectAssembler.assemble(outputClass, paramValue.row());
-    }
-
-    @Override
-    public <T> T getObject(String paramName, Class<T> outputClass, Object... inputLevels) {
-        ParamContext context = new LevelValues(inputLevels);
-        return getObject(paramName, outputClass, context);
-    }
-
-    @Override
-    public <T> Collection<T> getObjects(String paramName, Class<T> outputClass, ParamContext context) {
-        ParamValue paramValue = get(paramName, context);
-        return objectAssembler.assemble(outputClass, paramValue);
-    }
-
-    @Override
-    public <T> Collection<T> getObjects(String paramName, Class<T> outputClass, Object... inputLevels) {
-        ParamContext context = new LevelValues(inputLevels);
-        return getObjects(paramName, outputClass, context);
-    }
-
-    @Override
     public Object callFunction(String functionName, Object... args) {
         if (logger.isDebugEnabled()) {
             logger.debug("calling function [{}] with args: {}", functionName, classNames(args));
@@ -212,7 +183,7 @@ public class SmartParamEngine implements ParamEngine {
         logger.trace("evaluating level values");
 
         PreparedLevel[] levels = param.getLevels();
-        String[] values = new String[param.getInputLevelsCount()];
+        Object[] values = new Object[param.getInputLevelsCount()];
 
         for (int i = 0; i < values.length; ++i) {
             PreparedLevel level = levels[i];
@@ -228,18 +199,12 @@ public class SmartParamEngine implements ParamEngine {
             Object result = functionManager.invokeFunction(levelCreator, ctx);
             logger.trace("L{}: evaluated: {}", i + 1, result);
 
-            if (result == null) {
-                values[i] = null;
-            } else if (result instanceof String) {
-                values[i] = (String) result;
-            } else if (level.getType() != null) {
-                values[i] = level.getType().convert(result).getString();
-            } else {
-                values[i] = result.toString();
-            }
+            values[i] = result;
         }
 
-        logger.debug("discovered level values: {}", Arrays.toString(values));
+        if (logger.isDebugEnabled()) {
+            logger.debug("discovered level values: {}", Arrays.toString(values));
+        }
 
         ctx.setLevelValues(values);
     }
@@ -250,7 +215,6 @@ public class SmartParamEngine implements ParamEngine {
 
         if (param.isCacheable()) {
             LevelIndex<PreparedEntry> index = param.getIndex();
-            validateLevelValues(levelValues, index.getLevelCount());
             entries = index.find(levelValues);
         } else {
             entries = paramPreparer.findEntries(param.getName(), levelValues);
@@ -259,7 +223,7 @@ public class SmartParamEngine implements ParamEngine {
         return entries != null ? entries.toArray(new PreparedEntry[entries.size()]) : new PreparedEntry[0];
     }
 
-    private void validateLevelValues(String[] levelValues, int parameterLevelCount) {
+    private void validateLevelValues(Object[] levelValues, int parameterLevelCount) {
 
         if (levelValues.length != parameterLevelCount) {
             throw new SmartParamUsageException(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
@@ -274,7 +238,10 @@ public class SmartParamEngine implements ParamEngine {
             evaluateLevelValues(param, ctx);
         }
 
-        return findParameterEntries(param, ctx.getLevelValues());
+        validateLevelValues(ctx.getLevelValues(), param.getInputLevelsCount());
+
+        String[] normalizedInputValues = ParamHelper.normalize(param, ctx.getLevelValues());
+        return findParameterEntries(param, normalizedInputValues);
     }
 
     private PreparedParameter getPreparedParameter(String paramName) {

@@ -32,11 +32,12 @@ import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.util.ParamHelper;
 
 /**
  *
  * @author Przemek Hertel
- * @since 0.1.0
+ * @since 0.9.0
  */
 public class BasicParamPreparer implements ParamPreparer {
 
@@ -107,7 +108,17 @@ public class BasicParamPreparer implements ParamPreparer {
 
         String[] keys;
         for (ParameterEntry parameterEntry : parameter.getEntries()) {
+
+            // raw level patterns (read from repository)
             keys = getFirstNLevels(parameterEntry, inputLevelCount);
+
+            // normalize level patters
+            for (int i = 0; i < inputLevelCount; i++) {
+                if (matchers[i] == null) {
+                    keys[i] = ParamHelper.normalize(types[i], keys[i]);
+                }
+            }
+
             index.add(keys, prepareEntry(parameterEntry));
         }
 
