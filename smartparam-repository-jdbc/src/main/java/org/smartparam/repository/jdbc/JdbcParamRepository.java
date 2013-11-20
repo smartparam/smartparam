@@ -34,6 +34,8 @@ import org.smartparam.engine.core.repository.EditableParamRepository;
 import org.smartparam.engine.core.repository.ViewableParamRepository;
 import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
+import org.smartparam.engine.editor.ViewableRepositoryCapabilities;
+import org.smartparam.engine.editor.ViewableRepositoryCapability;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -79,6 +81,11 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     public void initialize() {
         schemaCreator.createSchema();
     }
+
+    public ViewableRepositoryCapabilities capabilities() {
+        return new ViewableRepositoryCapabilities(ViewableRepositoryCapability.PAGE_ENTRIES, ViewableRepositoryCapability.FILTER_ENTRIES);
+    }
+
 
     @Override
     public Set<String> listParameters() {

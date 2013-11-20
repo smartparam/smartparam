@@ -19,6 +19,7 @@ import java.util.List;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.EditableLevel;
 import org.smartparam.engine.model.editable.LevelKey;
 import org.smartparam.engine.model.editable.ParameterEntryKey;
 
@@ -30,15 +31,11 @@ public interface ParameterEditor {
 
     List<RepositoryName> repositories();
 
-    List<DescribedCollection<String>> listParameters();
-
-    DescribedCollection<String> listParameters(RepositoryName from);
-
     void createParameter(RepositoryName in, Parameter parameter);
 
     void updateParameter(RepositoryName in, String parameterName, Parameter parameter);
 
-    DescribedEntity<Level> getLevel(RepositoryName from, LevelKey levelKey);
+    DescribedEntity<EditableLevel> getLevel(RepositoryName from, LevelKey levelKey);
 
     DescribedEntity<LevelKey> addLevel(RepositoryName in, String parameterName, Level level);
 

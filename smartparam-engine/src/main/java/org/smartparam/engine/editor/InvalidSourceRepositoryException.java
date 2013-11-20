@@ -24,16 +24,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 @SuppressWarnings("serial")
 public class InvalidSourceRepositoryException extends SmartParamException {
 
-    private InvalidSourceRepositoryException(boolean editable, RepositoryName repositoryName) {
-        super("No " + (editable ? "editable" : "") + " repository with name " + repositoryName.name() + " registered in this editor.");
+    InvalidSourceRepositoryException(RepositoryName repositoryName) {
+        super("No repository with name " + repositoryName.name() + " registered in this store.");
     }
-
-    static InvalidSourceRepositoryException noneForReading(RepositoryName repositoryName) {
-        return new InvalidSourceRepositoryException(false, repositoryName);
-    }
-
-    static InvalidSourceRepositoryException noneForWriting(RepositoryName repositoryName) {
-        return new InvalidSourceRepositoryException(true, repositoryName);
-    }
-
 }

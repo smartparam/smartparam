@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package org.smartparam.engine.core.repository;
+package org.smartparam.engine.editor;
 
-import java.util.List;
-import org.smartparam.engine.editor.ParameterEntriesFilter;
-import org.smartparam.engine.editor.ViewableRepositoryCapabilities;
-import org.smartparam.engine.model.editable.IdentifiableParameter;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ViewableParamRepository extends ParamRepository {
+public abstract class RepositoryCapabilities<E extends Enum<E>> {
 
-    ViewableRepositoryCapabilities capabilities();
+    private final Set<E> capabilities;
 
-    IdentifiableParameter getParameterMetadata(String parameterName);
+    protected RepositoryCapabilities(E... capabilities) {
+        this.capabilities = EnumSet.copyOf(Arrays.asList(capabilities));
+    }
 
-    List<IdentifiableParameterEntry> listEntries(String parameterName, ParameterEntriesFilter filter);
+    public boolean isCapableOf(E capability) {
+        return capabilities.contains(capability);
+    }
 
 }

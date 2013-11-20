@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.editor;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.repository.EditableParamRepository;
@@ -23,6 +22,7 @@ import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.EditableLevel;
 import org.smartparam.engine.model.editable.LevelKey;
 import org.smartparam.engine.model.editable.ParameterEntryKey;
 
@@ -32,11 +32,11 @@ import org.smartparam.engine.model.editable.ParameterEntryKey;
  */
 public class BasicParameterEditor implements ParameterEditor {
 
-    private final RepositoryStore repositories;
+    private final RepositoryStore<EditableParamRepository> repositories;
 
     public BasicParameterEditor(ParamEngine paramEngine) {
         List<ParamRepository> registeredRepositories = paramEngine.getConfiguration().getParamRepositories();
-        repositories = new RepositoryStore(registeredRepositories);
+        repositories = new RepositoryStore<EditableParamRepository>(registeredRepositories, EditableParamRepository.class);
     }
 
     @Override
@@ -45,89 +45,74 @@ public class BasicParameterEditor implements ParameterEditor {
     }
 
     @Override
-    public List<DescribedCollection<String>> listParameters() {
-        List<DescribedCollection<String>> parameters = new ArrayList<DescribedCollection<String>>();
-        for(RepositoryName repositoryName : repositories.storedRepositories()) {
-            parameters.add(listParameters(repositoryName));
-        }
-        return parameters;
-    }
-
-    @Override
-    public DescribedCollection<String> listParameters(RepositoryName from) {
-        ParamRepository repository = repositories.get(from);
-        return new DescribedCollection<String>(from, repository.listParameters());
-    }
-
-    @Override
     public void createParameter(RepositoryName in, Parameter parameter) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         repository.createParameter(parameter);
     }
 
     @Override
     public void updateParameter(RepositoryName in, String parameterName, Parameter parameter) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         repository.updateParameter(parameterName, parameter);
     }
 
     @Override
-    public DescribedEntity<Level> getLevel(RepositoryName from, LevelKey levelKey) {
-        EditableParamRepository repository = repositories.getEditable(from);
-        return new DescribedEntity<Level>(from, repository.getLevel(levelKey));
+    public DescribedEntity<EditableLevel> getLevel(RepositoryName from, LevelKey levelKey) {
+        EditableParamRepository repository = repositories.get(from);
+        return new DescribedEntity<EditableLevel>(from, (EditableLevel) repository.getLevel(levelKey));
     }
 
     @Override
     public DescribedEntity<LevelKey> addLevel(RepositoryName in, String parameterName, Level level) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         return new DescribedEntity<LevelKey>(in, repository.addLevel(parameterName, level));
     }
 
     @Override
     public void reorderLevels(RepositoryName in, List<LevelKey> orderedLevels) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         repository.reorderLevels(orderedLevels);
     }
 
     @Override
     public void updateLevel(RepositoryName in, LevelKey levelKey, Level level) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         repository.updateLevel(levelKey, level);
     }
 
     @Override
     public void deleteLevel(RepositoryName in, String parameterName, LevelKey levelKey) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         repository.deleteLevel(parameterName, levelKey);
     }
 
     @Override
     public DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntry entry) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         return new DescribedEntity<ParameterEntryKey>(in, repository.addEntry(parameterName, entry));
     }
 
     @Override
     public DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, List<ParameterEntry> entries) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         return new DescribedCollection<ParameterEntryKey>(in, repository.addEntries(parameterName, entries));
     }
 
     @Override
     public void updateEntry(RepositoryName in, ParameterEntryKey entryKey, ParameterEntry entry) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         repository.updateEntry(entryKey, entry);
     }
 
     @Override
     public void deleteEntry(RepositoryName in, ParameterEntryKey entryKey) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         repository.deleteEntry(entryKey);
     }
 
     @Override
     public void deleteEntries(RepositoryName in, Iterable<ParameterEntryKey> entryKeys) {
-        EditableParamRepository repository = repositories.getEditable(in);
+        EditableParamRepository repository = repositories.get(in);
         repository.deleteEntries(entryKeys);
     }
 }

@@ -20,31 +20,26 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.core.repository.EditableParamRepository;
 import org.smartparam.engine.core.repository.ParamRepository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class RepositoryStore {
+public class RepositoryStore<T extends ParamRepository> {
 
     private final List<RepositoryName> storedRepositoriesNames = new ArrayList<RepositoryName>();
 
-    private final Map<RepositoryName, EditableParamRepository> editableRepositories = new HashMap<RepositoryName, EditableParamRepository>();
+    private final Map<RepositoryName, T> storedRepositories = new HashMap<RepositoryName, T>();
 
-    private final Map<RepositoryName, ParamRepository> readonlyRepositories = new HashMap<RepositoryName, ParamRepository>();
-
-    RepositoryStore(List<ParamRepository> allRepositories) {
-        filterOutEditableRepositories(allRepositories);
+    RepositoryStore(List<ParamRepository> allRepositories, Class<T> storedClass) {
+        filterOutEditableRepositories(allRepositories, storedClass);
     }
 
-    private void filterOutEditableRepositories(List<ParamRepository> allRepositories) {
+    private void filterOutEditableRepositories(List<ParamRepository> allRepositories, Class<T> storedClass) {
         for (ParamRepository repository : allRepositories) {
-            if (repository instanceof EditableParamRepository) {
-                injectRepository(repository, editableRepositories);
-            } else {
-                injectRepository(repository, readonlyRepositories);
+            if (storedClass.isAssignableFrom(repository.getClass())) {
+                injectRepository(repository, storedRepositories);
             }
         }
     }
@@ -66,21 +61,10 @@ public class RepositoryStore {
         storedRepositoriesNames.add(repositoryName);
     }
 
-    EditableParamRepository getEditable(RepositoryName from) {
-        EditableParamRepository repository = editableRepositories.get(from);
+    T get(RepositoryName from) {
+        T repository = storedRepositories.get(from);
         if (repository == null) {
-            throw InvalidSourceRepositoryException.noneForWriting(from);
-        }
-        return repository;
-    }
-
-    ParamRepository get(RepositoryName from) {
-        ParamRepository repository = readonlyRepositories.get(from);
-        if (repository == null) {
-            repository = editableRepositories.get(from);
-        }
-        if (repository == null) {
-            throw InvalidSourceRepositoryException.noneForReading(from);
+            throw new InvalidSourceRepositoryException(from);
         }
         return repository;
     }
