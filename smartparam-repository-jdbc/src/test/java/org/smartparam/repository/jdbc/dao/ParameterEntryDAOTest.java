@@ -19,7 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
+import org.smartparam.engine.editor.ParameterEntriesFilter;
+import org.smartparam.engine.editor.SortDirection;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
@@ -27,7 +30,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
 
 import static org.smartparam.engine.test.Iterables.onlyElement;
-import static org.smartparam.engine.test.assertions.Assertions.assertThat;
+import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
 
 /**
@@ -191,5 +194,164 @@ public class ParameterEntryDAOTest extends DatabaseTest {
 
         // then
         assertDatabase().hasNoEntriesForParameter("parameter").close();
+    }
+
+    @Test
+    public void shouldLimitNumberOfEntriesReturned() {
+        // given
+        database().withParameter("parameter").withParameterEntries("parameter", 10).build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        // when
+        List<IdentifiableParameterEntry> entries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter(0, 5));
+        runner.close();
+
+        // then
+        assertThat(entries).hasSize(5);
+    }
+
+    @Test
+    public void shouldSelectEntriesWithGivenOffset() {
+        // given
+        database().withParameter("parameter").withParameterEntries("parameter", 9).build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        // when
+        List<IdentifiableParameterEntry> entries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter(1, 5));
+        runner.close();
+
+        // then
+        assertThat(entries).hasSize(4);
+    }
+
+    @Test
+    public void shouldFilterEntriesUsingProvidedSingleFilterExpression() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        List<ParameterEntry> entries = Arrays.asList(
+                parameterEntry().withLevels("1", "2").build(),
+                parameterEntry().withLevels("1").build(),
+                parameterEntry().withLevels("5", "2").build());
+        parameterEntryDAO.insert(runner, entries, "parameter");
+        runner.commit();
+
+        // when
+        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("1"));
+        runner.close();
+
+        // then
+        assertThat(foundEntries).hasSize(2);
+    }
+
+    @Test
+    public void shouldFilterEntriesUsingProvidedMultipleFilterExpressions() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        List<ParameterEntry> entries = Arrays.asList(
+                parameterEntry().withLevels("1", "2").build(),
+                parameterEntry().withLevels("1").build(),
+                parameterEntry().withLevels("5", "2").build());
+        parameterEntryDAO.insert(runner, entries, "parameter");
+        runner.commit();
+
+        // when
+        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("5", "2"));
+        runner.close();
+
+        // then
+        assertThat(foundEntries).hasSize(1);
+    }
+
+    @Test
+    public void shouldNotFilterContentsOfConcatenatedExcessLevelsEvenIfFilterProvided() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        List<ParameterEntry> entries = Arrays.asList(
+                parameterEntry().withLevels("1", "2", "3").build(),
+                parameterEntry().withLevels("5", "6").build());
+        parameterEntryDAO.insert(runner, entries, "parameter");
+        runner.commit();
+
+        // when
+        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("", "", "3"));
+        runner.close();
+
+        // then
+        assertThat(foundEntries).hasSize(2);
+    }
+
+    @Test
+    public void shouldTranslateAntSyntaxToSQLLikeSyntaxForFiltering() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        List<ParameterEntry> entries = Arrays.asList(
+                parameterEntry().withLevels("prefix-12", "2", "3").build(),
+                parameterEntry().withLevels("does-not-match-12", "2", "3").build(),
+                parameterEntry().withLevels("other-prefix-52", "6").build());
+        parameterEntryDAO.insert(runner, entries, "parameter");
+        runner.commit();
+
+        // when
+        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("*prefix*"));
+        runner.close();
+
+        // then
+        assertThat(foundEntries).hasSize(2);
+    }
+
+    @Test
+    public void shouldOrderBySelectedLevelAndDirection() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        List<ParameterEntry> entries = Arrays.asList(
+                parameterEntry().withLevels("1", "2").build(),
+                parameterEntry().withLevels("5", "6").build());
+        parameterEntryDAO.insert(runner, entries, "parameter");
+        runner.commit();
+
+        // when
+        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().orderBy(1, SortDirection.DESC));
+        runner.close();
+
+        // then
+        assertThat(foundEntries.get(0)).hasLevels("5", "6");
+    }
+
+    @Test
+    public void shouldNotOrderByConcatenatedExcessLevelsEvenIfToldToDoSo() {
+        // given
+        database().withParameter("parameter").build();
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        List<ParameterEntry> entries = Arrays.asList(
+                parameterEntry().withLevels("1", "2", "3").build(),
+                parameterEntry().withLevels("5", "6", "7").build());
+        parameterEntryDAO.insert(runner, entries, "parameter");
+        runner.commit();
+
+        // when
+        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().orderBy(2, SortDirection.DESC));
+        runner.close();
+
+        // then
+        assertThat(foundEntries.get(0)).hasDifferentLevelsThan("5", "6", "7");
     }
 }

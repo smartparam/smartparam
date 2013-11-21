@@ -13,17 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.smartparam.engine.model.editable;
-
-import org.smartparam.engine.model.ParameterEntry;
+package org.smartparam.engine.editor;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface IdentifiableParameterEntry extends ParameterEntry {
+public enum SortDirection {
 
-    ParameterEntryKey getKey();
+    ASC,
+    DESC
 
 }

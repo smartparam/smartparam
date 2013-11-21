@@ -28,6 +28,7 @@ import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.UpdateQuery;
 import org.polyjdbc.core.util.StringUtils;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
+import org.smartparam.engine.editor.SortDirection;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
@@ -145,15 +146,31 @@ public class ParameterEntryDAO {
                 .withArgument("parameterName", parameterName);
 
         int maxDistinctLevels = configuration.getLevelColumnCount();
-        for(int levelIndex = 0; levelIndex < filter.levelFiltersLength() && levelIndex < maxDistinctLevels; ++levelIndex) {
-            if(filter.hasFilter(levelIndex)) {
-                query.append("and level" + (levelIndex + 1)).append(" = :level" + (levelIndex + 1));
-                query.withArgument("level" + (levelIndex + 1), filter.levelFilter(levelIndex));
+        for (int levelIndex = 0; levelIndex < filter.levelFiltersLength() && levelIndex < maxDistinctLevels; ++levelIndex) {
+            if (filter.hasFilter(levelIndex)) {
+                query.append(" and upper(level" + (levelIndex + 1) + ")").append(" like :level" + (levelIndex + 1));
+                query.withArgument("level" + (levelIndex + 1), parseAntMatcher(filter.levelFilter(levelIndex)));
             }
         }
 
-        query.limit(filter.pageSize(), filter.offset());
+        if (filter.applyOrdering() && filter.orderBy() < maxDistinctLevels) {
+            query.orderBy("level" + filter.orderBy(), parseSortOrder(filter.orderDirection()));
+        }
+
+        if (filter.applyPaging()) {
+            query.limit(filter.pageSize(), filter.offset());
+        } else if (filter.applyLimits()) {
+            query.limit(filter.pageSize());
+        }
 
         return queryRunner.queryList(query, new IdentifiableParameterEntryMapper(configuration));
+    }
+
+    private Order parseSortOrder(SortDirection sortOrder) {
+        return sortOrder == SortDirection.ASC ? Order.ASC : Order.DESC;
+    }
+
+    private String parseAntMatcher(String matcher) {
+        return matcher.replaceAll("\\*", "%").toUpperCase();
     }
 }

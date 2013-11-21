@@ -83,9 +83,8 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     public ViewableRepositoryCapabilities capabilities() {
-        return new ViewableRepositoryCapabilities(ViewableRepositoryCapability.PAGE_ENTRIES, ViewableRepositoryCapability.FILTER_ENTRIES);
+        return new ViewableRepositoryCapabilities(ViewableRepositoryCapability.PAGE_ENTRIES, ViewableRepositoryCapability.FILTER_ENTRIES, ViewableRepositoryCapability.SORT_ENTRIES);
     }
-
 
     @Override
     public Set<String> listParameters() {
