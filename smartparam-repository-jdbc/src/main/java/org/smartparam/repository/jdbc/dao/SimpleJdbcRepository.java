@@ -21,6 +21,7 @@ import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
+import org.smartparam.engine.editor.ParameterFilter;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -87,8 +88,13 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public Set<String> getParameterNames() {
+    public Set<String> listParameterNames() {
         return parameterDAO.getParameterNames();
+    }
+
+    @Override
+    public List<String> listParameterNames(ParameterFilter filter) {
+        return parameterDAO.getParameterNames(filter);
     }
 
     @Override

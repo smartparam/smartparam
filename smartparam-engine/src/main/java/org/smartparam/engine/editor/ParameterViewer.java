@@ -33,7 +33,11 @@ public interface ParameterViewer {
 
     List<DescribedCollection<String>> listParameters();
 
+    List<DescribedCollection<String>> listParameters(ParameterFilter filter);
+
     DescribedCollection<String> listParameters(RepositoryName from);
+
+    DescribedCollection<String> listParameters(RepositoryName from, ParameterFilter filter);
 
     DescribedEntity<IdentifiableParameter> getParameterMetadata(RepositoryName from, String parameterName);
 

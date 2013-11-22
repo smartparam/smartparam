@@ -66,9 +66,24 @@ public class BasicParameterViewer implements ParameterViewer {
     }
 
     @Override
+    public List<DescribedCollection<String>> listParameters(ParameterFilter filter) {
+        List<DescribedCollection<String>> parameters = new ArrayList<DescribedCollection<String>>();
+        for (RepositoryName repositoryName : repositories.storedRepositories()) {
+            parameters.add(listParameters(repositoryName, filter));
+        }
+        return parameters;
+    }
+
+    @Override
     public DescribedCollection<String> listParameters(RepositoryName from) {
         ViewableParamRepository repository = repositories.get(from);
         return new DescribedCollection<String>(from, repository.listParameters());
+    }
+
+    @Override
+    public DescribedCollection<String> listParameters(RepositoryName from, ParameterFilter filter) {
+        ViewableParamRepository repository = repositories.get(from);
+        return new DescribedCollection<String>(from, repository.listParameters(filter));
     }
 
     @Override

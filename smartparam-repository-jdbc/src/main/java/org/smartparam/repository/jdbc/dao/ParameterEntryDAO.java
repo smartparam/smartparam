@@ -28,7 +28,6 @@ import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.UpdateQuery;
 import org.polyjdbc.core.util.StringUtils;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
-import org.smartparam.engine.editor.SortDirection;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
@@ -149,12 +148,12 @@ public class ParameterEntryDAO {
         for (int levelIndex = 0; levelIndex < filter.levelFiltersLength() && levelIndex < maxDistinctLevels; ++levelIndex) {
             if (filter.hasFilter(levelIndex)) {
                 query.append(" and upper(level" + (levelIndex + 1) + ")").append(" like :level" + (levelIndex + 1));
-                query.withArgument("level" + (levelIndex + 1), parseAntMatcher(filter.levelFilter(levelIndex)));
+                query.withArgument("level" + (levelIndex + 1), FilterConverter.parseAntMatcher(filter.levelFilter(levelIndex)));
             }
         }
 
         if (filter.applyOrdering() && filter.orderBy() < maxDistinctLevels) {
-            query.orderBy("level" + filter.orderBy(), parseSortOrder(filter.orderDirection()));
+            query.orderBy("level" + filter.orderBy(), FilterConverter.parseSortOrder(filter.orderDirection()));
         }
 
         if (filter.applyPaging()) {
@@ -164,13 +163,5 @@ public class ParameterEntryDAO {
         }
 
         return queryRunner.queryList(query, new IdentifiableParameterEntryMapper(configuration));
-    }
-
-    private Order parseSortOrder(SortDirection sortOrder) {
-        return sortOrder == SortDirection.ASC ? Order.ASC : Order.DESC;
-    }
-
-    private String parseAntMatcher(String matcher) {
-        return matcher.replaceAll("\\*", "%").toUpperCase();
     }
 }

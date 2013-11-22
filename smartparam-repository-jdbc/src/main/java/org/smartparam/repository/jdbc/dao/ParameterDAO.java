@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.mapper.StringMapper;
 import org.polyjdbc.core.query.DeleteQuery;
@@ -25,6 +26,7 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.SimpleQueryRunner;
 import org.polyjdbc.core.query.UpdateQuery;
+import org.smartparam.engine.editor.ParameterFilter;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -62,6 +64,18 @@ public class ParameterDAO {
     public Set<String> getParameterNames() {
         SelectQuery query = QueryFactory.select("name").from(configuration.getParameterTable());
         return new HashSet<String>(simpleQueryRunner.queryList(query, new StringMapper()));
+    }
+
+    public List<String> getParameterNames(ParameterFilter filter) {
+        SelectQuery query = QueryFactory.select("name").from(configuration.getParameterTable());
+
+        if (filter.applyNameFilter()) {
+            query.where("upper(name) like :name")
+                    .withArgument("name", FilterConverter.parseAntMatcher(filter.nameFilter()));
+        }
+        query.orderBy("name", FilterConverter.parseSortOrder(filter.sortDirection()));
+
+        return simpleQueryRunner.queryList(query, new StringMapper());
     }
 
     public JdbcParameter getParameter(QueryRunner queryRunner, String parameterName) {

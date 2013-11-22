@@ -98,7 +98,7 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
         SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
 
         // when
-        Set<String> parameters = repository.getParameterNames();
+        Set<String> parameters = repository.listParameterNames();
 
         // then
         assertThat(parameters).hasSize(2);

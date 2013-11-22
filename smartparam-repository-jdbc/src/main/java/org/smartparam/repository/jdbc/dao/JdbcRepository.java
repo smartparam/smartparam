@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
+import org.smartparam.engine.editor.ParameterFilter;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
@@ -40,7 +41,9 @@ public interface JdbcRepository {
 
     JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName);
 
-    Set<String> getParameterNames();
+    Set<String> listParameterNames();
+
+    List<String> listParameterNames(ParameterFilter filter);
 
     Set<ParameterEntry> getParameterEntries(QueryRunner runner, String parameterName);
 

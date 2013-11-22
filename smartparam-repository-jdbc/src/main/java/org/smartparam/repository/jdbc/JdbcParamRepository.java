@@ -34,6 +34,7 @@ import org.smartparam.engine.core.repository.EditableParamRepository;
 import org.smartparam.engine.core.repository.ViewableParamRepository;
 import org.smartparam.engine.core.repository.WritableParamRepository;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
+import org.smartparam.engine.editor.ParameterFilter;
 import org.smartparam.engine.editor.ViewableRepositoryCapabilities;
 import org.smartparam.engine.editor.ViewableRepositoryCapability;
 import org.smartparam.engine.model.Level;
@@ -88,7 +89,12 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
 
     @Override
     public Set<String> listParameters() {
-        return dao.getParameterNames();
+        return dao.listParameterNames();
+    }
+
+    @Override
+    public List<String> listParameters(ParameterFilter filter) {
+        return dao.listParameterNames(filter);
     }
 
     @Override

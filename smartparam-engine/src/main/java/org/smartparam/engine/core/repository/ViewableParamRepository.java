@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.smartparam.engine.core.repository;
 
 import java.util.List;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
+import org.smartparam.engine.editor.ParameterFilter;
 import org.smartparam.engine.editor.ViewableRepositoryCapabilities;
 import org.smartparam.engine.model.editable.IdentifiableParameter;
 import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
@@ -29,6 +29,8 @@ import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 public interface ViewableParamRepository extends ParamRepository {
 
     ViewableRepositoryCapabilities capabilities();
+
+    List<String> listParameters(ParameterFilter filter);
 
     IdentifiableParameter getParameterMetadata(String parameterName);
 

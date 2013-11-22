@@ -15,13 +15,16 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
+import org.smartparam.engine.editor.ParameterFilter;
+import org.smartparam.engine.editor.SortDirection;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.metadata.ParameterForm;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.testng.annotations.Test;
+
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
 import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
 
@@ -63,7 +66,7 @@ public class ParameterDAOTest extends DatabaseTest {
         assertDatabase().hasNoParameter("toDelete").close();
     }
 
-    public void shouldReturnListOfParameterNames() {
+    public void shouldReturnSetOfParameterNames() {
         // given
         database().withParameters(10).build();
         ParameterDAO parameterDAO = get(ParameterDAO.class);
@@ -73,6 +76,35 @@ public class ParameterDAOTest extends DatabaseTest {
 
         // then
         assertThat(parameters).isNotEmpty().hasSize(10);
+    }
+
+    @Test
+    public void shouldReturnListOfSortedParameterNames() {
+        // given
+        database().withParameters(5).build();
+        ParameterDAO parameterDAO = get(ParameterDAO.class);
+        ParameterFilter filter = new ParameterFilter(SortDirection.DESC);
+
+        // when
+        List<String> parameters = parameterDAO.getParameterNames(filter);
+
+        // then
+        assertThat(parameters).containsExactly("parameter4", "parameter3", "parameter2",
+                                               "parameter1", "parameter0");
+    }
+
+    @Test
+    public void shouldReturnFilteredListOfParameterNames() {
+    // given
+        database().withParameters(5).build();
+        ParameterDAO parameterDAO = get(ParameterDAO.class);
+        ParameterFilter filter = new ParameterFilter("*4");
+
+        // when
+        List<String> parameters = parameterDAO.getParameterNames(filter);
+
+        // then
+        assertThat(parameters).containsExactly("parameter4");
     }
 
     public void shouldReturnTrueIfParameterExists() {
