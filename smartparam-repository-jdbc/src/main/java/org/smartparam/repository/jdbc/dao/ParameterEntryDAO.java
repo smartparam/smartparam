@@ -29,7 +29,6 @@ import org.polyjdbc.core.query.UpdateQuery;
 import org.polyjdbc.core.util.StringUtils;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 
@@ -139,7 +138,7 @@ public class ParameterEntryDAO {
         queryRunner.update(query);
     }
 
-    public List<IdentifiableParameterEntry> list(QueryRunner queryRunner, String parameterName, ParameterEntriesFilter filter) {
+    public List<ParameterEntry> list(QueryRunner queryRunner, String parameterName, ParameterEntriesFilter filter) {
         SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterEntryTable())
                 .where("fk_parameter = :parameterName ")
                 .withArgument("parameterName", parameterName);
@@ -162,6 +161,6 @@ public class ParameterEntryDAO {
             query.limit(filter.pageSize());
         }
 
-        return queryRunner.queryList(query, new IdentifiableParameterEntryMapper(configuration));
+        return queryRunner.queryList(query, new ParameterEntryMapper(configuration));
     }
 }

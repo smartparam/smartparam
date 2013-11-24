@@ -40,8 +40,6 @@ import org.smartparam.engine.editor.ViewableRepositoryCapability;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.IdentifiableParameter;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.engine.model.editable.LevelKey;
 import org.smartparam.engine.model.editable.ParameterEntryKey;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
@@ -201,10 +199,10 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public IdentifiableParameter getParameterMetadata(final String prameterName) {
-        return transactionRunner.run(new TransactionWrapper<IdentifiableParameter>() {
+    public Parameter getParameterMetadata(final String prameterName) {
+        return transactionRunner.run(new TransactionWrapper<Parameter>() {
             @Override
-            public IdentifiableParameter perform(QueryRunner queryRunner) {
+            public Parameter perform(QueryRunner queryRunner) {
                 return dao.getParameterMetadata(queryRunner, prameterName);
             }
         });
@@ -290,10 +288,10 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public List<IdentifiableParameterEntry> listEntries(final String parameterName, final ParameterEntriesFilter filter) {
-        return transactionRunner.run(new TransactionWrapper<List<IdentifiableParameterEntry>>() {
+    public List<ParameterEntry> listEntries(final String parameterName, final ParameterEntriesFilter filter) {
+        return transactionRunner.run(new TransactionWrapper<List<ParameterEntry>>() {
             @Override
-            public List<IdentifiableParameterEntry> perform(QueryRunner queryRunner) {
+            public List<ParameterEntry> perform(QueryRunner queryRunner) {
                 return dao.listEntries(queryRunner, parameterName, filter);
             }
         });

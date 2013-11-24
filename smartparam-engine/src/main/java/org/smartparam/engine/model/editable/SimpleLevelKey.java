@@ -21,14 +21,16 @@ package org.smartparam.engine.model.editable;
  */
 public class SimpleLevelKey extends AbstractEntityKey implements LevelKey {
 
+    static final String SYMBOL = "simple";
+
     private final String value;
 
     public SimpleLevelKey(String levelId) {
-        value = format(SimpleParameterKey.SYMBOL, levelId);
+        value = format(SYMBOL, levelId);
     }
 
     public SimpleLevelKey(LevelKey levelKey) {
-        String[] segments = parse(SimpleParameterKey.SYMBOL, levelKey.value());
+        String[] segments = parse(SYMBOL, levelKey.value());
         value = segments[0];
     }
 

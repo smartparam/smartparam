@@ -23,7 +23,6 @@ import org.smartparam.engine.editor.ParameterFilter;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
@@ -63,7 +62,7 @@ public interface JdbcRepository {
 
     void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId);
 
-    List<IdentifiableParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter);
+    List<ParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter);
 
     long addParameterEntry(QueryRunner runner, String parameterName, ParameterEntry entry);
 

@@ -16,8 +16,8 @@
 package org.smartparam.engine.editor;
 
 import java.util.List;
-import org.smartparam.engine.model.editable.IdentifiableParameter;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
+import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
@@ -39,8 +39,8 @@ public interface ParameterViewer {
 
     DescribedCollection<String> listParameters(RepositoryName from, ParameterFilter filter);
 
-    DescribedEntity<IdentifiableParameter> getParameterMetadata(RepositoryName from, String parameterName);
+    DescribedEntity<Parameter> getParameterMetadata(RepositoryName from, String parameterName);
 
-    DescribedCollection<IdentifiableParameterEntry> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter);
+    DescribedCollection<ParameterEntry> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter);
 
 }

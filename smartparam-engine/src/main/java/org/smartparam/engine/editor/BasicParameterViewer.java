@@ -20,8 +20,8 @@ import java.util.List;
 import org.smartparam.engine.core.engine.ParamEngine;
 import org.smartparam.engine.core.repository.ParamRepository;
 import org.smartparam.engine.core.repository.ViewableParamRepository;
-import org.smartparam.engine.model.editable.IdentifiableParameter;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
+import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
@@ -87,15 +87,15 @@ public class BasicParameterViewer implements ParameterViewer {
     }
 
     @Override
-    public DescribedEntity<IdentifiableParameter> getParameterMetadata(RepositoryName from, String parameterName) {
+    public DescribedEntity<Parameter> getParameterMetadata(RepositoryName from, String parameterName) {
         ViewableParamRepository repository = repositories.get(from);
-        return new DescribedEntity<IdentifiableParameter>(from, repository.getParameterMetadata(parameterName));
+        return new DescribedEntity<Parameter>(from, repository.getParameterMetadata(parameterName));
     }
 
     @Override
-    public DescribedCollection<IdentifiableParameterEntry> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter) {
+    public DescribedCollection<ParameterEntry> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter) {
         ViewableParamRepository repository = repositories.get(from);
-        return new DescribedCollection<IdentifiableParameterEntry>(from, repository.listEntries(parameterName, filter));
+        return new DescribedCollection<ParameterEntry>(from, repository.listEntries(parameterName, filter));
     }
 
 }

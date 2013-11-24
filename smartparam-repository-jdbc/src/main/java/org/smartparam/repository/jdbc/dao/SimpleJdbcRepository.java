@@ -25,7 +25,6 @@ import org.smartparam.engine.editor.ParameterFilter;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -145,7 +144,7 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public List<IdentifiableParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter) {
+    public List<ParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter) {
         return parameterEntryDAO.list(runner, parameterName, filter);
     }
 

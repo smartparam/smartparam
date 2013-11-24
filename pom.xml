@@ -81,7 +81,7 @@
             <dependency>
                 <groupId>org.polyjdbc</groupId>
                 <artifactId>polyjdbc</artifactId>
-                <version>0.2.2-SNAPSHOT</version>
+                <version>0.2.1</version>
             </dependency>
 
             <!-- serialization -->
@@ -170,7 +170,7 @@
                 <groupId>org.polyjdbc</groupId>
                 <artifactId>polyjdbc</artifactId>
                 <type>test-jar</type>
-                <version>0.2.2-SNAPSHOT</version>
+                <version>0.2.1</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

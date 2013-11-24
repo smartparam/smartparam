@@ -17,13 +17,14 @@ package org.smartparam.repository.jdbc.model;
 
 import org.smartparam.engine.model.editable.AbstractEntityKey;
 import org.smartparam.engine.model.editable.LevelKey;
-import static org.smartparam.repository.jdbc.model.JdbcParameterKey.SYMBOL;
 
 /**
  *
  * @author Adam Dubiel
  */
 public class JdbcLevelKey extends AbstractEntityKey implements LevelKey {
+
+    static final String SYMBOL = "jdbc";
 
     private final String value;
 

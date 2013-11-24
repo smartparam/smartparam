@@ -21,7 +21,9 @@ import org.smartparam.engine.model.Level;
  *
  * @author Adam Dubiel
  */
-public interface EditableLevel extends Level, IdentifiableLevel {
+public interface EditableLevel extends Level {
+
+    LevelKey getKey();
 
     void setName(String name);
 

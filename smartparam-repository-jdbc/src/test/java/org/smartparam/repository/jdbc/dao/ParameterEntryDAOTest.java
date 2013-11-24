@@ -22,7 +22,6 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
 import org.smartparam.engine.editor.SortDirection;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
 import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
@@ -204,7 +203,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         QueryRunner runner = queryRunner();
 
         // when
-        List<IdentifiableParameterEntry> entries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter(0, 5));
+        List<ParameterEntry> entries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter(0, 5));
         runner.close();
 
         // then
@@ -219,7 +218,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         QueryRunner runner = queryRunner();
 
         // when
-        List<IdentifiableParameterEntry> entries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter(1, 5));
+        List<ParameterEntry> entries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter(1, 5));
         runner.close();
 
         // then
@@ -241,7 +240,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         runner.commit();
 
         // when
-        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("1"));
+        List<ParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("1"));
         runner.close();
 
         // then
@@ -263,7 +262,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         runner.commit();
 
         // when
-        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("5", "2"));
+        List<ParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("5", "2"));
         runner.close();
 
         // then
@@ -284,7 +283,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         runner.commit();
 
         // when
-        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("", "", "3"));
+        List<ParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("", "", "3"));
         runner.close();
 
         // then
@@ -306,7 +305,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         runner.commit();
 
         // when
-        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("*prefix*"));
+        List<ParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().filterBy("*prefix*"));
         runner.close();
 
         // then
@@ -327,7 +326,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         runner.commit();
 
         // when
-        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().orderBy(1, SortDirection.DESC));
+        List<ParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().orderBy(1, SortDirection.DESC));
         runner.close();
 
         // then
@@ -348,7 +347,7 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         runner.commit();
 
         // when
-        List<IdentifiableParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().orderBy(2, SortDirection.DESC));
+        List<ParameterEntry> foundEntries = parameterEntryDAO.list(runner, "parameter", new ParameterEntriesFilter().orderBy(2, SortDirection.DESC));
         runner.close();
 
         // then

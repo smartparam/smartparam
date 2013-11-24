@@ -25,7 +25,7 @@ import org.smartparam.engine.model.ParameterEntry;
  *
  * @author Adam Dubiel
  */
-public interface EditableParameter extends Parameter, IdentifiableParameter {
+public interface EditableParameter extends Parameter {
 
     void setName(String name);
 

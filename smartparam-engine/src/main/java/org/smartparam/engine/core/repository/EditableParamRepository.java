@@ -16,11 +16,9 @@
 package org.smartparam.engine.core.repository;
 
 import java.util.List;
-import org.smartparam.engine.editor.ParameterEntriesFilter;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
 import org.smartparam.engine.model.editable.LevelKey;
 import org.smartparam.engine.model.editable.ParameterEntryKey;
 

@@ -19,8 +19,8 @@ import java.util.List;
 import org.smartparam.engine.editor.ParameterEntriesFilter;
 import org.smartparam.engine.editor.ParameterFilter;
 import org.smartparam.engine.editor.ViewableRepositoryCapabilities;
-import org.smartparam.engine.model.editable.IdentifiableParameter;
-import org.smartparam.engine.model.editable.IdentifiableParameterEntry;
+import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
@@ -32,8 +32,8 @@ public interface ViewableParamRepository extends ParamRepository {
 
     List<String> listParameters(ParameterFilter filter);
 
-    IdentifiableParameter getParameterMetadata(String parameterName);
+    Parameter getParameterMetadata(String parameterName);
 
-    List<IdentifiableParameterEntry> listEntries(String parameterName, ParameterEntriesFilter filter);
+    List<ParameterEntry> listEntries(String parameterName, ParameterEntriesFilter filter);
 
 }
