@@ -23,9 +23,9 @@ import org.smartparam.engine.model.Parameter;
  */
 public class ParameterBatchLoader {
 
-    private Parameter metadata;
+    private final Parameter metadata;
 
-    private ParameterEntryBatchLoader entryLoader;
+    private final ParameterEntryBatchLoader entryLoader;
 
     public ParameterBatchLoader(Parameter metadata, ParameterEntryBatchLoader entryLoader) {
         this.metadata = metadata;
