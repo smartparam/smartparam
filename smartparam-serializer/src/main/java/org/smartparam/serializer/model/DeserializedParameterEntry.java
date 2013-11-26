@@ -13,23 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.entries;
+package org.smartparam.serializer.model;
 
-import org.smartparam.serializer.CsvSerializationConfig;
-import org.smartparam.serializer.SerializationConfig;
-import org.supercsv.prefs.CsvPreference;
+import java.util.Arrays;
+import java.util.List;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public final class CsvPreferenceBuilder {
+public class DeserializedParameterEntry implements ParameterEntry {
 
-    private CsvPreferenceBuilder() {
+    private final String[] levels;
+
+    public DeserializedParameterEntry(List<String> levels) {
+        this.levels = levels.toArray(new String[levels.size()]);
     }
 
-    public static CsvPreference csvPreference(SerializationConfig config) {
-        CsvSerializationConfig csvConfig = (CsvSerializationConfig) config;
-        return new CsvPreference.Builder(csvConfig.getCsvQuote(), csvConfig.getCsvDelimiter(), csvConfig.getEndOfLine()).build();
+    @Override
+    public String[] getLevels() {
+        return Arrays.copyOf(levels, levels.length);
     }
 }

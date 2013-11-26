@@ -13,23 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.entries;
-
-import org.smartparam.serializer.CsvSerializationConfig;
-import org.smartparam.serializer.SerializationConfig;
-import org.supercsv.prefs.CsvPreference;
+package org.smartparam.serializer;
 
 /**
  *
  * @author Adam Dubiel
  */
-public final class CsvPreferenceBuilder {
+public interface CsvSerializationConfig extends SerializationConfig {
 
-    private CsvPreferenceBuilder() {
-    }
+    char getCsvDelimiter();
 
-    public static CsvPreference csvPreference(SerializationConfig config) {
-        CsvSerializationConfig csvConfig = (CsvSerializationConfig) config;
-        return new CsvPreference.Builder(csvConfig.getCsvQuote(), csvConfig.getCsvDelimiter(), csvConfig.getEndOfLine()).build();
-    }
+    char getCsvQuote();
 }

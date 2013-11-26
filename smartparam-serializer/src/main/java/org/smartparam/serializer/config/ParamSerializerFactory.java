@@ -15,6 +15,7 @@
  */
 package org.smartparam.serializer.config;
 
+import org.smartparam.serializer.SerializationConfig;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
@@ -47,7 +48,7 @@ public class ParamSerializerFactory {
         return container.getComponent(ParamDeserializer.class);
     }
 
-    public PicoContainer createContainer(ParamSerializerConfig config) {
+    private PicoContainer createContainer(ParamSerializerConfig config) {
         MutablePicoContainer container = PicoContainerUtil.createContainer();
         PicoContainerUtil.injectImplementations(container, config.getSerializationConfig());
 

@@ -16,7 +16,7 @@
 package org.smartparam.serializer.metadata;
 
 import java.io.BufferedReader;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.serializer.model.AppendableParameter;
 import org.smartparam.serializer.exception.ParamSerializationException;
 
 /**
@@ -25,5 +25,5 @@ import org.smartparam.serializer.exception.ParamSerializationException;
  */
 public interface ParameterMetadataDeserializer {
 
-    Parameter deserialize(BufferedReader reader) throws ParamSerializationException;
+    AppendableParameter deserialize(BufferedReader reader) throws ParamSerializationException;
 }

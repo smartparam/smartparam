@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
-import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
+import org.smartparam.serializer.model.DeserializedParameterEntry;
+import org.smartparam.serializer.util.StreamCloser;
 import org.supercsv.io.CsvListReader;
 
 /**
@@ -32,14 +32,11 @@ import org.supercsv.io.CsvListReader;
  */
 public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
 
-    private CsvListReader reader;
-
-    private Class<? extends EditableParameterEntry> instanceClass;
+    private final CsvListReader reader;
 
     private boolean hasMore = true;
 
-    public CsvParameterEntryBatchLoader(Class<? extends EditableParameterEntry> instanceClass, CsvListReader reader) {
-        this.instanceClass = instanceClass;
+    public CsvParameterEntryBatchLoader(CsvListReader reader) {
         this.reader = reader;
     }
 
@@ -60,7 +57,7 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
                 if (line == null) {
                     break;
                 }
-                entries.add(createParameterEntry(line));
+                entries.add(new DeserializedParameterEntry(line));
             }
 
             if (entriesRead < batchSize) {
@@ -68,30 +65,13 @@ public class CsvParameterEntryBatchLoader implements ParameterEntryBatchLoader {
             }
         } catch (IOException exception) {
             throw new ParamBatchLoadingException("deserialization error", exception);
-        } catch (IllegalAccessException illegalAccessException) {
-            throw new ParamBatchLoadingException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?", illegalAccessException);
-        } catch (InstantiationException instantiationException) {
-            throw new ParamBatchLoadingException("error creating instance of " + instanceClass.getName() + ", maybe it has no default constructor?", instantiationException);
         }
 
         return entries;
     }
 
-    private ParameterEntry createParameterEntry(List<String> levelValues) throws IllegalAccessException, InstantiationException {
-        EditableParameterEntry parameterEntry = instanceClass.newInstance();
-        parameterEntry.setLevels(levelValues.toArray(new String[levelValues.size()]));
-
-        return parameterEntry;
-    }
-
     @Override
     public void close() {
-        try {
-            if (reader != null) {
-                reader.close();
-            }
-        } catch (IOException exception) {
-            throw new SmartParamException("exception while closing stream", exception);
-        }
+        StreamCloser.closeStream(reader);
     }
 }

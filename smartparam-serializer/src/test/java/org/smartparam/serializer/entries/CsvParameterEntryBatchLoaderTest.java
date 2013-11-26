@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
-import org.smartparam.serializer.config.DefaultSerializationConfig;
+import org.smartparam.serializer.DefaultSerializationConfig;
 import org.supercsv.io.CsvListReader;
 import static org.fest.assertions.api.Assertions.*;
 import static org.smartparam.serializer.entries.CsvPreferenceBuilder.csvPreference;
@@ -34,7 +34,7 @@ import static org.smartparam.serializer.test.builder.CsvEntriesReaderTestBuilder
  */
 public class CsvParameterEntryBatchLoaderTest {
 
-    private DefaultSerializationConfig config = new DefaultSerializationConfig();
+    private final DefaultSerializationConfig config = new DefaultSerializationConfig();
 
     @Before
     public void initialize() {
@@ -45,7 +45,7 @@ public class CsvParameterEntryBatchLoaderTest {
         // given
         StringReader reader = csvEntriesReader(10).usingDelimiter(";").withEntries(10, "entry_%d", "column1", "column2").build();
         CsvListReader csvReader = new CsvListReader(reader, csvPreference(config));
-        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(SimpleEditableParameterEntry.class, csvReader);
+        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(csvReader);
 
         // when
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>();
@@ -61,7 +61,7 @@ public class CsvParameterEntryBatchLoaderTest {
         // given
         StringReader reader = csvEntriesReader(10).usingDelimiter(";").withEntries(10, "entry_%d", "column1", "column2").build();
         CsvListReader csvReader = new CsvListReader(reader, csvPreference(config));
-        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(SimpleEditableParameterEntry.class, csvReader);
+        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(csvReader);
 
         // when
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>();
@@ -76,7 +76,7 @@ public class CsvParameterEntryBatchLoaderTest {
         // given
         StringReader reader = csvEntriesReader(10).usingDelimiter(";").withEntries(10, "entry_%d", "column1", "column2").build();
         CsvListReader csvReader = new CsvListReader(reader, csvPreference(config));
-        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(SimpleEditableParameterEntry.class, csvReader);
+        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(csvReader);
         batchLoader.nextBatch(11);
 
         // when
@@ -92,7 +92,7 @@ public class CsvParameterEntryBatchLoaderTest {
         // given
         StringReader reader = csvEntriesReader(10).usingDelimiter(";").withEntries(10, "entry_%d", "column1", "column2").build();
         CsvListReader csvReader = new CsvListReader(reader, csvPreference(config));
-        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(SimpleEditableParameterEntry.class, csvReader);
+        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(csvReader);
 
         // when
         batchLoader.nextBatch(5);
@@ -106,7 +106,7 @@ public class CsvParameterEntryBatchLoaderTest {
         // given
         StringReader reader = csvEntriesReader(10).usingDelimiter(";").withEntries(10, "entry_%d", "column1", "column2").build();
         CsvListReader csvReader = new CsvListReader(reader, csvPreference(config));
-        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(SimpleEditableParameterEntry.class, csvReader);
+        CsvParameterEntryBatchLoader batchLoader = new CsvParameterEntryBatchLoader(csvReader);
 
         // when
         batchLoader.nextBatch(11);

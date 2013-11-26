@@ -15,7 +15,6 @@
  */
 package org.smartparam.serializer;
 
-import org.smartparam.serializer.config.SerializationConfig;
 import java.io.Writer;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.metadata.ParameterMetadataSerializer;
@@ -30,11 +29,11 @@ import org.smartparam.serializer.exception.ParamSerializationException;
  */
 public class StandardParamSerializer implements ParamSerializer {
 
-    private SerializationConfig serializationConfig;
+    private final SerializationConfig serializationConfig;
 
-    private ParameterMetadataSerializer metadataSerializer;
+    private final ParameterMetadataSerializer metadataSerializer;
 
-    private ParameterEntrySerializer entriesSerializer;
+    private final ParameterEntrySerializer entriesSerializer;
 
     public StandardParamSerializer(SerializationConfig serializationConfig, ParameterMetadataSerializer metadataSerializer, ParameterEntrySerializer entriesSerializer) {
         this.serializationConfig = serializationConfig;

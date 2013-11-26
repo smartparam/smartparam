@@ -24,11 +24,13 @@ import java.io.Reader;
  */
 public final class StreamPartReader {
 
+    private static final int PART_BUFFER_SIZE = 100;
+
     private StreamPartReader() {
     }
 
     public static String readPart(Reader reader, char openingChar, char closingChar) throws IOException {
-        StringBuilder part = new StringBuilder(100);
+        StringBuilder part = new StringBuilder(PART_BUFFER_SIZE);
 
         int characterCode = reader.read();
         int pairCounter = 0;
@@ -47,7 +49,7 @@ public final class StreamPartReader {
 
             if (character == closingChar) {
                 pairCounter--;
-                if(pairCounter == 0) {
+                if (pairCounter == 0) {
                     break;
                 }
             }
@@ -55,7 +57,7 @@ public final class StreamPartReader {
             characterCode = reader.read();
         }
 
-        if(pairCounter != 0) {
+        if (pairCounter != 0) {
             throw new IllegalStateException("Stream ended but no ending char found! Possibly because of dangling opening char.");
         }
 

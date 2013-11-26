@@ -13,11 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
-
-import org.smartparam.engine.model.editable.EditableLevel;
-import org.smartparam.engine.model.editable.EditableParameter;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
+package org.smartparam.serializer;
 
 /**
  *
@@ -25,7 +21,7 @@ import org.smartparam.engine.model.editable.EditableParameterEntry;
  */
 public final class SerializationConfigBuilder {
 
-    private DefaultSerializationConfig config = new DefaultSerializationConfig();
+    private final DefaultSerializationConfig config = new DefaultSerializationConfig();
 
     private SerializationConfigBuilder() {
     }
@@ -36,21 +32,6 @@ public final class SerializationConfigBuilder {
 
     public DefaultSerializationConfig build() {
         return config;
-    }
-
-    public SerializationConfigBuilder producesParameter(Class<? extends EditableParameter> parameterClass) {
-        config.setParameterInstanceClass(parameterClass);
-        return this;
-    }
-
-    public SerializationConfigBuilder producesParameterEntry(Class<? extends EditableParameterEntry> parameterEntryClass) {
-        config.setParameterEntryInstanceClass(parameterEntryClass);
-        return this;
-    }
-
-    public SerializationConfigBuilder producesLevel(Class<? extends EditableLevel> levelClass) {
-        config.setLevelInstanceClass(levelClass);
-        return this;
     }
 
     public SerializationConfigBuilder withCharset(String charset) {

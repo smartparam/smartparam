@@ -13,26 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.model;
 
-import java.nio.charset.Charset;
-import org.smartparam.engine.model.editable.EditableLevel;
-import org.smartparam.engine.model.editable.EditableParameter;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
+import java.util.Collection;
+import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.model.ParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface SerializationConfig {
+public interface AppendableParameter extends Parameter {
 
-    Class<? extends EditableParameter> parameterInstanceClass();
+    void appendEntries(Collection<ParameterEntry> entries);
 
-    Class<? extends EditableLevel> levelInstanceClass();
-
-    Class<? extends EditableParameterEntry> parameterEntryInstanceClass();
-
-    String getEndOfLine();
-
-    Charset getCharset();
 }

@@ -13,23 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.entries;
+package org.smartparam.serializer;
 
-import org.smartparam.serializer.CsvSerializationConfig;
-import org.smartparam.serializer.SerializationConfig;
-import org.supercsv.prefs.CsvPreference;
+import java.nio.charset.Charset;
 
 /**
  *
  * @author Adam Dubiel
  */
-public final class CsvPreferenceBuilder {
+public interface SerializationConfig {
 
-    private CsvPreferenceBuilder() {
-    }
+    String getEndOfLine();
 
-    public static CsvPreference csvPreference(SerializationConfig config) {
-        CsvSerializationConfig csvConfig = (CsvSerializationConfig) config;
-        return new CsvPreference.Builder(csvConfig.getCsvQuote(), csvConfig.getCsvDelimiter(), csvConfig.getEndOfLine()).build();
-    }
+    Charset getCharset();
 }

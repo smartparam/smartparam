@@ -15,21 +15,17 @@
  */
 package org.smartparam.serializer.entries;
 
-import org.smartparam.serializer.CsvSerializationConfig;
-import org.smartparam.serializer.SerializationConfig;
-import org.supercsv.prefs.CsvPreference;
+import org.smartparam.serializer.exception.ParamSerializationException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public final class CsvPreferenceBuilder {
+@SuppressWarnings("serial")
+public class EntriesCSVSerializationException extends ParamSerializationException {
 
-    private CsvPreferenceBuilder() {
+    public EntriesCSVSerializationException(Throwable cause) {
+        super("Failed to read/write entries CSV format.", cause);
     }
 
-    public static CsvPreference csvPreference(SerializationConfig config) {
-        CsvSerializationConfig csvConfig = (CsvSerializationConfig) config;
-        return new CsvPreference.Builder(csvConfig.getCsvQuote(), csvConfig.getCsvDelimiter(), csvConfig.getEndOfLine()).build();
-    }
 }

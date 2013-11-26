@@ -27,7 +27,8 @@ import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.serializer.exception.ParamSerializationException;
-import org.smartparam.serializer.config.SerializationConfig;
+import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.util.StreamCloser;
 import org.supercsv.io.CsvListWriter;
 
 /**
@@ -38,7 +39,7 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
 
     private static final Logger logger = LoggerFactory.getLogger(CsvParameterEntrySerializer.class);
 
-    private static final int PARAMETER_ENTRY_BATCH_SIZE = 500;
+    private static final int PARAMETER_ENTRY_BATCH_SIZE = 1000;
 
     @Override
     public void serialize(SerializationConfig config, Writer writer, Parameter parameter, ParameterEntryBatchLoader parameterEntryLoader) throws ParamSerializationException {
@@ -54,17 +55,20 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
                 for (ParameterEntry entry : parameterEntryLoader.nextBatch(PARAMETER_ENTRY_BATCH_SIZE)) {
                     csvWriter.write(entry.getLevels());
                     counter++;
+                    csvWriter.flush();
                 }
             }
+
+            csvWriter.flush();
 
             long endTime = System.currentTimeMillis();
             logger.debug("serializing {} parameter entries took {}", counter, endTime - startTime);
         } catch (IOException exception) {
-            throw new ParamSerializationException("serialization error", exception);
+            throw new EntriesCSVSerializationException(exception);
         } catch (ParamBatchLoadingException batchException) {
-            throw new ParamSerializationException("serialization error", batchException);
+            throw new EntriesCSVSerializationException(batchException);
         } finally {
-            closeWriter(csvWriter);
+            StreamCloser.closeStream(writer);
         }
     }
 
@@ -75,13 +79,5 @@ public class CsvParameterEntrySerializer implements ParameterEntrySerializer {
         }
 
         return header;
-    }
-
-    private void closeWriter(CsvListWriter writer) throws ParamSerializationException {
-        try {
-            writer.close();
-        } catch (IOException exception) {
-            throw new ParamSerializationException("error while closing writer stream", exception);
-        }
     }
 }

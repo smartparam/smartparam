@@ -13,15 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer;
 
 import java.nio.charset.Charset;
-import org.smartparam.engine.model.editable.EditableLevel;
-import org.smartparam.engine.model.editable.EditableParameter;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
-import org.smartparam.engine.model.editable.SimpleEditableLevel;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.engine.model.editable.SimpleEditableParameterEntry;
 
 /**
  *
@@ -37,12 +31,6 @@ public class DefaultSerializationConfig implements CsvSerializationConfig {
 
     public static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
-    private Class<? extends EditableParameter> parameterInstanceClass = SimpleEditableParameter.class;
-
-    private Class<? extends EditableLevel> levelInstanceClass = SimpleEditableLevel.class;
-
-    private Class<? extends EditableParameterEntry> parameterEntryInstanceClass = SimpleEditableParameterEntry.class;
-
     private char csvQuote = DEFAULT_CSV_QUOTE;
 
     private char csvDelimiter = DEFAULT_CSV_DELIMITER;
@@ -50,33 +38,6 @@ public class DefaultSerializationConfig implements CsvSerializationConfig {
     private String endOfLine = DEFAULT_END_OF_LINE;
 
     private Charset charset = Charset.forName(DEFAULT_CHARSET_NAME);
-
-    @Override
-    public Class<? extends EditableParameter> parameterInstanceClass() {
-        return parameterInstanceClass;
-    }
-
-    void setParameterInstanceClass(Class<? extends EditableParameter> parameterInstanceClass) {
-        this.parameterInstanceClass = parameterInstanceClass;
-    }
-
-    @Override
-    public Class<? extends EditableLevel> levelInstanceClass() {
-        return levelInstanceClass;
-    }
-
-    void setLevelInstanceClass(Class<? extends EditableLevel> levelInstanceClass) {
-        this.levelInstanceClass = levelInstanceClass;
-    }
-
-    @Override
-    public Class<? extends EditableParameterEntry> parameterEntryInstanceClass() {
-        return parameterEntryInstanceClass;
-    }
-
-    void setParameterEntryInstanceClass(Class<? extends EditableParameterEntry> parameterEntryInstanceClass) {
-        this.parameterEntryInstanceClass = parameterEntryInstanceClass;
-    }
 
     @Override
     public char getCsvDelimiter() {

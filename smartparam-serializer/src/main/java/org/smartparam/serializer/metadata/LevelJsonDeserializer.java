@@ -13,15 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer.metadata;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import java.lang.reflect.Type;
+import org.smartparam.engine.model.Level;
+import org.smartparam.serializer.model.DeserializedLevel;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface CsvSerializationConfig extends SerializationConfig {
+public class LevelJsonDeserializer implements JsonDeserializer<Level> {
 
-    char getCsvDelimiter();
+    public Level deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
+        return context.deserialize(json, DeserializedLevel.class);
+    }
 
-    char getCsvQuote();
 }
