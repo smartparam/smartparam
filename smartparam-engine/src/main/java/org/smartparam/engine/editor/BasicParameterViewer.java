@@ -27,7 +27,7 @@ import org.smartparam.engine.model.ParameterEntry;
  *
  * @author Adam Dubiel
  */
-public class BasicParameterViewer implements ParameterViewer {
+public class BasicParameterViewer implements ParamViewer {
 
     private final RepositoryStore<ViewableParamRepository> repositories;
 

@@ -30,7 +30,7 @@ import org.smartparam.engine.model.editable.ParameterEntryKey;
  *
  * @author Adam Dubiel
  */
-public class BasicParameterEditor implements ParameterEditor {
+public class BasicParameterEditor implements ParamEditor {
 
     private final RepositoryStore<EditableParamRepository> repositories;
 

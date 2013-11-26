@@ -27,7 +27,7 @@ import org.smartparam.engine.model.editable.ParameterEntryKey;
  *
  * @author Adam Dubiel
  */
-public interface ParameterEditor {
+public interface ParamEditor {
 
     List<RepositoryName> repositories();
 

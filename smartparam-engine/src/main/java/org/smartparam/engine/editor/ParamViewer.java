@@ -23,7 +23,7 @@ import org.smartparam.engine.model.ParameterEntry;
  *
  * @author Adam Dubiel
  */
-public interface ParameterViewer {
+public interface ParamViewer {
 
     DescribedEntity<ViewableRepositoryCapabilities> capabilities(RepositoryName of);
 
