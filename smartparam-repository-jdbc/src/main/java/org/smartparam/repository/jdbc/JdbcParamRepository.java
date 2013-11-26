@@ -26,22 +26,22 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.VoidTransactionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.editor.capabilities.RepositoryCapabilities;
 import org.smartparam.engine.config.InitializableComponent;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
-import org.smartparam.engine.core.repository.EditableParamRepository;
-import org.smartparam.engine.core.repository.ViewableParamRepository;
+import org.smartparam.editor.editor.EditableParamRepository;
 import org.smartparam.engine.core.repository.WritableParamRepository;
-import org.smartparam.engine.editor.ParameterEntriesFilter;
-import org.smartparam.engine.editor.ParameterFilter;
-import org.smartparam.engine.editor.ViewableRepositoryCapabilities;
-import org.smartparam.engine.editor.ViewableRepositoryCapability;
+import org.smartparam.editor.viewer.ParameterEntriesFilter;
+import org.smartparam.editor.viewer.ParameterFilter;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.LevelKey;
-import org.smartparam.engine.model.editable.ParameterEntryKey;
+import org.smartparam.editor.model.LevelKey;
+import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.viewer.ViewableParamRepository;
+import org.smartparam.editor.viewer.ViewableRepositoryCapability;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
 import org.smartparam.repository.jdbc.exception.ParameterAlreadyExistsException;
@@ -81,8 +81,11 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
         schemaCreator.createSchema();
     }
 
-    public ViewableRepositoryCapabilities capabilities() {
-        return new ViewableRepositoryCapabilities(ViewableRepositoryCapability.PAGE_ENTRIES, ViewableRepositoryCapability.FILTER_ENTRIES, ViewableRepositoryCapability.SORT_ENTRIES);
+    @Override
+    public RepositoryCapabilities capabilities() {
+        return new RepositoryCapabilities(ViewableRepositoryCapability.PAGE_ENTRIES,
+                ViewableRepositoryCapability.FILTER_ENTRIES,
+                ViewableRepositoryCapability.SORT_ENTRIES);
     }
 
     @Override

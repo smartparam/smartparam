@@ -16,7 +16,7 @@
 package org.smartparam.repository.jdbc.model;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.editable.EditableParameterEntry;
+import org.smartparam.editor.model.EditableParameterEntry;
 
 /**
  * @author Przemek Hertel
@@ -47,7 +47,6 @@ public class JdbcParameterEntry implements EditableParameterEntry {
         return key.entryId();
     }
 
-    @Override
     public void setLevels(String[] levels) {
         this.levels = levels;
     }

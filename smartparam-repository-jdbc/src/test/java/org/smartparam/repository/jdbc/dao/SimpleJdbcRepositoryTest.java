@@ -23,9 +23,9 @@ import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
-import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
 
 /**
  *

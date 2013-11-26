@@ -26,7 +26,7 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.SimpleQueryRunner;
 import org.polyjdbc.core.query.UpdateQuery;
-import org.smartparam.engine.editor.ParameterFilter;
+import org.smartparam.editor.viewer.ParameterFilter;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameter;

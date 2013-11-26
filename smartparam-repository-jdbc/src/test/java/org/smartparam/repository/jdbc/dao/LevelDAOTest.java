@@ -23,7 +23,7 @@ import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
 import static org.smartparam.repository.jdbc.test.builder.JdbcLevelTestBuilder.jdbcLevel;
 
 /**

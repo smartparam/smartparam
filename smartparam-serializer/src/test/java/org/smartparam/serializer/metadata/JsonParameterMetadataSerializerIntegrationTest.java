@@ -23,8 +23,8 @@ import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.test.builder.StringStreamUtil;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
 
 /**
  *

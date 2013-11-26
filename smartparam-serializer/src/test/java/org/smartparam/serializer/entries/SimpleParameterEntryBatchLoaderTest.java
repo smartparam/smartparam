@@ -22,8 +22,8 @@ import org.junit.Test;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import static org.fest.assertions.api.Assertions.*;
-import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
 
 /**
  *

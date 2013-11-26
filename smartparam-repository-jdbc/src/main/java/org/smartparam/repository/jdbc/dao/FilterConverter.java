@@ -16,7 +16,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import org.polyjdbc.core.query.Order;
-import org.smartparam.engine.editor.SortDirection;
+import org.smartparam.editor.viewer.SortDirection;
 
 /**
  *

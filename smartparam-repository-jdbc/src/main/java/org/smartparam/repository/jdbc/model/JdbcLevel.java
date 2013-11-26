@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.engine.model.editable.EditableLevel;
+import org.smartparam.editor.model.EditableLevel;
 
 /**
  * @author Przemek Hertel
@@ -83,27 +83,22 @@ public class JdbcLevel implements EditableLevel {
         this.orderNo = orderNo;
     }
 
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public void setLevelCreator(String levelCreator) {
         this.levelCreator = levelCreator;
     }
 
-    @Override
     public void setType(String type) {
         this.type = type;
     }
 
-    @Override
     public void setMatcher(String matcher) {
         this.matcher = matcher;
     }
 
-    @Override
     public void setArray(boolean array) {
         this.array = array;
     }

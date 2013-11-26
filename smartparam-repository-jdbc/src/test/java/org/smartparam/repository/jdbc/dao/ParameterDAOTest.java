@@ -18,15 +18,15 @@ package org.smartparam.repository.jdbc.dao;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.engine.editor.ParameterFilter;
-import org.smartparam.engine.editor.SortDirection;
+import org.smartparam.editor.viewer.ParameterFilter;
+import org.smartparam.editor.viewer.SortDirection;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.testng.annotations.Test;
 
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
 
 /**
  *

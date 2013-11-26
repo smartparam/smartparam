@@ -20,14 +20,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.smartparam.engine.model.Level;
+import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.editable.EditableParameter;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameter implements EditableParameter {
+public class JdbcParameter implements Parameter {
 
     /**
      * Default value for {@link #arraySeparator} field.
@@ -108,7 +108,6 @@ public class JdbcParameter implements EditableParameter {
         return sb.toString();
     }
 
-    @Override
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Parameter name can't be empty.");
@@ -116,34 +115,28 @@ public class JdbcParameter implements EditableParameter {
         this.name = name;
     }
 
-    @Override
     public void setLevels(List<Level> levels) {
         this.levels.clear();
         this.levels.addAll(levels);
     }
 
-    @Override
     public void setEntries(Set<ParameterEntry> entries) {
         this.entries.clear();
         this.entries.addAll(entries);
     }
 
-    @Override
     public void setInputLevels(int inputLevels) {
         this.inputLevels = inputLevels;
     }
 
-    @Override
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
     }
 
-    @Override
     public void setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
     }
 
-    @Override
     public void setArraySeparator(char arraySeparator) {
         this.arraySeparator = arraySeparator;
     }

@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.engine.editor.ParameterEntriesFilter;
-import org.smartparam.engine.editor.SortDirection;
+import org.smartparam.editor.viewer.ParameterEntriesFilter;
+import org.smartparam.editor.viewer.SortDirection;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 import static org.smartparam.engine.test.Iterables.onlyElement;
 import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
 
 /**
  *
