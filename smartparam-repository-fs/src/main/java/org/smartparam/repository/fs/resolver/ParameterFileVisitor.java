@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -39,11 +40,11 @@ public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
 
     private static final Logger logger = LoggerFactory.getLogger(ParameterFileVisitor.class);
 
-    private ParamDeserializer deserializer;
+    private final ParamDeserializer deserializer;
 
-    private Pattern filePattern;
+    private final Pattern filePattern;
 
-    private Map<String, String> parameters = new HashMap<String, String>();
+    private final Map<String, String> parameters = new HashMap<String, String>();
 
     public ParameterFileVisitor(String filePattern, ParamDeserializer deserializer) {
         this.filePattern = Pattern.compile(filePattern);
@@ -57,7 +58,7 @@ public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         String fileName = file.toFile().getCanonicalPath();
-        if(!filePattern.matcher(fileName).matches() ) {
+        if (!filePattern.matcher(fileName).matches()) {
             logger.debug("discarding file {}, does not match filtering pattern: {}", fileName, filePattern);
             return FileVisitResult.CONTINUE;
         }
@@ -81,6 +82,6 @@ public class ParameterFileVisitor extends SimpleFileVisitor<Path> {
     }
 
     public Map<String, String> getParameters() {
-        return parameters;
+        return Collections.unmodifiableMap(parameters);
     }
 }

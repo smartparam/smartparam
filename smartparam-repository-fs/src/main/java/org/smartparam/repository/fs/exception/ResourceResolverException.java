@@ -22,13 +22,13 @@ import org.smartparam.engine.core.exception.SmartParamException;
  * @author Adam Dubiel
  */
 @SuppressWarnings("serial")
-public class SmartParamResourceResolverException extends SmartParamException {
+public class ResourceResolverException extends SmartParamException {
 
-    public SmartParamResourceResolverException(String message, Throwable cause) {
+    public ResourceResolverException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public SmartParamResourceResolverException(String message) {
+    public ResourceResolverException(String message) {
         super(message);
     }
 }
