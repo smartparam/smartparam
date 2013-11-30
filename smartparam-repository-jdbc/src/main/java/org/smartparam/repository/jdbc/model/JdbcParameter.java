@@ -34,13 +34,13 @@ public class JdbcParameter implements Parameter {
      */
     public static final char DEFAULT_ARRAY_SEPARATOR = ',';
 
-    private String name;
+    private final String name;
 
     private final List<Level> levels = new ArrayList<Level>();
 
     private final Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
-    private int inputLevels;
+    private final int inputLevels;
 
     private boolean nullable;
 
@@ -108,13 +108,6 @@ public class JdbcParameter implements Parameter {
         return sb.toString();
     }
 
-    public void setName(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Parameter name can't be empty.");
-        }
-        this.name = name;
-    }
-
     public void setLevels(List<Level> levels) {
         this.levels.clear();
         this.levels.addAll(levels);
@@ -123,10 +116,6 @@ public class JdbcParameter implements Parameter {
     public void setEntries(Set<ParameterEntry> entries) {
         this.entries.clear();
         this.entries.addAll(entries);
-    }
-
-    public void setInputLevels(int inputLevels) {
-        this.inputLevels = inputLevels;
     }
 
     public void setNullable(boolean nullable) {

@@ -30,7 +30,9 @@ public class SimpleParameterEntry implements ParameterEntry {
     }
 
     public SimpleParameterEntry(ParameterEntry entry) {
-        this.levels = Arrays.copyOf(levels, levels.length);
+        if (entry.getLevels() != null) {
+            this.levels = Arrays.copyOf(entry.getLevels(), entry.getLevels().length);
+        }
     }
 
     public String[] getLevels() {
