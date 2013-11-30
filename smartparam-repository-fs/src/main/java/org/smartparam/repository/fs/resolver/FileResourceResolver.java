@@ -31,7 +31,6 @@ import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.exception.ParamSerializationException;
-import org.smartparam.serializer.util.StreamCloser;
 
 /**
  *

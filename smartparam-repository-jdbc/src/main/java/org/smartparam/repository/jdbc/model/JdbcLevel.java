@@ -23,9 +23,11 @@ import org.smartparam.editor.model.EditableLevel;
  */
 public class JdbcLevel implements EditableLevel {
 
+    private static final int TO_STRING_LENGTH = 100;
+
     private final JdbcLevelKey key;
 
-    private int orderNo;
+    private final int orderNo;
 
     private String name;
 
@@ -37,8 +39,9 @@ public class JdbcLevel implements EditableLevel {
 
     private boolean array;
 
-    public JdbcLevel(long id, String parameterName) {
+    public JdbcLevel(long id, String parameterName, int orderNo) {
         this.key = new JdbcLevelKey(parameterName, id);
+        this.orderNo = orderNo;
     }
 
     @Override
@@ -79,10 +82,6 @@ public class JdbcLevel implements EditableLevel {
         return matcher;
     }
 
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -105,7 +104,7 @@ public class JdbcLevel implements EditableLevel {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(TO_STRING_LENGTH);
         sb.append("JdbcParameterLevel[");
         sb.append("id=").append(getId());
         sb.append(", orderNo=").append(orderNo);

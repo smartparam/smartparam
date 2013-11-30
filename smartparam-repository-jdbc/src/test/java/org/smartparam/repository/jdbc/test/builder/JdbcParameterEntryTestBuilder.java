@@ -15,36 +15,40 @@
  */
 package org.smartparam.repository.jdbc.test.builder;
 
-import org.smartparam.engine.test.builder.AbstractParameterEntryTestBuilder;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JdbcParameterEntryTestBuilder extends AbstractParameterEntryTestBuilder<JdbcParameterEntry, JdbcParameterEntryTestBuilder> {
+public class JdbcParameterEntryTestBuilder {
 
     private long id;
 
     private String parameterName;
 
+    private String[] values;
+
     public static JdbcParameterEntryTestBuilder jdbcParameterEntry() {
         return new JdbcParameterEntryTestBuilder();
     }
 
-    @Override
-    protected JdbcParameterEntry buildEntry() {
-        return new JdbcParameterEntry(id, parameterName, null);
-    }
-
-
-    @Override
-    protected JdbcParameterEntryTestBuilder self() {
-        return this;
+    public JdbcParameterEntry build() {
+        return new JdbcParameterEntry(id, parameterName, values);
     }
 
     public JdbcParameterEntryTestBuilder withId(long id) {
         this.id = id;
+        return this;
+    }
+
+    public JdbcParameterEntryTestBuilder forParameter(String parameterName) {
+        this.parameterName = parameterName;
+        return this;
+    }
+
+    public JdbcParameterEntryTestBuilder withLevels(String... levelValues) {
+        this.values = levelValues;
         return this;
     }
 }

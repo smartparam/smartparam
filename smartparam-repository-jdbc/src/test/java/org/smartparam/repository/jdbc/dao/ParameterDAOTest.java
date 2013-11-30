@@ -90,12 +90,12 @@ public class ParameterDAOTest extends DatabaseTest {
 
         // then
         assertThat(parameters).containsExactly("parameter4", "parameter3", "parameter2",
-                                               "parameter1", "parameter0");
+                "parameter1", "parameter0");
     }
 
     @Test
     public void shouldReturnFilteredListOfParameterNames() {
-    // given
+        // given
         database().withParameters(5).build();
         ParameterDAO parameterDAO = get(ParameterDAO.class);
         ParameterFilter filter = new ParameterFilter("*4");
