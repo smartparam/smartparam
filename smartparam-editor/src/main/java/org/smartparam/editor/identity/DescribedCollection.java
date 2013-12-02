@@ -15,6 +15,7 @@
  */
 package org.smartparam.editor.identity;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -31,6 +32,11 @@ public class DescribedCollection<T> {
     public DescribedCollection(RepositoryName source, Collection<T> items) {
         this.source = source;
         this.items = items;
+    }
+
+    public DescribedCollection(RepositoryName source, T... items) {
+        this.source = source;
+        this.items = Arrays.asList(items);
     }
 
     public RepositoryName source() {
