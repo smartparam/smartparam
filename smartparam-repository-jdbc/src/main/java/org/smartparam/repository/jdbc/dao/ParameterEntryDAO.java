@@ -27,10 +27,12 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.UpdateQuery;
 import org.polyjdbc.core.util.StringUtils;
+import org.smartparam.editor.viewer.LevelSorting;
 import org.smartparam.editor.viewer.ParameterEntriesFilter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
+import static org.smartparam.repository.jdbc.dao.FilterConverter.parseSortOrder;
 
 /**
  *
@@ -60,13 +62,13 @@ public class ParameterEntryDAO {
                     .value("fk_parameter", parameterName);
 
             for (levelIndex = 0; levelIndex < maxDistinctLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
-                query.value("level" + (levelIndex + 1), entry.getLevels()[levelIndex]);
+                query.value(level(levelIndex), entry.getLevels()[levelIndex]);
             }
 
             if (entry.getLevels().length > maxDistinctLevels) {
-                query.value("level" + maxDistinctLevels, concatenateLastLevels(entry.getLevels(), maxDistinctLevels));
+                query.value(lastLevel(), concatenateLastLevels(entry.getLevels(), maxDistinctLevels));
             } else if (entry.getLevels().length == maxDistinctLevels) {
-                query.value("level" + maxDistinctLevels, entry.getLevels()[maxDistinctLevels - 1]);
+                query.value(lastLevel(), entry.getLevels()[maxDistinctLevels - 1]);
             }
 
             insertedEntriesIds.add(queryRunner.insert(query));
@@ -126,13 +128,13 @@ public class ParameterEntryDAO {
         int levelIndex;
 
         for (levelIndex = 0; levelIndex < maxDistinctLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
-            query.set("level" + (levelIndex + 1), entry.getLevels()[levelIndex]);
+            query.set(level(levelIndex), entry.getLevels()[levelIndex]);
         }
 
         if (entry.getLevels().length > maxDistinctLevels) {
-            query.set("level" + maxDistinctLevels, concatenateLastLevels(entry.getLevels(), maxDistinctLevels));
+            query.set(lastLevel(), concatenateLastLevels(entry.getLevels(), maxDistinctLevels));
         } else if (entry.getLevels().length == maxDistinctLevels) {
-            query.set("level" + maxDistinctLevels, entry.getLevels()[maxDistinctLevels - 1]);
+            query.set(lastLevel(), entry.getLevels()[maxDistinctLevels - 1]);
         }
 
         queryRunner.update(query);
@@ -147,12 +149,14 @@ public class ParameterEntryDAO {
         for (int levelIndex = 0; levelIndex < filter.levelFiltersLength() && levelIndex < maxDistinctLevels; ++levelIndex) {
             if (filter.hasFilter(levelIndex)) {
                 query.append(" and upper(level" + (levelIndex + 1) + ")").append(" like :level" + (levelIndex + 1));
-                query.withArgument("level" + (levelIndex + 1), FilterConverter.parseAntMatcher(filter.levelFilter(levelIndex)));
+                query.withArgument(level(levelIndex), FilterConverter.parseAntMatcher(filter.levelFilter(levelIndex)));
             }
         }
 
-        if (filter.applyOrdering() && filter.orderBy() < maxDistinctLevels) {
-            query.orderBy("level" + filter.orderBy(), FilterConverter.parseSortOrder(filter.orderDirection()));
+        for (LevelSorting levelSorting : filter.sorting()) {
+            if (levelSorting.levelIndex() < maxDistinctLevels) {
+                query.orderBy(level(levelSorting.levelIndex()), parseSortOrder(levelSorting.direction()));
+            }
         }
 
         if (filter.applyPaging()) {
@@ -162,5 +166,13 @@ public class ParameterEntryDAO {
         }
 
         return queryRunner.queryList(query, new ParameterEntryMapper(configuration));
+    }
+
+    private String lastLevel() {
+        return level(configuration.getLevelColumnCount() - 1);
+    }
+
+    private String level(int levelIndex) {
+        return "level" + (levelIndex + 1);
     }
 }

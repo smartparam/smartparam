@@ -15,7 +15,10 @@
  */
 package org.smartparam.editor.viewer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.smartparam.engine.util.EngineUtil;
 
 /**
@@ -30,19 +33,20 @@ public class ParameterEntriesFilter {
 
     private String[] levelFilters = new String[]{};
 
-    private SortDirection orderDirection = null;
-
-    private int orderByLevelIndex = -1;
+    private final List<LevelSorting> levelSorting = new ArrayList<LevelSorting>();
 
     public ParameterEntriesFilter() {
     }
 
-    public ParameterEntriesFilter(int page, int pageSize, String[] levelFilters, int orderLevelIndex, SortDirection levelOrdering) {
+    public ParameterEntriesFilter(int page, int pageSize, String[] levelFilters, List<LevelSorting> levelSorting) {
         this.page = page;
         this.pageSize = pageSize;
         this.levelFilters = levelFilters;
-        this.orderByLevelIndex = orderLevelIndex;
-        this.orderDirection = levelOrdering;
+        this.levelSorting.addAll(levelSorting);
+    }
+
+    public ParameterEntriesFilter(int page, int pageSize, String[] levelFilters, LevelSorting levelSorting) {
+        this(page, pageSize, levelFilters, Arrays.asList(levelSorting));
     }
 
     public ParameterEntriesFilter(int page, int pageSize) {
@@ -102,24 +106,25 @@ public class ParameterEntriesFilter {
     }
 
     public boolean applyOrdering() {
-        return orderByLevelIndex > -1;
+        return !levelSorting.isEmpty();
     }
 
-    public SortDirection orderDirection() {
-        return orderDirection;
+    public List<LevelSorting> sorting() {
+        return Collections.unmodifiableList(levelSorting);
     }
 
-    public int orderBy() {
-        return orderByLevelIndex;
+    public ParameterEntriesFilter orderBy(LevelSorting levelSorting) {
+        this.levelSorting.add(levelSorting);
+        return this;
     }
 
-    public boolean orderByThis(int levelIndex) {
-        return levelIndex == orderByLevelIndex;
+    public ParameterEntriesFilter orderBy(int orderByLevelIndex) {
+        levelSorting.add(new LevelSorting(orderByLevelIndex));
+        return this;
     }
 
     public ParameterEntriesFilter orderBy(int orderByLevelIndex, SortDirection orderDirection) {
-        this.orderByLevelIndex = orderByLevelIndex;
-        this.orderDirection = orderDirection;
+        levelSorting.add(new LevelSorting(orderByLevelIndex, orderDirection));
         return this;
     }
 }
