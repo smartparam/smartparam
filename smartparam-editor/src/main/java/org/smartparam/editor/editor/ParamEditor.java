@@ -38,6 +38,8 @@ public interface ParamEditor {
 
     void updateParameter(RepositoryName in, String parameterName, Parameter parameter);
 
+    void deleteParameter(RepositoryName in, String parameterName);
+
     DescribedEntity<EditableLevel> getLevel(RepositoryName from, LevelKey levelKey);
 
     DescribedEntity<LevelKey> addLevel(RepositoryName in, String parameterName, Level level);

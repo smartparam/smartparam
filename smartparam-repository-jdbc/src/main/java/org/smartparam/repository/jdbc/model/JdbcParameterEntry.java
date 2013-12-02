@@ -24,12 +24,14 @@ import org.smartparam.editor.model.EditableParameterEntry;
  */
 public class JdbcParameterEntry implements EditableParameterEntry {
 
+    private static final int TO_STRING_LENGTH = 100;
+
     private final JdbcParameterEntryKey key;
 
     private String[] levels;
 
-    public JdbcParameterEntry(long id, String parameterName, String[] levels) {
-        this.key = new JdbcParameterEntryKey(parameterName, id);
+    public JdbcParameterEntry(long id, String[] levels) {
+        this.key = new JdbcParameterEntryKey(id);
         this.levels = levels;
     }
 
@@ -40,7 +42,7 @@ public class JdbcParameterEntry implements EditableParameterEntry {
 
     @Override
     public String[] getLevels() {
-        return levels;
+        return Arrays.copyOf(levels, levels.length);
     }
 
     public long getId() {
@@ -48,12 +50,12 @@ public class JdbcParameterEntry implements EditableParameterEntry {
     }
 
     public void setLevels(String[] levels) {
-        this.levels = levels;
+        this.levels = Arrays.copyOf(levels, levels.length);
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(100);
+        StringBuilder sb = new StringBuilder(TO_STRING_LENGTH);
         sb.append("JdbcParameterEntry[#").append(getId());
         sb.append(' ');
         sb.append(Arrays.toString(levels));

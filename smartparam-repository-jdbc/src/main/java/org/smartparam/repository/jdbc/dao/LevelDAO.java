@@ -94,7 +94,7 @@ public class LevelDAO {
 
     public void delete(QueryRunner queryRunner, String parameterName, long levelId) {
         DeleteQuery query = QueryFactory.delete().from(configuration.getLevelTable())
-                .where("id = :id and fk_parameter = :parameterName")
+                .where("id = :id")
                 .withArgument("id", levelId)
                 .withArgument("parameterName", parameterName);
         queryRunner.delete(query);

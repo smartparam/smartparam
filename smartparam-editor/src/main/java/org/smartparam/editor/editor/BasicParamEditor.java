@@ -59,6 +59,11 @@ public class BasicParamEditor implements ParamEditor {
         repository.updateParameter(parameterName, parameter);
     }
 
+    public void deleteParameter(RepositoryName in, String parameterName) {
+        EditableParamRepository repository = repositories.get(in);
+        repository.deleteParameter(parameterName);
+    }
+
     @Override
     public DescribedEntity<EditableLevel> getLevel(RepositoryName from, LevelKey levelKey) {
         EditableParamRepository repository = repositories.get(from);

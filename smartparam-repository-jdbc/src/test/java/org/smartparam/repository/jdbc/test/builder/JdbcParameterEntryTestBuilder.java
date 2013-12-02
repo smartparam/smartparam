@@ -25,8 +25,6 @@ public class JdbcParameterEntryTestBuilder {
 
     private long id;
 
-    private String parameterName;
-
     private String[] values;
 
     public static JdbcParameterEntryTestBuilder jdbcParameterEntry() {
@@ -34,16 +32,11 @@ public class JdbcParameterEntryTestBuilder {
     }
 
     public JdbcParameterEntry build() {
-        return new JdbcParameterEntry(id, parameterName, values);
+        return new JdbcParameterEntry(id, values);
     }
 
     public JdbcParameterEntryTestBuilder withId(long id) {
         this.id = id;
-        return this;
-    }
-
-    public JdbcParameterEntryTestBuilder forParameter(String parameterName) {
-        this.parameterName = parameterName;
         return this;
     }
 

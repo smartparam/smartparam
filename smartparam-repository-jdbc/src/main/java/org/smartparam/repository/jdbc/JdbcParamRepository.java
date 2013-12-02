@@ -235,6 +235,11 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
+    public void deleteParameter(String parameterName) {
+        delete(parameterName);
+    }
+
+    @Override
     public Level getLevel(final LevelKey entityKey) {
         return transactionRunner.run(new TransactionWrapper<Level>() {
             @Override
@@ -250,7 +255,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
             @Override
             public LevelKey perform(QueryRunner queryRunner) {
                 long levelId = dao.addLevel(queryRunner, parameterName, level);
-                return new JdbcLevelKey(parameterName, levelId);
+                return new JdbcLevelKey(levelId);
             }
         });
     }
@@ -306,7 +311,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
             @Override
             public ParameterEntryKey perform(QueryRunner queryRunner) {
                 long entryId = dao.addParameterEntry(queryRunner, parameterName, entry);
-                return new JdbcParameterEntryKey(parameterName, entryId);
+                return new JdbcParameterEntryKey(entryId);
             }
         });
     }
@@ -320,7 +325,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
 
                 List<ParameterEntryKey> keys = new ArrayList<ParameterEntryKey>(entries.size());
                 for (Long entryId : entriesIds) {
-                    keys.add(new JdbcParameterEntryKey(parameterName, entryId));
+                    keys.add(new JdbcParameterEntryKey(entryId));
                 }
 
                 return keys;

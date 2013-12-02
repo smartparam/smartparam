@@ -13,40 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.model;
+package org.smartparam.editor.model.simple;
 
-import org.smartparam.editor.model.AbstractEntityKey;
 import org.smartparam.editor.model.LevelKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JdbcLevelKey extends AbstractEntityKey implements LevelKey {
-
-    static final String SYMBOL = "jdbc";
+public class SimpleLevelKey implements LevelKey {
 
     private final String value;
 
-    private final long levelId;
-
-    public JdbcLevelKey(long levelId) {
-        this.value = format(SYMBOL, Long.toString(levelId));
-        this.levelId = levelId;
+    public SimpleLevelKey(String value) {
+        this.value = value;
     }
 
-    public JdbcLevelKey(LevelKey parameterKey) {
-        String[] segments = parse(SYMBOL, parameterKey.value());
-        value = parameterKey.value();
-        levelId = Long.parseLong(segments[0]);
-    }
-
-    @Override
     public String value() {
         return value;
     }
 
-    public long levelId() {
-        return levelId;
-    }
 }

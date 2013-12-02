@@ -35,6 +35,8 @@ public interface EditableParamRepository extends ParamRepository {
 
     void updateParameter(String parameterName, Parameter parameter);
 
+    void deleteParameter(String parameterName);
+
     Level getLevel(LevelKey entityKey);
 
     LevelKey addLevel(String parameterName, Level level);

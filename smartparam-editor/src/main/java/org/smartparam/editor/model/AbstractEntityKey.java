@@ -23,7 +23,7 @@ import java.util.Arrays;
  */
 public abstract class AbstractEntityKey {
 
-    private static final String SEPARATOR = ";";
+    private static final String SEPARATOR = "-";
 
     protected final String[] parse(String repositorySymbol, String key) {
         if (key == null || key.isEmpty()) {
