@@ -47,9 +47,9 @@ import static com.googlecode.catchexception.CatchException.caughtException;
 import static org.mockito.Mockito.*;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
 import static org.smartparam.engine.test.builder.JavaFunctionTestBuilder.javaFunction;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
-import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
 
 /**
  * @author Przemek Hertel

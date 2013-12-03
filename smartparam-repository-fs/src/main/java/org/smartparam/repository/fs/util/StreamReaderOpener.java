@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
+import org.smartparam.repository.fs.exception.ResourceResolverException;
 
 /**
  *
@@ -38,14 +38,14 @@ public final class StreamReaderOpener {
             File file = new File(filePath);
             return Files.newBufferedReader(file.toPath(), charset);
         } catch (IOException exception) {
-            throw new SmartParamResourceResolverException("unable to open reader stream to file " + filePath, exception);
+            throw new ResourceResolverException("Unable to open reader stream to file " + filePath, exception);
         }
     }
 
     public static BufferedReader openReaderForResource(Class<?> classloaderClass, String classpathResourceName) {
         InputStream stream = classloaderClass.getResourceAsStream(classpathResourceName);
         if (stream == null) {
-            throw new SmartParamResourceResolverException("no resource " + classpathResourceName + " found in classpath");
+            throw new ResourceResolverException("No resource " + classpathResourceName + " found in classpath.");
         }
         return new BufferedReader(new InputStreamReader(stream));
     }

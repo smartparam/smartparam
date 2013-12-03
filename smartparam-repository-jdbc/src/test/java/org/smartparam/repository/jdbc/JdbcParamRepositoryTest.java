@@ -24,9 +24,9 @@ import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.testng.annotations.Test;
 
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
-import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
 
 /**
  *
@@ -37,28 +37,28 @@ public class JdbcParamRepositoryTest extends DatabaseTest {
     @Test
     public void shouldReturnParameterWithLevelsAndEntries() {
         // given
-        database().withParameter(1, "test").withLevels(1, 5).withParameterEntries(1, 5).build();
+        database().withParameter("parameter").withLevels("parameter", 5).withParameterEntries("parameter", 5).build();
         JdbcParamRepository repository = get(JdbcParamRepository.class);
 
         // when
-        Parameter parameter = repository.load("test");
+        Parameter parameter = repository.load("parameter");
 
         // then
-        assertThat(parameter).isNotNull().hasName("test")
+        assertThat(parameter).isNotNull().hasName("parameter")
                 .hasLevels(5).hasEntries(5);
     }
 
     @Test
     public void shouldReturnParameterBatchLoader() {
         // given
-        database().withParameter(1, "test").withLevels(1, 5).withParameterEntries(1, 5).build();
+        database().withParameter("parameter").withLevels("parameter", 5).withParameterEntries("parameter", 5).build();
         JdbcParamRepository repository = get(JdbcParamRepository.class);
 
         // when
-        ParameterBatchLoader loader = repository.batchLoad("test");
+        ParameterBatchLoader loader = repository.batchLoad("parameter");
 
         // then
-        assertThat(loader).hasEntryLoader().hasMetadataFor("test").hasMetadataWithLevels(5);
+        assertThat(loader).hasEntryLoader().hasMetadataFor("parameter").hasMetadataWithLevels(5);
     }
 
     @Test
@@ -66,43 +66,43 @@ public class JdbcParamRepositoryTest extends DatabaseTest {
         // given
         Level[] levels = new Level[]{level().withName("lvl1").withType("string").build()};
         ParameterEntry[] entries = new ParameterEntry[]{parameterEntry().withLevels("A").build()};
-        Parameter parameter = parameter().withName("test").withLevels(levels).withEntries(entries).build();
+        Parameter parameter = parameter().withName("parameter").withLevels(levels).withEntries(entries).build();
         JdbcParamRepository repository = get(JdbcParamRepository.class);
 
         // when
         repository.write(parameter);
 
         // then
-        assertDatabase().hasParameter("test").hasEntriesForParameter("test", 1).hasLevelsForParameter("test", 1).close();
+        assertDatabase().hasParameter("parameter").hasEntriesForParameter("parameter", 1).hasLevelsForParameter("parameter", 1).close();
     }
 
     @Test
     public void shouldOverwriteExistingParameterWithSameName() {
         // given
-        database().withParameter(1, "test").withLevels(1, 2).withParameterEntries(1, 2).build();
+        database().withParameter("parameter").withLevels("parameter", 2).withParameterEntries("parameter", 2).build();
         Level[] levels = new Level[]{level().withName("lvl1").withType("string").build()};
         ParameterEntry[] entries = new ParameterEntry[]{parameterEntry().withLevels("A").build()};
-        Parameter parameter = parameter().withName("test").withLevels(levels).withEntries(entries).build();
+        Parameter parameter = parameter().withName("parameter").withLevels(levels).withEntries(entries).build();
         JdbcParamRepository repository = get(JdbcParamRepository.class);
 
         // when
         repository.write(parameter);
 
         // then
-        assertDatabase().hasParameter("test").hasEntriesForParameter("test", 1).hasLevelsForParameter("test", 1).close();
+        assertDatabase().hasParameter("parameter").hasEntriesForParameter("parameter", 1).hasLevelsForParameter("parameter", 1).close();
     }
 
     @Test
     public void shouldAppendEntriesToExistingParameters() {
         // given
-        database().withParameter(1, "test").withLevels(1, 1).withParameterEntries(1, 1).build();
+        database().withParameter("parameter").withLevels("parameter", 1).withParameterEntries("parameter", 1).build();
         ParameterEntry[] entries = new ParameterEntry[]{parameterEntry().withLevels("A").build()};
         JdbcParamRepository repository = get(JdbcParamRepository.class);
 
         // when
-        repository.writeParameterEntries("test", Arrays.asList(entries));
+        repository.writeParameterEntries("parameter", Arrays.asList(entries));
 
         // then
-        assertDatabase().hasParameter("test").hasEntriesForParameter("test", 2).close();
+        assertDatabase().hasParameter("parameter").hasEntriesForParameter("parameter", 2).close();
     }
 }

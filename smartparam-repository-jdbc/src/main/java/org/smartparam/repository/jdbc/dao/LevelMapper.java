@@ -26,7 +26,7 @@ import org.smartparam.engine.model.Level;
  */
 public class LevelMapper implements ObjectMapper<Level> {
 
-    private JdbcLevelMapper jdbcMapper = new JdbcLevelMapper();
+    private final JdbcLevelMapper jdbcMapper = new JdbcLevelMapper();
 
     @Override
     public Level createObject(ResultSet resultSet) throws SQLException {

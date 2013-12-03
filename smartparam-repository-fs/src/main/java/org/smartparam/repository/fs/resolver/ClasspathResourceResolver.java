@@ -32,7 +32,7 @@ import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.fs.ResourceResolver;
-import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
+import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.exception.ParamSerializationException;
@@ -50,11 +50,11 @@ public class ClasspathResourceResolver implements ResourceResolver {
 
     private static final String PACKAGE_SEPARATOR = ".";
 
-    private String basePath;
+    private final String basePath;
 
-    private String filePattern;
+    private final String filePattern;
 
-    private ParamDeserializer deserializer;
+    private final ParamDeserializer deserializer;
 
     public ClasspathResourceResolver(String basePath, String filePattern, ParamDeserializer deserializer) {
         this.basePath = basePath;
@@ -108,7 +108,7 @@ public class ClasspathResourceResolver implements ResourceResolver {
         try {
             return readParameterConfigFromResource(resourceName).getName();
         } catch (ParamSerializationException serializationException) {
-            throw new SmartParamResourceResolverException("unable to load parameter from " + resourceName, serializationException);
+            throw new ResourceResolverException("Unable to load parameter from " + resourceName, serializationException);
         }
     }
 
@@ -124,7 +124,7 @@ public class ClasspathResourceResolver implements ResourceResolver {
 
     @Override
     public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
-        BufferedReader reader = null;
+        BufferedReader reader;
         try {
             reader = StreamReaderOpener.openReaderForResource(this.getClass(), parameterResourceName);
             Parameter metadata = deserializer.deserializeMetadata(reader);
@@ -132,7 +132,7 @@ public class ClasspathResourceResolver implements ResourceResolver {
 
             return new ParameterBatchLoader(metadata, entriesLoader);
         } catch (ParamSerializationException serializationException) {
-            throw new SmartParamResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
+            throw new ResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
         }
     }
 }

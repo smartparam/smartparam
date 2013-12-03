@@ -15,35 +15,82 @@
  */
 package org.smartparam.repository.jdbc.test.builder;
 
-import org.smartparam.engine.test.builder.AbstractLevelTestBuilder;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JdbcLevelTestBuilder extends AbstractLevelTestBuilder<JdbcLevel, JdbcLevelTestBuilder> {
+public class JdbcLevelTestBuilder {
 
-    private JdbcLevelTestBuilder() {
-        super(new JdbcLevel());
-    }
+    private long id;
+
+    private String parameterName;
+
+    private int order;
+
+    private String name;
+
+    private String type;
+
+    private String matcher;
+
+    private String levelCreator;
+
+    private boolean array;
 
     public static JdbcLevelTestBuilder jdbcLevel() {
         return new JdbcLevelTestBuilder();
     }
 
-    @Override
-    protected JdbcLevelTestBuilder self() {
+    public JdbcLevel build() {
+        JdbcLevel level = new JdbcLevel(id, parameterName, order);
+        level.setName(name);
+        level.setType(type);
+        level.setMatcher(matcher);
+        level.setLevelCreator(levelCreator);
+        level.setArray(array);
+
+        return level;
+    }
+
+    public JdbcLevelTestBuilder withId(long id) {
+        this.id = id;
         return this;
     }
 
-    public JdbcLevelTestBuilder forParameter(long parameterId) {
-        level.setParameterId(parameterId);
+    public JdbcLevelTestBuilder forParameter(String parameterName) {
+        this.parameterName = parameterName;
+        return this;
+    }
+
+    public JdbcLevelTestBuilder withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public JdbcLevelTestBuilder withMatcher(String matcher) {
+        this.matcher = matcher;
+        return this;
+    }
+
+    public JdbcLevelTestBuilder withLevelCreator(String levelCreator) {
+        this.levelCreator = levelCreator;
+        return this;
+    }
+
+    public JdbcLevelTestBuilder withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public JdbcLevelTestBuilder array() {
+        this.array = true;
         return this;
     }
 
     public JdbcLevelTestBuilder withOrder(int order) {
-        level.setOrderNo(order);
+        this.order = order;
         return this;
     }
 }

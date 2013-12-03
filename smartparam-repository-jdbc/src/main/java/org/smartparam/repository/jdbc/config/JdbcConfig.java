@@ -32,8 +32,6 @@ public interface JdbcConfig {
 
     String getParameterTable();
 
-    String getParameterSequence();
-
     String getLevelTable();
 
     String getLevelSequence();

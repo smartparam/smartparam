@@ -25,6 +25,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.smartparam</groupId>
+            <artifactId>smartparam-editor</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.polyjdbc</groupId>
             <artifactId>polyjdbc</artifactId>
         </dependency>

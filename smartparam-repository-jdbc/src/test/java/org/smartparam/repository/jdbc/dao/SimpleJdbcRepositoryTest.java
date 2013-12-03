@@ -17,16 +17,15 @@ package org.smartparam.repository.jdbc.dao;
 
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
-import static org.smartparam.engine.test.builder.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
 
 /**
  *
@@ -37,33 +36,33 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
     @Test
     public void shouldReturnParameterWithLevelsAndEntries() {
         // given
-        database().withParameter(1, "test").withParameterEntries(1, 5)
-                .withLevels(1, 4).build();
+        database().withParameter("parameter").withParameterEntries("parameter", 5)
+                .withLevels("parameter", 4).build();
         SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
         QueryRunner runner = queryRunner();
 
         // when
-        Parameter parameter = repository.getParameter(runner, "test");
+        Parameter parameter = repository.getParameter(runner, "parameter");
         runner.close();
 
         // then
-        assertThat(parameter).hasName("test").hasLevels(4).hasEntries(5);
+        assertThat(parameter).hasName("parameter").hasLevels(4).hasEntries(5);
     }
 
     @Test
     public void shouldReturnParameterMetadataWithoutEntries() {
         // given
-        database().withParameter(1, "test").withParameterEntries(1, 5)
-                .withLevels(1, 4).build();
+        database().withParameter("parameter").withParameterEntries("parameter", 5)
+                .withLevels("parameter", 4).build();
         SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
         QueryRunner runner = queryRunner();
 
         // when
-        Parameter metadata = repository.getParameterMetadata(runner, "test");
+        Parameter metadata = repository.getParameterMetadata(runner, "parameter");
         runner.close();
 
         // then
-        assertThat(metadata).hasName("test").hasLevels(4).hasNoEntries();
+        assertThat(metadata).hasName("parameter").hasLevels(4).hasNoEntries();
     }
 
     @Test
@@ -79,7 +78,7 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
             parameterEntry().withLevels("test").build()
         };
 
-        Parameter parameter = parameter().withName("test").withLevels(levels).withEntries(entries).build();
+        Parameter parameter = parameter().withName("parameter").withLevels(levels).withEntries(entries).build();
         SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
         QueryRunner runner = queryRunner();
 
@@ -88,8 +87,8 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
         runner.close();
 
         // then
-        assertDatabase().hasParameter("test").hasLevelsForParameter("test", 2)
-                .hasEntriesForParameter("test", 3).close();
+        assertDatabase().hasParameter("parameter").hasLevelsForParameter("parameter", 2)
+                .hasEntriesForParameter("parameter", 3).close();
     }
 
     @Test
@@ -99,7 +98,7 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
         SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
 
         // when
-        Set<String> parameters = repository.getParameterNames();
+        Set<String> parameters = repository.listParameterNames();
 
         // then
         assertThat(parameters).hasSize(2);
@@ -108,12 +107,12 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
     @Test
     public void shouldCheckIfParameterExists() {
         // given
-        database().withParameter("test").build();
+        database().withParameter("parameter").build();
         SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
         QueryRunner runner = queryRunner();
 
         // when
-        boolean exists = repository.parameterExists(runner, "test");
+        boolean exists = repository.parameterExists(runner, "parameter");
         runner.close();
 
         // then
@@ -123,15 +122,15 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
     @Test
     public void shouldDeleteParameterWithLevelsAndEntries() {
         // given
-        database().withParameter(1, "test").withLevels(1, 5).withParameterEntries(1, 5).build();
+        database().withParameter("parameter").withLevels("parameter", 5).withParameterEntries("parameter", 5).build();
         SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
         QueryRunner runner = queryRunner();
 
         // when
-        repository.deleteParameter(runner, "test");
+        repository.deleteParameter(runner, "parameter");
         runner.close();
 
         // then
-        assertDatabase().hasNoParameter("test").close();
+        assertDatabase().hasNoParameter("parameter").close();
     }
 }

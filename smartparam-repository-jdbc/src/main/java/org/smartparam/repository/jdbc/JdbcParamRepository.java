@@ -15,6 +15,8 @@
  */
 package org.smartparam.repository.jdbc;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoaderFactory;
 import java.util.Set;
 import org.polyjdbc.core.exception.TransactionInterruptedException;
@@ -24,39 +26,50 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.VoidTransactionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.editor.capabilities.RepositoryCapabilities;
 import org.smartparam.engine.config.InitializableComponent;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.editor.editor.EditableParamRepository;
 import org.smartparam.engine.core.repository.WritableParamRepository;
+import org.smartparam.editor.viewer.ParameterEntriesFilter;
+import org.smartparam.editor.viewer.ParameterFilter;
+import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.editor.model.LevelKey;
+import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.viewer.ViewableParamRepository;
+import org.smartparam.editor.viewer.ViewableRepositoryCapability;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
+import org.smartparam.repository.jdbc.exception.ParameterAlreadyExistsException;
+import org.smartparam.repository.jdbc.model.JdbcLevelKey;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
+import org.smartparam.repository.jdbc.model.JdbcParameterEntryKey;
 import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParamRepository implements ParamRepository, WritableParamRepository, InitializableComponent {
+public class JdbcParamRepository implements WritableParamRepository, EditableParamRepository, ViewableParamRepository, InitializableComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(JdbcParamRepository.class);
 
     private static final int LOADED_BATCH_SIZE = 500;
 
-    private TransactionRunner transactionRunner;
+    private final TransactionRunner transactionRunner;
 
-    private JdbcParameterEntryBatchLoaderFactory batchLoaderFactory;
+    private final JdbcParameterEntryBatchLoaderFactory batchLoaderFactory;
 
-    private JdbcRepository dao;
+    private final JdbcRepository dao;
 
-    private SchemaCreator schemaCreator;
+    private final SchemaCreator schemaCreator;
 
     public JdbcParamRepository(TransactionRunner operationRunner, JdbcParameterEntryBatchLoaderFactory batchLoaderFactory,
-                               JdbcRepository dao, SchemaCreator schemaCreator) {
+            JdbcRepository dao, SchemaCreator schemaCreator) {
         this.dao = dao;
         this.schemaCreator = schemaCreator;
         this.batchLoaderFactory = batchLoaderFactory;
@@ -69,8 +82,20 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
     }
 
     @Override
+    public RepositoryCapabilities capabilities() {
+        return new RepositoryCapabilities(ViewableRepositoryCapability.PAGE_ENTRIES,
+                ViewableRepositoryCapability.FILTER_ENTRIES,
+                ViewableRepositoryCapability.SORT_ENTRIES);
+    }
+
+    @Override
     public Set<String> listParameters() {
-        return dao.getParameterNames();
+        return dao.listParameterNames();
+    }
+
+    @Override
+    public List<String> listParameters(ParameterFilter filter) {
+        return dao.listParameterNames(filter);
     }
 
     @Override
@@ -89,7 +114,7 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
             @Override
             public ParameterBatchLoader perform(QueryRunner queryRunner) {
                 JdbcParameter metadata = dao.getParameterMetadata(queryRunner, parameterName);
-                JdbcParameterEntryBatchLoader entryLoader = batchLoaderFactory.create(metadata.getId());
+                JdbcParameterEntryBatchLoader entryLoader = batchLoaderFactory.create(parameterName);
 
                 return new ParameterBatchLoader(metadata, entryLoader);
             }
@@ -175,4 +200,172 @@ public class JdbcParamRepository implements ParamRepository, WritableParamReposi
             }
         });
     }
+
+    @Override
+    public Parameter getParameterMetadata(final String prameterName) {
+        return transactionRunner.run(new TransactionWrapper<Parameter>() {
+            @Override
+            public Parameter perform(QueryRunner queryRunner) {
+                return dao.getParameterMetadata(queryRunner, prameterName);
+            }
+        });
+    }
+
+    @Override
+    public void createParameter(final Parameter parameter) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                if (dao.parameterExists(queryRunner, parameter.getName())) {
+                    throw new ParameterAlreadyExistsException("Parameter with name " + parameter.getName() + " already exists in this repository.");
+                }
+                dao.createParameter(queryRunner, parameter);
+            }
+        });
+    }
+
+    @Override
+    public void updateParameter(final String parameterName, final Parameter parameter) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.updateParameter(queryRunner, parameterName, parameter);
+            }
+        });
+    }
+
+    @Override
+    public void deleteParameter(String parameterName) {
+        delete(parameterName);
+    }
+
+    @Override
+    public Level getLevel(final LevelKey entityKey) {
+        return transactionRunner.run(new TransactionWrapper<Level>() {
+            @Override
+            public Level perform(QueryRunner queryRunner) {
+                return dao.getLevel(queryRunner, new JdbcLevelKey(entityKey).levelId());
+            }
+        });
+    }
+
+    @Override
+    public LevelKey addLevel(final String parameterName, final Level level) {
+        return transactionRunner.run(new TransactionWrapper<LevelKey>() {
+            @Override
+            public LevelKey perform(QueryRunner queryRunner) {
+                long levelId = dao.addLevel(queryRunner, parameterName, level);
+                return new JdbcLevelKey(levelId);
+            }
+        });
+    }
+
+    @Override
+    public void updateLevel(final LevelKey levelKey, final Level level) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.updateLevel(queryRunner, new JdbcLevelKey(levelKey).levelId(), level);
+            }
+        });
+    }
+
+    @Override
+    public void reorderLevels(final List<LevelKey> orderedLevels) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                long[] orderedLevelIds = new long[orderedLevels.size()];
+                for (int index = 0; index < orderedLevelIds.length; ++index) {
+                    orderedLevelIds[index] = new JdbcLevelKey(orderedLevels.get(index)).levelId();
+                }
+
+                dao.reorderLevels(queryRunner, orderedLevelIds);
+            }
+        });
+    }
+
+    @Override
+    public void deleteLevel(final String parameterName, final LevelKey levelKey) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.deleteLevel(queryRunner, parameterName, new JdbcLevelKey(levelKey).levelId());
+            }
+        });
+    }
+
+    @Override
+    public List<ParameterEntry> listEntries(final String parameterName, final ParameterEntriesFilter filter) {
+        return transactionRunner.run(new TransactionWrapper<List<ParameterEntry>>() {
+            @Override
+            public List<ParameterEntry> perform(QueryRunner queryRunner) {
+                return dao.listEntries(queryRunner, parameterName, filter);
+            }
+        });
+    }
+
+    @Override
+    public ParameterEntryKey addEntry(final String parameterName, final ParameterEntry entry) {
+        return transactionRunner.run(new TransactionWrapper<ParameterEntryKey>() {
+            @Override
+            public ParameterEntryKey perform(QueryRunner queryRunner) {
+                long entryId = dao.addParameterEntry(queryRunner, parameterName, entry);
+                return new JdbcParameterEntryKey(entryId);
+            }
+        });
+    }
+
+    @Override
+    public List<ParameterEntryKey> addEntries(final String parameterName, final List<ParameterEntry> entries) {
+        return transactionRunner.run(new TransactionWrapper<List<ParameterEntryKey>>() {
+            @Override
+            public List<ParameterEntryKey> perform(QueryRunner queryRunner) {
+                List<Long> entriesIds = dao.writeParameterEntries(queryRunner, parameterName, entries);
+
+                List<ParameterEntryKey> keys = new ArrayList<ParameterEntryKey>(entries.size());
+                for (Long entryId : entriesIds) {
+                    keys.add(new JdbcParameterEntryKey(entryId));
+                }
+
+                return keys;
+            }
+        });
+    }
+
+    @Override
+    public void updateEntry(final ParameterEntryKey entryKey, final ParameterEntry entry) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.updateParameterEntry(queryRunner, new JdbcParameterEntryKey(entryKey).entryId(), entry);
+            }
+        });
+    }
+
+    @Override
+    public void deleteEntry(final ParameterEntryKey entryKey) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.deleteParameterEntry(queryRunner, new JdbcParameterEntryKey(entryKey).entryId());
+            }
+        });
+    }
+
+    @Override
+    public void deleteEntries(final Iterable<ParameterEntryKey> entryKeys) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                List<Long> ids = new ArrayList<Long>();
+                for (ParameterEntryKey key : entryKeys) {
+                    ids.add(new JdbcParameterEntryKey(key).entryId());
+                }
+
+                dao.deleteParameterEntries(queryRunner, ids);
+            }
+        });
+    }
+
 }

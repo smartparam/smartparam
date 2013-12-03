@@ -24,8 +24,8 @@ import org.smartparam.engine.core.service.ParameterProvider;
 import org.smartparam.engine.model.Level;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
-import static org.smartparam.engine.test.builder.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
 import static org.smartparam.engine.test.builder.PreparedLevelTestBuilder.preparedLevel;
 import static org.smartparam.engine.test.builder.PreparedParameterTestBuilder.preparedParameter;
 

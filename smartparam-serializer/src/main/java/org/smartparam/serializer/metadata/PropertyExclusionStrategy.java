@@ -27,7 +27,7 @@ import java.util.Set;
  */
 public class PropertyExclusionStrategy implements ExclusionStrategy {
 
-    private Set<String> propertiesToExclude = new HashSet<String>();
+    private final Set<String> propertiesToExclude = new HashSet<String>();
 
     public PropertyExclusionStrategy(String... propertiesToExclude) {
         this.propertiesToExclude.addAll(Arrays.asList(propertiesToExclude));

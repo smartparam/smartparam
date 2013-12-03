@@ -33,7 +33,7 @@ public class JdbcParameterEntryBatchLoaderFactory {
         this.parameterEntryDAO = parameterEntryDAO;
     }
 
-    public JdbcParameterEntryBatchLoader create(long parameterId) {
-        return new JdbcParameterEntryBatchLoader(queryRunnerFactory.create(), parameterEntryDAO, parameterId);
+    public JdbcParameterEntryBatchLoader create(String parameterName) {
+        return new JdbcParameterEntryBatchLoader(queryRunnerFactory.create(), parameterEntryDAO, parameterName);
     }
 }

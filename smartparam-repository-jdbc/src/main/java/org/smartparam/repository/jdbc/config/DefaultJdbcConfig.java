@@ -99,11 +99,6 @@ public class DefaultJdbcConfig implements JdbcConfig {
     }
 
     @Override
-    public String getParameterSequence() {
-        return sequencePrefix + parameterTable;
-    }
-
-    @Override
     public String getLevelSequence() {
         return sequencePrefix + levelTable;
     }

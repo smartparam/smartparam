@@ -25,7 +25,7 @@ public class CsvEntriesReaderTestBuilder {
 
     private static final int PROBABLE_ENTRY_VALUE_LENGTH = 10;
 
-    private StringBuilder stringBuilder;
+    private final StringBuilder stringBuilder;
 
     private String delimiter = ";";
 

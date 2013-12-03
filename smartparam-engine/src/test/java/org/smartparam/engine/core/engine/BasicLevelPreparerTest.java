@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 import static com.googlecode.catchexception.CatchException.*;
 import static org.mockito.Mockito.*;
 import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
 
 /**
  *

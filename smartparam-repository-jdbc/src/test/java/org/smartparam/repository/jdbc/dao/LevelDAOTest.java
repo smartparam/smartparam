@@ -23,7 +23,7 @@ import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.test.builder.LevelTestBuilder.level;
+import static org.smartparam.engine.model.LevelTestBuilder.level;
 import static org.smartparam.repository.jdbc.test.builder.JdbcLevelTestBuilder.jdbcLevel;
 
 /**
@@ -35,17 +35,17 @@ public class LevelDAOTest extends DatabaseTest {
 
     public void shouldInsertNewLevelIntoDatabase() {
         // given
-        database().withParameter(1).build();
+        database().withParameter("parameter").build();
         LevelDAO levelDAO = get(LevelDAO.class);
         JdbcLevel level = jdbcLevel().withName("test").withLevelCreator("testCreator")
                 .withMatcher("testMatcher").withType("testType").withOrder(0).array().build();
         QueryRunner runner = queryRunner();
 
         // when
-        levelDAO.insert(runner, level, 1);
+        levelDAO.insert(runner, level, "parameter");
         runner.commit();
 
-        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, 1);
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
         runner.close();
 
         // then
@@ -56,18 +56,37 @@ public class LevelDAOTest extends DatabaseTest {
     }
 
     @Test
+    public void shouldInsertAsLastLevelWhenInsertingSingleLevel() {
+        // given
+        database().withParameter("parameter").withLevels("parameter", 3).build();
+        LevelDAO levelDAO = get(LevelDAO.class);
+        Level level = level().withName("level").withType("string").build();
+        QueryRunner runner = queryRunner();
+
+        // when
+        long levelId = levelDAO.insert(runner, level, "parameter");
+
+        JdbcLevel savedLevel = levelDAO.getLevel(runner, levelId);
+        runner.close();
+
+        // then
+        assertThat(savedLevel.getOrderNo()).isEqualTo(3);
+
+    }
+
+    @Test
     public void shouldInsertLevelsForParameterOverridingOrder() {
         // given
-        database().withParameter(1).build();
+        database().withParameter("parameter").build();
         LevelDAO levelDAO = get(LevelDAO.class);
         Level level = level().withName("test").withType("string").build();
         QueryRunner runner = queryRunner();
 
         // when
-        levelDAO.insertParameterLevels(runner, Arrays.asList(level), 1);
+        levelDAO.insertParameterLevels(runner, Arrays.asList(level), "parameter");
         runner.commit();
 
-        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, 1);
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
         runner.close();
 
         // then
@@ -78,15 +97,72 @@ public class LevelDAOTest extends DatabaseTest {
     @Test
     public void shouldDeleteLevelsForParameter() {
         // given
-        database().withParameter(1, "test").withLevels(1, 2).build();
+        database().withParameter("parameter").withLevels("parameter", 2).build();
         LevelDAO levelDAO = get(LevelDAO.class);
         QueryRunner runner = queryRunner();
 
         // when
-        levelDAO.deleteParameterLevels(runner, "test");
-        runner.commit();
+        levelDAO.deleteParameterLevels(runner, "parameter");
+        runner.close();
 
         // then
-        assertDatabase().hasNoLevelsForParameter("test");
+        assertDatabase().hasNoLevelsForParameter("parameter").close();
+    }
+
+    @Test
+    public void shouldDeleteLevelWithGivenId() {
+        // given
+        database().withParameter("parameter").build();
+        LevelDAO levelDAO = get(LevelDAO.class);
+        QueryRunner runner = queryRunner();
+
+        long levelToDelete = levelDAO.insert(runner, level().withName("level").withType("string").build(), "parameter");
+
+        // when
+        levelDAO.delete(runner, "parameter", levelToDelete);
+        runner.close();
+
+        // then
+        assertDatabase().hasNoLevelsForParameter("parameter").close();
+    }
+
+    @Test
+    public void shouldUpdateContentsOfLevel() {
+        // given
+        database().withParameter("parameter").build();
+        LevelDAO levelDAO = get(LevelDAO.class);
+        QueryRunner runner = queryRunner();
+
+        long levelToUpdate = levelDAO.insert(runner, level().withName("level").withType("string").build(), "parameter");
+
+        // when
+        Level updatedLevelData = level().withName("renamedLevel").withType("string").build();
+        levelDAO.update(runner, levelToUpdate, updatedLevelData);
+
+        Level level = levelDAO.getLevel(runner, levelToUpdate);
+        runner.close();
+
+        // then
+        assertThat(level).hasName("renamedLevel");
+    }
+
+    @Test
+    public void shouldReorderLevelsAccordingToIdsOrdering() {
+        // given
+        database().withParameter("parameter").build();
+        LevelDAO levelDAO = get(LevelDAO.class);
+        QueryRunner runner = queryRunner();
+
+        long level1Id = levelDAO.insert(runner, level().withName("level1").withType("string").build(), "parameter");
+        long level2Id = levelDAO.insert(runner, level().withName("level2").withType("string").build(), "parameter");
+
+        // when
+        levelDAO.reorder(runner, new long[]{level2Id, level1Id});
+
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
+        runner.close();
+
+        // then
+        assertThat(levels.get(0)).hasName("level2");
     }
 }

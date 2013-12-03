@@ -50,7 +50,8 @@
         <module>smartparam-spring</module>
         <module>smartparam-transferer</module>
         <module>smartparam-test</module>
-    </modules>
+    <module>smartparam-editor</module>
+  </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -81,7 +82,7 @@
             <dependency>
                 <groupId>org.polyjdbc</groupId>
                 <artifactId>polyjdbc</artifactId>
-                <version>0.2.0</version>
+                <version>0.2.1</version>
             </dependency>
 
             <!-- serialization -->
@@ -170,7 +171,7 @@
                 <groupId>org.polyjdbc</groupId>
                 <artifactId>polyjdbc</artifactId>
                 <type>test-jar</type>
-                <version>0.2.0</version>
+                <version>0.2.1</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>

@@ -29,13 +29,13 @@ public class ParameterMapper implements ObjectMapper<JdbcParameter> {
 
     @Override
     public JdbcParameter createObject(ResultSet resultSet) throws SQLException {
-        JdbcParameter p = new JdbcParameter();
-        p.setName(resultSet.getString("name"));
-        p.setId(resultSet.getInt("id"));
-        p.setInputLevels(resultSet.getInt("input_levels"));
-        p.setCacheable(resultSet.getBoolean("cacheable"));
-        p.setNullable(resultSet.getBoolean("nullable"));
-        p.setArraySeparator(JdbcConverter.toChar(resultSet.getString("array_separator")));
-        return p;
+        JdbcParameter parameter = new JdbcParameter(resultSet.getString("name"),
+                resultSet.getInt("input_levels"));
+
+        parameter.setCacheable(resultSet.getBoolean("cacheable"));
+        parameter.setNullable(resultSet.getBoolean("nullable"));
+        parameter.setArraySeparator(JdbcConverter.toChar(resultSet.getString("array_separator")));
+
+        return parameter;
     }
 }

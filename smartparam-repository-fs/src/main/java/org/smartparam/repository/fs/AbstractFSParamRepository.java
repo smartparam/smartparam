@@ -27,7 +27,7 @@ import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardParamDeserializer;
-import org.smartparam.serializer.config.DefaultSerializationConfig;
+import org.smartparam.serializer.DefaultSerializationConfig;
 import org.smartparam.serializer.config.ParamSerializerFactory;
 
 /**

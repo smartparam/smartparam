@@ -15,12 +15,12 @@
  */
 package org.smartparam.serializer;
 
-import org.smartparam.serializer.config.SerializationConfig;
 import java.io.BufferedReader;
 import org.smartparam.engine.core.exception.ParamBatchLoadingException;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.serializer.metadata.ParameterMetadataDeserializer;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
+import org.smartparam.serializer.model.AppendableParameter;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
 import org.smartparam.serializer.exception.ParamSerializationException;
 
@@ -32,11 +32,11 @@ public class StandardParamDeserializer implements ParamDeserializer {
 
     private static final int PARAMETER_ENTRIES_BATCH_SIZE = 1000;
 
-    private SerializationConfig serializationConfig;
+    private final SerializationConfig serializationConfig;
 
-    private ParameterMetadataDeserializer metadataDeserializer;
+    private final ParameterMetadataDeserializer metadataDeserializer;
 
-    private ParameterEntryDeserializer entriesDeserializer;
+    private final ParameterEntryDeserializer entriesDeserializer;
 
     public StandardParamDeserializer(SerializationConfig serializationConfig, ParameterMetadataDeserializer metadataDeserializer, ParameterEntryDeserializer entriesDeserializer) {
         this.serializationConfig = serializationConfig;
@@ -46,16 +46,16 @@ public class StandardParamDeserializer implements ParamDeserializer {
 
     @Override
     public Parameter deserialize(BufferedReader reader) throws ParamSerializationException {
-        Parameter deserialiedParameter = deserializeMetadata(reader);
+        AppendableParameter deserialiedParameter = metadataDeserializer.deserialize(reader);
         readEntries(deserialiedParameter, deserializeEntries(reader));
 
         return deserialiedParameter;
     }
 
-    private void readEntries(Parameter parameter, ParameterEntryBatchLoader loader) throws ParamSerializationException {
+    private void readEntries(AppendableParameter parameter, ParameterEntryBatchLoader loader) throws ParamSerializationException {
         while (loader.hasMore()) {
             try {
-                parameter.getEntries().addAll(loader.nextBatch(PARAMETER_ENTRIES_BATCH_SIZE));
+                parameter.appendEntries(loader.nextBatch(PARAMETER_ENTRIES_BATCH_SIZE));
             } catch (ParamBatchLoadingException exception) {
                 throw new ParamSerializationException("error while loading batch of entries", exception);
             }

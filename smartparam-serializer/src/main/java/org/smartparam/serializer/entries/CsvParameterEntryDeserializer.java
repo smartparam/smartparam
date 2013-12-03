@@ -18,7 +18,7 @@ package org.smartparam.serializer.entries;
 import java.io.BufferedReader;
 import java.io.IOException;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
-import org.smartparam.serializer.config.SerializationConfig;
+import org.smartparam.serializer.SerializationConfig;
 import org.smartparam.serializer.exception.ParamSerializationException;
 import org.supercsv.io.CsvListReader;
 
@@ -28,7 +28,7 @@ import org.supercsv.io.CsvListReader;
  */
 public class CsvParameterEntryDeserializer implements ParameterEntryDeserializer {
 
-    private SerializationConfig serializationConfig;
+    private final SerializationConfig serializationConfig;
 
     public CsvParameterEntryDeserializer(SerializationConfig serializationConfig) {
         this.serializationConfig = serializationConfig;
@@ -40,9 +40,9 @@ public class CsvParameterEntryDeserializer implements ParameterEntryDeserializer
         try {
             // drop header
             csvListReader.read();
-            return new CsvParameterEntryBatchLoader(serializationConfig.parameterEntryInstanceClass(), csvListReader);
+            return new CsvParameterEntryBatchLoader(csvListReader);
         } catch (IOException exception) {
-            throw new ParamSerializationException("failed to read header from parameter CSV stream", exception);
+            throw new EntriesCSVSerializationException(exception);
         }
     }
 }

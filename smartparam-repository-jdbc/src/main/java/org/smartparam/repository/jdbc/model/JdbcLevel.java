@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.engine.model.editable.EditableLevel;
+import org.smartparam.editor.model.EditableLevel;
 
 /**
  * @author Przemek Hertel
@@ -23,11 +23,11 @@ import org.smartparam.engine.model.editable.EditableLevel;
  */
 public class JdbcLevel implements EditableLevel {
 
-    private long id;
+    private static final int TO_STRING_LENGTH = 100;
 
-    private long parameterId;
+    private final JdbcLevelKey key;
 
-    private int orderNo;
+    private final int orderNo;
 
     private String name;
 
@@ -39,19 +39,22 @@ public class JdbcLevel implements EditableLevel {
 
     private boolean array;
 
-    public JdbcLevel() {
+    public JdbcLevel(long id, String parameterName, int orderNo) {
+        this.key = new JdbcLevelKey(id);
+        this.orderNo = orderNo;
+    }
+
+    @Override
+    public JdbcLevelKey getKey() {
+        return key;
+    }
+
+    public long getId() {
+        return key.levelId();
     }
 
     public int getOrderNo() {
         return orderNo;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     @Override
@@ -79,48 +82,31 @@ public class JdbcLevel implements EditableLevel {
         return matcher;
     }
 
-    public void setOrderNo(int orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
     public void setLevelCreator(String levelCreator) {
         this.levelCreator = levelCreator;
     }
 
-    @Override
     public void setType(String type) {
         this.type = type;
     }
 
-    @Override
     public void setMatcher(String matcher) {
         this.matcher = matcher;
     }
 
-    @Override
     public void setArray(boolean array) {
         this.array = array;
     }
 
-    public long getParameterId() {
-        return parameterId;
-    }
-
-    public void setParameterId(long parameterId) {
-        this.parameterId = parameterId;
-    }
-
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(TO_STRING_LENGTH);
         sb.append("JdbcParameterLevel[");
-        sb.append("id=").append(id);
+        sb.append("id=").append(getId());
         sb.append(", orderNo=").append(orderNo);
         sb.append(", type=").append(type);
 

@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.mapper.StringMapper;
 import org.polyjdbc.core.query.DeleteQuery;
@@ -24,6 +25,8 @@ import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.SimpleQueryRunner;
+import org.polyjdbc.core.query.UpdateQuery;
+import org.smartparam.editor.viewer.ParameterFilter;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -43,33 +46,14 @@ public class ParameterDAO {
         this.simpleQueryRunner = simpleQueryRunner;
     }
 
-    public long insert(QueryRunner queryRunner, Parameter parameter) {
-        InsertQuery query = createInsertQuery(parameter);
-        query.sequence("id", configuration.getParameterSequence());
-        return queryRunner.insert(query);
-    }
-
-    public long insert(QueryRunner queryRunner, JdbcParameter parameter) {
-        InsertQuery query = createInsertQuery(parameter);
-
-        boolean generateSequenceId = parameter.getId() == 0;
-        if (generateSequenceId) {
-            query.sequence("id", configuration.getParameterSequence());
-        } else {
-            query.value("id", parameter.getId());
-        }
-
-        return queryRunner.insert(query);
-    }
-
-    private InsertQuery createInsertQuery(Parameter parameter) {
+    public void insert(QueryRunner queryRunner, Parameter parameter) {
         InsertQuery query = QueryFactory.insert().into(configuration.getParameterTable())
                 .value("name", parameter.getName())
                 .value("input_levels", parameter.getInputLevels())
                 .value("cacheable", parameter.isCacheable())
                 .value("nullable", parameter.isNullable())
                 .value("array_separator", parameter.getArraySeparator());
-        return query;
+        queryRunner.insert(query);
     }
 
     public void delete(QueryRunner queryRunner, String parameterName) {
@@ -82,6 +66,18 @@ public class ParameterDAO {
         return new HashSet<String>(simpleQueryRunner.queryList(query, new StringMapper()));
     }
 
+    public List<String> getParameterNames(ParameterFilter filter) {
+        SelectQuery query = QueryFactory.select("name").from(configuration.getParameterTable());
+
+        if (filter.applyNameFilter()) {
+            query.where("upper(name) like :name")
+                    .withArgument("name", FilterConverter.parseAntMatcher(filter.nameFilter()));
+        }
+        query.orderBy("name", FilterConverter.parseSortOrder(filter.sortDirection()));
+
+        return simpleQueryRunner.queryList(query, new StringMapper());
+    }
+
     public JdbcParameter getParameter(QueryRunner queryRunner, String parameterName) {
         SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterTable()).where("name = :name")
                 .withArgument("name", parameterName);
@@ -92,5 +88,17 @@ public class ParameterDAO {
         SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterTable()).where("name = :name")
                 .withArgument("name", parameterName);
         return simpleQueryRunner.queryExistence(query);
+    }
+
+    public void update(QueryRunner queryRunner, String parameterName, Parameter parameter) {
+        UpdateQuery query = QueryFactory.update(configuration.getParameterTable()).where("name = :name")
+                .withArgument("name", parameterName)
+                .set("name", parameter.getName())
+                .set("input_levels", parameter.getInputLevels())
+                .set("cacheable", parameter.isCacheable())
+                .set("nullable", parameter.isNullable())
+                .set("array_separator", parameter.getArraySeparator());
+
+        queryRunner.update(query);
     }
 }

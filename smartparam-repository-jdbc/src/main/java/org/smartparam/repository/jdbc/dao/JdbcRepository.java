@@ -15,10 +15,15 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
+import org.smartparam.editor.viewer.ParameterEntriesFilter;
+import org.smartparam.editor.viewer.ParameterFilter;
+import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
@@ -35,11 +40,35 @@ public interface JdbcRepository {
 
     JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName);
 
-    Set<String> getParameterNames();
+    Set<String> listParameterNames();
 
-    Set<ParameterEntry> getParameterEntries(QueryRunner runner, long parameterId);
+    List<String> listParameterNames(ParameterFilter filter);
 
-    void writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries);
+    Set<ParameterEntry> getParameterEntries(QueryRunner runner, String parameterName);
+
+    List<Long> writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries);
 
     void deleteParameter(QueryRunner runner, String parameterName);
+
+    void updateParameter(QueryRunner runner, String parameterName, Parameter parameter);
+
+    JdbcLevel getLevel(QueryRunner runner, long id);
+
+    long addLevel(QueryRunner runner, String parameterName, Level level);
+
+    void updateLevel(QueryRunner runner, long levelId, Level level);
+
+    void reorderLevels(QueryRunner runner, long[] orderedLevelIds);
+
+    void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId);
+
+    List<ParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter);
+
+    long addParameterEntry(QueryRunner runner, String parameterName, ParameterEntry entry);
+
+    void updateParameterEntry(QueryRunner runner, long entryId, ParameterEntry entry);
+
+    void deleteParameterEntry(QueryRunner runner, long entryId);
+
+    void deleteParameterEntries(QueryRunner runner, Iterable<Long> entriesIds);
 }

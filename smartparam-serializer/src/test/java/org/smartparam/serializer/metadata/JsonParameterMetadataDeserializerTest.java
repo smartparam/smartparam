@@ -19,12 +19,8 @@ import java.io.BufferedReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.editable.SimpleEditableLevel;
-import org.smartparam.engine.model.editable.SimpleEditableParameter;
-import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.test.builder.StringStreamUtil;
-import static org.smartparam.serializer.config.SerializationConfigBuilder.serializationConfig;
 import static org.smartparam.serializer.test.assertions.SerializerAssertions.*;
 
 /**
@@ -37,9 +33,7 @@ public class JsonParameterMetadataDeserializerTest {
 
     @Before
     public void initialize() {
-        SerializationConfig config = serializationConfig()
-                .producesParameter(SimpleEditableParameter.class).producesLevel(SimpleEditableLevel.class).build();
-        deserializer = new JsonParameterMetadataDeserializer(config);
+        deserializer = new JsonParameterMetadataDeserializer();
     }
 
     @Test

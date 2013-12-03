@@ -18,11 +18,11 @@ package org.smartparam.repository.fs.resolver;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.repository.fs.exception.SmartParamResourceResolverException;
+import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.config.DefaultSerializationConfig;
+import org.smartparam.serializer.DefaultSerializationConfig;
 import org.smartparam.serializer.config.ParamSerializerFactory;
-import org.smartparam.serializer.config.SerializationConfig;
+import org.smartparam.serializer.SerializationConfig;
 import org.testng.annotations.*;
 
 import java.io.File;
@@ -133,6 +133,6 @@ public class FileResourceResolverIntegrationTest {
         catchException(resolver).loadParameterFromResource("WRONG_RESOURCE_NAME");
 
         // then
-        assertThat(caughtException()).isInstanceOf(SmartParamResourceResolverException.class);
+        assertThat(caughtException()).isInstanceOf(ResourceResolverException.class);
     }
 }
