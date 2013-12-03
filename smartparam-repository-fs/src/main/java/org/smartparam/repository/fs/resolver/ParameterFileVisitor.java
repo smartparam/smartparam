@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.exception.ParamSerializationException;
 

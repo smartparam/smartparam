@@ -19,7 +19,7 @@ import java.util.Map;
 import org.fest.assertions.api.Assertions;
 import static org.fest.assertions.api.Fail.*;
 import org.fest.assertions.api.MapAssert;
-import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.annotated.RepositoryObjectKey;
 
 /**
  *

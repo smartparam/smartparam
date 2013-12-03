@@ -15,12 +15,13 @@
  */
 package org.smartparam.engine.core;
 
+import org.smartparam.engine.core.repository.MapRepository;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import static org.smartparam.engine.test.assertions.Assertions.*;

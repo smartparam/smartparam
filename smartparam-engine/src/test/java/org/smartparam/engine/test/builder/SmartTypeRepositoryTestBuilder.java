@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.test.builder;
 
-import org.smartparam.engine.core.repository.BasicTypeRepository;
+import org.smartparam.engine.annotated.repository.ScanningTypeRepository;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -24,17 +24,17 @@ import org.smartparam.engine.core.type.Type;
  */
 public class SmartTypeRepositoryTestBuilder {
 
-    private BasicTypeRepository typeRepository;
+    private ScanningTypeRepository typeRepository;
 
     private SmartTypeRepositoryTestBuilder() {
-        typeRepository = new BasicTypeRepository();
+        typeRepository = new ScanningTypeRepository();
     }
 
     public static SmartTypeRepositoryTestBuilder typeRepository() {
         return new SmartTypeRepositoryTestBuilder();
     }
 
-    public BasicTypeRepository build() {
+    public ScanningTypeRepository build() {
         return typeRepository;
     }
 

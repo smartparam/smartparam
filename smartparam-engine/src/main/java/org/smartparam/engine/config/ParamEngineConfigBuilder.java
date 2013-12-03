@@ -16,15 +16,15 @@
 package org.smartparam.engine.config;
 
 import java.util.Arrays;
-import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.annotated.PackageList;
+import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.config.initialization.MethodScannerInitializer;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.config.initialization.TypeScannerInitializer;
-import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
-import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
 
 /**

@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.cache;
 
-import org.smartparam.engine.core.engine.PreparedParameter;
+import org.smartparam.engine.core.prepared.PreparedParameter;
 
 /**
  * Implementacja {@link ParamCache} oparata na wspolbieznej wersji HashMapy.

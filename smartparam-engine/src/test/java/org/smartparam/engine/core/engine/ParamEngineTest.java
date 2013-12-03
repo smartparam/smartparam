@@ -19,7 +19,7 @@ import org.testng.annotations.BeforeMethod;
 import static org.testng.AssertJUnit.*;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.type.AbstractHolder;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.core.function.Function;
 
 /**
  * @author Przemek Hertel

@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.index;
 
+import org.smartparam.engine.core.matcher.Matcher;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

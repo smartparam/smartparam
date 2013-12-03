@@ -19,24 +19,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.config.ComponentInitializer;
 import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.engine.core.cache.MapFunctionCache;
 import org.smartparam.engine.core.cache.MapParamCache;
-import org.smartparam.engine.core.engine.BasicLevelPreparer;
-import org.smartparam.engine.core.engine.BasicParamPreparer;
-import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.prepared.BasicLevelPreparer;
+import org.smartparam.engine.core.prepared.BasicParamPreparer;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
-import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
-import org.smartparam.engine.core.repository.BasicInvokerRepository;
-import org.smartparam.engine.core.repository.BasicMatcherRepository;
-import org.smartparam.engine.core.repository.BasicTypeRepository;
-import org.smartparam.engine.core.service.BasicFunctionManager;
-import org.smartparam.engine.core.service.BasicFunctionProvider;
-import org.smartparam.engine.core.service.BasicParameterProvider;
+import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
+import org.smartparam.engine.annotated.repository.ScanningInvokerRepository;
+import org.smartparam.engine.annotated.repository.ScanningMatcherRepository;
+import org.smartparam.engine.annotated.repository.ScanningTypeRepository;
+import org.smartparam.engine.core.function.BasicFunctionManager;
+import org.smartparam.engine.core.function.BasicFunctionProvider;
+import org.smartparam.engine.core.parameter.BasicParameterProvider;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -67,10 +67,10 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(BasicFunctionManager.class);
         components.add(BasicFunctionProvider.class);
         components.add(MapFunctionCache.class);
-        components.add(BasicInvokerRepository.class);
+        components.add(ScanningInvokerRepository.class);
         components.add(BasicParameterProvider.class);
-        components.add(BasicTypeRepository.class);
-        components.add(BasicMatcherRepository.class);
+        components.add(ScanningTypeRepository.class);
+        components.add(ScanningMatcherRepository.class);
     }
 
     public List<ParamRepository> getParameterRepositories() {

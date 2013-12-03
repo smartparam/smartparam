@@ -15,8 +15,8 @@
  */
 package org.smartparam.transferer;
 
-import org.smartparam.engine.core.repository.WritableParamRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.parameter.WritableParamRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 
 /**
  *

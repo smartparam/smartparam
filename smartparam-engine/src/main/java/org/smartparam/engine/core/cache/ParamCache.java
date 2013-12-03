@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.cache;
 
-import org.smartparam.engine.core.engine.PreparedParameter;
+import org.smartparam.engine.core.prepared.PreparedParameter;
 
 /**
  * Kontrakt zapewniajacy cache'owanie przygotowanych parametrow ({@link PreparedParameter}).

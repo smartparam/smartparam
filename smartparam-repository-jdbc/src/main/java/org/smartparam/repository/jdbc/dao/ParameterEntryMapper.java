@@ -18,7 +18,7 @@ package org.smartparam.repository.jdbc.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.polyjdbc.core.query.mapper.ObjectMapper;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 
 /**

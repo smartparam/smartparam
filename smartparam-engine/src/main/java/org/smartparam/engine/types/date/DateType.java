@@ -18,7 +18,7 @@ package org.smartparam.engine.types.date;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import org.smartparam.engine.annotations.ParamType;
+import org.smartparam.engine.annotated.annotations.ParamType;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 

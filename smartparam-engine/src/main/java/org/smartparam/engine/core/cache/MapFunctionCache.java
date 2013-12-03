@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.cache;
 
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.core.function.Function;
 
 /**
  * Implementacja {@link FunctionCache} oparata na wspolbieznej wersji HashMapy.

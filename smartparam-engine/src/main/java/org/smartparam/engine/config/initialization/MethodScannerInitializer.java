@@ -16,12 +16,12 @@
 package org.smartparam.engine.config.initialization;
 
 import java.util.List;
-import org.smartparam.engine.annotations.scanner.PackageMethodScanner;
-import org.smartparam.engine.annotations.scanner.MethodScanner;
-import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.annotated.scanner.PackageMethodScanner;
+import org.smartparam.engine.annotated.scanner.MethodScanner;
+import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.config.ComponentInitializer;
 import org.smartparam.engine.config.ComponentInitializerRunner;
-import org.smartparam.engine.core.repository.MethodScanningRepository;
+import org.smartparam.engine.annotated.repository.MethodScanningRepository;
 
 /**
  *

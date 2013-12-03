@@ -18,7 +18,7 @@ package org.smartparam.engine.test.builder;
 import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.engine.core.index.LevelIndex;
-import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
 /**

@@ -17,11 +17,11 @@ package org.smartparam.engine.config.pico;
 
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.config.ParamEngineConfig;
-import org.smartparam.engine.core.engine.ParamEngine;
-import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.ParamEngine;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
-import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

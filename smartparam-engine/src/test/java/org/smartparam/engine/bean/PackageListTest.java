@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.bean;
 
+import org.smartparam.engine.annotated.PackageList;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.fest.assertions.api.Assertions.*;

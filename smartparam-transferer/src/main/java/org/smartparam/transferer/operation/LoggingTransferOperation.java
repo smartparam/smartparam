@@ -17,8 +17,8 @@ package org.smartparam.transferer.operation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.repository.WritableParamRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.parameter.WritableParamRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 
 /**
  *

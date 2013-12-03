@@ -18,7 +18,7 @@ package org.smartparam.serializer.metadata;
 import java.io.BufferedReader;
 import org.junit.Before;
 import org.junit.Test;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.test.builder.StringStreamUtil;
 import static org.smartparam.serializer.test.assertions.SerializerAssertions.*;

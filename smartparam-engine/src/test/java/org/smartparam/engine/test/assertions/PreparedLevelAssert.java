@@ -16,10 +16,10 @@
 package org.smartparam.engine.test.assertions;
 
 import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.core.engine.PreparedLevel;
-import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.prepared.PreparedLevel;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.core.function.Function;
 
 /**
  *

@@ -15,13 +15,14 @@
  */
 package org.smartparam.engine.annotations.scanner;
 
+import org.smartparam.engine.annotated.scanner.AnnotatedObjectsScanner;
 import java.util.Map;
-import org.smartparam.engine.annotations.ParamMatcher;
-import org.smartparam.engine.annotations.ParamType;
-import org.smartparam.engine.annotations.ParamFunctionInvoker;
-import org.smartparam.engine.annotations.ParamFunctionRepository;
-import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.annotated.annotations.ParamMatcher;
+import org.smartparam.engine.annotated.annotations.ParamType;
+import org.smartparam.engine.annotated.annotations.ParamFunctionInvoker;
+import org.smartparam.engine.annotated.annotations.ParamFunctionRepository;
+import org.smartparam.engine.annotated.PackageList;
+import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparamtestscan.annotation.DummyAnnotationWithoutInstances;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.test.builder.PackageListTestBuilder.*;

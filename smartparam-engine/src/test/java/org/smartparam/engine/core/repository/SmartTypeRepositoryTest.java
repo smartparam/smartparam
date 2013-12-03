@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.repository;
 
+import org.smartparam.engine.annotated.repository.ScanningTypeRepository;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.types.string.StringType;
@@ -31,7 +32,7 @@ public class SmartTypeRepositoryTest {
     @Test
     public void shouldFailWhenTryingToRegisterMultipleItemsUnderSameName() {
         // given
-        BasicTypeRepository typeRepository = typeRepository().withType("TYPE", new StringType()).build();
+        ScanningTypeRepository typeRepository = typeRepository().withType("TYPE", new StringType()).build();
 
         // when
         catchException(typeRepository).register("TYPE", null);

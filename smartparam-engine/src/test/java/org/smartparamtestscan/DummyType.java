@@ -15,8 +15,8 @@
  */
 package org.smartparamtestscan;
 
-import org.smartparam.engine.annotations.ObjectInstance;
-import org.smartparam.engine.annotations.ParamType;
+import org.smartparam.engine.annotated.annotations.ObjectInstance;
+import org.smartparam.engine.annotated.annotations.ParamType;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 

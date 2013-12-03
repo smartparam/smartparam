@@ -15,12 +15,13 @@
  */
 package org.smartparam.engine.annotations.scanner;
 
+import org.smartparam.engine.annotated.scanner.PackageMethodScanner;
 import java.lang.reflect.Method;
 import java.util.Map;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.smartparam.engine.bean.PackageList;
-import org.smartparam.engine.annotations.JavaPlugin;
+import org.smartparam.engine.annotated.PackageList;
+import org.smartparam.engine.annotated.annotations.JavaPlugin;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.test.scan.plugins.DummyPluginAnnotation;

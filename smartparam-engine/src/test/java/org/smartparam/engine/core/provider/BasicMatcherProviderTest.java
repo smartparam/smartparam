@@ -15,13 +15,13 @@
  */
 package org.smartparam.engine.core.provider;
 
-import org.smartparam.engine.core.repository.BasicMatcherRepository;
+import org.smartparam.engine.annotated.repository.ScanningMatcherRepository;
 import java.util.HashMap;
 import java.util.Map;
 import org.testng.annotations.Test;
 import static org.testng.AssertJUnit.*; 
 import static org.mockito.Mockito.*;
-import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.matcher.Matcher;
 
 /**
  * @author Przemek Hertel
@@ -40,7 +40,7 @@ public class BasicMatcherProviderTest {
         map.put("B", m2);
 
         // obiekt testowany
-        BasicMatcherRepository provider = new BasicMatcherRepository();
+        ScanningMatcherRepository provider = new ScanningMatcherRepository();
 
         // test
         provider.registerAll(map);
@@ -60,7 +60,7 @@ public class BasicMatcherProviderTest {
         Matcher m2 = mock(Matcher.class);
 
         // obiekt testowany
-        BasicMatcherRepository provider = new BasicMatcherRepository();
+        ScanningMatcherRepository provider = new ScanningMatcherRepository();
 
         // test
         provider.register("A", m1);

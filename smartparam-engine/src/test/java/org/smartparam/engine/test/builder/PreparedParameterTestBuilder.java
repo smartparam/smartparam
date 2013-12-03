@@ -15,9 +15,9 @@
  */
 package org.smartparam.engine.test.builder;
 
-import org.smartparam.engine.core.engine.PreparedLevel;
-import org.smartparam.engine.core.engine.PreparedParameter;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.prepared.PreparedLevel;
+import org.smartparam.engine.core.prepared.PreparedParameter;
+import org.smartparam.engine.core.parameter.Parameter;
 
 /**
  *

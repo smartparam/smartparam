@@ -18,7 +18,7 @@ package org.smartparam.serializer.metadata;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.Writer;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.serializer.model.DeserializedParameter;
 
 /**

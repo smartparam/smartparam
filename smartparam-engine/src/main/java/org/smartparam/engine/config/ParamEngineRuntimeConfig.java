@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
-import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
 
 /**

@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.invoker;
 
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.core.function.Function;
 
 /**
  * Invoker is able to run function (from Java class, script, etc...) described by

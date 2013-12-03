@@ -15,6 +15,9 @@
  */
 package org.smartparam.engine.model;
 
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.Parameter;
 import java.util.Arrays;
 import java.util.HashSet;
 

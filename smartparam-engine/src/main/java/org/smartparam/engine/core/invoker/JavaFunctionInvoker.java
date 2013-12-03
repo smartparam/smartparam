@@ -19,9 +19,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.smartparam.engine.annotations.ParamFunctionInvoker;
-import org.smartparam.engine.model.function.Function;
-import org.smartparam.engine.model.function.JavaFunction;
+import org.smartparam.engine.annotated.annotations.ParamFunctionInvoker;
+import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.function.JavaFunction;
 import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
 
 /**

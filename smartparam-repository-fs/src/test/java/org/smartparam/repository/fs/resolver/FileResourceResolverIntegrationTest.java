@@ -17,7 +17,7 @@ package org.smartparam.repository.fs.resolver;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.batch.ParameterBatchLoader;
 import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.config.DefaultSerializationConfig;

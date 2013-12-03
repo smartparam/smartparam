@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.output.MultiValue;
 import java.math.BigDecimal;
 import java.util.Date;
 import static org.testng.AssertJUnit.*;

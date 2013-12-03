@@ -16,7 +16,7 @@
 package org.smartparam.serializer.metadata;
 
 import java.io.Writer;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.parameter.Parameter;
 
 /**
  *

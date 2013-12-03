@@ -17,7 +17,7 @@ package org.smartparam.engine.test.assertions;
 
 import org.fest.assertions.api.AbstractAssert;
 import org.fest.assertions.data.MapEntry;
-import org.smartparam.engine.core.engine.PreparedParameter;
+import org.smartparam.engine.core.prepared.PreparedParameter;
 
 /**
  *

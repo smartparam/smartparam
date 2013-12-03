@@ -15,15 +15,17 @@
  */
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.prepared.BasicLevelPreparer;
+import org.smartparam.engine.core.prepared.PreparedLevel;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.core.repository.MatcherRepository;
-import org.smartparam.engine.core.repository.TypeRepository;
-import org.smartparam.engine.core.service.FunctionProvider;
+import org.smartparam.engine.core.matcher.Matcher;
+import org.smartparam.engine.core.matcher.MatcherRepository;
+import org.smartparam.engine.core.type.TypeRepository;
+import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.function.Function;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static com.googlecode.catchexception.CatchException.*;

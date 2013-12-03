@@ -22,43 +22,6 @@ package org.smartparam.engine.core.exception;
 public enum SmartParamErrorCode {
 
     /**
-     * Trying to extract wrong type from {@link org.smartparam.engine.core.type.AbstractHolder}.
-     */
-    GETTING_WRONG_TYPE,
-    /**
-     * Deprecated.
-     */
-    ILLEGAL_ASSEMBLER_DEFINITION,
-    /**
-     * Deprecated.
-     */
-    ASSEMBLER_NOT_FOUND,
-    /**
-     * Deprecated.
-     */
-    ASSEMBLER_INVOKE_ERROR,
-    /**
-     * Trying to register an item under same code (for strictly unique repositories).
-     */
-    NON_UNIQUE_ITEM_CODE,
-    /**
-     * Conversion to declared level type failed.
-     */
-    TYPE_CONVERSION_FAILURE,
-    /**
-     * Decoding value failed
-     * {@link org.smartparam.engine.core.type.AbstractType#decode(java.lang.String)}.
-     */
-    TYPE_DECODING_FAILURE,
-    /**
-     * No parameter with given name could be found in any registered repository.
-     */
-    UNKNOWN_PARAMETER,
-    /**
-     * No function with given name could be found in any registered repository.
-     */
-    UNKNOWN_FUNCTION,
-    /**
      * No value found in evaluated parameter, returned only if parameter does
      * not allow returning null values.
      */

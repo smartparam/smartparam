@@ -16,20 +16,20 @@
 package org.smartparam.engine.test.assertions;
 
 import java.util.Map;
-import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
-import org.smartparam.engine.core.ItemsContainer;
-import org.smartparam.engine.core.MapRepository;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.repository.ItemsContainer;
+import org.smartparam.engine.core.repository.MapRepository;
+import org.smartparam.engine.core.parameter.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.context.DefaultContext;
-import org.smartparam.engine.core.engine.ParamValue;
-import org.smartparam.engine.core.engine.PreparedLevel;
-import org.smartparam.engine.core.engine.PreparedParameter;
+import org.smartparam.engine.core.output.ParamValue;
+import org.smartparam.engine.core.prepared.PreparedLevel;
+import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.index.LevelNode;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *

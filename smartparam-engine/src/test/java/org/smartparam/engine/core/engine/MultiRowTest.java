@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.output.MultiValue;
+import org.smartparam.engine.core.output.MultiRow;
 import java.util.List;
 import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.exception.SmartParamException;

@@ -16,8 +16,8 @@
 package org.smartparam.engine.test.assertions;
 
 import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.core.engine.MultiValue;
-import org.smartparam.engine.core.engine.ParamValue;
+import org.smartparam.engine.core.output.MultiValue;
+import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.type.AbstractHolder;
 
 /**

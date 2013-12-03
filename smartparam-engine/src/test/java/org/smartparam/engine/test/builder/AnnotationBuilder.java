@@ -18,8 +18,8 @@ package org.smartparam.engine.test.builder;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
-import org.smartparam.engine.annotations.ParamFunctionRepository;
-import org.smartparam.engine.annotations.ObjectInstance;
+import org.smartparam.engine.annotated.annotations.ParamFunctionRepository;
+import org.smartparam.engine.annotated.annotations.ObjectInstance;
 
 /**
  *

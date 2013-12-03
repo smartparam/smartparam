@@ -16,7 +16,7 @@
 package org.smartparam.engine.core.cache;
 
 import java.util.Map;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.core.function.Function;
 
 /**
  * Kontrakt zapewniajacy cache'owanie obiektow funkcji z repozytorium.

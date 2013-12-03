@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.SmartParamEngine;
+import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
@@ -23,13 +25,13 @@ import org.smartparam.engine.core.context.LevelValues;
 import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
-import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.matchers.BetweenMatcher;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.function.Function;
 import org.smartparam.engine.types.date.DateType;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;

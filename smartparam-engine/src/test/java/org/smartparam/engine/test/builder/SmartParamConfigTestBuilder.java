@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
 
 /**

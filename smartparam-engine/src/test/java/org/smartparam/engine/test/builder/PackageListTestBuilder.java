@@ -17,7 +17,7 @@ package org.smartparam.engine.test.builder;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.annotated.PackageList;
 
 /**
  *

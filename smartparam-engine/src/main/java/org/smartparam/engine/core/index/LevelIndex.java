@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.index;
 
+import org.smartparam.engine.core.matcher.Matcher;
 import java.util.List;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.Formatter;

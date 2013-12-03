@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

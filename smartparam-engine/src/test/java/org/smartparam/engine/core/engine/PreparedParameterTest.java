@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.smartparam.engine.model.ParameterTestBuilder;
 import org.testng.annotations.Test;
 import static org.fest.assertions.api.Assertions.*;

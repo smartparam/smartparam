@@ -15,8 +15,9 @@
  */
 package org.smartparam.engine.core.engine;
 
-import org.smartparam.engine.core.index.Matcher;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.core.prepared.PreparedLevel;
+import org.smartparam.engine.core.matcher.Matcher;
+import org.smartparam.engine.core.function.Function;
 import org.smartparam.engine.types.integer.IntegerType;
 
 import org.testng.annotations.Test;

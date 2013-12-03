@@ -15,13 +15,16 @@
  */
 package org.smartparam.engine.core.engine;
 
+import org.smartparam.engine.core.prepared.LevelPreparer;
+import org.smartparam.engine.core.prepared.BasicParamPreparer;
+import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.testng.annotations.BeforeMethod;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.model.Parameter;
 
+import org.smartparam.engine.core.parameter.Parameter;
 import static org.mockito.Mockito.*;
-import org.smartparam.engine.core.service.ParameterProvider;
-import org.smartparam.engine.model.Level;
+import org.smartparam.engine.core.parameter.ParameterProvider;
+import org.smartparam.engine.core.parameter.Level;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.model.LevelTestBuilder.level;

@@ -16,10 +16,10 @@
 package org.smartparam.repository.jdbc;
 
 import java.util.Arrays;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.testng.annotations.Test;
 
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;

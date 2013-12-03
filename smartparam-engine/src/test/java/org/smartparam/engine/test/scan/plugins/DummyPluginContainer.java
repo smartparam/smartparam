@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.test.scan.plugins;
 
-import org.smartparam.engine.annotations.JavaPlugin;
+import org.smartparam.engine.annotated.annotations.JavaPlugin;
 
 /**
  *

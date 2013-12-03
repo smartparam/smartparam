@@ -18,7 +18,7 @@ package org.smartparam.repository.jdbc.dao;
 import java.util.Arrays;
 import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.engine.model.Level;
+import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.repository.jdbc.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.testng.annotations.Test;

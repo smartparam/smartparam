@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.test.builder;
 
-import org.smartparam.engine.model.function.JavaFunction;
+import org.smartparam.engine.core.function.JavaFunction;
 
 /**
  *

@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.util;
 
+import org.smartparam.engine.core.type.TypeDecoder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +52,7 @@ public class ParamHelperTest {
             String text = (String) testCase[0];
             AbstractHolder expectedHolder = (AbstractHolder) testCase[1];
 
-            AbstractHolder holder = ParamHelper.decode(type, text);
+            AbstractHolder holder = TypeDecoder.decode(type, text);
             assertEquals(expectedHolder.getValue(), holder.getValue());
         }
     }
@@ -65,7 +66,7 @@ public class ParamHelperTest {
         // wykonanie testow, oczekujemy wyjatku
         for (String text : illegals) {
             try {
-                ParamHelper.decode(type, text);
+                TypeDecoder.decode(type, text);
                 fail();
             } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.TYPE_DECODING_FAILURE, e.getErrorCode());
@@ -90,7 +91,7 @@ public class ParamHelperTest {
             Object obj = testCase[0];
             Long expectedValue = (Long) testCase[1];
 
-            AbstractHolder holder = ParamHelper.convert(type, obj);
+            AbstractHolder holder = TypeDecoder.convert(type, obj);
             assertEquals(expectedValue, holder.getValue());
         }
     }
@@ -104,7 +105,7 @@ public class ParamHelperTest {
         // wykonanie testow, oczekujemy wyjatku
         for (Object obj : illegals) {
             try {
-                ParamHelper.convert(type, obj);
+                TypeDecoder.convert(type, obj);
                 fail();
             } catch (SmartParamException e) {
                 assertEquals(SmartParamErrorCode.TYPE_CONVERSION_FAILURE, e.getErrorCode());
@@ -132,7 +133,7 @@ public class ParamHelperTest {
             Object[] array = arrays[i];
             IntegerHolder[] expected = (IntegerHolder[]) expectations[i];
 
-            AbstractHolder[] result = ParamHelper.convert(type, array);
+            AbstractHolder[] result = TypeDecoder.convert(type, array);
             checkArrays(expected, result);
         }
     }
@@ -167,6 +168,6 @@ public class ParamHelperTest {
         assertArrayEquals(expected, result);
     }
 
-    private class NonAbstractParamHelper extends ParamHelper {
+    private class NonAbstractParamHelper extends TypeDecoder {
     }
 }

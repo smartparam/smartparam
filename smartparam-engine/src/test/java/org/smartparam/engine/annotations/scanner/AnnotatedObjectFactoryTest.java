@@ -15,10 +15,11 @@
  */
 package org.smartparam.engine.annotations.scanner;
 
+import org.smartparam.engine.annotated.scanner.AnnotatedObjectFactory;
 import java.lang.annotation.Annotation;
 import java.util.Map;
 import org.testng.annotations.Test;
-import org.smartparam.engine.bean.RepositoryObjectKey;
+import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.testng.annotations.BeforeMethod;
 import static org.smartparam.engine.test.builder.AnnotationBuilder.*;
 import static org.smartparam.engine.test.assertions.Assertions.*;
