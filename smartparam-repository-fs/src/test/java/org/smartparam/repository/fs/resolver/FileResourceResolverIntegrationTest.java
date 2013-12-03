@@ -20,9 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.DefaultSerializationConfig;
-import org.smartparam.serializer.config.ParamSerializerFactory;
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.DefaultSerializationConfig;
+import org.smartparam.serializer.ParamSerializerFactory;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.testng.annotations.*;
 
 import java.io.File;

@@ -20,7 +20,6 @@ import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.integration.DatabaseTest;
 import org.testng.annotations.Test;
 
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;

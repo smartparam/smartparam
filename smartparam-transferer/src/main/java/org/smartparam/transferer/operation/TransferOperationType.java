@@ -13,17 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer;
-
-import java.nio.charset.Charset;
+package org.smartparam.transferer.operation;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface SerializationConfig {
+public enum TransferOperationType {
 
-    String getEndOfLine();
+    /**
+     * Override parameter in target repository.
+     */
+    OVERRIDE,
+    /**
+     * Create parameter in target repository if it does not exist.
+     */
+    CREATE,
+    /**
+     * Delete parameter in target repository if it does not exist in source repo.
+     */
+    DELETE;
 
-    Charset getCharset();
 }

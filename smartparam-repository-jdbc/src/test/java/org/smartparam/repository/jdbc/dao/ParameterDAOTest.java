@@ -21,7 +21,7 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.editor.viewer.ParameterFilter;
 import org.smartparam.editor.viewer.SortDirection;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.repository.jdbc.integration.DatabaseTest;
+import org.smartparam.repository.jdbc.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.testng.annotations.Test;
 

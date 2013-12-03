@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer;
 
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
-import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.ParamSerializer;
 
 /**
  *

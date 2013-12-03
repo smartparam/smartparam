@@ -20,7 +20,7 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.integration.DatabaseTest;
+import org.smartparam.repository.jdbc.DatabaseTest;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.*;
 import static org.smartparam.engine.model.LevelTestBuilder.level;

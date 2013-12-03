@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.transferer.sort;
+package org.smartparam.transferer.operation;
 
 import org.smartparam.transferer.sort.SortedParameters;
-import org.smartparam.transferer.sort.SimpleParameterSorter;
+import org.smartparam.transferer.sort.OperationParameterSorter;
 import java.util.Set;
-import org.smartparam.transferer.TransferOperationType;
+import org.smartparam.transferer.operation.TransferOperationType;
 import org.smartparam.transferer.test.assertions.Assertions;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -30,7 +30,7 @@ import static org.smartparam.transferer.test.builder.ParameterNameSetTestBuilder
  */
 public class SimpleParameterSorterTest {
 
-    private SimpleParameterSorter parameterSorter = new SimpleParameterSorter();
+    private OperationParameterSorter parameterSorter = new OperationParameterSorter();
 
     @BeforeMethod
     public void setUp() {

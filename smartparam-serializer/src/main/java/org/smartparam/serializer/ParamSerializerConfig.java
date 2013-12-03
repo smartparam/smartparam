@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer.config;
+package org.smartparam.serializer;
 
 import java.util.List;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.serializer.StandardParamDeserializer;
 import org.smartparam.serializer.StandardParamSerializer;
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
 import org.smartparam.serializer.entries.CsvParameterEntrySerializer;
 import org.smartparam.serializer.metadata.JsonParameterMetadataDeserializer;

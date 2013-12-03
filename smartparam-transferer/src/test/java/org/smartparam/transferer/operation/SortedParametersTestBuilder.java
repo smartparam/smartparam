@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.transferer.test.builder;
+package org.smartparam.transferer.operation;
 
-import org.smartparam.transferer.TransferOperationType;
 import org.smartparam.transferer.sort.SortedParameters;
 
 /**

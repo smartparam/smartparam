@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.model.Level;
-import org.smartparam.repository.jdbc.integration.DatabaseTest;
+import org.smartparam.repository.jdbc.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.assertions.Assertions.assertThat;

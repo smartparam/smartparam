@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.batch.ParameterBatchLoader;
 import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
 import org.smartparam.engine.model.Parameter;
-import org.smartparam.repository.fs.ResourceResolver;
 import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;

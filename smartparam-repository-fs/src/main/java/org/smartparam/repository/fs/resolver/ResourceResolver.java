@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.serializer;
+package org.smartparam.repository.fs.resolver;
+
+import java.util.Map;
+import org.smartparam.engine.core.batch.ParameterBatchLoader;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface CsvSerializationConfig extends SerializationConfig {
+public interface ResourceResolver {
 
-    char getCsvDelimiter();
+    Map<String, String> findParameterResources();
 
-    char getCsvQuote();
+    ParameterBatchLoader loadParameterFromResource(String parameterResourceName);
 }

@@ -21,7 +21,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.serializer.DefaultSerializationConfig;
+import org.smartparam.serializer.config.DefaultSerializationConfig;
 import org.supercsv.io.CsvListReader;
 import static org.fest.assertions.api.Assertions.*;
 import static org.smartparam.serializer.entries.CsvPreferenceBuilder.csvPreference;

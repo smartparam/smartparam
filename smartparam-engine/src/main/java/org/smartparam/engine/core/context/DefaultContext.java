@@ -120,7 +120,7 @@ public class DefaultContext implements ParamContext {
                 setterInvoker = (ReflectionSetterInvoker) arg;
             }
             else if (arg instanceof String[]) {
-                setLevelValues((String[]) arg);
+                setLevelValues((Object[]) arg);
             } else if (arg instanceof Object[]) {
                 setLevelValues((Object[]) arg);
             } else if (arg instanceof Locale) {
@@ -303,12 +303,13 @@ public class DefaultContext implements ParamContext {
      * Set level values directly as objects.
      * Method is null safe, puts null value into level values.
      */
-    public void setLevelValues(Object... levelValues) {
+    @Override
+    public final void setLevelValues(Object... levelValues) {
         this.levelValues = levelValues;
     }
 
     public DefaultContext withLevelValues(String... levelValues) {
-        setLevelValues(levelValues);
+        setLevelValues((Object[]) levelValues);
         return this;
     }
 

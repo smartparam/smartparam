@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package org.smartparam.transferer.test.assertions;
+package org.smartparam.transferer.operation;
 
+import org.smartparam.transferer.sort.SortedParameters;
 import org.fest.assertions.api.AbstractAssert;
 import org.smartparam.engine.test.assertions.Assertions;
-import org.smartparam.transferer.sort.SortedParameters;
-import org.smartparam.transferer.TransferOperationType;
 
 /**
  *

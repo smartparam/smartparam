@@ -16,13 +16,13 @@
 package org.smartparam.transferer.sort;
 
 import java.util.Set;
-import org.smartparam.transferer.TransferOperationType;
+import org.smartparam.transferer.operation.TransferOperationType;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleParameterSorter implements ParameterSorter {
+public class OperationParameterSorter implements ParameterSorter {
 
     public SortedParameters sort(Set<String> sourceRepoParameters, Set<String> targetRepoParameters) {
         SortedParameters sorted = new SortedParameters();

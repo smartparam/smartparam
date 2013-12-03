@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.integration;
+package org.smartparam.repository.jdbc;
 
 import java.sql.SQLException;
 import javax.sql.DataSource;
@@ -34,8 +34,6 @@ import org.polyjdbc.core.util.TheCloser;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
-import org.smartparam.repository.jdbc.config.JdbcParamRepositoryConfig;
-import org.smartparam.repository.jdbc.config.JdbcParamRepositoryFactory;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;

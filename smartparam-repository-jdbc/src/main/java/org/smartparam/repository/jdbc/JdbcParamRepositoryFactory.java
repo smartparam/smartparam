@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
+package org.smartparam.repository.jdbc;
 
 import javax.sql.DataSource;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
-import org.smartparam.repository.jdbc.JdbcParamRepository;
+import org.smartparam.repository.jdbc.config.JdbcConfig;
 
 /**
  *
@@ -40,7 +40,7 @@ public class JdbcParamRepositoryFactory {
         return container.getComponent(JdbcParamRepository.class);
     }
 
-    public PicoContainer createContainer(JdbcParamRepositoryConfig config) {
+    PicoContainer createContainer(JdbcParamRepositoryConfig config) {
         MutablePicoContainer container = PicoContainerUtil.createContainer();
         PicoContainerUtil.injectImplementations(container, JdbcParamRepository.class,
                                                 config.getConfiguration(), config.getConfiguration().getDialect(), config.getDataSource());

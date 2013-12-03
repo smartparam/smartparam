@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.jdbc.config;
+package org.smartparam.repository.jdbc;
 
 import java.util.List;
 import javax.sql.DataSource;
@@ -24,6 +24,7 @@ import org.polyjdbc.core.schema.SchemaManagerFactory;
 import org.polyjdbc.core.transaction.DataSourceTransactionManager;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoaderFactory;
+import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.dao.SimpleJdbcRepository;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
@@ -36,9 +37,9 @@ import org.smartparam.repository.jdbc.schema.DefaultSchemaCreator;
  */
 public class JdbcParamRepositoryConfig extends ComponentConfig {
 
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
-    private JdbcConfig configuration;
+    private final JdbcConfig configuration;
 
     public JdbcParamRepositoryConfig(DataSource dataSource, JdbcConfig configuration) {
         this.dataSource = dataSource;

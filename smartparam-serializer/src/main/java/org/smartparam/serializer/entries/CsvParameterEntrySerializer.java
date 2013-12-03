@@ -27,7 +27,7 @@ import org.smartparam.engine.model.Level;
 import org.smartparam.engine.model.Parameter;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.serializer.exception.ParamSerializationException;
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.util.StreamCloser;
 import org.supercsv.io.CsvListWriter;
 

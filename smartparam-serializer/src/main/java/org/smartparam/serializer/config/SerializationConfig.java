@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.repository.fs;
+package org.smartparam.serializer.config;
 
-import java.util.Map;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import java.nio.charset.Charset;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ResourceResolver {
+public interface SerializationConfig {
 
-    Map<String, String> findParameterResources();
+    String getEndOfLine();
 
-    ParameterBatchLoader loadParameterFromResource(String parameterResourceName);
+    Charset getCharset();
 }

@@ -24,7 +24,7 @@ import org.smartparam.editor.viewer.SortDirection;
 import org.smartparam.engine.model.ParameterEntry;
 import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
-import org.smartparam.repository.jdbc.integration.DatabaseTest;
+import org.smartparam.repository.jdbc.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
 

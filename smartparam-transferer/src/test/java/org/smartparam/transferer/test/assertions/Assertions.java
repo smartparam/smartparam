@@ -15,6 +15,7 @@
  */
 package org.smartparam.transferer.test.assertions;
 
+import org.smartparam.transferer.operation.SortedParametersAssert;
 import org.smartparam.transferer.sort.SortedParameters;
 
 /**
