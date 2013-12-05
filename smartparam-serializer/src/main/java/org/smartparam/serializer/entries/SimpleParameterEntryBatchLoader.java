@@ -15,7 +15,7 @@
  */
 package org.smartparam.serializer.entries;
 
-import org.smartparam.engine.core.parameter.batch.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

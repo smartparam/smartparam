@@ -25,7 +25,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 @SuppressWarnings("serial")
 public class UnknownFunctionException extends SmartParamException {
 
-    UnknownFunctionException(String functionName) {
+    public UnknownFunctionException(String functionName) {
         super("UNKNOWN_PARAMETER",
                 String.format("Could not find function %s in any registered repository. "
                         + "Check if all repositories are properly configured."

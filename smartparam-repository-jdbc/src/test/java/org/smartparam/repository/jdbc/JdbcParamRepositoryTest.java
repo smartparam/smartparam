@@ -16,7 +16,7 @@
 package org.smartparam.repository.jdbc;
 
 import java.util.Arrays;
-import org.smartparam.engine.core.parameter.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;

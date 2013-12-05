@@ -13,21 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.core.function;
+
+import org.smartparam.engine.core.repository.Repository;
 
 /**
- * Traverses SmartParamEngine service tree and returns runtime configuration of
- * engine in form of immutable object.
  *
  * @author Adam Dubiel
+ * @since 0.1.0
  */
-public interface ParamEngineRuntimeConfigBuilder {
+public interface InvokerRepository extends Repository<FunctionInvoker> {
 
-    /**
-     * Creates runtime configuration descriptor for given param engine.
-     *
-     * @param paramEngine engine
-     * @return configuration
-     */
-    ParamEngineRuntimeConfig buildConfig();
+    FunctionInvoker getInvoker(Function function);
 }

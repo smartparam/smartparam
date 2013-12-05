@@ -19,7 +19,7 @@ import java.util.Map;
 import org.smartparam.engine.annotated.annotations.ParamMatcher;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
-import org.smartparam.engine.config.ComponentInitializerRunner;
+import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MapRepository;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.annotated.repository.TypeScanningRepository;

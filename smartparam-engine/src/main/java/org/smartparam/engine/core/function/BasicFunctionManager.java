@@ -15,9 +15,6 @@
  */
 package org.smartparam.engine.core.function;
 
-import org.smartparam.engine.core.invoker.FunctionInvoker;
-import org.smartparam.engine.core.invoker.InvokerRepository;
-
 /**
  *
  * @author Przemek Hertel

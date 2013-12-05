@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.config.initialization;
 
 /**
  * Contract for component, that can be initialized using {@link PostConstructInitializer}

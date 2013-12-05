@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter.batch;
+package org.smartparam.engine.core.parameter;
 
-import java.io.Closeable;
-import java.util.Collection;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParameterEntryBatchLoader extends Closeable {
+@SuppressWarnings("serial")
+public class ParamBatchLoadingException extends SmartParamException {
 
-    boolean hasMore();
+    public ParamBatchLoadingException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    Collection<ParameterEntry> nextBatch(int batchSize);
-
-    void close();
+    public ParamBatchLoadingException(String message) {
+        super(message);
+    }
 }

@@ -13,27 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter.batch;
+package org.smartparam.engine.core;
 
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.type.Type;
 
 /**
+ * Decoding value failed
+ * {@link org.smartparam.engine.core.type.AbstractType#decode(java.lang.String)}.
  *
  * @author Adam Dubiel
  */
-public final class ParameterEntryUnbatchUtil {
+@SuppressWarnings("serial")
+public class TypeDecodingException extends SmartParamException {
 
-    private ParameterEntryUnbatchUtil() {
+    TypeDecodingException(RuntimeException cause, String value, Type<?> targetType) {
+        super("TYPE_DECODING_FAILURE", cause,
+                String.format("Failed to decode text [%s] into type [%s], check if level type is set correctly.",
+                        value, targetType != null ? targetType.getClass().getSimpleName() : null));
     }
 
-    public static void loadEntriesIntoParameter(Parameter parameter, ParameterEntryBatchLoader entryBatchLoader, int batchSize) {
-        try {
-            while (entryBatchLoader.hasMore()) {
-                parameter.getEntries().addAll(entryBatchLoader.nextBatch(batchSize));
-            }
-        } catch (ParamBatchLoadingException batchException) {
-            throw new SmartParamException(batchException);
-        }
-    }
 }

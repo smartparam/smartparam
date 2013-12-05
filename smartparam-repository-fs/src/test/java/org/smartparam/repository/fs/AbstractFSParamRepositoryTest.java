@@ -18,7 +18,7 @@ package org.smartparam.repository.fs;
 import org.smartparam.repository.fs.resolver.ResourceResolver;
 import java.util.HashMap;
 import java.util.Map;
-import org.smartparam.engine.core.parameter.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import static org.mockito.Mockito.*;
 import static org.fest.assertions.api.Assertions.*;
 import org.smartparam.engine.core.parameter.Parameter;

@@ -13,15 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.core;
+
+import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 
 /**
+ * Traverses SmartParamEngine service tree and returns runtime configuration of
+ * engine in form of immutable object.
  *
  * @author Adam Dubiel
  */
-public interface ComponentInitializer {
+public interface ParamEngineRuntimeConfigBuilder {
 
-    void initializeObject(Object configObject, ComponentInitializerRunner initializerRunner);
-
-    boolean acceptsObject(Object configObject);
+    /**
+     * Creates runtime configuration descriptor for given param engine.
+     *
+     * @param paramEngine engine
+     * @return configuration
+     */
+    ParamEngineRuntimeConfig buildConfig();
 }

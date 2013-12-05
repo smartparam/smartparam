@@ -15,14 +15,11 @@
  */
 package org.smartparam.engine.annotated.repository;
 
-import org.smartparam.engine.annotated.repository.AbstractScanningJavaFunctionRepository;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import org.smartparam.engine.annotated.annotations.ParamFunctionRepository;
 import org.smartparam.engine.annotated.annotations.JavaPlugin;
 import org.smartparam.engine.core.function.Function;
-import org.smartparam.engine.core.function.Function;
-import org.smartparam.engine.functions.java.JavaFunction;
 import org.smartparam.engine.functions.java.JavaFunction;
 
 /**

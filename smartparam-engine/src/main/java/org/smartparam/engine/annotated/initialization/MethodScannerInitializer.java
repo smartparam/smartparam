@@ -13,44 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config.initialization;
+package org.smartparam.engine.annotated.initialization;
 
 import java.util.List;
-import org.smartparam.engine.annotated.scanner.PackageTypeScanner;
+import org.smartparam.engine.annotated.scanner.PackageMethodScanner;
+import org.smartparam.engine.annotated.scanner.MethodScanner;
 import org.smartparam.engine.annotated.PackageList;
-import org.smartparam.engine.annotated.scanner.TypeScanner;
-import org.smartparam.engine.config.ComponentInitializer;
-import org.smartparam.engine.config.ComponentInitializerRunner;
-import org.smartparam.engine.annotated.repository.TypeScanningRepository;
+import org.smartparam.engine.annotated.repository.MethodScanningRepository;
+import org.smartparam.engine.config.initialization.ComponentInitializer;
+import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class TypeScannerInitializer implements ComponentInitializer {
+public class MethodScannerInitializer implements ComponentInitializer {
 
     private PackageList packagesToScan = new PackageList();
 
-    private TypeScanner typeScanner;
+    private MethodScanner methodScanner;
 
-    public TypeScannerInitializer() {
-        typeScanner = new PackageTypeScanner(packagesToScan);
+    public MethodScannerInitializer() {
+        methodScanner = new PackageMethodScanner(packagesToScan);
     }
 
-    public TypeScannerInitializer(PackageList packagesToScan) {
+    public MethodScannerInitializer(PackageList packagesToScan) {
         this.packagesToScan = packagesToScan;
-        typeScanner = new PackageTypeScanner(this.packagesToScan);
+        methodScanner = new PackageMethodScanner(packagesToScan);
     }
 
     @Override
     public void initializeObject(Object configObject, ComponentInitializerRunner runner) {
-        TypeScanningRepository repository = (TypeScanningRepository) configObject;
-        repository.scanAnnotations(typeScanner, runner);
+        MethodScanningRepository repository = (MethodScanningRepository) configObject;
+        repository.scanMethods(methodScanner);
     }
 
     @Override
     public boolean acceptsObject(Object configObject) {
-        return TypeScanningRepository.class.isAssignableFrom(configObject.getClass());
+        return MethodScanningRepository.class.isAssignableFrom(configObject.getClass());
     }
 
     public PackageList getPackageList() {
@@ -69,7 +69,7 @@ public class TypeScannerInitializer implements ComponentInitializer {
         packagesToScan.setDefaultPackage(defaultPackage);
     }
 
-    public void setTypeScanner(TypeScanner typeScanner) {
-        this.typeScanner = typeScanner;
+    public void setMethodScanner(MethodScanner methodScanner) {
+        this.methodScanner = methodScanner;
     }
 }

@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.invoker;
+package org.smartparam.engine.config.initialization;
 
-import org.smartparam.engine.core.repository.Repository;
-import org.smartparam.engine.core.invoker.FunctionInvoker;
-import org.smartparam.engine.core.function.Function;
+import java.util.Collection;
 
 /**
  *
  * @author Adam Dubiel
- * @since 0.1.0
  */
-public interface InvokerRepository extends Repository<FunctionInvoker> {
+public interface ComponentInitializerRunner {
 
-    FunctionInvoker getInvoker(Function function);
+    void runInitializers(Object objectToInitialize);
+
+    void runInitializersOnList(Iterable<?> objectsToInitialize);
+
+    void registerInitializers(Collection<ComponentInitializer> intializers);
 }

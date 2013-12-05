@@ -28,16 +28,14 @@ import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.config.ParamEngineRuntimeConfig;
-import org.smartparam.engine.config.ParamEngineRuntimeConfigBuilder;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.prepared.InputValueNormalizer;
 import org.smartparam.engine.types.string.StringHolder;
 import org.smartparam.engine.util.EngineUtil;
-import org.smartparam.engine.core.type.TypeDecoder;
 
 /**
  *
@@ -237,7 +235,7 @@ public class SmartParamEngine implements ParamEngine {
 
         validateLevelValues(ctx.getLevelValues(), param.getInputLevelsCount());
 
-        String[] normalizedInputValues = TypeDecoder.normalize(param, ctx.getLevelValues());
+        String[] normalizedInputValues = InputValueNormalizer.normalize(param, ctx.getLevelValues());
         return findParameterEntries(param, normalizedInputValues);
     }
 

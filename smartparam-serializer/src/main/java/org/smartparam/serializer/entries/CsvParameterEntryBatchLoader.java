@@ -15,12 +15,12 @@
  */
 package org.smartparam.serializer.entries;
 
-import org.smartparam.engine.core.parameter.batch.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.smartparam.engine.core.parameter.batch.ParamBatchLoadingException;
+import org.smartparam.engine.core.parameter.ParamBatchLoadingException;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.serializer.model.DeserializedParameterEntry;
 import org.smartparam.serializer.util.StreamCloser;

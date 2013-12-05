@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.core;
 
 import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.config.ParamEngineRuntimeConfig;
+import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.test.ParamEngineAssertions;
 

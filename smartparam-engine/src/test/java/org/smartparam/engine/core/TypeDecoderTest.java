@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.type;
+package org.smartparam.engine.core;
 
+import org.smartparam.engine.core.TypeDecoder;
+import org.smartparam.engine.core.TypeConversionException;
+import org.smartparam.engine.core.TypeDecodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.Type;
 import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.integer.IntegerType;
@@ -29,7 +34,7 @@ import org.testng.annotations.Test;
  */
 public class TypeDecoderTest {
 
-    private Type<?> type = new IntegerType();
+    private final Type<?> type = new IntegerType();
 
     @Test
     public void testDecode() {
@@ -153,7 +158,7 @@ public class TypeDecoderTest {
             Collection<?> coll = (Collection<?>) arrays[i];
             IntegerHolder[] expected = (IntegerHolder[]) expectations[i];
 
-            AbstractHolder[] result = new NonAbstractParamHelper().convert(type, coll);
+            AbstractHolder[] result = TypeDecoder.convert(type, coll);
             checkArrays(expected, result);
         }
     }
@@ -161,8 +166,5 @@ public class TypeDecoderTest {
     private void checkArrays(IntegerHolder[] expected, AbstractHolder[] result) {
         assertTrue(result instanceof IntegerHolder[]);
         assertArrayEquals(expected, result);
-    }
-
-    private class NonAbstractParamHelper extends TypeDecoder {
     }
 }

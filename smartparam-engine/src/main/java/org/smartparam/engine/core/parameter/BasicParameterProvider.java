@@ -17,10 +17,9 @@ package org.smartparam.engine.core.parameter;
 
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.repository.ListRepository;
-import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.repository.ListRepository;
 
 /**
  *
@@ -28,7 +27,7 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class BasicParameterProvider implements ParameterProvider {
 
-    private ListRepository<ParamRepository> innerRepository = new ListRepository<ParamRepository>(ParamRepository.class);
+    private final ListRepository<ParamRepository> innerRepository = new ListRepository<ParamRepository>(ParamRepository.class);
 
     @Override
     public Parameter load(String parameterName) {

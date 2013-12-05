@@ -18,8 +18,6 @@ package org.smartparam.engine.config.initialization;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.smartparam.engine.config.ComponentInitializer;
-import org.smartparam.engine.config.ComponentInitializerRunner;
 
 /**
  *

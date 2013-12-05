@@ -13,58 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.type;
+package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.prepared.PreparedLevel;
-import org.smartparam.engine.core.prepared.PreparedParameter;
+import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.string.StringType;
 
-import java.util.Collection;
-
 /**
- * @author Przemek Hertel
- * @since 0.9.0
+ *
+ * @author Adam Dubiel
  */
-public class TypeDecoder {
+public final class InputValueNormalizer {
 
-    TypeDecoder() {
-    }
-
-    public static AbstractHolder decode(Type<?> type, String text) {
-        try {
-            return type.decode(text != null ? text.trim() : null);
-        } catch (RuntimeException exception) {
-            throw new TypeDecodingException(exception, text, type);
-        }
-    }
-
-    public static AbstractHolder convert(Type<?> type, Object obj) {
-        try {
-            return type.convert(obj);
-        } catch (RuntimeException exception) {
-            throw new TypeConversionException(exception, obj, type);
-        }
-    }
-
-    public static AbstractHolder[] convert(Type<?> type, Object[] array) {
-        AbstractHolder[] result = type.newArray(array.length);
-        for (int i = 0; i < result.length; i++) {
-            result[i] = convert(type, array[i]);
-        }
-        return result;
-    }
-
-    public static AbstractHolder[] convert(Type<?> type, Collection<?> coll) {
-        return convert(type, coll.toArray());
+    private InputValueNormalizer() {
     }
 
     public static <T extends AbstractHolder> String normalize(Type<T> type, String levelValue) {
         if ("*".equals(levelValue)) {
             return levelValue;
+
         }
 
         if (type.getClass() == StringType.class) {
             return levelValue;
+
         }
 
         try {
@@ -101,5 +73,4 @@ public class TypeDecoder {
 
         return normalized;
     }
-
 }

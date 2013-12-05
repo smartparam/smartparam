@@ -16,7 +16,7 @@
 package org.smartparam.repository.fs.resolver;
 
 import java.util.Map;
-import org.smartparam.engine.core.parameter.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 
 /**
  *

@@ -16,11 +16,11 @@
 package org.smartparam.engine.config.pico;
 
 import org.picocontainer.PicoContainer;
-import org.smartparam.engine.config.ParamEngineRuntimeConfig;
-import org.smartparam.engine.config.ParamEngineRuntimeConfigBuilder;
+import org.smartparam.engine.core.ParamEngineRuntimeConfig;
+import org.smartparam.engine.core.ParamEngineRuntimeConfigBuilder;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.invoker.InvokerRepository;
+import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;
@@ -34,7 +34,7 @@ import org.smartparam.engine.core.parameter.ParameterProvider;
  */
 public class PicoParamEngineRuntimeConfigBuilder implements ParamEngineRuntimeConfigBuilder {
 
-    private PicoContainer engineContainer;
+    private final PicoContainer engineContainer;
 
     public PicoParamEngineRuntimeConfigBuilder(PicoContainer engineContainer) {
         this.engineContainer = engineContainer;

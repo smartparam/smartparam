@@ -17,7 +17,7 @@ package org.smartparam.repository.jdbc.batch;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import org.smartparam.engine.core.parameter.batch.ParamBatchLoadingException;
+import org.smartparam.engine.core.parameter.ParamBatchLoadingException;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 import org.smartparam.repository.jdbc.DatabaseTest;

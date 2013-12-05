@@ -15,14 +15,14 @@
  */
 package org.smartparam.serializer.entries;
 
-import org.smartparam.engine.core.parameter.batch.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.parameter.batch.ParamBatchLoadingException;
+import org.smartparam.engine.core.parameter.ParamBatchLoadingException;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;

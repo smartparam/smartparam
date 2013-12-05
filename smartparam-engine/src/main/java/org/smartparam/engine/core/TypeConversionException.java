@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.type;
+package org.smartparam.engine.core;
 
 import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.core.type.Type;
 
 /**
- * Decoding value failed
- * {@link org.smartparam.engine.core.type.AbstractType#decode(java.lang.String)}.
+ * Conversion to declared level type failed.
  *
  * @author Adam Dubiel
  */
 @SuppressWarnings("serial")
-public class TypeDecodingException extends SmartParamException {
+public class TypeConversionException extends SmartParamException {
 
-    TypeDecodingException(RuntimeException cause, String value, Type<?> targetType) {
-        super("TYPE_DECODING_FAILURE", cause,
-                String.format("Failed to decode text [%s] into type [%s], check if level type is set correctly.",
-                        value, targetType != null ? targetType.getClass().getSimpleName() : null));
+    TypeConversionException(RuntimeException cause, Object object, Type<?> targetType) {
+        super("TYPE_CONVERSION_FAILURE", cause,
+                String.format("Failed to convert object [%s] into type [%s], check if level type is set correctly.",
+                        object, targetType.getClass().getSimpleName()));
     }
 
 }

@@ -16,7 +16,6 @@
 package org.smartparam.engine.core;
 
 import org.smartparam.engine.core.output.ParamValue;
-import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 
 import org.smartparam.engine.core.context.ParamContext;
 

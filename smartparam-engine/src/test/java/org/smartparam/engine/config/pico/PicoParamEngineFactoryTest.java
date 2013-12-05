@@ -19,7 +19,7 @@ import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.invoker.FunctionInvoker;
+import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;

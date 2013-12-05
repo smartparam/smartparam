@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.core;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Map;
 import org.smartparam.engine.core.cache.FunctionCache;
 import org.smartparam.engine.core.cache.ParamCache;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.invoker.FunctionInvoker;
+import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;

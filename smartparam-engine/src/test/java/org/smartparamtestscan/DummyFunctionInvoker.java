@@ -16,7 +16,7 @@
 package org.smartparamtestscan;
 
 import org.smartparam.engine.annotated.annotations.ParamFunctionInvoker;
-import org.smartparam.engine.core.invoker.FunctionInvoker;
+import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.Function;
 
 /**

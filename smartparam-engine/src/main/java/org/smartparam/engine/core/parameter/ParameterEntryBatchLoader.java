@@ -13,30 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter.batch;
+package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.Parameter;
+import java.io.Closeable;
+import java.util.Collection;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ParameterBatchLoader {
+public interface ParameterEntryBatchLoader extends Closeable {
 
-    private final Parameter metadata;
+    boolean hasMore();
 
-    private final ParameterEntryBatchLoader entryLoader;
+    Collection<ParameterEntry> nextBatch(int batchSize);
 
-    public ParameterBatchLoader(Parameter metadata, ParameterEntryBatchLoader entryLoader) {
-        this.metadata = metadata;
-        this.entryLoader = entryLoader;
-    }
-
-    public Parameter getMetadata() {
-        return metadata;
-    }
-
-    public ParameterEntryBatchLoader getEntryLoader() {
-        return entryLoader;
-    }
+    void close();
 }

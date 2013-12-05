@@ -16,7 +16,7 @@
 package org.smartparam.engine.annotated.repository;
 
 import org.smartparam.engine.annotated.scanner.TypeScanner;
-import org.smartparam.engine.config.ComponentInitializerRunner;
+import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 
 /**
  *

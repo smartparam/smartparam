@@ -33,7 +33,6 @@ import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.engine.core.type.TypeDecoder;
 
 /**
  *
@@ -44,11 +43,11 @@ public class BasicParamPreparer implements ParamPreparer {
 
     private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
-    private ParameterProvider parameterProvider;
+    private final ParameterProvider parameterProvider;
 
-    private LevelPreparer levelPreparer;
+    private final LevelPreparer levelPreparer;
 
-    private ParamCache cache;
+    private final ParamCache cache;
 
     public BasicParamPreparer(ParameterProvider parameterProvider, LevelPreparer levelPreparer, ParamCache cache) {
         this.parameterProvider = parameterProvider;
@@ -116,7 +115,7 @@ public class BasicParamPreparer implements ParamPreparer {
             // normalize level patters
             for (int i = 0; i < inputLevelCount; i++) {
                 if (matchers[i] == null) {
-                    keys[i] = TypeDecoder.normalize(types[i], keys[i]);
+                    keys[i] = InputValueNormalizer.normalize(types[i], keys[i]);
                 }
             }
 

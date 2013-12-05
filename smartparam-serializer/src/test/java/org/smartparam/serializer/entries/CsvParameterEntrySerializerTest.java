@@ -15,7 +15,7 @@
  */
 package org.smartparam.serializer.entries;
 
-import org.smartparam.engine.core.parameter.batch.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import org.junit.Before;

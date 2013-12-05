@@ -13,19 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config;
+package org.smartparam.engine.core.parameter;
 
-import java.util.Collection;
+import org.smartparam.engine.core.parameter.Parameter;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ComponentInitializerRunner {
+public class ParameterBatchLoader {
 
-    void runInitializers(Object objectToInitialize);
+    private final Parameter metadata;
 
-    void runInitializersOnList(Iterable<?> objectsToInitialize);
+    private final ParameterEntryBatchLoader entryLoader;
 
-    void registerInitializers(Collection<ComponentInitializer> intializers);
+    public ParameterBatchLoader(Parameter metadata, ParameterEntryBatchLoader entryLoader) {
+        this.metadata = metadata;
+        this.entryLoader = entryLoader;
+    }
+
+    public Parameter getMetadata() {
+        return metadata;
+    }
+
+    public ParameterEntryBatchLoader getEntryLoader() {
+        return entryLoader;
+    }
 }

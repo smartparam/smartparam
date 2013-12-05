@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.config;
 
+import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.initialization.BasicComponentInitializerRunner;
@@ -22,7 +23,7 @@ import org.smartparam.engine.config.pico.PicoContainerUtil;
 import org.smartparam.engine.config.pico.PicoParamEngineRuntimeConfigBuilder;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.SmartParamEngine;
-import org.smartparam.engine.core.invoker.InvokerRepository;
+import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;

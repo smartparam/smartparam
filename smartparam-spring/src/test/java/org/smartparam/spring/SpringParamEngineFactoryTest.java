@@ -22,7 +22,7 @@ import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import static org.smartparam.engine.config.ParamEngineConfigBuilder.paramEngineConfig;
-import static org.smartparam.engine.config.ParamEngineRuntimeConfigAssert.assertThat;
+import static org.smartparam.engine.core.ParamEngineRuntimeConfigAssert.assertThat;
 
 /**
  *

@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter.batch;
-
-import org.smartparam.engine.core.exception.SmartParamException;
+package org.smartparam.engine.config.initialization;
 
 /**
  *
  * @author Adam Dubiel
  */
-@SuppressWarnings("serial")
-public class ParamBatchLoadingException extends SmartParamException {
+public interface ComponentInitializer {
 
-    public ParamBatchLoadingException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    void initializeObject(Object configObject, ComponentInitializerRunner initializerRunner);
 
-    public ParamBatchLoadingException(String message) {
-        super(message);
-    }
+    boolean acceptsObject(Object configObject);
 }

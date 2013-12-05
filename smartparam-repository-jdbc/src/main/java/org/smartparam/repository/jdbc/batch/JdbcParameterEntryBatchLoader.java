@@ -18,7 +18,7 @@ package org.smartparam.repository.jdbc.batch;
 import java.util.Collection;
 import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.engine.core.parameter.batch.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;

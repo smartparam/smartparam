@@ -13,29 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.function;
+package org.smartparam.engine.annotated.repository;
 
 import java.util.Map;
 import java.util.TreeMap;
 import org.smartparam.engine.annotated.annotations.ParamFunctionRepository;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
-import org.smartparam.engine.config.ComponentInitializerRunner;
+import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MapRepository;
 import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.annotated.repository.TypeScanningRepository;
+import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.function.FunctionProvider;
+import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.function.UnknownFunctionException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class BasicFunctionProvider implements FunctionProvider, TypeScanningRepository {
+public class ScanningFunctionProvider implements FunctionProvider, TypeScanningRepository {
 
     private final MapRepository<FunctionRepository> innerRepository = new MapRepository<FunctionRepository>(FunctionRepository.class, new TreeMap<RepositoryObjectKey, FunctionRepository>());
 
     private final FunctionCache functionCache;
 
-    public BasicFunctionProvider(FunctionCache functionCache) {
+    public ScanningFunctionProvider(FunctionCache functionCache) {
         this.functionCache = functionCache;
     }
 

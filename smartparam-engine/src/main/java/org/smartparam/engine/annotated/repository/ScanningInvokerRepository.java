@@ -19,13 +19,13 @@ import java.util.Map;
 import org.smartparam.engine.annotated.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
-import org.smartparam.engine.config.ComponentInitializerRunner;
+import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MapRepository;
-import org.smartparam.engine.core.invoker.FunctionInvoker;
+import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.annotated.repository.TypeScanningRepository;
 import org.smartparam.engine.core.function.Function;
-import org.smartparam.engine.core.invoker.FunctionInvoker;
-import org.smartparam.engine.core.invoker.InvokerRepository;
+import org.smartparam.engine.core.function.FunctionInvoker;
+import org.smartparam.engine.core.function.InvokerRepository;
 
 /**
  * @author Przemek Hertel

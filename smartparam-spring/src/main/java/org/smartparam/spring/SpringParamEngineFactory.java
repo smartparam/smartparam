@@ -17,10 +17,10 @@ package org.smartparam.spring;
 
 import java.util.List;
 import org.smartparam.engine.annotated.PackageList;
-import org.smartparam.engine.config.initialization.MethodScannerInitializer;
+import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
-import org.smartparam.engine.config.initialization.TypeScannerInitializer;
+import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;

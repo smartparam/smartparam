@@ -17,8 +17,6 @@ package org.smartparam.engine.core.function;
 
 import org.smartparam.engine.core.repository.OrderedRepository;
 import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.function.FunctionRepository;
-import org.smartparam.engine.core.function.Function;
 
 /**
  *

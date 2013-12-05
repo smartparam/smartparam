@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.config.initialization;
+package org.smartparam.engine.annotated.repository;
 
+import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.smartparam.engine.annotated.scanner.MethodScanner;
-import org.smartparam.engine.annotated.repository.MethodScanningRepository;
+import org.smartparam.engine.annotated.scanner.TypeScanner;
+import org.smartparam.engine.annotated.repository.TypeScanningRepository;
+import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import static org.mockito.Mockito.*;
 import static org.fest.assertions.api.Assertions.*;
 
@@ -26,34 +28,34 @@ import static org.fest.assertions.api.Assertions.*;
  *
  * @author Adam Dubiel
  */
-public class MethodScannerInitializerTest {
+public class TypeScannerInitializerTest {
 
-    private MethodScannerInitializer methodScannerInitializer;
+    private TypeScannerInitializer typeScannerInitializer;
 
     @BeforeMethod
     public void setUp() {
-        methodScannerInitializer = new MethodScannerInitializer();
+        typeScannerInitializer = new TypeScannerInitializer();
     }
 
     @Test
     public void shouldRunInitializationMethodOnProvidedObject() {
         // given
-        MethodScanningRepository repository = mock(MethodScanningRepository.class);
+        TypeScanningRepository repository = mock(TypeScanningRepository.class);
 
         // when
-        methodScannerInitializer.initializeObject(repository, null);
+        typeScannerInitializer.initializeObject(repository, null);
 
         // then
-        verify(repository, times(1)).scanMethods(any(MethodScanner.class));
+        verify(repository, times(1)).scanAnnotations(any(TypeScanner.class), any(ComponentInitializerRunner.class));
     }
 
     @Test
     public void shouldAcceptTypeScanningRepositoryImplementations() {
         // given
-        MethodScanningRepository repository = mock(MethodScanningRepository.class);
+        TypeScanningRepository repository = mock(TypeScanningRepository.class);
 
         // when
-        boolean accepted = methodScannerInitializer.acceptsObject(repository);
+        boolean accepted = typeScannerInitializer.acceptsObject(repository);
 
         // then
         assertThat(accepted).isTrue();
@@ -65,7 +67,7 @@ public class MethodScannerInitializerTest {
         Object someObject = new Object();
 
         // when
-        boolean accepted = methodScannerInitializer.acceptsObject(someObject);
+        boolean accepted = typeScannerInitializer.acceptsObject(someObject);
 
         // then
         assertThat(accepted).isFalse();

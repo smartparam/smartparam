@@ -15,7 +15,7 @@
  */
 package org.smartparam.transferer.operation;
 
-import org.smartparam.engine.core.parameter.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import org.smartparam.engine.core.parameter.WritableParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 
