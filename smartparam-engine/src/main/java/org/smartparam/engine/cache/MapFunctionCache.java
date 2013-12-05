@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.cache;
+package org.smartparam.engine.cache;
 
-import org.smartparam.engine.core.prepared.PreparedParameter;
+import org.smartparam.engine.core.function.FunctionCache;
+import org.smartparam.engine.cache.MapCache;
+import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.function.Function;
 
 /**
- * Implementacja {@link ParamCache} oparata na wspolbieznej wersji HashMapy.
- * Funkcje zapisane w tym cache'u sie nie przedawniaja az do wywolania
- * metody {@link #invalidate(java.lang.String)}.
+ * Implementacja {@link FunctionCache} oparata na wspolbieznej wersji HashMapy.
+ * Funkcje zapisane w tym cache'u sie nie przedawniaja az do wywolania metody
+ * {@link #invalidate(java.lang.String)}.
  *
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class MapParamCache extends MapCache<PreparedParameter> implements ParamCache {
+public class MapFunctionCache extends MapCache<Function> implements FunctionCache {
 }

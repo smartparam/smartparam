@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.cache;
+package org.smartparam.engine.core.prepared;
 
 import org.smartparam.engine.core.prepared.PreparedParameter;
 
@@ -28,7 +28,7 @@ import org.smartparam.engine.core.prepared.PreparedParameter;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public interface ParamCache {
+public interface PreparedParamCache {
 
     /**
      * Wstawia parametr <tt>pp</tt> pod kluczem <tt>paramName</tt>.

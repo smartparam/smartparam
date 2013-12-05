@@ -18,8 +18,8 @@ package org.smartparam.engine.config.pico;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.ParamEngineRuntimeConfigBuilder;
-import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.cache.ParamCache;
+import org.smartparam.engine.core.function.FunctionCache;
+import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
@@ -44,7 +44,7 @@ public class PicoParamEngineRuntimeConfigBuilder implements ParamEngineRuntimeCo
     public ParamEngineRuntimeConfig buildConfig() {
         return new ParamEngineRuntimeConfig(
                 engineContainer.getComponent(FunctionCache.class),
-                engineContainer.getComponent(ParamCache.class),
+                engineContainer.getComponent(PreparedParamCache.class),
                 engineContainer.getComponent(FunctionProvider.class).registeredItems(),
                 engineContainer.getComponent(ParameterProvider.class).registeredItems(),
                 engineContainer.getComponent(InvokerRepository.class).registeredItems(),

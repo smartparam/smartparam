@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.config.pico.ComponentConfig;
-import org.smartparam.engine.core.cache.MapFunctionCache;
-import org.smartparam.engine.core.cache.MapParamCache;
+import org.smartparam.engine.cache.MapFunctionCache;
+import org.smartparam.engine.cache.MapPreparedParamCache;
 import org.smartparam.engine.core.prepared.BasicLevelPreparer;
 import org.smartparam.engine.core.prepared.BasicParamPreparer;
 import org.smartparam.engine.core.matcher.Matcher;
@@ -63,7 +63,7 @@ public class ParamEngineConfig extends ComponentConfig {
     protected void injectDefaults(List<Object> components) {
         components.add(BasicParamPreparer.class);
         components.add(BasicLevelPreparer.class);
-        components.add(MapParamCache.class);
+        components.add(MapPreparedParamCache.class);
         components.add(BasicFunctionManager.class);
         components.add(ScanningFunctionProvider.class);
         components.add(MapFunctionCache.class);

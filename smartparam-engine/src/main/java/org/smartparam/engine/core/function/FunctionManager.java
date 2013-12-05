@@ -15,14 +15,10 @@
  */
 package org.smartparam.engine.core.function;
 
-import org.smartparam.engine.core.function.Function;
-
 /**
- * Kontrakt, ktory musi spelniac kazda klasa udostepniajaca funkcje z
- * repozytorium na podstawie jej unikalnej nazwy.
  *
  * @author Przemek Hertel
- * @since 1.0.0
+ * @since 0.3.0
  */
 public interface FunctionManager {
 

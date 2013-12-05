@@ -18,8 +18,8 @@ package org.smartparam.engine.core;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.cache.ParamCache;
+import org.smartparam.engine.core.function.FunctionCache;
+import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
@@ -33,26 +33,26 @@ import org.smartparam.engine.core.type.Type;
  */
 public class ParamEngineRuntimeConfig {
 
-    private FunctionCache functionCache;
+    private final FunctionCache functionCache;
 
-    private ParamCache paramCache;
+    private final PreparedParamCache paramCache;
 
-    private Map<String, FunctionInvoker> invokers;
+    private final Map<String, FunctionInvoker> invokers;
 
-    private Map<String, Type<?>> types;
+    private final Map<String, Type<?>> types;
 
-    private Map<String, Matcher> matchers;
+    private final Map<String, Matcher> matchers;
 
-    private Map<String, FunctionRepository> functionRepositories;
+    private final Map<String, FunctionRepository> functionRepositories;
 
-    private List<ParamRepository> paramRepositories;
+    private final List<ParamRepository> paramRepositories;
 
     /**
      * Constructor for configuration object - all objects are read only and
      * collections are immutable.
      */
     public ParamEngineRuntimeConfig(FunctionCache functionCache,
-            ParamCache paramCache,
+            PreparedParamCache paramCache,
             Map<String, FunctionRepository> functionRepositories,
             List<ParamRepository> paramRepositories,
             Map<String, FunctionInvoker> invokers,
@@ -71,7 +71,7 @@ public class ParamEngineRuntimeConfig {
         return functionCache;
     }
 
-    public ParamCache getParamCache() {
+    public PreparedParamCache getParamCache() {
         return paramCache;
     }
 

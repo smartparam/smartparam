@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.cache;
+package org.smartparam.engine.core.function;
 
 import java.util.Map;
+import org.smartparam.engine.core.function.Function;
 import org.smartparam.engine.core.function.Function;
 
 /**

@@ -22,7 +22,7 @@ import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MapRepository;
-import org.smartparam.engine.core.cache.FunctionCache;
+import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.function.Function;
 import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.function.FunctionRepository;

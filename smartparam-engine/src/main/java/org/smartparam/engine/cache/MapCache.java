@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.cache;
+package org.smartparam.engine.cache;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class MapCache<T> {
 
-    private Map<String, T> cache = new ConcurrentHashMap<String, T>();
+    private final Map<String, T> cache = new ConcurrentHashMap<String, T>();
 
     public void put(String key, T object) {
         cache.put(key, object);

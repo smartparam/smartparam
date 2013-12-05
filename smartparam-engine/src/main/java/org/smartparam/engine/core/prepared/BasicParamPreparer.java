@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.SmartParamEngine;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.parameter.ParameterProvider;
@@ -41,15 +39,15 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class BasicParamPreparer implements ParamPreparer {
 
-    private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
+    private final Logger logger = LoggerFactory.getLogger(BasicParamPreparer.class);
 
     private final ParameterProvider parameterProvider;
 
     private final LevelPreparer levelPreparer;
 
-    private final ParamCache cache;
+    private final PreparedParamCache cache;
 
-    public BasicParamPreparer(ParameterProvider parameterProvider, LevelPreparer levelPreparer, ParamCache cache) {
+    public BasicParamPreparer(ParameterProvider parameterProvider, LevelPreparer levelPreparer, PreparedParamCache cache) {
         this.parameterProvider = parameterProvider;
         this.levelPreparer = levelPreparer;
         this.cache = cache;
@@ -61,9 +59,7 @@ public class BasicParamPreparer implements ParamPreparer {
 
         if (preparedParameter == null) {
             Parameter parameter = parameterProvider.load(paramName);
-
             if (parameter == null) {
-                logger.warn("parameter {} not found", paramName);
                 return null;
             }
 

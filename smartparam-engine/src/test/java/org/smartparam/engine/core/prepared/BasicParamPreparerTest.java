@@ -19,7 +19,6 @@ import org.smartparam.engine.core.prepared.LevelPreparer;
 import org.smartparam.engine.core.prepared.BasicParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.testng.annotations.BeforeMethod;
-import org.smartparam.engine.core.cache.ParamCache;
 
 import org.smartparam.engine.core.parameter.Parameter;
 import static org.mockito.Mockito.*;
@@ -37,7 +36,7 @@ import static org.smartparam.engine.core.prepared.PreparedParameterTestBuilder.p
  */
 public class BasicParamPreparerTest {
 
-    private ParamCache cache;
+    private PreparedParamCache cache;
 
     private BasicParamPreparer paramPreparer;
 
@@ -49,7 +48,7 @@ public class BasicParamPreparerTest {
     public void initialize() {
         levelPreparer = mock(LevelPreparer.class);
         paramProvider = mock(ParameterProvider.class);
-        cache = mock(ParamCache.class);
+        cache = mock(PreparedParamCache.class);
 
         paramPreparer = new BasicParamPreparer(paramProvider, levelPreparer, cache);
     }

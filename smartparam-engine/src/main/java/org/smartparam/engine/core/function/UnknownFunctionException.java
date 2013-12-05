@@ -26,7 +26,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 public class UnknownFunctionException extends SmartParamException {
 
     public UnknownFunctionException(String functionName) {
-        super("UNKNOWN_PARAMETER",
+        super("UNKNOWN_FUNCTION",
                 String.format("Could not find function %s in any registered repository. "
                         + "Check if all repositories are properly configured."
                         + "To see all functions registered, follow logs from MapRepository on INFO level.", functionName));
