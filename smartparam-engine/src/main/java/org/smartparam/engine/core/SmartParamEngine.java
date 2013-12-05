@@ -84,23 +84,20 @@ public class SmartParamEngine implements ParamEngine {
             throw new ParameterValueNotFoundException(paramName, ctx);
         }
 
-        int k = param.getInputLevelsCount();   // liczba poziomow wejsciowych (k)
-        int l = param.getLevelCount() - k;     // liczba poziomow wyjsciowych (n-k)
+        int inputLevelCount = param.getInputLevelsCount();
+        int oputputLevelCount = param.getLevelCount() - inputLevelCount;
 
-        // allocate result matrix
         MultiValue[] mv = new MultiValue[rows.length];
 
-        // iteracja po wierszach podmacierzy
-        for (int i = 0; i < rows.length; i++) {
-            PreparedEntry pe = rows[i];
+        for (int rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+            PreparedEntry pe = rows[rowIndex];
 
             PreparedLevel[] levels = param.getLevels();
-            Object[] vector = new Object[l];
+            Object[] vector = new Object[oputputLevelCount];
 
-            // iteracja po kolumnach podmacierzy (czyli po poziomach wyjsciowych)
-            for (int j = 0; j < l; ++j) {
-                String cellText = pe.getLevel(k + j + 1);
-                PreparedLevel level = levels[k + j];
+            for (int columnIndex = 0; columnIndex < oputputLevelCount; ++columnIndex) {
+                String cellText = pe.getLevel(inputLevelCount + columnIndex + 1);
+                PreparedLevel level = levels[inputLevelCount + columnIndex];
 
                 Type<?> cellType = level.getType();
                 Object cellValue;
@@ -111,10 +108,10 @@ public class SmartParamEngine implements ParamEngine {
                     cellValue = TypeDecoder.decode(cellType, cellText);
                 }
 
-                vector[j] = cellValue;
+                vector[columnIndex] = cellValue;
             }
 
-            mv[i] = new MultiValue(vector, param.getLevelNameMap());
+            mv[rowIndex] = new MultiValue(vector, param.getLevelNameMap());
         }
 
         ParamValue result = new ParamValueImpl(mv, param.getLevelNameMap());

@@ -15,13 +15,11 @@
  */
 package org.smartparam.engine.util;
 
-import org.smartparam.engine.util.Printer;
-import org.smartparam.engine.util.Formatter;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import org.testng.annotations.Test;
-import static org.testng.AssertJUnit.*; 
+import static org.testng.AssertJUnit.*;
 
 /**
  * @author Przemek Hertel
@@ -38,8 +36,8 @@ public class PrinterTest {
         String result = Printer.print(list, "Integer list");
 
         // oczekiwany wynik
-        String expectedResult =
-                Formatter.NL
+        String expectedResult
+                = Formatter.NL
                 + "Integer list (4)" + Formatter.NL
                 + "  1. 123" + Formatter.NL
                 + "  2. 234" + Formatter.NL
@@ -129,8 +127,8 @@ public class PrinterTest {
         String result = Printer.print(array, null);
 
         // oczekiwany wynik
-        String expectedResult =
-                Formatter.NL
+        String expectedResult
+                = Formatter.NL
                 + "  1. 11223344" + Formatter.NL
                 + "  2. 55667788" + Formatter.NL;
 
@@ -181,9 +179,5 @@ public class PrinterTest {
             assertEquals(expectedResult, result);
         }
     }
-
-    private class NonAbstractPrinter extends Printer {
-    }
-    Printer instance = new NonAbstractPrinter();
 
 }

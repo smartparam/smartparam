@@ -36,6 +36,8 @@ import org.smartparam.engine.util.Printer;
  */
 public class MultiValue {
 
+    private static final int INLINE_TO_STRING_LENGTH = 100;
+
     /**
      * Values held, each entry is either AbstractHolder or AbstractHolder[].
      */
@@ -305,7 +307,7 @@ public class MultiValue {
      */
     public String toStringInline() {
         Object[] rawValues = unwrap();
-        StringBuilder sb = new StringBuilder(100);
+        StringBuilder sb = new StringBuilder(INLINE_TO_STRING_LENGTH);
         sb.append('[');
 
         for (int i = 0; i < rawValues.length; ++i) {

@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.parameter.ParameterProvider;
@@ -38,8 +36,6 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  * @since 0.9.0
  */
 public class BasicParamPreparer implements ParamPreparer {
-
-    private final Logger logger = LoggerFactory.getLogger(BasicParamPreparer.class);
 
     private final ParameterProvider parameterProvider;
 

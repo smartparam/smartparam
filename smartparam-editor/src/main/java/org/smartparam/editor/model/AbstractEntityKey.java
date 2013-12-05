@@ -25,6 +25,8 @@ public abstract class AbstractEntityKey {
 
     private static final String SEPARATOR = "-";
 
+    private static final int KEY_LENGTH = 50;
+
     protected final String[] parse(String repositorySymbol, String key) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Key can't be null nor empty.");
@@ -42,7 +44,7 @@ public abstract class AbstractEntityKey {
     }
 
     protected final String format(String... keySegments) {
-        StringBuilder keyBuilder = new StringBuilder(50);
+        StringBuilder keyBuilder = new StringBuilder(KEY_LENGTH);
         for (String segment : keySegments) {
             keyBuilder.append(segment).append(SEPARATOR);
         }

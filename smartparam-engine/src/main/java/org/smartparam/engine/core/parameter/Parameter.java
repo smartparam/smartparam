@@ -19,27 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Klasa reprezentuje parametr obslugiwany przez silnik parametryczny. Parametr
- * sklada sie z 2 logicznych czesci: <ol> <li> metadane - czyli wszelkie dane
- * opisujace specyfike parametru, <li> macierz parametru - czyli zbior wzorcow
- * dopasowania wraz z wartosciami skojarzonymi z tymi wzorcami. </ol>
- *
- * W sklad <b>metadanych</b> wchodza m.in.: <ol> <li> name - unikalna nazwa
- * parametru, <li> type - typ wartosci zwracanej przez parametr <li> levels -
- * definicje poziomow parametru <li> multivalue - czy wartosc parametru jest
- * wielokomorkowa <li> inputLevels - liczba poziomow wejsciowych (jesli parametr
- * jest multivalue) <li> array - czy komorka z wartoscia parametru jest tablica
- * wartosci <li> nullable - czy parametr moze zwracac wartosci <tt>null</tt>
- * <li> cacheable - czy macierz parametru jest wczytywana do pamieci <li>
- * archive - czy parametr jest logicznie usuniety (niedostepny) </ol>
- *
- * <b>Macierz parametru</b> to zbior wierszy {@link ParameterEntry}, ktore
- * zawieraja m.in.: <ol> <li> kolumny (poziomy) wejsciowe, ktore definiuja
- * wzorzec dopasowania <li> kolumny (poziomy) wyjsciowe, ktore definiuja wartosc
- * parametru (<tt>multivalue</tt>) <li> kolumne <tt>value</tt>, ktora zawiera
- * wartosc parametru (pojedyncza lub tablicowa jesli <tt>array</tt>) <li>
- * kolumne <tt>function</tt>, ktora wyznacza wartosc parametru, jesli nie jest
- * okreslona <tt>value</tt> </ol>
+ * Interface for parameter that is loaded from storage and evaluated inside engine.
+ * Two logical parts are metadata (attributes) and matrix (entries).
  *
  * @see ParameterEntry
  * @see Level
@@ -93,5 +74,9 @@ public interface Parameter {
      */
     boolean isNullable();
 
-    char getArraySeparator();   // still in use
+    /**
+     * Separator used when storing array as level value, this is set globally
+     * per parameter.
+     */
+    char getArraySeparator();
 }

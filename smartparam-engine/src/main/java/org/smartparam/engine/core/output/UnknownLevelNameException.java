@@ -27,7 +27,7 @@ public class UnknownLevelNameException extends SmartParamException {
     UnknownLevelNameException(String levelName) {
         super("UNKNOWN_LEVEL_NAME",
                 String.format("Trying to access level with name %s, but there is no such level defined. "
-                        + "Please check input level names in parameter definition."));
+                        + "Please check input level names in parameter definition.", levelName));
     }
 
 }
