@@ -19,10 +19,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.smartparam.engine.config.ParamEngineConfig;
-import org.smartparam.engine.core.engine.ParamEngine;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.ParamEngine;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import static org.smartparam.engine.config.ParamEngineConfigBuilder.paramEngineConfig;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.config.ParamEngineRuntimeConfigAssert.assertThat;
 
 /**
  *

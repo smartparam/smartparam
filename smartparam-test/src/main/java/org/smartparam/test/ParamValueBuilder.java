@@ -16,10 +16,10 @@
 package org.smartparam.test;
 
 import java.util.*;
-import org.smartparam.engine.core.engine.MultiValue;
-import org.smartparam.engine.core.engine.ParamValue;
-import org.smartparam.engine.core.engine.ParamValueImpl;
 
+import org.smartparam.engine.core.output.MultiValue;
+import org.smartparam.engine.core.output.ParamValue;
+import org.smartparam.engine.core.output.ParamValueImpl;
 import static org.smartparam.test.MultiValueBuilder.multiValue;
 
 /**

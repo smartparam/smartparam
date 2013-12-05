@@ -16,14 +16,14 @@
 package org.smartparam.spring;
 
 import java.util.List;
-import org.smartparam.engine.bean.PackageList;
+import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.config.initialization.MethodScannerInitializer;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.config.initialization.TypeScannerInitializer;
 import org.smartparam.engine.config.ParamEngineFactory;
-import org.smartparam.engine.core.engine.ParamEngine;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.ParamEngine;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.spring.function.SpringFunctionInvoker;
 import org.smartparam.spring.function.SpringFunctionRepository;
 import org.springframework.beans.factory.FactoryBean;

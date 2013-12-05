@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.core.engine.MultiValue;
+import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.types.date.DateHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
