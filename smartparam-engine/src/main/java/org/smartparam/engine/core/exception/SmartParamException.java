@@ -48,18 +48,8 @@ public class SmartParamException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public SmartParamException(SmartParamErrorCode errorCode, String message) {
-        super(message);
-        this.errorCode = errorCode.name();
-    }
-
-    public SmartParamException(SmartParamErrorCode errorCode, Throwable t, String message) {
-        super(message, t);
-        this.errorCode = errorCode.name();
-    }
-
-    public SmartParamErrorCode getErrorCode() {
-        return SmartParamErrorCode.valueOf(errorCode);
+    public String getErrorCode() {
+        return errorCode;
     }
 
     @Override

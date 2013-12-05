@@ -23,8 +23,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
@@ -59,7 +57,7 @@ public class ReflectionsScanner {
             AnnotationDetector detector = new AnnotationDetector(reporter);
             detector.detect(packagesToScan);
         } catch (IOException exception) {
-            throw new SmartParamException(SmartParamErrorCode.ANNOTATION_INITIALIZER_ERROR, exception, "failed to scan for annotation");
+            throw new AnnotationScannerException(exception, packagesToScan);
         }
     }
 

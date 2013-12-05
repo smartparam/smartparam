@@ -21,8 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
@@ -37,7 +35,7 @@ public final class ReflectionsHelper {
         try {
             return classLoader.loadClass(className);
         } catch (ClassNotFoundException exception) {
-            throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception, String.format("Unable to load class %s using %s classloader.", className, classLoader));
+            throw new InnerReflectiveOperationException(exception, String.format("Unable to load class %s using %s classloader.", className, classLoader));
         }
     }
 
@@ -61,7 +59,7 @@ public final class ReflectionsHelper {
         return annotatedFields;
     }
 
-    public static void runSetter(Method setter, Object setterHostObject, Object argument) {
+    public static void invokerSetter(Method setter, Object setterHostObject, Object argument) {
         try {
             setter.invoke(setterHostObject, argument);
         } catch (IllegalAccessException illegalAccessException) {
@@ -74,7 +72,7 @@ public final class ReflectionsHelper {
     }
 
     private static void throwExceptionForSetterInvocation(Exception exception, Method setter, Object setterHostObject, Object argument) {
-        throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception,
+        throw new InnerReflectiveOperationException(exception,
                 String.format("Could not invoke setter %s on object %s using %s as argument", setter.getName(), setterHostObject.getClass().getSimpleName(), argument.getClass().getSimpleName()));
     }
 }

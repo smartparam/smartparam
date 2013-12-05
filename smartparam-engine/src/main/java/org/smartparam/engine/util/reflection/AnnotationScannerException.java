@@ -13,26 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.invoker;
+package org.smartparam.engine.util.reflection;
 
-import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.util.Printer;
 
 /**
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+@SuppressWarnings("serial")
+public class AnnotationScannerException extends SmartParamException {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
-        try {
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
-            logger.error("", exception);
-            throw new JavaFunctionInvocationException(exception, instance, method);
-        }
+    AnnotationScannerException(Throwable cause, String[] packagesToScan) {
+        super("ANNOTATION_SCANNER_ERROR", cause,
+                String.format("Annotation scan in packages %s failed.", Printer.print(packagesToScan, "")));
     }
+
 }

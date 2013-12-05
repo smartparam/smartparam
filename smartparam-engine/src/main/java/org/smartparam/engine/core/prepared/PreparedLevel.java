@@ -32,15 +32,15 @@ import org.smartparam.engine.core.function.Function;
  */
 public class PreparedLevel {
 
-    private String name;
+    private final String name;
 
-    private Type<?> type;
+    private final Type<?> type;
 
-    private boolean array;
+    private final boolean array;
 
-    private Matcher matcher;
+    private final Matcher matcher;
 
-    private Function levelCreator;
+    private final Function levelCreator;
 
     /**
      * Creates immutable instance.

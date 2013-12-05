@@ -25,7 +25,7 @@ import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparamtestscan.annotation.DummyAnnotationWithoutInstances;
 import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.PackageListTestBuilder.*;
+import static org.smartparam.engine.annotated.PackageListTestBuilder.*;
 import static com.googlecode.catchexception.CatchException.*;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

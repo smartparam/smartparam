@@ -13,26 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.invoker;
-
-import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.smartparam.engine.core.context;
 
 /**
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+@SuppressWarnings("serial")
+public class DuplicateContextItemException extends ContextInitializationException {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
-        try {
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
-            logger.error("", exception);
-            throw new JavaFunctionInvocationException(exception, instance, method);
-        }
+    DuplicateContextItemException(String key) {
+        super("DUPLICATE_CONTEXT_ITEM", String.format("Trying to set duplicate key on userContext for key {} ." + key));
     }
+
 }

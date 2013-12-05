@@ -13,26 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.invoker;
+package org.smartparam.engine.annotated;
 
-import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import static org.fest.assertions.api.Assertions.*;
 
 /**
  *
  * @author Adam Dubiel
+ * @since 0.1.0
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+public class PackageListTest {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private PackageList packageList = null;
 
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
-        try {
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
-            logger.error("", exception);
-            throw new JavaFunctionInvocationException(exception, instance, method);
-        }
+    @BeforeMethod
+    public void setUp() {
+        packageList = new PackageList();
+    }
+
+    @Test
+    public void shouldReturnEmptyListWhenNoPackagesAdded() {
+        // given
+
+        // when
+
+        // then
+        assertThat(packageList.getPackages()).isNotNull();
     }
 }

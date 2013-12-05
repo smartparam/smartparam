@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.exception;
+package org.smartparam.engine.util.reflection;
+
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
- * @author Przemek Hertel
+ *
+ * @author Adam Dubiel
  */
-public class SmartParamUsageException extends SmartParamException {
-    
-    private static final long serialVersionUID = 1L;
-    
-	public SmartParamUsageException(SmartParamErrorCode errorCode, String message) {
-		super(errorCode, message);
-	}
+@SuppressWarnings("serial")
+public class InnerReflectiveOperationException extends SmartParamException {
 
-	public SmartParamUsageException(SmartParamErrorCode errorCode, Throwable t, String message) {
-		super(errorCode, t, message);
-	}
+    InnerReflectiveOperationException(Throwable cause, String message) {
+        super("REFLECTIVE_OPERATION_EXCEPTION", cause, message);
+    }
 
 }

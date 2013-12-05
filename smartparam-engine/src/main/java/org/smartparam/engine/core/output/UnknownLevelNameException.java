@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.exception;
+package org.smartparam.engine.core.output;
+
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
- * @author Przemek Hertel
+ *
+ * @author Adam Dubiel
  */
-public class SmartParamDefinitionException extends SmartParamException {
+@SuppressWarnings("serial")
+public class UnknownLevelNameException extends SmartParamException {
 
-    private static final long serialVersionUID = 1L;
-
-    public SmartParamDefinitionException(SmartParamErrorCode errorCode, Throwable cause, String message) {
-        super(errorCode, cause, message);
+    UnknownLevelNameException(String levelName) {
+        super("UNKNOWN_LEVEL_NAME",
+                String.format("Trying to access level with name %s, but there is no such level defined. "
+                        + "Please check input level names in parameter definition."));
     }
 
-    public SmartParamDefinitionException(SmartParamErrorCode errorCode, String message) {
-        super(errorCode, message);
-    }
 }

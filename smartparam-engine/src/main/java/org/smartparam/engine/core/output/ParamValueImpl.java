@@ -16,9 +16,6 @@
 package org.smartparam.engine.core.output;
 
 import java.math.BigDecimal;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.util.Formatter;
 import org.smartparam.engine.util.Printer;
@@ -33,9 +30,9 @@ import java.util.Map;
  */
 public class ParamValueImpl implements ParamValue {
 
-    private MultiValue[] rows;
+    private final MultiValue[] rows;
 
-    private Map<String, Integer> indexMap;
+    private final Map<String, Integer> indexMap;
 
     public ParamValueImpl(MultiValue[] rows, Map<String, Integer> indexMap) {
         this.rows = rows;
@@ -47,10 +44,7 @@ public class ParamValueImpl implements ParamValue {
         if (rowNo >= 0 && rowNo < size()) {
             return rows[rowNo];
         }
-
-        throw new SmartParamUsageException(
-                SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
-                String.format("Trying to get non-existing row: %d. Available rows: %d..%d.", rowNo, 0, size() - 1));
+        throw new InvalidRowIndexException(rowNo, rows);
     }
 
     @Override
@@ -161,7 +155,7 @@ public class ParamValueImpl implements ParamValue {
             }
         }
 
-        throw new SmartParamException("Unknown level name: " + name);
+        throw new UnknownLevelNameException(name);
     }
 
     @Override

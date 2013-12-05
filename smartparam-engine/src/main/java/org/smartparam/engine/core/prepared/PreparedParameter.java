@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.prepared;
 
+import java.util.Collections;
+import java.util.HashMap;
 import org.smartparam.engine.core.index.LevelIndex;
 
 import java.util.Map;
@@ -37,12 +39,12 @@ public class PreparedParameter {
     /**
      * Unique name of parameter.
      */
-    private String name;
+    private final String name;
 
     /**
      * Prepared (compiled) levels.
      */
-    private PreparedLevel[] levels;
+    private final PreparedLevel[] levels;
 
     /**
      * Search index built for this parameter.
@@ -53,18 +55,18 @@ public class PreparedParameter {
      * Number of input (criteria) levels.
      * Zero means this is no-criteria parameter.
      */
-    private int inputLevelsCount;
+    private final int inputLevelsCount;
 
-    private boolean nullable;
+    private final boolean nullable;
 
-    private boolean cacheable;
+    private final boolean cacheable;
 
     /**
-     * Prepared mapping: level name to (1-based) level position.
+     * Prepared mapping: level name to level index.
      */
-    private Map<String, Integer> levelNameMap;
+    private final Map<String, Integer> levelNameMap = new HashMap<String, Integer>();
 
-    private char arraySeparator;
+    private final char arraySeparator;
 
     public PreparedParameter(Parameter parameter, PreparedLevel[] levels) {
         this.name = parameter.getName();
@@ -128,11 +130,11 @@ public class PreparedParameter {
     }
 
     public Map<String, Integer> getLevelNameMap() {
-        return levelNameMap;
+        return Collections.unmodifiableMap(levelNameMap);
     }
 
     public void setLevelNameMap(Map<String, Integer> levelNameMap) {
-        this.levelNameMap = levelNameMap;
+        this.levelNameMap.putAll(levelNameMap);
     }
 
     public PreparedLevel getOutputLevel(int k) {

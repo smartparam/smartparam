@@ -13,34 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.bean;
+package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.annotated.PackageList;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import static org.fest.assertions.api.Assertions.*;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
+ * Trying to use level value of unknown {@link org.smartparam.engine.core.type.Type}.
  *
  * @author Adam Dubiel
- * @since 0.1.0
  */
-public class PackageListTest {
+@SuppressWarnings("serial")
+public class UnknownTypeException extends SmartParamException {
 
-    private PackageList packageList = null;
-
-    @BeforeMethod
-    public void setUp() {
-        packageList = new PackageList();
+    public UnknownTypeException(String levelName, String typeCode) {
+        super("UNKNOWN_TYPE",
+                String.format("Level %s has unknown type %s. "
+                        + "To see all registered types, look for MapRepository logs on INFO level during startup.",
+                        levelName, typeCode));
     }
 
-    @Test
-    public void shouldReturnEmptyListWhenNoPackagesAdded() {
-        // given
-
-        // when
-
-        // then
-        assertThat(packageList.getPackages()).isNotNull();
-    }
 }

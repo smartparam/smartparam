@@ -27,7 +27,7 @@ import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.test.scan.plugins.DummyPluginAnnotation;
 import org.smartparam.engine.test.scan.plugins.DummyPluginAnnotationWithoutValue;
 import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.PackageListTestBuilder.*;
+import static org.smartparam.engine.annotated.PackageListTestBuilder.*;
 import static com.googlecode.catchexception.CatchException.*;
 
 /**

@@ -19,18 +19,17 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
-import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.util.Printer;
 
 /**
  * Represents single row of matrix returned from parameter querying. Immutable.
- * Each method returning value can throw {@link SmartParamException} with:
+ * Each method returning value can throw:
  *
- * * {@link SmartParamErrorCode#INDEX_OUT_OF_BOUNDS} when trying to access wrong index
- * * {@link SmartParamErrorCode#GETTING_WRONG_TYPE} when trying to get wrong type from position
+ * * {@link InvalidRowIndexException}
+ * * {@link InvalidValueIndexException}
+ * * {@link GettingWrongTypeException}
+ * * {@link UnknownLevelNameException}
  *
  * @author Przemek Hertel
  * @since 0.9.0
@@ -138,7 +137,7 @@ public class MultiValue {
             }
         }
 
-        throw new SmartParamException("Unknown level name: " + name);
+        throw new UnknownLevelNameException(name);
     }
 
     /**
@@ -263,9 +262,7 @@ public class MultiValue {
         if (position >= 0 && position < values.length) {
             return values[position];
         }
-        throw new SmartParamUsageException(
-                SmartParamErrorCode.INDEX_OUT_OF_BOUNDS,
-                String.format("Getting element from non-existing position: %d. Valid positions: %d..%d", position, 0, values.length - 1));
+        throw new InvalidValueIndexException(position, values);
     }
 
     /**

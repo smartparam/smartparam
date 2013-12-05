@@ -36,7 +36,7 @@ public class PackageList implements Iterable<String> {
     /**
      * Internal representation of package list.
      */
-    private List<String> packages = new LinkedList<String>();
+    private final List<String> packages = new LinkedList<String>();
 
     public PackageList() {
     }

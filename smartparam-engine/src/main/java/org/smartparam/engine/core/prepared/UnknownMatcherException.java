@@ -13,26 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.invoker;
+package org.smartparam.engine.core.prepared;
 
-import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
+ * Trying to use unknown level {@link org.smartparam.engine.core.index.Matcher}.
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+@SuppressWarnings("serial")
+public class UnknownMatcherException extends SmartParamException {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
-        try {
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
-            logger.error("", exception);
-            throw new JavaFunctionInvocationException(exception, instance, method);
-        }
+    public UnknownMatcherException(String levelName, String matcherCode) {
+        super("UNKNOWN_TYPE",
+                String.format("Level %s has unknown matcher %s. "
+                        + "To see all registered matchers, look for MapRepository logs on INFO level during startup.",
+                        levelName, matcherCode));
     }
+
 }

@@ -614,7 +614,7 @@ public class ParamEngineIntegrationTest {
         when(functionRepository.loadFunction("function")).thenReturn(function);
 
         // when
-        engine.call("parameter", new LevelValues("A", "B"), "argument");
+        engine.callEvaluatedFunction("parameter", new LevelValues("A", "B"), "argument");
 
         // then
         verify(functionInvoker, times(1)).invoke(function, "argument");
@@ -633,7 +633,7 @@ public class ParamEngineIntegrationTest {
         when(paramRepository.load("parameter")).thenReturn(parameter);
 
         // when
-        catchException(engine).call("parameter", new LevelValues("A"), "argument");
+        catchException(engine).callEvaluatedFunction("parameter", new LevelValues("A"), "argument");
 
         // then
         assertThat((SmartParamException) caughtException()).hasErrorCode(SmartParamErrorCode.ILLEGAL_API_USAGE);

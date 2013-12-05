@@ -13,21 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.exception;
+package org.smartparam.engine.core;
+
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
+ * When using dynamic context without providing levelCreator function name.
  *
  * @author Adam Dubiel
  */
-public class SmartParamConfigException extends SmartParamException {
+@SuppressWarnings("serial")
+public class UndefinedLevelCreatorException extends SmartParamException {
 
-    private static final long serialVersionUID = 1L;
-
-    public SmartParamConfigException(String message) {
-        super(message);
+    UndefinedLevelCreatorException(int levelIndex) {
+        super("UNDEFINED_LEVEL_CREATOR",
+                String.format("Level[%d] has no level creator function registered. "
+                        + "When using dynamic context, level creators are mandatory for all input levels.", levelIndex));
     }
 
-    public SmartParamConfigException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

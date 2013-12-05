@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.exception.SmartParamDefinitionException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
@@ -31,11 +29,11 @@ import org.smartparam.engine.core.function.Function;
  */
 public class BasicLevelPreparer implements LevelPreparer {
 
-    private MatcherRepository matcherRepository;
+    private final MatcherRepository matcherRepository;
 
-    private TypeRepository typeRepository;
+    private final TypeRepository typeRepository;
 
-    private FunctionProvider functionProvider;
+    private final FunctionProvider functionProvider;
 
     public BasicLevelPreparer(MatcherRepository matcherRepository, TypeRepository typeRepository, FunctionProvider functionProvider) {
         this.matcherRepository = matcherRepository;
@@ -58,10 +56,7 @@ public class BasicLevelPreparer implements LevelPreparer {
             type = typeRepository.getType(typeCode);
 
             if (type == null) {
-                throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_PARAM_TYPE,
-                        String.format("Level %s has unknown type %s. "
-                        + "To see all registered types, look for MapRepository logs on INFO level during startup.",
-                        levelName, typeCode));
+                throw new UnknownTypeException(levelName, typeCode);
             }
         }
         return type;
@@ -73,10 +68,7 @@ public class BasicLevelPreparer implements LevelPreparer {
             matcher = matcherRepository.getMatcher(matcherCode);
 
             if (matcher == null) {
-                throw new SmartParamDefinitionException(SmartParamErrorCode.UNKNOWN_MATCHER,
-                        String.format("Level %s has unknown matcher %s. "
-                        + "To see all registered matchers, look for MapRepository logs on INFO level during startup.",
-                        levelName, matcherCode));
+                throw new UnknownMatcherException(levelName, matcherCode);
             }
         }
         return matcher;

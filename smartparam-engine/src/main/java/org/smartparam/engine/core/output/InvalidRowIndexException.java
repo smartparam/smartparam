@@ -13,26 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.invoker;
+package org.smartparam.engine.core.output;
 
-import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+@SuppressWarnings("serial")
+public class InvalidRowIndexException extends SmartParamException {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
-        try {
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
-            logger.error("", exception);
-            throw new JavaFunctionInvocationException(exception, instance, method);
-        }
+    InvalidRowIndexException(int rowIndex, Object[] values) {
+        super("INVALID_ROW_INDEX",
+                String.format("Trying to get non-existing row: %d. Available rows: %d..%d", rowIndex, 0, values.length - 1));
     }
+
 }

@@ -20,7 +20,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
@@ -99,12 +98,12 @@ public final class ReflectionsConstructorUtil {
     }
 
     private static void throwExceptionForObjectConstruction(Exception exception, Class<?> objectClass, Object[] construtorArgs) {
-        throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception,
+        throw new InnerReflectiveOperationException(exception,
                 String.format("no String[%d] constructor found for class %s", construtorArgs.length, objectClass.getCanonicalName()));
     }
 
     private static void throwExceptionForObjectConstruction(Exception exception, Constructor<?> constructor, Object[] construtorArgs) {
-        throw new SmartParamException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR, exception,
+        throw new InnerReflectiveOperationException(exception,
                 String.format("no %d-parameter constructor found for class %s", construtorArgs.length, constructor.getDeclaringClass().getCanonicalName()));
     }
 }

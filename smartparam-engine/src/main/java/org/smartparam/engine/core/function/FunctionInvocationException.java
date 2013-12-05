@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.invoker;
+package org.smartparam.engine.core.function;
 
-import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+@SuppressWarnings("serial")
+public class FunctionInvocationException extends SmartParamException {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Function function;
 
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
-        try {
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
-            logger.error("", exception);
-            throw new JavaFunctionInvocationException(exception, instance, method);
-        }
+    FunctionInvocationException(Throwable cause, Function function) {
+        super("FUNCTION_INVOKE_ERROR", cause,
+                String.format("Failed to invoke function %s of type %s.", function.getName(), function.getType()));
+        this.function = function;
+    }
+
+    public Function function() {
+        return function;
     }
 }

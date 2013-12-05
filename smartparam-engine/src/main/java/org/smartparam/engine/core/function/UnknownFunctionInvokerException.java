@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.invoker;
+package org.smartparam.engine.core.function;
 
-import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
+ * When using dynamic context without providing levelCreator function name.
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+@SuppressWarnings("serial")
+public class UnknownFunctionInvokerException extends SmartParamException {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
-        try {
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
-            logger.error("", exception);
-            throw new JavaFunctionInvocationException(exception, instance, method);
-        }
+    UnknownFunctionInvokerException(Function function) {
+        super("UNKNOWN_FUNCTION_INVOKER",
+                String.format("Could not find function invoker for function %s of type %s. "
+                        + "To see all registered function invokers, look for MapRepository logs on INFO level during startup.", function.getName(), function.getType()));
     }
+
 }

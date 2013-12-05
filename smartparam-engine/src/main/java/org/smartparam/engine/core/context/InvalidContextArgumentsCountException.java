@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.exception;
+package org.smartparam.engine.core.context;
 
 /**
  *
  * @author Adam Dubiel
- * @since 0.1.0
  */
-public class SmartParamInitializationException extends SmartParamException {
+@SuppressWarnings("serial")
+public class InvalidContextArgumentsCountException extends ContextInitializationException {
 
-    private static final long serialVersionUID = 1L;
-
-    public SmartParamInitializationException(SmartParamErrorCode errorCode, Throwable t, String message) {
-        super(errorCode, t, message);
+    InvalidContextArgumentsCountException(int expectedPosition, int argumentsCount) {
+        super("INVALID_CONTEXT_ARGUMENT_COUNT",
+                String.format("Expected element at position %d in argument array, but passed only %d arguments to DefaultContext constructor. "
+                        + "Maybe you wanted to put value under key and forgot to pass in a value after last string argument?", expectedPosition, argumentsCount));
     }
+
 }

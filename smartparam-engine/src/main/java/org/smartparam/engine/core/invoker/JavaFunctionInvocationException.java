@@ -16,23 +16,19 @@
 package org.smartparam.engine.core.invoker;
 
 import java.lang.reflect.Method;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+@SuppressWarnings("serial")
+public class JavaFunctionInvocationException extends SmartParamException {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
-        try {
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
-            logger.error("", exception);
-            throw new JavaFunctionInvocationException(exception, instance, method);
-        }
+    JavaFunctionInvocationException(Throwable cause, Object instance, Method method) {
+        super("FUNCTION_INVOKE_ERROR", cause,
+                String.format("Error invoking method %s on object %s.",
+                        method.getName(), instance != null ? instance.getClass().getSimpleName() : "<null>"));
     }
+
 }

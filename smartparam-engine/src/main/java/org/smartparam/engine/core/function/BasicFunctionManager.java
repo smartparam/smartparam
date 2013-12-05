@@ -15,11 +15,8 @@
  */
 package org.smartparam.engine.core.function;
 
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.exception.SmartParamException;
 import org.smartparam.engine.core.invoker.FunctionInvoker;
 import org.smartparam.engine.core.invoker.InvokerRepository;
-import org.smartparam.engine.core.function.Function;
 
 /**
  *
@@ -28,9 +25,9 @@ import org.smartparam.engine.core.function.Function;
  */
 public class BasicFunctionManager implements FunctionManager {
 
-    private InvokerRepository invokerRepository;
+    private final InvokerRepository invokerRepository;
 
-    private FunctionProvider functionProvider;
+    private final FunctionProvider functionProvider;
 
     public BasicFunctionManager(InvokerRepository invokerRepository, FunctionProvider functionProvider) {
         this.invokerRepository = invokerRepository;
@@ -48,16 +45,13 @@ public class BasicFunctionManager implements FunctionManager {
         FunctionInvoker invoker = invokerRepository.getInvoker(function);
 
         if (invoker == null) {
-            throw new SmartParamException(SmartParamErrorCode.UNDEFINED_FUNCTION_INVOKER,
-                    String.format("Could not find function invoker for function %s of type %s. "
-                    + "To see all registered function invokers, look for MapRepository logs on INFO level during startup.",
-                    function.getName(), function.getType()));
+            throw new UnknownFunctionInvokerException(function);
         }
 
         try {
             return invoker.invoke(function, args);
         } catch (RuntimeException e) {
-            throw new SmartParamException(SmartParamErrorCode.FUNCTION_INVOKE_ERROR, e, "Failed to invoke function: " + function);
+            throw new FunctionInvocationException(e, function);
         }
     }
 }

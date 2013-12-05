@@ -31,9 +31,6 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.ParamEngineRuntimeConfig;
 import org.smartparam.engine.config.ParamEngineRuntimeConfigBuilder;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
@@ -49,13 +46,13 @@ import org.smartparam.engine.core.type.TypeDecoder;
  */
 public class SmartParamEngine implements ParamEngine {
 
-    private Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
+    private final Logger logger = LoggerFactory.getLogger(SmartParamEngine.class);
 
-    private ParamEngineRuntimeConfigBuilder configBuilder;
+    private final ParamEngineRuntimeConfigBuilder configBuilder;
 
-    private ParamPreparer paramPreparer;
+    private final ParamPreparer paramPreparer;
 
-    private FunctionManager functionManager;
+    private final FunctionManager functionManager;
 
     public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager, ParamEngineRuntimeConfigBuilder configBuilder) {
         this.paramPreparer = paramPreparer;
@@ -86,7 +83,7 @@ public class SmartParamEngine implements ParamEngine {
                 return null;
             }
 
-            throw raiseValueNotFoundException(paramName, ctx);
+            throw new ParameterValueNotFoundException(paramName, ctx);
         }
 
         int k = param.getInputLevelsCount();   // liczba poziomow wejsciowych (k)
@@ -154,12 +151,11 @@ public class SmartParamEngine implements ParamEngine {
         return names;
     }
 
-    public Object call(String paramName, ParamContext ctx, Object... args) {
+    public Object callEvaluatedFunction(String paramName, ParamContext ctx, Object... args) {
         AbstractHolder holder = get(paramName, ctx).get();
 
         if (!(holder instanceof StringHolder)) {
-            throw new SmartParamException(SmartParamErrorCode.ILLEGAL_API_USAGE,
-                    "Can't call function if returned value is not of \"string\" type! Got " + holder.getClass().getSimpleName() + " instead of StringHolder.");
+            throw new InvalidFunctionToCallException(paramName, holder);
         }
 
         String functionName = holder.getString();
@@ -192,21 +188,18 @@ public class SmartParamEngine implements ParamEngine {
         PreparedLevel[] levels = param.getLevels();
         Object[] values = new Object[param.getInputLevelsCount()];
 
-        for (int i = 0; i < values.length; ++i) {
-            PreparedLevel level = levels[i];
+        for (int levelIndex = 0; levelIndex < values.length; ++levelIndex) {
+            PreparedLevel level = levels[levelIndex];
             Function levelCreator = level.getLevelCreator();
 
             if (levelCreator == null) {
-                throw new SmartParamException(
-                        SmartParamErrorCode.UNDEFINED_LEVEL_CREATOR,
-                        String.format("Level[%d] has no level creator function registered. "
-                        + "When using dynamic context, level creators are mandatory for all input levels.", i + 1));
+                throw new UndefinedLevelCreatorException(levelIndex);
             }
 
             Object result = functionManager.invokeFunction(levelCreator, ctx);
-            logger.trace("L{}: evaluated: {}", i + 1, result);
+            logger.trace("L{}: evaluated: {}", levelIndex, result);
 
-            values[i] = result;
+            values[levelIndex] = result;
         }
 
         if (logger.isDebugEnabled()) {
@@ -231,11 +224,8 @@ public class SmartParamEngine implements ParamEngine {
     }
 
     private void validateLevelValues(Object[] levelValues, int parameterLevelCount) {
-
         if (levelValues.length != parameterLevelCount) {
-            throw new SmartParamUsageException(SmartParamErrorCode.ILLEGAL_LEVEL_VALUES,
-                    String.format("Level values array length differs from parameter input levels count (%d != %d). Provided values: %s.",
-                    levelValues.length, parameterLevelCount, Arrays.toString(levelValues)));
+            throw new InvalidLevelValuesQuery(levelValues, parameterLevelCount);
         }
     }
 
@@ -259,12 +249,5 @@ public class SmartParamEngine implements ParamEngine {
             throw new UnknownParameterException(paramName);
         }
         return param;
-    }
-
-    private SmartParamException raiseValueNotFoundException(String paramName, ParamContext context) {
-        return new SmartParamException(
-                SmartParamErrorCode.PARAM_VALUE_NOT_FOUND,
-                String.format("No value found for parameter [%s] using values from context %s.\n"
-                + "If parameter should return null values instead of throwing this exception, set nullable flag to true.", paramName, context));
     }
 }

@@ -17,8 +17,6 @@ package org.smartparam.engine.core.type;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * Concrete representation of value of {@link Type}.

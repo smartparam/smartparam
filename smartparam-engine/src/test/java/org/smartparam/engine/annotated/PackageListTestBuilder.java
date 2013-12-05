@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.test.builder;
+package org.smartparam.engine.annotated;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.smartparam.engine.annotated.PackageList;
 
 /**
  *
@@ -27,7 +26,7 @@ public class PackageListTestBuilder {
 
     private String defaultPackage;
 
-    private List<String> packages = new ArrayList<String>();
+    private final List<String> packages = new ArrayList<String>();
 
     private PackageListTestBuilder() {
     }

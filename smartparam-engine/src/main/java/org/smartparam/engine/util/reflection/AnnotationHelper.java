@@ -16,9 +16,8 @@
 package org.smartparam.engine.util.reflection;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.exception.SmartParamInitializationException;
 
 /**
  *
@@ -31,7 +30,7 @@ public final class AnnotationHelper {
 
     /**
      * Extract value from given annotation method, if anything goes wrong
-     * throws {@link SmartParamInitializationException} with real reason as
+     * throws {@link InnerReflectiveOperationException} with real reason as
      * cause.
      *
      * @param <T>        type of returned value
@@ -45,9 +44,21 @@ public final class AnnotationHelper {
         try {
             Method defaultValueMethod = annotation.annotationType().getMethod(methodName);
             return (T) defaultValueMethod.invoke(annotation);
-        } catch (Exception exception) {
-            throw new SmartParamInitializationException(SmartParamErrorCode.REFLECTIVE_OPERATION_ERROR,
-                    exception, String.format("no %s method found on annotation %s", methodName, annotation.annotationType().getCanonicalName()));
+        } catch (IllegalAccessException illegalAccessException) {
+            throw reflectiveException(illegalAccessException, methodName, annotation);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw reflectiveException(illegalArgumentException, methodName, annotation);
+        } catch (NoSuchMethodException noSuchMethodException) {
+            throw reflectiveException(noSuchMethodException, methodName, annotation);
+        } catch (SecurityException securityException) {
+            throw reflectiveException(securityException, methodName, annotation);
+        } catch (InvocationTargetException invocationTargetException) {
+            throw reflectiveException(invocationTargetException, methodName, annotation);
         }
+    }
+
+    private static InnerReflectiveOperationException reflectiveException(Exception exception, String methodName, Annotation annotation) {
+        return new InnerReflectiveOperationException(exception,
+                String.format("No %s method found on annotation %s.", methodName, annotation.annotationType().getCanonicalName()));
     }
 }
