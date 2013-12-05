@@ -29,8 +29,8 @@ import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
 
 import static org.smartparam.engine.test.Iterables.onlyElement;
-import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
+import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
 
 /**
  *

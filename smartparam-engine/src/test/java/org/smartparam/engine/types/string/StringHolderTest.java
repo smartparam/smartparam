@@ -18,8 +18,6 @@ package org.smartparam.engine.types.string;
 import java.util.Arrays;
 import org.testng.annotations.Test;
 import static org.testng.AssertJUnit.*;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * Test klasy przechowujacej wartosci dla typu StringType.
@@ -64,28 +62,17 @@ public class StringHolderTest {
         assertNull(h2.getString());
     }
 
-    @Test()
-    public void testIntValue() {
-
-        // sprawdzenie wynikow testu - oczekiwany wyjatek typu: GETTING_WRONG_TYPE
-        try {
-            h1.intValue();
-        } catch (SmartParamUsageException e) {
-            assertEquals(SmartParamErrorCode.GETTING_WRONG_TYPE, e.getErrorCode());
-        }
-    }
-
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testLongValue() {
         h1.longValue();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetLong() {
         h1.getLong();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetInteger() {
         h1.getInteger();
     }

@@ -18,7 +18,7 @@ package org.smartparam.engine.util.reflection;
 import java.lang.reflect.Method;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
 
 /**
  *

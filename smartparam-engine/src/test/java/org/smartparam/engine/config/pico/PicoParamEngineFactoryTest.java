@@ -26,7 +26,7 @@ import org.smartparam.engine.core.type.Type;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
 import static org.smartparam.engine.config.ParamEngineConfigBuilder.paramEngineConfig;
 
 /**

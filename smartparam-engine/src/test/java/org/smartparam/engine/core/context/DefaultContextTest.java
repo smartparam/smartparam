@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
 import static org.testng.AssertJUnit.*;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
 import org.smartparam.engine.util.reflection.ReflectionSetterInvoker;
 
 /**

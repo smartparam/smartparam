@@ -16,13 +16,13 @@
 package org.smartparam.serializer.test.assertions;
 
 import java.io.Reader;
-import org.smartparam.engine.test.assertions.Assertions;
+import org.smartparam.engine.test.ParamEngineAssertions;
 
 /**
  *
  * @author Adam Dubiel
  */
-public final class SerializerAssertions extends Assertions {
+public final class SerializerAssertions extends ParamEngineAssertions {
 
     private SerializerAssertions() {
     }

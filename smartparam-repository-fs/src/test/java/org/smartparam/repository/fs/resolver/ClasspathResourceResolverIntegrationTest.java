@@ -25,7 +25,7 @@ import org.smartparam.serializer.ParamSerializerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
 import static com.googlecode.catchexception.CatchException.*;
 
 /**

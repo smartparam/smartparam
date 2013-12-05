@@ -22,8 +22,8 @@ import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.repository.jdbc.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
+import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
 import static org.smartparam.repository.jdbc.test.builder.JdbcLevelTestBuilder.jdbcLevel;
 
 /**

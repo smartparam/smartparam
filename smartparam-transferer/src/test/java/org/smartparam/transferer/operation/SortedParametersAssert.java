@@ -18,7 +18,7 @@ package org.smartparam.transferer.operation;
 
 import org.smartparam.transferer.sort.SortedParameters;
 import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.test.assertions.Assertions;
+import org.smartparam.engine.test.ParamEngineAssertions;
 
 /**
  *
@@ -35,7 +35,7 @@ public class SortedParametersAssert extends AbstractAssert<SortedParametersAsser
     }
 
     public SortedParametersAssert containsParameter(TransferOperationType operationType, String paramterName) {
-        Assertions.assertThat(actual.getParameterNames(operationType)).contains(paramterName);
+        ParamEngineAssertions.assertThat(actual.getParameterNames(operationType)).contains(paramterName);
         return this;
     }
 }

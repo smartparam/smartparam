@@ -25,8 +25,8 @@ import org.smartparam.repository.jdbc.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.testng.annotations.Test;
 
-import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**
  *

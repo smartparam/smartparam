@@ -21,7 +21,7 @@ import org.fest.assertions.api.AbstractAssert;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.engine.test.assertions.Assertions;
+import org.smartparam.engine.test.ParamEngineAssertions;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
@@ -61,7 +61,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
             operation.run();
         } catch (Exception exception) {
             queryRunner.close();
-            Assertions.fail(exception.toString());
+            ParamEngineAssertions.fail(exception.toString());
         }
         return this;
     }
@@ -71,7 +71,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
             @Override
             public void run() {
                 boolean exists = parameterDAO.parameterExists(name);
-                Assertions.assertThat(exists).isTrue();
+                ParamEngineAssertions.assertThat(exists).isTrue();
             }
         });
     }
@@ -81,7 +81,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
             @Override
             public void run() {
                 boolean exists = parameterDAO.parameterExists(name);
-                Assertions.assertThat(exists).isFalse();
+                ParamEngineAssertions.assertThat(exists).isFalse();
             }
         });
     }
@@ -91,7 +91,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
             @Override
             public void run() {
                 List<Level> levels = levelDAO.getLevels(queryRunner, parameterName);
-                Assertions.assertThat(levels).hasSize(count);
+                ParamEngineAssertions.assertThat(levels).hasSize(count);
             }
         });
     }
@@ -105,7 +105,7 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
             @Override
             public void run() {
                 Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(queryRunner, parameterName);
-                Assertions.assertThat(entries).hasSize(count);
+                ParamEngineAssertions.assertThat(entries).hasSize(count);
             }
         });
     }

@@ -33,8 +33,8 @@ import java.util.Map;
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
 import static java.lang.System.err;
-import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.test.assertions.Assertions.entry;
+import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
+import static org.smartparam.engine.test.ParamEngineAssertions.entry;
 
 /**
  *

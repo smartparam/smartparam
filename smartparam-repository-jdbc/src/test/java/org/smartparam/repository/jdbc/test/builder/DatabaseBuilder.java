@@ -23,7 +23,7 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
-import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterEntryTestBuilder.jdbcParameterEntry;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterTestBuilder.jdbcParameter;
 

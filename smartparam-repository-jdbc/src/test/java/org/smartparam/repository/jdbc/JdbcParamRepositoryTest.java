@@ -22,10 +22,10 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.testng.annotations.Test;
 
-import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.model.LevelTestBuilder.level;
-import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
+import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**
  *

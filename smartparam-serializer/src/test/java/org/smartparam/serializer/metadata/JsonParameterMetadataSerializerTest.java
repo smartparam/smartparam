@@ -22,9 +22,9 @@ import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import static org.fest.assertions.api.Assertions.*;
-import static org.smartparam.engine.model.LevelTestBuilder.level;
-import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**
  *

@@ -25,9 +25,9 @@ import java.util.Collection;
  * @author Przemek Hertel
  * @since 0.9.0
  */
-public final class TypeDecoder {
+public class TypeDecoder {
 
-    private TypeDecoder() {
+    TypeDecoder() {
     }
 
     public static AbstractHolder decode(Type<?> type, String text) {
