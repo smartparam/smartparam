@@ -118,7 +118,7 @@ public class FileResourceResolverIntegrationTest {
         // given
 
         // when
-        ParameterBatchLoader parameterBatch = resolver.loadParameterFromResource(parameterResource);
+        ParameterBatchLoader parameterBatch = resolver.batchLoadParameterFromResource(parameterResource);
 
         // then
         assertThat(parameterBatch.getMetadata()).hasName(parameterName);
@@ -130,7 +130,7 @@ public class FileResourceResolverIntegrationTest {
         // given
 
         // when
-        catchException(resolver).loadParameterFromResource("WRONG_RESOURCE_NAME");
+        catchException(resolver).batchLoadParameterFromResource("WRONG_RESOURCE_NAME");
 
         // then
         assertThat(caughtException()).isInstanceOf(ResourceResolverException.class);

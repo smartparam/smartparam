@@ -30,6 +30,7 @@ import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.exception.ParamSerializationException;
+import org.smartparam.serializer.util.StreamCloser;
 
 /**
  *
@@ -67,7 +68,7 @@ public class FileResourceResolver implements ResourceResolver {
     }
 
     @Override
-    public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
+    public ParameterBatchLoader batchLoadParameterFromResource(String parameterResourceName) {
         BufferedReader reader;
         try {
             reader = StreamReaderOpener.openReaderForFile(parameterResourceName, deserializer.getSerializationConfig().getCharset());
@@ -77,6 +78,19 @@ public class FileResourceResolver implements ResourceResolver {
             return new ParameterBatchLoader(metadata, entriesLoader);
         } catch (ParamSerializationException serializationException) {
             throw new ResourceResolverException("Unable to load parameter from " + parameterResourceName, serializationException);
+        }
+    }
+
+    @Override
+    public Parameter loadParameterFromResource(String parameterResourceName) {
+        BufferedReader reader = null;
+        try {
+            reader = StreamReaderOpener.openReaderForFile(parameterResourceName, deserializer.getSerializationConfig().getCharset());
+            return deserializer.deserialize(reader);
+        } catch (ParamSerializationException serializationException) {
+            throw new ResourceResolverException("Unable to load parameter from " + parameterResourceName, serializationException);
+        } finally {
+            StreamCloser.closeStream(reader);
         }
     }
 }

@@ -36,12 +36,12 @@ public class ParamValueAssert extends AbstractAssert<ParamValueAssert, ParamValu
     }
 
     public ParamValueAssert hasValue(Object value) {
-        ParamEngineAssertions.assertThat(actual.get().getValue()).isEqualTo(value);
+        ParamEngineAssertions.assertThat(actual.getHolder().getValue()).isEqualTo(value);
         return this;
     }
 
     public ParamValueAssert hasIntValue(int value) {
-        ParamEngineAssertions.assertThat(actual.get().getInteger()).isEqualTo(value);
+        ParamEngineAssertions.assertThat(actual.getHolder().getInteger()).isEqualTo(value);
         return this;
     }
 

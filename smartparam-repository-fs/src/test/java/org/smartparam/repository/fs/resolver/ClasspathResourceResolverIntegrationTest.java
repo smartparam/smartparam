@@ -86,7 +86,7 @@ public class ClasspathResourceResolverIntegrationTest {
         ClasspathResourceResolver resolver = new ClasspathResourceResolver("/", ".*csv$", deserializer);
 
         // when
-        ParameterBatchLoader parameterLoader = resolver.loadParameterFromResource(parameterResource);
+        ParameterBatchLoader parameterLoader = resolver.batchLoadParameterFromResource(parameterResource);
 
         // then
         assertThat(parameterLoader.getMetadata()).hasName(parameterName);
@@ -99,7 +99,7 @@ public class ClasspathResourceResolverIntegrationTest {
         ClasspathResourceResolver resolver = new ClasspathResourceResolver("/", ".*", deserializer);
 
         // when
-        catchException(resolver).loadParameterFromResource("WRONG_RESOURCE_NAME");
+        catchException(resolver).batchLoadParameterFromResource("WRONG_RESOURCE_NAME");
 
         // then
         assertThat(caughtException()).isInstanceOf(ResourceResolverException.class);

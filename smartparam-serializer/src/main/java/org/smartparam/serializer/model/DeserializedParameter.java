@@ -39,11 +39,11 @@ public class DeserializedParameter implements AppendableParameter {
 
     private final Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
-    private boolean cacheable;
+    private boolean cacheable = true;
 
     private boolean nullable;
 
-    private char arraySeparator;
+    private char arraySeparator = ';';
 
     public DeserializedParameter() {
     }

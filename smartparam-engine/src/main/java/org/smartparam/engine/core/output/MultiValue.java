@@ -62,8 +62,8 @@ public class MultiValue {
     /**
      * Returns value stored at position.
      */
-    public AbstractHolder getValue(int position) {
-        Object obj = getHolder(position);
+    public AbstractHolder getHolder(int position) {
+        Object obj = getAbstractHolder(position);
 
         if (obj instanceof AbstractHolder) {
             return (AbstractHolder) obj;
@@ -73,42 +73,61 @@ public class MultiValue {
     }
 
     /**
+     * @return generic argument depending on evaluation context, use with care
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T get(int position) {
+        return (T) getHolder(position).getValue();
+    }
+
+    /**
      * @return string representation of value
      */
     public String getString(int position) {
-        return getValue(position).getString();
+        return getHolder(position).getString();
     }
 
     /**
      * @return big decimal value, if supported by holder
      */
     public BigDecimal getBigDecimal(int position) {
-        return getValue(position).getBigDecimal();
+        return getHolder(position).getBigDecimal();
     }
 
     /**
      * @return date value, if supported by holder
      */
     public Date getDate(int position) {
-        return getValue(position).getDate();
+        return getHolder(position).getDate();
     }
 
     /**
      * @return integer value, if supported by holder
      */
     public Integer getInteger(int position) {
-        return getValue(position).getInteger();
+        return getHolder(position).getInteger();
     }
 
     /**
      * @return long value, if supported by holder
      */
     public Long getLong(int position) {
-        return getValue(position).getLong();
+        return getHolder(position).getLong();
     }
 
-    public AbstractHolder getValue(String name) {
-        return getValue(index(name));
+    /**
+     * @return raw holder
+     */
+    public AbstractHolder getHolder(String name) {
+        return getHolder(index(name));
+    }
+
+    /**
+     * @return generic argument depending on evaluation context, use with care
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T get(String name) {
+        return (T) getHolder(index(name)).getValue();
     }
 
     public String getString(String name) {
@@ -170,7 +189,7 @@ public class MultiValue {
      * Type of each value holder in array is the same, defined by level type.
      */
     public AbstractHolder[] getArray(int position) {
-        Object obj = getHolder(position);
+        Object obj = getAbstractHolder(position);
 
         if (obj instanceof AbstractHolder[]) {
             return (AbstractHolder[]) obj;
@@ -260,7 +279,7 @@ public class MultiValue {
         return result;
     }
 
-    private Object getHolder(int position) {
+    private Object getAbstractHolder(int position) {
         if (position >= 0 && position < values.length) {
             return values[position];
         }
@@ -338,10 +357,21 @@ public class MultiValue {
      * Iteration mode, return value of next row element.
      *
      * @return raw value
-     * @see #getValue(int)
+     * @see #getHolder(int)
      */
-    public AbstractHolder nextValue() {
-        return getValue(nextPosition());
+    public AbstractHolder nextHolder() {
+        return getHolder(nextPosition());
+    }
+
+    /**
+     * Iteration mode, return value of next row element.
+     *
+     * @return cast value
+     * @see #getHolder(int)
+     */
+    @SuppressWarnings("unchecked")
+    public <T> T next() {
+        return (T) nextHolder().getValue();
     }
 
     /**

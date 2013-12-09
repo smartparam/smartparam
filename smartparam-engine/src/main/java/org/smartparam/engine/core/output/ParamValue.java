@@ -65,7 +65,12 @@ public interface ParamValue {
     /**
      * Get value from first row using level name as column indicator.
      */
-    AbstractHolder get(String name);
+    AbstractHolder getHolder(String name);
+
+    /**
+     * Get object of type T from first row and column with given name.
+     */
+    <T> T get(String name);
 
     /**
      * Get string from first row and column with given name.
@@ -103,7 +108,12 @@ public interface ParamValue {
      *
      * @return value held in first cell of first row
      */
-    AbstractHolder get();
+    AbstractHolder getHolder();
+
+    /**
+     * Return value from first column of first row as generic object.
+     */
+    <T> T get();
 
     /**
      * Return value from first column of first row as string.

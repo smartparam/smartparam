@@ -51,7 +51,7 @@ public class AbstractFSParamRepositoryTest {
         when(resourceResolver.findParameterResources()).thenReturn(resources);
 
         ParameterBatchLoader batchLoader = mock(ParameterBatchLoader.class);
-        when(resourceResolver.loadParameterFromResource("resource")).thenReturn(batchLoader);
+        when(resourceResolver.batchLoadParameterFromResource("resource")).thenReturn(batchLoader);
 
         AbstractFSParamRepository paramRepository = new TestFSParamRepository(resourceResolver);
         paramRepository.initialize();

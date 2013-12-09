@@ -147,7 +147,7 @@ public class SmartParamEngine implements ParamEngine {
     }
 
     public Object callEvaluatedFunction(String paramName, ParamContext ctx, Object... args) {
-        AbstractHolder holder = get(paramName, ctx).get();
+        AbstractHolder holder = get(paramName, ctx).getHolder();
 
         if (!(holder instanceof StringHolder)) {
             throw new InvalidFunctionToCallException(paramName, holder);

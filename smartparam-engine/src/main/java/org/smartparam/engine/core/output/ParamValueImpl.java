@@ -59,7 +59,7 @@ public class ParamValueImpl implements ParamValue {
 
     @Override
     public AbstractHolder get(int rowNo, int colNo) {
-        return row(rowNo).getValue(colNo);
+        return row(rowNo).getHolder(colNo);
     }
 
     @Override
@@ -69,12 +69,17 @@ public class ParamValueImpl implements ParamValue {
 
     @Override
     public AbstractHolder get(int colNo) {
-        return row().getValue(colNo);
+        return row().getHolder(colNo);
     }
 
     @Override
-    public AbstractHolder get(String name) {
-        return row().getValue(index(name));
+    public AbstractHolder getHolder(String name) {
+        return row().getHolder(index(name));
+    }
+
+    @Override
+    public <T> T get(String name) {
+        return row().get(name);
     }
 
     @Override
@@ -108,8 +113,13 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public AbstractHolder get() {
-        return row().getValue(0);
+    public AbstractHolder getHolder() {
+        return row().getHolder(0);
+    }
+
+    @Override
+    public <T> T get() {
+        return row().get(0);
     }
 
     @Override

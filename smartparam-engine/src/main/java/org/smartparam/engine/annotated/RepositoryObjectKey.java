@@ -32,15 +32,17 @@ package org.smartparam.engine.annotated;
  */
 public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {
 
+    private static final int DEFAULT_ORDER = 100;
+
     /**
      * Key of entry, should be unique across the container.
      */
-    private String key;
+    private final String key;
 
     /**
      * Order number, defaults to 100.
      */
-    private int order = 100;
+    private int order = DEFAULT_ORDER;
 
     /**
      * Create new repository key with only string key.

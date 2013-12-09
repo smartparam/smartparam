@@ -122,7 +122,7 @@ public class ClasspathResourceResolver implements ResourceResolver {
     }
 
     @Override
-    public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
+    public ParameterBatchLoader batchLoadParameterFromResource(String parameterResourceName) {
         BufferedReader reader;
         try {
             reader = StreamReaderOpener.openReaderForResource(this.getClass(), parameterResourceName);
@@ -131,7 +131,21 @@ public class ClasspathResourceResolver implements ResourceResolver {
 
             return new ParameterBatchLoader(metadata, entriesLoader);
         } catch (ParamSerializationException serializationException) {
-            throw new ResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
+            throw new ResourceResolverException("Unable to load parameter from " + parameterResourceName, serializationException);
         }
     }
+
+    @Override
+    public Parameter loadParameterFromResource(String parameterResourceName) {
+        BufferedReader reader = null;
+        try {
+            reader = StreamReaderOpener.openReaderForResource(this.getClass(), parameterResourceName);
+            return deserializer.deserialize(reader);
+        } catch (ParamSerializationException serializationException) {
+            throw new ResourceResolverException("Unable to load parameter from " + parameterResourceName, serializationException);
+        } finally {
+            StreamCloser.closeStream(reader);
+        }
+    }
+
 }

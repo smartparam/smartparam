@@ -16,7 +16,6 @@
 package org.smartparam.engine.core.parameter;
 
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.parameter.Parameter;
 
 /**
  *

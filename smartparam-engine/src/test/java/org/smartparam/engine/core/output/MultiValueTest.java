@@ -46,9 +46,9 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(values);
 
         // oczekiwane wartosci
-        assertSame(h1, mv.getValue(0));
-        assertSame(h2, mv.getValue(1));
-        assertSame(h3, mv.getValue(2));
+        assertSame(h1, mv.getHolder(0));
+        assertSame(h2, mv.getHolder(1));
+        assertSame(h3, mv.getHolder(2));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class MultiValueTest {
             int k = indices[i];
 
             try {
-                mv.getValue(k);
+                mv.getHolder(k);
                 fail();
             } catch (SmartParamException e) {
                 // success
@@ -445,9 +445,9 @@ public class MultiValueTest {
         MultiValue mv = new MultiValue(values);
 
         // oczekiwane wartosci
-        assertSame(h1, mv.nextValue());
-        assertSame(h2, mv.nextValue());
-        assertSame(h3, mv.nextValue());
+        assertSame(h1, mv.nextHolder());
+        assertSame(h2, mv.nextHolder());
+        assertSame(h3, mv.nextHolder());
     }
 
     @Test
