@@ -323,6 +323,48 @@ public class MultiValue {
         return result;
     }
 
+    /**
+     * Return value of column under given name as array of raw value holders.
+     */
+    public AbstractHolder[] getArray(String name) {
+        return getArray(index(name));
+    }
+
+    /**
+     * Return value of column under given name as array of strings.
+     */
+    public String[] getStringArray(String name) {
+        return getStringArray(index(name));
+    }
+
+    /**
+     * Return value of column under given name as array of raw big decimals.
+     */
+    public BigDecimal[] getBigDecimalArray(String name) {
+        return getBigDecimalArray(index(name));
+    }
+
+    /**
+     * Return value of column under given name as array of dates.
+     */
+    public Date[] getDateArray(String name) {
+        return getDateArray(index(name));
+    }
+
+    /**
+     * Return value of column under given name as array of integers.
+     */
+    public Integer[] getIntegerArray(String name) {
+        return getIntegerArray(index(name));
+    }
+
+    /**
+     * Return value of column under given name as array of longs.
+     */
+    public Long[] getLongArray(String name) {
+        return getLongArray(index(name));
+    }
+
     private Object getAbstractHolder(int position) {
         if (position >= 0 && position < values.length) {
             return values[position];
