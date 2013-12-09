@@ -25,8 +25,6 @@ public class JdbcLevelTestBuilder {
 
     private long id;
 
-    private String parameterName;
-
     private int order;
 
     private String name;
@@ -44,7 +42,7 @@ public class JdbcLevelTestBuilder {
     }
 
     public JdbcLevel build() {
-        JdbcLevel level = new JdbcLevel(id, parameterName, order);
+        JdbcLevel level = new JdbcLevel(id, order);
         level.setName(name);
         level.setType(type);
         level.setMatcher(matcher);
@@ -56,11 +54,6 @@ public class JdbcLevelTestBuilder {
 
     public JdbcLevelTestBuilder withId(long id) {
         this.id = id;
-        return this;
-    }
-
-    public JdbcLevelTestBuilder forParameter(String parameterName) {
-        this.parameterName = parameterName;
         return this;
     }
 

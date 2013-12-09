@@ -15,9 +15,9 @@
  */
 package org.smartparam.engine.matchers;
 
-import org.smartparam.engine.annotations.ParamMatcher;
-import org.smartparam.engine.annotations.ObjectInstance;
-import org.smartparam.engine.core.index.Matcher;
+import org.smartparam.engine.annotated.annotations.ParamMatcher;
+import org.smartparam.engine.annotated.annotations.ObjectInstance;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.AbstractHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;

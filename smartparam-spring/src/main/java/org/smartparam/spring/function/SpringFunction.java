@@ -16,7 +16,7 @@
 package org.smartparam.spring.function;
 
 import java.lang.reflect.Method;
-import org.smartparam.engine.model.function.JavaFunction;
+import org.smartparam.engine.functions.java.JavaFunction;
 
 /**
  *
@@ -24,7 +24,7 @@ import org.smartparam.engine.model.function.JavaFunction;
  */
 public class SpringFunction extends JavaFunction {
 
-    private String beanName;
+    private final String beanName;
 
     public SpringFunction(String name, String type, String beanName, Method method) {
         super(name, type, method);

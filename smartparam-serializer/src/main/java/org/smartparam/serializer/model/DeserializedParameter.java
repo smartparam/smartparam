@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *
@@ -39,11 +39,11 @@ public class DeserializedParameter implements AppendableParameter {
 
     private final Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
-    private boolean cacheable;
+    private boolean cacheable = true;
 
     private boolean nullable;
 
-    private char arraySeparator;
+    private char arraySeparator = ';';
 
     public DeserializedParameter() {
     }

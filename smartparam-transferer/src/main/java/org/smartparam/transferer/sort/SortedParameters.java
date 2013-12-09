@@ -18,7 +18,7 @@ package org.smartparam.transferer.sort;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
-import org.smartparam.transferer.TransferOperationType;
+import org.smartparam.transferer.operation.TransferOperationType;
 
 /**
  *
@@ -26,7 +26,7 @@ import org.smartparam.transferer.TransferOperationType;
  */
 public class SortedParameters {
 
-    private EnumMap<TransferOperationType, Set<String>> buckets = new EnumMap<TransferOperationType, Set<String>>(TransferOperationType.class);
+    private final EnumMap<TransferOperationType, Set<String>> buckets = new EnumMap<TransferOperationType, Set<String>>(TransferOperationType.class);
 
     public SortedParameters() {
         for (TransferOperationType operationType : TransferOperationType.values()) {

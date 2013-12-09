@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.index;
 
+import org.smartparam.engine.core.matcher.Matcher;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,7 @@ import org.smartparam.engine.types.string.StringType;
 import org.smartparam.engine.util.EngineUtil;
 import org.smartparam.engine.util.Formatter;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
+import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
 
 /**
  * Test indeksu budowanego dla macierzy parametru.

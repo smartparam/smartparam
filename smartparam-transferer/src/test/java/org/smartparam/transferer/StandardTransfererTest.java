@@ -15,17 +15,18 @@
  */
 package org.smartparam.transferer;
 
+import org.smartparam.transferer.operation.TransferOperationType;
 import java.util.EnumMap;
 import java.util.Map;
-import org.smartparam.engine.core.repository.WritableParamRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.engine.core.parameter.WritableParamRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.transferer.operation.TransferOperation;
 import org.smartparam.transferer.sort.ParameterSorter;
 import org.smartparam.transferer.sort.SortedParameters;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
-import static org.smartparam.transferer.test.builder.SortedParametersTestBuilder.sortedParameters;
+import static org.smartparam.transferer.operation.SortedParametersTestBuilder.sortedParameters;
 
 /**
  *

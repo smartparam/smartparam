@@ -23,22 +23,16 @@ import java.util.List;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public abstract class Printer {
+public final class Printer {
 
-    /**
-     * Minimalna liczba linii, ktore zostana zwrocone w stringu wynikowym.
-     */
-    private static final int MIN_LINES = 3;
+    private Printer() {
+    }
 
-    /**
-     * Szacowana dlugosc jednej linii, sluzy do wstepnej inicjalizacji rozmiaru StringBuildera.
-     */
-    private static final int EXPECTED_LINE_LEN = 32;
+    private static final int MIN_OUTPUT_LINES = 3;
 
-    /**
-     * Liczba znakow (szerokosc), do ktorej dostosowywany jest numer linii w wyniku.
-     */
-    private static final int NUMBER_WIDTH = 3;
+    private static final int EXPECTED_LINE_LENGTH = 32;
+
+    private static final int LINE_NUMBER_WIDTH = 3;
 
     /**
      * Tworzy string reprezentujacy zawartosc kolekcji <tt>list</tt> w czytelnej postaci.
@@ -60,15 +54,14 @@ public abstract class Printer {
         }
 
         // ograniczenie liczby linii od dolu (co najmniej 3 linie)
-        int max = Math.max(maxLines, MIN_LINES);
+        int max = Math.max(maxLines, MIN_OUTPUT_LINES);
 
-        int lines = Math.min(list.size(), maxLines);			//liczba linii, ktore zostana wyswietlone
-        boolean printAll = maxLines == 0 || list.size() <= max;	//czy wszystkie elementy maja byc wypisane
+        int lines = Math.min(list.size(), maxLines);
+        boolean printAll = maxLines == 0 || list.size() <= max;
 
-        StringBuilder sb = new StringBuilder(lines * EXPECTED_LINE_LEN);
+        StringBuilder sb = new StringBuilder(lines * EXPECTED_LINE_LENGTH);
         sb.append(Formatter.NL);
 
-        // opcjonalny tytul wraz z rozmiarem kolekcji w nawiasie
         if (title != null) {
             sb.append(title).append(" (").append(list.size()).append(')').append(Formatter.NL);
         }
@@ -139,20 +132,19 @@ public abstract class Printer {
 
     /**
      * Wyrownuje liczba <tt>n</tt> do prawej strony,
-     * tak by zajmowala {@link #NUMBER_WIDTH} znakow.
+     * tak by zajmowala {@link #LINE_NUMBER_WIDTH} znakow.
      */
     private static String padNumber(int n) {
         String numberString = String.valueOf(n);
 
-        if(NUMBER_WIDTH > numberString.length()) {
-            StringBuilder builder = new StringBuilder(NUMBER_WIDTH);
-            for(int i = 0; i < NUMBER_WIDTH - numberString.length(); ++i) {
+        if (LINE_NUMBER_WIDTH > numberString.length()) {
+            StringBuilder builder = new StringBuilder(LINE_NUMBER_WIDTH);
+            for (int i = 0; i < LINE_NUMBER_WIDTH - numberString.length(); ++i) {
                 builder.append(" ");
             }
             builder.append(numberString);
             return builder.toString();
-        }
-        else {
+        } else {
             return numberString;
         }
     }

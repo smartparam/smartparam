@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ReflectionSetterInvoker {
 
-    private Map<Class<?>, Map<Class<?>, Setter>> setterCache = new ConcurrentHashMap<Class<?>, Map<Class<?>, Setter>>();
+    private final Map<Class<?>, Map<Class<?>, Setter>> setterCache = new ConcurrentHashMap<Class<?>, Map<Class<?>, Setter>>();
 
     /**
      * Find and invoke setter on provided object.
@@ -44,7 +44,7 @@ public class ReflectionSetterInvoker {
         if(setter == null) {
             return false;
         }
-        ReflectionsHelper.runSetter(setter, setterHostObject, forArg);
+        ReflectionsHelper.invokerSetter(setter, setterHostObject, forArg);
         return true;
     }
 
@@ -105,7 +105,7 @@ public class ReflectionSetterInvoker {
 
     private static final class Setter {
 
-        private Method method;
+        private final Method method;
 
         Setter(Method method) {
             this.method = method;
@@ -118,7 +118,7 @@ public class ReflectionSetterInvoker {
 
     private static final class AccessibleSetter implements PrivilegedAction<Object> {
 
-        private Method method;
+        private final Method method;
 
         private AccessibleSetter(Method method) {
             this.method = method;

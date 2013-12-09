@@ -23,14 +23,14 @@ import java.nio.file.Path;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.repository.fs.ResourceResolver;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.exception.ParamSerializationException;
+import org.smartparam.serializer.util.StreamCloser;
 
 /**
  *
@@ -68,7 +68,7 @@ public class FileResourceResolver implements ResourceResolver {
     }
 
     @Override
-    public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
+    public ParameterBatchLoader batchLoadParameterFromResource(String parameterResourceName) {
         BufferedReader reader;
         try {
             reader = StreamReaderOpener.openReaderForFile(parameterResourceName, deserializer.getSerializationConfig().getCharset());
@@ -78,6 +78,19 @@ public class FileResourceResolver implements ResourceResolver {
             return new ParameterBatchLoader(metadata, entriesLoader);
         } catch (ParamSerializationException serializationException) {
             throw new ResourceResolverException("Unable to load parameter from " + parameterResourceName, serializationException);
+        }
+    }
+
+    @Override
+    public Parameter loadParameterFromResource(String parameterResourceName) {
+        BufferedReader reader = null;
+        try {
+            reader = StreamReaderOpener.openReaderForFile(parameterResourceName, deserializer.getSerializationConfig().getCharset());
+            return deserializer.deserialize(reader);
+        } catch (ParamSerializationException serializationException) {
+            throw new ResourceResolverException("Unable to load parameter from " + parameterResourceName, serializationException);
+        } finally {
+            StreamCloser.closeStream(reader);
         }
     }
 }

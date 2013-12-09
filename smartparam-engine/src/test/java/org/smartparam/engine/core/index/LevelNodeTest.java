@@ -17,8 +17,8 @@ package org.smartparam.engine.core.index;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.test.builder.LevelIndexTestBuilder.levelIndex;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
+import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
 
 /**
  * @author Przemek Hertel

@@ -16,16 +16,16 @@
 package org.smartparam.repository.fs.resolver;
 
 import java.util.Map;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import org.smartparam.repository.fs.exception.ResourceResolverException;
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.DefaultSerializationConfig;
-import org.smartparam.serializer.config.ParamSerializerFactory;
+import org.smartparam.serializer.config.DefaultSerializationConfig;
+import org.smartparam.serializer.ParamSerializerFactory;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
 import static com.googlecode.catchexception.CatchException.*;
 
 /**
@@ -86,7 +86,7 @@ public class ClasspathResourceResolverIntegrationTest {
         ClasspathResourceResolver resolver = new ClasspathResourceResolver("/", ".*csv$", deserializer);
 
         // when
-        ParameterBatchLoader parameterLoader = resolver.loadParameterFromResource(parameterResource);
+        ParameterBatchLoader parameterLoader = resolver.batchLoadParameterFromResource(parameterResource);
 
         // then
         assertThat(parameterLoader.getMetadata()).hasName(parameterName);
@@ -99,7 +99,7 @@ public class ClasspathResourceResolverIntegrationTest {
         ClasspathResourceResolver resolver = new ClasspathResourceResolver("/", ".*", deserializer);
 
         // when
-        catchException(resolver).loadParameterFromResource("WRONG_RESOURCE_NAME");
+        catchException(resolver).batchLoadParameterFromResource("WRONG_RESOURCE_NAME");
 
         // then
         assertThat(caughtException()).isInstanceOf(ResourceResolverException.class);

@@ -15,9 +15,9 @@
  */
 package org.smartparamtestscan;
 
-import org.smartparam.engine.annotations.ParamFunctionRepository;
-import org.smartparam.engine.core.repository.FunctionRepository;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.annotated.annotations.ParamFunctionRepository;
+import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.function.Function;
 
 /**
  *

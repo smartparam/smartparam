@@ -15,12 +15,13 @@
  */
 package org.smartparam.repository.fs;
 
+import org.smartparam.repository.fs.resolver.ResourceResolver;
 import java.util.HashMap;
 import java.util.Map;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import static org.mockito.Mockito.*;
 import static org.fest.assertions.api.Assertions.*;
-import org.smartparam.engine.model.Parameter;
+import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.serializer.ParamDeserializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -50,7 +51,7 @@ public class AbstractFSParamRepositoryTest {
         when(resourceResolver.findParameterResources()).thenReturn(resources);
 
         ParameterBatchLoader batchLoader = mock(ParameterBatchLoader.class);
-        when(resourceResolver.loadParameterFromResource("resource")).thenReturn(batchLoader);
+        when(resourceResolver.batchLoadParameterFromResource("resource")).thenReturn(batchLoader);
 
         AbstractFSParamRepository paramRepository = new TestFSParamRepository(resourceResolver);
         paramRepository.initialize();

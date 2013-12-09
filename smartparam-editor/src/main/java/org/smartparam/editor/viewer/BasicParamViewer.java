@@ -22,10 +22,10 @@ import org.smartparam.editor.identity.DescribedCollection;
 import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.editor.capabilities.RepositoryCapabilities;
-import org.smartparam.engine.core.engine.ParamEngine;
-import org.smartparam.engine.core.repository.ParamRepository;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.ParamEngine;
+import org.smartparam.engine.core.parameter.ParamRepository;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *

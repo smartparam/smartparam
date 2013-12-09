@@ -19,9 +19,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import org.smartparam.engine.core.exception.SmartParamException;
+import org.smartparam.engine.util.reflection.InnerReflectiveOperationException;
 import org.smartparam.engine.util.reflection.ReflectionSetterInvoker;
 
 /**
@@ -116,11 +114,10 @@ public class DefaultContext implements ParamContext {
         for (int argumentIndex = 0; argumentIndex < args.length; ++argumentIndex) {
             Object arg = getArgumentAt(args, argumentIndex);
 
-            if(argumentIndex == 0 && arg instanceof ReflectionSetterInvoker) {
+            if (argumentIndex == 0 && arg instanceof ReflectionSetterInvoker) {
                 setterInvoker = (ReflectionSetterInvoker) arg;
-            }
-            else if (arg instanceof String[]) {
-                setLevelValues((String[]) arg);
+            } else if (arg instanceof String[]) {
+                setLevelValues((Object[]) arg);
             } else if (arg instanceof Object[]) {
                 setLevelValues((Object[]) arg);
             } else if (arg instanceof Locale) {
@@ -131,7 +128,7 @@ public class DefaultContext implements ParamContext {
                 with((String) arg, getArgumentAt(args, argumentIndex));
             } else if (arg != null) {
                 boolean setterFound = findAndInvokeSetter(arg);
-                if(!setterFound) {
+                if (!setterFound) {
                     set(arg);
                 }
             }
@@ -140,7 +137,7 @@ public class DefaultContext implements ParamContext {
 
     /**
      * Put <tt>value</tt> under <tt>lowercase(key)</tt>. Will throw a
-     * {@link SmartParamUsageException} if there was value registered already.
+     * {@link DuplicateContextItemException} if there was value registered already.
      *
      * @param key
      * @param value
@@ -155,7 +152,7 @@ public class DefaultContext implements ParamContext {
     /**
      * Put <tt>value</tt> under key <tt>lowercase(key)</tt>. allowOverwrite flag
      * determines what happens in case of key collision. If overwriting is allowed,
-     * new value replaces old one, otherwise {@link SmartParamUsageException} is
+     * new value replaces old one, otherwise {@link DuplicateContextItemException} is
      * thrown. Lowercase function uses default JVM locale, if none other specified.
      *
      * @param key
@@ -172,8 +169,7 @@ public class DefaultContext implements ParamContext {
 
         String lowerKey = lowercase(key);
         if (userContext.containsKey(lowerKey) && !allowOverwrite) {
-            throw new SmartParamUsageException(SmartParamErrorCode.ERROR_FILLING_CONTEXT,
-                    "Trying to set duplicate key on userContext: key=" + key);
+            throw new DuplicateContextItemException(key);
         }
 
         userContext.put(lowerKey, value);
@@ -269,18 +265,14 @@ public class DefaultContext implements ParamContext {
         if (index < args.length) {
             return args[index];
         }
-        throw new SmartParamUsageException(
-                SmartParamErrorCode.ERROR_FILLING_CONTEXT,
-                String.format("Expected element at position %d in argument array, but passed only %d arguments to DefaultContext constructor. "
-                + "Maybe you wanted to put value under key and forgot to pass in a value after last string argument?", index, args.length));
+        throw new InvalidContextArgumentsCountException(index, args.length);
     }
 
     private boolean findAndInvokeSetter(Object arg) {
         try {
             return setterInvoker.invokeSetter(this, arg);
-        } catch (SmartParamException exception) {
-            throw new SmartParamUsageException(SmartParamErrorCode.ERROR_FILLING_CONTEXT, exception,
-                    String.format("Unable to set argument %s on context", arg));
+        } catch (InnerReflectiveOperationException exception) {
+            throw new ContextInitializationException(exception, arg);
         }
     }
 
@@ -303,12 +295,13 @@ public class DefaultContext implements ParamContext {
      * Set level values directly as objects.
      * Method is null safe, puts null value into level values.
      */
-    public void setLevelValues(Object... levelValues) {
+    @Override
+    public final void setLevelValues(Object... levelValues) {
         this.levelValues = levelValues;
     }
 
     public DefaultContext withLevelValues(String... levelValues) {
-        setLevelValues(levelValues);
+        setLevelValues((Object[]) levelValues);
         return this;
     }
 

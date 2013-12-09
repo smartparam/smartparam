@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.types.string;
 
-import org.smartparam.engine.annotations.ParamType;
+import org.smartparam.engine.annotated.annotations.ParamType;
 import org.smartparam.engine.core.type.Type;
 
 /**

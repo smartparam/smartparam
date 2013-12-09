@@ -39,7 +39,7 @@ public class JdbcLevel implements EditableLevel {
 
     private boolean array;
 
-    public JdbcLevel(long id, String parameterName, int orderNo) {
+    public JdbcLevel(long id, int orderNo) {
         this.key = new JdbcLevelKey(id);
         this.orderNo = orderNo;
     }

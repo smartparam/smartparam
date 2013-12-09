@@ -15,21 +15,21 @@
  */
 package org.smartparam.serializer;
 
+import org.smartparam.serializer.config.SerializationConfig;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.serializer.config.ParamSerializerFactory;
-import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.model.LevelTestBuilder.level;
-import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
-import static org.smartparam.serializer.SerializationConfigBuilder.serializationConfig;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
+import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
+import static org.smartparam.serializer.config.SerializationConfigBuilder.serializationConfig;
 
 /**
  *

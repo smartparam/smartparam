@@ -17,15 +17,15 @@ package org.smartparam.repository.jdbc.dao;
 
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
-import org.smartparam.repository.jdbc.integration.DatabaseTest;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.repository.jdbc.DatabaseTest;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.assertions.Assertions.*;
-import static org.smartparam.engine.model.LevelTestBuilder.level;
-import static org.smartparam.engine.model.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.model.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
+import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**
  *

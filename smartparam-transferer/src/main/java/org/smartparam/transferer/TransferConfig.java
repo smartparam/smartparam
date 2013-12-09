@@ -15,13 +15,15 @@
  */
 package org.smartparam.transferer;
 
+import org.smartparam.transferer.operation.TransferOperationType;
+
 /**
  *
  * @author Adam Dubiel
  */
 public class TransferConfig {
 
-    private TransferOperationType[] operationsToPerform;
+    private final TransferOperationType[] operationsToPerform;
 
     public TransferConfig(TransferOperationType... operationsToPerform) {
         this.operationsToPerform = operationsToPerform;

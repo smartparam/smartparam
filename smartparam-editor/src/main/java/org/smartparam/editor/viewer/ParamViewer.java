@@ -20,8 +20,8 @@ import org.smartparam.editor.identity.RepositoryName;
 import org.smartparam.editor.identity.DescribedCollection;
 import java.util.List;
 import org.smartparam.editor.capabilities.RepositoryCapabilities;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *

@@ -15,10 +15,6 @@
  */
 package org.smartparam.engine.config.initialization;
 
-import org.smartparam.engine.config.ComponentInitializer;
-import org.smartparam.engine.config.ComponentInitializerRunner;
-import org.smartparam.engine.config.InitializableComponent;
-
 /**
  * Initializer for handling simple post-construct like initialization.
  *

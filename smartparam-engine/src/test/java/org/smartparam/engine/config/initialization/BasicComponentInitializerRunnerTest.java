@@ -16,8 +16,6 @@
 package org.smartparam.engine.config.initialization;
 
 import java.util.Arrays;
-import org.smartparam.engine.config.ComponentInitializer;
-import org.smartparam.engine.config.ComponentInitializerRunner;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;

@@ -29,7 +29,7 @@ import org.polyjdbc.core.query.UpdateQuery;
 import org.polyjdbc.core.util.StringUtils;
 import org.smartparam.editor.viewer.LevelSorting;
 import org.smartparam.editor.viewer.ParameterEntriesFilter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import static org.smartparam.repository.jdbc.dao.FilterConverter.parseSortOrder;

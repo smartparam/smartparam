@@ -16,7 +16,7 @@
 package org.smartparam.editor.model.simple;
 
 import java.util.Arrays;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *

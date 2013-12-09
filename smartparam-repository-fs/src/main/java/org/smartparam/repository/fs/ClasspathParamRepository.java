@@ -15,6 +15,7 @@
  */
 package org.smartparam.repository.fs;
 
+import org.smartparam.repository.fs.resolver.ResourceResolver;
 import org.smartparam.repository.fs.resolver.ClasspathResourceResolver;
 import org.smartparam.serializer.ParamDeserializer;
 

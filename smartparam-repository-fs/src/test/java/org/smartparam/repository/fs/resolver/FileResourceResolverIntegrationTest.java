@@ -17,12 +17,12 @@ package org.smartparam.repository.fs.resolver;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.serializer.ParamDeserializer;
-import org.smartparam.serializer.DefaultSerializationConfig;
-import org.smartparam.serializer.config.ParamSerializerFactory;
-import org.smartparam.serializer.SerializationConfig;
+import org.smartparam.serializer.config.DefaultSerializationConfig;
+import org.smartparam.serializer.ParamSerializerFactory;
+import org.smartparam.serializer.config.SerializationConfig;
 import org.testng.annotations.*;
 
 import java.io.File;
@@ -33,8 +33,8 @@ import java.util.Map;
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
 import static java.lang.System.err;
-import static org.smartparam.engine.test.assertions.Assertions.assertThat;
-import static org.smartparam.engine.test.assertions.Assertions.entry;
+import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
+import static org.smartparam.engine.test.ParamEngineAssertions.entry;
 
 /**
  *
@@ -118,7 +118,7 @@ public class FileResourceResolverIntegrationTest {
         // given
 
         // when
-        ParameterBatchLoader parameterBatch = resolver.loadParameterFromResource(parameterResource);
+        ParameterBatchLoader parameterBatch = resolver.batchLoadParameterFromResource(parameterResource);
 
         // then
         assertThat(parameterBatch.getMetadata()).hasName(parameterName);
@@ -130,7 +130,7 @@ public class FileResourceResolverIntegrationTest {
         // given
 
         // when
-        catchException(resolver).loadParameterFromResource("WRONG_RESOURCE_NAME");
+        catchException(resolver).batchLoadParameterFromResource("WRONG_RESOURCE_NAME");
 
         // then
         assertThat(caughtException()).isInstanceOf(ResourceResolverException.class);

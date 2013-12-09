@@ -41,7 +41,7 @@ public class ParameterEntriesFilter {
     public ParameterEntriesFilter(int page, int pageSize, String[] levelFilters, List<LevelSorting> levelSorting) {
         this.page = page;
         this.pageSize = pageSize;
-        this.levelFilters = levelFilters;
+        this.levelFilters = Arrays.copyOf(levelFilters, levelFilters.length);
         this.levelSorting.addAll(levelSorting);
     }
 

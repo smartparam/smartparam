@@ -15,7 +15,7 @@
  */
 package org.smartparam.serializer.model;
 
-import org.smartparam.engine.model.Level;
+import org.smartparam.engine.core.parameter.Level;
 
 /**
  *

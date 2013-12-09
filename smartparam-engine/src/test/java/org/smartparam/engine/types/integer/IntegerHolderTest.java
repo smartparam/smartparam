@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import org.testng.annotations.Test;
 import static org.testng.AssertJUnit.*;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
  * Test klasy przechowujacej wartosci dla typu IntegerType.
@@ -78,12 +77,12 @@ public class IntegerHolderTest {
         assertEquals(0, h3.intValue());
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testDoubleValue() {
         h1.doubleValue();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testBooleanValue() {
         h1.booleanValue();
     }
@@ -104,12 +103,12 @@ public class IntegerHolderTest {
         assertEquals(null, h3.getInteger());
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetBoolean() {
         h1.getBoolean();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetDouble() {
         h1.getDouble();
     }

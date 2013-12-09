@@ -17,8 +17,6 @@ package org.smartparam.engine.core.type;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
 
 /**
  * Concrete representation of value of {@link Type}.
@@ -145,9 +143,8 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
         return sb.toString();
     }
 
-    private SmartParamUsageException prepareUnexpectedUsageException(String valueType) {
-        return new SmartParamUsageException(SmartParamErrorCode.GETTING_WRONG_TYPE,
-                String.format("Trying to get [%s] value from %s, which does not support this type. "
+    private UnsupportedOperationException prepareUnexpectedUsageException(String valueType) {
+        return new UnsupportedOperationException(String.format("Trying to get [%s] value from %s, which does not support this type. "
                 + "Check if type of parameter level is correct.", valueType, this.getClass()));
     }
 
@@ -163,7 +160,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns int value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return int value
      */
@@ -173,7 +170,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns long value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return long value
      */
@@ -183,7 +180,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns double value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return double value
      */
@@ -193,7 +190,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns boolean value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return boolean value
      */
@@ -203,7 +200,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns Integer value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return Integer value
      */
@@ -213,7 +210,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns Long value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return Long value
      */
@@ -223,7 +220,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns Double value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return Double value
      */
@@ -233,7 +230,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns Boolean value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return Boolean value
      */
@@ -243,7 +240,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns BigDecimal value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return BigDecimal value
      */
@@ -253,7 +250,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
 
     /**
      * Returns Date value if holder is capable of doing it, otherwise
-     * exception with {@link SmartParamErrorCode#GETTING_WRONG_TYPE} is thrown.
+     * UnsupportedOperationException is thrown.
      *
      * @return Date value
      */

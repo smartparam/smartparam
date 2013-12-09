@@ -19,8 +19,9 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.repository.WritableParamRepository;
-import org.smartparam.engine.core.repository.ParamRepository;
+import org.smartparam.transferer.operation.TransferOperationType;
+import org.smartparam.engine.core.parameter.WritableParamRepository;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.transferer.operation.TransferOperation;
 import org.smartparam.transferer.sort.ParameterSorter;
 import org.smartparam.transferer.sort.SortedParameters;
@@ -33,9 +34,9 @@ public class StandardTransferer implements Transferer {
 
     private static final Logger logger = LoggerFactory.getLogger(StandardTransferer.class);
 
-    private ParameterSorter sorter;
+    private final ParameterSorter sorter;
 
-    private Map<TransferOperationType, TransferOperation> operations;
+    private final Map<TransferOperationType, TransferOperation> operations;
 
     public StandardTransferer(ParameterSorter sorter, Map<TransferOperationType, TransferOperation> operations) {
         this.sorter = sorter;

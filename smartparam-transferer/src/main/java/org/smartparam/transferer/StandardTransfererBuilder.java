@@ -15,6 +15,7 @@
  */
 package org.smartparam.transferer;
 
+import org.smartparam.transferer.operation.TransferOperationType;
 import java.util.EnumMap;
 import java.util.Map;
 import org.smartparam.transferer.operation.CreateParameter;
@@ -22,7 +23,7 @@ import org.smartparam.transferer.operation.DeleteParameter;
 import org.smartparam.transferer.operation.OverrideParameter;
 import org.smartparam.transferer.operation.TransferOperation;
 import org.smartparam.transferer.sort.ParameterSorter;
-import org.smartparam.transferer.sort.SimpleParameterSorter;
+import org.smartparam.transferer.sort.OperationParameterSorter;
 
 /**
  *
@@ -32,7 +33,7 @@ public final class StandardTransfererBuilder {
 
     private ParameterSorter sorter;
 
-    private Map<TransferOperationType, TransferOperation> operations = new EnumMap<TransferOperationType, TransferOperation>(TransferOperationType.class);
+    private final Map<TransferOperationType, TransferOperation> operations = new EnumMap<TransferOperationType, TransferOperation>(TransferOperationType.class);
 
     private StandardTransfererBuilder() {
     }
@@ -43,7 +44,7 @@ public final class StandardTransfererBuilder {
 
     public StandardTransferer build() {
         if (sorter == null) {
-            sorter = new SimpleParameterSorter();
+            sorter = new OperationParameterSorter();
         }
         if (!operations.containsKey(TransferOperationType.CREATE)) {
             operations.put(TransferOperationType.CREATE, new CreateParameter());

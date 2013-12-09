@@ -17,7 +17,7 @@ package org.smartparam.engine.core.context;
 
 import org.testng.annotations.Test;
 
-import static org.smartparam.engine.test.assertions.Assertions.assertThat;
+import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
  * @author Przemek Hertel

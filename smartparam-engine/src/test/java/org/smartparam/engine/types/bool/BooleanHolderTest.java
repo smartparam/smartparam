@@ -18,7 +18,6 @@ package org.smartparam.engine.types.bool;
 import java.util.Arrays;
 import org.testng.annotations.Test;
 import static org.testng.AssertJUnit.*;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
  * @author Przemek Hertel
@@ -109,12 +108,12 @@ public class BooleanHolderTest {
 //    }
 
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetDouble() {
         h1.getDouble();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testDoubleValue() {
         h1.doubleValue();
     }

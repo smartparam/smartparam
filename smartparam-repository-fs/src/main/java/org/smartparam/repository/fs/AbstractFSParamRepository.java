@@ -15,20 +15,20 @@
  */
 package org.smartparam.repository.fs;
 
+import org.smartparam.repository.fs.resolver.ResourceResolver;
 import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.config.InitializableComponent;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.core.batch.ParameterEntryUnbatchUtil;
-import org.smartparam.engine.core.repository.ParamRepository;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.config.initialization.InitializableComponent;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParamRepository;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardParamDeserializer;
-import org.smartparam.serializer.DefaultSerializationConfig;
-import org.smartparam.serializer.config.ParamSerializerFactory;
+import org.smartparam.serializer.config.DefaultSerializationConfig;
+import org.smartparam.serializer.ParamSerializerFactory;
 
 /**
  *
@@ -77,10 +77,9 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
 
     @Override
     public Parameter load(String parameterName) {
-        ParameterBatchLoader parameterBatch = batchLoad(parameterName);
-        if (parameterBatch != null) {
-            ParameterEntryUnbatchUtil.loadEntriesIntoParameter(parameterBatch.getMetadata(), parameterBatch.getEntryLoader(), DEFAULT_BATCH_LOADER_SIZE);
-            return parameterBatch.getMetadata();
+        String parameterResourceName = parameters.get(parameterName);
+        if (parameterResourceName != null) {
+            return resourceResolver.loadParameterFromResource(parameterResourceName);
         }
         return null;
     }
@@ -89,7 +88,7 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
     public ParameterBatchLoader batchLoad(String parameterName) {
         String parameterResourceName = parameters.get(parameterName);
         if (parameterResourceName != null) {
-            return resourceResolver.loadParameterFromResource(parameterResourceName);
+            return resourceResolver.batchLoadParameterFromResource(parameterResourceName);
         }
         return null;
     }

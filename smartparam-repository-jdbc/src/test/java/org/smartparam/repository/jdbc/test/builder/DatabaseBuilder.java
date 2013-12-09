@@ -18,12 +18,12 @@ package org.smartparam.repository.jdbc.test.builder;
 import java.util.ArrayList;
 import java.util.List;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
-import static org.smartparam.engine.model.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterEntryTestBuilder.jdbcParameterEntry;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterTestBuilder.jdbcParameter;
 

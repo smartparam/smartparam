@@ -15,13 +15,14 @@
  */
 package org.smartparam.transferer.test.assertions;
 
+import org.smartparam.transferer.operation.SortedParametersAssert;
 import org.smartparam.transferer.sort.SortedParameters;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class Assertions extends org.smartparam.engine.test.assertions.Assertions {
+public class Assertions extends org.smartparam.engine.test.ParamEngineAssertions {
 
     public static SortedParametersAssert assertThat(SortedParameters actual) {
         return SortedParametersAssert.assertThat(actual);

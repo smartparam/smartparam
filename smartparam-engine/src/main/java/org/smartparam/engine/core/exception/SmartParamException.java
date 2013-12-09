@@ -22,7 +22,9 @@ package org.smartparam.engine.core.exception;
 @SuppressWarnings("serial")
 public class SmartParamException extends RuntimeException {
 
-    private SmartParamErrorCode errorCode;
+    private static final int TO_STRING_LENGTH = 100;
+
+    private String errorCode;
 
     public SmartParamException(Throwable t) {
         super(t.getMessage(), t);
@@ -36,27 +38,27 @@ public class SmartParamException extends RuntimeException {
         super(message, cause);
     }
 
-    public SmartParamException(SmartParamErrorCode errorCode, String message) {
+    public SmartParamException(String errorCode, String message) {
         super(message);
         this.errorCode = errorCode;
     }
 
-    public SmartParamException(SmartParamErrorCode errorCode, Throwable t, String message) {
+    public SmartParamException(String errorCode, Throwable t, String message) {
         super(message, t);
         this.errorCode = errorCode;
     }
 
-    public SmartParamErrorCode getErrorCode() {
+    public String getErrorCode() {
         return errorCode;
     }
 
     @Override
     public String getMessage() {
-        StringBuilder sb = new StringBuilder(100);
-        sb.append(super.getMessage());
+        StringBuilder sb = new StringBuilder(TO_STRING_LENGTH);
         if (errorCode != null) {
-            sb.append(" [errorcode=").append(errorCode).append(']');
+            sb.append("[errorcode=").append(errorCode).append("] ");
         }
+        sb.append(super.getMessage());
         return sb.toString();
     }
 }

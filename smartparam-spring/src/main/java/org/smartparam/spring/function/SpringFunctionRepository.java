@@ -17,9 +17,9 @@ package org.smartparam.spring.function;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import org.smartparam.engine.annotations.ParamFunctionRepository;
-import org.smartparam.engine.core.repository.AbstractJavaFunctionRepository;
-import org.smartparam.engine.model.function.Function;
+import org.smartparam.engine.annotated.annotations.ParamFunctionRepository;
+import org.smartparam.engine.annotated.repository.AbstractScanningJavaFunctionRepository;
+import org.smartparam.engine.core.function.Function;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
@@ -29,17 +29,17 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
  * @author Adam Dubiel
  */
 @ParamFunctionRepository(SpringFunctionRepository.FUNCTION_TYPE)
-public class SpringFunctionRepository extends AbstractJavaFunctionRepository {
+public class SpringFunctionRepository extends AbstractScanningJavaFunctionRepository {
 
     public static final String FUNCTION_TYPE = "spring";
 
-    private AnnotationBeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
+    private final AnnotationBeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
 
     /**
      * In order to resolve bean name from class using beanNameGenerator we
      * need a registry - serves no other purpose.
      */
-    private SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
+    private final SimpleBeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
 
     @Override
     protected Class<? extends Annotation> annotationClass() {

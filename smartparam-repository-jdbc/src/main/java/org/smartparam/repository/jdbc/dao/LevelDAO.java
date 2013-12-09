@@ -23,7 +23,7 @@ import org.polyjdbc.core.query.QueryFactory;
 import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.SelectQuery;
 import org.polyjdbc.core.query.UpdateQuery;
-import org.smartparam.engine.model.Level;
+import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 

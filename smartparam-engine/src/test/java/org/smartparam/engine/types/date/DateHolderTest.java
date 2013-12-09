@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Date;
 import org.testng.annotations.Test;
 import static org.testng.AssertJUnit.*;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
 
 /**
  * @author Przemek Hertel
@@ -62,37 +61,37 @@ public class DateHolderTest {
         assertFalse(h3.isNotNull());
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testLongValue() {
         h1.longValue();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testIntValue() {
         h2.intValue();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testDoubleValue() {
         h3.doubleValue();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetInteger() {
         h1.getInteger();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetLong() {
         h2.getLong();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetDouble() {
         h3.getDouble();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetBigDecimal() {
         h1.getBigDecimal();
     }
@@ -107,12 +106,12 @@ public class DateHolderTest {
         assertNull(h3.getString());
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testBooleanValue() {
         h1.booleanValue();
     }
 
-    @Test(expectedExceptions = SmartParamUsageException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void testGetBoolean() {
         h1.getBoolean();
     }

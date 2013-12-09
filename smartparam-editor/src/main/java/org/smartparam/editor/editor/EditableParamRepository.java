@@ -16,10 +16,10 @@
 package org.smartparam.editor.editor;
 
 import java.util.List;
-import org.smartparam.engine.core.repository.ParamRepository;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.ParamRepository;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
 

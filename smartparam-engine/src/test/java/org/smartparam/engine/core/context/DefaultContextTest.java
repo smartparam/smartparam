@@ -19,9 +19,7 @@ import java.math.BigDecimal;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
 import static org.testng.AssertJUnit.*;
-import org.smartparam.engine.core.exception.SmartParamUsageException;
-import org.smartparam.engine.core.exception.SmartParamErrorCode;
-import static org.smartparam.engine.test.assertions.Assertions.*;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
 import org.smartparam.engine.util.reflection.ReflectionSetterInvoker;
 
 /**
@@ -133,9 +131,8 @@ public class DefaultContextTest {
             context.with("TEST", "A");
             fail();
         }
-        catch(SmartParamUsageException exception) {
-            // then
-            assertThat(exception).hasErrorCode(SmartParamErrorCode.ERROR_FILLING_CONTEXT);
+        catch(DuplicateContextItemException exception) {
+            // then success
         }
     }
 
@@ -211,9 +208,8 @@ public class DefaultContextTest {
             new DefaultContext("KEY_WITHOUT_VALUE");
             fail();
         }
-        catch(SmartParamUsageException exception) {
-            // then
-            assertThat(exception).hasErrorCode(SmartParamErrorCode.ERROR_FILLING_CONTEXT);
+        catch(InvalidContextArgumentsCountException exception) {
+            // then success
         }
     }
 }

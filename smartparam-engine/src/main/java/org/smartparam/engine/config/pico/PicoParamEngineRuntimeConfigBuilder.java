@@ -16,15 +16,15 @@
 package org.smartparam.engine.config.pico;
 
 import org.picocontainer.PicoContainer;
-import org.smartparam.engine.config.ParamEngineRuntimeConfig;
-import org.smartparam.engine.config.ParamEngineRuntimeConfigBuilder;
-import org.smartparam.engine.core.cache.FunctionCache;
-import org.smartparam.engine.core.cache.ParamCache;
-import org.smartparam.engine.core.repository.InvokerRepository;
-import org.smartparam.engine.core.repository.MatcherRepository;
-import org.smartparam.engine.core.repository.TypeRepository;
-import org.smartparam.engine.core.service.FunctionProvider;
-import org.smartparam.engine.core.service.ParameterProvider;
+import org.smartparam.engine.core.ParamEngineRuntimeConfig;
+import org.smartparam.engine.core.ParamEngineRuntimeConfigBuilder;
+import org.smartparam.engine.core.function.FunctionCache;
+import org.smartparam.engine.core.prepared.PreparedParamCache;
+import org.smartparam.engine.core.function.InvokerRepository;
+import org.smartparam.engine.core.matcher.MatcherRepository;
+import org.smartparam.engine.core.type.TypeRepository;
+import org.smartparam.engine.core.function.FunctionProvider;
+import org.smartparam.engine.core.parameter.ParameterProvider;
 
 /**
  * Runtime config builder that extracts runtime information form parameter engine
@@ -34,7 +34,7 @@ import org.smartparam.engine.core.service.ParameterProvider;
  */
 public class PicoParamEngineRuntimeConfigBuilder implements ParamEngineRuntimeConfigBuilder {
 
-    private PicoContainer engineContainer;
+    private final PicoContainer engineContainer;
 
     public PicoParamEngineRuntimeConfigBuilder(PicoContainer engineContainer) {
         this.engineContainer = engineContainer;
@@ -44,7 +44,7 @@ public class PicoParamEngineRuntimeConfigBuilder implements ParamEngineRuntimeCo
     public ParamEngineRuntimeConfig buildConfig() {
         return new ParamEngineRuntimeConfig(
                 engineContainer.getComponent(FunctionCache.class),
-                engineContainer.getComponent(ParamCache.class),
+                engineContainer.getComponent(PreparedParamCache.class),
                 engineContainer.getComponent(FunctionProvider.class).registeredItems(),
                 engineContainer.getComponent(ParameterProvider.class).registeredItems(),
                 engineContainer.getComponent(InvokerRepository.class).registeredItems(),

@@ -17,7 +17,7 @@ package org.smartparam.repository.jdbc.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.smartparam.engine.test.assertions.Assertions;
+import org.smartparam.engine.test.ParamEngineAssertions;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
@@ -43,7 +43,7 @@ public class JdbcParameterEntryMapperTest {
         JdbcParameterEntry entry = mapper.createObject(resultSet);
 
         // then
-        Assertions.assertThat(entry).hasLevels(2);
+        ParamEngineAssertions.assertThat(entry).hasLevels(2);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class JdbcParameterEntryMapperTest {
         JdbcParameterEntry entry = mapper.createObject(resultSet);
 
         // then
-        Assertions.assertThat(entry).hasLevels(2);
+        ParamEngineAssertions.assertThat(entry).hasLevels(2);
     }
 
     @Test
@@ -77,6 +77,6 @@ public class JdbcParameterEntryMapperTest {
         JdbcParameterEntry entry = mapper.createObject(resultSet);
 
         // then
-        Assertions.assertThat(entry).hasLevels(5);
+        ParamEngineAssertions.assertThat(entry).hasLevels(5);
     }
 }

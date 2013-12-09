@@ -20,9 +20,9 @@ import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.editor.viewer.ParameterEntriesFilter;
 import org.smartparam.editor.viewer.ParameterFilter;
-import org.smartparam.engine.model.Level;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.engine.model.ParameterEntry;
+import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 

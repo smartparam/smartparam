@@ -28,10 +28,9 @@ import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.batch.ParameterBatchLoader;
-import org.smartparam.engine.core.batch.ParameterEntryBatchLoader;
-import org.smartparam.engine.model.Parameter;
-import org.smartparam.repository.fs.ResourceResolver;
+import org.smartparam.engine.core.parameter.ParameterBatchLoader;
+import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;
 import org.smartparam.serializer.ParamDeserializer;
@@ -123,7 +122,7 @@ public class ClasspathResourceResolver implements ResourceResolver {
     }
 
     @Override
-    public ParameterBatchLoader loadParameterFromResource(String parameterResourceName) {
+    public ParameterBatchLoader batchLoadParameterFromResource(String parameterResourceName) {
         BufferedReader reader;
         try {
             reader = StreamReaderOpener.openReaderForResource(this.getClass(), parameterResourceName);
@@ -132,7 +131,21 @@ public class ClasspathResourceResolver implements ResourceResolver {
 
             return new ParameterBatchLoader(metadata, entriesLoader);
         } catch (ParamSerializationException serializationException) {
-            throw new ResourceResolverException("unable to load parameter from " + parameterResourceName, serializationException);
+            throw new ResourceResolverException("Unable to load parameter from " + parameterResourceName, serializationException);
         }
     }
+
+    @Override
+    public Parameter loadParameterFromResource(String parameterResourceName) {
+        BufferedReader reader = null;
+        try {
+            reader = StreamReaderOpener.openReaderForResource(this.getClass(), parameterResourceName);
+            return deserializer.deserialize(reader);
+        } catch (ParamSerializationException serializationException) {
+            throw new ResourceResolverException("Unable to load parameter from " + parameterResourceName, serializationException);
+        } finally {
+            StreamCloser.closeStream(reader);
+        }
+    }
+
 }
