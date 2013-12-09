@@ -30,7 +30,7 @@ import org.smartparam.engine.core.type.AbstractHolder;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public interface ParamValue {
+public interface ParamValue extends Iterable<MultiValue> {
 
     /**
      * Return resulting matrix row.
@@ -71,6 +71,11 @@ public interface ParamValue {
      * Get object of type T from first row and column with given name.
      */
     <T> T get(String name);
+
+    /**
+     * Get object of given class from first row and column with given name.
+     */
+    <T> T get(String name, Class<T> clazz);
 
     /**
      * Get string from first row and column with given name.
@@ -116,6 +121,11 @@ public interface ParamValue {
     <T> T get();
 
     /**
+     * Return value from first column of first row as object of given class.
+     */
+    <T> T get(Class<T> clazz);
+
+    /**
      * Return value from first column of first row as string.
      */
     String getString();
@@ -131,7 +141,7 @@ public interface ParamValue {
     Date getDate();
 
     /**
-     * Return value from first column of first row as Ineger.
+     * Return value from first column of first row as Integer.
      */
     Integer getInteger();
 

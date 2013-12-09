@@ -48,7 +48,7 @@ public final class ParamValueBuilder {
     }
 
     public ParamValue build() {
-        return new ParamValueImpl(rows.toArray(new MultiValue[rows.size()]), indexMap);
+        return new ParamValueImpl(rows.toArray(new MultiValue[rows.size()]));
     }
 
     public ParamValueBuilder withNamedLevels(String... levelNames) {

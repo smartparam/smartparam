@@ -17,9 +17,6 @@ package org.smartparam.engine.core.output;
 
 import java.util.*;
 
-import org.smartparam.engine.core.output.MultiValue;
-import org.smartparam.engine.core.output.ParamValue;
-import org.smartparam.engine.core.output.ParamValueImpl;
 import static org.smartparam.engine.core.output.MultiValueBuilder.multiValue;
 
 /**
@@ -48,7 +45,7 @@ public final class ParamValueBuilder {
     }
 
     public ParamValue build() {
-        return new ParamValueImpl(rows.toArray(new MultiValue[rows.size()]), indexMap);
+        return new ParamValueImpl(rows.toArray(new MultiValue[rows.size()]));
     }
 
     public ParamValueBuilder withNamedLevels(String... levelNames) {

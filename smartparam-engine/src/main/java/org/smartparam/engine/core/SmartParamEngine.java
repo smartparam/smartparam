@@ -87,7 +87,7 @@ public class SmartParamEngine implements ParamEngine {
         int inputLevelCount = param.getInputLevelsCount();
         int oputputLevelCount = param.getLevelCount() - inputLevelCount;
 
-        MultiValue[] mv = new MultiValue[rows.length];
+        MultiValue[] row = new MultiValue[rows.length];
 
         for (int rowIndex = 0; rowIndex < rows.length; rowIndex++) {
             PreparedEntry pe = rows[rowIndex];
@@ -111,10 +111,10 @@ public class SmartParamEngine implements ParamEngine {
                 vector[columnIndex] = cellValue;
             }
 
-            mv[rowIndex] = new MultiValue(vector, param.getLevelNameMap());
+            row[rowIndex] = new MultiValue(vector, param.getLevelNameMap());
         }
 
-        ParamValue result = new ParamValueImpl(mv, param.getLevelNameMap());
+        ParamValue result = new ParamValueImpl(row);
 
         logger.debug("leave get[{}], result={}", paramName, result);
         return result;

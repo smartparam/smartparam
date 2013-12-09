@@ -60,7 +60,7 @@ public class MultiValue {
     }
 
     /**
-     * Returns value stored at position.
+     * Return raw holder of stored at given position.
      */
     public AbstractHolder getHolder(int position) {
         Object obj = getAbstractHolder(position);
@@ -73,7 +73,7 @@ public class MultiValue {
     }
 
     /**
-     * @return generic argument depending on evaluation context, use with care
+     * Return value of column at given position cast to generic return value.
      */
     @SuppressWarnings("unchecked")
     public <T> T get(int position) {
@@ -81,71 +81,100 @@ public class MultiValue {
     }
 
     /**
-     * @return string representation of value
+     * Return value of column at given position cast to object of class clazz.
+     */
+    public <T> T get(int position, Class<T> clazz) {
+        return clazz.cast(getHolder(position).getValue());
+    }
+
+    /**
+     * Return value of column at given position as string.
      */
     public String getString(int position) {
         return getHolder(position).getString();
     }
 
     /**
-     * @return big decimal value, if supported by holder
+     * Return value of column at given position as BigDecimal.
      */
     public BigDecimal getBigDecimal(int position) {
         return getHolder(position).getBigDecimal();
     }
 
     /**
-     * @return date value, if supported by holder
+     * Return value of column at given position as date.
      */
     public Date getDate(int position) {
         return getHolder(position).getDate();
     }
 
     /**
-     * @return integer value, if supported by holder
+     * Return value of column at given position as integer.
      */
     public Integer getInteger(int position) {
         return getHolder(position).getInteger();
     }
 
     /**
-     * @return long value, if supported by holder
+     * Return value of column at given position as long.
      */
     public Long getLong(int position) {
         return getHolder(position).getLong();
     }
 
     /**
-     * @return raw holder
+     * Return raw value holder of column with given name.
      */
     public AbstractHolder getHolder(String name) {
         return getHolder(index(name));
     }
 
     /**
-     * @return generic argument depending on evaluation context, use with care
+     * Return value of column with given name cast to generic return value.
      */
     @SuppressWarnings("unchecked")
     public <T> T get(String name) {
         return (T) getHolder(index(name)).getValue();
     }
 
+    /**
+     * Return value of column with given name cast to object of class clazz.
+     */
+    public <T> T get(String name, Class<T> clazz) {
+        return clazz.cast(getHolder(index(name)).getValue());
+    }
+
+    /**
+     * Return value of column with given name as string.
+     */
     public String getString(String name) {
         return getString(index(name));
     }
 
+    /**
+     * Return value of column with given name as BigDecimal.
+     */
     public BigDecimal getBigDecimal(String name) {
         return getBigDecimal(index(name));
     }
 
+    /**
+     * Return value of column with given name as date.
+     */
     public Date getDate(String name) {
         return getDate(index(name));
     }
 
+    /**
+     * Return value of column with given name as integer.
+     */
     public Integer getInteger(String name) {
         return getInteger(index(name));
     }
 
+    /**
+     * Return value of column with given name as long.
+     */
     public Long getLong(String name) {
         return getLong(index(name));
     }
@@ -169,6 +198,9 @@ public class MultiValue {
         return code != null ? codeToEnum(code, enumClass) : null;
     }
 
+    /**
+     * Return value of column with given name as enum.
+     */
     public <T extends Enum<T>> T getEnum(String name, Class<T> enumClass) {
         return getEnum(index(name), enumClass);
     }
@@ -232,7 +264,7 @@ public class MultiValue {
     }
 
     /**
-     * @return string array, if supported by holder
+     * Return value of column at given position as string array.
      */
     public String[] getStringArray(int position) {
         AbstractHolder[] array = getArray(position);
@@ -244,7 +276,7 @@ public class MultiValue {
     }
 
     /**
-     * @return date array, if supported by holder
+     * Return value of column at given position as date array.
      */
     public Date[] getDateArray(int position) {
         AbstractHolder[] array = getArray(position);
@@ -256,7 +288,7 @@ public class MultiValue {
     }
 
     /**
-     * @return integer array, if supported by holder
+     * Return value of column at given position as integer array.
      */
     public Integer[] getIntegerArray(int position) {
         AbstractHolder[] array = getArray(position);
@@ -268,7 +300,19 @@ public class MultiValue {
     }
 
     /**
-     * @return big decimal array, if supported by holder
+     * Return value of column at given position as integer array.
+     */
+    public Long[] getLongArray(int position) {
+        AbstractHolder[] array = getArray(position);
+        Long[] result = new Long[array.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = array[i].getLong();
+        }
+        return result;
+    }
+
+    /**
+     * Return value of column at given position as BigDecimal array.
      */
     public BigDecimal[] getBigDecimalArray(int position) {
         AbstractHolder[] array = getArray(position);
@@ -289,8 +333,6 @@ public class MultiValue {
     /**
      * Returns row values as strings, equivalent to calling {@link #getString(int) }
      * on every row value.
-     *
-     * @return
      */
     public String[] asStrings() {
         String[] array = new String[values.length];
@@ -303,8 +345,6 @@ public class MultiValue {
     /**
      * Returns row values as BigDecimals, equivalent to calling {@link #getBigDecimal(int) }
      * on every row value.
-     *
-     * @return
      */
     public BigDecimal[] asBigDecimals() {
         BigDecimal[] array = new BigDecimal[values.length];
@@ -321,8 +361,6 @@ public class MultiValue {
 
     /**
      * Returns toString, but in single line.
-     *
-     * @return string representation of object
      */
     public String toStringInline() {
         Object[] rawValues = unwrap();
@@ -354,20 +392,14 @@ public class MultiValue {
     }
 
     /**
-     * Iteration mode, return value of next row element.
-     *
-     * @return raw value
-     * @see #getHolder(int)
+     * Iteration mode, return raw value holder of next row element.
      */
     public AbstractHolder nextHolder() {
         return getHolder(nextPosition());
     }
 
     /**
-     * Iteration mode, return value of next row element.
-     *
-     * @return cast value
-     * @see #getHolder(int)
+     * Iteration mode, return value of next row element cast to generic type.
      */
     @SuppressWarnings("unchecked")
     public <T> T next() {
@@ -375,10 +407,14 @@ public class MultiValue {
     }
 
     /**
+     * Iteration mode, return value of next row element cast to object of class clazz.
+     */
+    public <T> T next(Class<T> clazz) {
+        return clazz.cast(nextHolder().getValue());
+    }
+
+    /**
      * Iteration mode, get string value of next row element.
-     *
-     * @return string value
-     * @see #getString(int)
      */
     public String nextString() {
         return getString(nextPosition());
@@ -386,9 +422,6 @@ public class MultiValue {
 
     /**
      * Iteration mode, get BigDecimal value of next row element.
-     *
-     * @return BigDecimal value
-     * @see #getBigDecimal(int)
      */
     public BigDecimal nextBigDecimal() {
         return getBigDecimal(nextPosition());
@@ -396,9 +429,6 @@ public class MultiValue {
 
     /**
      * Iteration mode, get Date value of next row element.
-     *
-     * @return Date value
-     * @see #getDate(int)
      */
     public Date nextDate() {
         return getDate(nextPosition());
@@ -406,9 +436,6 @@ public class MultiValue {
 
     /**
      * Iteration mode, get integer value of next row element.
-     *
-     * @return integer value
-     * @see #getInteger(int)
      */
     public Integer nextInteger() {
         return getInteger(nextPosition());
@@ -416,9 +443,6 @@ public class MultiValue {
 
     /**
      * Iteration mode, get long value of next row element.
-     *
-     * @return long value
-     * @see #getLong(int)
      */
     public Long nextLong() {
         return getLong(nextPosition());
@@ -426,9 +450,6 @@ public class MultiValue {
 
     /**
      * Iteration mode, get enum value of next row element.
-     *
-     * @return enum of given class
-     * @see #getEnum(int, java.lang.Class)
      */
     public <T extends Enum<T>> T nextEnum(Class<T> enumClass) {
         return getEnum(nextPosition(), enumClass);
@@ -436,9 +457,6 @@ public class MultiValue {
 
     /**
      * Iteration mode, return value of next row element as holder array.
-     *
-     * @return raw elements array
-     * @see #getArray(int)
      */
     public AbstractHolder[] nextArray() {
         return getArray(nextPosition());
@@ -446,9 +464,6 @@ public class MultiValue {
 
     /**
      * Iteration mode, return value of next row element as string array.
-     *
-     * @return string array
-     * @see #getStringArray(int)
      */
     public String[] nextStringArray() {
         return getStringArray(nextPosition());
@@ -456,12 +471,30 @@ public class MultiValue {
 
     /**
      * Iteration mode, return value of next row element as BigDecimal array.
-     *
-     * @return BigDecimal array
-     * @see #getBigDecimalArray(int)
      */
     public BigDecimal[] nextBigDecimalArray() {
         return getBigDecimalArray(nextPosition());
+    }
+
+    /**
+     * Iteration mode, return value of next row element as Date array.
+     */
+    public Date[] nextDateArray() {
+        return getDateArray(nextPosition());
+    }
+
+    /**
+     * Iteration mode, return value of next row element as integer array.
+     */
+    public Integer[] nextIntegerArray() {
+        return getIntegerArray(nextPosition());
+    }
+
+    /**
+     * Iteration mode, return value of next row element as long array.
+     */
+    public Long[] nextLongArray() {
+        return getLongArray(nextPosition());
     }
 
     /**

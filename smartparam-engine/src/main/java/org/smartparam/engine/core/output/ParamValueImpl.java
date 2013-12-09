@@ -22,7 +22,7 @@ import org.smartparam.engine.util.Printer;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
+import java.util.Iterator;
 
 /**
  * @author Przemek Hertel
@@ -32,11 +32,8 @@ public class ParamValueImpl implements ParamValue {
 
     private final MultiValue[] rows;
 
-    private final Map<String, Integer> indexMap;
-
-    public ParamValueImpl(MultiValue[] rows, Map<String, Integer> indexMap) {
+    public ParamValueImpl(MultiValue[] rows) {
         this.rows = rows;
-        this.indexMap = indexMap;
     }
 
     @Override
@@ -58,13 +55,18 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
+    public Iterator<MultiValue> iterator() {
+        return Arrays.asList(rows).iterator();
+    }
+
+    @Override
     public AbstractHolder get(int rowNo, int colNo) {
         return row(rowNo).getHolder(colNo);
     }
 
     @Override
     public AbstractHolder get(int rowNo, String name) {
-        return get(rowNo, index(name));
+        return get(rowNo, name);
     }
 
     @Override
@@ -74,12 +76,16 @@ public class ParamValueImpl implements ParamValue {
 
     @Override
     public AbstractHolder getHolder(String name) {
-        return row().getHolder(index(name));
+        return row().getHolder(name);
     }
 
     @Override
     public <T> T get(String name) {
         return row().get(name);
+    }
+
+    public <T> T get(String name, Class<T> clazz) {
+        return row().get(name, clazz);
     }
 
     @Override
@@ -123,6 +129,11 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
+    public <T> T get(Class<T> clazz) {
+        return row().get(0, clazz);
+    }
+
+    @Override
     public String getString() {
         return row().getString(0);
     }
@@ -157,21 +168,9 @@ public class ParamValueImpl implements ParamValue {
         return rows != null ? rows.length : 0;
     }
 
-    private int index(String name) {
-        if (indexMap != null) {
-            Integer k = indexMap.get(name);
-            if (k != null) {
-                return k;
-            }
-        }
-
-        throw new UnknownLevelNameException(name);
-    }
-
     @Override
     public String toString() {
-        String header = "ParamValue " + indexMap;
-        return Printer.print(Arrays.asList(rows), header, 0, new MultiValueInlineFormatter());
+        return Printer.print(Arrays.asList(rows), "ParamValue", 0, new MultiValueInlineFormatter());
     }
 
     static final class MultiValueInlineFormatter implements Formatter {
