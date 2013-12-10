@@ -37,7 +37,7 @@ public class JdbcParameterEntryMapperTest {
         DefaultJdbcConfig configuration = jdbcConfig().withLevelColumnCount(10).build();
         JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
-                .withString("level1", "1").withString("level2", "2").build();
+                .withString("level0", "1").withString("level1", "2").build();
 
         // when
         JdbcParameterEntry entry = mapper.createObject(resultSet);
@@ -52,7 +52,7 @@ public class JdbcParameterEntryMapperTest {
         DefaultJdbcConfig configuration = jdbcConfig().withLevelColumnCount(2).build();
         JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
-                .withString("level1", "1").withString("level2", "2")
+                .withString("level0", "1").withString("level1", "2")
                 .build();
 
         // when
@@ -69,8 +69,8 @@ public class JdbcParameterEntryMapperTest {
                 .withLevelColumnCount(3).withExcessLevelSeparator('|').build();
         JdbcParameterEntryMapper mapper = new JdbcParameterEntryMapper(configuration);
         ResultSet resultSet = resultSet().withLong("id", 1).withLong("fk_parameter", 1)
-                .withString("level1", "1").withString("level2", "2")
-                .withString("level3", "3|4|5")
+                .withString("level0", "1").withString("level1", "2")
+                .withString("level2", "3|4|5")
                 .build();
 
         // when

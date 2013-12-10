@@ -49,18 +49,28 @@ public abstract class AbstractConfigurationBuilder<C extends DefaultJdbcConfig, 
         return withDialect(DialectRegistry.dialect(dialectCode));
     }
 
-    public B withParameterTableName(String parameterTableName) {
-        configuration.setParameterTable(parameterTableName);
+    public B withParameterSufix(String parameterSufix) {
+        configuration.parameterSufix(parameterSufix);
         return self();
     }
 
-    public B withParameterEntryTableName(String parameterEntryTableName) {
-        configuration.setParameterEntryTable(parameterEntryTableName);
+    public B withParameterEntrySufix(String parameterEntrySufix) {
+        configuration.parameterEntrySufix(parameterEntrySufix);
         return self();
     }
 
-    public B withLevelTableName(String levelTableName) {
-        configuration.setLevelTable(levelTableName);
+    public B withLevelSufix(String levelEntitySufix) {
+        configuration.levelSufix(levelEntitySufix);
+        return self();
+    }
+
+    public B withEntityPrefix(String entityPrefix) {
+        configuration.entityPrefix(entityPrefix);
+        return self();
+    }
+
+    public B withSequencePrefix(String sequencePrefix) {
+        configuration.sequencePrefix(sequencePrefix);
         return self();
     }
 }

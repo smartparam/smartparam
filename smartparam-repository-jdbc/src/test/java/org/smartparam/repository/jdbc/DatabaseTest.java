@@ -101,8 +101,8 @@ public class DatabaseTest {
         dialect = DialectRegistry.dialect("H2");
 
         JdbcConfigBuilder configurationBuilder = jdbcConfig().withDialect(dialect)
-                .withParameterTableName("parameter").withLevelTableName("level")
-                .withParameterEntryTableName("entry");
+                .withParameterSufix("parameter").withLevelSufix("level")
+                .withParameterEntrySufix("entry");
         customizeConfiguraion(configurationBuilder);
         DefaultJdbcConfig configuration = configurationBuilder.build();
 
@@ -126,7 +126,7 @@ public class DatabaseTest {
     @BeforeMethod(alwaysRun = true)
     public void cleanDatabase() {
         JdbcConfig config = get(JdbcConfig.class);
-        String[] relationsToDelete = config.getManagedTables();
+        String[] relationsToDelete = config.managedEntities();
         ArrayUtils.reverse(relationsToDelete);
         cleaner.cleanDB(relationsToDelete);
     }

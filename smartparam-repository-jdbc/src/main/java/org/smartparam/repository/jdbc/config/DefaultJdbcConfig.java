@@ -24,10 +24,21 @@ import org.polyjdbc.core.dialect.Dialect;
  * Default table names are:
  * <ul>
  * <li>sp_parameter for parameter</li>
- * <li>sp_parameter_level for parameter level</li>
+ * <li>sp_level for parameter level</li>
  * <li>sp_parameter_entry for parameter entry</li>
  * </ul>
  *
+ * Default sequence prefix is seq_.
+ *
+ * Default JDBC repository database structure uses denormalized entity to
+ * hold parameter entries. This entity has N-columns, labeled from level0
+ * to level(N-1) that hold parameter levels. If there are more levels than parameters,
+ * excess levels are all concatenated and stored in last column. Default value
+ * for N is 8 and default concatenated level separator is ';'.
+ *
+ * If you find yourself in hot-spot using JDBC repository, N value can be modified
+ * to better reflect your needs. 8 is just a sensible default deducted from
+ * previous experience with using SmartParam.
  *
  * @author Przemek Hertel
  */
@@ -37,11 +48,13 @@ public class DefaultJdbcConfig implements JdbcConfig {
 
     private Dialect dialect;
 
-    private String parameterTable = "sp_parameter";
+    private String parameterSufix = "parameter";
 
-    private String levelTable = "sp_parameter_level";
+    private String levelSufix = "level";
 
-    private String parameterEntryTable = "sp_parameter_entry";
+    private String parameterEntrySufix = "parameter_entry";
+
+    private String entityPrefix = "sp_";
 
     private String sequencePrefix = "seq_";
 
@@ -57,7 +70,7 @@ public class DefaultJdbcConfig implements JdbcConfig {
     }
 
     @Override
-    public Dialect getDialect() {
+    public Dialect dialect() {
         return dialect;
     }
 
@@ -66,69 +79,76 @@ public class DefaultJdbcConfig implements JdbcConfig {
     }
 
     @Override
-    public String[] getManagedTables() {
-        return new String[]{parameterTable, levelTable, parameterEntryTable};
+    public String[] managedEntities() {
+        return new String[]{parameterEntityName(), levelEntityName(), parameterEntryEntityName()};
     }
 
-    @Override
-    public String getParameterTable() {
-        return parameterTable;
+    public String sequencePrefix() {
+        return this.sequencePrefix;
     }
 
-    public void setParameterTable(String parameterTable) {
-        this.parameterTable = parameterTable;
-    }
-
-    @Override
-    public String getLevelTable() {
-        return levelTable;
-    }
-
-    public void setLevelTable(String parameterLevelTable) {
-        this.levelTable = parameterLevelTable;
-    }
-
-    @Override
-    public String getParameterEntryTable() {
-        return parameterEntryTable;
-    }
-
-    @Override
-    public String getSequencePrefix() {
-        return sequencePrefix;
-    }
-
-    @Override
-    public String getLevelSequence() {
-        return sequencePrefix + levelTable;
-    }
-
-    @Override
-    public String getParameterEntrySequence() {
-        return sequencePrefix + parameterEntryTable;
-    }
-
-    public void setSequencePrefix(String sequencePrefix) {
+    void sequencePrefix(String sequencePrefix) {
         this.sequencePrefix = sequencePrefix;
     }
 
-    public void setParameterEntryTable(String parameterEntryTable) {
-        this.parameterEntryTable = parameterEntryTable;
+    public String entityPrefix() {
+        return this.entityPrefix;
     }
 
-    public char getExcessLevelsSeparator() {
+    void entityPrefix(String entityPrefix) {
+        this.entityPrefix = entityPrefix;
+    }
+
+    @Override
+    public String parameterEntityName() {
+        return entityPrefix + parameterSufix;
+    }
+
+    @Override
+    public String levelEntityName() {
+        return entityPrefix + levelSufix;
+    }
+
+    @Override
+    public String parameterEntryEntityName() {
+        return entityPrefix + parameterEntrySufix;
+    }
+
+    void parameterSufix(String parameterSufix) {
+        this.parameterSufix = parameterSufix;
+    }
+
+    void levelSufix(String levelSufix) {
+        this.levelSufix = levelSufix;
+    }
+
+    void parameterEntrySufix(String parameterEntrySufix) {
+        this.parameterEntrySufix = parameterEntrySufix;
+    }
+
+    @Override
+    public String levelSequenceName() {
+        return sequencePrefix + levelSufix;
+    }
+
+    @Override
+    public String parameterEntrySequenceName() {
+        return sequencePrefix + parameterEntrySufix;
+    }
+
+    public char excessLevelsSeparator() {
         return excessLevelsSeparator;
     }
 
-    public void setExcessLevelsSeparator(char excessLevelsSeparator) {
+    void excessLevelsSeparator(char excessLevelsSeparator) {
         this.excessLevelsSeparator = excessLevelsSeparator;
     }
 
-    public int getLevelColumnCount() {
+    public int levelColumnCount() {
         return levelColumnCount;
     }
 
-    public void setLevelColumnCount(int levelColumnCount) {
+    void levelColumnCount(int levelColumnCount) {
         this.levelColumnCount = levelColumnCount;
     }
 }

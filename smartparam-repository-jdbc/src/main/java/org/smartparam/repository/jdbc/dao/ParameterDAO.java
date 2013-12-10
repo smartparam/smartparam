@@ -47,7 +47,7 @@ public class ParameterDAO {
     }
 
     public void insert(QueryRunner queryRunner, Parameter parameter) {
-        InsertQuery query = QueryFactory.insert().into(configuration.getParameterTable())
+        InsertQuery query = QueryFactory.insert().into(configuration.parameterEntityName())
                 .value("name", parameter.getName())
                 .value("input_levels", parameter.getInputLevels())
                 .value("cacheable", parameter.isCacheable())
@@ -57,17 +57,17 @@ public class ParameterDAO {
     }
 
     public void delete(QueryRunner queryRunner, String parameterName) {
-        DeleteQuery query = QueryFactory.delete().from(configuration.getParameterTable()).where("name = :name").withArgument("name", parameterName);
+        DeleteQuery query = QueryFactory.delete().from(configuration.parameterEntityName()).where("name = :name").withArgument("name", parameterName);
         queryRunner.delete(query);
     }
 
     public Set<String> getParameterNames() {
-        SelectQuery query = QueryFactory.select("name").from(configuration.getParameterTable());
+        SelectQuery query = QueryFactory.select("name").from(configuration.parameterEntityName());
         return new HashSet<String>(simpleQueryRunner.queryList(query, new StringMapper()));
     }
 
     public List<String> getParameterNames(ParameterFilter filter) {
-        SelectQuery query = QueryFactory.select("name").from(configuration.getParameterTable());
+        SelectQuery query = QueryFactory.select("name").from(configuration.parameterEntityName());
 
         if (filter.applyNameFilter()) {
             query.where("upper(name) like :name")
@@ -79,19 +79,19 @@ public class ParameterDAO {
     }
 
     public JdbcParameter getParameter(QueryRunner queryRunner, String parameterName) {
-        SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterTable()).where("name = :name")
+        SelectQuery query = QueryFactory.selectAll().from(configuration.parameterEntityName()).where("name = :name")
                 .withArgument("name", parameterName);
         return queryRunner.queryUnique(query, new ParameterMapper(), false);
     }
 
     public boolean parameterExists(String parameterName) {
-        SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterTable()).where("name = :name")
+        SelectQuery query = QueryFactory.selectAll().from(configuration.parameterEntityName()).where("name = :name")
                 .withArgument("name", parameterName);
         return simpleQueryRunner.queryExistence(query);
     }
 
     public void update(QueryRunner queryRunner, String parameterName, Parameter parameter) {
-        UpdateQuery query = QueryFactory.update(configuration.getParameterTable()).where("name = :name")
+        UpdateQuery query = QueryFactory.update(configuration.parameterEntityName()).where("name = :name")
                 .withArgument("name", parameterName)
                 .set("name", parameter.getName())
                 .set("input_levels", parameter.getInputLevels())

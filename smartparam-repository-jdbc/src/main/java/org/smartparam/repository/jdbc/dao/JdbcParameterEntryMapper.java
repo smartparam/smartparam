@@ -41,8 +41,8 @@ public class JdbcParameterEntryMapper implements ObjectMapper<JdbcParameterEntry
         List<String> levels = new ArrayList<String>();
         String currentLevelValue;
         boolean doneBeforeLimit = false;
-        for (int levelIndex = 0; levelIndex < configuration.getLevelColumnCount() - 1; ++levelIndex) {
-            currentLevelValue = resultSet.getString("level" + (levelIndex + 1));
+        for (int levelIndex = 0; levelIndex < configuration.levelColumnCount() - 1; ++levelIndex) {
+            currentLevelValue = resultSet.getString("level" + levelIndex);
             if (currentLevelValue == null) {
                 doneBeforeLimit = true;
                 break;
@@ -51,9 +51,9 @@ public class JdbcParameterEntryMapper implements ObjectMapper<JdbcParameterEntry
         }
 
         if (!doneBeforeLimit) {
-            String lastLevelValue = resultSet.getString("level" + configuration.getLevelColumnCount());
+            String lastLevelValue = resultSet.getString("level" + (configuration.levelColumnCount() - 1));
             if (lastLevelValue != null) {
-                levels.addAll(Arrays.asList(lastLevelValue.split("\\" + configuration.getExcessLevelsSeparator())));
+                levels.addAll(Arrays.asList(lastLevelValue.split("\\" + configuration.excessLevelsSeparator())));
             }
         }
 

@@ -52,7 +52,7 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     private void checkConfiguration() {
-        if (configuration.getDialect() == null) {
+        if (configuration.dialect() == null) {
             throw new SmartParamException("Provided JDBC repository configuration has no dialect defined!");
         }
     }

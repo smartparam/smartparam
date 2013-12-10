@@ -51,14 +51,14 @@ public class ParameterEntryDAO {
     }
 
     public List<Long> insert(QueryRunner queryRunner, Iterable<ParameterEntry> parameterEntries, String parameterName) {
-        int maxDistinctLevels = configuration.getLevelColumnCount();
+        int maxDistinctLevels = configuration.levelColumnCount();
         List<Long> insertedEntriesIds = new LinkedList<Long>();
 
         InsertQuery query;
         int levelIndex;
         for (ParameterEntry entry : parameterEntries) {
-            query = QueryFactory.insert().into(configuration.getParameterEntryTable())
-                    .sequence("id", configuration.getParameterEntrySequence())
+            query = QueryFactory.insert().into(configuration.parameterEntryEntityName())
+                    .sequence("id", configuration.parameterEntrySequenceName())
                     .value("fk_parameter", parameterName);
 
             for (levelIndex = 0; levelIndex < maxDistinctLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
@@ -79,7 +79,7 @@ public class ParameterEntryDAO {
 
     private String concatenateLastLevels(String[] entryLevels, int maxDistinctLevels) {
         String[] excessLevels = Arrays.copyOfRange(entryLevels, maxDistinctLevels - 1, entryLevels.length);
-        return StringUtils.concatenate(configuration.getExcessLevelsSeparator(), (Object[]) excessLevels);
+        return StringUtils.concatenate(configuration.excessLevelsSeparator(), (Object[]) excessLevels);
     }
 
     public Set<ParameterEntry> getParameterEntries(QueryRunner queryRunner, String parameterName) {
@@ -97,34 +97,34 @@ public class ParameterEntryDAO {
     }
 
     private SelectQuery createSelectQuery(String parameterName) {
-        return QueryFactory.selectAll().from(configuration.getParameterEntryTable()).where("fk_parameter = :parameterName")
+        return QueryFactory.selectAll().from(configuration.parameterEntryEntityName()).where("fk_parameter = :parameterName")
                 .withArgument("parameterName", parameterName);
     }
 
     public void deleteParameterEntries(QueryRunner queryRunner, String parameterName) {
-        DeleteQuery query = QueryFactory.delete().from(configuration.getParameterEntryTable())
+        DeleteQuery query = QueryFactory.delete().from(configuration.parameterEntryEntityName())
                 .where("fk_parameter = :parameterName")
                 .withArgument("parameterName", parameterName);
         queryRunner.delete(query);
     }
 
     public void delete(QueryRunner queryRunner, long entryId) {
-        DeleteQuery query = QueryFactory.delete().from(configuration.getParameterEntryTable())
+        DeleteQuery query = QueryFactory.delete().from(configuration.parameterEntryEntityName())
                 .where("id = :id").withArgument("id", entryId);
         queryRunner.delete(query);
     }
 
     public void delete(QueryRunner queryRunner, Iterable<Long> entriesIds) {
-        DeleteQuery query = QueryFactory.delete().from(configuration.getParameterEntryTable())
+        DeleteQuery query = QueryFactory.delete().from(configuration.parameterEntryEntityName())
                 .where("id in (:ids)").withArgument("ids", entriesIds);
         queryRunner.delete(query);
     }
 
     public void update(QueryRunner queryRunner, long entryId, ParameterEntry entry) {
-        UpdateQuery query = QueryFactory.update(configuration.getParameterEntryTable())
+        UpdateQuery query = QueryFactory.update(configuration.parameterEntryEntityName())
                 .where("id = :id").withArgument("id", entryId);
 
-        int maxDistinctLevels = configuration.getLevelColumnCount();
+        int maxDistinctLevels = configuration.levelColumnCount();
         int levelIndex;
 
         for (levelIndex = 0; levelIndex < maxDistinctLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
@@ -141,14 +141,14 @@ public class ParameterEntryDAO {
     }
 
     public List<ParameterEntry> list(QueryRunner queryRunner, String parameterName, ParameterEntriesFilter filter) {
-        SelectQuery query = QueryFactory.selectAll().from(configuration.getParameterEntryTable())
+        SelectQuery query = QueryFactory.selectAll().from(configuration.parameterEntryEntityName())
                 .where("fk_parameter = :parameterName ")
                 .withArgument("parameterName", parameterName);
 
-        int maxDistinctLevels = configuration.getLevelColumnCount();
+        int maxDistinctLevels = configuration.levelColumnCount();
         for (int levelIndex = 0; levelIndex < filter.levelFiltersLength() && levelIndex < maxDistinctLevels; ++levelIndex) {
             if (filter.hasFilter(levelIndex)) {
-                query.append(" and upper(level" + (levelIndex + 1) + ")").append(" like :level" + (levelIndex + 1));
+                query.append(" and upper(" + level(levelIndex) + ")").append(" like :" + level(levelIndex));
                 query.withArgument(level(levelIndex), FilterConverter.parseAntMatcher(filter.levelFilter(levelIndex)));
             }
         }
@@ -169,10 +169,10 @@ public class ParameterEntryDAO {
     }
 
     private String lastLevel() {
-        return level(configuration.getLevelColumnCount() - 1);
+        return level(configuration.levelColumnCount() - 1);
     }
 
     private String level(int levelIndex) {
-        return "level" + (levelIndex + 1);
+        return "level" + levelIndex;
     }
 }

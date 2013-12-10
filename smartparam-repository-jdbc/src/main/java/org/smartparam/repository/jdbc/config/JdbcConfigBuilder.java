@@ -35,12 +35,12 @@ public final class JdbcConfigBuilder extends AbstractConfigurationBuilder<Defaul
     }
 
     public JdbcConfigBuilder withLevelColumnCount(int levelColumnCount) {
-        configuration().setLevelColumnCount(levelColumnCount);
+        configuration().levelColumnCount(levelColumnCount);
         return this;
     }
 
     public JdbcConfigBuilder withExcessLevelSeparator(char separator) {
-        configuration().setExcessLevelsSeparator(separator);
+        configuration().excessLevelsSeparator(separator);
         return this;
     }
 }

@@ -28,19 +28,17 @@ public interface JdbcConfig {
      * What database dialect should be used - mandatory field, JDBC repository
      * will throw an exception if left empty.
      */
-    Dialect getDialect();
+    Dialect dialect();
 
-    String getParameterTable();
+    String parameterEntityName();
 
-    String getLevelTable();
+    String levelEntityName();
 
-    String getLevelSequence();
+    String levelSequenceName();
 
-    String getParameterEntryTable();
+    String parameterEntryEntityName();
 
-    String getParameterEntrySequence();
+    String parameterEntrySequenceName();
 
-    String getSequencePrefix();
-
-    String[] getManagedTables();
+    String[] managedEntities();
 }
