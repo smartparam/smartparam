@@ -59,7 +59,7 @@ public class SmartParamEngine implements ParamEngine {
     }
 
     @Override
-    public ParamEngineRuntimeConfig getConfiguration() {
+    public ParamEngineRuntimeConfig runtimeConfiguration() {
         return configBuilder.buildConfig();
     }
 

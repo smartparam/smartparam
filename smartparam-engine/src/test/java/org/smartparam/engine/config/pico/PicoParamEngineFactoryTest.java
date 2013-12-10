@@ -52,7 +52,7 @@ public class PicoParamEngineFactoryTest {
         ParamEngine engine = paramEngineFactory.createParamEngine(config);
 
         // then
-        assertThat(engine.getConfiguration()).hasParamCache().hasFunctionCache();
+        assertThat(engine.runtimeConfiguration()).hasParamCache().hasFunctionCache();
     }
 
     @Test
@@ -70,7 +70,7 @@ public class PicoParamEngineFactoryTest {
         ParamEngine engine = paramEngineFactory.createParamEngine(config);
 
         // then
-        assertThat(engine.getConfiguration()).hasFunctionRepositories().hasInvokers()
+        assertThat(engine.runtimeConfiguration()).hasFunctionRepositories().hasInvokers()
                 .hasMachers().hasParamRepositories().hasTypes();
     }
 }

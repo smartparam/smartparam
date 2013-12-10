@@ -38,7 +38,7 @@ public class BasicParamEditor implements ParamEditor {
     private final RepositoryStore<EditableParamRepository> repositories;
 
     public BasicParamEditor(ParamEngine paramEngine) {
-        List<ParamRepository> registeredRepositories = paramEngine.getConfiguration().getParamRepositories();
+        List<ParamRepository> registeredRepositories = paramEngine.runtimeConfiguration().getParamRepositories();
         repositories = new RepositoryStore<EditableParamRepository>(registeredRepositories, EditableParamRepository.class);
     }
 

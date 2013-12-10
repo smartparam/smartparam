@@ -47,7 +47,7 @@ public class SpringParamEngineFactoryTest {
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 
         // then
-        assertThat(paramEngine.getConfiguration()).hasParamCache().hasFunctionCache();
+        assertThat(paramEngine.runtimeConfiguration()).hasParamCache().hasFunctionCache();
     }
 
     @Test
@@ -60,7 +60,7 @@ public class SpringParamEngineFactoryTest {
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 
         // then
-        assertThat(paramEngine.getConfiguration()).hasFunctionRepositories().hasInvokers()
+        assertThat(paramEngine.runtimeConfiguration()).hasFunctionRepositories().hasInvokers()
                 .hasMachers().hasTypes();
     }
 
@@ -73,7 +73,7 @@ public class SpringParamEngineFactoryTest {
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 
         // then
-        assertThat(paramEngine.getConfiguration()).hasParamCache().hasFunctionCache();
+        assertThat(paramEngine.runtimeConfiguration()).hasParamCache().hasFunctionCache();
     }
 
     @Test
@@ -86,6 +86,6 @@ public class SpringParamEngineFactoryTest {
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 
         // then
-        assertThat(paramEngine.getConfiguration()).hasRepository(repository);
+        assertThat(paramEngine.runtimeConfiguration()).hasRepository(repository);
     }
 }

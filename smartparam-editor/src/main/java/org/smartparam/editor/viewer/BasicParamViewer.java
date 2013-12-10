@@ -36,7 +36,7 @@ public class BasicParamViewer implements ParamViewer {
     private final RepositoryStore<ViewableParamRepository> repositories;
 
     public BasicParamViewer(ParamEngine paramEngine) {
-        List<ParamRepository> registeredRepositories = paramEngine.getConfiguration().getParamRepositories();
+        List<ParamRepository> registeredRepositories = paramEngine.runtimeConfiguration().getParamRepositories();
         repositories = new RepositoryStore<ViewableParamRepository>(registeredRepositories, ViewableParamRepository.class);
     }
 

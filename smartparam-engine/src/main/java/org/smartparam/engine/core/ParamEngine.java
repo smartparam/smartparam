@@ -59,9 +59,21 @@ public interface ParamEngine {
     Object callFunction(String functionName, Object... args);
 
     /**
+     * Evaluate parameter using provided context and use returned value retrieved
+     * using {@link ParamValue#get() } as name of function to call with provided
+     * arguments.
+     *
+     * @param paramName name of parameter to evaluate
+     * @param ctx       evaluation context
+     * @param args      function invocation arguments
+     * @return invocation result, null for void functions
+     */
+    Object callEvaluatedFunction(String paramName, ParamContext ctx, Object... args);
+
+    /**
      * Return runtime configuration of this instance of parameter engine.
      *
      * @return runtime config
      */
-    ParamEngineRuntimeConfig getConfiguration();
+    ParamEngineRuntimeConfig runtimeConfiguration();
 }
