@@ -38,7 +38,7 @@ public class SimpleParameter implements Parameter {
 
     private final Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
-    private char arraySeparator = ';';
+    private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;;
 
     private boolean cacheable = true;
 

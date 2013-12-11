@@ -32,6 +32,11 @@ import java.util.Set;
 public interface Parameter {
 
     /**
+     * Default value for array separator.
+     */
+    public static final char DEFAULT_ARRAY_SEPARATOR = ',';
+
+    /**
      * Returns unique name of parameter.
      *
      * @return parameter name

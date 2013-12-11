@@ -43,7 +43,7 @@ public class DeserializedParameter implements AppendableParameter {
 
     private boolean nullable;
 
-    private char arraySeparator = ';';
+    private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;;
 
     public DeserializedParameter() {
     }

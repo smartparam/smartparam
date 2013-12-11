@@ -15,9 +15,6 @@
  */
 package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.Level;
-import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.engine.core.parameter.Parameter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -38,7 +35,7 @@ class TestParameter implements Parameter {
 
     Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
-    char arraySeparator = ';';
+    char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
     boolean cacheable = true;
 

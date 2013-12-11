@@ -29,11 +29,6 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class JdbcParameter implements Parameter {
 
-    /**
-     * Default value for {@link #arraySeparator} field.
-     */
-    public static final char DEFAULT_ARRAY_SEPARATOR = ',';
-
     private final String name;
 
     private final List<Level> levels = new ArrayList<Level>();
@@ -46,7 +41,7 @@ public class JdbcParameter implements Parameter {
 
     private boolean cacheable = true;
 
-    private char arraySeparator = DEFAULT_ARRAY_SEPARATOR;
+    private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
     public JdbcParameter(String name, int inputLevels) {
         this.name = name;
