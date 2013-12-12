@@ -50,17 +50,47 @@ public interface ParamValue extends Iterable<MultiValue> {
     /**
      * Get cell of matrix.
      */
-    AbstractHolder get(int rowNo, int colNo);
+    AbstractHolder getHolder(int rowNo, int colNo);
+
+    /**
+     * Get object of type T from cell of matrix.
+     */
+    <T> T get(int rowNo, int colNo);
+
+    /**
+     * Get object of given class from cell of matrix.
+     */
+    <T> T get(int rowNo, int colNo, Class<T> clazz);
 
     /**
      * Get cell of matrix using level name as column indicator.
      */
-    AbstractHolder get(int rowNo, String name);
+    AbstractHolder getHolder(int rowNo, String name);
+
+    /**
+     * Get object of type T from cell of matrix, where column is described by name.
+     */
+    <T> T get(int rowNo, String name);
+
+    /**
+     * Get object of given class from cell of matrix, where column is described by name.
+     */
+    <T> T get(int rowNo, String name, Class<T> clazz);
 
     /**
      * Get value from first row and given column.
      */
-    AbstractHolder get(int colNo);
+    AbstractHolder getHolder(int colNo);
+
+    /**
+     * Get object of type T from first row and column with given index.
+     */
+    <T> T get(int colNo);
+
+    /**
+     * Get object of given class from first row and column with given index.
+     */
+    <T> T get(int colNo, Class<T> clazz);
 
     /**
      * Get value from first row using level name as column indicator.

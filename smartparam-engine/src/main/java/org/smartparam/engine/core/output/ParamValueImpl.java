@@ -60,18 +60,48 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public AbstractHolder get(int rowNo, int colNo) {
+    public AbstractHolder getHolder(int rowNo, int colNo) {
         return row(rowNo).getHolder(colNo);
     }
 
     @Override
-    public AbstractHolder get(int rowNo, String name) {
-        return get(rowNo, name);
+    public <T> T get(int rowNo, int colNo) {
+        return row(rowNo).get(colNo);
     }
 
     @Override
-    public AbstractHolder get(int colNo) {
+    public <T> T get(int rowNo, int colNo, Class<T> clazz) {
+        return row(rowNo).get(colNo, clazz);
+    }
+
+    @Override
+    public AbstractHolder getHolder(int rowNo, String name) {
+        return row(rowNo).getHolder(name);
+    }
+
+    @Override
+    public <T> T get(int rowNo, String name) {
+        return row(rowNo).get(name);
+    }
+
+    @Override
+    public <T> T get(int rowNo, String name, Class<T> clazz) {
+        return row(rowNo).get(name, clazz);
+    }
+
+    @Override
+    public AbstractHolder getHolder(int colNo) {
         return row().getHolder(colNo);
+    }
+
+    @Override
+    public <T> T get(int colNo) {
+        return row().get(colNo);
+    }
+
+    @Override
+    public <T> T get(int colNo, Class<T> clazz) {
+        return row().get(colNo, clazz);
     }
 
     @Override
