@@ -22,19 +22,19 @@ import org.smartparam.engine.core.type.Type;
 
 /**
  * Basic equality matcher to compare two strings. It is possible to toggle
- * case sensitivity.
+ * on case sensitivity.
  *
  * @author Przemek Hertel
  */
-@ParamMatcher("eqMatcher")
-public class EqMatcher implements Matcher {
+@ParamMatcher("equals/string")
+public class StringMatcher implements Matcher {
 
-    private boolean caseSensitive = true;
+    private boolean caseSensitive = false;
 
-    public EqMatcher() {
+    public StringMatcher() {
     }
 
-    public EqMatcher(boolean caseSensitive) {
+    public StringMatcher(boolean caseSensitive) {
         this.caseSensitive = caseSensitive;
     }
 

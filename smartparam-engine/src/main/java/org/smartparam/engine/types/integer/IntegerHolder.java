@@ -35,7 +35,7 @@ public class IntegerHolder extends AbstractHolder {
     /**
      * Wewnetrzna reprezentacja liczby calkowitej (64 bit, signed).
      */
-    private Long value;
+    private final Long value;
 
     /**
      * Jedyny sposob wypelnienia obiektu wartoscia. Obiekty sa immutable.

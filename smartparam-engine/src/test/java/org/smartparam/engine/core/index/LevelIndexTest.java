@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.matchers.BetweenMatcher;
-import org.smartparam.engine.matchers.EqMatcher;
+import org.smartparam.engine.matchers.StringMatcher;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.integer.IntegerType;
 import org.smartparam.engine.types.string.StringType;
@@ -48,7 +48,7 @@ public class LevelIndexTest {
         // konfiguracja zaleznosci
         StringType t1 = new StringType();
         IntegerType t2 = new IntegerType();
-        Matcher m1 = new EqMatcher();
+        Matcher m1 = new StringMatcher();
         Matcher m2 = new BetweenMatcher();
 
         Type<?>[] types = {t1, t2};
@@ -99,7 +99,7 @@ public class LevelIndexTest {
         // konfiguracja zaleznosci
         StringType t1 = new StringType();
         IntegerType t2 = new IntegerType();
-        Matcher m1 = new EqMatcher();
+        Matcher m1 = new StringMatcher();
 
         Type<?>[] types = {t1, t2};
 
@@ -218,8 +218,8 @@ public class LevelIndexTest {
 
         // utworzenie zaleznosci
         StringType stringType = new StringType();
-        Matcher m1 = new EqMatcher(true);           // case sensitive
-        Matcher m2 = new EqMatcher(false);          // ignore case
+        Matcher m1 = new StringMatcher(true);           // case sensitive
+        Matcher m2 = new StringMatcher(false);          // ignore case
 
         // utworzenie testowanego obiektu
         LevelIndex<Integer> ix = new LevelIndex<Integer>(2, new StringType[]{stringType, stringType}, m1, m2);
@@ -262,7 +262,7 @@ public class LevelIndexTest {
     public void testFind__customMatcher2() {
 
         // utworzenie zaleznosci
-        Matcher m1 = new EqMatcher();
+        Matcher m1 = new StringMatcher();
         Matcher m2 = new BetweenMatcher();
 
         StringType t1 = new StringType();

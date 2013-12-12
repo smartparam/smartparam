@@ -34,7 +34,7 @@ public class BooleanHolder extends AbstractHolder {
     /**
      * Wewnetrzna reprezentacja wartosci.
      */
-    private Boolean value;
+    private final Boolean value;
 
     /**
      * Jedyny sposob wypelnienia obiektu wartoscia.

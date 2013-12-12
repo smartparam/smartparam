@@ -25,7 +25,7 @@ import org.smartparam.engine.core.type.AbstractHolder;
  */
 public class DateHolder extends AbstractHolder {
 
-    private Date date;
+    private final Date date;
 
     public DateHolder(Date date) {
         this.date = date;

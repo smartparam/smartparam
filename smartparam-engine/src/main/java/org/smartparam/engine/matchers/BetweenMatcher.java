@@ -41,7 +41,8 @@ import org.smartparam.engine.util.EngineUtil;
 @ParamMatcher(value = "", instances = {
     @ObjectInstance(value = "between/ie", constructorArgs = {"true", "false"}),
     @ObjectInstance(value = "between/ei", constructorArgs = {"false", "true"}),
-    @ObjectInstance(value = "between/ii", constructorArgs = {"true", "true"})
+    @ObjectInstance(value = "between/ii", constructorArgs = {"true", "true"}),
+    @ObjectInstance(value = "between/ee", constructorArgs = {"false", "false"})
 })
 public class BetweenMatcher implements Matcher {
 

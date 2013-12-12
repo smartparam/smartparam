@@ -36,7 +36,7 @@ public class NumberHolder extends AbstractHolder {
     /**
      * Wewnetrzna reprezentacja liczby.
      */
-    private BigDecimal value;
+    private final BigDecimal value;
 
     /**
      * Jedyny sposob wypelnienia obiektu wartoscia. Obiekty sa immutable.

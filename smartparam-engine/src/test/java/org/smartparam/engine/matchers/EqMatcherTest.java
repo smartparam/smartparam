@@ -27,7 +27,7 @@ public class EqMatcherTest {
     @Test
     public void shouldMatchValueWithPatternWhenEqual() {
         // given
-        EqMatcher matcher = new EqMatcher(true);
+        StringMatcher matcher = new StringMatcher(true);
 
         // when
         boolean equals = matcher.matches("ABC", "ABC", new StringType());
@@ -39,7 +39,7 @@ public class EqMatcherTest {
     @Test
     public void shouldNotMatchValueWithPatternWhenCaseDoesNotMatch() {
         // given
-        EqMatcher matcher = new EqMatcher(true);
+        StringMatcher matcher = new StringMatcher(true);
 
         // when
         boolean equals = matcher.matches("abc", "ABC", new StringType());
@@ -51,7 +51,7 @@ public class EqMatcherTest {
     @Test
     public void shouldMatchValueWhenCaseDoesNotMatchButIsCaseInsensitive() {
         // given
-        EqMatcher matcher = new EqMatcher(false);
+        StringMatcher matcher = new StringMatcher(false);
 
         // when
         boolean equals = matcher.matches("abc", "ABC", new StringType());
@@ -63,7 +63,7 @@ public class EqMatcherTest {
     @Test
     public void shouldNotMatchValueWhenValueIsNull() {
         // given
-        EqMatcher matcher = new EqMatcher(false);
+        StringMatcher matcher = new StringMatcher(false);
 
         // when
         boolean equals = matcher.matches(null, "ABC", new StringType());
