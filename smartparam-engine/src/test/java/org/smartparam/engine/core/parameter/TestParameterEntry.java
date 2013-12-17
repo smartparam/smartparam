@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.ParameterEntry;
 import java.util.Arrays;
 
 /**
@@ -27,7 +26,10 @@ class TestParameterEntry implements ParameterEntry {
     String[] levels;
 
     public String[] getLevels() {
-        return Arrays.copyOf(levels, levels.length);
+        if(levels != null) {
+            return Arrays.copyOf(levels, levels.length);
+        }
+        return null;
     }
 
 }

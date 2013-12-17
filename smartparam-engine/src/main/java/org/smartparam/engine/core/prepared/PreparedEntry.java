@@ -29,21 +29,20 @@ public class PreparedEntry {
 
     private static final String[] EMPTY_ARRAY = {};
 
-    private String[] levels;
-
-    public PreparedEntry() {
-    }
+    private final String[] levels;
 
     public PreparedEntry(ParameterEntry parameterEntry) {
-        this.levels = trimRight(parameterEntry.getLevels());
+        this.levels = normalizeLevels(parameterEntry.getLevels());
     }
 
     public String[] getLevels() {
         return levels;
     }
 
-    public void setLevels(String[] levels) {
-        this.levels = trimRight(levels);
+    private String[] normalizeLevels(String[] rawLevels) {
+        String[] normalizedLevels = trimRight(rawLevels);
+        internalizeLevelValues(normalizedLevels);
+        return normalizedLevels;
     }
 
     private String[] trimRight(String[] array) {
@@ -57,6 +56,14 @@ public class PreparedEntry {
         }
 
         return len < array.length ? Arrays.copyOf(array, len) : array;
+    }
+
+    private void internalizeLevelValues(String[] levels) {
+        for (int i = 0; i < levels.length; i++) {
+            if (levels[i] != null) {
+                levels[i] = levels[i].intern();
+            }
+        }
     }
 
     public String getLevel(int k) {

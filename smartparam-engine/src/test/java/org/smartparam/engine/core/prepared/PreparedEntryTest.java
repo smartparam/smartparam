@@ -15,24 +15,17 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.prepared.PreparedEntry;
+import org.smartparam.engine.core.parameter.ParameterEntryTestBuilder;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.AssertJUnit.*; 
-import static org.testng.AssertJUnit.*; 
+import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.testng.AssertJUnit.*;
 
 /**
  * @author Przemek Hertel
  */
 public class PreparedEntryTest {
-
-    PreparedEntry pe;
-
-    @BeforeMethod
-    public void init() {
-        pe = new PreparedEntry();
-    }
 
     @Test
     public void testSetLevels() {
@@ -62,8 +55,7 @@ public class PreparedEntryTest {
             String[] levels = tests[i];
             String[] getlevels = expected[i];
 
-            PreparedEntry entry = new PreparedEntry();
-            entry.setLevels(levels);
+            PreparedEntry entry = new PreparedEntry(parameterEntry().withLevels(levels).build());
 
             // weryfikacja
             assertArrayEquals(getlevels, entry.getLevels());
@@ -72,14 +64,13 @@ public class PreparedEntryTest {
 
     @Test
     public void testGetLevel() {
-
         // inicjalizacja
-        pe.setLevels(new String[]{"A", "B"});
+        PreparedEntry entry = new PreparedEntry(parameterEntry().withLevels("A", "B").build());
 
         // testy
-        assertEquals("A", pe.getLevel(1));
-        assertEquals("B", pe.getLevel(2));
-        assertEquals(null, pe.getLevel(3));
-        assertEquals(null, pe.getLevel(0));
+        assertEquals("A", entry.getLevel(1));
+        assertEquals("B", entry.getLevel(2));
+        assertEquals(null, entry.getLevel(3));
+        assertEquals(null, entry.getLevel(0));
     }
 }

@@ -115,7 +115,7 @@ public class LevelNode<T> {
      * </pre>
      *
      * @param levelValues query values
-     * @param depth depth of current node
+     * @param depth       depth of current node
      * @return value
      */
     public LevelNode<T> findNode(String[] levelValues, int depth) {
@@ -133,6 +133,16 @@ public class LevelNode<T> {
         LevelNode<T> matchedLeaf = null;
 
         if (children != null) {
+            if (matcher == null) {
+                matchedLeaf = children.get(levelVal);
+                if (matchedLeaf != null) {
+                    LevelNode<T> leaf = matchedLeaf.findNode(levelValues, depth + 1);
+                    if (leaf != null) {
+                        return leaf;
+                    }
+                }
+            }
+
             matchedLeaf = match(levelVal, matcher, type, levelValues, depth);
         }
 
@@ -148,9 +158,9 @@ public class LevelNode<T> {
         Iterator<Map.Entry<String, LevelNode<T>>> childrenIterator = children.entrySet().iterator();
 
         Map.Entry<String, LevelNode<T>> entry;
-        while(leaf == null && childrenIterator.hasNext()) {
+        while (leaf == null && childrenIterator.hasNext()) {
             entry = childrenIterator.next();
-            if(patternMatches(val, matcher, type, entry.getKey())) {
+            if (patternMatches(val, matcher, type, entry.getKey())) {
                 leaf = traverseChildNode(entry.getValue(), levelValues, depth);
             }
         }
@@ -159,13 +169,12 @@ public class LevelNode<T> {
     }
 
     private boolean patternMatches(String value, Matcher matcher, Type<?> type, String pattern) {
-        if(matcher == null) {
-            if(pattern == null) {
+        if (matcher == null) {
+            if (pattern == null) {
                 return value == null;
             }
             return pattern.equals(value);
-        }
-        else {
+        } else {
             return matcher.matches(value, pattern, type);
         }
     }
