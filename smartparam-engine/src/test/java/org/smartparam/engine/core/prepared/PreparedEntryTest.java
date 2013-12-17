@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.parameter.ParameterEntryTestBuilder;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
