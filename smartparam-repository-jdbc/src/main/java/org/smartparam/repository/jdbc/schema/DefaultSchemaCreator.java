@@ -62,13 +62,15 @@ public class DefaultSchemaCreator implements SchemaCreator {
         String relationName = configuration.parameterEntityName();
         if (!schemaInspector.relationExists(relationName)) {
             schema.addRelation(relationName)
+                    .withAttribute().longAttr("id").withAdditionalModifiers("AUTO_INCREMENT").notNull().and()
                     .withAttribute().string("name").withMaxLength(200).notNull().unique().and()
                     .withAttribute().integer("input_levels").notNull().and()
                     .withAttribute().booleanAttr("cacheable").notNull().withDefaultValue(true).and()
                     .withAttribute().booleanAttr("nullable").notNull().withDefaultValue(false).and()
                     .withAttribute().character("array_separator").notNull().withDefaultValue(';').and()
-                    .primaryKey(primaryKey(relationName)).using("name").and()
+                    .primaryKey(primaryKey(relationName)).using("id").and()
                     .build();
+            schema.addSequence(configuration.parameterSequenceName()).build();
         }
     }
 
@@ -83,9 +85,9 @@ public class DefaultSchemaCreator implements SchemaCreator {
                     .withAttribute().string("level_creator").withMaxLength(200).and()
                     .withAttribute().booleanAttr("array_flag").notNull().withDefaultValue(false).and()
                     .withAttribute().integer("order_no").notNull().and()
-                    .withAttribute().string(foreignKey("parameter")).notNull().and()
+                    .withAttribute().longAttr(foreignKey("parameter")).notNull().and()
                     .primaryKey(primaryKey(relationName)).using("id").and()
-                    .foreignKey(foreignKey(configuration.parameterEntityName() + "_name")).references(configuration.parameterEntityName(), "name").on(foreignKey("parameter")).and()
+                    .foreignKey(foreignKey(configuration.parameterEntityName() + "_name")).references(configuration.parameterEntityName(), "id").on(foreignKey("parameter")).and()
                     .build();
             schema.addSequence(configuration.levelSequenceName()).build();
         }
@@ -96,14 +98,14 @@ public class DefaultSchemaCreator implements SchemaCreator {
         if (!schemaInspector.relationExists(relationName)) {
             RelationBuilder builder = RelationBuilder.relation(schema, relationName);
             builder.withAttribute().longAttr("id").withAdditionalModifiers("AUTO_INCREMENT").notNull().and()
-                    .withAttribute().string(foreignKey("parameter")).notNull().and();
+                    .withAttribute().longAttr(foreignKey("parameter")).notNull().and();
 
             for (int levelIndex = 0; levelIndex < configuration.levelColumnCount(); ++levelIndex) {
                 builder.string("level" + levelIndex).withMaxLength(255).and();
             }
 
             builder.primaryKey(primaryKey(relationName)).using("id").and()
-                    .foreignKey(foreignKey(configuration.parameterEntityName() + "name")).references(configuration.parameterEntityName(), "name").on(foreignKey("parameter")).and()
+                    .foreignKey(foreignKey(configuration.parameterEntityName() + "name")).references(configuration.parameterEntityName(), "id").on(foreignKey("parameter")).and()
                     .build();
 
             schema.addSequence(configuration.parameterEntrySequenceName()).build();
@@ -118,6 +120,7 @@ public class DefaultSchemaCreator implements SchemaCreator {
 
             Schema schema = new Schema(configuration.dialect());
             schema.addRelation(configuration.parameterEntityName()).build();
+            schema.addSequence(configuration.parameterSequenceName()).build();
 
             schema.addRelation(configuration.levelEntityName()).build();
             schema.addSequence(configuration.levelSequenceName()).build();

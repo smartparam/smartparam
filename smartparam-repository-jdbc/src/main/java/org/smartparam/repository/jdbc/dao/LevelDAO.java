@@ -39,27 +39,23 @@ public class LevelDAO {
         this.configuration = configuration;
     }
 
-    public void insertParameterLevels(QueryRunner queryRunner, List<Level> levels, String parameterName) {
+    public void insertParameterLevels(QueryRunner queryRunner, List<Level> levels, long parameterId) {
         int order = 0;
         for (Level level : levels) {
-            insert(queryRunner, level, parameterName, order);
+            insert(queryRunner, level, parameterId, order);
             order++;
         }
     }
 
-    public long insert(QueryRunner queryRunner, JdbcLevel level, String parameterName) {
-        return insert(queryRunner, level, parameterName, level.getOrderNo());
+    public long insert(QueryRunner queryRunner, Level level, long parameterId) {
+        List<Level> levels = getLevels(queryRunner, parameterId);
+        return insert(queryRunner, level, parameterId, levels.size());
     }
 
-    public long insert(QueryRunner queryRunner, Level level, String parameterName) {
-        List<Level> levels = getLevels(queryRunner, parameterName);
-        return insert(queryRunner, level, parameterName, levels.size());
-    }
-
-    private long insert(QueryRunner queryRunner, Level level, String parameterName, int order) {
+    private long insert(QueryRunner queryRunner, Level level, long parameterId, int order) {
         InsertQuery query = QueryFactory.insert().into(configuration.levelEntityName())
                 .sequence("id", configuration.levelSequenceName())
-                .value("fk_parameter", parameterName)
+                .value("fk_parameter", parameterId)
                 .value("name", level.getName())
                 .value("level_creator", level.getLevelCreator())
                 .value("type", level.getType())
@@ -73,33 +69,35 @@ public class LevelDAO {
         return queryRunner.queryUnique(QueryFactory.selectAll().from(configuration.levelEntityName()).where("id = :id").withArgument("id", id), new JdbcLevelMapper());
     }
 
-    public List<Level> getLevels(QueryRunner queryRunner, String parameterName) {
-        return queryRunner.queryList(createSelectQuery(parameterName), new LevelMapper());
+    public List<Level> getLevels(QueryRunner queryRunner, long parameterId) {
+        return queryRunner.queryList(createSelectQuery(parameterId), new LevelMapper());
     }
 
-    public List<JdbcLevel> getJdbcLevels(QueryRunner queryRunner, String parameterName) {
-        return queryRunner.queryList(createSelectQuery(parameterName), new JdbcLevelMapper());
+    public List<JdbcLevel> getJdbcLevels(QueryRunner queryRunner, long parameterId) {
+        return queryRunner.queryList(createSelectQuery(parameterId), new JdbcLevelMapper());
     }
 
-    private SelectQuery createSelectQuery(String parameterName) {
-        return QueryFactory.selectAll().from(configuration.levelEntityName()).where("fk_parameter = :parameterName").orderBy("order_no", Order.ASC).withArgument("parameterName", parameterName);
+    private SelectQuery createSelectQuery(long parameterId) {
+        return QueryFactory.selectAll().from(configuration.levelEntityName())
+                .where("fk_parameter = :parameterId")
+                .orderBy("order_no", Order.ASC)
+                .withArgument("parameterId", parameterId);
     }
 
     public void deleteParameterLevels(QueryRunner queryRunner, String parameterName) {
         DeleteQuery query = QueryFactory.delete().from(configuration.levelEntityName())
-                .where("fk_parameter = :parameterName")
+                .where("fk_parameter = (select id from " + configuration.parameterEntityName() + " where name = :parameterName)")
                 .withArgument("parameterName", parameterName);
         queryRunner.delete(query);
     }
 
-    public void delete(QueryRunner queryRunner, String parameterName, long levelId) {
+    public void delete(QueryRunner queryRunner, long parameterId, long levelId) {
         DeleteQuery query = QueryFactory.delete().from(configuration.levelEntityName())
                 .where("id = :id")
-                .withArgument("id", levelId)
-                .withArgument("parameterName", parameterName);
+                .withArgument("id", levelId);
         queryRunner.delete(query);
 
-        List<JdbcLevel> parameterLevels = getJdbcLevels(queryRunner, parameterName);
+        List<JdbcLevel> parameterLevels = getJdbcLevels(queryRunner, parameterId);
         long[] parameterLevelsIds = new long[parameterLevels.size()];
         for (int index = 0; index < parameterLevels.size(); ++index) {
             parameterLevelsIds[index] = parameterLevels.get(index).getId();

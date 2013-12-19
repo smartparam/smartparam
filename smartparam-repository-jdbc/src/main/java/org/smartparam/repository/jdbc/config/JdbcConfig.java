@@ -32,6 +32,8 @@ public interface JdbcConfig {
 
     String parameterEntityName();
 
+    String parameterSequenceName();
+
     String levelEntityName();
 
     String levelSequenceName();

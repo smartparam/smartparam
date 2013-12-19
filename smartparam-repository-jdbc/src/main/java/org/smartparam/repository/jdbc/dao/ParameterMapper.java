@@ -29,7 +29,8 @@ public class ParameterMapper implements ObjectMapper<JdbcParameter> {
 
     @Override
     public JdbcParameter createObject(ResultSet resultSet) throws SQLException {
-        JdbcParameter parameter = new JdbcParameter(resultSet.getString("name"),
+        JdbcParameter parameter = new JdbcParameter(resultSet.getLong("id"),
+                resultSet.getString("name"),
                 resultSet.getInt("input_levels"));
 
         parameter.setCacheable(resultSet.getBoolean("cacheable"));

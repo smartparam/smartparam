@@ -59,9 +59,9 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     @Override
     public void createParameter(QueryRunner runner, Parameter parameter) {
-        parameterDAO.insert(runner, parameter);
-        levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameter.getName());
-        parameterEntryDAO.insert(runner, parameter.getEntries(), parameter.getName());
+        long parameterId = parameterDAO.insert(runner, parameter);
+        levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameterId);
+        parameterEntryDAO.insert(runner, parameter.getEntries(), parameterId);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class SimpleJdbcRepository implements JdbcRepository {
     @Override
     public JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName) {
         JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
-        List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameterName));
+        List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameter.getId()));
         parameter.setLevels(levels);
 
         return parameter;
@@ -103,7 +103,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     @Override
     public List<Long> writeParameterEntries(QueryRunner runner, String parameterName, Iterable<ParameterEntry> entries) {
-        return parameterEntryDAO.insert(runner, entries, parameterName);
+        JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
+        return parameterEntryDAO.insert(runner, entries, parameter.getId());
     }
 
     @Override
@@ -125,7 +126,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     @Override
     public long addLevel(QueryRunner runner, String parameterName, Level level) {
-        return levelDAO.insert(runner, level, parameterName);
+        JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
+        return levelDAO.insert(runner, level, parameter.getId());
     }
 
     @Override
@@ -140,7 +142,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     @Override
     public void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId) {
-        levelDAO.delete(queryRunner, parameterName, levelId);
+       JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
+        levelDAO.delete(queryRunner, parameter.getId(), levelId);
     }
 
     @Override
@@ -150,7 +153,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     @Override
     public long addParameterEntry(QueryRunner runner, String parameterName, ParameterEntry entry) {
-        return parameterEntryDAO.insert(runner, entry, parameterName);
+        JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
+        return parameterEntryDAO.insert(runner, entry, parameter.getId());
     }
 
     @Override

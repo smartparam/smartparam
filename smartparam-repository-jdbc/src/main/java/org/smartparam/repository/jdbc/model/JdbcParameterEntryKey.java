@@ -34,9 +34,9 @@ public class JdbcParameterEntryKey extends AbstractEntityKey implements Paramete
         this.entryId = entryId;
     }
 
-    public JdbcParameterEntryKey(ParameterEntryKey parameterKey) {
-        String[] segments = parse(SYMBOL, parameterKey.value());
-        value = parameterKey.value();
+    public JdbcParameterEntryKey(ParameterEntryKey parameterEntryKey) {
+        String[] segments = parse(SYMBOL, parameterEntryKey.value());
+        value = parameterEntryKey.value();
         entryId = Long.parseLong(segments[1]);
     }
 

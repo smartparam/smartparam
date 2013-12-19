@@ -30,6 +30,8 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public class JdbcParameterTestBuilder {
 
+    private long id;
+
     private String name;
 
     private final List<Level> levels = new ArrayList<Level>();
@@ -49,7 +51,7 @@ public class JdbcParameterTestBuilder {
     }
 
     public JdbcParameter build() {
-        JdbcParameter parameter = new JdbcParameter(name, inputLevels);
+        JdbcParameter parameter = new JdbcParameter(id, name, inputLevels);
         parameter.setLevels(levels);
         parameter.setEntries(entries);
         parameter.setNullable(nullable);
@@ -57,6 +59,11 @@ public class JdbcParameterTestBuilder {
         parameter.setArraySeparator(arraySeparator);
 
         return parameter;
+    }
+
+    public JdbcParameterTestBuilder withId(long id) {
+        this.id = id;
+        return this;
     }
 
     public JdbcParameterTestBuilder withName(String name) {

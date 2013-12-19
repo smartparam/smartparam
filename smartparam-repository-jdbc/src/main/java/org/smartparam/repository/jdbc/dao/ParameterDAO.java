@@ -46,14 +46,15 @@ public class ParameterDAO {
         this.simpleQueryRunner = simpleQueryRunner;
     }
 
-    public void insert(QueryRunner queryRunner, Parameter parameter) {
+    public long insert(QueryRunner queryRunner, Parameter parameter) {
         InsertQuery query = QueryFactory.insert().into(configuration.parameterEntityName())
+                .sequence("id", configuration.parameterSequenceName())
                 .value("name", parameter.getName())
                 .value("input_levels", parameter.getInputLevels())
                 .value("cacheable", parameter.isCacheable())
                 .value("nullable", parameter.isNullable())
                 .value("array_separator", parameter.getArraySeparator());
-        queryRunner.insert(query);
+        return queryRunner.insert(query);
     }
 
     public void delete(QueryRunner queryRunner, String parameterName) {

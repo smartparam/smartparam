@@ -21,6 +21,7 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.repository.jdbc.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcLevel;
+import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
@@ -41,11 +42,13 @@ public class LevelDAOTest extends DatabaseTest {
                 .withMatcher("testMatcher").withType("testType").withOrder(0).array().build();
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+
         // when
-        levelDAO.insert(runner, level, "parameter");
+        levelDAO.insert(runner, level, parameter.getId());
         runner.commit();
 
-        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, parameter.getId());
         runner.close();
 
         // then
@@ -63,8 +66,10 @@ public class LevelDAOTest extends DatabaseTest {
         Level level = level().withName("level").withType("string").build();
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+
         // when
-        long levelId = levelDAO.insert(runner, level, "parameter");
+        long levelId = levelDAO.insert(runner, level, parameter.getId());
 
         JdbcLevel savedLevel = levelDAO.getLevel(runner, levelId);
         runner.close();
@@ -82,11 +87,13 @@ public class LevelDAOTest extends DatabaseTest {
         Level level = level().withName("test").withType("string").build();
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+
         // when
-        levelDAO.insertParameterLevels(runner, Arrays.asList(level), "parameter");
+        levelDAO.insertParameterLevels(runner, Arrays.asList(level), parameter.getId());
         runner.commit();
 
-        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, parameter.getId());
         runner.close();
 
         // then
@@ -116,10 +123,11 @@ public class LevelDAOTest extends DatabaseTest {
         LevelDAO levelDAO = get(LevelDAO.class);
         QueryRunner runner = queryRunner();
 
-        long levelToDelete = levelDAO.insert(runner, level().withName("level").withType("string").build(), "parameter");
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+        long levelToDelete = levelDAO.insert(runner, level().withName("level").withType("string").build(), parameter.getId());
 
         // when
-        levelDAO.delete(runner, "parameter", levelToDelete);
+        levelDAO.delete(runner, parameter.getId(), levelToDelete);
         runner.close();
 
         // then
@@ -133,7 +141,8 @@ public class LevelDAOTest extends DatabaseTest {
         LevelDAO levelDAO = get(LevelDAO.class);
         QueryRunner runner = queryRunner();
 
-        long levelToUpdate = levelDAO.insert(runner, level().withName("level").withType("string").build(), "parameter");
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+        long levelToUpdate = levelDAO.insert(runner, level().withName("level").withType("string").build(), parameter.getId());
 
         // when
         Level updatedLevelData = level().withName("renamedLevel").withType("string").build();
@@ -153,13 +162,14 @@ public class LevelDAOTest extends DatabaseTest {
         LevelDAO levelDAO = get(LevelDAO.class);
         QueryRunner runner = queryRunner();
 
-        long level1Id = levelDAO.insert(runner, level().withName("level1").withType("string").build(), "parameter");
-        long level2Id = levelDAO.insert(runner, level().withName("level2").withType("string").build(), "parameter");
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+        long level1Id = levelDAO.insert(runner, level().withName("level1").withType("string").build(), parameter.getId());
+        long level2Id = levelDAO.insert(runner, level().withName("level2").withType("string").build(), parameter.getId());
 
         // when
         levelDAO.reorder(runner, new long[]{level2Id, level1Id});
 
-        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, "parameter");
+        List<JdbcLevel> levels = levelDAO.getJdbcLevels(runner, parameter.getId());
         runner.close();
 
         // then

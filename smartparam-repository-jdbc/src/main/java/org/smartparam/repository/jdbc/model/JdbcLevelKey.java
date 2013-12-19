@@ -35,9 +35,9 @@ public class JdbcLevelKey extends AbstractEntityKey implements LevelKey {
         this.levelId = levelId;
     }
 
-    public JdbcLevelKey(LevelKey parameterKey) {
-        String[] segments = parse(SYMBOL, parameterKey.value());
-        value = parameterKey.value();
+    public JdbcLevelKey(LevelKey levelKey) {
+        String[] segments = parse(SYMBOL, levelKey.value());
+        value = levelKey.value();
         levelId = Long.parseLong(segments[0]);
     }
 

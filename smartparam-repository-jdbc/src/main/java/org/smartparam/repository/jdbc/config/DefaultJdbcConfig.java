@@ -127,6 +127,11 @@ public class DefaultJdbcConfig implements JdbcConfig {
     }
 
     @Override
+    public String parameterSequenceName() {
+        return sequencePrefix + parameterSufix;
+    }
+
+    @Override
     public String levelSequenceName() {
         return sequencePrefix + levelSufix;
     }

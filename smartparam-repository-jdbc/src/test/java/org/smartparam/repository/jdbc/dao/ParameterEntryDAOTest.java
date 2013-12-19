@@ -25,6 +25,7 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
 import org.smartparam.repository.jdbc.DatabaseTest;
+import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
 
@@ -49,11 +50,13 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         // given
         database().withParameter("parameter").build();
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
-        ParameterEntry entry = parameterEntry().withLevels("1", "2").build();
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+        ParameterEntry entry = parameterEntry().withLevels("1", "2").build();
+
         // when
-        parameterEntryDAO.insert(runner, Arrays.asList(entry), "parameter");
+        parameterEntryDAO.insert(runner, Arrays.asList(entry), parameter.getId());
         runner.commit();
 
         Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, "parameter");
@@ -68,11 +71,13 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         // given
         database().withParameter("parameter").build();
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
-        ParameterEntry entry = parameterEntry().withLevels("1", "2", "3", "4").build();
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+        ParameterEntry entry = parameterEntry().withLevels("1", "2", "3", "4").build();
+
         // when
-        parameterEntryDAO.insert(runner, Arrays.asList(entry), "parameter");
+        parameterEntryDAO.insert(runner, Arrays.asList(entry), parameter.getId());
         runner.commit();
 
         Set<JdbcParameterEntry> entries = parameterEntryDAO.getJdbcParameterEntries(runner, "parameter");
@@ -121,7 +126,8 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
-        long entryIdToDelete = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), "parameter");
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+        long entryIdToDelete = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), parameter.getId());
         runner.commit();
 
         // when
@@ -139,7 +145,8 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
-        long entryIdToUpdate = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), "parameter");
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+        long entryIdToUpdate = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), parameter.getId());
         runner.commit();
 
         // when
@@ -160,7 +167,8 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
-        long entryIdToUpdate = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), "parameter");
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
+        long entryIdToUpdate = parameterEntryDAO.insert(runner, parameterEntry().withLevels("1").build(), parameter.getId());
         runner.commit();
 
         // when
@@ -181,10 +189,11 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
         List<ParameterEntry> entries = Arrays.asList(
                 parameterEntry().withLevels("1").build(),
                 parameterEntry().withLevels("2").build());
-        List<Long> entriesIdsToDelete = parameterEntryDAO.insert(runner, entries, "parameter");
+        List<Long> entriesIdsToDelete = parameterEntryDAO.insert(runner, entries, parameter.getId());
         runner.commit();
 
         // when
@@ -232,11 +241,12 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
         List<ParameterEntry> entries = Arrays.asList(
                 parameterEntry().withLevels("1", "2").build(),
                 parameterEntry().withLevels("1").build(),
                 parameterEntry().withLevels("5", "2").build());
-        parameterEntryDAO.insert(runner, entries, "parameter");
+        parameterEntryDAO.insert(runner, entries, parameter.getId());
         runner.commit();
 
         // when
@@ -254,11 +264,12 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
         List<ParameterEntry> entries = Arrays.asList(
                 parameterEntry().withLevels("1", "2").build(),
                 parameterEntry().withLevels("1").build(),
                 parameterEntry().withLevels("5", "2").build());
-        parameterEntryDAO.insert(runner, entries, "parameter");
+        parameterEntryDAO.insert(runner, entries, parameter.getId());
         runner.commit();
 
         // when
@@ -276,10 +287,11 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
         List<ParameterEntry> entries = Arrays.asList(
                 parameterEntry().withLevels("1", "2", "3").build(),
                 parameterEntry().withLevels("5", "6").build());
-        parameterEntryDAO.insert(runner, entries, "parameter");
+        parameterEntryDAO.insert(runner, entries, parameter.getId());
         runner.commit();
 
         // when
@@ -297,11 +309,12 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
         List<ParameterEntry> entries = Arrays.asList(
                 parameterEntry().withLevels("prefix-12", "2", "3").build(),
                 parameterEntry().withLevels("does-not-match-12", "2", "3").build(),
                 parameterEntry().withLevels("other-prefix-52", "6").build());
-        parameterEntryDAO.insert(runner, entries, "parameter");
+        parameterEntryDAO.insert(runner, entries, parameter.getId());
         runner.commit();
 
         // when
@@ -319,10 +332,11 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
         List<ParameterEntry> entries = Arrays.asList(
                 parameterEntry().withLevels("1", "2").build(),
                 parameterEntry().withLevels("5", "6").build());
-        parameterEntryDAO.insert(runner, entries, "parameter");
+        parameterEntryDAO.insert(runner, entries, parameter.getId());
         runner.commit();
 
         // when
@@ -340,10 +354,11 @@ public class ParameterEntryDAOTest extends DatabaseTest {
         ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
         QueryRunner runner = queryRunner();
 
+        JdbcParameter parameter = get(ParameterDAO.class).getParameter(runner, "parameter");
         List<ParameterEntry> entries = Arrays.asList(
                 parameterEntry().withLevels("1", "2", "3").build(),
                 parameterEntry().withLevels("5", "6", "7").build());
-        parameterEntryDAO.insert(runner, entries, "parameter");
+        parameterEntryDAO.insert(runner, entries, parameter.getId());
         runner.commit();
 
         // when

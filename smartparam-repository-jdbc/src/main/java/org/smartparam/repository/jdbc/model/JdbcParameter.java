@@ -29,6 +29,8 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class JdbcParameter implements Parameter {
 
+    private final long id;
+
     private final String name;
 
     private final List<Level> levels = new ArrayList<Level>();
@@ -43,9 +45,14 @@ public class JdbcParameter implements Parameter {
 
     private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
-    public JdbcParameter(String name, int inputLevels) {
+    public JdbcParameter(long id, String name, int inputLevels) {
+        this.id = id;
         this.name = name;
         this.inputLevels = inputLevels;
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override

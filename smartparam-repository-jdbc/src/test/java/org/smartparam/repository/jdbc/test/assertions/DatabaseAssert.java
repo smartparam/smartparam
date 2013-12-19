@@ -25,6 +25,7 @@ import org.smartparam.engine.test.ParamEngineAssertions;
 import org.smartparam.repository.jdbc.dao.LevelDAO;
 import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
+import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
  *
@@ -90,7 +91,8 @@ public class DatabaseAssert extends AbstractAssert<DatabaseAssert, Object> {
         return performOperation(new Operation() {
             @Override
             public void run() {
-                List<Level> levels = levelDAO.getLevels(queryRunner, parameterName);
+                JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
+                List<Level> levels = levelDAO.getLevels(queryRunner, parameter.getId());
                 ParamEngineAssertions.assertThat(levels).hasSize(count);
             }
         });

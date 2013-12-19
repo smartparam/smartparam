@@ -27,7 +27,7 @@ import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
  */
 public class ParameterEntryMapper implements ObjectMapper<ParameterEntry> {
 
-    private JdbcParameterEntryMapper jdbcMapper;
+    private final JdbcParameterEntryMapper jdbcMapper;
 
     public ParameterEntryMapper(DefaultJdbcConfig configuration) {
         jdbcMapper = new JdbcParameterEntryMapper(configuration);

@@ -46,11 +46,11 @@ public class ParameterEntryDAO {
         this.configuration = configuration;
     }
 
-    public long insert(QueryRunner queryRunner, ParameterEntry parameterEntry, String parameterName) {
-        return insert(queryRunner, Arrays.asList(parameterEntry), parameterName).get(0);
+    public long insert(QueryRunner queryRunner, ParameterEntry parameterEntry, long parameterId) {
+        return insert(queryRunner, Arrays.asList(parameterEntry), parameterId).get(0);
     }
 
-    public List<Long> insert(QueryRunner queryRunner, Iterable<ParameterEntry> parameterEntries, String parameterName) {
+    public List<Long> insert(QueryRunner queryRunner, Iterable<ParameterEntry> parameterEntries, long parameterId) {
         int maxDistinctLevels = configuration.levelColumnCount();
         List<Long> insertedEntriesIds = new LinkedList<Long>();
 
@@ -59,7 +59,7 @@ public class ParameterEntryDAO {
         for (ParameterEntry entry : parameterEntries) {
             query = QueryFactory.insert().into(configuration.parameterEntryEntityName())
                     .sequence("id", configuration.parameterEntrySequenceName())
-                    .value("fk_parameter", parameterName);
+                    .value("fk_parameter", parameterId);
 
             for (levelIndex = 0; levelIndex < maxDistinctLevels - 1 && levelIndex < entry.getLevels().length; ++levelIndex) {
                 query.value(level(levelIndex), entry.getLevels()[levelIndex]);
@@ -97,13 +97,14 @@ public class ParameterEntryDAO {
     }
 
     private SelectQuery createSelectQuery(String parameterName) {
-        return QueryFactory.selectAll().from(configuration.parameterEntryEntityName()).where("fk_parameter = :parameterName")
+        return QueryFactory.selectAll().from(configuration.parameterEntryEntityName())
+                .where("fk_parameter = (select id from " + configuration.parameterEntityName() + " where name = :parameterName)")
                 .withArgument("parameterName", parameterName);
     }
 
     public void deleteParameterEntries(QueryRunner queryRunner, String parameterName) {
         DeleteQuery query = QueryFactory.delete().from(configuration.parameterEntryEntityName())
-                .where("fk_parameter = :parameterName")
+                .where("fk_parameter = (select id from " + configuration.parameterEntityName() + " where name = :parameterName)")
                 .withArgument("parameterName", parameterName);
         queryRunner.delete(query);
     }
@@ -142,7 +143,7 @@ public class ParameterEntryDAO {
 
     public List<ParameterEntry> list(QueryRunner queryRunner, String parameterName, ParameterEntriesFilter filter) {
         SelectQuery query = QueryFactory.selectAll().from(configuration.parameterEntryEntityName())
-                .where("fk_parameter = :parameterName ")
+                .where("fk_parameter = (select id from " + configuration.parameterEntityName() + " where name = :parameterName) ")
                 .withArgument("parameterName", parameterName);
 
         int maxDistinctLevels = configuration.levelColumnCount();
