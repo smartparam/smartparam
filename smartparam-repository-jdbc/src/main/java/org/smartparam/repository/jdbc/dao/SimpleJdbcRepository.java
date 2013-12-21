@@ -26,7 +26,6 @@ import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
-import org.smartparam.repository.jdbc.model.JdbcLevel;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
@@ -120,11 +119,6 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public JdbcLevel getLevel(QueryRunner runner, long id) {
-        return levelDAO.getLevel(runner, id);
-    }
-
-    @Override
     public long addLevel(QueryRunner runner, String parameterName, Level level) {
         JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
         return levelDAO.insert(runner, level, parameter.getId());
@@ -142,7 +136,7 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     @Override
     public void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId) {
-       JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
+        JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
         levelDAO.delete(queryRunner, parameter.getId(), levelId);
     }
 

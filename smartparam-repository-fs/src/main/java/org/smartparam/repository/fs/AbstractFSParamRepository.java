@@ -38,8 +38,6 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractFSParamRepository.class);
 
-    private static final int DEFAULT_BATCH_LOADER_SIZE = 2000;
-
     private String basePath;
 
     private String filePattern;

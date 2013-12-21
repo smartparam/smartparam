@@ -51,11 +51,11 @@ public class MultiValue {
     private int last = 0;
 
     public MultiValue(Object[] values) {
-        this.values = values;
+        this.values = Arrays.copyOf(values, values.length);
     }
 
     public MultiValue(Object[] values, Map<String, Integer> indexMap) {
-        this.values = values;
+        this(values);
         this.indexMap = indexMap;
     }
 

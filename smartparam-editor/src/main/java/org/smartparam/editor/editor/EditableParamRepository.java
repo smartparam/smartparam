@@ -24,37 +24,71 @@ import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
 
 /**
- * Warning! This interface will be undergoing big changes in near future
- * (adding new methods most probably) to integrate with editor.
+ * Editable repository.
  *
  * @author Adam Dubiel
  */
 public interface EditableParamRepository extends ParamRepository {
 
+    /**
+     * Create new parameter based on provided instance (only interface methods
+     * are used).
+     */
     void createParameter(Parameter parameter);
 
+    /**
+     * Update parameter with properties of provided instance.
+     */
     void updateParameter(String parameterName, Parameter parameter);
 
+    /**
+     * Delete parameter stored under given name.
+     */
     void deleteParameter(String parameterName);
 
-    Level getLevel(LevelKey entityKey);
-
+    /**
+     * Add level to parameter.
+     */
     LevelKey addLevel(String parameterName, Level level);
 
-    void reorderLevels(List<LevelKey> orderedLevels);
+    /**
+     * Change order of parameter levels to their order on the list.
+     */
+    void reorderLevels(String parameterName, List<LevelKey> orderedLevels);
 
-    void updateLevel(LevelKey levelKey, Level level);
+    /**
+     * Update level in given parameter.
+     */
+    void updateLevel(String parameterName, LevelKey levelKey, Level level);
 
+    /**
+     * Delete level from parameter.
+     */
     void deleteLevel(String parameterName, LevelKey levelKey);
 
+    /**
+     * Add entry to parameter.
+     */
     ParameterEntryKey addEntry(String parameterName, ParameterEntry entry);
 
-    List<ParameterEntryKey> addEntries(String parameterName, List<ParameterEntry> entries);
+    /**
+     * Add entries to parameter.
+     */
+    List<ParameterEntryKey> addEntries(String parameterName, Iterable<ParameterEntry> entries);
 
-    void updateEntry(ParameterEntryKey entryKey, ParameterEntry entry);
+    /**
+     * Update given entry.
+     */
+    void updateEntry(String parameterName, ParameterEntryKey entryKey, ParameterEntry entry);
 
-    void deleteEntry(ParameterEntryKey entryKey);
+    /**
+     * Delete entry.
+     */
+    void deleteEntry(String parameterName, ParameterEntryKey entryKey);
 
-    void deleteEntries(Iterable<ParameterEntryKey> entryKeys);
+    /**
+     * Delete all entries.
+     */
+    void deleteEntries(String parameterName, Iterable<ParameterEntryKey> entryKeys);
 
 }

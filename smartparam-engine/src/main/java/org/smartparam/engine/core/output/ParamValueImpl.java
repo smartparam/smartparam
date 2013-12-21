@@ -23,6 +23,7 @@ import org.smartparam.engine.util.Printer;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Przemek Hertel
@@ -33,7 +34,7 @@ public class ParamValueImpl implements ParamValue {
     private final MultiValue[] rows;
 
     public ParamValueImpl(MultiValue[] rows) {
-        this.rows = rows;
+        this.rows = Arrays.copyOf(rows, rows.length);
     }
 
     @Override
@@ -50,13 +51,13 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public MultiValue[] rows() {
-        return rows;
+    public List<MultiValue> rows() {
+        return Arrays.asList(rows);
     }
 
     @Override
     public Iterator<MultiValue> iterator() {
-        return Arrays.asList(rows).iterator();
+        return rows().iterator();
     }
 
     @Override

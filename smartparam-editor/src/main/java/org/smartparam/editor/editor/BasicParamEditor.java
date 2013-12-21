@@ -21,13 +21,13 @@ import org.smartparam.editor.identity.DescribedEntity;
 import org.smartparam.editor.identity.RepositoryName;
 import org.smartparam.editor.store.RepositoryStore;
 import org.smartparam.engine.core.ParamEngine;
-import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.editor.model.EditableLevel;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.engine.core.ParamEngineRuntimeConfig;
+import org.smartparam.engine.core.prepared.PreparedParamCache;
 
 /**
  *
@@ -37,14 +37,22 @@ public class BasicParamEditor implements ParamEditor {
 
     private final RepositoryStore<EditableParamRepository> repositories;
 
+    private final PreparedParamCache parameterCache;
+
     public BasicParamEditor(ParamEngine paramEngine) {
-        List<ParamRepository> registeredRepositories = paramEngine.runtimeConfiguration().getParamRepositories();
-        repositories = new RepositoryStore<EditableParamRepository>(registeredRepositories, EditableParamRepository.class);
+        ParamEngineRuntimeConfig runtimeConfig = paramEngine.runtimeConfiguration();
+
+        repositories = new RepositoryStore<EditableParamRepository>(runtimeConfig.getParamRepositories(), EditableParamRepository.class);
+        parameterCache = runtimeConfig.getParamCache();
     }
 
     @Override
     public List<RepositoryName> repositories() {
         return repositories.storedRepositories();
+    }
+
+    private void clearCache(String parameterName) {
+        parameterCache.invalidate(parameterName);
     }
 
     @Override
@@ -57,70 +65,78 @@ public class BasicParamEditor implements ParamEditor {
     public void updateParameter(RepositoryName in, String parameterName, Parameter parameter) {
         EditableParamRepository repository = repositories.get(in);
         repository.updateParameter(parameterName, parameter);
+        clearCache(parameterName);
     }
 
     public void deleteParameter(RepositoryName in, String parameterName) {
         EditableParamRepository repository = repositories.get(in);
         repository.deleteParameter(parameterName);
-    }
-
-    @Override
-    public DescribedEntity<EditableLevel> getLevel(RepositoryName from, LevelKey levelKey) {
-        EditableParamRepository repository = repositories.get(from);
-        return new DescribedEntity<EditableLevel>(from, (EditableLevel) repository.getLevel(levelKey));
+        clearCache(parameterName);
     }
 
     @Override
     public DescribedEntity<LevelKey> addLevel(RepositoryName in, String parameterName, Level level) {
         EditableParamRepository repository = repositories.get(in);
-        return new DescribedEntity<LevelKey>(in, repository.addLevel(parameterName, level));
+        LevelKey addedLevelKey = repository.addLevel(parameterName, level);
+        clearCache(parameterName);
+
+        return new DescribedEntity<LevelKey>(in, addedLevelKey);
     }
 
     @Override
-    public void reorderLevels(RepositoryName in, List<LevelKey> orderedLevels) {
+    public void reorderLevels(RepositoryName in, String parameterName, List<LevelKey> orderedLevels) {
         EditableParamRepository repository = repositories.get(in);
-        repository.reorderLevels(orderedLevels);
+        repository.reorderLevels(parameterName, orderedLevels);
+        clearCache(parameterName);
     }
 
     @Override
-    public void updateLevel(RepositoryName in, LevelKey levelKey, Level level) {
+    public void updateLevel(RepositoryName in, String parameterName, LevelKey levelKey, Level level) {
         EditableParamRepository repository = repositories.get(in);
-        repository.updateLevel(levelKey, level);
+        repository.updateLevel(parameterName, levelKey, level);
+        clearCache(parameterName);
     }
 
     @Override
     public void deleteLevel(RepositoryName in, String parameterName, LevelKey levelKey) {
         EditableParamRepository repository = repositories.get(in);
         repository.deleteLevel(parameterName, levelKey);
+        clearCache(parameterName);
     }
 
     @Override
     public DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntry entry) {
         EditableParamRepository repository = repositories.get(in);
-        return new DescribedEntity<ParameterEntryKey>(in, repository.addEntry(parameterName, entry));
+        ParameterEntryKey addedEntryKey = repository.addEntry(parameterName, entry);
+        clearCache(parameterName);
+
+        return new DescribedEntity<ParameterEntryKey>(in, addedEntryKey);
     }
 
     @Override
-    public DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, List<ParameterEntry> entries) {
+    public DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntry> entries) {
         EditableParamRepository repository = repositories.get(in);
         return new DescribedCollection<ParameterEntryKey>(in, repository.addEntries(parameterName, entries));
     }
 
     @Override
-    public void updateEntry(RepositoryName in, ParameterEntryKey entryKey, ParameterEntry entry) {
+    public void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, ParameterEntry entry) {
         EditableParamRepository repository = repositories.get(in);
-        repository.updateEntry(entryKey, entry);
+        repository.updateEntry(parameterName, entryKey, entry);
+        clearCache(parameterName);
     }
 
     @Override
-    public void deleteEntry(RepositoryName in, ParameterEntryKey entryKey) {
+    public void deleteEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey) {
         EditableParamRepository repository = repositories.get(in);
-        repository.deleteEntry(entryKey);
+        repository.deleteEntry(parameterName, entryKey);
+        clearCache(parameterName);
     }
 
     @Override
-    public void deleteEntries(RepositoryName in, Iterable<ParameterEntryKey> entryKeys) {
+    public void deleteEntries(RepositoryName in, String parameterName, Iterable<ParameterEntryKey> entryKeys) {
         EditableParamRepository repository = repositories.get(in);
-        repository.deleteEntries(entryKeys);
+        repository.deleteEntries(parameterName, entryKeys);
+        clearCache(parameterName);
     }
 }

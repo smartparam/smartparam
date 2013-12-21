@@ -52,8 +52,6 @@ public interface JdbcRepository {
 
     void updateParameter(QueryRunner runner, String parameterName, Parameter parameter);
 
-    JdbcLevel getLevel(QueryRunner runner, long id);
-
     long addLevel(QueryRunner runner, String parameterName, Level level);
 
     void updateLevel(QueryRunner runner, long levelId, Level level);

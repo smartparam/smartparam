@@ -240,16 +240,6 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public Level getLevel(final LevelKey entityKey) {
-        return transactionRunner.run(new TransactionWrapper<Level>() {
-            @Override
-            public Level perform(QueryRunner queryRunner) {
-                return dao.getLevel(queryRunner, new JdbcLevelKey(entityKey).levelId());
-            }
-        });
-    }
-
-    @Override
     public LevelKey addLevel(final String parameterName, final Level level) {
         return transactionRunner.run(new TransactionWrapper<LevelKey>() {
             @Override
@@ -261,7 +251,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public void updateLevel(final LevelKey levelKey, final Level level) {
+    public void updateLevel(String parameterName, final LevelKey levelKey, final Level level) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
@@ -271,7 +261,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public void reorderLevels(final List<LevelKey> orderedLevels) {
+    public void reorderLevels(String parameterName, final List<LevelKey> orderedLevels) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
@@ -317,13 +307,13 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public List<ParameterEntryKey> addEntries(final String parameterName, final List<ParameterEntry> entries) {
+    public List<ParameterEntryKey> addEntries(final String parameterName, final Iterable<ParameterEntry> entries) {
         return transactionRunner.run(new TransactionWrapper<List<ParameterEntryKey>>() {
             @Override
             public List<ParameterEntryKey> perform(QueryRunner queryRunner) {
                 List<Long> entriesIds = dao.writeParameterEntries(queryRunner, parameterName, entries);
 
-                List<ParameterEntryKey> keys = new ArrayList<ParameterEntryKey>(entries.size());
+                List<ParameterEntryKey> keys = new ArrayList<ParameterEntryKey>(entriesIds.size());
                 for (Long entryId : entriesIds) {
                     keys.add(new JdbcParameterEntryKey(entryId));
                 }
@@ -334,7 +324,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public void updateEntry(final ParameterEntryKey entryKey, final ParameterEntry entry) {
+    public void updateEntry(String parameterName, final ParameterEntryKey entryKey, final ParameterEntry entry) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
@@ -344,7 +334,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public void deleteEntry(final ParameterEntryKey entryKey) {
+    public void deleteEntry(String parameterName, final ParameterEntryKey entryKey) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {
@@ -354,7 +344,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public void deleteEntries(final Iterable<ParameterEntryKey> entryKeys) {
+    public void deleteEntries(String parameterName, final Iterable<ParameterEntryKey> entryKeys) {
         transactionRunner.run(new VoidTransactionWrapper() {
             @Override
             public void performVoid(QueryRunner queryRunner) {

@@ -22,7 +22,6 @@ import org.smartparam.editor.identity.RepositoryName;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.editor.model.EditableLevel;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
 
@@ -40,23 +39,21 @@ public interface ParamEditor {
 
     void deleteParameter(RepositoryName in, String parameterName);
 
-    DescribedEntity<EditableLevel> getLevel(RepositoryName from, LevelKey levelKey);
-
     DescribedEntity<LevelKey> addLevel(RepositoryName in, String parameterName, Level level);
 
-    void reorderLevels(RepositoryName in, List<LevelKey> orderedLevels);
+    void reorderLevels(RepositoryName in, String parameterName, List<LevelKey> orderedLevels);
 
-    void updateLevel(RepositoryName in, LevelKey levelKey, Level level);
+    void updateLevel(RepositoryName in, String parameterName, LevelKey levelKey, Level level);
 
     void deleteLevel(RepositoryName in, String parameterName, LevelKey levelKey);
 
     DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntry entry);
 
-    DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, List<ParameterEntry> entries);
+    DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntry> entries);
 
-    void updateEntry(RepositoryName in, ParameterEntryKey entryKey, ParameterEntry entry);
+    void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, ParameterEntry entry);
 
-    void deleteEntry(RepositoryName in, ParameterEntryKey entryKey);
+    void deleteEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey);
 
-    void deleteEntries(RepositoryName in, Iterable<ParameterEntryKey> entryKeys);
+    void deleteEntries(RepositoryName in, String parameterName, Iterable<ParameterEntryKey> entryKeys);
 }

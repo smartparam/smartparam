@@ -39,8 +39,8 @@ import org.smartparam.engine.core.function.BasicFunctionManager;
 import org.smartparam.engine.annotated.repository.ScanningFunctionProvider;
 import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.parameter.BasicParameterProvider;
+import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.type.Type;
-import sun.security.provider.ParameterCache;
 
 /**
  * Configuration to build ParamEngine instance - use {@link ParamEngineConfigBuilder}
@@ -60,7 +60,7 @@ public class ParamEngineConfig extends ComponentConfig {
 
     private final Map<String, Matcher> matchers = new HashMap<String, Matcher>();
 
-    private ParameterCache parameterCache;
+    private PreparedParamCache parameterCache;
 
     private FunctionCache functionCache;
 
@@ -131,11 +131,11 @@ public class ParamEngineConfig extends ComponentConfig {
         addComponent(functionCache);
     }
 
-    public ParameterCache getParameterCache() {
+    public PreparedParamCache getParameterCache() {
         return parameterCache;
     }
 
-    protected void setParameterCache(ParameterCache parameterCache) {
+    protected void setParameterCache(PreparedParamCache parameterCache) {
         this.parameterCache = parameterCache;
         addComponent(parameterCache);
     }

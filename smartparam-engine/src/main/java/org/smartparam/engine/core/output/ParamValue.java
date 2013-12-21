@@ -17,6 +17,7 @@ package org.smartparam.engine.core.output;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import org.smartparam.engine.core.type.AbstractHolder;
 
 /**
@@ -45,7 +46,7 @@ public interface ParamValue extends Iterable<MultiValue> {
     /**
      * Return all rows of matrix.
      */
-    MultiValue[] rows();
+    List<MultiValue> rows();
 
     /**
      * Get cell of matrix.

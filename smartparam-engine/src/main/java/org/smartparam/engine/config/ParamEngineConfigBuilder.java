@@ -28,8 +28,8 @@ import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
+import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.type.Type;
-import sun.security.provider.ParameterCache;
 
 /**
  * ParamEngine configuration builder. Call {@link #build() } to create
@@ -161,7 +161,7 @@ public final class ParamEngineConfigBuilder {
     /**
      * Register custom {@link ParameterCache}.
      */
-    public ParamEngineConfigBuilder withParameterCache(ParameterCache parameterCache) {
+    public ParamEngineConfigBuilder withParameterCache(PreparedParamCache parameterCache) {
         paramEngineConfig.setParameterCache(parameterCache);
         return this;
     }
