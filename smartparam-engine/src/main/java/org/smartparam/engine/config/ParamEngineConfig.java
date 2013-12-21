@@ -18,6 +18,7 @@ package org.smartparam.engine.config;
 import org.smartparam.engine.config.initialization.ComponentInitializer;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,24 +41,26 @@ import org.smartparam.engine.core.parameter.BasicParameterProvider;
 import org.smartparam.engine.core.type.Type;
 
 /**
+ * Configuration to build ParamEngine instance - use {@link ParamEngineConfigBuilder}
+ * to create this immutable object.
  *
  * @author Adam Dubiel
  */
 public class ParamEngineConfig extends ComponentConfig {
 
-    private List<ParamRepository> parameterRepositories = new ArrayList<ParamRepository>();
+    private final List<ParamRepository> parameterRepositories = new ArrayList<ParamRepository>();
 
-    private Map<RepositoryObjectKey, FunctionRepository> functionRepositories = new HashMap<RepositoryObjectKey, FunctionRepository>();
+    private final Map<RepositoryObjectKey, FunctionRepository> functionRepositories = new HashMap<RepositoryObjectKey, FunctionRepository>();
 
-    private Map<String, FunctionInvoker> functionInvokers = new HashMap<String, FunctionInvoker>();
+    private final Map<String, FunctionInvoker> functionInvokers = new HashMap<String, FunctionInvoker>();
 
-    private Map<String, Type<?>> types = new HashMap<String, Type<?>>();
+    private final Map<String, Type<?>> types = new HashMap<String, Type<?>>();
 
-    private Map<String, Matcher> matchers = new HashMap<String, Matcher>();
+    private final Map<String, Matcher> matchers = new HashMap<String, Matcher>();
 
     private ComponentInitializerRunner initializationRunner;
 
-    private List<ComponentInitializer> componentInitializers = new ArrayList<ComponentInitializer>();
+    private final List<ComponentInitializer> componentInitializers = new ArrayList<ComponentInitializer>();
 
     @Override
     protected void injectDefaults(List<Object> components) {
@@ -74,51 +77,51 @@ public class ParamEngineConfig extends ComponentConfig {
     }
 
     public List<ParamRepository> getParameterRepositories() {
-        return parameterRepositories;
+        return Collections.unmodifiableList(parameterRepositories);
     }
 
-    public void setParameterRepositories(List<ParamRepository> parameterRepositories) {
-        this.parameterRepositories = parameterRepositories;
+    protected void addParameterRepositories(List<ParamRepository> parameterRepositories) {
+        this.parameterRepositories.addAll(parameterRepositories);
     }
 
     public Map<RepositoryObjectKey, FunctionRepository> getFunctionRepositories() {
-        return functionRepositories;
+        return Collections.unmodifiableMap(functionRepositories);
     }
 
-    public void setFunctionRepositories(Map<RepositoryObjectKey, FunctionRepository> functionRepositories) {
-        this.functionRepositories = functionRepositories;
+    protected void addFunctionRepository(RepositoryObjectKey key, FunctionRepository functionRepository) {
+        this.functionRepositories.put(key, functionRepository);
     }
 
     public Map<String, FunctionInvoker> getFunctionInvokers() {
-        return functionInvokers;
+        return Collections.unmodifiableMap(functionInvokers);
     }
 
-    public void setFunctionInvokers(Map<String, FunctionInvoker> functionInvokers) {
-        this.functionInvokers = functionInvokers;
+    protected void addFunctionInvoker(String key, FunctionInvoker functionInvoker) {
+        this.functionInvokers.put(key, functionInvoker);
     }
 
     public Map<String, Type<?>> getTypes() {
-        return types;
+        return Collections.unmodifiableMap(types);
     }
 
-    public void setTypes(Map<String, Type<?>> types) {
-        this.types = types;
+    protected void addType(String key, Type<?> type) {
+        this.types.put(key, type);
     }
 
     public Map<String, Matcher> getMatchers() {
-        return matchers;
+        return Collections.unmodifiableMap(matchers);
     }
 
-    public void setMatchers(Map<String, Matcher> matchers) {
-        this.matchers = matchers;
+    protected void addMatcher(String key, Matcher matcher) {
+        this.matchers.put(key, matcher);
     }
 
     public List<ComponentInitializer> getComponentInitializers() {
-        return componentInitializers;
+        return Collections.unmodifiableList(componentInitializers);
     }
 
-    public void setComponentInitializers(List<ComponentInitializer> componentInitializers) {
-        this.componentInitializers = componentInitializers;
+    protected void addComponentInitializers(List<ComponentInitializer> componentInitializers) {
+        this.componentInitializers.addAll(componentInitializers);
     }
 
     public ComponentInitializerRunner getInitializationRunner() {

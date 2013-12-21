@@ -15,11 +15,9 @@
  */
 package org.smartparam.engine.annotated.initialization;
 
-import java.util.List;
 import org.smartparam.engine.annotated.scanner.PackageTypeScanner;
 import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
-import org.smartparam.engine.annotated.repository.TypeScanningRepository;
 import org.smartparam.engine.annotated.repository.TypeScanningRepository;
 import org.smartparam.engine.config.initialization.ComponentInitializer;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
@@ -30,17 +28,17 @@ import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
  */
 public class TypeScannerInitializer implements ComponentInitializer {
 
-    private PackageList packagesToScan = new PackageList();
+    private final PackageList packagesToScan;
 
-    private TypeScanner typeScanner;
+    private final TypeScanner typeScanner;
 
-    public TypeScannerInitializer() {
-        typeScanner = new PackageTypeScanner(packagesToScan);
+    public TypeScannerInitializer(TypeScanner typeScanner, PackageList packageList) {
+        this.typeScanner = typeScanner;
+        this.packagesToScan = packageList;
     }
 
     public TypeScannerInitializer(PackageList packagesToScan) {
-        this.packagesToScan = packagesToScan;
-        typeScanner = new PackageTypeScanner(this.packagesToScan);
+        this(new PackageTypeScanner(packagesToScan), packagesToScan);
     }
 
     @Override
@@ -58,19 +56,7 @@ public class TypeScannerInitializer implements ComponentInitializer {
         return packagesToScan;
     }
 
-    public void setPackagesToScan(List<String> packagesToScan) {
-        this.packagesToScan.setPackages(packagesToScan);
-    }
-
     public String getDefaultPackage() {
         return packagesToScan.getDefaultPackage();
-    }
-
-    public void setDefaultPackage(String defaultPackage) {
-        packagesToScan.setDefaultPackage(defaultPackage);
-    }
-
-    public void setTypeScanner(TypeScanner typeScanner) {
-        this.typeScanner = typeScanner;
     }
 }

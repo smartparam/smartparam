@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class BasicComponentInitializerRunner implements ComponentInitializerRunner {
 
-    private List<ComponentInitializer> initializers = new ArrayList<ComponentInitializer>();
+    private final List<ComponentInitializer> initializers = new ArrayList<ComponentInitializer>();
 
     @Override
     public void runInitializersOnList(Iterable<?> objectsToInitialize) {

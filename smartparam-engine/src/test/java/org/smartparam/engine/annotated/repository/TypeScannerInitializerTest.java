@@ -19,7 +19,6 @@ import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
-import org.smartparam.engine.annotated.repository.TypeScanningRepository;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import static org.mockito.Mockito.*;
 import static org.fest.assertions.api.Assertions.*;
@@ -34,7 +33,7 @@ public class TypeScannerInitializerTest {
 
     @BeforeMethod
     public void setUp() {
-        typeScannerInitializer = new TypeScannerInitializer();
+        typeScannerInitializer = new TypeScannerInitializer(null);
     }
 
     @Test

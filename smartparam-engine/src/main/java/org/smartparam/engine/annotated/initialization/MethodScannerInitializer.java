@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.annotated.initialization;
 
-import java.util.List;
 import org.smartparam.engine.annotated.scanner.PackageMethodScanner;
 import org.smartparam.engine.annotated.scanner.MethodScanner;
 import org.smartparam.engine.annotated.PackageList;
@@ -29,17 +28,17 @@ import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
  */
 public class MethodScannerInitializer implements ComponentInitializer {
 
-    private PackageList packagesToScan = new PackageList();
+    private final PackageList packagesToScan;
 
-    private MethodScanner methodScanner;
+    private final MethodScanner methodScanner;
 
-    public MethodScannerInitializer() {
-        methodScanner = new PackageMethodScanner(packagesToScan);
+    public MethodScannerInitializer(MethodScanner methodScanner, PackageList packagesToScan) {
+        this.packagesToScan = packagesToScan;
+        this.methodScanner = methodScanner;
     }
 
     public MethodScannerInitializer(PackageList packagesToScan) {
-        this.packagesToScan = packagesToScan;
-        methodScanner = new PackageMethodScanner(packagesToScan);
+        this(new PackageMethodScanner(packagesToScan), packagesToScan);
     }
 
     @Override
@@ -57,19 +56,7 @@ public class MethodScannerInitializer implements ComponentInitializer {
         return packagesToScan;
     }
 
-    public void setPackagesToScan(List<String> packagesToScan) {
-        this.packagesToScan.setPackages(packagesToScan);
-    }
-
     public String getDefaultPackage() {
         return packagesToScan.getDefaultPackage();
-    }
-
-    public void setDefaultPackage(String defaultPackage) {
-        packagesToScan.setDefaultPackage(defaultPackage);
-    }
-
-    public void setMethodScanner(MethodScanner methodScanner) {
-        this.methodScanner = methodScanner;
     }
 }

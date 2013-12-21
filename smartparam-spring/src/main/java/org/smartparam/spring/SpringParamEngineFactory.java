@@ -15,17 +15,13 @@
  */
 package org.smartparam.spring;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.engine.annotated.PackageList;
-import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
-import org.smartparam.engine.config.ParamEngineConfig;
-import org.smartparam.engine.config.initialization.PostConstructInitializer;
-import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
+import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;
-import org.smartparam.spring.function.SpringFunctionInvoker;
-import org.smartparam.spring.function.SpringFunctionRepository;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -38,39 +34,26 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
 
     private ApplicationContext appContext;
 
-    private ParamEngineConfig config;
-
     private ParamRepository paramRepository;
 
     private boolean scanAnnotations = true;
 
-    private List<String> packagesToScan;
+    private final List<String> packagesToScan = new ArrayList<String>();
 
     @Override
     public ParamEngine getObject() {
-        if (config == null) {
-            config = new ParamEngineConfig();
-        }
+        ParamEngineConfigBuilder configBuilder = ParamEngineConfigBuilder.paramEngineConfig();
         if (paramRepository != null) {
-            config.getParameterRepositories().add(paramRepository);
+            configBuilder.withParameterRepositories(paramRepository);
         }
 
         if (scanAnnotations) {
-            injectComponentInitializers();
+            configBuilder.withAnnotationScanEnabled(new PackageList(packagesToScan));
         }
 
-        config.getFunctionInvokers().put(SpringFunctionRepository.FUNCTION_TYPE, new SpringFunctionInvoker(appContext));
+        configBuilder.registerModule(new SpringModule(appContext));
 
-        return new ParamEngineFactory().createParamEngine(config);
-    }
-
-    private void injectComponentInitializers() {
-        PackageList packageList = new PackageList();
-        packageList.setPackages(packagesToScan);
-
-        config.getComponentInitializers().add(new PostConstructInitializer());
-        config.getComponentInitializers().add(new TypeScannerInitializer(packageList));
-        config.getComponentInitializers().add(new MethodScannerInitializer(packageList));
+        return new ParamEngineFactory().createParamEngine(configBuilder.build());
     }
 
     @Override
@@ -87,16 +70,13 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
         this.paramRepository = paramRepository;
     }
 
-    public void setConfig(ParamEngineConfig config) {
-        this.config = config;
-    }
-
     public void setScanAnnotations(boolean scanAnnotations) {
         this.scanAnnotations = scanAnnotations;
     }
 
     public void setPackagesToScan(List<String> packagesToScan) {
-        this.packagesToScan = packagesToScan;
+        this.packagesToScan.clear();
+        this.packagesToScan.addAll(packagesToScan);
     }
 
     public void setApplicationContext(ApplicationContext appContext) {

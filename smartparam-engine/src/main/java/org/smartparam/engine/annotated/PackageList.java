@@ -16,6 +16,7 @@
 package org.smartparam.engine.annotated;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -45,12 +46,25 @@ public class PackageList implements Iterable<String> {
         this.defaultPackage = defaultPackage;
     }
 
-    public void addPackage(String packageName) {
+    public PackageList(String defaultPackage, List<String> packages) {
+        this.defaultPackage = defaultPackage;
+        this.packages.addAll(packages);
+    }
+
+    public PackageList(List<String> packages) {
+        this.packages.addAll(packages);
+    }
+
+    public void add(String packageName) {
         packages.add(packageName);
     }
 
-    public void addAllPackages(String... packages) {
+    public void addAll(String... packages) {
         this.packages.addAll(Arrays.asList(packages));
+    }
+
+    public void addAll(Collection<String> packages) {
+        this.packages.addAll(packages);
     }
 
     public String getDefaultPackage() {
@@ -68,18 +82,6 @@ public class PackageList implements Iterable<String> {
      */
     public List<String> getPackages() {
         return Collections.unmodifiableList(packages);
-    }
-
-    /**
-     * Replaces currently defined packages with those on provided list.
-     *
-     * @param packages list of package, content is copied
-     */
-    public void setPackages(List<String> packages) {
-        this.packages.clear();
-        if (packages != null) {
-            this.packages.addAll(packages);
-        }
     }
 
     @Override

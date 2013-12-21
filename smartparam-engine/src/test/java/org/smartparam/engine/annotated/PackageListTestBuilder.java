@@ -36,8 +36,7 @@ public class PackageListTestBuilder {
     }
 
     public PackageList build() {
-        PackageList packageList = new PackageList(defaultPackage);
-        packageList.setPackages(packages);
+        PackageList packageList = new PackageList(defaultPackage, packages);
         return packageList;
     }
 

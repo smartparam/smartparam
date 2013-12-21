@@ -30,6 +30,13 @@ import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
 
 /**
+ * ParamEngine configuration builder. Call {@link #build() } to create
+ * immutable configuration object that should be used to construct
+ * new ParamEngine instance using {@link ParamEngineFactory}.
+ *
+ * Remember, that instead of registering components by hand you can use
+ * annotation scanning (configured via {@link #withAnnotationScanEnabled(java.lang.String...) }
+ * to discover classes.
  *
  * @author Adam Dubiel
  */
@@ -41,59 +48,122 @@ public final class ParamEngineConfigBuilder {
         paramEngineConfig = new ParamEngineConfig();
     }
 
+    /**
+     * Start building configuration.
+     */
     public static ParamEngineConfigBuilder paramEngineConfig() {
         return new ParamEngineConfigBuilder();
     }
 
+    /**
+     * Finalizes configuration building and returns immutable config object.
+     */
     public ParamEngineConfig build() {
         withComponentInitializers(new PostConstructInitializer());
         return paramEngineConfig;
     }
 
+    /**
+     * Enable SmartParam annotation scanning in given packages (and all their
+     * descendants). This also enables scanning for ParamEngine defaults, so
+     * even if there are no custom entities to scan for, call this method
+     * with no arguments. Otherwise bare ParamEngine is returned, with no
+     * matchers, types, function repositories etc.
+     */
     public ParamEngineConfigBuilder withAnnotationScanEnabled(String... packagesToScan) {
-        PackageList packageList = new PackageList();
-        packageList.setPackages(Arrays.asList(packagesToScan));
-
+        PackageList packageList = new PackageList(Arrays.asList(packagesToScan));
         return withComponentInitializers(new TypeScannerInitializer(packageList), new MethodScannerInitializer(packageList));
     }
 
+    /**
+     * Enables annotation scanning, see {@link #withAnnotationScanEnabled(java.lang.String...) }
+     * for more.
+     */
+    public ParamEngineConfigBuilder withAnnotationScanEnabled(PackageList packagesToScan) {
+        return withComponentInitializers(new TypeScannerInitializer(packagesToScan), new MethodScannerInitializer(packagesToScan));
+    }
+
+    /**
+     * Replace default ParamEngine components with custom one. This method should
+     * be used when you want to go deeper and replace one of ParamEngine core
+     * interfaces. If so, register object instance that implements interface of
+     * component you want to replace. For details on what are interfaces and
+     * classes, please take a look at source code of {@link ParamEngineConfig#injectDefaults(java.util.List) }.
+     */
     public ParamEngineConfigBuilder withComponent(Object component) {
         paramEngineConfig.addComponent(component);
         return this;
     }
 
+    /**
+     * Add a self-registering module that encapsulates all self configuration.
+     */
+    public ParamEngineConfigBuilder registerModule(ParamEngineModule module) {
+        module.registerSelf(this);
+        return this;
+    }
+
+    /**
+     * Register parameter repositories. There has to be at least one registered.
+     * Order of registration matters, as it determines order of querying. First
+     * repository that contains parameter wins.
+     */
     public ParamEngineConfigBuilder withParameterRepositories(ParamRepository... repositories) {
-        paramEngineConfig.getParameterRepositories().addAll(Arrays.asList(repositories));
+        paramEngineConfig.addParameterRepositories(Arrays.asList(repositories));
         return this;
     }
 
-    public ParamEngineConfigBuilder withFunctionRepository(String functionType, int priority, FunctionRepository repository) {
-        paramEngineConfig.getFunctionRepositories().put(new RepositoryObjectKey(functionType, priority), repository);
+    /**
+     * Register {@link FunctionRepository} with given order (default repository has
+     * priority 100). Order might matter if you plan on overwriting functions
+     * from one repository with function with the other. Highest order goes
+     * last.
+     */
+    public ParamEngineConfigBuilder withFunctionRepository(String functionType, int order, FunctionRepository repository) {
+        paramEngineConfig.addFunctionRepository(new RepositoryObjectKey(functionType, order), repository);
         return this;
     }
 
+    /**
+     * Register {@link FunctionInvoker}.
+     */
     public ParamEngineConfigBuilder withFunctionInvoker(String functionType, FunctionInvoker invoker) {
-        paramEngineConfig.getFunctionInvokers().put(functionType, invoker);
+        paramEngineConfig.addFunctionInvoker(functionType, invoker);
         return this;
     }
 
+    /**
+     * Register {@link Type} under code.
+     */
     public ParamEngineConfigBuilder withType(String code, Type<?> type) {
-        paramEngineConfig.getTypes().put(code, type);
+        paramEngineConfig.addType(code, type);
         return this;
     }
 
+    /**
+     * Register {@link Matcher} under code.
+     */
     public ParamEngineConfigBuilder withMatcher(String code, Matcher matcher) {
-        paramEngineConfig.getMatchers().put(code, matcher);
+        paramEngineConfig.addMatcher(code, matcher);
         return this;
     }
 
+    /**
+     * Register custom implementation of initialization runner. This goes deep
+     * into ParamEngine construction process, so watch out.
+     */
     public ParamEngineConfigBuilder withInitializationRunner(ComponentInitializerRunner runner) {
         paramEngineConfig.setInitializationRunner(runner);
         return this;
     }
 
+    /**
+     * Register additional {@link ComponentInitializer}. These are useful if custom
+     * component needs custom initialization (and {@link org.smartparam.engine.config.initialization.PostConstructInitializer}
+     * is not enough.
+     */
     public ParamEngineConfigBuilder withComponentInitializers(ComponentInitializer... initializers) {
-        paramEngineConfig.getComponentInitializers().addAll(Arrays.asList(initializers));
+        paramEngineConfig.addComponentInitializers(Arrays.asList(initializers));
         return this;
     }
 }

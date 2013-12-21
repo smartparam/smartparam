@@ -19,7 +19,6 @@ import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.smartparam.engine.annotated.scanner.MethodScanner;
-import org.smartparam.engine.annotated.repository.MethodScanningRepository;
 import static org.mockito.Mockito.*;
 import static org.fest.assertions.api.Assertions.*;
 
@@ -33,7 +32,7 @@ public class MethodScannerInitializerTest {
 
     @BeforeMethod
     public void setUp() {
-        methodScannerInitializer = new MethodScannerInitializer();
+        methodScannerInitializer = new MethodScannerInitializer(null);
     }
 
     @Test

@@ -15,13 +15,12 @@
  */
 package org.smartparam.spring;
 
+import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;
-import static org.smartparam.engine.config.ParamEngineConfigBuilder.paramEngineConfig;
 import static org.smartparam.engine.core.ParamEngineRuntimeConfigAssert.assertThat;
 
 /**
@@ -38,23 +37,9 @@ public class SpringParamEngineFactoryTest {
     }
 
     @Test
-    public void shouldReturnParamEngineCreatedUsingProvidedConfig() throws Exception {
-        // given
-        ParamEngineConfig config = paramEngineConfig().build();
-        springParamEngineFactory.setConfig(config);
-
-        // when
-        ParamEngine paramEngine = springParamEngineFactory.getObject();
-
-        // then
-        assertThat(paramEngine.runtimeConfiguration()).hasParamCache().hasFunctionCache();
-    }
-
-    @Test
     public void shouldReturnParamEngineWithAnnotationScanningEnabled() throws Exception {
         // given
-        ParamEngineConfig config = paramEngineConfig().withAnnotationScanEnabled("test").build();
-        springParamEngineFactory.setConfig(config);
+        springParamEngineFactory.setPackagesToScan(Arrays.asList("test"));
 
         // when
         ParamEngine paramEngine = springParamEngineFactory.getObject();

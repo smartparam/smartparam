@@ -30,15 +30,27 @@ import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 
 /**
+ * Creates ParamEngine instance using provided configuration. Use {@link ParamEngineConfigBuilder}
+ * to construct configuration object.
+ *
+ * Under the hood PicoContainer is used to create ParamEngine dependency tree.
  *
  * @author Adam Dubiel
  */
 public class ParamEngineFactory {
 
+    /**
+     * Create instance of ParamEngine, use {@link ParamEngineConfigBuilder}
+     * to construct configuration object.
+     */
     public static ParamEngine paramEngine(ParamEngineConfig config) {
         return new ParamEngineFactory().createParamEngine(config);
     }
 
+    /**
+     * Create instance of ParamEngine, use {@link ParamEngineConfigBuilder}
+     * to construct configuration object.
+     */
     public ParamEngine createParamEngine(ParamEngineConfig config) {
         ComponentInitializerRunner initializerRunner = prepareInitializerRunner(config);
 
