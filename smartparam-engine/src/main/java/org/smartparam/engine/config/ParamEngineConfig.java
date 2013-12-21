@@ -37,8 +37,10 @@ import org.smartparam.engine.annotated.repository.ScanningMatcherRepository;
 import org.smartparam.engine.annotated.repository.ScanningTypeRepository;
 import org.smartparam.engine.core.function.BasicFunctionManager;
 import org.smartparam.engine.annotated.repository.ScanningFunctionProvider;
+import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.parameter.BasicParameterProvider;
 import org.smartparam.engine.core.type.Type;
+import sun.security.provider.ParameterCache;
 
 /**
  * Configuration to build ParamEngine instance - use {@link ParamEngineConfigBuilder}
@@ -57,6 +59,10 @@ public class ParamEngineConfig extends ComponentConfig {
     private final Map<String, Type<?>> types = new HashMap<String, Type<?>>();
 
     private final Map<String, Matcher> matchers = new HashMap<String, Matcher>();
+
+    private ParameterCache parameterCache;
+
+    private FunctionCache functionCache;
 
     private ComponentInitializerRunner initializationRunner;
 
@@ -114,6 +120,24 @@ public class ParamEngineConfig extends ComponentConfig {
 
     protected void addMatcher(String key, Matcher matcher) {
         this.matchers.put(key, matcher);
+    }
+
+    public FunctionCache getFunctionCache() {
+        return functionCache;
+    }
+
+    protected void setFunctionCache(FunctionCache functionCache) {
+        this.functionCache = functionCache;
+        addComponent(functionCache);
+    }
+
+    public ParameterCache getParameterCache() {
+        return parameterCache;
+    }
+
+    protected void setParameterCache(ParameterCache parameterCache) {
+        this.parameterCache = parameterCache;
+        addComponent(parameterCache);
     }
 
     public List<ComponentInitializer> getComponentInitializers() {

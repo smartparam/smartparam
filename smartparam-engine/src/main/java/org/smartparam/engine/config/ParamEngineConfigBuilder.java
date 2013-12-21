@@ -23,11 +23,13 @@ import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
+import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
+import sun.security.provider.ParameterCache;
 
 /**
  * ParamEngine configuration builder. Call {@link #build() } to create
@@ -145,6 +147,22 @@ public final class ParamEngineConfigBuilder {
      */
     public ParamEngineConfigBuilder withMatcher(String code, Matcher matcher) {
         paramEngineConfig.addMatcher(code, matcher);
+        return this;
+    }
+
+    /**
+     * Register custom {@link FunctionCache}.
+     */
+    public ParamEngineConfigBuilder withFunctionCache(FunctionCache functionCache) {
+        paramEngineConfig.setFunctionCache(functionCache);
+        return this;
+    }
+
+    /**
+     * Register custom {@link ParameterCache}.
+     */
+    public ParamEngineConfigBuilder withParameterCache(ParameterCache parameterCache) {
+        paramEngineConfig.setParameterCache(parameterCache);
         return this;
     }
 

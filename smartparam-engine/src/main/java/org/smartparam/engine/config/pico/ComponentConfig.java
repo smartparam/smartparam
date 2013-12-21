@@ -25,9 +25,9 @@ import java.util.List;
  */
 public abstract class ComponentConfig {
 
-    private List<Object> userComponents = new ArrayList<Object>();
+    private final List<Object> userComponents = new ArrayList<Object>();
 
-    private List<Object> defaultComponents = new ArrayList<Object>();
+    private final List<Object> defaultComponents = new ArrayList<Object>();
 
     private List<Object> components;
 
