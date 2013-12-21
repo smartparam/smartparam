@@ -34,7 +34,7 @@ public interface Parameter {
     /**
      * Default value for array separator.
      */
-    static final char DEFAULT_ARRAY_SEPARATOR = ',';
+    final char DEFAULT_ARRAY_SEPARATOR = ',';
 
     /**
      * Returns unique name of parameter.
