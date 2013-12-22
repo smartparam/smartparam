@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.smartparam.engine.annotated.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.core.function.Function;
-import org.smartparam.engine.functions.java.JavaFunction;
 import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
 
 /**

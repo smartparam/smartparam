@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.core.function;
 
-import org.smartparam.engine.core.function.Function;
-
 /**
  * Invoker is able to run function (from Java class, script, etc...) described by
  * {@link Function} object with given parameters and return its value

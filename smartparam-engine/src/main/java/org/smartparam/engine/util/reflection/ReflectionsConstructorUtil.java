@@ -68,7 +68,9 @@ public final class ReflectionsConstructorUtil {
 
     public static <T> T createObject(Class<T> objectClass, Class<?>[] constructorArgsClasses, Object[] constructorArgs) {
         try {
-            return createObject(objectClass.getConstructor(constructorArgsClasses), constructorArgs);
+            Constructor<T> constructor = objectClass.getConstructor(constructorArgsClasses);
+            constructor.setAccessible(true);
+            return createObject(constructor, constructorArgs);
         } catch (IllegalArgumentException illegalArgumentException) {
             throwExceptionForObjectConstruction(illegalArgumentException, objectClass, constructorArgs);
         } catch (NoSuchMethodException noSuchMethodException) {
