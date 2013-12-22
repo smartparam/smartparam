@@ -35,7 +35,7 @@ public interface ValueHolder extends Comparable<ValueHolder> {
      * Implementations of ValueHolder should change return value
      * with appropriate for type held, for example:
      * <pre>
-     * public BigDecimal getValue() { //if BigDecimal holder }
+     *  BigDecimal getValue() { //if BigDecimal holder }
      * </pre>
      *
      * @return object held
@@ -60,55 +60,55 @@ public interface ValueHolder extends Comparable<ValueHolder> {
     /**
      * Get value as string.
      */
-    public String getString();
+    String getString();
 
     /**
      * Get value as primitive int.
      */
-    public int intValue();
+    int intValue();
 
     /**
      * Get value as primitive long.
      */
-    public long longValue();
+    long longValue();
 
     /**
      * Get value as primitive double.
      */
-    public double doubleValue();
+    double doubleValue();
 
     /**
      * Get value as primitive boolean.
      */
-    public boolean booleanValue();
+    boolean booleanValue();
 
     /**
      * Get value as nullable integer.
      */
-    public Integer getInteger();
+    Integer getInteger();
 
     /**
      * Get value as nullable long.
      */
-    public Long getLong();
+    Long getLong();
 
     /**
      * Get value as nullable double.
      */
-    public Double getDouble();
+    Double getDouble();
 
     /**
      * Get value as nullable boolean.
      */
-    public Boolean getBoolean();
+    Boolean getBoolean();
 
     /**
      * Get value as BigDecimal.
      */
-    public BigDecimal getBigDecimal();
+    BigDecimal getBigDecimal();
 
     /**
      * Get value as Date.
      */
-    public Date getDate();
+    Date getDate();
 }
