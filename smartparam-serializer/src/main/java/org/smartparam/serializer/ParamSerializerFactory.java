@@ -19,6 +19,7 @@ import org.smartparam.serializer.config.SerializationConfig;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
+import org.smartparam.serializer.config.SerializationConfigBuilder;
 
 /**
  *
@@ -26,9 +27,19 @@ import org.smartparam.engine.config.pico.PicoContainerUtil;
  */
 public class ParamSerializerFactory {
 
+    public static ParamSerializer paramSerializer() {
+        ParamSerializerFactory factory = new ParamSerializerFactory();
+        return factory.createSerializer(new ParamSerializerConfig(SerializationConfigBuilder.serializationConfig().build()));
+    }
+
     public static ParamSerializer paramSerializer(SerializationConfig config) {
         ParamSerializerFactory factory = new ParamSerializerFactory();
         return factory.createSerializer(new ParamSerializerConfig(config));
+    }
+
+    public static ParamDeserializer paramDeserializer() {
+        ParamSerializerFactory factory = new ParamSerializerFactory();
+        return factory.createDeserializer(new ParamSerializerConfig(SerializationConfigBuilder.serializationConfig().build()));
     }
 
     public static ParamDeserializer paramDeserializer(SerializationConfig config) {
