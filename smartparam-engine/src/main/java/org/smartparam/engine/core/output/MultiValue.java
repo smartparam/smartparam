@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.util.Printer;
 
 /**
@@ -62,11 +62,11 @@ public class MultiValue {
     /**
      * Return raw holder of stored at given position.
      */
-    public AbstractHolder getHolder(int position) {
+    public ValueHolder getHolder(int position) {
         Object obj = getAbstractHolder(position);
 
-        if (obj instanceof AbstractHolder) {
-            return (AbstractHolder) obj;
+        if (obj instanceof ValueHolder) {
+            return (ValueHolder) obj;
         }
 
         throw new GettingWrongTypeException(position, "AbstractHolder", obj);
@@ -125,7 +125,7 @@ public class MultiValue {
     /**
      * Return raw value holder of column with given name.
      */
-    public AbstractHolder getHolder(String name) {
+    public ValueHolder getHolder(String name) {
         return getHolder(index(name));
     }
 
@@ -220,11 +220,11 @@ public class MultiValue {
      * parameter level ({@link org.smartparam.engine.model.Parameter#getArraySeparator()}).
      * Type of each value holder in array is the same, defined by level type.
      */
-    public AbstractHolder[] getArray(int position) {
+    public ValueHolder[] getArray(int position) {
         Object obj = getAbstractHolder(position);
 
-        if (obj instanceof AbstractHolder[]) {
-            return (AbstractHolder[]) obj;
+        if (obj instanceof ValueHolder[]) {
+            return (ValueHolder[]) obj;
         }
 
         throw new GettingWrongTypeException(position, "AbstractHolder[]", obj);
@@ -244,14 +244,14 @@ public class MultiValue {
             Object val = values[i];
 
             // if object at i is holder
-            if (val instanceof AbstractHolder) {
-                AbstractHolder cell = (AbstractHolder) val;
+            if (val instanceof ValueHolder) {
+                ValueHolder cell = (ValueHolder) val;
                 result[i] = cell.getValue();
             }
 
             // if object at i is holder array
-            if (val instanceof AbstractHolder[]) {
-                AbstractHolder[] cell = (AbstractHolder[]) val;
+            if (val instanceof ValueHolder[]) {
+                ValueHolder[] cell = (ValueHolder[]) val;
                 Object[] array = new Object[cell.length];
                 for (int j = 0; j < cell.length; j++) {
                     array[j] = cell[j].getValue();
@@ -267,7 +267,7 @@ public class MultiValue {
      * Return value of column at given position as string array.
      */
     public String[] getStringArray(int position) {
-        AbstractHolder[] array = getArray(position);
+        ValueHolder[] array = getArray(position);
         String[] result = new String[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getString();
@@ -279,7 +279,7 @@ public class MultiValue {
      * Return value of column at given position as date array.
      */
     public Date[] getDateArray(int position) {
-        AbstractHolder[] array = getArray(position);
+        ValueHolder[] array = getArray(position);
         Date[] result = new Date[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getDate();
@@ -291,7 +291,7 @@ public class MultiValue {
      * Return value of column at given position as integer array.
      */
     public Integer[] getIntegerArray(int position) {
-        AbstractHolder[] array = getArray(position);
+        ValueHolder[] array = getArray(position);
         Integer[] result = new Integer[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getInteger();
@@ -303,7 +303,7 @@ public class MultiValue {
      * Return value of column at given position as integer array.
      */
     public Long[] getLongArray(int position) {
-        AbstractHolder[] array = getArray(position);
+        ValueHolder[] array = getArray(position);
         Long[] result = new Long[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getLong();
@@ -315,7 +315,7 @@ public class MultiValue {
      * Return value of column at given position as BigDecimal array.
      */
     public BigDecimal[] getBigDecimalArray(int position) {
-        AbstractHolder[] array = getArray(position);
+        ValueHolder[] array = getArray(position);
         BigDecimal[] result = new BigDecimal[array.length];
         for (int i = 0; i < result.length; i++) {
             result[i] = array[i].getBigDecimal();
@@ -326,7 +326,7 @@ public class MultiValue {
     /**
      * Return value of column under given name as array of raw value holders.
      */
-    public AbstractHolder[] getArray(String name) {
+    public ValueHolder[] getArray(String name) {
         return getArray(index(name));
     }
 
@@ -436,7 +436,7 @@ public class MultiValue {
     /**
      * Iteration mode, return raw value holder of next row element.
      */
-    public AbstractHolder nextHolder() {
+    public ValueHolder nextHolder() {
         return getHolder(nextPosition());
     }
 
@@ -500,7 +500,7 @@ public class MultiValue {
     /**
      * Iteration mode, return value of next row element as holder array.
      */
-    public AbstractHolder[] nextArray() {
+    public ValueHolder[] nextArray() {
         return getArray(nextPosition());
     }
 

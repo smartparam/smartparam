@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.types.string.StringType;
 
@@ -28,7 +28,7 @@ public final class InputValueNormalizer {
     private InputValueNormalizer() {
     }
 
-    public static <T extends AbstractHolder> String normalize(Type<T> type, String levelValue) {
+    public static <T extends ValueHolder> String normalize(Type<T> type, String levelValue) {
         if ("*".equals(levelValue)) {
             return levelValue;
 
@@ -51,7 +51,7 @@ public final class InputValueNormalizer {
         }
     }
 
-    public static <T extends AbstractHolder> String normalize(Type<T> type, Object levelObject) {
+    public static <T extends ValueHolder> String normalize(Type<T> type, Object levelObject) {
         if (levelObject instanceof String) {
             return normalize(type, (String) levelObject);
         }

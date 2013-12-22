@@ -16,7 +16,7 @@
 package org.smartparam.engine.core;
 
 import org.smartparam.engine.core.exception.SmartParamException;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 
 /**
  *
@@ -25,7 +25,7 @@ import org.smartparam.engine.core.type.AbstractHolder;
 @SuppressWarnings("serial")
 public class InvalidFunctionToCallException extends SmartParamException {
 
-    public InvalidFunctionToCallException(String parameterName, AbstractHolder paramValue) {
+    public InvalidFunctionToCallException(String parameterName, ValueHolder paramValue) {
         super("INVALID_FUNCTION_TO_CALL",
                 String.format("Can't call function if returned value is not of \"string\" type! Got {} instead of StringHolder after evaluating parameter {}.\n"
                         + "Make sure this parameter returns single string.", paramValue.getClass().getSimpleName(), parameterName));

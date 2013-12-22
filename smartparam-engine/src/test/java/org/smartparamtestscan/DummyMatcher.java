@@ -17,7 +17,7 @@ package org.smartparamtestscan;
 
 import org.smartparam.engine.annotated.annotations.ParamMatcher;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -28,7 +28,7 @@ import org.smartparam.engine.core.type.Type;
 public class DummyMatcher implements Matcher {
 
     @Override
-    public <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type) {
+    public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {
         throw new UnsupportedOperationException("Dummy implementation");
     }
 }

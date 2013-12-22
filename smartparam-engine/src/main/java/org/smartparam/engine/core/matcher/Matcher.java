@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.matcher;
 
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -39,5 +39,5 @@ public interface Matcher {
      * @param type type of value, might be null if none was set
      * @return true if value matched, false otherwise
      */
-    <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type);
+    <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type);
 }

@@ -18,19 +18,25 @@ package org.smartparam.engine.core.type;
 /**
  * Contract for parameter engine type system entity. Type gives behavior to
  * its value - most of all decodes and encodes from/to String form. Each type
- * should have {@link AbstractHolder} defined, which is a concrete representation
+ * should have {@link ValueHolder} defined, which is a concrete representation
  * (instance) of type.
+ *
+ * There are two convenience classes that might help when creating custom types:
+ * {@link AbstractType} and {@link SimpleType}. First one simplifies Type interface
+ * implementation by hiding some details behind well-performing default implementations.
+ * Second one makes creating a type as easy as implementing decoding/encoding
+ * routine, no ValueHolder needed.
  *
  * To use custom type in engine, register it at {@link org.smartparam.engine.core.repository.TypeRepository},
  * or use {@link org.smartparam.engine.annotations.ParamType} if annotation scan
  * is enabled.
  *
- * @param T held value
+ * @param H supported value holder
  *
  * @author Przemek Hertel <przemek.hertel@gamil.com>
  * @since 1.0.0
  */
-public interface Type<T extends AbstractHolder> {
+public interface Type<H extends ValueHolder> {
 
     /**
      * Create String representation of value. Transformation has to be reversible using
@@ -42,7 +48,7 @@ public interface Type<T extends AbstractHolder> {
      * @param holder value to stringify
      * @return string representation
      */
-    String encode(T holder);
+    String encode(H holder);
 
     /**
      * Create value out of provided string. This is opposite to
@@ -54,7 +60,7 @@ public interface Type<T extends AbstractHolder> {
      * @param text string to interprete
      * @return value
      */
-    T decode(String text);
+    H decode(String text);
 
     /**
      * Can convert any object to value of Type. Should throw IllegalArgumentException
@@ -63,7 +69,7 @@ public interface Type<T extends AbstractHolder> {
      * @param obj object to try and convert
      * @return value
      */
-    T convert(Object obj);
+    H convert(Object obj);
 
     /**
      * Should create new, empty array of given size.
@@ -71,5 +77,5 @@ public interface Type<T extends AbstractHolder> {
      * @param size size of array
      * @return empty array of values
      */
-    T[] newArray(int size);
+    H[] newArray(int size);
 }

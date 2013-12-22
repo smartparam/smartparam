@@ -16,7 +16,7 @@
 package org.smartparam.engine.types.integer;
 
 import java.math.BigDecimal;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.AbstractValueHolder;
 
 /**
  * Klasa reprezentuje wartosci typu {@link IntegerType}.
@@ -30,7 +30,7 @@ import org.smartparam.engine.core.type.AbstractHolder;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class IntegerHolder extends AbstractHolder {
+public class IntegerHolder extends AbstractValueHolder {
 
     /**
      * Wewnetrzna reprezentacja liczby calkowitej (64 bit, signed).

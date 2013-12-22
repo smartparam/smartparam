@@ -18,7 +18,7 @@ package org.smartparam.engine.core.output;
 import org.fest.assertions.api.AbstractAssert;
 import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.output.ParamValue;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
 /**
@@ -78,7 +78,7 @@ public class ParamValueAssert extends AbstractAssert<ParamValueAssert, ParamValu
 
     public ParamValueAssert hasArray(int levelIndex, Object... values) {
         int index = 0;
-        for (AbstractHolder holder : actual.row().getArray(levelIndex)) {
+        for (ValueHolder holder : actual.row().getArray(levelIndex)) {
             ParamEngineAssertions.assertThat(holder.getValue()).isEqualTo(values[index]);
             index++;
         }

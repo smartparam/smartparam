@@ -17,7 +17,7 @@ package org.smartparamtestscan;
 
 import org.smartparam.engine.annotated.annotations.ObjectInstance;
 import org.smartparam.engine.annotated.annotations.ParamType;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -47,22 +47,22 @@ public class DummyType implements Type {
     }
 
     @Override
-    public String encode(AbstractHolder holder) {
+    public String encode(ValueHolder holder) {
         throw new UnsupportedOperationException("Dummy implementation");
     }
 
     @Override
-    public AbstractHolder decode(String text) {
+    public ValueHolder decode(String text) {
         throw new UnsupportedOperationException("Dummy implementation");
     }
 
     @Override
-    public AbstractHolder convert(Object obj) {
+    public ValueHolder convert(Object obj) {
         throw new UnsupportedOperationException("Dummy implementation");
     }
 
     @Override
-    public AbstractHolder[] newArray(int size) {
+    public ValueHolder[] newArray(int size) {
         throw new UnsupportedOperationException("Dummy implementation");
     }
 }

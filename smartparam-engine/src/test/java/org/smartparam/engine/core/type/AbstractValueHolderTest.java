@@ -15,23 +15,22 @@
  */
 package org.smartparam.engine.core.type;
 
-import org.smartparam.engine.core.type.AbstractHolder;
 import org.testng.annotations.Test;
-import static org.testng.AssertJUnit.*; 
+import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.string.StringHolder;
 
 /**
  * @author Przemek Hertel
  */
-public class AbstractHolderTest {
+public class AbstractValueHolderTest {
 
     @Test
     public void testCompareTo() {
 
         // konfiguracja
-        AbstractHolder holder1 = new NonComparableHolder();
-        AbstractHolder holder2 = new StringHolder("abc");
+        ValueHolder holder1 = new NonComparableHolder();
+        ValueHolder holder2 = new StringHolder("abc");
 
         // test
         int result = holder1.compareTo(holder2);
@@ -55,8 +54,8 @@ public class AbstractHolderTest {
         // testy
         for (int i = 0; i < pairs.length; i++) {
             Object[] test = pairs[i];
-            AbstractHolder h1 = (AbstractHolder) test[0];
-            AbstractHolder h2 = (AbstractHolder) test[1];
+            ValueHolder h1 = (ValueHolder) test[0];
+            ValueHolder h2 = (ValueHolder) test[1];
             boolean expectedResult = (Boolean) test[2];
 
             // test 1
@@ -72,7 +71,7 @@ public class AbstractHolderTest {
 
     }
 
-    private class NonComparableHolder extends AbstractHolder {
+    private class NonComparableHolder extends AbstractValueHolder {
 
         @Override
         public Object getValue() {

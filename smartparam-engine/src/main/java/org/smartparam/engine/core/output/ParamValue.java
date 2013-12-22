@@ -18,7 +18,7 @@ package org.smartparam.engine.core.output;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 
 /**
  * Container of parameter sub-matrix returned after querying the parameter.
@@ -51,7 +51,7 @@ public interface ParamValue extends Iterable<MultiValue> {
     /**
      * Get cell of matrix.
      */
-    AbstractHolder getHolder(int rowNo, int colNo);
+    ValueHolder getHolder(int rowNo, int colNo);
 
     /**
      * Get object of type T from cell of matrix.
@@ -66,7 +66,7 @@ public interface ParamValue extends Iterable<MultiValue> {
     /**
      * Get cell of matrix using level name as column indicator.
      */
-    AbstractHolder getHolder(int rowNo, String name);
+    ValueHolder getHolder(int rowNo, String name);
 
     /**
      * Get object of type T from cell of matrix, where column is described by name.
@@ -81,7 +81,7 @@ public interface ParamValue extends Iterable<MultiValue> {
     /**
      * Get value from first row and given column.
      */
-    AbstractHolder getHolder(int colNo);
+    ValueHolder getHolder(int colNo);
 
     /**
      * Get object of type T from first row and column with given index.
@@ -96,7 +96,7 @@ public interface ParamValue extends Iterable<MultiValue> {
     /**
      * Get value from first row using level name as column indicator.
      */
-    AbstractHolder getHolder(String name);
+    ValueHolder getHolder(String name);
 
     /**
      * Get object of type T from first row and column with given name.
@@ -144,7 +144,7 @@ public interface ParamValue extends Iterable<MultiValue> {
      *
      * @return value held in first cell of first row
      */
-    AbstractHolder getHolder();
+    ValueHolder getHolder();
 
     /**
      * Return value from first column of first row as generic object.

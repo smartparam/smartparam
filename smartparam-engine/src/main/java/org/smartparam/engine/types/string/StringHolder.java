@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.types.string;
 
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.AbstractValueHolder;
 
 /**
  * Klasa reprezentuje wartosci typu {@link StringType}.
@@ -29,7 +29,7 @@ import org.smartparam.engine.core.type.AbstractHolder;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class StringHolder extends AbstractHolder {
+public class StringHolder extends AbstractValueHolder {
 
     /**
      * Wewnetrzna reprezentacja wartosci.

@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.types.bool;
 
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.AbstractValueHolder;
 
 /**
  * Klasa reprezentuje wartosci typu {@link BooleanType}.
@@ -29,7 +29,7 @@ import org.smartparam.engine.core.type.AbstractHolder;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class BooleanHolder extends AbstractHolder {
+public class BooleanHolder extends AbstractValueHolder {
 
     /**
      * Wewnetrzna reprezentacja wartosci.

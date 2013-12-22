@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.types.integer.IntegerHolder;
@@ -50,9 +50,9 @@ public class TypeDecoderTest {
         // wykonanie testow
         for (Object[] testCase : testCases) {
             String text = (String) testCase[0];
-            AbstractHolder expectedHolder = (AbstractHolder) testCase[1];
+            ValueHolder expectedHolder = (ValueHolder) testCase[1];
 
-            AbstractHolder holder = TypeDecoder.decode(type, text);
+            ValueHolder holder = TypeDecoder.decode(type, text);
             assertEquals(expectedHolder.getValue(), holder.getValue());
         }
     }
@@ -91,7 +91,7 @@ public class TypeDecoderTest {
             Object obj = testCase[0];
             Long expectedValue = (Long) testCase[1];
 
-            AbstractHolder holder = TypeDecoder.convert(type, obj);
+            ValueHolder holder = TypeDecoder.convert(type, obj);
             assertEquals(expectedValue, holder.getValue());
         }
     }
@@ -133,7 +133,7 @@ public class TypeDecoderTest {
             Object[] array = arrays[i];
             IntegerHolder[] expected = (IntegerHolder[]) expectations[i];
 
-            AbstractHolder[] result = TypeDecoder.convert(type, array);
+            ValueHolder[] result = TypeDecoder.convert(type, array);
             checkArrays(expected, result);
         }
     }
@@ -158,12 +158,12 @@ public class TypeDecoderTest {
             Collection<?> coll = (Collection<?>) arrays[i];
             IntegerHolder[] expected = (IntegerHolder[]) expectations[i];
 
-            AbstractHolder[] result = TypeDecoder.convert(type, coll);
+            ValueHolder[] result = TypeDecoder.convert(type, coll);
             checkArrays(expected, result);
         }
     }
 
-    private void checkArrays(IntegerHolder[] expected, AbstractHolder[] result) {
+    private void checkArrays(IntegerHolder[] expected, ValueHolder[] result) {
         assertTrue(result instanceof IntegerHolder[]);
         assertArrayEquals(expected, result);
     }

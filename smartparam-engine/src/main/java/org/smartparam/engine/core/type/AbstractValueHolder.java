@@ -19,43 +19,19 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * Concrete representation of value of {@link Type}.
  *
- * Holder implementation is obliged to override {@link #getValue() } method,
- * but also might override any number of convenience methods if they are
- * suitable for given type.
- *
- * @author Przemek Hertel
- * @since 1.0.0
+ * @author Adam Dubiel
  */
-public abstract class AbstractHolder implements Comparable<AbstractHolder> {
+public abstract class AbstractValueHolder implements ValueHolder {
 
     private static final int EXPECTED_TOSTRING_LENGTH = 32;
 
-    /**
-     * Return object held in holder.
-     * Implementations of AbstractHolder should change return value
-     * with appropriate for type held, for example:
-     * <pre>
-     * public BigDecimal getValue() { //if BigDecimal holder }
-     * </pre>
-     *
-     * @return object held
-     */
-    public abstract Object getValue();
-
-    /**
-     *
-     * @return if value is null
-     */
+    @Override
     public boolean isNull() {
         return getValue() == null;
     }
 
-    /**
-     *
-     * @return if value is not null
-     */
+    @Override
     public boolean isNotNull() {
         return getValue() != null;
     }
@@ -75,7 +51,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
         if (obj != null && obj.getClass() == this.getClass()) {
 
             Object v1 = getValue();
-            Object v2 = ((AbstractHolder) obj).getValue();
+            Object v2 = ((ValueHolder) obj).getValue();
 
             if (v1 == null) {
                 return v2 == null;
@@ -102,10 +78,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
         return this.getClass().hashCode() ^ vhash;
     }
 
-    /**
-     * Returns true only if value held in this holder implement {@link Comparable}.
-     * By default returns true.
-     */
+    @Override
     public boolean isComparable() {
         return true;
     }
@@ -120,7 +93,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public int compareTo(AbstractHolder o) {
+    public int compareTo(ValueHolder o) {
         if (isComparable()) {
             Comparable<Object> v1 = (Comparable<Object>) this.getValue();
             Comparable<Object> v2 = (Comparable<Object>) o.getValue();
@@ -153,6 +126,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return toString value or null if none value held
      */
+    @Override
     public String getString() {
         Object value = getValue();
         return value != null ? value.toString() : null;
@@ -164,6 +138,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return int value
      */
+    @Override
     public int intValue() {
         throw prepareUnexpectedUsageException("int");
     }
@@ -174,6 +149,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return long value
      */
+    @Override
     public long longValue() {
         throw prepareUnexpectedUsageException("long");
     }
@@ -184,6 +160,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return double value
      */
+    @Override
     public double doubleValue() {
         throw prepareUnexpectedUsageException("double");
     }
@@ -194,6 +171,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return boolean value
      */
+    @Override
     public boolean booleanValue() {
         throw prepareUnexpectedUsageException("boolean");
     }
@@ -204,6 +182,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return Integer value
      */
+    @Override
     public Integer getInteger() {
         throw prepareUnexpectedUsageException("Integer");
     }
@@ -214,6 +193,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return Long value
      */
+    @Override
     public Long getLong() {
         throw prepareUnexpectedUsageException("Long");
     }
@@ -224,6 +204,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return Double value
      */
+    @Override
     public Double getDouble() {
         throw prepareUnexpectedUsageException("Double");
     }
@@ -234,6 +215,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return Boolean value
      */
+    @Override
     public Boolean getBoolean() {
         throw prepareUnexpectedUsageException("Boolean");
     }
@@ -244,6 +226,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return BigDecimal value
      */
+    @Override
     public BigDecimal getBigDecimal() {
         throw prepareUnexpectedUsageException("BigDecimal");
     }
@@ -254,6 +237,7 @@ public abstract class AbstractHolder implements Comparable<AbstractHolder> {
      *
      * @return Date value
      */
+    @Override
     public Date getDate() {
         throw prepareUnexpectedUsageException("Date");
     }

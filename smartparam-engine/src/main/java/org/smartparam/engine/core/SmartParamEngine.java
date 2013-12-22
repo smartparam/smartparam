@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.index.LevelIndex;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.function.Function;
 import org.smartparam.engine.core.prepared.InputValueNormalizer;
@@ -147,7 +147,7 @@ public class SmartParamEngine implements ParamEngine {
     }
 
     public Object callEvaluatedFunction(String paramName, ParamContext ctx, Object... args) {
-        AbstractHolder holder = get(paramName, ctx).getHolder();
+        ValueHolder holder = get(paramName, ctx).getHolder();
 
         if (!(holder instanceof StringHolder)) {
             throw new InvalidFunctionToCallException(paramName, holder);
@@ -162,11 +162,11 @@ public class SmartParamEngine implements ParamEngine {
         return null;
     }
 
-    AbstractHolder[] evaluateStringAsArray(String value, Type<?> type, char separator) {
+    ValueHolder[] evaluateStringAsArray(String value, Type<?> type, char separator) {
 
         if (EngineUtil.hasText(value)) {
             String[] tokens = EngineUtil.split(value, separator);
-            AbstractHolder[] array = type.newArray(tokens.length);
+            ValueHolder[] array = type.newArray(tokens.length);
             for (int i = 0; i < tokens.length; i++) {
                 array[i] = TypeDecoder.decode(type, tokens[i]);
             }

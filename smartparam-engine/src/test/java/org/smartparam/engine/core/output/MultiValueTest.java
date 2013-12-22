@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import org.smartparam.engine.core.exception.SmartParamException;
 import static org.testng.AssertJUnit.*;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.types.date.DateHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.number.NumberHolder;
@@ -35,9 +35,9 @@ public class MultiValueTest {
     public void testGetValue() {
 
         // zaleznosci
-        AbstractHolder h1 = new StringHolder("a");
-        AbstractHolder h2 = new NumberHolder(BigDecimal.ONE);
-        AbstractHolder h3 = new IntegerHolder(100L);
+        ValueHolder h1 = new StringHolder("a");
+        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h3 = new IntegerHolder(100L);
 
         // dane testowe
         Object[] values = {h1, h2, h3};
@@ -55,11 +55,11 @@ public class MultiValueTest {
     public void testGetValue__exception() {
 
         // zaleznosci
-        AbstractHolder h1 = new StringHolder("a");
-        AbstractHolder h2 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h1 = new StringHolder("a");
+        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
 
         // dane testowe
-        Object[] values = {new AbstractHolder[]{h1, h2}};       // 1 element typu AbstractHolder[]
+        Object[] values = {new ValueHolder[]{h1, h2}};       // 1 element typu AbstractHolder[]
 
         // testowany obiekt
         MultiValue mv = new MultiValue(values);
@@ -84,9 +84,9 @@ public class MultiValueTest {
     public void testGetString() {
 
         // zaleznosci
-        AbstractHolder h1 = new StringHolder("a");
-        AbstractHolder h2 = new NumberHolder(BigDecimal.ONE);
-        AbstractHolder h3 = new IntegerHolder(9L);
+        ValueHolder h1 = new StringHolder("a");
+        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h3 = new IntegerHolder(9L);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1, h2, h3});
@@ -101,8 +101,8 @@ public class MultiValueTest {
     public void testGetBigDecimal() {
 
         // zaleznosci
-        AbstractHolder h1 = new NumberHolder(BigDecimal.ONE);
-        AbstractHolder h2 = new NumberHolder(BigDecimal.TEN);
+        ValueHolder h1 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h2 = new NumberHolder(BigDecimal.TEN);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1, h2});
@@ -118,8 +118,8 @@ public class MultiValueTest {
         // zaleznosci
         Date d1 = new Date();
         Date d2 = new Date();
-        AbstractHolder h1 = new DateHolder(d1);
-        AbstractHolder h2 = new DateHolder(d2);
+        ValueHolder h1 = new DateHolder(d1);
+        ValueHolder h2 = new DateHolder(d2);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1, h2});
@@ -133,7 +133,7 @@ public class MultiValueTest {
     public void testGetInteger() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(123L);
+        ValueHolder h1 = new IntegerHolder(123L);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1});
@@ -146,7 +146,7 @@ public class MultiValueTest {
     public void testGetLong() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(123L);
+        ValueHolder h1 = new IntegerHolder(123L);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1});
@@ -159,7 +159,7 @@ public class MultiValueTest {
     public void testGetEnum() {
 
         // przypadki testowe
-        AbstractHolder[] tests = {
+        ValueHolder[] tests = {
             new StringHolder("A3"),
             new StringHolder("A4"),
             new StringHolder(null)
@@ -174,7 +174,7 @@ public class MultiValueTest {
 
         // testy
         for (int i = 0; i < tests.length; i++) {
-            AbstractHolder h = tests[i];
+            ValueHolder h = tests[i];
             LetterType expectedResult = expected[i];
 
             MultiValue mv = new MultiValue(new Object[]{h});
@@ -191,14 +191,14 @@ public class MultiValueTest {
     public void testGetEnum__illegalArgument() {
 
         // przypadki testowe
-        AbstractHolder[] tests = {
+        ValueHolder[] tests = {
             new StringHolder("A9"),
             new StringHolder("")
         };
 
         // testy
         for (int i = 0; i < tests.length; i++) {
-            AbstractHolder h = tests[i];
+            ValueHolder h = tests[i];
             MultiValue mv = new MultiValue(new Object[]{h});
 
             // test
@@ -216,25 +216,25 @@ public class MultiValueTest {
     public void testGetArray() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(100L);
-        AbstractHolder h2 = new IntegerHolder(200L);
+        ValueHolder h1 = new IntegerHolder(100L);
+        ValueHolder h2 = new IntegerHolder(200L);
 
         // 1 element
-        AbstractHolder[] e1 = {h1, h2};
+        ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{e1});       // 1 poziom typu tablicowego
 
         // oczekiwane wartosci
-        assertArrayEquals(new AbstractHolder[]{h1, h2}, mv.getArray(0));
+        assertArrayEquals(new ValueHolder[]{h1, h2}, mv.getArray(0));
     }
 
     @Test
     public void testGetArray__exception() {
 
         // zaleznosci
-        AbstractHolder h1 = new StringHolder("a");
-        AbstractHolder h2 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h1 = new StringHolder("a");
+        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
 
         // dane testowe
         Object[] values = {h1, h2};       // nie ma elementow tablicowych
@@ -263,13 +263,13 @@ public class MultiValueTest {
 
         // zaleznosci
         Date date = new Date();
-        AbstractHolder h1 = new StringHolder("a");
-        AbstractHolder h2 = new NumberHolder(BigDecimal.ONE);
-        AbstractHolder h3 = new IntegerHolder(100L);
-        AbstractHolder h4 = new DateHolder(date);
+        ValueHolder h1 = new StringHolder("a");
+        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h3 = new IntegerHolder(100L);
+        ValueHolder h4 = new DateHolder(date);
 
         Object element1 = h1;
-        Object element2 = new AbstractHolder[]{h2, h3};
+        Object element2 = new ValueHolder[]{h2, h3};
         Object element3 = h4;
 
         // testowany obiekt
@@ -293,11 +293,11 @@ public class MultiValueTest {
     public void testGetStringArray() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(100L);
-        AbstractHolder h2 = new IntegerHolder(200L);
+        ValueHolder h1 = new IntegerHolder(100L);
+        ValueHolder h2 = new IntegerHolder(200L);
 
         // 1 element tablicowy
-        AbstractHolder[] e1 = {h1, h2};
+        ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt - value(1) to tablica
         MultiValue mv = new MultiValue(new Object[]{e1});
@@ -317,11 +317,11 @@ public class MultiValueTest {
         Date d2 = new Date();
 
         // zaleznosci
-        AbstractHolder h1 = new DateHolder(d1);
-        AbstractHolder h2 = new DateHolder(d2);
+        ValueHolder h1 = new DateHolder(d1);
+        ValueHolder h2 = new DateHolder(d2);
 
         // 1 element tablicowy
-        AbstractHolder[] e1 = {h1, h2};
+        ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt - value(1) to tablica
         MultiValue mv = new MultiValue(new Object[]{e1});
@@ -337,11 +337,11 @@ public class MultiValueTest {
     public void testGetIntegerArray() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(100L);
-        AbstractHolder h2 = new IntegerHolder(200L);
+        ValueHolder h1 = new IntegerHolder(100L);
+        ValueHolder h2 = new IntegerHolder(200L);
 
         // 1 element tablicowy
-        AbstractHolder[] e1 = {h1, h2};
+        ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt - value(1) to tablica
         MultiValue mv = new MultiValue(new Object[]{e1});
@@ -357,11 +357,11 @@ public class MultiValueTest {
     public void testGetBigDecimalArray() {
 
         // zaleznosci
-        AbstractHolder h1 = new NumberHolder(BigDecimal.ZERO);
-        AbstractHolder h2 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h1 = new NumberHolder(BigDecimal.ZERO);
+        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
 
         // 1 element tablicowy
-        AbstractHolder[] e1 = {h1, h2};
+        ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt - value(1) to tablica
         MultiValue mv = new MultiValue(new Object[]{e1});
@@ -377,8 +377,8 @@ public class MultiValueTest {
     public void testAsStrings() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(100L);
-        AbstractHolder h2 = new IntegerHolder(200L);
+        ValueHolder h1 = new IntegerHolder(100L);
+        ValueHolder h2 = new IntegerHolder(200L);
 
         // testowany obiekt - value(1) to tablica
         MultiValue mv = new MultiValue(new Object[]{h1, h2});
@@ -394,8 +394,8 @@ public class MultiValueTest {
     public void testAsBigDecimals() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(100L);
-        AbstractHolder h2 = new IntegerHolder(200L);
+        ValueHolder h1 = new IntegerHolder(100L);
+        ValueHolder h2 = new IntegerHolder(200L);
 
         // testowany obiekt - value(1) to tablica
         MultiValue mv = new MultiValue(new Object[]{h1, h2});
@@ -434,9 +434,9 @@ public class MultiValueTest {
     public void testNextValue() {
 
         // zaleznosci
-        AbstractHolder h1 = new StringHolder("a");
-        AbstractHolder h2 = new NumberHolder(BigDecimal.ONE);
-        AbstractHolder h3 = new IntegerHolder(100L);
+        ValueHolder h1 = new StringHolder("a");
+        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h3 = new IntegerHolder(100L);
 
         // dane testowe
         Object[] values = {h1, h2, h3};
@@ -454,9 +454,9 @@ public class MultiValueTest {
     public void testNextString() {
 
         // zaleznosci
-        AbstractHolder h1 = new StringHolder("a");
-        AbstractHolder h2 = new NumberHolder(BigDecimal.ONE);
-        AbstractHolder h3 = new IntegerHolder(9L);
+        ValueHolder h1 = new StringHolder("a");
+        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h3 = new IntegerHolder(9L);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1, h2, h3});
@@ -471,8 +471,8 @@ public class MultiValueTest {
     public void testNextBigDecimal() {
 
         // zaleznosci
-        AbstractHolder h1 = new NumberHolder(BigDecimal.ONE);
-        AbstractHolder h2 = new NumberHolder(BigDecimal.TEN);
+        ValueHolder h1 = new NumberHolder(BigDecimal.ONE);
+        ValueHolder h2 = new NumberHolder(BigDecimal.TEN);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1, h2});
@@ -490,9 +490,9 @@ public class MultiValueTest {
         BigDecimal v2 = BigDecimal.ONE;
         Long v3 = 100L;
 
-        AbstractHolder h1 = new DateHolder(v1);
-        AbstractHolder h2 = new NumberHolder(v2);
-        AbstractHolder h3 = new IntegerHolder(v3);
+        ValueHolder h1 = new DateHolder(v1);
+        ValueHolder h2 = new NumberHolder(v2);
+        ValueHolder h3 = new IntegerHolder(v3);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1, h2, h3});
@@ -507,7 +507,7 @@ public class MultiValueTest {
     public void testNextInteger() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(123L);
+        ValueHolder h1 = new IntegerHolder(123L);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1});
@@ -520,7 +520,7 @@ public class MultiValueTest {
     public void testNextLong() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(123L);
+        ValueHolder h1 = new IntegerHolder(123L);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1});
@@ -533,7 +533,7 @@ public class MultiValueTest {
     public void testNextEnum() {
 
         // przypadki testowe
-        AbstractHolder[] tests = {
+        ValueHolder[] tests = {
             new StringHolder("A3"),
             new StringHolder("A4"),
             new StringHolder(null)
@@ -552,13 +552,13 @@ public class MultiValueTest {
     public void testNextArray() {
 
         // zaleznosci
-        AbstractHolder h1 = new IntegerHolder(100L);
-        AbstractHolder h2 = new IntegerHolder(200L);
-        AbstractHolder h3 = new IntegerHolder(300L);
+        ValueHolder h1 = new IntegerHolder(100L);
+        ValueHolder h2 = new IntegerHolder(200L);
+        ValueHolder h3 = new IntegerHolder(300L);
 
         // 2 elementy
-        AbstractHolder[] e1 = {h1, h2};
-        AbstractHolder[] e2 = {h3};
+        ValueHolder[] e1 = {h1, h2};
+        ValueHolder[] e2 = {h3};
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
@@ -577,8 +577,8 @@ public class MultiValueTest {
         StringHolder h3 = new StringHolder("C");
 
         // 3 elementy
-        AbstractHolder[] e1 = {h1, h2};
-        AbstractHolder[] e2 = {h2, h3};
+        ValueHolder[] e1 = {h1, h2};
+        ValueHolder[] e2 = {h2, h3};
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
@@ -601,8 +601,8 @@ public class MultiValueTest {
         NumberHolder h3 = new NumberHolder(v10);
 
         // 3 elementy
-        AbstractHolder[] e1 = {h1, h2};
-        AbstractHolder[] e2 = {h2, h3};
+        ValueHolder[] e1 = {h1, h2};
+        ValueHolder[] e2 = {h2, h3};
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
@@ -618,8 +618,8 @@ public class MultiValueTest {
         // zaleznosci
         Date d1 = new Date();
         Date d2 = new Date();
-        AbstractHolder h1 = new DateHolder(d1);
-        AbstractHolder h2 = new DateHolder(d2);
+        ValueHolder h1 = new DateHolder(d1);
+        ValueHolder h2 = new DateHolder(d2);
 
         // testowany obiekt
         MultiValue mv = new MultiValue(new Object[]{h1, h2});

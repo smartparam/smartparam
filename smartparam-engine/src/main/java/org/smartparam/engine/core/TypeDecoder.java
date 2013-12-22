@@ -16,7 +16,7 @@
 package org.smartparam.engine.core;
 
 import java.util.Collection;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -28,7 +28,7 @@ final class TypeDecoder {
     private TypeDecoder() {
     }
 
-    static AbstractHolder decode(Type<?> type, String text) {
+    static ValueHolder decode(Type<?> type, String text) {
         try {
             return type.decode(text != null ? text.trim() : null);
         } catch (RuntimeException exception) {
@@ -36,7 +36,7 @@ final class TypeDecoder {
         }
     }
 
-    static AbstractHolder convert(Type<?> type, Object obj) {
+    static ValueHolder convert(Type<?> type, Object obj) {
         try {
             return type.convert(obj);
         } catch (RuntimeException exception) {
@@ -44,15 +44,15 @@ final class TypeDecoder {
         }
     }
 
-    static AbstractHolder[] convert(Type<?> type, Object[] array) {
-        AbstractHolder[] result = type.newArray(array.length);
+    static ValueHolder[] convert(Type<?> type, Object[] array) {
+        ValueHolder[] result = type.newArray(array.length);
         for (int i = 0; i < result.length; i++) {
             result[i] = convert(type, array[i]);
         }
         return result;
     }
 
-    static AbstractHolder[] convert(Type<?> type, Collection<?> coll) {
+    static ValueHolder[] convert(Type<?> type, Collection<?> coll) {
         return convert(type, coll.toArray());
     }
 

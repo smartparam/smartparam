@@ -13,40 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.types.date;
+package org.smartparam.engine.core.type;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import org.smartparam.engine.core.type.AbstractValueHolder;
 
 /**
- * in progress..
  *
- * @author Przemek Hertel
+ * @author Adam Dubiel
  */
-public class DateHolder extends AbstractValueHolder {
-
-    private final Date date;
-
-    public DateHolder(Date date) {
-        this.date = date;
-    }
+public class EmptyHolder extends AbstractValueHolder {
 
     @Override
-    public Date getValue() {
-        return date;
-    }
-
-    @Override
-    public Date getDate() {
-        return date;
+    public Object getValue() {
+        return null;
     }
 
     @Override
     public String getString() {
-        return getString(DateType.getDefaultOutputPattern());
+        return null;
     }
 
-    public String getString(String pattern) {
-        return date != null ? SimpleDateFormatPool.get(pattern).format(date) : null;
+    @Override
+    public BigDecimal getBigDecimal() {
+        return null;
     }
+
+    @Override
+    public Boolean getBoolean() {
+        return null;
+    }
+
+    @Override
+    public Date getDate() {
+        return null;
+    }
+
+    @Override
+    public Double getDouble() {
+        return null;
+    }
+
+    @Override
+    public Integer getInteger() {
+        return null;
+    }
+
+    @Override
+    public Long getLong() {
+        return null;
+    }
+
 }

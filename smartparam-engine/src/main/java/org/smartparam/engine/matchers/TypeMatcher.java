@@ -17,7 +17,7 @@ package org.smartparam.engine.matchers;
 
 import org.smartparam.engine.annotated.annotations.ParamMatcher;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -27,7 +27,7 @@ import org.smartparam.engine.core.type.Type;
 @ParamMatcher("equals/type")
 public class TypeMatcher implements Matcher {
 
-    public <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type) {
+    public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {
         if ("*".equals(pattern)) {
             return true;
         }

@@ -18,7 +18,7 @@ package org.smartparam.engine.matchers;
 import org.smartparam.engine.annotated.annotations.ParamMatcher;
 import org.smartparam.engine.annotated.annotations.ObjectInstance;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.EngineUtil;
 
@@ -78,7 +78,7 @@ public class BetweenMatcher implements Matcher {
     }
 
     @Override
-    public <T extends AbstractHolder> boolean matches(String value, String pattern, Type<T> type) {
+    public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {
         char separator = findSeparator(pattern);
 
         String[] tokens = EngineUtil.split2(pattern, separator);
@@ -99,7 +99,7 @@ public class BetweenMatcher implements Matcher {
         return DEFAULT_SEPARATORS[0];
     }
 
-    private <T extends AbstractHolder> boolean lowerCondition(T v, String lower, Type<T> type) {
+    private <T extends ValueHolder> boolean lowerCondition(T v, String lower, Type<T> type) {
         if ("*".equals(lower) || "".equals(lower)) {
             return true;
         }
@@ -109,7 +109,7 @@ public class BetweenMatcher implements Matcher {
         return lowerInclusive ? l.compareTo(v) <= 0 : l.compareTo(v) < 0;
     }
 
-    private <T extends AbstractHolder> boolean upperCondition(T v, String upper, Type<T> type) {
+    private <T extends ValueHolder> boolean upperCondition(T v, String upper, Type<T> type) {
         if ("*".equals(upper) || "".equals(upper)) {
             return true;
         }

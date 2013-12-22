@@ -16,7 +16,7 @@
 package org.smartparam.engine.core.output;
 
 import java.math.BigDecimal;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.util.Formatter;
 import org.smartparam.engine.util.Printer;
 
@@ -61,7 +61,7 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public AbstractHolder getHolder(int rowNo, int colNo) {
+    public ValueHolder getHolder(int rowNo, int colNo) {
         return row(rowNo).getHolder(colNo);
     }
 
@@ -76,7 +76,7 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public AbstractHolder getHolder(int rowNo, String name) {
+    public ValueHolder getHolder(int rowNo, String name) {
         return row(rowNo).getHolder(name);
     }
 
@@ -91,7 +91,7 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public AbstractHolder getHolder(int colNo) {
+    public ValueHolder getHolder(int colNo) {
         return row().getHolder(colNo);
     }
 
@@ -106,7 +106,7 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public AbstractHolder getHolder(String name) {
+    public ValueHolder getHolder(String name) {
         return row().getHolder(name);
     }
 
@@ -150,7 +150,7 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public AbstractHolder getHolder() {
+    public ValueHolder getHolder() {
         return row().getHolder(0);
     }
 

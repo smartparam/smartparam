@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.output.MultiValue;
-import org.smartparam.engine.core.type.AbstractHolder;
+import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.types.date.DateHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.number.NumberHolder;
@@ -62,7 +62,7 @@ public final class MultiValueBuilder {
         return this;
     }
 
-    private AbstractHolder getHolderForObject(Object object) {
+    private ValueHolder getHolderForObject(Object object) {
         if (object instanceof BigDecimal) {
             return new NumberHolder((BigDecimal) object);
         }

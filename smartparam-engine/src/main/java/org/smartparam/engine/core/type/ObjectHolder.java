@@ -13,40 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.types.date;
-
-import java.util.Date;
-import org.smartparam.engine.core.type.AbstractValueHolder;
+package org.smartparam.engine.core.type;
 
 /**
- * in progress..
  *
- * @author Przemek Hertel
+ * @author Adam Dubiel
  */
-public class DateHolder extends AbstractValueHolder {
+public class ObjectHolder extends AbstractValueHolder {
 
-    private final Date date;
+    private final Object value;
 
-    public DateHolder(Date date) {
-        this.date = date;
+    public ObjectHolder(Object value) {
+        this.value = value;
     }
 
     @Override
-    public Date getValue() {
-        return date;
-    }
-
-    @Override
-    public Date getDate() {
-        return date;
+    public Object getValue() {
+        return value;
     }
 
     @Override
     public String getString() {
-        return getString(DateType.getDefaultOutputPattern());
-    }
-
-    public String getString(String pattern) {
-        return date != null ? SimpleDateFormatPool.get(pattern).format(date) : null;
+        return value != null ? value.toString() : null;
     }
 }
