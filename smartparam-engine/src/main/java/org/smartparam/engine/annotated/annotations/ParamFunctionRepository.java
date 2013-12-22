@@ -32,6 +32,8 @@ import java.lang.annotation.Target;
 @Sortable
 public @interface ParamFunctionRepository {
 
+    int DEFAULT_ORDER = 100;
+
     /**
      * Unique name of repository.
      *
@@ -62,5 +64,5 @@ public @interface ParamFunctionRepository {
      *
      * @return order, defaults to 100
      */
-    int order() default 100;
+    int order() default DEFAULT_ORDER;
 }

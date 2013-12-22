@@ -46,6 +46,10 @@ public final class ParamEngineConfigBuilder {
 
     private final ParamEngineConfig paramEngineConfig;
 
+    private boolean annotationScanEnabled = false;
+
+    private final PackageList packageList = new PackageList();
+
     private ParamEngineConfigBuilder() {
         paramEngineConfig = new ParamEngineConfig();
     }
@@ -61,6 +65,9 @@ public final class ParamEngineConfigBuilder {
      * Finalizes configuration building and returns immutable config object.
      */
     public ParamEngineConfig build() {
+        if (annotationScanEnabled) {
+            withComponentInitializers(new TypeScannerInitializer(packageList), new MethodScannerInitializer(packageList));
+        }
         withComponentInitializers(new PostConstructInitializer());
         return paramEngineConfig;
     }
@@ -73,16 +80,27 @@ public final class ParamEngineConfigBuilder {
      * matchers, types, function repositories etc.
      */
     public ParamEngineConfigBuilder withAnnotationScanEnabled(String... packagesToScan) {
-        PackageList packageList = new PackageList(Arrays.asList(packagesToScan));
-        return withComponentInitializers(new TypeScannerInitializer(packageList), new MethodScannerInitializer(packageList));
+        annotationScanEnabled = true;
+        packageList.addAll(packagesToScan);
+        return this;
     }
 
     /**
-     * Enables annotation scanning, see {@link #withAnnotationScanEnabled(java.lang.String...) }
-     * for more.
+     * Add more packages to scan, has no effect if annotation scanning is disabled
+     * {@link #withAnnotationScanEnabled(java.lang.String...) }.
      */
-    public ParamEngineConfigBuilder withAnnotationScanEnabled(PackageList packagesToScan) {
-        return withComponentInitializers(new TypeScannerInitializer(packagesToScan), new MethodScannerInitializer(packagesToScan));
+    public ParamEngineConfigBuilder withPackagesToScan(String... packagesToScan) {
+        packageList.addAll(packagesToScan);
+        return this;
+    }
+
+    /**
+     * Add more packages to scan, has no effect if annotation scanning is disabled
+     * {@link #withAnnotationScanEnabled(java.lang.String...) }.
+     */
+    public ParamEngineConfigBuilder withPackagesToScan(PackageList packagesToScan) {
+        this.packageList.addAll(packagesToScan.getPackages());
+        return this;
     }
 
     /**

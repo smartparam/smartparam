@@ -48,7 +48,8 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
         }
 
         if (scanAnnotations) {
-            configBuilder.withAnnotationScanEnabled(new PackageList(packagesToScan));
+            configBuilder.withAnnotationScanEnabled();
+            configBuilder.withPackagesToScan(new PackageList(packagesToScan));
         }
 
         configBuilder.registerModule(new SpringModule(appContext));

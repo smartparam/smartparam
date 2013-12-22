@@ -17,7 +17,6 @@ package org.smartparam.spring.function;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import org.smartparam.engine.annotated.annotations.ParamFunctionRepository;
 import org.smartparam.engine.annotated.repository.AbstractScanningJavaFunctionRepository;
 import org.smartparam.engine.core.function.Function;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
@@ -28,7 +27,6 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
  *
  * @author Adam Dubiel
  */
-@ParamFunctionRepository(SpringFunctionRepository.FUNCTION_TYPE)
 public class SpringFunctionRepository extends AbstractScanningJavaFunctionRepository {
 
     public static final String FUNCTION_TYPE = "spring";

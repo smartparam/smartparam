@@ -15,6 +15,7 @@
  */
 package org.smartparam.spring;
 
+import org.smartparam.engine.annotated.annotations.ParamFunctionRepository;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineModule;
 import org.smartparam.spring.function.SpringFunctionInvoker;
@@ -34,7 +35,8 @@ public class SpringModule implements ParamEngineModule {
     }
 
     public void registerSelf(ParamEngineConfigBuilder configBuilder) {
-        configBuilder.withFunctionInvoker(SpringFunctionRepository.FUNCTION_TYPE, new SpringFunctionInvoker(applicationContext));
+        configBuilder.withFunctionInvoker(SpringFunctionRepository.FUNCTION_TYPE, new SpringFunctionInvoker(applicationContext))
+                .withFunctionRepository(SpringFunctionRepository.FUNCTION_TYPE, ParamFunctionRepository.DEFAULT_ORDER, new SpringFunctionRepository());
     }
 
 }
