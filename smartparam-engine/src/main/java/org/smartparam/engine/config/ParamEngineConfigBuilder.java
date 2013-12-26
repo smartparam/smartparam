@@ -46,7 +46,7 @@ public final class ParamEngineConfigBuilder {
 
     private final ParamEngineConfig paramEngineConfig;
 
-    private boolean annotationScanEnabled = false;
+    private boolean annotationScanEnabled = true;
 
     private final PackageList packageList = new PackageList();
 
@@ -73,21 +73,19 @@ public final class ParamEngineConfigBuilder {
     }
 
     /**
-     * Enable SmartParam annotation scanning in given packages (and all their
-     * descendants). This also enables scanning for ParamEngine defaults, so
-     * even if there are no custom entities to scan for, call this method
-     * with no arguments. Otherwise bare ParamEngine is returned, with no
-     * matchers, types, function repositories etc.
+     * Disable annotation scanning, this will return bare ParamEngine without
+     * any default components.
      */
-    public ParamEngineConfigBuilder withAnnotationScanEnabled(String... packagesToScan) {
-        annotationScanEnabled = true;
-        packageList.addAll(packagesToScan);
+    public ParamEngineConfigBuilder withAnnotationScanDisabled() {
+        annotationScanEnabled = false;
         return this;
     }
 
     /**
-     * Add more packages to scan, has no effect if annotation scanning is disabled
-     * {@link #withAnnotationScanEnabled(java.lang.String...) }.
+     * Add packages (including all descendants) that will be scanned in search of
+     * SmartParam annotations. By default SmartParam only scans default package
+     * (org.smartparam.engine) which provides a  base set of capabilities. It is
+     * also possible to disable annotation scanning by using {@link #withAnnotationScanDisabled() }.
      */
     public ParamEngineConfigBuilder withPackagesToScan(String... packagesToScan) {
         packageList.addAll(packagesToScan);
@@ -95,8 +93,10 @@ public final class ParamEngineConfigBuilder {
     }
 
     /**
-     * Add more packages to scan, has no effect if annotation scanning is disabled
-     * {@link #withAnnotationScanEnabled(java.lang.String...) }.
+     * Add packages that will be scanned in search of SmartParam annotations. By default
+     * SmartParam only scans default package (org.smartparam.engine) which provides a
+     * base set of capabilities. It is also possible to disable annotation scanning
+     * by using {@link #withAnnotationScanDisabled() }.
      */
     public ParamEngineConfigBuilder withPackagesToScan(PackageList packagesToScan) {
         this.packageList.addAll(packagesToScan.getPackages());
