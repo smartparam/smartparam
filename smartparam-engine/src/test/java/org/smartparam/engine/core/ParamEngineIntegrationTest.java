@@ -79,6 +79,7 @@ public class ParamEngineIntegrationTest {
                 .withFunctionRepository("java", 1, functionRepository)
                 .withFunctionInvoker("java", functionInvoker)
                 .withMatcher("between", new BetweenMatcher())
+                .withAnnotationScanDisabled()
                 .build();
 
         engine = (SmartParamEngine) ParamEngineFactory.paramEngine(config);
