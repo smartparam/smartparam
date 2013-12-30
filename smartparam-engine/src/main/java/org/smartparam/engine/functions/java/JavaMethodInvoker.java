@@ -18,18 +18,23 @@ package org.smartparam.engine.functions.java;
 import java.lang.reflect.Method;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.engine.core.function.FunctionInvoker;
 
 /**
  *
  * @author Adam Dubiel
  */
-public abstract class AbstractJavaFunctionInvoker implements FunctionInvoker {
+public class JavaMethodInvoker {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(JavaMethodInvoker.class);
 
-    protected Object invokeMethod(Object instance, Method method, Object... args) {
+    /**
+     * Invoke method on given object instance with arguments.
+     */
+    public Object invokeMethod(Object instance, Method method, boolean makeAccessible, Object... args) {
         try {
+            if (makeAccessible) {
+                method.setAccessible(true);
+            }
             return method.invoke(instance, args);
         } catch (Exception exception) {
             logger.error("", exception);

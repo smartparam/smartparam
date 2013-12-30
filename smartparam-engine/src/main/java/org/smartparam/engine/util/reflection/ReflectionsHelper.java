@@ -41,7 +41,7 @@ public final class ReflectionsHelper {
 
     public static Set<Method> findMethodsAnnotatedWith(Class<? extends Annotation> annotationType, Class<?> parentClass) {
         Set<Method> annotatedMethods = new HashSet<Method>();
-        for (Method method : parentClass.getMethods()) {
+        for (Method method : parentClass.getDeclaredMethods()) {
             if (method.isAnnotationPresent(annotationType)) {
                 annotatedMethods.add(method);
             }

@@ -27,11 +27,11 @@ import java.util.Set;
  */
 public class AnnotatedMethodReporter extends PackageFilteringReporter implements AnnotationDetector.MethodReporter {
 
-    private Class<? extends Annotation> reportedClass;
+    private final Class<? extends Annotation> reportedClass;
 
-    private Set<Method> annotatedMethods = new HashSet<Method>();
+    private final Set<Method> annotatedMethods = new HashSet<Method>();
 
-    private Set<String> scannedClasses = new HashSet<String>();
+    private final Set<String> scannedClasses = new HashSet<String>();
 
     public AnnotatedMethodReporter(Class<? extends Annotation> reportedClass, String... packagesToScan) {
         super(reportedClass.getClassLoader(), packagesToScan);

@@ -16,7 +16,8 @@
 package org.smartparam.spring.function;
 
 import org.smartparam.engine.core.function.Function;
-import org.smartparam.engine.functions.java.AbstractJavaFunctionInvoker;
+import org.smartparam.engine.core.function.FunctionInvoker;
+import org.smartparam.engine.functions.java.JavaMethodInvoker;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -24,9 +25,11 @@ import org.springframework.context.ApplicationContext;
  * @author Adam Dubiel
  * @since 0.1.0
  */
-public class SpringFunctionInvoker extends AbstractJavaFunctionInvoker {
+public class SpringFunctionInvoker implements FunctionInvoker {
 
     private final ApplicationContext appContext;
+
+    private final JavaMethodInvoker methodInvoker = new JavaMethodInvoker();
 
     public SpringFunctionInvoker(ApplicationContext appContext) {
         this.appContext = appContext;
@@ -38,6 +41,6 @@ public class SpringFunctionInvoker extends AbstractJavaFunctionInvoker {
 
         Object bean = appContext.getBean(springFunction.getBeanName());
 
-        return invokeMethod(bean, springFunction.getMethod(), args);
+        return methodInvoker.invokeMethod(bean, springFunction.getMethod(), true, args);
     }
 }

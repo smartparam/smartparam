@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.functions.java;
 
-import org.smartparam.engine.functions.java.JavaFunction;
-
 /**
  *
  * @author Adam Dubiel
