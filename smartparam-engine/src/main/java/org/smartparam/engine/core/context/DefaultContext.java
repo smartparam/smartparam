@@ -39,7 +39,7 @@ import org.smartparam.engine.util.reflection.ReflectionSetterInvoker;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class DefaultContext implements ParamContext {
+public class DefaultContext extends BaseParamContext {
 
     private static final Locale DEFAULT_LOCALE = Locale.getDefault();
 
@@ -54,8 +54,6 @@ public class DefaultContext implements ParamContext {
     private ReflectionSetterInvoker setterInvoker = sharedSetterInvoker;
 
     private Map<String, Object> userContext;
-
-    private Object[] levelValues;
 
     /**
      * Puts provided values into context using algorithm:
@@ -276,11 +274,6 @@ public class DefaultContext implements ParamContext {
         }
     }
 
-    @Override
-    public Object[] getLevelValues() {
-        return levelValues;
-    }
-
     /**
      * Explicitly set locale used for lowercase operation on map keys used by
      * {@link #set(java.lang.String, java.lang.Object, boolean) } and
@@ -290,15 +283,6 @@ public class DefaultContext implements ParamContext {
      */
     public void setLocale(Locale locale) {
         this.locale = locale;
-    }
-
-    /**
-     * Set level values directly as objects.
-     * Method is null safe, puts null value into level values.
-     */
-    @Override
-    public final void setLevelValues(Object... levelValues) {
-        this.levelValues = levelValues;
     }
 
     public DefaultContext withLevelValues(String... levelValues) {
@@ -322,6 +306,6 @@ public class DefaultContext implements ParamContext {
 
     @Override
     public String toString() {
-        return "DefaultContext[levelValues=" + Arrays.toString(levelValues) + ", userContext=" + userContext + ']';
+        return "DefaultContext[levelValues=" + Arrays.toString(getLevelValues()) + ", userContext=" + userContext + ']';
     }
 }

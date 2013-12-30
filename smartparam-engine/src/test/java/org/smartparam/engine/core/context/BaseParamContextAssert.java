@@ -23,23 +23,18 @@ import org.smartparam.engine.test.ParamEngineAssertions;
  *
  * @author Adam Dubiel
  */
-public class DefaultContextAssert extends AbstractAssert<DefaultContextAssert, DefaultContext> {
+public class BaseParamContextAssert extends AbstractAssert<BaseParamContextAssert, BaseParamContext> {
 
-    private DefaultContextAssert(DefaultContext actual) {
-        super(actual, DefaultContextAssert.class);
+    private BaseParamContextAssert(BaseParamContext actual) {
+        super(actual, BaseParamContextAssert.class);
     }
 
-    public static DefaultContextAssert assertThat(DefaultContext actual) {
-        return new DefaultContextAssert(actual);
+    public static BaseParamContextAssert assertThat(BaseParamContext actual) {
+        return new BaseParamContextAssert(actual);
     }
 
-    public DefaultContextAssert hasLevelValues(Object... levelValues) {
+    public BaseParamContextAssert hasLevelValues(Object... levelValues) {
         ParamEngineAssertions.assertThat(actual.getLevelValues()).containsExactly(levelValues);
-        return this;
-    }
-
-    public DefaultContextAssert hasValue(String key, Object value) {
-        ParamEngineAssertions.assertThat(actual.get(key)).isEqualTo(value);
         return this;
     }
 }

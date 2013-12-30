@@ -16,16 +16,21 @@
 package org.smartparam.engine.core.context;
 
 /**
- * Simple parameter evaluation context that uses values provided directly by
- * user. Under the hood, {@link DefaultContext#setLevelValues(java.lang.Object[]) }
- * is called.
  *
- * @author Przemek Hertel
- * @since 1.0.0
+ * @author Adam Dubiel
  */
-public class LevelValues extends BaseParamContext {
+public class BaseParamContext implements ParamContext {
 
-    public LevelValues(Object... values) {
-        setLevelValues(values);
+    private Object[] levelValues;
+
+    @Override
+    public Object[] getLevelValues() {
+        return levelValues;
     }
+
+    @Override
+    public void setLevelValues(Object... levelValues) {
+        this.levelValues = levelValues;
+    }
+
 }

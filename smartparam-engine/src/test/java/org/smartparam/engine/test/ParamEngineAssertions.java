@@ -31,6 +31,8 @@ import org.smartparam.engine.core.context.DefaultContextAssert;
 import java.util.Map;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
+import org.smartparam.engine.core.context.BaseParamContext;
+import org.smartparam.engine.core.context.BaseParamContextAssert;
 import org.smartparam.engine.core.repository.ItemsContainer;
 import org.smartparam.engine.core.repository.MapRepository;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
@@ -67,6 +69,10 @@ public class ParamEngineAssertions extends org.fest.assertions.api.Assertions {
 
     public static DefaultContextAssert assertThat(DefaultContext actual) {
         return DefaultContextAssert.assertThat(actual);
+    }
+
+    public static BaseParamContextAssert assertThat(BaseParamContext actual) {
+        return BaseParamContextAssert.assertThat(actual);
     }
 
     public static PreparedParameterAssert assertThat(PreparedParameter actual) {
