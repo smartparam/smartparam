@@ -38,7 +38,9 @@ public class SimpleParameter implements Parameter {
 
     private final Set<ParameterEntry> entries = new HashSet<ParameterEntry>();
 
-    private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;;
+    private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
+
+    ;
 
     private boolean cacheable = true;
 
@@ -68,6 +70,11 @@ public class SimpleParameter implements Parameter {
         this.name = name;
     }
 
+    public SimpleParameter withName(String name) {
+        this.name = name;
+        return this;
+    }
+
     @Override
     public List<Level> getLevels() {
         return Collections.unmodifiableList(levels);
@@ -77,6 +84,11 @@ public class SimpleParameter implements Parameter {
         this.levels.addAll(levels);
     }
 
+    public SimpleParameter withLevel(Level level) {
+        this.levels.add(level);
+        return this;
+    }
+
     @Override
     public int getInputLevels() {
         return inputLevels;
@@ -84,6 +96,11 @@ public class SimpleParameter implements Parameter {
 
     public void setInputLevels(int inputLevels) {
         this.inputLevels = inputLevels;
+    }
+
+    public SimpleParameter withInputLevels(int inputLevels) {
+        this.inputLevels = inputLevels;
+        return this;
     }
 
     @Override

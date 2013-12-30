@@ -61,10 +61,19 @@ public class BasicParamViewer implements ParamViewer {
     }
 
     @Override
+    public boolean parameterExists(String parameterName) {
+        return !listParameters(new ParameterFilter(parameterName)).isEmpty();
+    }
+
+    @Override
     public List<DescribedCollection<String>> listParameters() {
         List<DescribedCollection<String>> parameters = new ArrayList<DescribedCollection<String>>();
+        DescribedCollection<String> repositoryParameters;
         for (RepositoryName repositoryName : repositories.storedRepositories()) {
-            parameters.add(listParameters(repositoryName));
+            repositoryParameters = listParameters(repositoryName);
+            if (!repositoryParameters.isEmpty()) {
+                parameters.add(repositoryParameters);
+            }
         }
         return parameters;
     }
@@ -72,8 +81,12 @@ public class BasicParamViewer implements ParamViewer {
     @Override
     public List<DescribedCollection<String>> listParameters(ParameterFilter filter) {
         List<DescribedCollection<String>> parameters = new ArrayList<DescribedCollection<String>>();
+        DescribedCollection<String> repositoryParameters;
         for (RepositoryName repositoryName : repositories.storedRepositories()) {
-            parameters.add(listParameters(repositoryName, filter));
+            repositoryParameters = listParameters(repositoryName, filter);
+            if (!repositoryParameters.isEmpty()) {
+                parameters.add(repositoryParameters);
+            }
         }
         return parameters;
     }

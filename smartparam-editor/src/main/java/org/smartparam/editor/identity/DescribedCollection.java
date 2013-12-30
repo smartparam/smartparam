@@ -18,12 +18,13 @@ package org.smartparam.editor.identity;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class DescribedCollection<T> {
+public class DescribedCollection<T> implements Iterable<T> {
 
     private final RepositoryName source;
 
@@ -45,5 +46,14 @@ public class DescribedCollection<T> {
 
     public Collection<T> items() {
         return Collections.unmodifiableCollection(items);
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return items.iterator();
     }
 }

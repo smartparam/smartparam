@@ -35,6 +35,8 @@ public interface ParamViewer {
 
     List<RepositoryName> repositories();
 
+    boolean parameterExists(String parameterName);
+
     List<DescribedCollection<String>> listParameters();
 
     List<DescribedCollection<String>> listParameters(ParameterFilter filter);

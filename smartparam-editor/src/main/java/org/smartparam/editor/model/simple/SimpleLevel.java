@@ -53,6 +53,11 @@ public class SimpleLevel implements Level {
         this.name = name;
     }
 
+    public SimpleLevel withName(String name) {
+        this.name = name;
+        return this;
+    }
+
     @Override
     public String getLevelCreator() {
         return levelCreator;
@@ -60,6 +65,11 @@ public class SimpleLevel implements Level {
 
     public void setLevelCreator(String levelCreator) {
         this.levelCreator = levelCreator;
+    }
+
+    public SimpleLevel withLevelCreator(String levelCreator) {
+        this.levelCreator = levelCreator;
+        return this;
     }
 
     @Override
@@ -71,6 +81,11 @@ public class SimpleLevel implements Level {
         this.type = type;
     }
 
+    public SimpleLevel withType(String type) {
+        this.type = type;
+        return this;
+    }
+
     @Override
     public boolean isArray() {
         return array;
@@ -80,6 +95,11 @@ public class SimpleLevel implements Level {
         this.array = array;
     }
 
+    public SimpleLevel array() {
+        this.array = true;
+        return this;
+    }
+
     @Override
     public String getMatcher() {
         return matcher;
@@ -87,6 +107,11 @@ public class SimpleLevel implements Level {
 
     public void setMatcher(String matcher) {
         this.matcher = matcher;
+    }
+
+    public SimpleLevel withMatcher(String matcher) {
+        this.matcher = matcher;
+        return this;
     }
 
 }
