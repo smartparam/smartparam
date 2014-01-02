@@ -24,6 +24,7 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.model.ParameterKey;
 
 /**
  *
@@ -33,7 +34,7 @@ public interface ParamEditor {
 
     List<RepositoryName> repositories();
 
-    void createParameter(RepositoryName in, Parameter parameter);
+    ParameterKey createParameter(RepositoryName in, Parameter parameter);
 
     void updateParameter(RepositoryName in, String parameterName, Parameter parameter);
 

@@ -26,6 +26,7 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.model.ParameterKey;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 
@@ -56,9 +57,9 @@ public class BasicParamEditor implements ParamEditor {
     }
 
     @Override
-    public void createParameter(RepositoryName in, Parameter parameter) {
+    public ParameterKey createParameter(RepositoryName in, Parameter parameter) {
         EditableParamRepository repository = repositories.get(in);
-        repository.createParameter(parameter);
+        return repository.createParameter(parameter);
     }
 
     @Override
