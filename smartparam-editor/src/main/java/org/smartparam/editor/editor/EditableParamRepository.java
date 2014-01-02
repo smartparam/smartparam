@@ -22,6 +22,7 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.model.ParameterKey;
 
 /**
  * Editable repository.
@@ -34,7 +35,7 @@ public interface EditableParamRepository extends ParamRepository {
      * Create new parameter based on provided instance (only interface methods
      * are used).
      */
-    void createParameter(Parameter parameter);
+    ParameterKey createParameter(Parameter parameter);
 
     /**
      * Update parameter with properties of provided instance.

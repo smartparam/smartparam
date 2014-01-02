@@ -40,6 +40,7 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.model.ParameterKey;
 import org.smartparam.editor.viewer.ViewableParamRepository;
 import org.smartparam.editor.viewer.ViewableRepositoryCapability;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
@@ -48,6 +49,7 @@ import org.smartparam.repository.jdbc.exception.ParameterAlreadyExistsException;
 import org.smartparam.repository.jdbc.model.JdbcLevelKey;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntryKey;
+import org.smartparam.repository.jdbc.model.JdbcParameterKey;
 import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
 /**
@@ -212,14 +214,14 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public void createParameter(final Parameter parameter) {
-        transactionRunner.run(new VoidTransactionWrapper() {
+    public ParameterKey createParameter(final Parameter parameter) {
+        return transactionRunner.run(new TransactionWrapper<ParameterKey>() {
             @Override
-            public void performVoid(QueryRunner queryRunner) {
+            public ParameterKey perform(QueryRunner queryRunner) {
                 if (dao.parameterExists(queryRunner, parameter.getName())) {
                     throw new ParameterAlreadyExistsException("Parameter with name " + parameter.getName() + " already exists in this repository.");
                 }
-                dao.createParameter(queryRunner, parameter);
+                return new JdbcParameterKey(dao.createParameter(queryRunner, parameter));
             }
         });
     }

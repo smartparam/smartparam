@@ -31,7 +31,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public interface JdbcRepository {
 
-    void createParameter(QueryRunner runner, Parameter parameter);
+    long createParameter(QueryRunner runner, Parameter parameter);
 
     boolean parameterExists(QueryRunner runner, String parameterName);
 

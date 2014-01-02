@@ -57,10 +57,11 @@ public class SimpleJdbcRepository implements JdbcRepository {
     }
 
     @Override
-    public void createParameter(QueryRunner runner, Parameter parameter) {
+    public long createParameter(QueryRunner runner, Parameter parameter) {
         long parameterId = parameterDAO.insert(runner, parameter);
         levelDAO.insertParameterLevels(runner, parameter.getLevels(), parameterId);
         parameterEntryDAO.insert(runner, parameter.getEntries(), parameterId);
+        return parameterId;
     }
 
     @Override

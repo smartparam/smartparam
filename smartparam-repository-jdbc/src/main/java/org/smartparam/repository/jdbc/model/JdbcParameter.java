@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.smartparam.editor.model.EditableParameter;
+import org.smartparam.editor.model.ParameterKey;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
@@ -27,9 +29,9 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameter implements Parameter {
+public class JdbcParameter implements EditableParameter {
 
-    private final long id;
+    private final JdbcParameterKey key;
 
     private final String name;
 
@@ -46,13 +48,18 @@ public class JdbcParameter implements Parameter {
     private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
     public JdbcParameter(long id, String name, int inputLevels) {
-        this.id = id;
+        this.key = new JdbcParameterKey(id);
         this.name = name;
         this.inputLevels = inputLevels;
     }
 
+    @Override
+    public ParameterKey getKey() {
+        return key;
+    }
+
     public long getId() {
-        return id;
+        return key.parameterId();
     }
 
     @Override

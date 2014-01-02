@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,29 @@
 package org.smartparam.repository.jdbc.model;
 
 import org.smartparam.editor.model.AbstractEntityKey;
-import org.smartparam.editor.model.ParameterEntryKey;
-import static org.smartparam.repository.jdbc.model.JdbcParameterKey.SYMBOL;
+import org.smartparam.editor.model.ParameterKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JdbcParameterEntryKey extends AbstractEntityKey implements ParameterEntryKey {
+public class JdbcParameterKey extends AbstractEntityKey implements ParameterKey {
+
+    static final String SYMBOL = "jdbc";
 
     private final String value;
 
-    private final long entryId;
+    private final long parameterId;
 
-    public JdbcParameterEntryKey(long entryId) {
-        this.value = format(SYMBOL, Long.toString(entryId));
-        this.entryId = entryId;
+    public JdbcParameterKey(long parameterId) {
+        this.value = format(SYMBOL, Long.toString(parameterId));
+        this.parameterId = parameterId;
     }
 
-    public JdbcParameterEntryKey(ParameterEntryKey parameterEntryKey) {
-        String[] segments = parse(SYMBOL, parameterEntryKey.value());
-        value = parameterEntryKey.value();
-        entryId = Long.parseLong(segments[1]);
+    public JdbcParameterKey(ParameterKey parameterKey) {
+        String[] segments = parse(SYMBOL, parameterKey.value());
+        value = parameterKey.value();
+        parameterId = Long.parseLong(segments[0]);
     }
 
     @Override
@@ -45,8 +46,8 @@ public class JdbcParameterEntryKey extends AbstractEntityKey implements Paramete
         return value;
     }
 
-    public long entryId() {
-        return entryId;
+    public long parameterId() {
+        return parameterId;
     }
 
 }
