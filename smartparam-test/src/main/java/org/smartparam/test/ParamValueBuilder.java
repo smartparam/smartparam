@@ -20,6 +20,7 @@ import java.util.*;
 import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.output.ParamValueImpl;
+import org.smartparam.engine.core.type.ValueHolder;
 import static org.smartparam.test.MultiValueBuilder.multiValue;
 
 /**
@@ -43,6 +44,10 @@ public final class ParamValueBuilder {
         return new ParamValueBuilder().returning(value).build();
     }
 
+    public static ParamValue paramValue(ValueHolder value) {
+        return new ParamValueBuilder().returning(value).build();
+    }
+
     public static ParamValue paramValue(Object... singleRowValues) {
         return new ParamValueBuilder().withRow(singleRowValues).build();
     }
@@ -62,8 +67,17 @@ public final class ParamValueBuilder {
         return withRow(value);
     }
 
+    public ParamValueBuilder returning(ValueHolder holder) {
+        return withRow(holder);
+    }
+
     public ParamValueBuilder withRow(Object... rowValues) {
         rows.add(multiValue().withNamedLevels(indexMap).withValues(rowValues).build());
+        return this;
+    }
+
+    public ParamValueBuilder withRow(ValueHolder... rowHolders) {
+        rows.add(multiValue().withNamedLevels(indexMap).withValues(rowHolders).build());
         return this;
     }
 }

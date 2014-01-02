@@ -22,7 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.output.MultiValue;
+import org.smartparam.engine.core.type.ObjectHolder;
 import org.smartparam.engine.core.type.ValueHolder;
+import org.smartparam.engine.types.bool.BooleanHolder;
 import org.smartparam.engine.types.date.DateHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.number.NumberHolder;
@@ -62,12 +64,23 @@ public final class MultiValueBuilder {
         return this;
     }
 
+    public MultiValueBuilder withValues(ValueHolder... holders) {
+        for (ValueHolder holder : holders) {
+            this.values.add(holder);
+        }
+
+        return this;
+    }
+
     private ValueHolder getHolderForObject(Object object) {
         if (object instanceof BigDecimal) {
             return new NumberHolder((BigDecimal) object);
         }
         if (object instanceof Date) {
             return new DateHolder((Date) object);
+        }
+        if (object instanceof Boolean) {
+            return new BooleanHolder((Boolean) object);
         }
         if (object instanceof Number) {
             return new IntegerHolder(((Number) object).longValue());
@@ -78,6 +91,6 @@ public final class MultiValueBuilder {
         if (object instanceof Enum<?>) {
             return new StringHolder(((Enum<?>) object).name());
         }
-        return new StringHolder(object.toString());
+        return new ObjectHolder(object.toString());
     }
 }
