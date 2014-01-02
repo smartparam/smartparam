@@ -32,8 +32,10 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-@ParamType("number")
+@ParamType(NumberType.TYPE_NAME)
 public class NumberType implements Type<NumberHolder> {
+
+    public static final String TYPE_NAME = "number";
 
     /**
      * Zamienia obiekt holdera na <tt>String</tt>.

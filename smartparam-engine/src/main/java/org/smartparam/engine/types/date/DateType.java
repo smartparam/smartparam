@@ -26,8 +26,10 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-@ParamType("date")
+@ParamType(DateType.TYPE_NAME)
 public class DateType implements Type<DateHolder> {
+
+    public static final String TYPE_NAME = "date";
 
     private static String defaultOutputPattern = "yyyy-MM-dd";
 

@@ -33,8 +33,10 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-@ParamType("integer")
+@ParamType(IntegerType.TYPE_NAME)
 public class IntegerType implements Type<IntegerHolder> {
+
+    public static final String TYPE_NAME = "integer";
 
     /**
      * Zamienia obiekt holdera na <tt>String</tt>.

@@ -27,8 +27,10 @@ import org.smartparam.engine.core.type.Type;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-@ParamType("string")
+@ParamType(StringType.TYPE_NAME)
 public class StringType implements Type<StringHolder> {
+
+    public static final String TYPE_NAME = "string";
 
     /**
      * Zamienia obiekt holdera na <tt>String</tt>.

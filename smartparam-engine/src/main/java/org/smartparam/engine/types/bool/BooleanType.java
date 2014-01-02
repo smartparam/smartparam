@@ -34,8 +34,10 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Przemek Hertel
  * @since 0.2.0
  */
-@ParamType("boolean")
+@ParamType(BooleanType.TYPE_NAME)
 public class BooleanType implements Type<BooleanHolder> {
+
+    public static final String TYPE_NAME = "boolean";
 
     public String encode(BooleanHolder holder) {
         return String.valueOf(holder.getBoolean());
@@ -70,19 +72,19 @@ public class BooleanType implements Type<BooleanHolder> {
     private Boolean parse(String text) {
         return Boolean.valueOf(text);
     }
-    
+
     //TODO #ph: finish boolean: 1) convert 2) parse 3) attributes
 
     /*
      * attr             default
      * formatTrue       "true"  - literaly uzywane przez encode
      * formatFalse      "false"
-     * 
+     *
      * parseTrue        true, t, yes, y, 1
      * parseFalse       false, f, no, n, 0
      * ignoreCase       true
      * parseUnknownAsEx true
      * parseUnknownAs   false (:boolean)
      */
-    
+
 }
