@@ -15,22 +15,12 @@
  */
 package org.smartparam.repository.jdbc;
 
-import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import javax.sql.DataSource;
-import org.apache.commons.lang.ArrayUtils;
 import org.picocontainer.PicoContainer;
-import org.polyjdbc.core.dialect.Dialect;
-import org.polyjdbc.core.dialect.DialectRegistry;
-import org.polyjdbc.core.integration.DataSourceFactory;
-import org.polyjdbc.core.integration.TheCleaner;
-import org.polyjdbc.core.key.KeyGeneratorRegistry;
-import org.polyjdbc.core.query.QueryRunner;
-import org.polyjdbc.core.query.QueryRunnerFactory;
-import org.polyjdbc.core.schema.SchemaManagerFactory;
-import org.polyjdbc.core.transaction.DataSourceTransactionManager;
-import org.polyjdbc.core.transaction.Transaction;
-import org.polyjdbc.core.transaction.TransactionManager;
-import org.polyjdbc.core.util.TheCloser;
+import org.polyjdbc.core.infrastructure.PolyDatabaseTest;
 import org.smartparam.repository.jdbc.config.JdbcConfig;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
@@ -50,42 +40,14 @@ import static org.smartparam.repository.jdbc.config.JdbcConfigBuilder.jdbcConfig
  *
  * @author Adam Dubiel
  */
-public class DatabaseTest {
-
-    private Dialect dialect;
-
-    private TransactionManager transactionManager;
-
-    private QueryRunnerFactory queryRunnerFactory;
+public class DatabaseTest extends PolyDatabaseTest {
 
     private SchemaCreator schemaCreator;
 
     private PicoContainer container;
 
-    private TheCleaner cleaner;
-
     protected <T> T get(Class<T> objectClass) {
         return container.getComponent(objectClass);
-    }
-
-    protected QueryRunnerFactory queryRunnerFactory() {
-        return queryRunnerFactory;
-    }
-
-    protected QueryRunner queryRunner() {
-        return queryRunnerFactory.create();
-    }
-
-    protected void databaseInterface() {
-        Transaction transaction = null;
-        try {
-            transaction = transactionManager.openTransaction();
-            org.h2.tools.Server.startWebServer(transaction.getConnection());
-        } catch (SQLException exception) {
-            throw new IllegalStateException(exception);
-        } finally {
-            TheCloser.close(transaction);
-        }
     }
 
     protected DatabaseBuilder database() {
@@ -98,26 +60,19 @@ public class DatabaseTest {
 
     @BeforeClass(alwaysRun = true)
     public void setUpDatabase() throws Exception {
-        dialect = DialectRegistry.dialect("H2");
+        DataSource dataSource = createDatabase("H2", "jdbc:h2:mem:test", "smartparam", "smartparam");
 
-        JdbcConfigBuilder configurationBuilder = jdbcConfig().withDialect(dialect)
+        JdbcConfigBuilder configurationBuilder = jdbcConfig().withDialect(dialect())
                 .withParameterSufix("parameter").withLevelSufix("level")
                 .withParameterEntrySufix("entry");
         customizeConfiguraion(configurationBuilder);
         DefaultJdbcConfig configuration = configurationBuilder.build();
 
-        DataSource dataSource = DataSourceFactory.create(dialect, "jdbc:h2:mem:test", "smartparam", "smartparam");
-        this.transactionManager = new DataSourceTransactionManager(dataSource);
-        this.queryRunnerFactory = new QueryRunnerFactory(dialect, transactionManager);
-
-        SchemaManagerFactory schemaManagerFactory = new SchemaManagerFactory(transactionManager);
-        this.schemaCreator = new DefaultSchemaCreator(configuration, schemaManagerFactory);
+        this.schemaCreator = new DefaultSchemaCreator(configuration, schemaManagerFactory());
         schemaCreator.createSchema();
 
         JdbcParamRepositoryFactory factory = new JdbcParamRepositoryFactory();
         this.container = factory.createContainer(new JdbcParamRepositoryConfig(dataSource, configuration));
-
-        this.cleaner = new TheCleaner(queryRunnerFactory);
     }
 
     protected void customizeConfiguraion(JdbcConfigBuilder builder) {
@@ -126,15 +81,19 @@ public class DatabaseTest {
     @BeforeMethod(alwaysRun = true)
     public void cleanDatabase() {
         JdbcConfig config = get(JdbcConfig.class);
-        String[] relationsToDelete = config.managedEntities();
-        ArrayUtils.reverse(relationsToDelete);
-        cleaner.cleanDB(relationsToDelete);
+        List<String> relationsToDelete = Arrays.asList(config.managedEntities());
+        Collections.reverse(relationsToDelete);
+        super.deleteFromRelations(relationsToDelete);
     }
 
     @AfterClass(alwaysRun = true)
     public void tearDownDatabase() throws Exception {
-        schemaCreator.dropSchema();
-        KeyGeneratorRegistry.keyGenerator(dialect).reset();
+        dropDatabase();
         this.container = null;
+    }
+
+    @Override
+    protected void dropSchema() {
+        schemaCreator.dropSchema();
     }
 }
