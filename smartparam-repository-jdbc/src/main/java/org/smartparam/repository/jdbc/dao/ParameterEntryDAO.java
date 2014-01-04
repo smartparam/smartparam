@@ -16,6 +16,7 @@
 package org.smartparam.repository.jdbc.dao;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -84,6 +85,15 @@ public class ParameterEntryDAO {
 
     public Set<ParameterEntry> getParameterEntries(QueryRunner queryRunner, String parameterName) {
         return queryRunner.querySet(createSelectQuery(parameterName), new ParameterEntryMapper(configuration));
+    }
+
+    public List<ParameterEntry> getParameterEntries(QueryRunner queryRunner, List<Long> ids) {
+        SelectQuery query = QueryFactory.selectAll().from(configuration.parameterEntryEntityName())
+                .where("id in (:ids)").withArgument("ids", ids);
+
+        List<ParameterEntry> entries = queryRunner.queryList(query, new ParameterEntryMapper(configuration));
+        Collections.sort(entries, new ParameterEntryIdSequenceComparator(ids));
+        return entries;
     }
 
     public Set<JdbcParameterEntry> getJdbcParameterEntries(QueryRunner queryRunner, String parameterName) {

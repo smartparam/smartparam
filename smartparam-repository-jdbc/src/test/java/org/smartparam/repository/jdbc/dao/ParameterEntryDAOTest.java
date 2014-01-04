@@ -15,7 +15,9 @@
  */
 package org.smartparam.repository.jdbc.dao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
@@ -85,6 +87,24 @@ public class ParameterEntryDAOTest extends DatabaseTest {
 
         // then
         assertThat(onlyElement(entries)).hasLevels(4).levelAtEquals(2, "3").levelAtEquals(3, "4");
+    }
+
+    @Test
+    public void shouldReturnListOfEntriesWithGivenIdsInSameOrderAsIds() {
+        // given
+        List<Long> ids = new ArrayList<Long>();
+        database().withParameter("parameter").withParameterEntries("parameter", 5, ids).build();
+        Collections.shuffle(ids);
+
+        ParameterEntryDAO parameterEntryDAO = get(ParameterEntryDAO.class);
+        QueryRunner runner = queryRunner();
+
+        // when
+        List<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, ids);
+        runner.close();
+
+        // then
+        assertThat(entries).hasSize(5).isSortedAccordingTo(new ParameterEntryIdSequenceComparator(ids));
     }
 
     @Test

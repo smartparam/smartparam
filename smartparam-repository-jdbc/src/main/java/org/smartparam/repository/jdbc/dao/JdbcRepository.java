@@ -59,6 +59,8 @@ public interface JdbcRepository {
 
     void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId);
 
+    List<ParameterEntry> getEntries(QueryRunner runner, List<Long> ids);
+
     List<ParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter);
 
     long addParameterEntry(QueryRunner runner, String parameterName, ParameterEntry entry);

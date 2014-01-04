@@ -72,24 +72,20 @@ public class DatabaseBuilder {
     }
 
     public DatabaseBuilder withParameterEntries(String parameterName, int count) {
-        return withParameterEntries(parameterName, -1, count);
+        return withParameterEntries(parameterName, count, new ArrayList<Long>());
     }
 
-    public DatabaseBuilder withParameterEntries(String parameterName, long baseId, int count) {
+    public DatabaseBuilder withParameterEntries(String parameterName, int count, List<Long> ids) {
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>();
 
-        boolean definedIds = baseId >= 0;
         JdbcParameterEntryTestBuilder entryBuilder;
         for (int i = 0; i < count; ++i) {
             entryBuilder = jdbcParameterEntry().withLevels("entry" + i);
-            if (definedIds) {
-                entryBuilder.withId(baseId + i);
-            }
             entries.add(entryBuilder.build());
         }
 
         JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
-        parameterEntryDAO.insert(queryRunner, entries, parameter.getId());
+        ids.addAll(parameterEntryDAO.insert(queryRunner, entries, parameter.getId()));
         return this;
     }
 
