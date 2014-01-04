@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -46,6 +47,17 @@ public class DescribedCollection<T> implements Iterable<T> {
 
     public Collection<T> items() {
         return Collections.unmodifiableCollection(items);
+    }
+
+    public List<T> itemsList() {
+        if (List.class.isAssignableFrom(items.getClass())) {
+            return (List<T>) Collections.unmodifiableCollection(items);
+        }
+        throw new IllegalStateException("Tried to get a non-list collection as list!");
+    }
+
+    public T firstItem() {
+        return items.iterator().next();
     }
 
     public boolean isEmpty() {

@@ -17,6 +17,7 @@ package org.smartparam.editor.viewer;
 
 import java.util.List;
 import org.smartparam.editor.capabilities.RepositoryCapabilities;
+import org.smartparam.editor.model.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
@@ -32,6 +33,8 @@ public interface ViewableParamRepository extends ParamRepository {
     List<String> listParameters(ParameterFilter filter);
 
     Parameter getParameterMetadata(String parameterName);
+
+    List<ParameterEntry> getParameterEntries(Iterable<ParameterEntryKey> parameterEntryKeys);
 
     List<ParameterEntry> listEntries(String parameterName, ParameterEntriesFilter filter);
 

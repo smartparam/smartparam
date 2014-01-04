@@ -20,6 +20,7 @@ import org.smartparam.editor.identity.RepositoryName;
 import org.smartparam.editor.identity.DescribedCollection;
 import java.util.List;
 import org.smartparam.editor.capabilities.RepositoryCapabilities;
+import org.smartparam.editor.model.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 
@@ -46,6 +47,8 @@ public interface ParamViewer {
     DescribedCollection<String> listParameters(RepositoryName from, ParameterFilter filter);
 
     DescribedEntity<Parameter> getParameterMetadata(RepositoryName from, String parameterName);
+
+    DescribedCollection<ParameterEntry> getParameterEntries(RepositoryName from, Iterable<ParameterEntryKey> parameterEntryKeys);
 
     DescribedCollection<ParameterEntry> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter);
 

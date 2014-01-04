@@ -22,6 +22,7 @@ import org.smartparam.editor.identity.DescribedCollection;
 import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.editor.capabilities.RepositoryCapabilities;
+import org.smartparam.editor.model.ParameterEntryKey;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
@@ -107,6 +108,12 @@ public class BasicParamViewer implements ParamViewer {
     public DescribedEntity<Parameter> getParameterMetadata(RepositoryName from, String parameterName) {
         ViewableParamRepository repository = repositories.get(from);
         return new DescribedEntity<Parameter>(from, repository.getParameterMetadata(parameterName));
+    }
+
+    @Override
+    public DescribedCollection<ParameterEntry> getParameterEntries(RepositoryName from, Iterable<ParameterEntryKey> parameterEntryKeys) {
+        ViewableParamRepository repository = repositories.get(from);
+        return new DescribedCollection<ParameterEntry>(from, repository.getParameterEntries(parameterEntryKeys));
     }
 
     @Override
