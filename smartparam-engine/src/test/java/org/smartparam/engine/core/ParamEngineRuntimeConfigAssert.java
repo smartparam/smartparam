@@ -16,7 +16,6 @@
 package org.smartparam.engine.core;
 
 import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
@@ -36,6 +35,11 @@ public class ParamEngineRuntimeConfigAssert extends AbstractAssert<ParamEngineRu
 
     public ParamEngineRuntimeConfigAssert hasFunctionCache() {
         ParamEngineAssertions.assertThat(actual.getFunctionCache()).isNotNull();
+        return this;
+    }
+
+    public ParamEngineRuntimeConfigAssert hasFunctionCache(Class<?> ofClass) {
+        ParamEngineAssertions.assertThat(actual.getFunctionCache()).isInstanceOf(ofClass);
         return this;
     }
 

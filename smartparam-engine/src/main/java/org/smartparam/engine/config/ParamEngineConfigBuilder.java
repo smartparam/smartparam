@@ -23,6 +23,7 @@ import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
+import org.smartparam.engine.config.pico.ComponentDefinition;
 import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
@@ -30,6 +31,7 @@ import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.type.Type;
+import sun.security.provider.ParameterCache;
 
 /**
  * ParamEngine configuration builder. Call {@link #build() } to create
@@ -110,8 +112,8 @@ public final class ParamEngineConfigBuilder {
      * component you want to replace. For details on what are interfaces and
      * classes, please take a look at source code of {@link ParamEngineConfig#injectDefaults(java.util.List) }.
      */
-    public ParamEngineConfigBuilder withComponent(Object component) {
-        paramEngineConfig.addComponent(component);
+    public ParamEngineConfigBuilder withComponent(Class<?> interfaceClass, Object component) {
+        paramEngineConfig.addComponent(ComponentDefinition.component(interfaceClass, component));
         return this;
     }
 
