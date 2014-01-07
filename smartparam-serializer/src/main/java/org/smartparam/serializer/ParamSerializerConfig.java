@@ -15,15 +15,19 @@
  */
 package org.smartparam.serializer;
 
-import java.util.List;
+import java.util.Set;
 import org.smartparam.engine.config.pico.ComponentConfig;
-import org.smartparam.serializer.StandardParamDeserializer;
-import org.smartparam.serializer.StandardParamSerializer;
+import org.smartparam.engine.config.pico.ComponentDefinition;
 import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.entries.CsvParameterEntryDeserializer;
 import org.smartparam.serializer.entries.CsvParameterEntrySerializer;
+import org.smartparam.serializer.entries.ParameterEntryDeserializer;
+import org.smartparam.serializer.entries.ParameterEntrySerializer;
 import org.smartparam.serializer.metadata.JsonParameterMetadataDeserializer;
 import org.smartparam.serializer.metadata.JsonParameterMetadataSerializer;
+import org.smartparam.serializer.metadata.ParameterMetadataDeserializer;
+import org.smartparam.serializer.metadata.ParameterMetadataSerializer;
+import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
 /**
  *
@@ -38,13 +42,13 @@ public class ParamSerializerConfig extends ComponentConfig {
     }
 
     @Override
-    protected void injectDefaults(List<Object> components) {
-        components.add(JsonParameterMetadataDeserializer.class);
-        components.add(JsonParameterMetadataSerializer.class);
-        components.add(CsvParameterEntryDeserializer.class);
-        components.add(CsvParameterEntrySerializer.class);
-        components.add(StandardParamSerializer.class);
-        components.add(StandardParamDeserializer.class);
+    protected void injectDefaults(Set<ComponentDefinition> components) {
+        components.add(component(ParameterMetadataDeserializer.class, JsonParameterMetadataDeserializer.class));
+        components.add(component(ParameterMetadataSerializer.class, JsonParameterMetadataSerializer.class));
+        components.add(component(ParameterEntryDeserializer.class, CsvParameterEntryDeserializer.class));
+        components.add(component(ParameterEntrySerializer.class, CsvParameterEntrySerializer.class));
+        components.add(component(ParamSerializer.class, StandardParamSerializer.class));
+        components.add(component(ParamDeserializer.class, StandardParamDeserializer.class));
     }
 
     public SerializationConfig getSerializationConfig() {
