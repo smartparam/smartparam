@@ -33,6 +33,12 @@ public final class PicoContainerUtil {
         return new DefaultPicoContainer(new Caching());
     }
 
+    public static MutablePicoContainer createContainer(ComponentConfig components) {
+        MutablePicoContainer container = new DefaultPicoContainer(new Caching());
+        injectImplementations(container, components.getComponents());
+        return container;
+    }
+
     public static void injectImplementations(MutablePicoContainer container, Object... implementations) {
         for (Object object : implementations) {
             container.addComponent(object);

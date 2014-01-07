@@ -19,7 +19,6 @@ import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.engine.config.initialization.BasicComponentInitializerRunner;
-import org.smartparam.engine.config.pico.ComponentDefinition;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
 import org.smartparam.engine.config.pico.PicoParamEngineRuntimeConfigBuilder;
 import org.smartparam.engine.core.ParamEngine;
