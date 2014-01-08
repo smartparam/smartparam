@@ -16,6 +16,7 @@
 package org.smartparam.repository.memory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +45,24 @@ public class InMemoryParamRepository implements ParamRepository, ViewableParamRe
 
     private InMemoryParameter loadRaw(String parameterName) {
         return repository.get(parameterName);
+    }
+
+    public void clear() {
+        repository.clear();
+    }
+
+    public void clearExcept(String... parameterNames) {
+        Map<String, InMemoryParameter> sideSotrage = new HashMap<String, InMemoryParameter>();
+        InMemoryParameter parameterToSave;
+        for (String parameterToSaveName : parameterNames) {
+            parameterToSave = loadRaw(parameterToSaveName);
+            if (parameterToSave != null) {
+                sideSotrage.put(parameterToSaveName, parameterToSave);
+            }
+        }
+
+        repository.clear();
+        repository.putAll(sideSotrage);
     }
 
     @Override
@@ -103,6 +122,10 @@ public class InMemoryParamRepository implements ParamRepository, ViewableParamRe
     public ParameterKey createParameter(Parameter parameter) {
         InMemoryParameter newParameter = new InMemoryParameter(parameter);
         repository.put(newParameter.getName(), newParameter);
+        for (Level level : parameter.getLevels()) {
+            newParameter.addLevel(new InMemoryLevel(level));
+        }
+
         return newParameter.getKey();
     }
 

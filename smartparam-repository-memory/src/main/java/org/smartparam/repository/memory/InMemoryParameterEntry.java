@@ -26,9 +26,11 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class InMemoryParameterEntry implements EditableParameterEntry {
 
+    private static final String[] EMPTY_LEVELS = {};
+
     private final InMemoryParameterEntryKey key;
 
-    private String[] levels;
+    private String[] levels = EMPTY_LEVELS;
 
     InMemoryParameterEntry() {
         this.key = new InMemoryParameterEntryKey();

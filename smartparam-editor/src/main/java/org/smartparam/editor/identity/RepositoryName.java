@@ -27,6 +27,10 @@ public class RepositoryName {
         this.name = name;
     }
 
+    public static RepositoryName from(String name) {
+        return new RepositoryName(name);
+    }
+
     public String name() {
         return name;
     }

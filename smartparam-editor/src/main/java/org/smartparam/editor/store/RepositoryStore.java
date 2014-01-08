@@ -34,10 +34,10 @@ public class RepositoryStore<T extends ParamRepository> {
     private final Map<RepositoryName, T> storedRepositories = new HashMap<RepositoryName, T>();
 
     public RepositoryStore(List<ParamRepository> allRepositories, Class<T> storedClass) {
-        filterOutEditableRepositories(allRepositories, storedClass);
+        filterOutMatchingRepositories(allRepositories, storedClass);
     }
 
-    private void filterOutEditableRepositories(List<ParamRepository> allRepositories, Class<T> storedClass) {
+    private void filterOutMatchingRepositories(List<ParamRepository> allRepositories, Class<T> storedClass) {
         for (ParamRepository repository : allRepositories) {
             if (storedClass.isAssignableFrom(repository.getClass())) {
                 injectRepository(repository, storedRepositories);
@@ -55,8 +55,8 @@ public class RepositoryStore<T extends ParamRepository> {
         repositoryName = new RepositoryName(repositoryClassName);
 
         while (repositoriesCollection.containsKey(repositoryName)) {
+            repositoryName = new RepositoryName(repositoryClassName + (repositoryOccurence > 0 ? repositoryOccurence : ""));
             repositoryOccurence++;
-            repositoryName = new RepositoryName(repositoryClassName + repositoryOccurence);
         }
         repositoriesCollection.put(repositoryName, (T) repository);
         storedRepositoriesNames.add(repositoryName);
