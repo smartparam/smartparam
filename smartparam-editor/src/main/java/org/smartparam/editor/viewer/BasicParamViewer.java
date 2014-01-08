@@ -111,9 +111,9 @@ public class BasicParamViewer implements ParamViewer {
     }
 
     @Override
-    public DescribedCollection<ParameterEntry> getParameterEntries(RepositoryName from, Iterable<ParameterEntryKey> parameterEntryKeys) {
+    public DescribedCollection<ParameterEntry> getParameterEntries(RepositoryName from, String parameterName, Iterable<ParameterEntryKey> parameterEntryKeys) {
         ViewableParamRepository repository = repositories.get(from);
-        return new DescribedCollection<ParameterEntry>(from, repository.getParameterEntries(parameterEntryKeys));
+        return new DescribedCollection<ParameterEntry>(from, repository.getParameterEntries(parameterName, parameterEntryKeys));
     }
 
     @Override

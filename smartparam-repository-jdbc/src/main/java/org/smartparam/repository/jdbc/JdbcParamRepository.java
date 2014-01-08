@@ -288,7 +288,7 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public List<ParameterEntry> getParameterEntries(final Iterable<ParameterEntryKey> parameterEntryKeys) {
+    public List<ParameterEntry> getParameterEntries(final String parameterName, final Iterable<ParameterEntryKey> parameterEntryKeys) {
         return transactionRunner.run(new TransactionWrapper<List<ParameterEntry>>() {
             @Override
             public List<ParameterEntry> perform(QueryRunner queryRunner) {

@@ -40,8 +40,6 @@ public class SimpleParameter implements Parameter {
 
     private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
-    ;
-
     private boolean cacheable = true;
 
     private boolean nullable = false;

@@ -33,8 +33,8 @@ public abstract class AbstractEntityKey {
         }
 
         String[] keySegments = key.split(SEPARATOR);
-        if (keySegments.length == 0) {
-            throw new IllegalArgumentException("Couldn't parse key " + key + ". Looks like it's segments are note separated using standard separator.");
+        if (keySegments.length < 2) {
+            throw new IllegalArgumentException("Couldn't parse key " + key + ". Looks like it's segments are not separated using standard separator.");
         }
         if (!repositorySymbol.equals(keySegments[0])) {
             throw new IllegalArgumentException("Key " + key + " can't be interpreted as valid key for " + repositorySymbol + " repository.");
@@ -43,8 +43,9 @@ public abstract class AbstractEntityKey {
         return Arrays.copyOfRange(keySegments, 1, keySegments.length);
     }
 
-    protected final String format(String... keySegments) {
+    protected final String format(String repositorySymbol, String... keySegments) {
         StringBuilder keyBuilder = new StringBuilder(KEY_LENGTH);
+        keyBuilder.append(repositorySymbol).append(SEPARATOR);
         for (String segment : keySegments) {
             keyBuilder.append(segment).append(SEPARATOR);
         }

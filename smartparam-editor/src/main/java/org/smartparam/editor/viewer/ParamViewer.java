@@ -48,7 +48,7 @@ public interface ParamViewer {
 
     DescribedEntity<Parameter> getParameterMetadata(RepositoryName from, String parameterName);
 
-    DescribedCollection<ParameterEntry> getParameterEntries(RepositoryName from, Iterable<ParameterEntryKey> parameterEntryKeys);
+    DescribedCollection<ParameterEntry> getParameterEntries(RepositoryName from, String parameterName, Iterable<ParameterEntryKey> parameterEntryKeys);
 
     DescribedCollection<ParameterEntry> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter);
 

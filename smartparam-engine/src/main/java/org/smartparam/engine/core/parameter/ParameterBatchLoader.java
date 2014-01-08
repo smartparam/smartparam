@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.Parameter;
-
 /**
  *
  * @author Adam Dubiel

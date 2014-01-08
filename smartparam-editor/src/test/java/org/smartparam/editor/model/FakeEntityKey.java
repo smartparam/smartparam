@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter;
 
-import java.io.Closeable;
-import java.util.Collection;
+package org.smartparam.editor.model;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParameterEntryBatchLoader extends Closeable {
+public class FakeEntityKey extends AbstractEntityKey {
 
-    boolean hasMore();
+    String[] exposedParse(String symbol, String key) {
+        return super.parse(symbol, key);
+    }
 
-    Collection<ParameterEntry> nextBatch(int batchSize);
+    String exposedFormat(String repositorySymbol, String... keySegments) {
+        return super.format(repositorySymbol, keySegments);
+    }
 
-    void close();
 }

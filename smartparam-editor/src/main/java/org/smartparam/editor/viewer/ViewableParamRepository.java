@@ -34,7 +34,7 @@ public interface ViewableParamRepository extends ParamRepository {
 
     Parameter getParameterMetadata(String parameterName);
 
-    List<ParameterEntry> getParameterEntries(Iterable<ParameterEntryKey> parameterEntryKeys);
+    List<ParameterEntry> getParameterEntries(String parameterName, Iterable<ParameterEntryKey> parameterEntryKeys);
 
     List<ParameterEntry> listEntries(String parameterName, ParameterEntriesFilter filter);
 
