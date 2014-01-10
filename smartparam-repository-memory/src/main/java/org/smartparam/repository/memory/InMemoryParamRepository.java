@@ -17,6 +17,7 @@ package org.smartparam.repository.memory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -93,7 +94,20 @@ public class InMemoryParamRepository implements ParamRepository, ViewableParamRe
 
     @Override
     public List<String> listParameters(ParameterFilter filter) {
-        return new ArrayList<String>(listParameters());
+        if (filter.applyNameFilter()) {
+            List<String> filteredParamteres = new ArrayList<String>();
+            Iterator<String> parametersIterator = listParameters().iterator();
+            String parameterName;
+            while (parametersIterator.hasNext()) {
+                parameterName = parametersIterator.next();
+                if (filter.nameFilter().equals(parameterName)) {
+                    filteredParamteres.add(parameterName);
+                }
+            }
+            return filteredParamteres;
+        } else {
+            return new ArrayList<String>(listParameters());
+        }
     }
 
     @Override

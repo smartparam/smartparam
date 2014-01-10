@@ -24,7 +24,9 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class SimpleParameterEntry implements ParameterEntry {
 
-    private String[] levels;
+    private static final String[] EMPTY_LEVELS = {};
+
+    private String[] levels = EMPTY_LEVELS;
 
     public SimpleParameterEntry() {
     }

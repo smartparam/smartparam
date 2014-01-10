@@ -54,6 +54,10 @@ public class ParameterEntriesFilter {
         this.pageSize = pageSize;
     }
 
+    public static ParameterEntriesFilter empty() {
+        return new ParameterEntriesFilter();
+    }
+
     public int page() {
         return page;
     }
