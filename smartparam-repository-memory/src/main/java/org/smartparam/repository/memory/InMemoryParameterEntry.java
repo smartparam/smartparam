@@ -42,7 +42,7 @@ public class InMemoryParameterEntry implements EditableParameterEntry {
     }
 
     final void merge(ParameterEntry entry) {
-        this.levels = getLevels();
+        this.levels = entry.getLevels();
     }
 
     @Override
