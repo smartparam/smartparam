@@ -31,10 +31,21 @@ import java.util.List;
  */
 public class ParamValueImpl implements ParamValue {
 
+    private static final MultiValue[] EMPTY = {};
+
     private final MultiValue[] rows;
 
     public ParamValueImpl(MultiValue[] rows) {
         this.rows = Arrays.copyOf(rows, rows.length);
+    }
+
+    public static ParamValueImpl empty() {
+        return new ParamValueImpl(EMPTY);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return rows == EMPTY || rows.length == 0;
     }
 
     @Override

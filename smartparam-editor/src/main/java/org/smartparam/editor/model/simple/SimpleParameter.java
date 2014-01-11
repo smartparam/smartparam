@@ -128,6 +128,11 @@ public class SimpleParameter implements Parameter {
         this.cacheable = cacheable;
     }
 
+    public SimpleParameter notCacheable() {
+        this.cacheable = false;
+        return this;
+    }
+
     @Override
     public boolean isNullable() {
         return nullable;
@@ -135,6 +140,11 @@ public class SimpleParameter implements Parameter {
 
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
+    }
+
+    public SimpleParameter nullable() {
+        this.nullable = true;
+        return this;
     }
 
 }

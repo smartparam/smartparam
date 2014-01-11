@@ -34,6 +34,11 @@ import org.smartparam.engine.core.type.ValueHolder;
 public interface ParamValue extends Iterable<MultiValue> {
 
     /**
+     * Are there any rows?
+     */
+    boolean isEmpty();
+
+    /**
      * Return resulting matrix row.
      */
     MultiValue row(int rowNo);
