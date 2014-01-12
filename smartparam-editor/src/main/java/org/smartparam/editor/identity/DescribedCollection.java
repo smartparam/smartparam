@@ -51,7 +51,7 @@ public class DescribedCollection<T> implements Iterable<T> {
 
     public List<T> itemsList() {
         if (List.class.isAssignableFrom(items.getClass())) {
-            return (List<T>) Collections.unmodifiableCollection(items);
+            return Collections.unmodifiableList((List<T>) items);
         }
         throw new IllegalStateException("Tried to get a non-list collection as list!");
     }
