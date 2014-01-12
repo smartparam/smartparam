@@ -15,13 +15,18 @@
  */
 package org.smartparam.repository.memory;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.Sets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 import org.smartparam.editor.capabilities.RepositoryCapabilities;
 import org.smartparam.editor.editor.EditableParamRepository;
 import org.smartparam.editor.model.LevelKey;
@@ -29,6 +34,7 @@ import org.smartparam.editor.model.ParameterEntryKey;
 import org.smartparam.editor.model.ParameterKey;
 import org.smartparam.editor.viewer.ParameterEntriesFilter;
 import org.smartparam.editor.viewer.ParameterFilter;
+import org.smartparam.editor.viewer.SortDirection;
 import org.smartparam.editor.viewer.ViewableParamRepository;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.ParamRepository;
@@ -53,17 +59,15 @@ public class InMemoryParamRepository implements ParamRepository, ViewableParamRe
     }
 
     public void clearExcept(String... parameterNames) {
-        Map<String, InMemoryParameter> sideSotrage = new HashMap<String, InMemoryParameter>();
-        InMemoryParameter parameterToSave;
-        for (String parameterToSaveName : parameterNames) {
-            parameterToSave = loadRaw(parameterToSaveName);
-            if (parameterToSave != null) {
-                sideSotrage.put(parameterToSaveName, parameterToSave);
+        final Set<String> parametersToKeep = Sets.newHashSet(parameterNames);
+        Map<String, InMemoryParameter> entriesToKeep = ImmutableMap.copyOf(Maps.filterKeys(repository, new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return parametersToKeep.contains(input);
             }
-        }
-
+        }));
         repository.clear();
-        repository.putAll(sideSotrage);
+        repository.putAll(entriesToKeep);
     }
 
     @Override
@@ -95,16 +99,18 @@ public class InMemoryParamRepository implements ParamRepository, ViewableParamRe
     @Override
     public List<String> listParameters(ParameterFilter filter) {
         if (filter.applyNameFilter()) {
-            List<String> filteredParamteres = new ArrayList<String>();
-            Iterator<String> parametersIterator = listParameters().iterator();
-            String parameterName;
-            while (parametersIterator.hasNext()) {
-                parameterName = parametersIterator.next();
-                if (filter.nameFilter().equals(parameterName)) {
-                    filteredParamteres.add(parameterName);
+            final Pattern pattern = Pattern.compile(filter.nameFilter());
+            Set<String> filteredSet = Sets.filter(listParameters(), new Predicate<String>() {
+                public boolean apply(String input) {
+                    return pattern.matcher(input).matches();
                 }
+            });
+
+            Ordering<String> ordering = Ordering.natural();
+            if (filter.sortDirection() == SortDirection.DESC) {
+                ordering = ordering.reverse();
             }
-            return filteredParamteres;
+            return ordering.sortedCopy(filteredSet);
         } else {
             return new ArrayList<String>(listParameters());
         }
