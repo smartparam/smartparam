@@ -21,7 +21,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,8 +49,14 @@ public class InMemoryParamRepository implements ParamRepository, ViewableParamRe
 
     private final Map<String, InMemoryParameter> repository = new ConcurrentHashMap<String, InMemoryParameter>();
 
+    private final InMemoryParamRepositoryInspector inspector = new InMemoryParamRepositoryInspector(this);
+
     private InMemoryParameter loadRaw(String parameterName) {
         return repository.get(parameterName);
+    }
+
+    public InMemoryParamRepositoryInspector inspector() {
+        return inspector;
     }
 
     public void clear() {

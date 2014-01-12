@@ -49,7 +49,7 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  *
  * @author Adam Dubiel
  */
-public class ParamEngineAssertions extends org.fest.assertions.api.Assertions {
+public class ParamEngineAssertions extends org.assertj.core.api.Assertions {
 
     public static ParameterAssert assertThat(Parameter actual) {
         return ParameterAssert.assertThat(actual);

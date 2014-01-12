@@ -17,7 +17,7 @@
 package org.smartparam.transferer.operation;
 
 import org.smartparam.transferer.sort.SortedParameters;
-import org.fest.assertions.api.AbstractAssert;
+import org.assertj.core.api.AbstractAssert;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
 /**

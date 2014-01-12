@@ -21,7 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterEntryTestBuilder.jdbcParameterEntry;
 
 /**

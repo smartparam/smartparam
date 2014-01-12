@@ -18,7 +18,7 @@ package org.smartparam.engine.core.prepared;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.smartparam.engine.core.parameter.ParameterTestBuilder;
 import org.testng.annotations.Test;
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author Przemek Hertel

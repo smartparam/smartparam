@@ -18,7 +18,7 @@ package org.smartparam.repository.memory;
 import java.util.Collection;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.testng.annotations.Test;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *

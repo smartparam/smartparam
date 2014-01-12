@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,33 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.annotated;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import static org.assertj.core.api.Assertions.*;
+package org.smartparam.repository.memory;
 
 /**
  *
  * @author Adam Dubiel
- * @since 0.1.0
  */
-public class PackageListTest {
+public class InMemoryParamRepositoryInspector {
 
-    private PackageList packageList = null;
+    private final InMemoryParamRepository repository;
 
-    @BeforeMethod
-    public void setUp() {
-        packageList = new PackageList();
+    public InMemoryParamRepositoryInspector(InMemoryParamRepository repository) {
+        this.repository = repository;
     }
 
-    @Test
-    public void shouldReturnEmptyListWhenNoPackagesAdded() {
-        // given
-
-        // when
-
-        // then
-        assertThat(packageList.getPackages()).isNotNull();
+    public boolean hasParameter(String name) {
+        return repository.load(name) != null;
     }
+
 }

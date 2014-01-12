@@ -23,7 +23,7 @@ import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 import org.smartparam.repository.jdbc.DatabaseTest;
 import org.testng.annotations.Test;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *

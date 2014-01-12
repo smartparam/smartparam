@@ -26,7 +26,7 @@ import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.serializer.config.DefaultSerializationConfig;
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
 import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;

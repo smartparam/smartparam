@@ -23,7 +23,7 @@ import org.junit.Test;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.serializer.config.DefaultSerializationConfig;
 import org.supercsv.io.CsvListReader;
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.smartparam.serializer.entries.CsvPreferenceBuilder.csvPreference;
 import static org.smartparam.serializer.test.builder.CsvEntriesReaderTestBuilder.csvEntriesReader;
 

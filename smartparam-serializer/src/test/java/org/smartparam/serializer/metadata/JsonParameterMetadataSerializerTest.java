@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
 import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;

@@ -22,7 +22,7 @@ import org.smartparam.editor.identity.RepositoryName;
 import org.smartparam.editor.viewer.ViewableParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.testng.annotations.Test;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *

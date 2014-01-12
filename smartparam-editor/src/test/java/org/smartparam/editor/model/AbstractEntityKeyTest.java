@@ -18,7 +18,7 @@ package org.smartparam.editor.model;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static com.googlecode.catchexception.CatchException.*;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *

@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core;
 
-import org.fest.assertions.api.AbstractAssert;
+import org.assertj.core.api.AbstractAssert;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
