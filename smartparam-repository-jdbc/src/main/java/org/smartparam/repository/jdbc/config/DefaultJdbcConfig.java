@@ -58,6 +58,12 @@ public class DefaultJdbcConfig implements JdbcConfig {
 
     private String sequencePrefix = "seq_";
 
+    private String indexPrefix = "idx_";
+
+    private String primaryKeyPrefix = "pk_";
+
+    private String foreignKeyPrefix = "fk_";
+
     private char excessLevelsSeparator = ';';
 
     private int levelColumnCount = DEFAULT_LEVEL_COUNT;
@@ -155,5 +161,29 @@ public class DefaultJdbcConfig implements JdbcConfig {
 
     void levelColumnCount(int levelColumnCount) {
         this.levelColumnCount = levelColumnCount;
+    }
+
+    public String indexPrefix() {
+        return indexPrefix;
+    }
+
+    void indexPrefix(String indexPrefix) {
+        this.indexPrefix = indexPrefix;
+    }
+
+    public String primaryKeyPrefix() {
+        return primaryKeyPrefix;
+    }
+
+    void primaryKeyPrefix(String primaryKeyPrefix) {
+        this.primaryKeyPrefix = primaryKeyPrefix;
+    }
+
+    public String foreignKeyPrefix() {
+        return foreignKeyPrefix;
+    }
+
+    void foreignKeyPrefix(String foreignKeyPrefix) {
+        this.foreignKeyPrefix = foreignKeyPrefix;
     }
 }
