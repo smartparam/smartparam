@@ -55,6 +55,14 @@
             <artifactId>catch-exception</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.smartparam</groupId>
+            <artifactId>smartparam-engine</artifactId>
+            <scope>test</scope>
+            <type>test-jar</type>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

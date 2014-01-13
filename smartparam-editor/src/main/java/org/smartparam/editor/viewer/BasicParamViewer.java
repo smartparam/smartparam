@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.editor.capabilities.RepositoryCapabilities;
 import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.store.ParamRepositoryNaming;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
@@ -36,9 +37,13 @@ public class BasicParamViewer implements ParamViewer {
 
     private final RepositoryStore<ViewableParamRepository> repositories;
 
-    public BasicParamViewer(ParamEngine paramEngine) {
+    public BasicParamViewer(ParamEngine paramEngine, ParamRepositoryNaming repositoryNaming) {
         List<ParamRepository> registeredRepositories = paramEngine.runtimeConfiguration().getParamRepositories();
-        repositories = new RepositoryStore<ViewableParamRepository>(registeredRepositories, ViewableParamRepository.class);
+        repositories = new RepositoryStore<ViewableParamRepository>(registeredRepositories, repositoryNaming, ViewableParamRepository.class);
+    }
+
+    public BasicParamViewer(ParamEngine paramEngine) {
+        this(paramEngine, ParamRepositoryNaming.empty());
     }
 
     @Override

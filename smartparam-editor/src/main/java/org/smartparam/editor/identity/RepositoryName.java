@@ -36,6 +36,11 @@ public class RepositoryName {
     }
 
     @Override
+    public String toString() {
+        return "Repository[" + name + "]";
+    }
+
+    @Override
     public int hashCode() {
         int hash = 7;
         hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);

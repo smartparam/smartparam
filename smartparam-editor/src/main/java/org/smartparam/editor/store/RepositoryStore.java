@@ -33,7 +33,10 @@ public class RepositoryStore<T extends ParamRepository> {
 
     private final Map<RepositoryName, T> storedRepositories = new HashMap<RepositoryName, T>();
 
-    public RepositoryStore(List<ParamRepository> allRepositories, Class<T> storedClass) {
+    private final ParamRepositoryNaming repositoryNaming;
+
+    public RepositoryStore(List<ParamRepository> allRepositories, ParamRepositoryNaming repositoryNaming, Class<T> storedClass) {
+        this.repositoryNaming = repositoryNaming;
         filterOutMatchingRepositories(allRepositories, storedClass);
     }
 
@@ -47,16 +50,12 @@ public class RepositoryStore<T extends ParamRepository> {
 
     @SuppressWarnings("unchecked")
     private <T extends ParamRepository> void injectRepository(ParamRepository repository, Map<RepositoryName, T> repositoriesCollection) {
-        String repositoryClassName;
-        RepositoryName repositoryName;
         int repositoryOccurence = 0;
-
-        repositoryClassName = repository.getClass().getSimpleName();
-        repositoryName = new RepositoryName(repositoryClassName);
+        RepositoryName repositoryName = repositoryNaming.name(repository.getClass());
 
         while (repositoriesCollection.containsKey(repositoryName)) {
-            repositoryName = new RepositoryName(repositoryClassName + (repositoryOccurence > 0 ? repositoryOccurence : ""));
             repositoryOccurence++;
+            repositoryName = repositoryNaming.name(repository.getClass(), repositoryOccurence);
         }
         repositoriesCollection.put(repositoryName, (T) repository);
         storedRepositoriesNames.add(repositoryName);

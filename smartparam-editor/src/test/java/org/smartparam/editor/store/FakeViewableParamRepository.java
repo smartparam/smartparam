@@ -31,7 +31,7 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  *
  * @author Adam Dubiel
  */
-class FakeViewableParamRepository implements ViewableParamRepository {
+public class FakeViewableParamRepository implements ViewableParamRepository {
 
     public RepositoryCapabilities capabilities() {
         throw new UnsupportedOperationException("Not supported yet.");

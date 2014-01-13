@@ -54,8 +54,10 @@ public class SimpleParameter implements Parameter {
         this.nullable = parameter.isNullable();
         this.arraySeparator = parameter.getArraySeparator();
 
-        for (Level level : parameter.getLevels()) {
-            this.levels.add(new SimpleLevel(level));
+        if (parameter.getLevels() != null) {
+            for (Level level : parameter.getLevels()) {
+                this.levels.add(new SimpleLevel(level));
+            }
         }
     }
 
@@ -79,7 +81,9 @@ public class SimpleParameter implements Parameter {
     }
 
     public void setLevels(List<Level> levels) {
-        this.levels.addAll(levels);
+        if (levels != null) {
+            this.levels.addAll(levels);
+        }
     }
 
     public SimpleParameter withLevel(Level level) {
@@ -117,6 +121,11 @@ public class SimpleParameter implements Parameter {
 
     public void setArraySeparator(char arraySeparator) {
         this.arraySeparator = arraySeparator;
+    }
+
+    public SimpleParameter withArraySeparator(char arraySeparator) {
+        this.arraySeparator = arraySeparator;
+        return this;
     }
 
     @Override

@@ -27,6 +27,7 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
 import org.smartparam.editor.model.ParameterKey;
+import org.smartparam.editor.store.ParamRepositoryNaming;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 
@@ -40,11 +41,15 @@ public class BasicParamEditor implements ParamEditor {
 
     private final PreparedParamCache parameterCache;
 
-    public BasicParamEditor(ParamEngine paramEngine) {
+    public BasicParamEditor(ParamEngine paramEngine, ParamRepositoryNaming naming) {
         ParamEngineRuntimeConfig runtimeConfig = paramEngine.runtimeConfiguration();
 
-        repositories = new RepositoryStore<EditableParamRepository>(runtimeConfig.getParamRepositories(), EditableParamRepository.class);
+        repositories = new RepositoryStore<EditableParamRepository>(runtimeConfig.getParamRepositories(), naming, EditableParamRepository.class);
         parameterCache = runtimeConfig.getParamCache();
+    }
+
+    public BasicParamEditor(ParamEngine paramEngine) {
+        this(paramEngine, ParamRepositoryNaming.empty());
     }
 
     @Override
