@@ -122,7 +122,10 @@ public class BasicParamEditor implements ParamEditor {
     @Override
     public DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntry> entries) {
         EditableParamRepository repository = repositories.get(in);
-        return new DescribedCollection<ParameterEntryKey>(in, repository.addEntries(parameterName, entries));
+        List<ParameterEntryKey> addedEntryKeys = repository.addEntries(parameterName, entries);
+        clearCache(parameterName);
+
+        return new DescribedCollection<ParameterEntryKey>(in, addedEntryKeys);
     }
 
     @Override
