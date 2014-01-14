@@ -46,7 +46,7 @@ import org.smartparam.engine.util.EngineUtil;
 })
 public class BetweenMatcher implements Matcher {
 
-    private static final char[] DEFAULT_SEPARATORS = {':', '-', ','};
+    private static final char[] DEFAULT_SEPARATORS = {'~', ':', '-', ','};
 
     private boolean lowerInclusive = true;
 
