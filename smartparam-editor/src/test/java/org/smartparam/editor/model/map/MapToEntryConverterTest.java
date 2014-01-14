@@ -102,4 +102,19 @@ public class MapToEntryConverterTest {
         // then
         assertThat(entry).hasLevels("2013-12-04");
     }
+
+    @Test
+    public void shouldWorkForMultipleLevelValues() {
+        // given
+        Parameter metadata = new SimpleParameter().withLevel(new SimpleLevel().withName("string"))
+                .withLevel(new SimpleLevel().withName("string2"));
+        ParameterEntryMap map = new ParameterEntryMap().put("string", "something")
+                .put("string2", "else");
+
+        // when
+        ParameterEntry entry = converter.asEntry(metadata, map);
+
+        // then
+        assertThat(entry).hasLevels("something", "else");
+    }
 }

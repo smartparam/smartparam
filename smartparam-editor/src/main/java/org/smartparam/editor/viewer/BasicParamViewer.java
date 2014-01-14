@@ -140,10 +140,10 @@ public class BasicParamViewer implements ParamViewer {
     }
 
     private DescribedCollection<ParameterEntryMap> convert(RepositoryName from, Parameter metadata, List<ParameterEntry> entries) {
-        DescribedCollection<ParameterEntryMap> describedEntries = new DescribedCollection<ParameterEntryMap>(from);
+        List<ParameterEntryMap> describedEntries = new ArrayList<ParameterEntryMap>();
         for (ParameterEntry entry : entries) {
             describedEntries.add(converter.asMap(metadata, entry));
         }
-        return describedEntries;
+        return new DescribedCollection<ParameterEntryMap>(from, describedEntries);
     }
 }

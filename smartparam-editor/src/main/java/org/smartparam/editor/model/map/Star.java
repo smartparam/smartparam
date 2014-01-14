@@ -21,11 +21,13 @@ package org.smartparam.editor.model.map;
  */
 public final class Star {
 
+    private static final Star STAR = new Star();
+
     private Star() {
     }
 
     public static Star star() {
-        return new Star();
+        return STAR;
     }
 
 }

@@ -40,6 +40,7 @@ class MapToEntryConverter {
         int index = 0;
         for (Level level : metadata.getLevels()) {
             levelValues[index] = asString(level, entryMap.get(level.getName()));
+            index++;
         }
 
         return new SimpleParameterEntry(levelValues);

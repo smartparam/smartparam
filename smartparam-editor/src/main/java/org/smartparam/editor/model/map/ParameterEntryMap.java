@@ -20,9 +20,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.smartparam.editor.model.ParameterEntryKey;
-import org.smartparam.engine.core.parameter.Level;
-import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *
@@ -39,6 +36,20 @@ public class ParameterEntryMap implements Iterable<Entry<String, Object>> {
 
     public ParameterEntryMap(ParameterEntryKey key) {
         this.key = key;
+    }
+
+    public ParameterEntryMap merge(ParameterEntryMap other) {
+        ParameterEntryMap merged = new ParameterEntryMap();
+        merged.values.putAll(other.values);
+        merged.key = other.key;
+
+        // override
+        merged.values.putAll(this.values);
+        if (hasKey()) {
+            merged.key = this.key;
+        }
+
+        return merged;
     }
 
     public ParameterEntryKey key() {

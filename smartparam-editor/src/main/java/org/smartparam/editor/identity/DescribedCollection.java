@@ -45,10 +45,6 @@ public class DescribedCollection<T> implements Iterable<T> {
         return source;
     }
 
-    public void add(T item) {
-        items.add(item);
-    }
-
     public Collection<T> items() {
         return Collections.unmodifiableCollection(items);
     }
