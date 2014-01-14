@@ -147,7 +147,7 @@ public class ParamEngineIntegrationTest {
     }
 
     @Test
-    public void shouldAllowToReturnNullForNullableParameter() {
+    public void shouldReturnEmptyParamValueWhenNothingFoundAndParameterIsNullable() {
         // given
         Level[] levels = new Level[]{
             level().withType("string").build(),
@@ -165,7 +165,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A", "C");
 
         // then
-        assertThat(value).isNull();
+        assertThat(value.isEmpty()).isTrue();
     }
 
     @Test

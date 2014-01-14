@@ -74,11 +74,10 @@ public class SmartParamEngine implements ParamEngine {
         // find entries matching given context
         PreparedEntry[] rows = findParameterEntries(param, ctx);
 
-        // todo ph think about it
         if (rows.length == 0) {
             if (param.isNullable()) {
                 logger.debug("leave get[{}], result=null", paramName);
-                return null;
+                return ParamValueImpl.empty();
             }
 
             throw new ParameterValueNotFoundException(paramName, ctx);
