@@ -15,6 +15,7 @@
  */
 package org.smartparam.editor.model.map;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,7 +28,7 @@ import org.smartparam.editor.model.ParameterEntryKey;
  */
 public class ParameterEntryMap implements Iterable<Entry<String, Object>> {
 
-    private ParameterEntryKey key;
+    public static final String KEY = "_key";
 
     private final Map<String, Object> values = new HashMap<String, Object>();
 
@@ -35,29 +36,33 @@ public class ParameterEntryMap implements Iterable<Entry<String, Object>> {
     }
 
     public ParameterEntryMap(ParameterEntryKey key) {
-        this.key = key;
+        values.put(KEY, key);
+    }
+
+    public ParameterEntryMap(Map<String, Object> initialValues) {
+        values.putAll(initialValues);
     }
 
     public ParameterEntryMap merge(ParameterEntryMap other) {
         ParameterEntryMap merged = new ParameterEntryMap();
         merged.values.putAll(other.values);
-        merged.key = other.key;
 
         // override
         merged.values.putAll(this.values);
-        if (hasKey()) {
-            merged.key = this.key;
-        }
 
         return merged;
     }
 
     public ParameterEntryKey key() {
-        return key;
+        return get(KEY);
     }
 
     public boolean hasKey() {
-        return key != null;
+        return has(KEY);
+    }
+
+    public boolean has(String levelName) {
+        return this.values.containsKey(levelName);
     }
 
     public ParameterEntryMap put(String levelName, Object value) {
@@ -82,5 +87,9 @@ public class ParameterEntryMap implements Iterable<Entry<String, Object>> {
     @Override
     public Iterator<Entry<String, Object>> iterator() {
         return values.entrySet().iterator();
+    }
+
+    public Map<String, Object> rawValues() {
+        return Collections.unmodifiableMap(values);
     }
 }

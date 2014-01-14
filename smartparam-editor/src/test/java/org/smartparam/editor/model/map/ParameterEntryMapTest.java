@@ -15,6 +15,8 @@
  */
 package org.smartparam.editor.model.map;
 
+import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.model.simple.SimpleParameterEntryKey;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +25,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Adam Dubiel
  */
 public class ParameterEntryMapTest {
+
+    @Test
+    public void shouldKeepKeyInSpecialMapEntry() {
+        // given
+        ParameterEntryMap map = new ParameterEntryMap(new SimpleParameterEntryKey("key"));
+        
+        // when
+        ParameterEntryKey key = map.get(ParameterEntryMap.KEY);
+
+        // then
+        assertThat(key.value()).isEqualTo("key");
+    }
 
     @Test
     public void shouldMergeTwoMapsIntoOneWithHostOverridingOtherMapsProperties() {
@@ -39,5 +53,4 @@ public class ParameterEntryMapTest {
         assertThat(merged.get("hostLevel")).isEqualTo("hostValue");
         assertThat(merged.get("otherLevel")).isEqualTo("otherValue");
     }
-
 }
