@@ -72,6 +72,11 @@ public class BasicParamViewer implements ParamViewer {
     }
 
     @Override
+    public boolean parameterExists(RepositoryName in, String parameterName) {
+        return !listParameters(in, new ParameterFilter(parameterName)).isEmpty();
+    }
+
+    @Override
     public List<DescribedCollection<String>> listParameters() {
         List<DescribedCollection<String>> parameters = new ArrayList<DescribedCollection<String>>();
         DescribedCollection<String> repositoryParameters;

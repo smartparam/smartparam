@@ -38,6 +38,8 @@ public interface ParamViewer {
 
     boolean parameterExists(String parameterName);
 
+    boolean parameterExists(RepositoryName in, String parameterName);
+
     List<DescribedCollection<String>> listParameters();
 
     List<DescribedCollection<String>> listParameters(ParameterFilter filter);
