@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.editor.capabilities.RepositoryCapabilities;
 import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.model.map.ParameterEntryMap;
+import org.smartparam.editor.model.map.ParameterEntryMapConverter;
 import org.smartparam.editor.store.ParamRepositoryNaming;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;
@@ -37,9 +39,12 @@ public class BasicParamViewer implements ParamViewer {
 
     private final RepositoryStore<ViewableParamRepository> repositories;
 
+    private final ParameterEntryMapConverter converter;
+
     public BasicParamViewer(ParamEngine paramEngine, ParamRepositoryNaming repositoryNaming) {
         List<ParamRepository> registeredRepositories = paramEngine.runtimeConfiguration().getParamRepositories();
         repositories = new RepositoryStore<ViewableParamRepository>(registeredRepositories, repositoryNaming, ViewableParamRepository.class);
+        converter = new ParameterEntryMapConverter(paramEngine);
     }
 
     public BasicParamViewer(ParamEngine paramEngine) {
@@ -121,15 +126,24 @@ public class BasicParamViewer implements ParamViewer {
     }
 
     @Override
-    public DescribedCollection<ParameterEntry> getParameterEntries(RepositoryName from, String parameterName, Iterable<ParameterEntryKey> parameterEntryKeys) {
+    public DescribedCollection<ParameterEntryMap> getParameterEntries(RepositoryName from, String parameterName, Iterable<ParameterEntryKey> parameterEntryKeys) {
         ViewableParamRepository repository = repositories.get(from);
-        return new DescribedCollection<ParameterEntry>(from, repository.getParameterEntries(parameterName, parameterEntryKeys));
+        Parameter metadata = repository.getParameterMetadata(parameterName);
+        return convert(from, metadata, repository.getParameterEntries(parameterName, parameterEntryKeys));
     }
 
     @Override
-    public DescribedCollection<ParameterEntry> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter) {
+    public DescribedCollection<ParameterEntryMap> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter) {
         ViewableParamRepository repository = repositories.get(from);
-        return new DescribedCollection<ParameterEntry>(from, repository.listEntries(parameterName, filter));
+        Parameter metadata = repository.getParameterMetadata(parameterName);
+        return convert(from, metadata, repository.listEntries(parameterName, filter));
     }
 
+    private DescribedCollection<ParameterEntryMap> convert(RepositoryName from, Parameter metadata, List<ParameterEntry> entries) {
+        DescribedCollection<ParameterEntryMap> describedEntries = new DescribedCollection<ParameterEntryMap>(from);
+        for (ParameterEntry entry : entries) {
+            describedEntries.add(converter.asMap(metadata, entry));
+        }
+        return describedEntries;
+    }
 }

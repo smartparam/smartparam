@@ -41,8 +41,9 @@ public class SimpleParameterEntry implements ParameterEntry {
         }
     }
 
+    @Override
     public String[] getLevels() {
-        return Arrays.copyOf(levels, levels.length);
+        return levels;
     }
 
     public void setLevels(String[] levels) {
