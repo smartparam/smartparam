@@ -29,17 +29,17 @@ import org.smartparam.transferer.sort.OperationParameterSorter;
  *
  * @author Adam Dubiel
  */
-public final class StandardTransfererBuilder {
+public final class TransfererBuilder {
 
     private ParameterSorter sorter;
 
     private final Map<TransferOperationType, TransferOperation> operations = new EnumMap<TransferOperationType, TransferOperation>(TransferOperationType.class);
 
-    private StandardTransfererBuilder() {
+    private TransfererBuilder() {
     }
 
-    public static StandardTransfererBuilder standardTransferer() {
-        return new StandardTransfererBuilder();
+    public static TransfererBuilder transferer() {
+        return new TransfererBuilder();
     }
 
     public StandardTransferer build() {
@@ -59,12 +59,12 @@ public final class StandardTransfererBuilder {
         return new StandardTransferer(sorter, operations);
     }
 
-    public StandardTransfererBuilder withParameterSorter(ParameterSorter sorter) {
+    public TransfererBuilder withParameterSorter(ParameterSorter sorter) {
         this.sorter = sorter;
         return this;
     }
 
-    public StandardTransfererBuilder usingOperation(TransferOperationType operationType, TransferOperation operation) {
+    public TransfererBuilder usingOperation(TransferOperationType operationType, TransferOperation operation) {
         operations.put(operationType, operation);
         return this;
     }
