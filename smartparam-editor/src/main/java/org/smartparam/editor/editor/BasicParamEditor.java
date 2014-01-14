@@ -15,6 +15,7 @@
  */
 package org.smartparam.editor.editor;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.editor.identity.DescribedCollection;
 import org.smartparam.editor.identity.DescribedEntity;
@@ -23,12 +24,14 @@ import org.smartparam.editor.store.RepositoryStore;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
 import org.smartparam.editor.model.ParameterKey;
+import org.smartparam.editor.model.map.ParameterEntryMap;
+import org.smartparam.editor.model.map.ParameterEntryMapConverter;
 import org.smartparam.editor.store.ParamRepositoryNaming;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 
 /**
@@ -41,11 +44,14 @@ public class BasicParamEditor implements ParamEditor {
 
     private final PreparedParamCache parameterCache;
 
+    private final ParameterEntryMapConverter converter;
+
     public BasicParamEditor(ParamEngine paramEngine, ParamRepositoryNaming naming) {
         ParamEngineRuntimeConfig runtimeConfig = paramEngine.runtimeConfiguration();
 
         repositories = new RepositoryStore<EditableParamRepository>(runtimeConfig.getParamRepositories(), naming, EditableParamRepository.class);
         parameterCache = runtimeConfig.getParamCache();
+        converter = new ParameterEntryMapConverter(paramEngine);
     }
 
     public BasicParamEditor(ParamEngine paramEngine) {
@@ -74,6 +80,7 @@ public class BasicParamEditor implements ParamEditor {
         clearCache(parameterName);
     }
 
+    @Override
     public void deleteParameter(RepositoryName in, String parameterName) {
         EditableParamRepository repository = repositories.get(in);
         repository.deleteParameter(parameterName);
@@ -111,8 +118,10 @@ public class BasicParamEditor implements ParamEditor {
     }
 
     @Override
-    public DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntry entry) {
+    public DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntryMap entryMap) {
         EditableParamRepository repository = repositories.get(in);
+        ParameterEntry entry = convert(repository, entryMap, parameterName);
+
         ParameterEntryKey addedEntryKey = repository.addEntry(parameterName, entry);
         clearCache(parameterName);
 
@@ -120,17 +129,19 @@ public class BasicParamEditor implements ParamEditor {
     }
 
     @Override
-    public DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntry> entries) {
+    public DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntryMap> entries) {
         EditableParamRepository repository = repositories.get(in);
-        List<ParameterEntryKey> addedEntryKeys = repository.addEntries(parameterName, entries);
+        List<ParameterEntryKey> addedEntryKeys = repository.addEntries(parameterName, convert(repository, entries, parameterName));
         clearCache(parameterName);
 
         return new DescribedCollection<ParameterEntryKey>(in, addedEntryKeys);
     }
 
     @Override
-    public void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, ParameterEntry entry) {
+    public void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, ParameterEntryMap entryMap) {
         EditableParamRepository repository = repositories.get(in);
+        ParameterEntry entry = convert(repository, entryMap, parameterName);
+
         repository.updateEntry(parameterName, entryKey, entry);
         clearCache(parameterName);
     }
@@ -148,4 +159,19 @@ public class BasicParamEditor implements ParamEditor {
         repository.deleteEntries(parameterName, entryKeys);
         clearCache(parameterName);
     }
+
+    private ParameterEntry convert(EditableParamRepository repository, ParameterEntryMap entryMap, String parameterName) {
+        Parameter metadata = repository.getParameterMetadata(parameterName);
+        return converter.asEntry(metadata, entryMap);
+    }
+
+    private List<ParameterEntry> convert(EditableParamRepository repository, Iterable<ParameterEntryMap> entryMaps, String parameterName) {
+        Parameter metadata = repository.getParameterMetadata(parameterName);
+        List<ParameterEntry> entries = new ArrayList<ParameterEntry>();
+        for (ParameterEntryMap entryMap : entryMaps) {
+            entries.add(converter.asEntry(metadata, entryMap));
+        }
+        return entries;
+    }
+
 }

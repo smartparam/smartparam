@@ -20,10 +20,10 @@ import java.util.List;
 import org.smartparam.editor.identity.RepositoryName;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.model.map.ParameterEntryMap;
 import org.smartparam.editor.model.simple.SimpleLevel;
 import org.smartparam.editor.model.simple.SimpleLevelKey;
 import org.smartparam.editor.model.simple.SimpleParameter;
-import org.smartparam.editor.model.simple.SimpleParameterEntry;
 import org.smartparam.editor.model.simple.SimpleParameterEntryKey;
 import org.smartparam.editor.store.FakeEditableParamRepository;
 import org.smartparam.editor.viewer.ViewableParamRepository;
@@ -60,6 +60,8 @@ public class BasicParamEditorTest {
     public void setUp() {
         cache = mock(PreparedParamCache.class);
         editableRepository = mock(EditableParamRepository.class);
+        when(editableRepository.getParameterMetadata(anyString())).thenReturn(new SimpleParameter());
+
         ParamRepository viewableRepository = mock(ViewableParamRepository.class);
 
         ParamEngineConfig config = ParamEngineConfigBuilder.paramEngineConfig()
@@ -182,26 +184,26 @@ public class BasicParamEditorTest {
     @Test
     public void shouldAddEntryToParameterAndInvalidateCacheForThisParameter() {
         // given
-        ParameterEntry entry = new SimpleParameterEntry();
+        ParameterEntryMap entry = new ParameterEntryMap();
 
         // when
         paramEditor.addEntry(REPOSITORY_NAME, "parameter", entry);
 
         // then
-        verify(editableRepository).addEntry("parameter", entry);
+        verify(editableRepository).addEntry(eq("parameter"), any(ParameterEntry.class));
         verify(cache).invalidate("parameter");
     }
 
     @Test
     public void shouldAddMultipleEntriesToParameterInOneTransactionAndInvalidateCacheForThisParameter() {
         // given
-        List<ParameterEntry> entries = Arrays.asList((ParameterEntry) new SimpleParameterEntry());
+        List<ParameterEntryMap> entries = Arrays.asList(new ParameterEntryMap());
 
         // when
         paramEditor.addEntries(REPOSITORY_NAME, "parameter", entries);
 
         // then
-        verify(editableRepository).addEntries("parameter", entries);
+        verify(editableRepository).addEntries(eq("parameter"), anyCollection());
         verify(cache).invalidate("parameter");
     }
 
@@ -209,13 +211,13 @@ public class BasicParamEditorTest {
     public void shouldUpdateEntryInParameterAndInvalidateCacheForThisParameter() {
         // given
         ParameterEntryKey entryKey = new SimpleParameterEntryKey("key");
-        ParameterEntry entry = new SimpleParameterEntry();
+        ParameterEntryMap entry = new ParameterEntryMap();
 
         // when
         paramEditor.updateEntry(REPOSITORY_NAME, "parameter", entryKey, entry);
 
         // then
-        verify(editableRepository).updateEntry("parameter", entryKey, entry);
+        verify(editableRepository).updateEntry(eq("parameter"), eq(entryKey), any(ParameterEntry.class));
         verify(cache).invalidate("parameter");
     }
 

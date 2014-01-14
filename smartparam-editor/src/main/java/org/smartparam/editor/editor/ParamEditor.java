@@ -21,10 +21,10 @@ import org.smartparam.editor.identity.DescribedEntity;
 import org.smartparam.editor.identity.RepositoryName;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
 import org.smartparam.editor.model.LevelKey;
 import org.smartparam.editor.model.ParameterEntryKey;
 import org.smartparam.editor.model.ParameterKey;
+import org.smartparam.editor.model.map.ParameterEntryMap;
 
 /**
  *
@@ -48,11 +48,11 @@ public interface ParamEditor {
 
     void deleteLevel(RepositoryName in, String parameterName, LevelKey levelKey);
 
-    DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntry entry);
+    DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntryMap entryMap);
 
-    DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntry> entries);
+    DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntryMap> entriesMaps);
 
-    void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, ParameterEntry entry);
+    void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, ParameterEntryMap entryMap);
 
     void deleteEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey);
 

@@ -48,6 +48,11 @@ public interface EditableParamRepository extends ParamRepository {
     void deleteParameter(String parameterName);
 
     /**
+     * Returns metadata (parameter + levels, without entries) of parameter.
+     */
+    Parameter getParameterMetadata(String parameterName);
+
+    /**
      * Add level to parameter.
      */
     LevelKey addLevel(String parameterName, Level level);
