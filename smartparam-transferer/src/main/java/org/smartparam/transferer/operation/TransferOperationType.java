@@ -16,6 +16,14 @@
 package org.smartparam.transferer.operation;
 
 /**
+ * Specifies operations done by transferer. Depending on setup it can:
+ * <ul>
+ * <li>override parameters that exist in both repositories (multiplication of sets)</li>
+ * <li>create parameters that don't exist in target repository (sum of sets)</li>
+ * <li>delete parameters that don't exist in source but exist in target (difference of sets)</li>
+ * </ul>
+ *
+ * To perform  clone of repository specify all operations.
  *
  * @author Adam Dubiel
  */
