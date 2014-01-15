@@ -22,8 +22,6 @@ import org.smartparam.engine.annotated.scanner.TypeScanner;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MapRepository;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.annotated.repository.TypeScanningRepository;
-import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 
 /**
@@ -34,7 +32,7 @@ import org.smartparam.engine.core.matcher.MatcherRepository;
  */
 public class ScanningMatcherRepository implements MatcherRepository, TypeScanningRepository {
 
-    private MapRepository<Matcher> innerRepository = new MapRepository<Matcher>(Matcher.class);
+    private final MapRepository<Matcher> innerRepository = new MapRepository<Matcher>(Matcher.class);
 
     @Override
     public void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner initializer) {

@@ -58,8 +58,8 @@ public class BetweenMatcher implements Matcher {
     }
 
     public BetweenMatcher(String lowerInclusive, String upperInclusive) {
-        setLowerInclusive(Boolean.parseBoolean(lowerInclusive));
-        setUpperInclusive(Boolean.parseBoolean(upperInclusive));
+        this.lowerInclusive = Boolean.parseBoolean(lowerInclusive);
+        this.upperInclusive = Boolean.parseBoolean(upperInclusive);
     }
 
     public BetweenMatcher(String lowerInclusive, String upperInclusive, String separators) {
@@ -72,9 +72,11 @@ public class BetweenMatcher implements Matcher {
      * @param separators     separators to use
      */
     public BetweenMatcher(boolean lowerInclusive, boolean upperInclusive, String separators) {
-        setLowerInclusive(lowerInclusive);
-        setUpperInclusive(upperInclusive);
-        setSeparators(separators);
+        this.lowerInclusive = lowerInclusive;
+        this.upperInclusive = upperInclusive;
+        if (separators != null) {
+            this.separators = separators.toCharArray();
+        }
     }
 
     @Override
@@ -119,21 +121,7 @@ public class BetweenMatcher implements Matcher {
         return upperInclusive ? v.compareTo(u) <= 0 : v.compareTo(u) < 0;
     }
 
-    public final void setLowerInclusive(boolean lowerInclusive) {
-        this.lowerInclusive = lowerInclusive;
-    }
-
-    public final void setUpperInclusive(boolean upperInclusive) {
-        this.upperInclusive = upperInclusive;
-    }
-
-    /**
-     * Override default separators. Provided string is split into char array and
-     * each character is treated as a single separator.
-     */
-    public final void setSeparators(String separators) {
-        if (separators != null) {
-            this.separators = separators.toCharArray();
-        }
+    public char[] separators() {
+        return separators;
     }
 }

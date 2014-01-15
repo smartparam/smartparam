@@ -16,7 +16,6 @@
 package org.smartparam.engine.core.matcher;
 
 import org.smartparam.engine.core.repository.Repository;
-import org.smartparam.engine.core.matcher.Matcher;
 
 /**
  *
