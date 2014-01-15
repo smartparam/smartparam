@@ -15,7 +15,7 @@
  */
 package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.editor.model.EditableLevel;
+import org.smartparam.editor.core.model.EditableLevel;
 
 /**
  * @author Przemek Hertel

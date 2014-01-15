@@ -17,16 +17,16 @@ package org.smartparam.editor.config;
 
 import java.util.*;
 import org.smartparam.editor.annotated.ScanningMatcherConverterRepository;
-import org.smartparam.editor.core.BasicParamEditor;
-import org.smartparam.editor.core.BasicParamViewer;
-import org.smartparam.editor.core.ParamEditor;
-import org.smartparam.editor.core.ParamViewer;
+import org.smartparam.editor.core.*;
+import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
 import org.smartparam.editor.core.matcher.MatcherAwareConverter;
 import org.smartparam.editor.core.matcher.MatcherConverterRepository;
+import org.smartparam.editor.core.store.ParamRepositoryNaming;
 import org.smartparam.engine.config.initialization.ComponentInitializer;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.engine.config.pico.ComponentDefinition;
+import org.smartparam.engine.core.ParamEngine;
 
 import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
@@ -36,17 +36,29 @@ import static org.smartparam.engine.config.pico.ComponentDefinition.component;
  */
 public class ParamEditorConfig extends ComponentConfig {
 
+    private final ParamEngine paramEngine;
+
     private ComponentInitializerRunner initializationRunner;
 
     private final List<ComponentInitializer> componentInitializers = new ArrayList<ComponentInitializer>();
 
     private final Map<String, MatcherAwareConverter<?>> matcherConverter = new HashMap<String, MatcherAwareConverter<?>>();
 
+    public ParamEditorConfig(ParamEngine paramEngine) {
+        this.paramEngine = paramEngine;
+    }
+
     @Override
     protected void injectDefaults(Set<ComponentDefinition> components) {
         components.add(component(ParamEditor.class, BasicParamEditor.class));
         components.add(component(ParamViewer.class, BasicParamViewer.class));
+        components.add(component(ParameterEntryMapConverter.class, ParameterEntryMapConverter.class));
         components.add(component(MatcherConverterRepository.class, ScanningMatcherConverterRepository.class));
+        components.add(component(ParamRepositoryNaming.class, ParamRepositoryNaming.empty()));
+    }
+
+    ParamEngine paramEngine() {
+        return paramEngine;
     }
 
     protected void addComponentInitializers(List<ComponentInitializer> componentInitializers) {

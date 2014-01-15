@@ -16,7 +16,7 @@
 package org.smartparam.repository.jdbc.model;
 
 import java.util.Arrays;
-import org.smartparam.editor.model.EditableParameterEntry;
+import org.smartparam.editor.core.model.EditableParameterEntry;
 
 /**
  * @author Przemek Hertel

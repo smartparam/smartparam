@@ -17,7 +17,7 @@ package org.smartparam.repository.memory;
 
 import java.util.Comparator;
 import java.util.List;
-import org.smartparam.editor.model.LevelKey;
+import org.smartparam.editor.core.model.LevelKey;
 import org.smartparam.engine.core.parameter.Level;
 
 /**

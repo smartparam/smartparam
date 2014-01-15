@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core;
+package org.smartparam.editor.core;
 
 /**
- * Traverses SmartParamEngine service tree and returns runtime configuration of
- * engine in form of immutable object.
  *
  * @author Adam Dubiel
  */
-public interface ParamEngineRuntimeConfigBuilder {
+public interface ParamEditorRuntimeConfigBuilder {
 
-    /**
-     * Creates runtime configuration descriptor for given param engine.
-     *
-     * @param paramEngine engine
-     * @return configuration
-     */
-    ParamEngineRuntimeConfig buildConfig();
+    ParamEditorRuntimeConfig buildConfig();
+
 }

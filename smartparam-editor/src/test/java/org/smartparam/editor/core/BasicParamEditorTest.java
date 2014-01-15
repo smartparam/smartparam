@@ -17,6 +17,9 @@ package org.smartparam.editor.core;
 
 import java.util.Arrays;
 import java.util.List;
+import org.smartparam.editor.config.ParamEditorConfig;
+import org.smartparam.editor.config.ParamEditorConfigBuilder;
+import org.smartparam.editor.config.ParamEditorFactory;
 import org.smartparam.editor.core.identity.RepositoryName;
 import org.smartparam.editor.core.model.LevelKey;
 import org.smartparam.editor.core.model.ParameterEntryKey;
@@ -56,7 +59,7 @@ public class BasicParamEditorTest {
 
     private PreparedParamCache cache;
 
-    private BasicParamEditor paramEditor;
+    private ParamEditor paramEditor;
 
     @BeforeMethod
     public void setUp() {
@@ -78,7 +81,9 @@ public class BasicParamEditorTest {
         when(entryMapConverter.asEntry(any(Parameter.class), any(ParameterEntryMap.class))).thenReturn(new SimpleParameterEntry());
         when(entryMapConverter.asMap(any(Parameter.class), any(ParameterEntry.class))).thenReturn(new ParameterEntryMap());
 
-        paramEditor = new BasicParamEditor(paramEngine, repositoryNaming, entryMapConverter);
+        ParamEditorConfig editorConfig = ParamEditorConfigBuilder.paramEditorConfig(paramEngine)
+                .withRepositoryNaming(repositoryNaming).build();
+        paramEditor = new ParamEditorFactory(editorConfig).editor();
     }
 
     @Test
@@ -95,7 +100,7 @@ public class BasicParamEditorTest {
 
         // when
         BasicParamEditor localParamEditor = new BasicParamEditor(paramEngine, repositoryNaming()
-                .registerAs(FakeEditableParamRepository.class, "fake1", "fake2").build(), null);
+                .registerAs(FakeEditableParamRepository.class, "fake1", "fake2").build(), null, null);
 
         // then
         assertThat(localParamEditor.repositories()).containsOnly(RepositoryName.from("fake1"), RepositoryName.from("fake2"));

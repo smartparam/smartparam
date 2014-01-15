@@ -16,8 +16,8 @@
 package org.smartparam.repository.memory;
 
 import java.util.Arrays;
-import org.smartparam.editor.model.EditableParameterEntry;
-import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.editor.core.model.EditableParameterEntry;
+import org.smartparam.editor.core.model.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**

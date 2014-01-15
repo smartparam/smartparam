@@ -46,12 +46,19 @@ public class BasicParamEditor implements ParamEditor {
 
     private final ParameterEntryMapConverter converter;
 
-    public BasicParamEditor(ParamEngine paramEngine, ParamRepositoryNaming naming, ParameterEntryMapConverter entryMapConverter) {
+    private final ParamEditorRuntimeConfigBuilder runtimeConfigBuilder;
+
+    public BasicParamEditor(ParamEngine paramEngine,
+            ParamRepositoryNaming naming,
+            ParameterEntryMapConverter entryMapConverter,
+            ParamEditorRuntimeConfigBuilder runtimeConfigBuilder) {
         ParamEngineRuntimeConfig runtimeConfig = paramEngine.runtimeConfiguration();
 
         repositories = new RepositoryStore<EditableParamRepository>(runtimeConfig.getParamRepositories(), naming, EditableParamRepository.class);
         parameterCache = runtimeConfig.getParamCache();
         converter = entryMapConverter;
+
+        this.runtimeConfigBuilder = runtimeConfigBuilder;
     }
 
     @Override
@@ -170,4 +177,8 @@ public class BasicParamEditor implements ParamEditor {
         return entries;
     }
 
+    @Override
+    public ParamEditorRuntimeConfig runtimeConfig() {
+        return runtimeConfigBuilder.buildConfig();
+    }
 }

@@ -23,9 +23,7 @@ import org.smartparam.editor.core.matcher.MatcherConverterRepository;
 import org.smartparam.engine.config.initialization.BasicComponentInitializerRunner;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
-import org.smartparam.engine.config.pico.PicoParamEngineRuntimeConfigBuilder;
 import org.smartparam.engine.core.ParamEngine;
-import org.smartparam.engine.core.SmartParamEngine;
 
 import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
@@ -56,11 +54,11 @@ public final class ParamEditorFactory {
     public PicoContainer createContainer(ParamEditorConfig config) {
         ComponentInitializerRunner initializerRunner = prepareInitializerRunner(config);
 
-        config.addComponent(component(ParamEngine.class, SmartParamEngine.class));
+        config.addComponent(component(ParamEngine.class, config.paramEngine()));
 
         MutablePicoContainer picoContainer = PicoContainerUtil.createContainer();
         PicoContainerUtil.injectImplementations(picoContainer, config.getComponents());
-        picoContainer.addComponent(new PicoParamEngineRuntimeConfigBuilder(picoContainer));
+        picoContainer.addComponent(new PicoParamEditorRuntimeConfigBuilder(picoContainer));
 
         initializeRepositories(picoContainer, config);
         initializerRunner.runInitializersOnList(picoContainer.getComponents());

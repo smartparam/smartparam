@@ -22,12 +22,11 @@ import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
 import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
 import org.smartparam.engine.config.ParamEngineConfig;
-import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.initialization.ComponentInitializer;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.config.pico.ComponentDefinition;
-import org.smartparam.engine.core.function.FunctionInvoker;
+import org.smartparam.engine.core.ParamEngine;
 
 import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
@@ -37,18 +36,19 @@ import static org.smartparam.engine.config.pico.ComponentDefinition.component;
  */
 public final class ParamEditorConfigBuilder {
 
-    private final ParamEditorConfig config = new ParamEditorConfig();
+    private final ParamEditorConfig config;
 
     private final PackageList packageList;
 
     private boolean annotationScanEnabled = true;
 
-    private ParamEditorConfigBuilder() {
+    private ParamEditorConfigBuilder(ParamEngine paramEngine) {
+        config = new ParamEditorConfig(paramEngine);
         packageList = new PackageList("org.smartparam.editor");
     }
 
-    public static ParamEditorConfigBuilder paramEditorConfig() {
-        return new ParamEditorConfigBuilder();
+    public static ParamEditorConfigBuilder paramEditorConfig(ParamEngine paramEngine) {
+        return new ParamEditorConfigBuilder(paramEngine);
     }
 
     public ParamEditorConfig build() {

@@ -56,4 +56,5 @@ public interface ParamViewer {
 
     DescribedCollection<ParameterEntryMap> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter);
 
+    ParamEditorRuntimeConfig runtimeConfig();
 }

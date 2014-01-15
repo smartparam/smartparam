@@ -16,8 +16,8 @@
 package org.smartparam.repository.memory;
 
 import java.util.UUID;
-import org.smartparam.editor.model.AbstractEntityKey;
-import org.smartparam.editor.model.LevelKey;
+import org.smartparam.editor.core.model.AbstractEntityKey;
+import org.smartparam.editor.core.model.LevelKey;
 import static org.smartparam.repository.memory.InMemoryParameterKey.SYMBOL;
 
 /**
