@@ -13,24 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.model.simple;
-
-import org.smartparam.editor.core.model.ParameterEntryKey;
+package org.smartparam.editor.core.filters;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleParameterEntryKey implements ParameterEntryKey {
+public class LevelSorting {
 
-    private final String value;
+    private final int levelIndex;
 
-    public SimpleParameterEntryKey(String value) {
-        this.value = value;
+    private final SortDirection direction;
+
+    public LevelSorting(int levelIndex, SortDirection direction) {
+        this.levelIndex = levelIndex;
+        this.direction = direction;
     }
 
-    public String value() {
-        return value;
+    public LevelSorting(int levelIndex) {
+        this(levelIndex, SortDirection.DESC);
+    }
+
+    public int levelIndex() {
+        return levelIndex;
+    }
+
+    public SortDirection direction() {
+        return direction;
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.model.simple;
-
-import org.smartparam.editor.core.model.ParameterEntryKey;
+package org.smartparam.editor.core.entry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleParameterEntryKey implements ParameterEntryKey {
+public final class Star {
 
-    private final String value;
+    private static final Star STAR = new Star();
 
-    public SimpleParameterEntryKey(String value) {
-        this.value = value;
+    private Star() {
     }
 
-    public String value() {
-        return value;
+    public static Star star() {
+        return STAR;
     }
 
 }

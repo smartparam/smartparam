@@ -13,24 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.model.simple;
+package org.smartparam.editor.core.capabilities;
 
-import org.smartparam.editor.core.model.ParameterEntryKey;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleParameterEntryKey implements ParameterEntryKey {
+public class RepositoryCapabilities {
 
-    private final String value;
+    private final Set<String> capabilities = new HashSet<String>();
 
-    public SimpleParameterEntryKey(String value) {
-        this.value = value;
+    public RepositoryCapabilities(Object... capabilities) {
+        for (Object capability : capabilities) {
+            this.capabilities.add(capability.toString());
+        }
     }
 
-    public String value() {
-        return value;
+    public boolean capableOf(String capability) {
+        return capabilities.contains(capability);
     }
-
 }

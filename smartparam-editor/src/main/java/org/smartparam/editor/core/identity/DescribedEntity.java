@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.model.simple;
-
-import org.smartparam.editor.core.model.ParameterEntryKey;
+package org.smartparam.editor.core.identity;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleParameterEntryKey implements ParameterEntryKey {
+public class DescribedEntity<T> {
 
-    private final String value;
+    private final RepositoryName source;
 
-    public SimpleParameterEntryKey(String value) {
-        this.value = value;
+    private final T data;
+
+    public DescribedEntity(RepositoryName source, T data) {
+        this.source = source;
+        this.data = data;
     }
 
-    public String value() {
-        return value;
+    public RepositoryName source() {
+        return source;
+    }
+
+    public T data() {
+        return data;
     }
 
 }

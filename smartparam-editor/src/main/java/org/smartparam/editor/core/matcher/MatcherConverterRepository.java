@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.model.simple;
+package org.smartparam.editor.core.matcher;
 
-import org.smartparam.editor.core.model.ParameterEntryKey;
+import org.smartparam.engine.core.repository.Repository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleParameterEntryKey implements ParameterEntryKey {
+public interface MatcherConverterRepository extends Repository<MatcherAwareConverter<?>> {
 
-    private final String value;
-
-    public SimpleParameterEntryKey(String value) {
-        this.value = value;
-    }
-
-    public String value() {
-        return value;
-    }
+    MatcherAwareConverter<?> getConverter(String matcherCode);
 
 }

@@ -13,24 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.model.simple;
+package org.smartparam.editor.core.model;
 
-import org.smartparam.editor.core.model.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleParameterEntryKey implements ParameterEntryKey {
+public interface EditableParameterEntry extends ParameterEntry {
 
-    private final String value;
-
-    public SimpleParameterEntryKey(String value) {
-        this.value = value;
-    }
-
-    public String value() {
-        return value;
-    }
-
+    ParameterEntryKey getKey();
 }

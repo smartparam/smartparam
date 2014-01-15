@@ -16,8 +16,9 @@
 package org.smartparam.editor.annotated;
 
 import java.util.Map;
-import org.smartparam.editor.matcher.MatcherAwareConverter;
-import org.smartparam.editor.matcher.MatcherConverterRepository;
+import org.smartparam.editor.core.matcher.EmptyMatcherConverter;
+import org.smartparam.editor.core.matcher.MatcherAwareConverter;
+import org.smartparam.editor.core.matcher.MatcherConverterRepository;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.repository.TypeScanningRepository;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
@@ -30,6 +31,8 @@ import org.smartparam.engine.core.repository.MapRepository;
  */
 public class ScanningMatcherConverterRepository implements MatcherConverterRepository, TypeScanningRepository {
 
+    private final MatcherAwareConverter<?> defaultConverter = new EmptyMatcherConverter();
+
     private final MapRepository<MatcherAwareConverter<?>> innerRepository = new MapRepository<MatcherAwareConverter<?>>(MatcherAwareConverter.class);
 
     @Override
@@ -40,7 +43,11 @@ public class ScanningMatcherConverterRepository implements MatcherConverterRepos
 
     @Override
     public MatcherAwareConverter<?> getConverter(String matcherCode) {
-        return innerRepository.getItem(matcherCode);
+        MatcherAwareConverter<?> converter = innerRepository.getItem(matcherCode);
+        if (converter == null) {
+            converter = defaultConverter;
+        }
+        return converter;
     }
 
     @Override

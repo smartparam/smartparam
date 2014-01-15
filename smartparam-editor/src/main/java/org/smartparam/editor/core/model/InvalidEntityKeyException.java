@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.model.simple;
 
-import org.smartparam.editor.core.model.ParameterEntryKey;
+package org.smartparam.editor.core.model;
+
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SimpleParameterEntryKey implements ParameterEntryKey {
+@SuppressWarnings("serial")
+public class InvalidEntityKeyException extends SmartParamException {
 
-    private final String value;
-
-    public SimpleParameterEntryKey(String value) {
-        this.value = value;
-    }
-
-    public String value() {
-        return value;
+    public InvalidEntityKeyException(String message) {
+        super(message);
     }
 
 }

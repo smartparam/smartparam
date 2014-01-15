@@ -15,7 +15,7 @@
  */
 package org.smartparam.editor.model.simple;
 
-import org.smartparam.editor.model.ParameterKey;
+import org.smartparam.editor.core.model.ParameterKey;
 
 /**
  *

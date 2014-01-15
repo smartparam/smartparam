@@ -15,6 +15,9 @@
  */
 package org.smartparam.editor.matcher;
 
+import org.smartparam.editor.core.matcher.MatcherAwareConverter;
+import org.smartparam.editor.core.matcher.EmptyMatcherConverter;
+import org.smartparam.editor.annotated.ParamMatcherConverter;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.matchers.BetweenMatcher;
@@ -24,6 +27,7 @@ import org.smartparam.engine.util.EngineUtil;
  *
  * @author Adam Dubiel
  */
+@ParamMatcherConverter(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
 public class BetweenMatcherConverter implements MatcherAwareConverter<Range> {
 
     private final EmptyMatcherConverter simpleConverter = new EmptyMatcherConverter();
