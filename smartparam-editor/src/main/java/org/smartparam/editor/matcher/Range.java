@@ -30,6 +30,10 @@ public class Range {
         this.to = to;
     }
 
+    public static Range of(Object from, Object to) {
+        return new Range(from, to);
+    }
+
     public Object from() {
         return from;
     }

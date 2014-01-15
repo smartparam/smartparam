@@ -30,4 +30,13 @@ public final class Star {
         return STAR;
     }
 
+    public static Object orStar(Object object) {
+        return object == null ? star() : object;
+    }
+
+    @Override
+    public String toString() {
+        return "*";
+    }
+
 }
