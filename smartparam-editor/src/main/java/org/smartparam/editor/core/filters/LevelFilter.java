@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.smartparam.editor.core.filters;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class LevelSorting {
+public class LevelFilter {
 
-    private final String level;
+    private final String value;
 
-    private final SortDirection direction;
+    private final boolean starAllowed;
 
-    LevelSorting(String level, SortDirection direction) {
-        this.level = level;
-        this.direction = direction;
+    LevelFilter(String value, boolean starAllowed) {
+        this.value = value;
+        this.starAllowed = starAllowed;
     }
 
-    public String level() {
-        return level;
+    public boolean starAllowed() {
+        return starAllowed;
     }
 
-    public SortDirection direction() {
-        return direction;
+    public String value() {
+        return value;
     }
-
 }

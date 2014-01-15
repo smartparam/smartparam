@@ -25,6 +25,7 @@ import org.smartparam.repository.jdbc.dao.ParameterDAO;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
+import static org.smartparam.repository.jdbc.test.builder.JdbcLevelTestBuilder.jdbcLevel;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterEntryTestBuilder.jdbcParameterEntry;
 import static org.smartparam.repository.jdbc.test.builder.JdbcParameterTestBuilder.jdbcParameter;
 
@@ -93,6 +94,16 @@ public class DatabaseBuilder {
         List<Level> levels = new ArrayList<Level>();
         for (int i = 0; i < count; ++i) {
             levels.add(level().withName("level" + i).withType("string").build());
+        }
+        JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
+        levelDAO.insertParameterLevels(queryRunner, levels, parameter.getId());
+        return this;
+    }
+
+    public DatabaseBuilder withLevels(String parameterName, String... levelNames) {
+        List<Level> levels = new ArrayList<Level>();
+        for (String levelName : levelNames) {
+            levels.add(level().withName(levelName).withType("string").build());
         }
         JdbcParameter parameter = parameterDAO.getParameter(queryRunner, parameterName);
         levelDAO.insertParameterLevels(queryRunner, levels, parameter.getId());

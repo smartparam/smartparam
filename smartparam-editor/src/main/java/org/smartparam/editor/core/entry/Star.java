@@ -21,6 +21,8 @@ package org.smartparam.editor.core.entry;
  */
 public final class Star {
 
+    public static final String SYMBOL = "*";
+
     private static final Star STAR = new Star();
 
     private Star() {

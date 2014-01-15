@@ -16,10 +16,10 @@
 package org.smartparam.editor.core.filters;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import org.smartparam.engine.util.EngineUtil;
+import java.util.Map;
 
 /**
  *
@@ -31,22 +31,11 @@ public class ParameterEntriesFilter {
 
     private int pageSize = -1;
 
-    private String[] levelFilters = new String[]{};
+    private final Map<String, LevelFilter> levelFilters = new HashMap<String, LevelFilter>();
 
     private final List<LevelSorting> levelSorting = new ArrayList<LevelSorting>();
 
     public ParameterEntriesFilter() {
-    }
-
-    public ParameterEntriesFilter(int page, int pageSize, String[] levelFilters, List<LevelSorting> levelSorting) {
-        this.page = page;
-        this.pageSize = pageSize;
-        this.levelFilters = Arrays.copyOf(levelFilters, levelFilters.length);
-        this.levelSorting.addAll(levelSorting);
-    }
-
-    public ParameterEntriesFilter(int page, int pageSize, String[] levelFilters, LevelSorting levelSorting) {
-        this(page, pageSize, levelFilters, Arrays.asList(levelSorting));
     }
 
     public ParameterEntriesFilter(int page, int pageSize) {
@@ -62,17 +51,9 @@ public class ParameterEntriesFilter {
         return page;
     }
 
-    public ParameterEntriesFilter withPage(int page) {
+    public ParameterEntriesFilter selectPage(int page) {
         this.page = page;
         return this;
-    }
-
-    public boolean applyPaging() {
-        return page > -1;
-    }
-
-    public boolean applyLimits() {
-        return pageSize > -1;
     }
 
     public int pageSize() {
@@ -84,32 +65,37 @@ public class ParameterEntriesFilter {
         return this;
     }
 
+    public boolean applyPaging() {
+        return page > -1;
+    }
+
+    public boolean applyLimits() {
+        return pageSize > -1;
+    }
+
     public int offset() {
         return page * pageSize;
     }
 
-    public String[] levelFilters() {
-        return Arrays.copyOf(levelFilters, levelFilters.length);
-    }
-
-    public ParameterEntriesFilter filterBy(String... levelFilters) {
-        this.levelFilters = Arrays.copyOf(levelFilters, levelFilters.length);
+    public ParameterEntriesFilter filter(String levelName, String value) {
+        this.levelFilters.put(levelName, new LevelFilter(value, false));
         return this;
     }
 
-    public String levelFilter(int levelIndex) {
-        return levelFilters[levelIndex];
+    public ParameterEntriesFilter filterOrStar(String levelName, String value) {
+        this.levelFilters.put(value, new LevelFilter(value, true));
+        return this;
     }
 
-    public boolean hasFilter(int levelIndex) {
-        return levelIndex < levelFiltersLength() && EngineUtil.hasText(levelFilters[levelIndex]);
+    public LevelFilter levelFilter(String levelName) {
+        return levelFilters.get(levelName);
     }
 
-    public int levelFiltersLength() {
-        return levelFilters.length;
+    public boolean hasFilter(String levelName) {
+        return levelFilters.containsKey(levelName);
     }
 
-    public boolean applyOrdering() {
+    public boolean applySorting() {
         return !levelSorting.isEmpty();
     }
 
@@ -117,18 +103,8 @@ public class ParameterEntriesFilter {
         return Collections.unmodifiableList(levelSorting);
     }
 
-    public ParameterEntriesFilter orderBy(LevelSorting levelSorting) {
-        this.levelSorting.add(levelSorting);
-        return this;
-    }
-
-    public ParameterEntriesFilter orderBy(int orderByLevelIndex) {
-        levelSorting.add(new LevelSorting(orderByLevelIndex));
-        return this;
-    }
-
-    public ParameterEntriesFilter orderBy(int orderByLevelIndex, SortDirection orderDirection) {
-        levelSorting.add(new LevelSorting(orderByLevelIndex, orderDirection));
+    public ParameterEntriesFilter orderBy(String levelName, SortDirection direction) {
+        this.levelSorting.add(new LevelSorting(levelName, direction));
         return this;
     }
 }

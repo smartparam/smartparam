@@ -148,7 +148,8 @@ public class SimpleJdbcRepository implements JdbcRepository {
 
     @Override
     public List<ParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter) {
-        return parameterEntryDAO.list(runner, parameterName, filter);
+        JdbcParameter parameter = getParameterMetadata(runner, parameterName);
+        return parameterEntryDAO.list(runner, parameter, filter);
     }
 
     @Override
