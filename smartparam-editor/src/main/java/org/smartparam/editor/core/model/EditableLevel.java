@@ -15,6 +15,7 @@
  */
 package org.smartparam.editor.core.model;
 
+import org.smartparam.engine.core.parameter.LevelKey;
 import org.smartparam.engine.core.parameter.Level;
 
 /**

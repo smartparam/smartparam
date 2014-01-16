@@ -17,7 +17,7 @@ package org.smartparam.editor.core.store;
 
 import org.smartparam.editor.core.store.ParamRepositoryNamingBuilder;
 import org.smartparam.editor.core.store.ParamRepositoryNaming;
-import org.smartparam.editor.core.identity.RepositoryName;
+import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -32,6 +32,11 @@ class TestLevel implements Level {
     boolean array;
 
     String matcher;
+
+    @Override
+    public LevelKey getKey() {
+        return EmptyEntityKey.emptyKey();
+    }
 
     @Override
     public String getLevelCreator() {

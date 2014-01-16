@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core.model;
+
+package org.smartparam.engine.core.parameter;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface LevelKey {
+public interface ParameterKey {
 
     String value();
 

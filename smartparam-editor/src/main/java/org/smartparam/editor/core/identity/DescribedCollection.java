@@ -15,6 +15,7 @@
  */
 package org.smartparam.editor.core.identity;
 
+import org.smartparam.engine.core.repository.RepositoryName;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;

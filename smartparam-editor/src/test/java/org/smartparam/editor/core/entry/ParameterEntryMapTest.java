@@ -16,7 +16,7 @@
 package org.smartparam.editor.core.entry;
 
 import org.smartparam.editor.core.entry.ParameterEntryMap;
-import org.smartparam.editor.core.model.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.ParameterEntryKey;
 import org.smartparam.editor.model.simple.SimpleParameterEntryKey;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;

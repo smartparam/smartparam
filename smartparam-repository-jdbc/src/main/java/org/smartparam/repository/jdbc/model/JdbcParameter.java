@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.smartparam.editor.core.model.EditableParameter;
-import org.smartparam.editor.core.model.ParameterKey;
+import org.smartparam.engine.core.parameter.ParameterKey;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;

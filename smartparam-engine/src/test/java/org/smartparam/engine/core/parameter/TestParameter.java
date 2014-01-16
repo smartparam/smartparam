@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -40,6 +41,11 @@ class TestParameter implements Parameter {
     boolean cacheable = true;
 
     boolean nullable = false;
+
+    @Override
+    public ParameterKey getKey() {
+        return EmptyEntityKey.emptyKey();
+    }
 
     @Override
     public String getName() {

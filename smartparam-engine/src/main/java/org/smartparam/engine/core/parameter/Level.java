@@ -20,11 +20,19 @@ package org.smartparam.engine.core.parameter;
  * In tabular view: how many columns there are.
  * In "if"-tree: indentation depth.
  *
+ * Level MIGHT contain unique key, but this depends on repository implementation, might
+ * be useful for auditing purposes.
+ *
  * @author Przemek Hertel
  * @author Adam Dubiel
  * @since 0.1.0
  */
 public interface Level {
+
+    /**
+     * Returns optional repository-scope unique identifier of Level.
+     */
+    LevelKey getKey();
 
     /**
      * Returns name of level, internally used to load value by output parameter

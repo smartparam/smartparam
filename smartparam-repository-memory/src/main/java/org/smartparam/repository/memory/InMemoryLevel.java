@@ -16,7 +16,7 @@
 package org.smartparam.repository.memory;
 
 import org.smartparam.editor.core.model.EditableLevel;
-import org.smartparam.editor.core.model.LevelKey;
+import org.smartparam.engine.core.parameter.LevelKey;
 import org.smartparam.engine.core.parameter.Level;
 
 /**

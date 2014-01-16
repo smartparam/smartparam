@@ -21,7 +21,7 @@ import org.smartparam.editor.core.store.RepositoryStore;
 import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.editor.core.EditableParamRepository;
-import org.smartparam.editor.core.identity.RepositoryName;
+import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.editor.core.ViewableParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.testng.annotations.Test;

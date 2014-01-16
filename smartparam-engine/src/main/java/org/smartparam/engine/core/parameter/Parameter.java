@@ -22,6 +22,9 @@ import java.util.Set;
  * Interface for parameter that is loaded from storage and evaluated inside engine.
  * Two logical parts are metadata (attributes) and matrix (entries).
  *
+ * Parameter MIGHT contain unique key, but this depends on repository implementation, might
+ * be useful for auditing purposes.
+ *
  * @see ParameterEntry
  * @see Level
  *
@@ -35,6 +38,11 @@ public interface Parameter {
      * Default value for array separator.
      */
     char DEFAULT_ARRAY_SEPARATOR = ',';
+
+    /**
+     * Returns optional repository-scope unique identifier of parameter.
+     */
+    ParameterKey getKey();
 
     /**
      * Returns unique name of parameter.

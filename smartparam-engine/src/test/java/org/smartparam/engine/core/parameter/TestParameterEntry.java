@@ -16,6 +16,7 @@
 package org.smartparam.engine.core.parameter;
 
 import java.util.Arrays;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -25,8 +26,14 @@ class TestParameterEntry implements ParameterEntry {
 
     String[] levels;
 
+    @Override
+    public ParameterEntryKey getKey() {
+        return EmptyEntityKey.emptyKey();
+    }
+
+    @Override
     public String[] getLevels() {
-        if(levels != null) {
+        if (levels != null) {
             return Arrays.copyOf(levels, levels.length);
         }
         return null;

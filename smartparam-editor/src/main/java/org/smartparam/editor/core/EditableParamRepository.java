@@ -20,9 +20,9 @@ import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.editor.core.model.LevelKey;
-import org.smartparam.editor.core.model.ParameterEntryKey;
-import org.smartparam.editor.core.model.ParameterKey;
+import org.smartparam.engine.core.parameter.LevelKey;
+import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.ParameterKey;
 
 /**
  * Editable repository.

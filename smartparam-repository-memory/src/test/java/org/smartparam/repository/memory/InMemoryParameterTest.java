@@ -18,7 +18,7 @@ package org.smartparam.repository.memory;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.smartparam.editor.core.model.LevelKey;
+import org.smartparam.engine.core.parameter.LevelKey;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 

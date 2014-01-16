@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.editor.core.identity.RepositoryName;
+import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.parameter.ParamRepository;
 
 /**

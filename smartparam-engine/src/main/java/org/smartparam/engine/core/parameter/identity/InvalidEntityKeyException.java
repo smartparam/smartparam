@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Adam Dubiel, Przemek Hertel.
+ * Copyright 2013 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-package org.smartparam.editor.core.model;
+package org.smartparam.engine.core.parameter.identity;
+
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParameterKey {
+@SuppressWarnings("serial")
+public class InvalidEntityKeyException extends SmartParamException {
 
-    String value();
+    public InvalidEntityKeyException(String message) {
+        super(message);
+    }
 
 }

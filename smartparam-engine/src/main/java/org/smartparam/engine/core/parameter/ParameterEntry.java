@@ -43,6 +43,12 @@ package org.smartparam.engine.core.parameter;
 public interface ParameterEntry {
 
     /**
+     * Optional repository-scope unique identifier of this entry that might be
+     * used in audits to pinpoint exact entry that was used to deliver value.
+     */
+    ParameterEntryKey getKey();
+
+    /**
      * Get all level patterns for this row.
      * Both input and output levels.
      *

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,31 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core.identity;
+package org.smartparam.engine.core.parameter.identity;
 
-import org.smartparam.engine.core.repository.RepositoryName;
+import org.smartparam.engine.core.parameter.ParameterKey;
+import org.smartparam.engine.core.parameter.LevelKey;
+import org.smartparam.engine.core.parameter.ParameterEntryKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class DescribedEntity<T> {
+public class EmptyEntityKey implements LevelKey, ParameterEntryKey, ParameterKey {
 
-    private final RepositoryName source;
+    private static final EmptyEntityKey KEY = new EmptyEntityKey();
 
-    private final T data;
-
-    public DescribedEntity(RepositoryName source, T data) {
-        this.source = source;
-        this.data = data;
+    private EmptyEntityKey() {
     }
 
-    public RepositoryName source() {
-        return source;
+    public static EmptyEntityKey emptyKey() {
+        return KEY;
     }
 
-    public T data() {
-        return data;
+    @Override
+    public String value() {
+        return "NOT_SUPPORTED";
     }
 
 }

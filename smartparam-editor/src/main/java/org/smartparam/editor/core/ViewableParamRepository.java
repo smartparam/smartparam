@@ -19,7 +19,7 @@ import org.smartparam.editor.core.filters.ParameterEntriesFilter;
 import org.smartparam.editor.core.filters.ParameterFilter;
 import java.util.List;
 import org.smartparam.editor.core.capabilities.RepositoryCapabilities;
-import org.smartparam.editor.core.model.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterEntry;

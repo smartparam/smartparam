@@ -15,7 +15,7 @@
  */
 package org.smartparam.editor.core.store;
 
-import org.smartparam.editor.core.identity.RepositoryName;
+import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
