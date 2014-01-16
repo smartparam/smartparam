@@ -35,7 +35,7 @@ public class EmptyMatcherConverter implements MatcherAwareConverter<Object> {
             return type.decode(value).getValue();
         }
 
-        if (value != null && value.equals("")) {
+        if (value != null && value.isEmpty()) {
             return null;
         }
 
