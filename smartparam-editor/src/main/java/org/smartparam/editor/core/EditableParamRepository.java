@@ -93,8 +93,12 @@ public interface EditableParamRepository extends ParamRepository {
     void deleteEntry(String parameterName, ParameterEntryKey entryKey);
 
     /**
-     * Delete all entries.
+     * Delete all specified entries.
      */
     void deleteEntries(String parameterName, Iterable<ParameterEntryKey> entryKeys);
 
+    /**
+     * Delete all entries in parameter.
+     */
+    void deleteEntries(String parameterName);
 }

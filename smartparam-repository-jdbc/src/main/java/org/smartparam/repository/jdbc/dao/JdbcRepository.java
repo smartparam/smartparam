@@ -70,4 +70,6 @@ public interface JdbcRepository {
     void deleteParameterEntry(QueryRunner runner, long entryId);
 
     void deleteParameterEntries(QueryRunner runner, Iterable<Long> entriesIds);
+
+    void deleteParameterEntries(QueryRunner runner, String parameterName);
 }

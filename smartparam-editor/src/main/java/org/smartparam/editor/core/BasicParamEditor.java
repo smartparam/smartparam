@@ -163,6 +163,13 @@ public class BasicParamEditor implements ParamEditor {
         clearCache(parameterName);
     }
 
+    @Override
+    public void deleteEntries(RepositoryName in, String parameterName) {
+        EditableParamRepository repository = repositories.get(in);
+        repository.deleteEntries(parameterName);
+        clearCache(parameterName);
+    }
+
     private ParameterEntry convert(EditableParamRepository repository, ParameterEntryMap entryMap, String parameterName) {
         Parameter metadata = repository.getParameterMetadata(parameterName);
         return converter.asEntry(metadata, entryMap);

@@ -33,38 +33,47 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class FakeViewableParamRepository implements ViewableParamRepository {
 
+    @Override
     public RepositoryCapabilities capabilities() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public List<String> listParameters(ParameterFilter filter) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public Parameter getParameterMetadata(String parameterName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public List<ParameterEntry> getParameterEntries(String parameterName, Iterable<ParameterEntryKey> parameterEntryKeys) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public List<ParameterEntry> listEntries(String parameterName, ParameterEntriesFilter filter) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public Parameter load(String parameterName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public ParameterBatchLoader batchLoad(String parameterName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public Set<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    @Override
     public Set<String> listParameters() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

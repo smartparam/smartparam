@@ -133,4 +133,19 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
         // then
         assertDatabase().hasNoParameter("parameter").close();
     }
+
+    @Test
+    public void shouldDeleteAllEntriesOfParameter() {
+        // given
+        database().withParameter("parameter").withLevels("parameter", 5).withParameterEntries("parameter", 5).build();
+        SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
+        QueryRunner runner = queryRunner();
+
+        // when
+        repository.deleteParameterEntries(runner, "parameter");
+        runner.close();
+
+        // then
+        assertDatabase().hasNoEntriesForParameter("parameter").close();
+    }
 }

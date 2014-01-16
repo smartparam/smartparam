@@ -172,4 +172,10 @@ public class SimpleJdbcRepository implements JdbcRepository {
     public void deleteParameterEntries(QueryRunner runner, Iterable<Long> entriesIds) {
         parameterEntryDAO.delete(runner, entriesIds);
     }
+
+    @Override
+    public void deleteParameterEntries(QueryRunner runner, String parameterName) {
+        parameterEntryDAO.deleteParameterEntries(runner, parameterName);
+    }
+
 }

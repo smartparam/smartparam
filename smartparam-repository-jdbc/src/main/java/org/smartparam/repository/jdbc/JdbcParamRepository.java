@@ -374,4 +374,14 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
         });
     }
 
+    @Override
+    public void deleteEntries(final String parameterName) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.deleteParameterEntries(queryRunner, parameterName);
+            }
+        });
+    }
+
 }

@@ -120,6 +120,10 @@ public class InMemoryParameter implements EditableParameter {
         entries.remove(entryKey.value());
     }
 
+    void removeEntries() {
+        entries.clear();
+    }
+
     @Override
     public ParameterKey getKey() {
         return key;

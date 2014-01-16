@@ -227,4 +227,8 @@ public class InMemoryParamRepository implements ParamRepository, ViewableParamRe
         }
     }
 
+    public void deleteEntries(String parameterName) {
+        InMemoryParameter parameter = loadRaw(parameterName);
+        parameter.removeEntries();
+    }
 }
