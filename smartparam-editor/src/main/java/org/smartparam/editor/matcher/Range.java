@@ -38,8 +38,16 @@ public class Range {
         return from;
     }
 
+    public <T> T fromAs(Class<T> clazz) {
+        return (T) from;
+    }
+
     public Object to() {
         return to;
+    }
+
+    public <T> T toAs(Class<T> clazz) {
+        return (T) to;
     }
 
 }
