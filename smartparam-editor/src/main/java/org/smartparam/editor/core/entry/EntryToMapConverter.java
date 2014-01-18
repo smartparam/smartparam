@@ -16,13 +16,12 @@
 package org.smartparam.editor.core.entry;
 
 import org.smartparam.editor.core.matcher.MatcherConverterRepository;
-import org.smartparam.editor.core.model.EditableParameterEntry;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -41,7 +40,7 @@ class EntryToMapConverter {
     }
 
     ParameterEntryMap asMap(Parameter metadata, ParameterEntry parameterEntry) {
-        ParameterEntryMap map = new ParameterEntryMap(keyOf(parameterEntry));
+        ParameterEntryMap map = new ParameterEntryMap(parameterEntry.getKey());
 
         int index = 0;
         for (Level level : metadata.getLevels()) {
@@ -50,13 +49,6 @@ class EntryToMapConverter {
         }
 
         return map;
-    }
-
-    private ParameterEntryKey keyOf(ParameterEntry entry) {
-        if (entry instanceof EditableParameterEntry) {
-            return ((EditableParameterEntry) entry).getKey();
-        }
-        return null;
     }
 
     private Object asObject(Level level, String levelValue) {

@@ -16,7 +16,7 @@
 package org.smartparam.editor.model.simple;
 
 import java.util.List;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 
 /**
  *

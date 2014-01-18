@@ -15,13 +15,13 @@
  */
 package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.editor.core.model.EditableLevel;
+import org.smartparam.engine.core.parameter.level.Level;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcLevel implements EditableLevel {
+public class JdbcLevel implements Level {
 
     private static final int TO_STRING_LENGTH = 100;
 

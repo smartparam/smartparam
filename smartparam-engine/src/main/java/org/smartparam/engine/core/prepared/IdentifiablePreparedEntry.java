@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core.model;
+package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.parameter.LevelKey;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface EditableLevel extends Level {
+public class IdentifiablePreparedEntry extends PreparedEntry {
 
-    LevelKey getKey();
+    private final String key;
 
+    public IdentifiablePreparedEntry(ParameterEntry parameterEntry) {
+        super(parameterEntry);
+        this.key = parameterEntry.getKey().value();
+    }
+
+    public ParameterEntryKey getKey() {
+        return new PreparedEntryKey(key);
+    }
 }

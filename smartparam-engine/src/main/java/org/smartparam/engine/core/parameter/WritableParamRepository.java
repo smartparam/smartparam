@@ -16,7 +16,7 @@
 package org.smartparam.engine.core.parameter;
 
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  * Writable repository is a repository without fine-grained control of what is

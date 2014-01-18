@@ -16,7 +16,7 @@
 package org.smartparam.engine.core.prepared;
 
 import java.util.Arrays;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  * PreparedEntry compiled form, without unnecessary information and with

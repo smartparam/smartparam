@@ -23,18 +23,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.smartparam.editor.core.model.EditableParameter;
-import org.smartparam.engine.core.parameter.LevelKey;
+import org.smartparam.engine.core.parameter.level.LevelKey;
 import org.smartparam.engine.core.parameter.ParameterKey;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class InMemoryParameter implements EditableParameter {
+public class InMemoryParameter implements Parameter {
 
     private final InMemoryParameterKey key;
 
@@ -52,6 +51,8 @@ public class InMemoryParameter implements EditableParameter {
 
     private boolean nullable = false;
 
+    private boolean identifyEntries;
+
     InMemoryParameter() {
         this.key = new InMemoryParameterKey();
     }
@@ -67,6 +68,7 @@ public class InMemoryParameter implements EditableParameter {
         this.arraySeparator = parameter.getArraySeparator();
         this.cacheable = parameter.isCacheable();
         this.nullable = parameter.isNullable();
+        this.identifyEntries = parameter.isIdentifyEntries();
     }
 
     InMemoryLevelKey addLevel(InMemoryLevel level) {
@@ -164,4 +166,8 @@ public class InMemoryParameter implements EditableParameter {
         return arraySeparator;
     }
 
+    @Override
+    public boolean isIdentifyEntries() {
+        return identifyEntries;
+    }
 }

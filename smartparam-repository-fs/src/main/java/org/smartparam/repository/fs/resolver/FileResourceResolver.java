@@ -24,7 +24,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
-import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.repository.fs.exception.ResourceResolverException;
 import org.smartparam.repository.fs.util.StreamReaderOpener;

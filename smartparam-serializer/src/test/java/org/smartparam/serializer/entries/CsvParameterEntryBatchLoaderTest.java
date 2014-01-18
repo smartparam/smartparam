@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.serializer.config.DefaultSerializationConfig;
 import org.supercsv.io.CsvListReader;
 import static org.assertj.core.api.Assertions.*;

@@ -16,13 +16,13 @@
 package org.smartparam.repository.jdbc.model;
 
 import java.util.Arrays;
-import org.smartparam.editor.core.model.EditableParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameterEntry implements EditableParameterEntry {
+public class JdbcParameterEntry implements ParameterEntry {
 
     private static final int TO_STRING_LENGTH = 100;
 

@@ -16,7 +16,6 @@
 package org.smartparam.engine.core.parameter;
 
 import org.assertj.core.api.AbstractAssert;
-import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
 /**

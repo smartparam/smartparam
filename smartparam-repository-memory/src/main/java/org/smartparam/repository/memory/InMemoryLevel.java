@@ -15,15 +15,14 @@
  */
 package org.smartparam.repository.memory;
 
-import org.smartparam.editor.core.model.EditableLevel;
-import org.smartparam.engine.core.parameter.LevelKey;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.LevelKey;
+import org.smartparam.engine.core.parameter.level.Level;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class InMemoryLevel implements EditableLevel {
+public class InMemoryLevel implements Level {
 
     private final InMemoryLevelKey key;
 

@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  * @author Przemek Hertel
@@ -69,6 +70,16 @@ public class ParamValueImpl implements ParamValue {
     @Override
     public Iterator<MultiValue> iterator() {
         return rows().iterator();
+    }
+
+    @Override
+    public ParameterEntryKey getKey(int rowNo) {
+        return row(rowNo).getKey();
+    }
+
+    @Override
+    public ParameterEntryKey getKey() {
+        return row().getKey();
     }
 
     @Override
@@ -126,6 +137,7 @@ public class ParamValueImpl implements ParamValue {
         return row().get(name);
     }
 
+    @Override
     public <T> T get(String name, Class<T> clazz) {
         return row().get(name, clazz);
     }

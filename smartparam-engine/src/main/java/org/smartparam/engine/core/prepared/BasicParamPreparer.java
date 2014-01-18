@@ -26,9 +26,9 @@ import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *
@@ -111,7 +111,7 @@ public class BasicParamPreparer implements ParamPreparer {
                 }
             }
 
-            index.add(keys, prepareEntry(parameterEntry));
+            index.add(keys, prepareEntry(parameterEntry, parameter.isIdentifyEntries()));
         }
 
         return index;
@@ -148,8 +148,8 @@ public class BasicParamPreparer implements ParamPreparer {
         return Arrays.copyOf(parameterEntry.getLevels(), levelCount);
     }
 
-    private PreparedEntry prepareEntry(ParameterEntry parameterEntry) {
-        return new PreparedEntry(parameterEntry);
+    private PreparedEntry prepareEntry(ParameterEntry parameterEntry, boolean identifyEntries) {
+        return identifyEntries ? new IdentifiablePreparedEntry(parameterEntry) : new PreparedEntry(parameterEntry);
     }
 
     @Override
@@ -158,7 +158,8 @@ public class BasicParamPreparer implements ParamPreparer {
 
         List<PreparedEntry> result = new ArrayList<PreparedEntry>(entries.size());
         for (ParameterEntry pe : entries) {
-            result.add(prepareEntry(pe));
+            // no cache, everything can be identifiable
+            result.add(prepareEntry(pe, true));
         }
 
         return result;

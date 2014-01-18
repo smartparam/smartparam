@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.util.Printer;
 
@@ -26,7 +27,6 @@ import org.smartparam.engine.util.Printer;
  * Represents single row of matrix returned from parameter querying. Immutable.
  * Each method returning value can throw:
  *
- * * {@link InvalidRowIndexException}
  * * {@link InvalidValueIndexException}
  * * {@link GettingWrongTypeException}
  * * {@link UnknownLevelNameException}
@@ -45,6 +45,8 @@ public class MultiValue {
 
     private Map<String, Integer> indexMap;
 
+    private ParameterEntryKey key;
+
     /**
      * Keeps iteration state, used to power next* methods.
      */
@@ -57,6 +59,26 @@ public class MultiValue {
     public MultiValue(Object[] values, Map<String, Integer> indexMap) {
         this(values);
         this.indexMap = indexMap;
+    }
+
+    public MultiValue(ParameterEntryKey key, Object[] values, Map<String, Integer> indexMap) {
+        this(values, indexMap);
+        this.key = key;
+    }
+
+    /**
+     * Return repository-scope unique identifier of this value. By using this value and knowing repository name (from
+     * ParamValue) it is possible to pinpoint the exact entry in repository from which this value has been read, useful
+     * for auditing but might hurt performance.
+     *
+     * @throws GettingKeyNotIdentifiableParameterException when parameter not flagged with identifiable entries
+     * @see org.smartparam.engine.core.parameter.Parameter#isIdentifyEntries()
+     */
+    public ParameterEntryKey getKey() {
+        if (key == null) {
+            throw new GettingKeyNotIdentifiableParameterException();
+        }
+        return key;
     }
 
     /**

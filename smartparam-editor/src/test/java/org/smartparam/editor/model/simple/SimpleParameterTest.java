@@ -17,7 +17,7 @@ package org.smartparam.editor.model.simple;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 

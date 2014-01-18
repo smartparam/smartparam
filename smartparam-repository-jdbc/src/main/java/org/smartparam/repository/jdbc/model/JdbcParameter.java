@@ -19,17 +19,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.editor.core.model.EditableParameter;
 import org.smartparam.engine.core.parameter.ParameterKey;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  * @author Przemek Hertel
  * @since 0.2.0
  */
-public class JdbcParameter implements EditableParameter {
+public class JdbcParameter implements Parameter {
 
     private final JdbcParameterKey key;
 
@@ -44,6 +43,8 @@ public class JdbcParameter implements EditableParameter {
     private boolean nullable;
 
     private boolean cacheable = true;
+
+    private boolean identifyEntries;
 
     private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
@@ -102,6 +103,11 @@ public class JdbcParameter implements EditableParameter {
     }
 
     @Override
+    public boolean isIdentifyEntries() {
+        return identifyEntries;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Parameter#").append(name);
@@ -133,6 +139,10 @@ public class JdbcParameter implements EditableParameter {
 
     public void setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
+    }
+
+    public void setIdentifyEntries(boolean identifyEntries) {
+        this.identifyEntries = identifyEntries;
     }
 
     public void setArraySeparator(char arraySeparator) {

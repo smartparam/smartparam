@@ -19,16 +19,16 @@ import java.util.List;
 import java.util.Set;
 import org.smartparam.editor.core.capabilities.RepositoryCapabilities;
 import org.smartparam.editor.core.EditableParamRepository;
-import org.smartparam.engine.core.parameter.LevelKey;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.level.LevelKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParameterKey;
 import org.smartparam.editor.core.filters.ParameterEntriesFilter;
 import org.smartparam.editor.core.filters.ParameterFilter;
 import org.smartparam.editor.core.ViewableParamRepository;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *

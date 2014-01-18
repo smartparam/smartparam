@@ -13,13 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter;
+package org.smartparam.engine.core.parameter.entry;
+
+import java.io.Closeable;
+import java.util.Collection;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParameterEntryKey {
+public interface ParameterEntryBatchLoader extends Closeable {
 
-    String value();
+    boolean hasMore();
+
+    Collection<ParameterEntry> nextBatch(int batchSize);
+
+    @Override
+    void close();
 }

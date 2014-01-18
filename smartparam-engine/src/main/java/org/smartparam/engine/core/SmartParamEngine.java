@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.XPathParser;
 import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.output.ParamValueImpl;
 import org.smartparam.engine.core.output.ParamValue;
@@ -33,6 +34,8 @@ import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
 import org.smartparam.engine.core.prepared.InputValueNormalizer;
 import org.smartparam.engine.types.string.StringHolder;
 import org.smartparam.engine.util.EngineUtil;
@@ -110,13 +113,20 @@ public class SmartParamEngine implements ParamEngine {
                 vector[columnIndex] = cellValue;
             }
 
-            row[rowIndex] = new MultiValue(vector, param.getLevelNameMap());
+            row[rowIndex] = new MultiValue(extractEntryKey(pe), vector, param.getLevelNameMap());
         }
 
         ParamValue result = new ParamValueImpl(row);
 
         logger.debug("leave get[{}], result={}", paramName, result);
         return result;
+    }
+
+    private ParameterEntryKey extractEntryKey(PreparedEntry entry) {
+        if(entry instanceof IdentifiablePreparedEntry) {
+            return ((IdentifiablePreparedEntry)entry).getKey();
+        }
+        return null;
     }
 
     @Override
@@ -145,6 +155,7 @@ public class SmartParamEngine implements ParamEngine {
         return names;
     }
 
+    @Override
     public Object callEvaluatedFunction(String paramName, ParamContext ctx, Object... args) {
         ValueHolder holder = get(paramName, ctx).getHolder();
 

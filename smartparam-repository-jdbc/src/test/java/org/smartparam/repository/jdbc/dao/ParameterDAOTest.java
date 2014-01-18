@@ -40,7 +40,7 @@ public class ParameterDAOTest extends DatabaseTest {
         ParameterDAO parameterDAO = get(ParameterDAO.class);
         QueryRunner runner = queryRunner();
         Parameter parameter = parameter().withName("test").withInputLevels(5)
-                .nullable().noncacheable().withArraySeparator('*').build();
+                .nullable().noncacheable().identifyEntries().withArraySeparator('*').build();
 
         // when
         parameterDAO.insert(runner, parameter);
@@ -49,7 +49,8 @@ public class ParameterDAOTest extends DatabaseTest {
 
         // then
         assertThat(resultingParameter).isNotNull().hasName("test")
-                .hasInputLevels(5).hasArraySeparator('*').isNullable().isNotCacheable();
+                .hasInputLevels(5).hasArraySeparator('*').isNullable().isNotCacheable()
+                .identifyEntries();
     }
 
     public void shouldDeleteParameterFromDatabase() {

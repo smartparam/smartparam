@@ -18,14 +18,14 @@ package org.smartparam.engine.test;
 import org.smartparam.engine.core.repository.RepositoryItemMapAssert;
 import org.smartparam.engine.core.prepared.PreparedParameterAssert;
 import org.smartparam.engine.core.prepared.PreparedLevelAssert;
-import org.smartparam.engine.core.parameter.ParameterEntryAssert;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryAssert;
 import org.smartparam.engine.core.parameter.ParameterBatchLoaderAssert;
 import org.smartparam.engine.core.parameter.ParameterAssert;
 import org.smartparam.engine.core.output.ParamValueAssert;
 import org.smartparam.engine.core.ParamEngineRuntimeConfigAssert;
 import org.smartparam.engine.core.repository.MapRepositoryAssert;
 import org.smartparam.engine.core.index.LevelNodeAssert;
-import org.smartparam.engine.core.parameter.LevelAssert;
+import org.smartparam.engine.core.parameter.level.LevelAssert;
 import org.smartparam.engine.core.repository.ItemsContainerAssert;
 import org.smartparam.engine.core.context.DefaultContextAssert;
 import java.util.Map;
@@ -41,9 +41,9 @@ import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.prepared.PreparedLevel;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.smartparam.engine.core.index.LevelNode;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *

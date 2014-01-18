@@ -19,7 +19,7 @@ import org.smartparam.editor.core.matcher.MatcherConverterRepository;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *

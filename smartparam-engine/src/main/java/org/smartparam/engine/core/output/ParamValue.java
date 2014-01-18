@@ -18,6 +18,7 @@ package org.smartparam.engine.core.output;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.type.ValueHolder;
 
 /**
@@ -52,6 +53,22 @@ public interface ParamValue extends Iterable<MultiValue> {
      * Return all rows of matrix.
      */
     List<MultiValue> rows();
+
+    /**
+     * Return unique key of entry, from which given matrix row came from.
+     *
+     * @throws GettingKeyNotIdentifiableParameterException when parameter not flagged with identifiable entries
+     * @see org.smartparam.engine.core.parameter.Parameter#isIdentifyEntries()
+     */
+    ParameterEntryKey getKey(int rowNo);
+
+    /**
+     * Return unique key of entry, which was used to create first row of matrix.
+     *
+     * @throws GettingKeyNotIdentifiableParameterException when parameter not flagged with identifiable entries
+     * @see org.smartparam.engine.core.parameter.Parameter#isIdentifyEntries()
+     */
+    ParameterEntryKey getKey();
 
     /**
      * Get cell of matrix.

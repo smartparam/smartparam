@@ -25,9 +25,9 @@ import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.matchers.BetweenMatcher;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.function.Function;
 import org.smartparam.engine.types.date.DateType;
 import org.smartparam.engine.types.integer.IntegerType;
@@ -41,15 +41,19 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.smartparam.engine.core.output.GettingKeyNotIdentifiableParameterException;
 import org.smartparam.engine.core.output.GettingWrongTypeException;
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 import static org.smartparam.engine.functions.java.JavaFunctionTestBuilder.javaFunction;
-import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
-import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
 
 /**
  * @author Przemek Hertel
@@ -191,7 +195,7 @@ public class ParamEngineIntegrationTest {
     }
 
     @Test
-    public void shouldPreferConcreteVlueToDefaultValueWhenBothPossible() {
+    public void shouldPreferConcreteValueToDefaultValueWhenBothPossible() {
         // given
         Level[] levels = new Level[]{
             level().withType("string").build(),
@@ -381,6 +385,47 @@ public class ParamEngineIntegrationTest {
 
         // then
         assertThat(value).hasArray(0, "B", "C");
+    }
+
+    @Test
+    public void shouldReturnKeysForResultingParameterEntriesWhenIdentifiableParameterFlagIsSet() {
+        // given
+        Level[] levels = new Level[]{
+            level().withType("string").build(),
+            level().withType("string").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("A", "B").withKey("entry-key").build()
+        };
+        Parameter parameter = parameter().identifyEntries().withArraySeparator(',').withLevels(levels).withEntries(entries).withInputLevels(1).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        ParamValue value = engine.get("parameter", "A");
+
+        // then
+        assertThat(value.getKey().value()).isEqualTo("entry-key");
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToRetrieveEntryKeyWhenIdentifiableParameterFlagIsNotSet() {
+        // given
+        Level[] levels = new Level[]{
+            level().withType("string").build(),
+            level().withType("string").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("A", "B").build()
+        };
+        Parameter parameter = parameter().withArraySeparator(',').withLevels(levels).withEntries(entries).withInputLevels(1).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        ParamValue value = engine.get("parameter", "A");
+        catchException(value).getKey();
+
+        // then
+        assertThat(caughtException()).isInstanceOf(GettingKeyNotIdentifiableParameterException.class);
     }
 
     @Test

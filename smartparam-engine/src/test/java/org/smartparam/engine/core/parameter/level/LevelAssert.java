@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.smartparam.engine.core.parameter;
+package org.smartparam.engine.core.parameter.level;
 
 import org.assertj.core.api.AbstractAssert;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
 /**

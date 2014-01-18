@@ -19,7 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.serializer.model.AppendableParameter;
 import org.smartparam.serializer.model.DeserializedParameter;
 import org.smartparam.serializer.exception.ParamSerializationException;

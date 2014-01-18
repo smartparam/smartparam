@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.parameter;
 
+import org.smartparam.engine.core.parameter.entry.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.exception.SmartParamException;
 
 /**

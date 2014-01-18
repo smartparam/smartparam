@@ -13,30 +13,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter;
+package org.smartparam.engine.core.parameter.level;
 
-import java.util.Arrays;
+import org.smartparam.engine.core.parameter.level.LevelKey;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-class TestParameterEntry implements ParameterEntry {
+class TestLevel implements Level {
 
-    String[] levels;
+    String name;
+
+    String levelCreator;
+
+    String type;
+
+    boolean array;
+
+    String matcher;
 
     @Override
-    public ParameterEntryKey getKey() {
+    public LevelKey getKey() {
         return EmptyEntityKey.emptyKey();
     }
 
     @Override
-    public String[] getLevels() {
-        if (levels != null) {
-            return Arrays.copyOf(levels, levels.length);
-        }
-        return null;
+    public String getLevelCreator() {
+        return levelCreator;
+    }
+
+    @Override
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public boolean isArray() {
+        return array;
+    }
+
+    @Override
+    public String getMatcher() {
+        return matcher;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
 }

@@ -15,7 +15,7 @@
  */
 package org.smartparam.serializer.entries;
 
-import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryBatchLoader;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.parameter.ParamBatchLoadingException;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.config.SerializationConfig;
 import org.smartparam.serializer.util.StreamCloser;

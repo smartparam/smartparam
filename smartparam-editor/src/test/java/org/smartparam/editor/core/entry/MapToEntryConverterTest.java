@@ -25,7 +25,7 @@ import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.types.date.DateType;
 import org.smartparam.engine.types.date.SimpleDateFormatPool;

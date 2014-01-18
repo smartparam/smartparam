@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  *

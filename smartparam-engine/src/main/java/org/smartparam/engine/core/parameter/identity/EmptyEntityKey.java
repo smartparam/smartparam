@@ -16,8 +16,8 @@
 package org.smartparam.engine.core.parameter.identity;
 
 import org.smartparam.engine.core.parameter.ParameterKey;
-import org.smartparam.engine.core.parameter.LevelKey;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.level.LevelKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  *

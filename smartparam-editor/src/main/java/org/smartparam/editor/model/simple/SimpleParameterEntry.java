@@ -16,7 +16,9 @@
 package org.smartparam.editor.model.simple;
 
 import java.util.Arrays;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -39,6 +41,11 @@ public class SimpleParameterEntry implements ParameterEntry {
         if (entry.getLevels() != null) {
             this.levels = Arrays.copyOf(entry.getLevels(), entry.getLevels().length);
         }
+    }
+
+    @Override
+    public ParameterEntryKey getKey() {
+        return EmptyEntityKey.emptyKey();
     }
 
     @Override

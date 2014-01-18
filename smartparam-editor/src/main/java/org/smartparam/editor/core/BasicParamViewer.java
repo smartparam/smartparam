@@ -24,14 +24,14 @@ import org.smartparam.editor.core.identity.DescribedCollection;
 import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.editor.core.capabilities.RepositoryCapabilities;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.editor.core.entry.ParameterEntryMap;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
 import org.smartparam.editor.core.store.ParamRepositoryNaming;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *

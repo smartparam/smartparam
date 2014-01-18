@@ -53,6 +53,7 @@ public class ParameterDAO {
                 .value("input_levels", parameter.getInputLevels())
                 .value("cacheable", parameter.isCacheable())
                 .value("nullable", parameter.isNullable())
+                .value("identify_entries", parameter.isIdentifyEntries())
                 .value("array_separator", parameter.getArraySeparator());
         return queryRunner.insert(query);
     }
@@ -98,6 +99,7 @@ public class ParameterDAO {
                 .set("input_levels", parameter.getInputLevels())
                 .set("cacheable", parameter.isCacheable())
                 .set("nullable", parameter.isNullable())
+                .set("identify_entries", parameter.isIdentifyEntries())
                 .set("array_separator", parameter.getArraySeparator());
 
         queryRunner.update(query);

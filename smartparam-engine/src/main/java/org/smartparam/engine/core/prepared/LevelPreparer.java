@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 
 /**
  *

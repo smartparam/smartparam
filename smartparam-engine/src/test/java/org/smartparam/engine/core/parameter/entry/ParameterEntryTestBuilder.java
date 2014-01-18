@@ -13,16 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core.model;
-
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+package org.smartparam.engine.core.parameter.entry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface EditableParameterEntry extends ParameterEntry {
+public class ParameterEntryTestBuilder {
 
-    ParameterEntryKey getKey();
+    private final TestParameterEntry entry = new TestParameterEntry();
+
+    public static ParameterEntryTestBuilder parameterEntry() {
+        return new ParameterEntryTestBuilder();
+    }
+
+    public ParameterEntry build() {
+        return entry;
+    }
+
+    public ParameterEntryTestBuilder withLevels(String... levelValues) {
+        entry.levels = levelValues;
+        return this;
+    }
+
+    public ParameterEntryTestBuilder withKey(String key) {
+        entry.key = new TestParameterEntryKey(key);
+        return this;
+    }
 }

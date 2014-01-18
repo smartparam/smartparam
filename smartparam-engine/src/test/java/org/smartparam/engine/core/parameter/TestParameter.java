@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.parameter;
 
+import org.smartparam.engine.core.parameter.level.Level;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -41,6 +43,8 @@ class TestParameter implements Parameter {
     boolean cacheable = true;
 
     boolean nullable = false;
+
+    boolean identifyEntries = false;
 
     @Override
     public ParameterKey getKey() {
@@ -80,5 +84,10 @@ class TestParameter implements Parameter {
     @Override
     public boolean isNullable() {
         return nullable;
+    }
+
+    @Override
+    public boolean isIdentifyEntries() {
+        return identifyEntries;
     }
 }

@@ -18,7 +18,7 @@ package org.smartparam.repository.jdbc.dao;
 
 import java.util.Comparator;
 import java.util.List;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 
 /**

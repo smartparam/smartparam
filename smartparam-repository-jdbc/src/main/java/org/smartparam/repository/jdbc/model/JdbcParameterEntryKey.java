@@ -16,7 +16,7 @@
 package org.smartparam.repository.jdbc.model;
 
 import org.smartparam.engine.core.parameter.identity.AbstractEntityKey;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import static org.smartparam.repository.jdbc.model.JdbcParameterKey.SYMBOL;
 
 /**

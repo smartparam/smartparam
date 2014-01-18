@@ -15,7 +15,9 @@
  */
 package org.smartparam.serializer.model;
 
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
+import org.smartparam.engine.core.parameter.level.Level;
+import org.smartparam.engine.core.parameter.level.LevelKey;
 
 /**
  *
@@ -42,6 +44,11 @@ public class DeserializedLevel implements Level {
         this.type = level.getType();
         this.matcher = level.getMatcher();
         this.array = level.isArray();
+    }
+
+    @Override
+    public LevelKey getKey() {
+        return EmptyEntityKey.emptyKey();
     }
 
     @Override

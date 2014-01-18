@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.parameter;
 
+import org.smartparam.engine.core.parameter.level.LevelAssert;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryAssert;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.smartparam.engine.test.Iterables;
@@ -78,6 +80,16 @@ public class ParameterAssert extends AbstractAssert<ParameterAssert, Parameter> 
 
     public ParameterAssert isNotCacheable() {
         ParamEngineAssertions.assertThat(actual.isCacheable()).isFalse();
+        return this;
+    }
+
+    public ParameterAssert identifyEntries() {
+        ParamEngineAssertions.assertThat(actual.isIdentifyEntries()).isTrue();
+        return this;
+    }
+
+    public ParameterAssert dontIdentifyEntries() {
+        ParamEngineAssertions.assertThat(actual.isIdentifyEntries()).isFalse();
         return this;
     }
 

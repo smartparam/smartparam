@@ -22,16 +22,16 @@ import org.smartparam.editor.core.identity.DescribedEntity;
 import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.editor.core.store.RepositoryStore;
 import org.smartparam.engine.core.ParamEngine;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.LevelKey;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.level.LevelKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParameterKey;
 import org.smartparam.editor.core.entry.ParameterEntryMap;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
 import org.smartparam.editor.core.store.ParamRepositoryNaming;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 
 /**

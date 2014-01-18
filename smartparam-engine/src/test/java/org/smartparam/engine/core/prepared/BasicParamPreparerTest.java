@@ -15,20 +15,20 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.prepared.LevelPreparer;
-import org.smartparam.engine.core.prepared.BasicParamPreparer;
-import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.testng.annotations.BeforeMethod;
 
 import org.smartparam.engine.core.parameter.Parameter;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.parameter.ParameterProvider;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.test.ParamEngineAssertions.*;
-import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
 import static org.smartparam.engine.core.prepared.PreparedLevelTestBuilder.preparedLevel;
+import static org.smartparam.engine.test.ParamEngineAssertions.*;
 import static org.smartparam.engine.core.prepared.PreparedParameterTestBuilder.preparedParameter;
 
 /**
@@ -71,6 +71,48 @@ public class BasicParamPreparerTest {
         // then
         assertThat(preparedParameter).hasName("param").hasInputLevels(1).hasArraySeparator('^').hasIndex()
                 .hasLevelNameEntry("outputLevel", 0);
+    }
+
+    @Test
+    public void shouldInsertLightParameterEntriesIntoIndexWhenParameterHasNoIdentifyEntriesFlagSet() {
+        // given
+        Level[] levels = new Level[]{
+            level().withName("outputLevel").withType("type").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("hello").build()
+        };
+        Parameter parameter = parameter().withName("param").withInputLevels(0)
+                .withLevels(levels).withEntries(entries).build();
+        when(paramProvider.load("param")).thenReturn(parameter);
+        when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
+
+        // when
+        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+
+        // then
+        assertThat(preparedParameter.getIndex().find().get(0)).isExactlyInstanceOf(PreparedEntry.class);
+    }
+
+    @Test
+    public void shouldInsertIdentifiableParameterEntriesIntoIndexWhenParameterHasIdentifyEntriesFlagSet() {
+        // given
+        Level[] levels = new Level[]{
+            level().withName("outputLevel").withType("type").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("hello").build()
+        };
+        Parameter parameter = parameter().withName("param").identifyEntries().withInputLevels(0)
+                .withLevels(levels).withEntries(entries).build();
+        when(paramProvider.load("param")).thenReturn(parameter);
+        when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
+
+        // when
+        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+
+        // then
+        assertThat(preparedParameter.getIndex().find().get(0)).isInstanceOf(IdentifiablePreparedEntry.class);
     }
 
     @Test

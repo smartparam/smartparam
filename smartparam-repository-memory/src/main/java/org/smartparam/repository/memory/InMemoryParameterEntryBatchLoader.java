@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryBatchLoader;
 
 /**
  *

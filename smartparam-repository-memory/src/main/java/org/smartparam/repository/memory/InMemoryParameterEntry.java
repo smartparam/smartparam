@@ -16,15 +16,14 @@
 package org.smartparam.repository.memory;
 
 import java.util.Arrays;
-import org.smartparam.editor.core.model.EditableParameterEntry;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class InMemoryParameterEntry implements EditableParameterEntry {
+public class InMemoryParameterEntry implements ParameterEntry {
 
     private static final String[] EMPTY_LEVELS = {};
 

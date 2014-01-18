@@ -17,11 +17,11 @@ package org.smartparam.editor.core;
 
 import java.util.List;
 import org.smartparam.engine.core.parameter.ParamRepository;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.engine.core.parameter.LevelKey;
-import org.smartparam.engine.core.parameter.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.level.LevelKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParameterKey;
 
 /**

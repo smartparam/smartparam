@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.parameter;
 
+import org.smartparam.engine.core.parameter.entry.ParameterEntryBatchLoader;
+
 /**
  *
  * @author Adam Dubiel

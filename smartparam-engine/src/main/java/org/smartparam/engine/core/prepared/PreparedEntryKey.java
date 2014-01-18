@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.ParameterEntry;
+package org.smartparam.engine.core.prepared;
+
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ParameterEntryTestBuilder {
+public class PreparedEntryKey implements ParameterEntryKey {
 
-    private final TestParameterEntry entry = new TestParameterEntry();
+    private final String value;
 
-    public static ParameterEntryTestBuilder parameterEntry() {
-        return new ParameterEntryTestBuilder();
+    PreparedEntryKey(String value) {
+        this.value = value;
     }
 
-    public ParameterEntry build() {
-        return entry;
+    @Override
+    public String value() {
+        return value;
     }
 
-    public ParameterEntryTestBuilder withLevels(String... levelValues) {
-        entry.levels = levelValues;
-        return this;
-    }
 }

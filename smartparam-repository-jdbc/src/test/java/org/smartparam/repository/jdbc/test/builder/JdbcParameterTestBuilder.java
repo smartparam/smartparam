@@ -20,8 +20,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.parameter.Level;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.level.Level;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**

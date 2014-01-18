@@ -15,9 +15,8 @@
  */
 package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.Level;
-import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.level.Level;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -49,6 +48,11 @@ public class ParameterTestBuilder {
 
     public ParameterTestBuilder nullable() {
         parameter.nullable = true;
+        return this;
+    }
+
+    public ParameterTestBuilder identifyEntries() {
+        parameter.identifyEntries = true;
         return this;
     }
 

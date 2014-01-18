@@ -13,17 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core.model;
-
-import org.smartparam.engine.core.parameter.ParameterKey;
-import org.smartparam.engine.core.parameter.Parameter;
+package org.smartparam.engine.core.parameter.entry;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface EditableParameter extends Parameter {
+public class TestParameterEntryKey implements ParameterEntryKey {
 
-    ParameterKey getKey();
+    private final String value;
+
+    public TestParameterEntryKey(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public String value() {
+        return value;
+    }
 
 }

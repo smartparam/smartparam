@@ -66,6 +66,7 @@ public class DefaultSchemaCreator implements SchemaCreator {
                     .withAttribute().integer("input_levels").notNull().and()
                     .withAttribute().booleanAttr("cacheable").notNull().withDefaultValue(true).and()
                     .withAttribute().booleanAttr("nullable").notNull().withDefaultValue(false).and()
+                    .withAttribute().booleanAttr("identify_entries").notNull().withDefaultValue(false).and()
                     .withAttribute().character("array_separator").notNull().withDefaultValue(';').and()
                     .primaryKey(primaryKey(relationName)).using("id").and()
                     .build();

@@ -20,9 +20,9 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import static org.assertj.core.api.Assertions.*;
-import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package org.smartparam.engine.core.parameter;
+package org.smartparam.engine.core.parameter.entry;
 
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.assertj.core.api.AbstractAssert;
 import org.smartparam.engine.test.ParamEngineAssertions;
 

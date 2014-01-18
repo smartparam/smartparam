@@ -15,21 +15,21 @@
  */
 package org.smartparam.serializer.entries;
 
-import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryBatchLoader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.serializer.config.DefaultSerializationConfig;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
-import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**

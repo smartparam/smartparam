@@ -20,9 +20,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.ParameterKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -44,6 +46,8 @@ public class SimpleParameter implements Parameter {
 
     private boolean nullable = false;
 
+    private boolean identifyEntries = false;
+
     public SimpleParameter() {
     }
 
@@ -59,6 +63,11 @@ public class SimpleParameter implements Parameter {
                 this.levels.add(new SimpleLevel(level));
             }
         }
+    }
+
+    @Override
+    public ParameterKey getKey() {
+        return EmptyEntityKey.emptyKey();
     }
 
     @Override
@@ -153,6 +162,20 @@ public class SimpleParameter implements Parameter {
 
     public SimpleParameter nullable() {
         this.nullable = true;
+        return this;
+    }
+
+    @Override
+    public boolean isIdentifyEntries() {
+        return identifyEntries;
+    }
+
+    public void setIdentifyEntries(boolean identifyEntries) {
+        this.identifyEntries = identifyEntries;
+    }
+
+    public SimpleParameter identifyEntries() {
+        this.identifyEntries = true;
         return this;
     }
 

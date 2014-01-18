@@ -22,12 +22,12 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import static org.smartparam.engine.test.ParamEngineAssertions.*;
-import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
-import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 import static org.smartparam.serializer.config.SerializationConfigBuilder.serializationConfig;
 

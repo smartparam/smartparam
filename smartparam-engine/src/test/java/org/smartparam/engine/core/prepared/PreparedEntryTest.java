@@ -17,7 +17,7 @@ package org.smartparam.engine.core.prepared;
 
 import org.testng.annotations.Test;
 
-import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.testng.AssertJUnit.*;
 
 /**

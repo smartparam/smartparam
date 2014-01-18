@@ -20,9 +20,9 @@ import org.smartparam.editor.core.matcher.MatcherConverterRepository;
 import org.smartparam.editor.model.simple.SimpleParameterEntry;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.type.Type;
 
 /**

@@ -18,12 +18,12 @@ package org.smartparam.serializer.metadata;
 import java.io.StringWriter;
 import org.junit.Before;
 import org.junit.Test;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.serializer.exception.ParamSerializationException;
 import org.smartparam.serializer.test.builder.StringStreamUtil;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
-import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**

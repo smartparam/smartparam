@@ -23,7 +23,7 @@ import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
 import org.smartparam.editor.core.filters.ParameterEntriesFilter;
 import org.smartparam.editor.core.filters.SortDirection;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.test.Iterables;
 import org.smartparam.repository.jdbc.config.JdbcConfigBuilder;
 import org.smartparam.repository.jdbc.DatabaseTest;
@@ -31,7 +31,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntry;
 import org.testng.annotations.Test;
 
-import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.test.Iterables.onlyElement;
 import static org.smartparam.engine.test.ParamEngineAssertions.*;
 

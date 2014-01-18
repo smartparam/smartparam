@@ -18,7 +18,7 @@ package org.smartparam.engine.core.parameter;
 import java.util.List;
 import java.util.Set;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.repository.ListRepository;
 
 /**
