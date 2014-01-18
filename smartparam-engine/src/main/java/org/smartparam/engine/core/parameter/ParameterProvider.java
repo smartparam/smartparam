@@ -25,13 +25,13 @@ import java.util.Set;
  */
 public interface ParameterProvider {
 
-    Parameter load(String parameterName);
+    ParameterFromRepository load(String parameterName);
 
     Set<ParameterEntry> findEntries(String parameterName, String[] levelValues);
 
-    void register(ParamRepository repository);
+    void register(NamedParamRepository repository);
 
-    void registerAll(List<ParamRepository> repositories);
+    void registerAll(List<NamedParamRepository> repositories);
 
-    List<ParamRepository> registeredItems();
+    List<NamedParamRepository> registeredItems();
 }

@@ -26,6 +26,6 @@ import org.smartparam.engine.core.exception.SmartParamException;
 public class InvalidSourceRepositoryException extends SmartParamException {
 
     InvalidSourceRepositoryException(RepositoryName repositoryName) {
-        super("No repository with name " + repositoryName.name() + " registered in this store.");
+        super("No repository with name " + repositoryName.value() + " registered in this store.");
     }
 }

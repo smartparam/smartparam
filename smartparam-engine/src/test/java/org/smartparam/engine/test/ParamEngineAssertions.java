@@ -41,6 +41,8 @@ import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.prepared.PreparedLevel;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.smartparam.engine.core.index.LevelNode;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
+import org.smartparam.engine.core.parameter.NamedParamRepositoryAssert;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
@@ -105,5 +107,9 @@ public class ParamEngineAssertions extends org.assertj.core.api.Assertions {
 
     public static ParameterBatchLoaderAssert assertThat(ParameterBatchLoader actual) {
         return ParameterBatchLoaderAssert.assertThat(actual);
+    }
+
+    public static NamedParamRepositoryAssert assertThat(NamedParamRepository actual) {
+        return NamedParamRepositoryAssert.assertThat(actual);
     }
 }

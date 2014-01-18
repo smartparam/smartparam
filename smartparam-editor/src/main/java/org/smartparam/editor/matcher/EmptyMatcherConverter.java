@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core.matcher;
+package org.smartparam.editor.matcher;
 
 import org.smartparam.editor.core.entry.Star;
+import org.smartparam.editor.core.matcher.MatcherAwareConverter;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
@@ -45,7 +46,7 @@ public class EmptyMatcherConverter implements MatcherAwareConverter<Object> {
     @Override
     @SuppressWarnings("unchecked")
     public String encode(Object object, Type type, Matcher matcher) {
-        if (object != null && object instanceof Star) {
+        if (object instanceof Star) {
             return "*";
         }
 

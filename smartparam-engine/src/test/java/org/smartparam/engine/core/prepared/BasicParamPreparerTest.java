@@ -21,9 +21,9 @@ import org.smartparam.engine.core.parameter.Parameter;
 import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
-import org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.testng.annotations.Test;
+import static org.smartparam.engine.core.parameter.ParameterFromRepositoryBuilder.repositoryParameter;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
@@ -62,7 +62,7 @@ public class BasicParamPreparerTest {
         };
         Parameter parameter = parameter().withName("param").withInputLevels(1).withArraySeparator('^')
                 .withEntries().withLevels(levels).build();
-        when(paramProvider.load("param")).thenReturn(parameter);
+        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
         when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
 
         // when
@@ -84,7 +84,7 @@ public class BasicParamPreparerTest {
         };
         Parameter parameter = parameter().withName("param").withInputLevels(0)
                 .withLevels(levels).withEntries(entries).build();
-        when(paramProvider.load("param")).thenReturn(parameter);
+        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
         when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
 
         // when
@@ -105,7 +105,7 @@ public class BasicParamPreparerTest {
         };
         Parameter parameter = parameter().withName("param").identifyEntries().withInputLevels(0)
                 .withLevels(levels).withEntries(entries).build();
-        when(paramProvider.load("param")).thenReturn(parameter);
+        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
         when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
 
         // when
@@ -119,7 +119,7 @@ public class BasicParamPreparerTest {
     public void shouldNotBuildIndexForNoncacheableParameter() {
         // given
         Parameter parameter = parameter().withName("param").withInputLevels(1).noncacheable().withEntries().withLevels().build();
-        when(paramProvider.load("param")).thenReturn(parameter);
+        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
 
         // when
         PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
@@ -133,7 +133,7 @@ public class BasicParamPreparerTest {
         // given
         Parameter parameter = parameter().withEntries().build();
         when(cache.get("param")).thenReturn(null).thenReturn(preparedParameter().forParameter(parameter).build());
-        when(paramProvider.load("param")).thenReturn(parameter);
+        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
 
         // when
         paramPreparer.getPreparedParameter("param");

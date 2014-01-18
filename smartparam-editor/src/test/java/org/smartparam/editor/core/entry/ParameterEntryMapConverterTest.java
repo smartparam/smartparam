@@ -15,7 +15,7 @@
  */
 package org.smartparam.editor.core.entry;
 
-import org.smartparam.editor.core.matcher.EmptyMatcherConverter;
+import org.smartparam.editor.matcher.EmptyMatcherConverter;
 import org.smartparam.editor.core.matcher.MatcherConverterRepository;
 import org.smartparam.editor.model.simple.SimpleLevel;
 import org.smartparam.editor.model.simple.SimpleParameter;

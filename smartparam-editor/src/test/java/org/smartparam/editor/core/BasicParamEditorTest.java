@@ -30,7 +30,6 @@ import org.smartparam.editor.model.simple.SimpleLevelKey;
 import org.smartparam.editor.model.simple.SimpleParameter;
 import org.smartparam.editor.model.simple.SimpleParameterEntryKey;
 import org.smartparam.editor.core.store.FakeEditableParamRepository;
-import org.smartparam.editor.core.store.ParamRepositoryNaming;
 import org.smartparam.editor.model.simple.SimpleParameterEntry;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
@@ -44,7 +43,6 @@ import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
-import static org.smartparam.editor.core.store.ParamRepositoryNamingBuilder.repositoryNaming;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
@@ -67,22 +65,18 @@ public class BasicParamEditorTest {
         editableRepository = mock(EditableParamRepository.class);
         when(editableRepository.getParameterMetadata(anyString())).thenReturn(new SimpleParameter());
 
-        ParamRepository viewableRepository = mock(ViewableParamRepository.class);
-
         ParamEngineConfig config = ParamEngineConfigBuilder.paramEngineConfig()
-                .withParameterRepositories(editableRepository, viewableRepository)
+                .withParameterRepository("repository", editableRepository)
+                .withParameterRepository(mock(ViewableParamRepository.class))
                 .withParameterCache(cache)
                 .withAnnotationScanDisabled().build();
         ParamEngine paramEngine = ParamEngineFactory.paramEngine(config);
-
-        ParamRepositoryNaming repositoryNaming = repositoryNaming().registerAs(editableRepository.getClass(), REPOSITORY_NAME.name()).build();
 
         ParameterEntryMapConverter entryMapConverter = mock(ParameterEntryMapConverter.class);
         when(entryMapConverter.asEntry(any(Parameter.class), any(ParameterEntryMap.class))).thenReturn(new SimpleParameterEntry());
         when(entryMapConverter.asMap(any(Parameter.class), any(ParameterEntry.class))).thenReturn(new ParameterEntryMap());
 
-        ParamEditorConfig editorConfig = ParamEditorConfigBuilder.paramEditorConfig(paramEngine)
-                .withRepositoryNaming(repositoryNaming).build();
+        ParamEditorConfig editorConfig = ParamEditorConfigBuilder.paramEditorConfig(paramEngine).build();
         paramEditor = new ParamEditorFactory(editorConfig).editor();
     }
 
@@ -94,13 +88,14 @@ public class BasicParamEditorTest {
         ParamRepository editableRepository2 = new FakeEditableParamRepository();
 
         ParamEngineConfig config = ParamEngineConfigBuilder.paramEngineConfig()
-                .withParameterRepositories(editableRepository1, viewableRepository, editableRepository2)
+                .withParameterRepository("fake1", editableRepository1)
+                .withParameterRepository(viewableRepository)
+                .withParameterRepository("fake2", editableRepository2)
                 .withAnnotationScanDisabled().build();
         ParamEngine paramEngine = ParamEngineFactory.paramEngine(config);
 
         // when
-        BasicParamEditor localParamEditor = new BasicParamEditor(paramEngine, repositoryNaming()
-                .registerAs(FakeEditableParamRepository.class, "fake1", "fake2").build(), null, null);
+        BasicParamEditor localParamEditor = new BasicParamEditor(paramEngine, null, null);
 
         // then
         assertThat(localParamEditor.repositories()).containsOnly(RepositoryName.from("fake1"), RepositoryName.from("fake2"));
@@ -208,6 +203,7 @@ public class BasicParamEditorTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldAddMultipleEntriesToParameterInOneTransactionAndInvalidateCacheForThisParameter() {
         // given
         List<ParameterEntryMap> entries = Arrays.asList(new ParameterEntryMap());

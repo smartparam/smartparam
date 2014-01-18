@@ -15,50 +15,36 @@
  */
 package org.smartparam.editor.core.store;
 
-import org.smartparam.engine.core.repository.RepositoryName;
 import java.util.ArrayList;
+import org.smartparam.engine.core.repository.RepositoryName;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class RepositoryStore<T extends ParamRepository> {
+public final class RepositoryStore<T extends ParamRepository> {
 
-    private final List<RepositoryName> storedRepositoriesNames = new ArrayList<RepositoryName>();
+    private final Map<RepositoryName, T> storedRepositories = new LinkedHashMap<RepositoryName, T>();
 
-    private final Map<RepositoryName, T> storedRepositories = new HashMap<RepositoryName, T>();
-
-    private final ParamRepositoryNaming repositoryNaming;
-
-    public RepositoryStore(List<ParamRepository> allRepositories, ParamRepositoryNaming repositoryNaming, Class<T> storedClass) {
-        this.repositoryNaming = repositoryNaming;
+    public RepositoryStore(List<NamedParamRepository> allRepositories, Class<T> storedClass) {
         filterOutMatchingRepositories(allRepositories, storedClass);
     }
 
-    private void filterOutMatchingRepositories(List<ParamRepository> allRepositories, Class<T> storedClass) {
-        for (ParamRepository repository : allRepositories) {
+    @SuppressWarnings("unchecked")
+    private void filterOutMatchingRepositories(List<NamedParamRepository> allRepositories, Class<T> storedClass) {
+        ParamRepository repository;
+        for (NamedParamRepository namedRepository : allRepositories) {
+            repository = namedRepository.repository();
             if (storedClass.isAssignableFrom(repository.getClass())) {
-                injectRepository(repository, storedRepositories);
+                storedRepositories.put(namedRepository.name(), (T) namedRepository.repository());
             }
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T extends ParamRepository> void injectRepository(ParamRepository repository, Map<RepositoryName, T> repositoriesCollection) {
-        int repositoryOccurence = 0;
-        RepositoryName repositoryName = repositoryNaming.name(repository.getClass());
-
-        while (repositoriesCollection.containsKey(repositoryName)) {
-            repositoryOccurence++;
-            repositoryName = repositoryNaming.name(repository.getClass(), repositoryOccurence);
-        }
-        repositoriesCollection.put(repositoryName, (T) repository);
-        storedRepositoriesNames.add(repositoryName);
     }
 
     public T get(RepositoryName from) {
@@ -70,6 +56,6 @@ public class RepositoryStore<T extends ParamRepository> {
     }
 
     public List<RepositoryName> storedRepositories() {
-        return Collections.unmodifiableList(storedRepositoriesNames);
+        return Collections.unmodifiableList(new ArrayList<RepositoryName>(storedRepositories.keySet()));
     }
 }

@@ -17,18 +17,14 @@ package org.smartparam.editor.config;
 
 import java.util.Arrays;
 import org.smartparam.editor.core.matcher.MatcherAwareConverter;
-import org.smartparam.editor.core.store.ParamRepositoryNaming;
 import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
 import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
-import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.initialization.ComponentInitializer;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.config.initialization.PostConstructInitializer;
 import org.smartparam.engine.config.pico.ComponentDefinition;
 import org.smartparam.engine.core.ParamEngine;
-
-import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
 /**
  *
@@ -95,15 +91,10 @@ public final class ParamEditorConfigBuilder {
      * be used when you want to go deeper and replace one of ParamEngine core
      * interfaces. If so, register object instance that implements interface of
      * component you want to replace. For details on what are interfaces and
-     * classes, please take a look at source code of {@link ParamEngineConfig#injectDefaults(java.util.List) }.
+     * classes, please take a look at source code of {@link org.smartparam.engine.config.ParamEngineConfig#injectDefaults(java.util.List) }.
      */
     public ParamEditorConfigBuilder withComponent(Class<?> interfaceClass, Object component) {
         config.addComponent(ComponentDefinition.component(interfaceClass, component));
-        return this;
-    }
-
-    public ParamEditorConfigBuilder withRepositoryNaming(ParamRepositoryNaming repositoryNaming) {
-        config.addComponent(component(ParamRepositoryNaming.class, repositoryNaming));
         return this;
     }
 
@@ -129,7 +120,7 @@ public final class ParamEditorConfigBuilder {
     /**
      * Register {@link MatcherAwareConverter}.
      */
-    public ParamEditorConfigBuilder withMatcherConverter(String functionType, MatcherAwareConverter matcherConverter) {
+    public ParamEditorConfigBuilder withMatcherConverter(String functionType, MatcherAwareConverter<?> matcherConverter) {
         config.addMatcherConverter(functionType, matcherConverter);
         return this;
     }

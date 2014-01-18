@@ -29,7 +29,6 @@ import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParameterKey;
 import org.smartparam.editor.core.entry.ParameterEntryMap;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
-import org.smartparam.editor.core.store.ParamRepositoryNaming;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
@@ -49,12 +48,11 @@ public class BasicParamEditor implements ParamEditor {
     private final ParamEditorRuntimeConfigBuilder runtimeConfigBuilder;
 
     public BasicParamEditor(ParamEngine paramEngine,
-            ParamRepositoryNaming naming,
             ParameterEntryMapConverter entryMapConverter,
             ParamEditorRuntimeConfigBuilder runtimeConfigBuilder) {
         ParamEngineRuntimeConfig runtimeConfig = paramEngine.runtimeConfiguration();
 
-        repositories = new RepositoryStore<EditableParamRepository>(runtimeConfig.getParamRepositories(), naming, EditableParamRepository.class);
+        repositories = new RepositoryStore<EditableParamRepository>(runtimeConfig.getParamRepositories(), EditableParamRepository.class);
         parameterCache = runtimeConfig.getParamCache();
         converter = entryMapConverter;
 

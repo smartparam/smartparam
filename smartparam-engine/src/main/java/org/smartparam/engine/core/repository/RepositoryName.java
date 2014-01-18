@@ -31,7 +31,7 @@ public class RepositoryName {
         return new RepositoryName(name);
     }
 
-    public String name() {
+    public String value() {
         return name;
     }
 

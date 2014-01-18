@@ -19,7 +19,6 @@ import org.picocontainer.PicoContainer;
 import org.smartparam.editor.core.ParamEditorRuntimeConfig;
 import org.smartparam.editor.core.ParamEditorRuntimeConfigBuilder;
 import org.smartparam.editor.core.matcher.MatcherConverterRepository;
-import org.smartparam.editor.core.store.ParamRepositoryNaming;
 
 /**
  *
@@ -36,8 +35,7 @@ public class PicoParamEditorRuntimeConfigBuilder implements ParamEditorRuntimeCo
     @Override
     public ParamEditorRuntimeConfig buildConfig() {
         return new ParamEditorRuntimeConfig(
-                container.getComponent(MatcherConverterRepository.class).registeredItems(),
-                container.getComponent(ParamRepositoryNaming.class)
+                container.getComponent(MatcherConverterRepository.class).registeredItems()
         );
     }
 

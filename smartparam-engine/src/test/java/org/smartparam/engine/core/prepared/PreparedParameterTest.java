@@ -15,10 +15,9 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.prepared.PreparedParameter;
-import org.smartparam.engine.core.parameter.ParameterTestBuilder;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.*;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**
  * @author Przemek Hertel
@@ -26,10 +25,9 @@ import static org.assertj.core.api.Assertions.*;
 public class PreparedParameterTest {
 
     @Test
-    public void shouldAssureThatIsNullableAndIsNotNullReturnOppositeValues() {
-        // given
+    public void shouldReturnFalseWhenAskingIfNullForNullableParameter() {
         // when
-        PreparedParameter parameter = new PreparedParameter(ParameterTestBuilder.parameter().nullable().build(), null);
+        PreparedParameter parameter = new PreparedParameter(null, parameter().nullable().build(), null);
 
         // then
         assertThat(parameter.isNotNull()).isFalse();

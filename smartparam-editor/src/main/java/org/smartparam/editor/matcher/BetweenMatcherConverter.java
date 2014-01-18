@@ -16,7 +16,6 @@
 package org.smartparam.editor.matcher;
 
 import org.smartparam.editor.core.matcher.MatcherAwareConverter;
-import org.smartparam.editor.core.matcher.EmptyMatcherConverter;
 import org.smartparam.editor.annotated.ParamMatcherConverter;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;

@@ -21,6 +21,7 @@ import org.smartparam.engine.core.index.LevelIndex;
 
 import java.util.Map;
 import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.repository.RepositoryName;
 
 /**
  * Compiled parameter object, which contains all resolved references and
@@ -40,6 +41,8 @@ public class PreparedParameter {
      * Unique name of parameter.
      */
     private final String name;
+
+    private final RepositoryName sourceRepository;
 
     /**
      * Prepared (compiled) levels.
@@ -68,7 +71,8 @@ public class PreparedParameter {
 
     private final char arraySeparator;
 
-    public PreparedParameter(Parameter parameter, PreparedLevel[] levels) {
+    public PreparedParameter(RepositoryName sourceRepository, Parameter parameter, PreparedLevel[] levels) {
+        this.sourceRepository = sourceRepository;
         this.name = parameter.getName();
         this.inputLevelsCount = parameter.getInputLevels();
         this.nullable = parameter.isNullable();
@@ -96,6 +100,10 @@ public class PreparedParameter {
 
     public String getName() {
         return name;
+    }
+
+    public RepositoryName getSourceRepository() {
+        return sourceRepository;
     }
 
     public int getLevelCount() {
@@ -137,7 +145,7 @@ public class PreparedParameter {
         this.levelNameMap.putAll(levelNameMap);
     }
 
-    public PreparedLevel getOutputLevel(int k) {
-        return levels[inputLevelsCount + k - 1];
+    public PreparedLevel getOutputLevel(int levelIndex) {
+        return levels[inputLevelsCount + levelIndex - 1];
     }
 }

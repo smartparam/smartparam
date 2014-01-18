@@ -16,6 +16,8 @@
 package org.smartparam.engine.core;
 
 import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
@@ -74,7 +76,12 @@ public class ParamEngineRuntimeConfigAssert extends AbstractAssert<ParamEngineRu
     }
 
     public ParamEngineRuntimeConfigAssert hasRepository(ParamRepository repository) {
-        ParamEngineAssertions.assertThat(actual.getParamRepositories()).contains(repository);
+        for(NamedParamRepository namedRepository : actual.getParamRepositories()) {
+            if(namedRepository.repository() == repository) {
+                return this;
+            }
+        }
+        Assertions.fail("Expected to find repository " + repository + " in registered repositories, but none found.");
         return this;
     }
 }

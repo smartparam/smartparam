@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.type.ValueHolder;
 
 /**
@@ -55,12 +56,17 @@ public interface ParamValue extends Iterable<MultiValue> {
     List<MultiValue> rows();
 
     /**
+     * Return name of repository from which this parameter was loaded.
+     */
+    RepositoryName sourceRepository();
+
+    /**
      * Return unique key of entry, from which given matrix row came from.
      *
      * @throws GettingKeyNotIdentifiableParameterException when parameter not flagged with identifiable entries
      * @see org.smartparam.engine.core.parameter.Parameter#isIdentifyEntries()
      */
-    ParameterEntryKey getKey(int rowNo);
+    ParameterEntryKey key(int rowNo);
 
     /**
      * Return unique key of entry, which was used to create first row of matrix.
@@ -68,7 +74,7 @@ public interface ParamValue extends Iterable<MultiValue> {
      * @throws GettingKeyNotIdentifiableParameterException when parameter not flagged with identifiable entries
      * @see org.smartparam.engine.core.parameter.Parameter#isIdentifyEntries()
      */
-    ParameterEntryKey getKey();
+    ParameterEntryKey key();
 
     /**
      * Get cell of matrix.

@@ -32,7 +32,6 @@ import org.smartparam.engine.core.prepared.BasicParamPreparer;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
-import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.annotated.repository.ScanningInvokerRepository;
 import org.smartparam.engine.annotated.repository.ScanningMatcherRepository;
 import org.smartparam.engine.annotated.repository.ScanningTypeRepository;
@@ -45,6 +44,7 @@ import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.parameter.BasicParameterProvider;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.prepared.LevelPreparer;
 import org.smartparam.engine.core.prepared.ParamPreparer;
@@ -61,7 +61,7 @@ import static org.smartparam.engine.config.pico.ComponentDefinition.component;
  */
 public class ParamEngineConfig extends ComponentConfig {
 
-    private final List<ParamRepository> parameterRepositories = new ArrayList<ParamRepository>();
+    private final List<NamedParamRepository> parameterRepositories = new ArrayList<NamedParamRepository>();
 
     private final Map<RepositoryObjectKey, FunctionRepository> functionRepositories = new HashMap<RepositoryObjectKey, FunctionRepository>();
 
@@ -93,12 +93,16 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(component(MatcherRepository.class, ScanningMatcherRepository.class));
     }
 
-    public List<ParamRepository> getParameterRepositories() {
+    public List<NamedParamRepository> getParameterRepositories() {
         return Collections.unmodifiableList(parameterRepositories);
     }
 
-    protected void addParameterRepositories(List<ParamRepository> parameterRepositories) {
+    protected void addParameterRepositories(List<NamedParamRepository> parameterRepositories) {
         this.parameterRepositories.addAll(parameterRepositories);
+    }
+
+    protected void addParameterRepository(NamedParamRepository parameterRepository) {
+        this.parameterRepositories.add(parameterRepository);
     }
 
     public Map<RepositoryObjectKey, FunctionRepository> getFunctionRepositories() {

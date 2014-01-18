@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.core;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.XPathParser;
 import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.output.ParamValueImpl;
 import org.smartparam.engine.core.output.ParamValue;
@@ -116,7 +115,7 @@ public class SmartParamEngine implements ParamEngine {
             row[rowIndex] = new MultiValue(extractEntryKey(pe), vector, param.getLevelNameMap());
         }
 
-        ParamValue result = new ParamValueImpl(row);
+        ParamValue result = new ParamValueImpl(row, param.getSourceRepository());
 
         logger.debug("leave get[{}], result={}", paramName, result);
         return result;

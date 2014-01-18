@@ -15,19 +15,17 @@
  */
 package org.smartparam.editor.core.store;
 
-import org.smartparam.editor.core.store.InvalidSourceRepositoryException;
-import org.smartparam.editor.core.store.ParamRepositoryNaming;
-import org.smartparam.editor.core.store.RepositoryStore;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.smartparam.editor.core.EditableParamRepository;
 import org.smartparam.engine.core.repository.RepositoryName;
-import org.smartparam.editor.core.ViewableParamRepository;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
+import org.smartparam.engine.core.parameter.NamedParamRepositoryBuilder;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.testng.annotations.Test;
-import static com.googlecode.catchexception.CatchException.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.smartparam.editor.core.store.ParamRepositoryNamingBuilder.repositoryNaming;
+import static org.smartparam.engine.core.parameter.NamedParamRepositoryBuilder.namedRepository;
 
 /**
  *
@@ -40,56 +38,33 @@ public class RepositoryStoreTest {
         // given
         ParamRepository editableRepository = new FakeEditableParamRepository();
 
-        List<ParamRepository> repositories = new ArrayList<ParamRepository>();
-        repositories.add(editableRepository);
-        repositories.add(new FakeViewableParamRepository());
-
-        ParamRepositoryNaming naming = repositoryNaming().registerAs(FakeEditableParamRepository.class, "fakeRepo").build();
+        List<NamedParamRepository> repositories = Arrays.asList(
+                namedRepository(editableRepository).named("fakeRepo").build(),
+                NamedParamRepositoryBuilder.namedRepository(new FakeViewableParamRepository()).build()
+        );
 
         // when
         RepositoryStore<EditableParamRepository> store = new RepositoryStore<EditableParamRepository>(
-                repositories, naming, EditableParamRepository.class);
+                repositories, EditableParamRepository.class);
 
         // then
         assertThat(store.storedRepositories()).containsOnly(new RepositoryName("fakeRepo"));
     }
 
     @Test
-    public void shouldNameRepositoriesAccordingToNamingStrategy() {
-        List<ParamRepository> repositories = new ArrayList<ParamRepository>();
-        repositories.add(new FakeEditableParamRepository());
-        repositories.add(new FakeViewableParamRepository());
-        repositories.add(new FakeViewableParamRepository());
-
-        ParamRepositoryNaming naming = repositoryNaming()
-                .registerAs(FakeEditableParamRepository.class, "fakeEditableRepo")
-                .build();
-
-        // when
-        RepositoryStore<ViewableParamRepository> store = new RepositoryStore<ViewableParamRepository>(
-                repositories, naming, ViewableParamRepository.class);
-
-        // then
-        assertThat(store.storedRepositories()).containsOnly(
-                new RepositoryName("fakeEditableRepo"),
-                new RepositoryName("FakeViewableParamRepository"),
-                new RepositoryName("FakeViewableParamRepository1"));
-    }
-
-    @Test
     public void shouldThrowInvalidSourceExceptionWhenTryingToGetUnknownRepository() {
         // given
-        List<ParamRepository> repositories = new ArrayList<ParamRepository>();
-        repositories.add(new FakeEditableParamRepository());
+        List<NamedParamRepository> repositories = Arrays.asList(
+                namedRepository(new FakeEditableParamRepository()).build()
+        );
 
-        ParamRepositoryNaming naming = ParamRepositoryNaming.empty();
-
-        RepositoryStore<EditableParamRepository> store = new RepositoryStore<EditableParamRepository>(repositories, naming, EditableParamRepository.class);
+        RepositoryStore<EditableParamRepository> store = new RepositoryStore<EditableParamRepository>(repositories, EditableParamRepository.class);
 
         // when
-        catchException(store).get(RepositoryName.from("invalid name"));
-
-        // then
-        assertThat(caughtException()).isInstanceOf(InvalidSourceRepositoryException.class);
+        try {
+            store.get(RepositoryName.from("invalid name"));
+            Assertions.fail("Expected InvalidSourceRepositoryException.");
+        } catch (InvalidSourceRepositoryException invalidRepoException) {
+        }
     }
 }

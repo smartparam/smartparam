@@ -27,9 +27,8 @@ import org.smartparam.editor.core.capabilities.RepositoryCapabilities;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.editor.core.entry.ParameterEntryMap;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
-import org.smartparam.editor.core.store.ParamRepositoryNaming;
 import org.smartparam.engine.core.ParamEngine;
-import org.smartparam.engine.core.parameter.ParamRepository;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
@@ -46,12 +45,11 @@ public class BasicParamViewer implements ParamViewer {
     private final ParamEditorRuntimeConfigBuilder runtimeConfigBuilder;
 
     public BasicParamViewer(ParamEngine paramEngine,
-            ParamRepositoryNaming repositoryNaming,
             ParameterEntryMapConverter entryMapConverter,
             ParamEditorRuntimeConfigBuilder runtimeConfigBuilder) {
-        List<ParamRepository> registeredRepositories = paramEngine.runtimeConfiguration().getParamRepositories();
+        List<NamedParamRepository> registeredRepositories = paramEngine.runtimeConfiguration().getParamRepositories();
 
-        repositories = new RepositoryStore<ViewableParamRepository>(registeredRepositories, repositoryNaming, ViewableParamRepository.class);
+        repositories = new RepositoryStore<ViewableParamRepository>(registeredRepositories, ViewableParamRepository.class);
         converter = entryMapConverter;
 
         this.runtimeConfigBuilder = runtimeConfigBuilder;

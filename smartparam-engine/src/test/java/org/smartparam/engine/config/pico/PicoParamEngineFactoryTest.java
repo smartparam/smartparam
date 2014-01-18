@@ -15,11 +15,10 @@
  */
 package org.smartparam.engine.config.pico;
 
-import java.util.Map;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.ParamEngine;
-import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.ParamRepositoriesNaming;
 import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
@@ -80,36 +79,31 @@ public class PicoParamEngineFactoryTest {
     @Test
     public void shouldAllowOnOverwritingDefaultImplementationsWithCustomBeans() {
         // given
-        ParamEngineConfig config = paramEngineConfig().withFunctionCache(new DummyFunctionCache()).build();
+        FunctionCache functionCache = mock(FunctionCache.class);
+        Class<? extends FunctionCache> cacheClass = functionCache.getClass();
+
+        ParamEngineConfig config = paramEngineConfig().withFunctionCache(functionCache).build();
 
         // when
         ParamEngine engine = paramEngineFactory.createParamEngine(config);
 
         // then
-        assertThat(engine.runtimeConfiguration()).hasFunctionCache(DummyFunctionCache.class);
+        assertThat(engine.runtimeConfiguration()).hasFunctionCache(cacheClass);
     }
 
-    private class DummyFunctionCache implements FunctionCache {
+    @Test
+    public void shouldRegisterParamRepositoriesUnderGivenNames() {
+        // given
+        ParamRepository repository = mock(ParamRepository.class);
+        ParamEngineConfig config = paramEngineConfig()
+                .withParameterRepository("test-repository", repository)
+                .build();
 
-        public void put(String functionName, Function function) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
+        // when
+        ParamEngine engine = paramEngineFactory.createParamEngine(config);
 
-        public void putAll(Map<String, Function> functions) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public Function get(String functionName) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public void invalidate(String functionName) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        public void invalidate() {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
+        // then
+        ParamRepositoriesNaming naming = engine.runtimeConfiguration().getParamRepositoriesNaming();
+        assertThat(naming.find("test-repository")).isSameAs(repository);
     }
 }

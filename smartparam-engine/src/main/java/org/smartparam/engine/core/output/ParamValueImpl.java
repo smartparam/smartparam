@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.repository.RepositoryName;
 
 /**
  * @author Przemek Hertel
@@ -36,12 +37,15 @@ public class ParamValueImpl implements ParamValue {
 
     private final MultiValue[] rows;
 
-    public ParamValueImpl(MultiValue[] rows) {
+    private final RepositoryName sourceRepository;
+
+    public ParamValueImpl(MultiValue[] rows, RepositoryName sourceRepository) {
         this.rows = Arrays.copyOf(rows, rows.length);
+        this.sourceRepository = sourceRepository;
     }
 
     public static ParamValueImpl empty() {
-        return new ParamValueImpl(EMPTY);
+        return new ParamValueImpl(EMPTY, null);
     }
 
     @Override
@@ -73,12 +77,17 @@ public class ParamValueImpl implements ParamValue {
     }
 
     @Override
-    public ParameterEntryKey getKey(int rowNo) {
+    public RepositoryName sourceRepository() {
+        return sourceRepository;
+    }
+
+    @Override
+    public ParameterEntryKey key(int rowNo) {
         return row(rowNo).getKey();
     }
 
     @Override
-    public ParameterEntryKey getKey() {
+    public ParameterEntryKey key() {
         return row().getKey();
     }
 

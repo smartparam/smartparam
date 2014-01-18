@@ -16,7 +16,6 @@
 package org.smartparam.editor.core.entry;
 
 import org.smartparam.editor.core.matcher.MatcherConverterRepository;
-import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.parameter.level.Level;

@@ -45,13 +45,10 @@ import org.smartparam.engine.core.output.GettingKeyNotIdentifiableParameterExcep
 import org.smartparam.engine.core.output.GettingWrongTypeException;
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 import static org.smartparam.engine.functions.java.JavaFunctionTestBuilder.javaFunction;
-import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
-import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
 
@@ -79,7 +76,7 @@ public class ParamEngineIntegrationTest {
                 .withType("string", new StringType())
                 .withType("integer", new IntegerType())
                 .withType("date", new DateType())
-                .withParameterRepositories(paramRepository)
+                .withParameterRepository("testRepository", paramRepository)
                 .withFunctionRepository("java", 1, functionRepository)
                 .withFunctionInvoker("java", functionInvoker)
                 .withMatcher("between", new BetweenMatcher())
@@ -108,6 +105,7 @@ public class ParamEngineIntegrationTest {
 
         // then
         assertThat(value).hasValue(11l);
+        assertThat(value.sourceRepository().value()).isEqualTo("testRepository");
     }
 
     @Test
@@ -404,7 +402,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A");
 
         // then
-        assertThat(value.getKey().value()).isEqualTo("entry-key");
+        assertThat(value.key().value()).isEqualTo("entry-key");
     }
 
     @Test
@@ -422,7 +420,7 @@ public class ParamEngineIntegrationTest {
 
         // when
         ParamValue value = engine.get("parameter", "A");
-        catchException(value).getKey();
+        catchException(value).key();
 
         // then
         assertThat(caughtException()).isInstanceOf(GettingKeyNotIdentifiableParameterException.class);

@@ -21,7 +21,6 @@ import org.smartparam.editor.core.*;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
 import org.smartparam.editor.core.matcher.MatcherAwareConverter;
 import org.smartparam.editor.core.matcher.MatcherConverterRepository;
-import org.smartparam.editor.core.store.ParamRepositoryNaming;
 import org.smartparam.engine.config.initialization.ComponentInitializer;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.config.pico.ComponentConfig;
@@ -54,7 +53,6 @@ public class ParamEditorConfig extends ComponentConfig {
         components.add(component(ParamViewer.class, BasicParamViewer.class));
         components.add(component(ParameterEntryMapConverter.class, ParameterEntryMapConverter.class));
         components.add(component(MatcherConverterRepository.class, ScanningMatcherConverterRepository.class));
-        components.add(component(ParamRepositoryNaming.class, ParamRepositoryNaming.empty()));
     }
 
     ParamEngine paramEngine() {

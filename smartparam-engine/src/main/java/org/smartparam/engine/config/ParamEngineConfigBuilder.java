@@ -28,8 +28,10 @@ import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
+import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -37,13 +39,19 @@ import org.smartparam.engine.core.type.Type;
  * immutable configuration object that should be used to construct
  * new ParamEngine instance using {@link ParamEngineFactory}.
  *
- * Remember, that instead of registering components by hand you can use
- * annotation scanning (configured via {@link #withAnnotationScanEnabled(java.lang.String...) }
- * to discover classes.
+ * You MUST register at least one repository. Order of registration matters, as first that returns valid parameter
+ * wins (so it is possible to override repositories).
+ *
+ * Parameter repositories are registered with names so it is possible to track which repository was used to
+ * evaluate parameter value ({@link org.smartparam.engine.core.output.ParamValue#sourceRepository() }). If you
+ * don't need or don't care, name can be auto-generated in form of simple class name plus occurrence counter (if two
+ * repositories of same class are registered).
  *
  * @author Adam Dubiel
  */
 public final class ParamEngineConfigBuilder {
+
+    private final NamedParamRepositoryFactory namedRepositoryFactory = new NamedParamRepositoryFactory();
 
     private final ParamEngineConfig paramEngineConfig;
 
@@ -85,7 +93,7 @@ public final class ParamEngineConfigBuilder {
     /**
      * Add packages (including all descendants) that will be scanned in search of
      * SmartParam annotations. By default SmartParam only scans default package
-     * (org.smartparam.engine) which provides a  base set of capabilities. It is
+     * (org.smartparam.engine) which provides a base set of capabilities. It is
      * also possible to disable annotation scanning by using {@link #withAnnotationScanDisabled() }.
      */
     public ParamEngineConfigBuilder withPackagesToScan(String... packagesToScan) {
@@ -125,12 +133,44 @@ public final class ParamEngineConfigBuilder {
     }
 
     /**
-     * Register parameter repositories. There has to be at least one registered.
-     * Order of registration matters, as it determines order of querying. First
-     * repository that contains parameter wins.
+     * Register parameter repositories with auto-generated names.
      */
     public ParamEngineConfigBuilder withParameterRepositories(ParamRepository... repositories) {
+        for (ParamRepository repository : repositories) {
+            paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repository));
+        }
+        return this;
+    }
+
+    /**
+     * Register parameter repository with auto-generated name.
+     */
+    public ParamEngineConfigBuilder withParameterRepository(ParamRepository repository) {
+        paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repository));
+        return this;
+    }
+
+    /**
+     * Register named repositories.
+     */
+    public ParamEngineConfigBuilder withParameterRepositories(NamedParamRepository... repositories) {
         paramEngineConfig.addParameterRepositories(Arrays.asList(repositories));
+        return this;
+    }
+
+    /**
+     * Register parameter repository under given name. Name has to be unique.
+     */
+    public ParamEngineConfigBuilder withParameterRepository(String repositoryName, ParamRepository repository) {
+        paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repositoryName, repository));
+        return this;
+    }
+
+    /**
+     * Register parameter repository under given name. Name has to be uniqe.
+     */
+    public ParamEngineConfigBuilder withParameterRepository(RepositoryName repositoryName, ParamRepository repository) {
+        paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repositoryName, repository));
         return this;
     }
 
@@ -178,7 +218,7 @@ public final class ParamEngineConfigBuilder {
     }
 
     /**
-     * Register custom {@link ParameterCache}.
+     * Register custom {@link PreparedParamCache}.
      */
     public ParamEngineConfigBuilder withParameterCache(PreparedParamCache parameterCache) {
         paramEngineConfig.setParameterCache(parameterCache);

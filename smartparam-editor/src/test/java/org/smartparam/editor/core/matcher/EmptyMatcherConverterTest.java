@@ -15,7 +15,7 @@
  */
 package org.smartparam.editor.core.matcher;
 
-import org.smartparam.editor.core.matcher.EmptyMatcherConverter;
+import org.smartparam.editor.matcher.EmptyMatcherConverter;
 import org.smartparam.editor.core.entry.Star;
 import org.smartparam.engine.core.type.ObjectHolder;
 import org.smartparam.engine.core.type.Type;

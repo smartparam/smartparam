@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.parameter.identity;
+package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.ParameterKey;
-import org.smartparam.engine.core.parameter.level.LevelKey;
-import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.repository.RepositoryName;
 
 /**
  *
  * @author Adam Dubiel
  */
-public final class EmptyEntityKey implements LevelKey, ParameterEntryKey, ParameterKey {
+public class ParameterFromRepository {
 
-    private static final EmptyEntityKey KEY = new EmptyEntityKey();
+    private final Parameter parameter;
 
-    private EmptyEntityKey() {
+    private final RepositoryName repositoryName;
+
+    public ParameterFromRepository(Parameter parameter, RepositoryName repositoryName) {
+        this.parameter = parameter;
+        this.repositoryName = repositoryName;
     }
 
-    public static EmptyEntityKey emptyKey() {
-        return KEY;
+    public Parameter parameter() {
+        return parameter;
     }
 
-    @Override
-    public String value() {
-        return "NOT_SUPPORTED";
+    public RepositoryName repositoryName() {
+        return repositoryName;
     }
-
 }

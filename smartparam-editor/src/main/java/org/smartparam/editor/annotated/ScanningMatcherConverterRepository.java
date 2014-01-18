@@ -16,7 +16,7 @@
 package org.smartparam.editor.annotated;
 
 import java.util.Map;
-import org.smartparam.editor.core.matcher.EmptyMatcherConverter;
+import org.smartparam.editor.matcher.EmptyMatcherConverter;
 import org.smartparam.editor.core.matcher.MatcherAwareConverter;
 import org.smartparam.editor.core.matcher.MatcherConverterRepository;
 import org.smartparam.engine.annotated.RepositoryObjectKey;

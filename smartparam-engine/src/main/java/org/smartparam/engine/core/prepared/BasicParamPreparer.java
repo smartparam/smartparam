@@ -28,6 +28,7 @@ import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.ParameterFromRepository;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
@@ -54,7 +55,7 @@ public class BasicParamPreparer implements ParamPreparer {
         PreparedParameter preparedParameter = cache.get(paramName);
 
         if (preparedParameter == null) {
-            Parameter parameter = parameterProvider.load(paramName);
+            ParameterFromRepository parameter = parameterProvider.load(paramName);
             if (parameter == null) {
                 return null;
             }
@@ -66,7 +67,9 @@ public class BasicParamPreparer implements ParamPreparer {
         return preparedParameter;
     }
 
-    private PreparedParameter prepare(Parameter parameter) {
+    private PreparedParameter prepare(ParameterFromRepository parameterFromRepository) {
+        Parameter parameter = parameterFromRepository.parameter();
+
         int levelCount = getLevelCount(parameter);
         PreparedLevel[] levels = new PreparedLevel[levelCount];
         Type<?>[] types = new Type<?>[levelCount];
@@ -81,7 +84,7 @@ public class BasicParamPreparer implements ParamPreparer {
             matchers[currentLevelIndex] = preparedLevel.getMatcher();
         }
 
-        PreparedParameter preparedParameter = new PreparedParameter(parameter, levels);
+        PreparedParameter preparedParameter = new PreparedParameter(parameterFromRepository.repositoryName(), parameter, levels);
         preparedParameter.setLevelNameMap(buildLevelNameToIndexMap(preparedParameter));
 
         if (parameter.isCacheable()) {
