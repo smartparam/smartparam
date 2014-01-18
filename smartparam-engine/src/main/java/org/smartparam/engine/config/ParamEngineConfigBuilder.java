@@ -133,32 +133,6 @@ public final class ParamEngineConfigBuilder {
     }
 
     /**
-     * Register parameter repositories with auto-generated names.
-     */
-    public ParamEngineConfigBuilder withParameterRepositories(ParamRepository... repositories) {
-        for (ParamRepository repository : repositories) {
-            paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repository));
-        }
-        return this;
-    }
-
-    /**
-     * Register parameter repository with auto-generated name.
-     */
-    public ParamEngineConfigBuilder withParameterRepository(ParamRepository repository) {
-        paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repository));
-        return this;
-    }
-
-    /**
-     * Register named repositories.
-     */
-    public ParamEngineConfigBuilder withParameterRepositories(NamedParamRepository... repositories) {
-        paramEngineConfig.addParameterRepositories(Arrays.asList(repositories));
-        return this;
-    }
-
-    /**
      * Register parameter repository under given name. Name has to be unique.
      */
     public ParamEngineConfigBuilder withParameterRepository(String repositoryName, ParamRepository repository) {
@@ -171,6 +145,32 @@ public final class ParamEngineConfigBuilder {
      */
     public ParamEngineConfigBuilder withParameterRepository(RepositoryName repositoryName, ParamRepository repository) {
         paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repositoryName, repository));
+        return this;
+    }
+
+    /**
+     * Register parameter repository with auto-generated name.
+     */
+    public ParamEngineConfigBuilder withParameterRepository(ParamRepository repository) {
+        paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repository));
+        return this;
+    }
+
+    /**
+     * Register parameter repositories with auto-generated names.
+     */
+    public ParamEngineConfigBuilder withParameterRepositories(ParamRepository... repositories) {
+        for (ParamRepository repository : repositories) {
+            paramEngineConfig.addParameterRepository(namedRepositoryFactory.create(repository));
+        }
+        return this;
+    }
+
+    /**
+     * Register named repositories.
+     */
+    public ParamEngineConfigBuilder withParameterRepositories(NamedParamRepository... repositories) {
+        paramEngineConfig.addParameterRepositories(Arrays.asList(repositories));
         return this;
     }
 

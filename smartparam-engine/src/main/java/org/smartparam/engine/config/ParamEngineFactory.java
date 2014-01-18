@@ -27,6 +27,7 @@ import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
@@ -79,7 +80,9 @@ public class ParamEngineFactory {
     }
 
     private void initializeRepositories(PicoContainer container, ParamEngineConfig config, ComponentInitializerRunner initializerRunner) {
-        initializerRunner.runInitializersOnList(config.getParameterRepositories());
+        for(NamedParamRepository namedRepository : config.getParameterRepositories()) {
+            initializerRunner.runInitializers(namedRepository.repository());
+        }
         container.getComponent(ParameterProvider.class).registerAll(config.getParameterRepositories());
 
         initializerRunner.runInitializersOnList(config.getFunctionRepositories().values());
