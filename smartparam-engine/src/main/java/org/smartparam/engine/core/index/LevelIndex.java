@@ -31,7 +31,7 @@ import org.smartparam.engine.util.Formatter;
 public class LevelIndex<T> {
 
     /**
-     * Number of levels in index tree.
+     * Number of levels in index tree (depth).
      */
     private int levelCount;
 
@@ -52,7 +52,7 @@ public class LevelIndex<T> {
     private Type<?>[] types;
 
     /**
-     * Create new empty index with parameter metadata.
+     * Create new empty index with types and matchers for each level.
      *
      * @param levelCount number of levels (depth)
      * @param types
@@ -97,18 +97,19 @@ public class LevelIndex<T> {
      * Find all values that match given values.
      *
      * @see {@link LevelNode#findNode(java.lang.String[], int) }
-     * @param levelValues
-     * @return
      */
     public List<T> find(String... levelValues) {
         LevelNode<T> node = root.findNode(levelValues, 0);
         return node != null ? node.getLeafList() : null;
     }
 
+    /**
+     * Pretty printing whole index tree.
+     */
     public String printTree() {
-        StringBuilder sb = new StringBuilder(Formatter.INITIAL_STR_LEN_256);
-        root.printNode(sb, 0);
-        return sb.toString();
+        StringBuilder builder = new StringBuilder(Formatter.INITIAL_STR_LEN_256);
+        root.printNode(builder, 0);
+        return builder.toString();
     }
 
     Matcher[] getMatchers() {
@@ -121,9 +122,6 @@ public class LevelIndex<T> {
 
     /**
      * Return matcher for given level index.
-     *
-     * @param depth
-     * @return
      */
     public Matcher getMatcher(int depth) {
         return matchers[depth];
@@ -131,9 +129,6 @@ public class LevelIndex<T> {
 
     /**
      * Return type for given level index.
-     *
-     * @param depth
-     * @return
      */
     public Type<?> getType(int depth) {
         return types[depth];
@@ -141,8 +136,6 @@ public class LevelIndex<T> {
 
     /**
      * Return depth of tree.
-     *
-     * @return
      */
     public int getLevelCount() {
         return levelCount;
