@@ -99,8 +99,13 @@ public class LevelIndex<T> {
      * @see {@link LevelNode#findNode(java.lang.String[], int) }
      */
     public List<T> find(String... levelValues) {
-        LevelNode<T> node = root.findNode(levelValues, 0);
-        return node != null ? node.getLeafList() : null;
+        FastLevelIndexCrawler<T> crawler = new FastLevelIndexCrawler<T>(this, levelValues);
+        return crawler.find();
+    }
+
+    public List<T> customizedFind(String... levelValues) {
+        CustomizableLevelIndexCrawler<T> crawler = new CustomizableLevelIndexCrawler<T>(this, levelValues);
+        return crawler.find();
     }
 
     /**
@@ -139,5 +144,9 @@ public class LevelIndex<T> {
      */
     public int getLevelCount() {
         return levelCount;
+    }
+
+    public LevelNode<T> getRoot() {
+        return root;
     }
 }

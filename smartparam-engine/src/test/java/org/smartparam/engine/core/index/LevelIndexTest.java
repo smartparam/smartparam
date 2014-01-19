@@ -17,7 +17,6 @@ package org.smartparam.engine.core.index;
 
 import org.smartparam.engine.core.matcher.Matcher;
 import java.util.List;
-import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.Formatter;
 import org.testng.annotations.Test;
@@ -26,7 +25,6 @@ import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
- * Test indeksu budowanego dla macierzy parametru.
  *
  * @author Przemek Hertel
  */
@@ -192,17 +190,18 @@ public class LevelIndexTest {
     }
 
     @Test
-    public void testPrintTree() {
-
-        // utworzenie testowanego obiektu
+    public void shouldPrettyPrintWholeLevelIndex() {
+        // given
         LevelIndex<Integer> index = new LevelIndex<Integer>(2);
         index.add(new String[]{"A", "X"}, 11);
         index.add(new String[]{"B", "X"}, 22);
         index.add(new String[]{"B", "*"}, 33);
 
-        // oczekiwany wynik
-        String expectedPrefix = ""
-                + "path : " + Formatter.NL;
+        // when
+        String result = index.printTree();
+
+        // then
+        String expectedPrefix = "path : " + Formatter.NL;
         String expectedForA = ""
                 + "    path : /A" + Formatter.NL
                 + "        path : /A/X   (leaf=[11])" + Formatter.NL;
@@ -211,12 +210,22 @@ public class LevelIndexTest {
                 + "        path : /B/X   (leaf=[22])" + Formatter.NL
                 + "        path : /B/*   (leaf=[33])" + Formatter.NL;
 
-        // test
-        String result = index.printTree();
+        assertThat(result).startsWith(expectedPrefix);
+        assertThat(result).contains(expectedForA, expectedForB);
+    }
 
-        // weryfikacja
-        assertTrue(result.startsWith(expectedPrefix));
-        assertTrue(result.contains(expectedForA));
-        assertTrue(result.contains(expectedForB));
+    @Test
+    public void shouldDoAGreeadySearchOnIndexAndReturnAllValuesThatMatchIncludingDefaults() {
+        // given
+        LevelIndex<String> index = levelIndex().withLevelCount(3).build();
+        index.add(new String[]{"A", "*", "*"}, "default");
+        index.add(new String[]{"A", "B", "C"}, "value");
+        index.add(new String[]{"A", "X", "C"}, "noise");
+
+        // when
+        List<String> value = index.customizedFind("A", "B", "C");
+
+        // then
+        assertThat(value).containsOnly("default", "value");
     }
 }
