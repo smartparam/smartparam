@@ -20,6 +20,7 @@ import org.smartparam.editor.annotated.ParamMatcherEncoder;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.matchers.BetweenMatcher;
+import org.smartparam.engine.matchers.decoder.Range;
 
 /**
  *

@@ -16,6 +16,7 @@
 package org.smartparam.editor.matcher;
 
 import org.smartparam.engine.matchers.BetweenMatcher;
+import org.smartparam.engine.matchers.decoder.Range;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
