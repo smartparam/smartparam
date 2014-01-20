@@ -28,11 +28,11 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class EntryMapFactory {
+public class MapEntryFactory {
 
     private final MatcherDecoderRepository matcherDecoderRepository;
 
-    public EntryMapFactory(MatcherDecoderRepository matcherDecoderRepository) {
+    public MapEntryFactory(MatcherDecoderRepository matcherDecoderRepository) {
         this.matcherDecoderRepository = matcherDecoderRepository;
     }
 

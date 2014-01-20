@@ -42,7 +42,7 @@ import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
 import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
-import org.smartparam.engine.core.output.entry.EntryMapFactory;
+import org.smartparam.engine.core.output.entry.MapEntryFactory;
 import org.smartparam.engine.core.output.factory.ParamValueFactory;
 import org.smartparam.engine.core.parameter.BasicParameterProvider;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
@@ -96,7 +96,7 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(component(MatcherRepository.class, ScanningMatcherRepository.class));
         components.add(component(ParamValueFactory.class, ParamValueFactory.class));
         components.add(component(MatcherDecoderRepository.class, ScanningMatcherDecoderRepository.class));
-        components.add(component(EntryMapFactory.class, EntryMapFactory.class));
+        components.add(component(MapEntryFactory.class, MapEntryFactory.class));
     }
 
     public List<NamedParamRepository> getParameterRepositories() {
