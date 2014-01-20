@@ -38,6 +38,7 @@ public class Range {
         return from;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T fromAs(Class<T> clazz) {
         return (T) from;
     }
@@ -46,8 +47,44 @@ public class Range {
         return to;
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T toAs(Class<T> clazz) {
         return (T) to;
+    }
+
+    @Override
+    public String toString() {
+        return "Range[" + boundAsString(from) + " - " + boundAsString(to) + "]";
+    }
+
+    private String boundAsString(Object bound) {
+        return bound == null ? "*" : bound.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + (this.from != null ? this.from.hashCode() : 0);
+        hash = 67 * hash + (this.to != null ? this.to.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Range other = (Range) obj;
+        if (this.from != other.from && (this.from == null || !this.from.equals(other.from))) {
+            return false;
+        }
+        if (this.to != other.to && (this.to == null || !this.to.equals(other.to))) {
+            return false;
+        }
+        return true;
     }
 
 }

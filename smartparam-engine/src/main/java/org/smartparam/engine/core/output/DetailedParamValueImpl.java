@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.output;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import org.smartparam.engine.core.output.entry.MapEntry;
@@ -99,7 +101,6 @@ public class DetailedParamValueImpl extends AbstractParamValue implements Detail
         public void remove() {
             throw new UnsupportedOperationException("Removing from ParamValue is prohibited.");
         }
-
     }
 
     private class MultiValueIterator implements Iterator<MultiValue> {
@@ -120,6 +121,17 @@ public class DetailedParamValueImpl extends AbstractParamValue implements Detail
         public void remove() {
             throw new UnsupportedOperationException("Removing from ParamValue is prohibited.");
         }
-
     }
+
+    @Override
+    public void sort(final Comparator<MapEntry> comparator) {
+        Collections.sort(rows, new Comparator<DetailedMultiValue>() {
+
+            @Override
+            public int compare(DetailedMultiValue o1, DetailedMultiValue o2) {
+                return comparator.compare(o1.entry(), o2.entry());
+            }
+        });
+    }
+
 }

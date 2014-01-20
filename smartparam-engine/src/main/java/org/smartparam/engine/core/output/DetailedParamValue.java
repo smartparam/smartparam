@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.output;
 
+import java.util.Comparator;
 import org.smartparam.engine.core.output.entry.MapEntry;
 
 /**
@@ -36,5 +37,7 @@ public interface DetailedParamValue extends ParamValue {
     Iterable<DetailedMultiValue> detailedRows();
 
     Iterable<MapEntry> detailedEntries();
+
+    void sort(Comparator<MapEntry> comparator);
 
 }
