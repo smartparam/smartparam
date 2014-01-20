@@ -34,7 +34,7 @@ public class FastLevelNodeInspectorTest {
         index.add(new String[]{"A"}, "value");
         index.add(new String[]{"C"}, "noise");
 
-        CustomizableLevelIndexCrawler<String> crawler = new CustomizableLevelIndexCrawler<String>(
+        CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
                 new IndexTraversalOverrides(new boolean[]{false}), index, "A");
 
         // when
@@ -51,7 +51,7 @@ public class FastLevelNodeInspectorTest {
         index.add(new String[]{"*"}, "default");
         index.add(new String[]{"C"}, "noise");
 
-        CustomizableLevelIndexCrawler<String> crawler = new CustomizableLevelIndexCrawler<String>(
+        CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
                 new IndexTraversalOverrides(new boolean[]{false}), index, "A");
 
         // when
@@ -67,7 +67,7 @@ public class FastLevelNodeInspectorTest {
         LevelIndex<String> index = levelIndex().withLevelCount(1).build();
         index.add(new String[]{"C"}, "noise");
 
-        CustomizableLevelIndexCrawler<String> crawler = new CustomizableLevelIndexCrawler<String>(
+        CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
                 new IndexTraversalOverrides(new boolean[]{false}), index, "A");
 
         // when

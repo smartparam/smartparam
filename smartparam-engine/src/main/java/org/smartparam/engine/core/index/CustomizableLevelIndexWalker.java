@@ -25,7 +25,7 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class CustomizableLevelIndexCrawler<T> implements LevelIndexCrawler<T> {
+public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
 
     private final LevelNodeInspector<T> fastNodeInspector = new FastLevelNodeInspector<T>(this);
 
@@ -37,7 +37,7 @@ public class CustomizableLevelIndexCrawler<T> implements LevelIndexCrawler<T> {
 
     private final IndexTraversalOverrides overrides;
 
-    public CustomizableLevelIndexCrawler(IndexTraversalOverrides overrides, LevelIndex<T> index, String... levelValues) {
+    public CustomizableLevelIndexWalker(IndexTraversalOverrides overrides, LevelIndex<T> index, String... levelValues) {
         this.overrides = overrides;
         this.index = index;
         this.levelValues = levelValues;

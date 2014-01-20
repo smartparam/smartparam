@@ -16,9 +16,6 @@
 package org.smartparam.engine.core.index;
 
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.matcher.MatcherRepository;
-import org.smartparam.engine.core.prepared.PreparedLevel;
-import org.smartparam.engine.core.prepared.PreparedParameter;
 
 /**
  *
@@ -29,27 +26,6 @@ public class IndexTraversalOverrides {
     private final boolean[] greedinessMatrix;
 
     private final Matcher[] overridenMatchers;
-
-    public IndexTraversalOverrides(PreparedParameter parameter, IndexTraversalOptions options, MatcherRepository repository) {
-        int totalDepth = parameter.getInputLevelsCount();
-
-        this.greedinessMatrix = new boolean[totalDepth];
-        this.overridenMatchers = new Matcher[totalDepth];
-
-        int depth = 0;
-        String levelName;
-        for (PreparedLevel level : parameter.getLevels()) {
-            if (depth >= totalDepth) {
-                break;
-            }
-
-            levelName = level.getName();
-            greedinessMatrix[depth] = options.greedy(levelName);
-            overridenMatchers[depth] = options.overrideMatcher(levelName) ? repository.getMatcher(options.overridenMatcher(levelName)) : null;
-
-            depth++;
-        }
-    }
 
     public IndexTraversalOverrides(boolean[] greedinessMatrix, Matcher[] overridenMatchers) {
         this.greedinessMatrix = greedinessMatrix;

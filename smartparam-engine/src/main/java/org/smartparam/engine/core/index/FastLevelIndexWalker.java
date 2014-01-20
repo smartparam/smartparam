@@ -26,13 +26,13 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class FastLevelIndexCrawler<T> implements LevelIndexCrawler<T> {
+public class FastLevelIndexWalker<T> implements LevelIndexWalker<T> {
 
     private final LevelIndex<T> index;
 
     private final String[] levelValues;
 
-    public FastLevelIndexCrawler(LevelIndex<T> index, String... levelValues) {
+    public FastLevelIndexWalker(LevelIndex<T> index, String... levelValues) {
         this.index = index;
         this.levelValues = levelValues;
     }

@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core;
+package org.smartparam.engine.core.type.decode;
 
-import org.smartparam.engine.core.TypeDecoder;
-import org.smartparam.engine.core.TypeConversionException;
-import org.smartparam.engine.core.TypeDecodingException;
+import org.smartparam.engine.core.type.decode.TypeDecoder;
+import org.smartparam.engine.core.type.decode.TypeConversionException;
+import org.smartparam.engine.core.type.decode.TypeDecodingException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;

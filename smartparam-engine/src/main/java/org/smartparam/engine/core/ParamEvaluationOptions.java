@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index;
+package org.smartparam.engine.core;
 
 import java.util.*;
 
@@ -21,18 +21,18 @@ import java.util.*;
  *
  * @author Adam Dubiel
  */
-public class IndexTraversalOptions {
+public class ParamEvaluationOptions {
 
     private final Set<String> greedyLevels = new HashSet<String>();
 
     private final Map<String, String> overridenMatchers = new HashMap<String, String>();
 
-    public IndexTraversalOptions withGreedyLevels(String... levelNames) {
+    public ParamEvaluationOptions withGreedyLevels(String... levelNames) {
         greedyLevels.addAll(Arrays.asList(levelNames));
         return this;
     }
 
-    public IndexTraversalOptions withOverridenMatcher(String levelName, String matcherCode) {
+    public ParamEvaluationOptions withOverridenMatcher(String levelName, String matcherCode) {
         overridenMatchers.put(levelName, levelName);
         return this;
     }

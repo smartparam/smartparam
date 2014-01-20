@@ -28,7 +28,7 @@ import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
  *
  * @author Adam Dubiel
  */
-public class CustomizableLevelIndexCrawlerTest {
+public class CustomizableLevelIndexWalkerTest {
 
     @Test
     public void shouldTraverseWholeTreeGreedilyAndReturnAllMatchingValues() {
@@ -38,7 +38,7 @@ public class CustomizableLevelIndexCrawlerTest {
         index.add(new String[]{"A", "B", "C"}, "value");
         index.add(new String[]{"A", "C", "*"}, "noise");
 
-        CustomizableLevelIndexCrawler<String> crawler = new CustomizableLevelIndexCrawler<String>(
+        CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
                 new IndexTraversalOverrides(new boolean[]{true, true, true}), index, "A", "B", "C");
 
         // when
@@ -59,7 +59,7 @@ public class CustomizableLevelIndexCrawlerTest {
         Matcher allowAll = mock(Matcher.class);
         when(allowAll.matches(anyString(), anyString(), any(Type.class))).thenReturn(true);
 
-        CustomizableLevelIndexCrawler<String> crawler = new CustomizableLevelIndexCrawler<String>(
+        CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
                 new IndexTraversalOverrides(new boolean[]{true, true, true}, new Matcher[]{null, allowAll, null}),
                 index, "A", "B", "C");
 
@@ -81,7 +81,7 @@ public class CustomizableLevelIndexCrawlerTest {
         Matcher allowAll = mock(Matcher.class);
         when(allowAll.matches(anyString(), anyString(), any(Type.class))).thenReturn(true);
 
-        CustomizableLevelIndexCrawler<String> crawler = new CustomizableLevelIndexCrawler<String>(
+        CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
                 new IndexTraversalOverrides(new boolean[]{false, true, false}, new Matcher[]{null, allowAll, null}),
                 index, "A", "B", "C");
 

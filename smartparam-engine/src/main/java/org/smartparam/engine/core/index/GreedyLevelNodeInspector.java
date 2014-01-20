@@ -28,9 +28,9 @@ import org.smartparam.engine.core.type.Type;
  */
 public class GreedyLevelNodeInspector<T> implements LevelNodeInspector<T> {
 
-    private final CustomizableLevelIndexCrawler<T> indexCrawler;
+    private final CustomizableLevelIndexWalker<T> indexCrawler;
 
-    public GreedyLevelNodeInspector(CustomizableLevelIndexCrawler<T> indexCrawler) {
+    public GreedyLevelNodeInspector(CustomizableLevelIndexWalker<T> indexCrawler) {
         this.indexCrawler = indexCrawler;
     }
 

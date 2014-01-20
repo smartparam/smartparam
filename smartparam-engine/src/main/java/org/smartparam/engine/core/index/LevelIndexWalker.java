@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @author Adam Dubiel
  */
-public interface LevelIndexCrawler<T> {
+public interface LevelIndexWalker<T> {
 
     List<T> find();
 

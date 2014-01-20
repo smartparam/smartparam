@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.core;
 
-import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.output.ParamValueImpl;
 import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.prepared.ParamPreparer;
@@ -31,13 +30,10 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.ValueHolder;
-import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.function.Function;
-import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
-import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
+import org.smartparam.engine.core.output.factory.ParamValueFactory;
 import org.smartparam.engine.core.prepared.InputValueNormalizer;
 import org.smartparam.engine.types.string.StringHolder;
-import org.smartparam.engine.util.EngineUtil;
 
 /**
  *
@@ -54,9 +50,15 @@ public class SmartParamEngine implements ParamEngine {
 
     private final FunctionManager functionManager;
 
-    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager, ParamEngineRuntimeConfigBuilder configBuilder) {
+    private final ParamValueFactory paramValueFactory;
+
+    public SmartParamEngine(ParamPreparer paramPreparer,
+            FunctionManager functionManager,
+            ParamValueFactory paramValueFactory,
+            ParamEngineRuntimeConfigBuilder configBuilder) {
         this.paramPreparer = paramPreparer;
         this.functionManager = functionManager;
+        this.paramValueFactory = paramValueFactory;
         this.configBuilder = configBuilder;
     }
 
@@ -85,47 +87,10 @@ public class SmartParamEngine implements ParamEngine {
             throw new ParameterValueNotFoundException(paramName, ctx);
         }
 
-        int inputLevelCount = param.getInputLevelsCount();
-        int oputputLevelCount = param.getLevelCount() - inputLevelCount;
-
-        MultiValue[] row = new MultiValue[rows.length];
-
-        for (int rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-            PreparedEntry pe = rows[rowIndex];
-
-            PreparedLevel[] levels = param.getLevels();
-            Object[] vector = new Object[oputputLevelCount];
-
-            for (int columnIndex = 0; columnIndex < oputputLevelCount; ++columnIndex) {
-                String cellText = pe.getLevel(inputLevelCount + columnIndex + 1);
-                PreparedLevel level = levels[inputLevelCount + columnIndex];
-
-                Type<?> cellType = level.getType();
-                Object cellValue;
-
-                if (level.isArray()) {
-                    cellValue = evaluateStringAsArray(cellText, cellType, ',');
-                } else {
-                    cellValue = TypeDecoder.decode(cellType, cellText);
-                }
-
-                vector[columnIndex] = cellValue;
-            }
-
-            row[rowIndex] = new MultiValue(extractEntryKey(pe), vector, param.getLevelNameMap());
-        }
-
-        ParamValue result = new ParamValueImpl(row, param.getSourceRepository());
+        ParamValue result = paramValueFactory.create(param, rows);
 
         logger.debug("leave get[{}], result={}", paramName, result);
         return result;
-    }
-
-    private ParameterEntryKey extractEntryKey(PreparedEntry entry) {
-        if(entry instanceof IdentifiablePreparedEntry) {
-            return ((IdentifiablePreparedEntry)entry).getKey();
-        }
-        return null;
     }
 
     @Override
@@ -169,21 +134,6 @@ public class SmartParamEngine implements ParamEngine {
         }
 
         return null;
-    }
-
-    ValueHolder[] evaluateStringAsArray(String value, Type<?> type, char separator) {
-
-        if (EngineUtil.hasText(value)) {
-            String[] tokens = EngineUtil.split(value, separator);
-            ValueHolder[] array = type.newArray(tokens.length);
-            for (int i = 0; i < tokens.length; i++) {
-                array[i] = TypeDecoder.decode(type, tokens[i]);
-            }
-            return array;
-
-        } else {
-            return type.newArray(0);
-        }
     }
 
     void evaluateLevelValues(PreparedParameter param, ParamContext ctx) {

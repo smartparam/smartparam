@@ -99,12 +99,12 @@ public class LevelIndex<T> {
      * @see {@link LevelNode#findNode(java.lang.String[], int) }
      */
     public List<T> find(String... levelValues) {
-        FastLevelIndexCrawler<T> crawler = new FastLevelIndexCrawler<T>(this, levelValues);
+        FastLevelIndexWalker<T> crawler = new FastLevelIndexWalker<T>(this, levelValues);
         return crawler.find();
     }
 
     public List<T> customizedFind(IndexTraversalOverrides overrides, String... levelValues) {
-        CustomizableLevelIndexCrawler<T> crawler = new CustomizableLevelIndexCrawler<T>(overrides, this, levelValues);
+        CustomizableLevelIndexWalker<T> crawler = new CustomizableLevelIndexWalker<T>(overrides, this, levelValues);
         return crawler.find();
     }
 

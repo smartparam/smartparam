@@ -34,7 +34,7 @@ public class GreedyLevelNodeInspectorTest {
         index.add(new String[]{"A"}, "value");
         index.add(new String[]{"C"}, "noise");
 
-        CustomizableLevelIndexCrawler<String> crawler = new CustomizableLevelIndexCrawler<String>(
+        CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
                 new IndexTraversalOverrides(new boolean[] {true}), index, "A");
 
         // when

@@ -28,9 +28,9 @@ import org.smartparam.engine.core.type.Type;
  */
 public class FastLevelNodeInspector<T> implements LevelNodeInspector<T> {
 
-    private final CustomizableLevelIndexCrawler<T> indexCrawler;
+    private final CustomizableLevelIndexWalker<T> indexCrawler;
 
-    public FastLevelNodeInspector(CustomizableLevelIndexCrawler<T> indexCrawler) {
+    public FastLevelNodeInspector(CustomizableLevelIndexWalker<T> indexCrawler) {
         this.indexCrawler = indexCrawler;
     }
 

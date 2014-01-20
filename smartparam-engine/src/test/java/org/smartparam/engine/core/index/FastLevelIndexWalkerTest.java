@@ -24,7 +24,7 @@ import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
 /**
  * @author Przemek Hertel
  */
-public class FastLevelIndexCrawlerTest {
+public class FastLevelIndexWalkerTest {
 
     @Test
     public void shouldFavourConcreteValuesOverDefaultWhenLookingForValue() {
@@ -33,7 +33,7 @@ public class FastLevelIndexCrawlerTest {
         levelIndex.add(new String[]{"*"}, 11);
         levelIndex.add(new String[]{"A"}, 42);
 
-        FastLevelIndexCrawler<Integer> crawler = new FastLevelIndexCrawler<Integer>(levelIndex, "A");
+        FastLevelIndexWalker<Integer> crawler = new FastLevelIndexWalker<Integer>(levelIndex, "A");
 
         // when
         List<Integer> node = crawler.find();
@@ -49,7 +49,7 @@ public class FastLevelIndexCrawlerTest {
         levelIndex.add(new String[]{"*"}, 42);
         levelIndex.add(new String[]{"A"}, 11);
 
-        FastLevelIndexCrawler<Integer> crawler = new FastLevelIndexCrawler<Integer>(levelIndex, "B");
+        FastLevelIndexWalker<Integer> crawler = new FastLevelIndexWalker<Integer>(levelIndex, "B");
 
         // when
         List<Integer> node = crawler.find();
@@ -64,7 +64,7 @@ public class FastLevelIndexCrawlerTest {
         LevelIndex<Integer> levelIndex = levelIndex().withLevelCount(1).build();
         levelIndex.add(new String[]{"A"}, 10);
 
-        FastLevelIndexCrawler<Integer> crawler = new FastLevelIndexCrawler<Integer>(levelIndex, "B");
+        FastLevelIndexWalker<Integer> crawler = new FastLevelIndexWalker<Integer>(levelIndex, "B");
 
         // when
         List<Integer> node = crawler.find();
@@ -101,7 +101,7 @@ public class FastLevelIndexCrawlerTest {
         levelIndex.add(new String[]{"*", "Z", "*"}, 22);
         levelIndex.add(new String[]{"*", "*", "*"}, 99);
 
-        FastLevelIndexCrawler<Integer> crawler = new FastLevelIndexCrawler<Integer>(levelIndex, levelValues);
+        FastLevelIndexWalker<Integer> crawler = new FastLevelIndexWalker<Integer>(levelIndex, levelValues);
 
         // when
         List<Integer> node = crawler.find();
