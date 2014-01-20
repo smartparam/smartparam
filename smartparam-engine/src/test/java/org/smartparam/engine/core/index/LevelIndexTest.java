@@ -213,19 +213,4 @@ public class LevelIndexTest {
         assertThat(result).startsWith(expectedPrefix);
         assertThat(result).contains(expectedForA, expectedForB);
     }
-
-    @Test
-    public void shouldDoAGreeadySearchOnIndexAndReturnAllValuesThatMatchIncludingDefaults() {
-        // given
-        LevelIndex<String> index = levelIndex().withLevelCount(3).build();
-        index.add(new String[]{"A", "*", "*"}, "default");
-        index.add(new String[]{"A", "B", "C"}, "value");
-        index.add(new String[]{"A", "X", "C"}, "noise");
-
-        // when
-        List<String> value = index.customizedFind("A", "B", "C");
-
-        // then
-        assertThat(value).containsOnly("default", "value");
-    }
 }

@@ -22,6 +22,7 @@ import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
 /**
+ * Fastest way to get value from index - default ParamEngine mode optimized for speed.
  *
  * @author Adam Dubiel
  */
@@ -31,7 +32,7 @@ public class FastLevelIndexCrawler<T> implements LevelIndexCrawler<T> {
 
     private final String[] levelValues;
 
-    public FastLevelIndexCrawler(LevelIndex<T> index, String[] levelValues) {
+    public FastLevelIndexCrawler(LevelIndex<T> index, String... levelValues) {
         this.index = index;
         this.levelValues = levelValues;
     }

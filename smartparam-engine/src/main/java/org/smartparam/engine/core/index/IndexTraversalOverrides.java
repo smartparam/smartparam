@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,10 @@
  */
 package org.smartparam.engine.core.index;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.smartparam.engine.core.matcher.Matcher;
+import org.smartparam.engine.core.matcher.MatcherRepository;
+import org.smartparam.engine.core.prepared.PreparedLevel;
+import org.smartparam.engine.core.prepared.PreparedParameter;
 
 /**
  *
@@ -25,24 +26,51 @@ import org.smartparam.engine.core.matcher.Matcher;
  */
 public class IndexTraversalOverrides {
 
-    private final Boolean[] greedyLevels;
+    private final boolean[] greedinessMatrix;
 
-    private final Map<Integer, Matcher> overridenMatchers = new HashMap<Integer, Matcher>();
+    private final Matcher[] overridenMatchers;
 
-    public IndexTraversalOverrides(Boolean[] greedyNodes, Map<Integer, Matcher> overridenMatchers) {
-        this.greedyLevels = greedyNodes;
-        this.overridenMatchers.putAll(overridenMatchers);
+    public IndexTraversalOverrides(PreparedParameter parameter, IndexTraversalOptions options, MatcherRepository repository) {
+        int totalDepth = parameter.getInputLevelsCount();
+
+        this.greedinessMatrix = new boolean[totalDepth];
+        this.overridenMatchers = new Matcher[totalDepth];
+
+        int depth = 0;
+        String levelName;
+        for (PreparedLevel level : parameter.getLevels()) {
+            if (depth >= totalDepth) {
+                break;
+            }
+
+            levelName = level.getName();
+            greedinessMatrix[depth] = options.greedy(levelName);
+            overridenMatchers[depth] = options.overrideMatcher(levelName) ? repository.getMatcher(options.overridenMatcher(levelName)) : null;
+
+            depth++;
+        }
     }
 
-    public boolean greedy(int depth) {
-        return greedyLevels[depth];
+    public IndexTraversalOverrides(boolean[] greedinessMatrix, Matcher[] overridenMatchers) {
+        this.greedinessMatrix = greedinessMatrix;
+        this.overridenMatchers = overridenMatchers;
     }
 
-    public boolean overrideMatcher(int depth) {
-        return overridenMatchers.containsKey(depth);
+    public IndexTraversalOverrides(boolean[] greedinessMatrix) {
+        this.greedinessMatrix = greedinessMatrix;
+        this.overridenMatchers = new Matcher[greedinessMatrix.length];
     }
 
-    public Matcher overridenMatcher(int depth) {
-        return overridenMatchers.get(depth);
+    public boolean isGreedy(int levelDepth) {
+        return greedinessMatrix[levelDepth];
     }
+
+    public boolean overrideMatcher(int levelDepth) {
+        return overridenMatchers[levelDepth] != null;
+    }
+
+    public Matcher overridenMatcher(int levelDepth) {
+        return overridenMatchers[levelDepth];
+    }
+
 }

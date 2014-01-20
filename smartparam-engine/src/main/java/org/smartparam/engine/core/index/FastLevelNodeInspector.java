@@ -59,7 +59,7 @@ public class FastLevelNodeInspector<T> implements LevelNodeInspector<T> {
             matchedLeafs = indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1);
         }
 
-        return matchedLeafs;
+        return matchedLeafs != null ? matchedLeafs : new ArrayList<LevelNode<T>>();
     }
 
     private List<LevelNode<T>> match(LevelNode<T> currentNode, String val, Matcher matcher, Type<?> type, int currentDepth) {

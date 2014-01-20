@@ -103,8 +103,8 @@ public class LevelIndex<T> {
         return crawler.find();
     }
 
-    public List<T> customizedFind(String... levelValues) {
-        CustomizableLevelIndexCrawler<T> crawler = new CustomizableLevelIndexCrawler<T>(this, levelValues);
+    public List<T> customizedFind(IndexTraversalOverrides overrides, String... levelValues) {
+        CustomizableLevelIndexCrawler<T> crawler = new CustomizableLevelIndexCrawler<T>(overrides, this, levelValues);
         return crawler.find();
     }
 

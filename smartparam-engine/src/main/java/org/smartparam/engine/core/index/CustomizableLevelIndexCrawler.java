@@ -27,13 +27,18 @@ import org.smartparam.engine.core.type.Type;
  */
 public class CustomizableLevelIndexCrawler<T> implements LevelIndexCrawler<T> {
 
+    private final LevelNodeInspector<T> fastNodeInspector = new FastLevelNodeInspector<T>(this);
+
+    private final LevelNodeInspector<T> greedyNodeInspector = new GreedyLevelNodeInspector<T>(this);
+
     private final LevelIndex<T> index;
 
     private final String[] levelValues;
 
-    private LevelNodeInspector<T> inspector = new GreedyLevelNodeInspector<T>(this);
+    private final IndexTraversalOverrides overrides;
 
-    public CustomizableLevelIndexCrawler(LevelIndex<T> index, String[] levelValues) {
+    public CustomizableLevelIndexCrawler(IndexTraversalOverrides overrides, LevelIndex<T> index, String... levelValues) {
+        this.overrides = overrides;
         this.index = index;
         this.levelValues = levelValues;
     }
@@ -54,14 +59,18 @@ public class CustomizableLevelIndexCrawler<T> implements LevelIndexCrawler<T> {
         if (depth >= levelValues.length) {
             return Arrays.asList(currentNode);
         }
-        return inspector.inspect(currentNode, levelValues[depth], depth);
+        return inspectorFor(depth).inspect(currentNode, levelValues[depth], depth);
     }
 
-    public Matcher matcherFor(int currentDepth) {
-        return index.getMatcher(currentDepth);
+    private LevelNodeInspector<T> inspectorFor(int depth) {
+        return overrides.isGreedy(depth) ? greedyNodeInspector : fastNodeInspector;
     }
 
-    public Type<?> typeFor(int currentDepth) {
-        return index.getType(currentDepth);
+    public Matcher matcherFor(int depth) {
+        return overrides.overrideMatcher(depth) ? overrides.overridenMatcher(depth) : index.getMatcher(depth);
+    }
+
+    public Type<?> typeFor(int depth) {
+        return index.getType(depth);
     }
 }
