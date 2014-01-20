@@ -15,14 +15,11 @@
  */
 package org.smartparam.engine.core.index;
 
-import org.smartparam.engine.core.matcher.Matcher;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.Formatter;
 
 /**
@@ -32,6 +29,8 @@ import org.smartparam.engine.util.Formatter;
  * @author Przemek Hertel
  */
 public class LevelNode<T> {
+
+    private static final int TO_STRING_INITIAL_LENGTH = 100;
 
     private static final float CHILDREN_MAP_LOAD_FACTOR = 0.8f;
 
@@ -45,7 +44,7 @@ public class LevelNode<T> {
 
     private LevelNode<T> parent;
 
-    private LevelIndex<T> index;
+    private final LevelIndex<T> index;
 
     public LevelNode(LevelIndex<T> index) {
         this.index = index;
@@ -58,12 +57,12 @@ public class LevelNode<T> {
         this.leafList = null;
     }
 
-    public void add(List<String> levels, T leafValue, int depth) {
+    void add(List<String> levels, T leafValue, int depth) {
         String[] levelsArray = levels.toArray(new String[levels.size()]);
         add(levelsArray, leafValue, depth);
     }
 
-    public void add(String[] levels, T leafValue, int depth) {
+    void add(String[] levels, T leafValue, int depth) {
 
         if (!reachedLeafDepth(depth)) {
             String levelVal = levels[depth];
@@ -106,6 +105,30 @@ public class LevelNode<T> {
         }
     }
 
+    public boolean hasChildren() {
+        return (children != null && !children.isEmpty()) || defaultNode != null;
+    }
+
+    public boolean isLeaf() {
+        return !hasChildren();
+    }
+
+    public Map<String, LevelNode<T>> getChildren() {
+        return children;
+    }
+
+    public LevelNode<T> getDefaultNode() {
+        return defaultNode;
+    }
+
+    public List<T> getLeafList() {
+        return leafList;
+    }
+
+    public T getLeafValue() {
+        return leafList.get(0);
+    }
+
     public void printNode(StringBuilder sb, int level) {
         String indent = repeat(' ', level << 2);
         boolean leaf = isLeaf();
@@ -127,17 +150,9 @@ public class LevelNode<T> {
         }
     }
 
-    public boolean hasChildren() {
-        return (children != null && !children.isEmpty()) || defaultNode != null;
-    }
-
-    public boolean isLeaf() {
-        return !hasChildren();
-    }
-
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(TO_STRING_INITIAL_LENGTH);
         sb.append("LevelNode[");
         sb.append("level=").append(level);
         sb.append(", path=").append(getLevelPath());
@@ -156,32 +171,8 @@ public class LevelNode<T> {
         return new String(str);
     }
 
-    public String getLevel() {
-        return level;
-    }
-
-    public List<T> getLeafList() {
-        return leafList;
-    }
-
-    public T getLeafValue() {
-        return leafList.get(0);
-    }
-
-    LevelNode<T> getParent() {
-        return parent;
-    }
-
-    String getLevelPath() {
+    private String getLevelPath() {
         String lv = level != null ? level : "";
         return parent != null ? parent.getLevelPath() + "/" + lv : lv;
-    }
-
-    Map<String, LevelNode<T>> getChildren() {
-        return children;
-    }
-
-    LevelNode<T> getDefaultNode() {
-        return defaultNode;
     }
 }

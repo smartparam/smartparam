@@ -13,11 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index;
+package org.smartparam.engine.core.index.walker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.smartparam.engine.core.index.IndexTraversalOverrides;
+import org.smartparam.engine.core.index.LevelIndex;
+import org.smartparam.engine.core.index.LevelIndexWalker;
+import org.smartparam.engine.core.index.LevelIndexWalkerFactory;
+import org.smartparam.engine.core.index.LevelNode;
+import org.smartparam.engine.core.index.LevelNodeInspector;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
@@ -41,6 +47,20 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
         this.overrides = overrides;
         this.index = index;
         this.levelValues = levelValues;
+    }
+
+    public class Factory<T> implements LevelIndexWalkerFactory<T> {
+
+        private final IndexTraversalOverrides overrides;
+
+        public Factory(IndexTraversalOverrides overrides) {
+            this.overrides = overrides;
+        }
+
+        @Override
+        public LevelIndexWalker<T> create(LevelIndex<T> index, String... values) {
+            return new CustomizableLevelIndexWalker<T>(overrides, index, levelValues);
+        }
     }
 
     @Override

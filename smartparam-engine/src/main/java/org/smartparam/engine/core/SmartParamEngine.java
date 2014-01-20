@@ -31,6 +31,8 @@ import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.index.LevelIndexWalkerFactory;
+import org.smartparam.engine.core.index.walker.FastLevelIndexWalker;
 import org.smartparam.engine.core.output.factory.ParamValueFactory;
 import org.smartparam.engine.core.prepared.InputValueNormalizer;
 import org.smartparam.engine.types.string.StringHolder;
@@ -51,6 +53,8 @@ public class SmartParamEngine implements ParamEngine {
     private final FunctionManager functionManager;
 
     private final ParamValueFactory paramValueFactory;
+
+    private final LevelIndexWalkerFactory<PreparedEntry> fastIndexWalkerFactory = new FastLevelIndexWalker.Factory<PreparedEntry>();
 
     public SmartParamEngine(ParamPreparer paramPreparer,
             FunctionManager functionManager,
@@ -76,7 +80,7 @@ public class SmartParamEngine implements ParamEngine {
         PreparedParameter param = getPreparedParameter(paramName);
 
         // find entries matching given context
-        PreparedEntry[] rows = findParameterEntries(param, ctx);
+        PreparedEntry[] rows = findParameterEntries(fastIndexWalkerFactory, param, ctx);
 
         if (rows.length == 0) {
             if (param.isNullable()) {
@@ -163,13 +167,24 @@ public class SmartParamEngine implements ParamEngine {
         ctx.setLevelValues(values);
     }
 
-    private PreparedEntry[] findParameterEntries(PreparedParameter param, String[] levelValues) {
+    private PreparedEntry[] findParameterEntries(LevelIndexWalkerFactory<PreparedEntry> indexWalkerFactory, PreparedParameter param, ParamContext ctx) {
+        if (ctx.getLevelValues() == null) {
+            evaluateLevelValues(param, ctx);
+        }
+
+        validateLevelValues(ctx.getLevelValues(), param.getInputLevelsCount());
+
+        String[] normalizedInputValues = InputValueNormalizer.normalize(param, ctx.getLevelValues());
+        return findParameterEntries(indexWalkerFactory, param, normalizedInputValues);
+    }
+
+    private PreparedEntry[] findParameterEntries(LevelIndexWalkerFactory<PreparedEntry> indexWalkerFactory, PreparedParameter param, String[] levelValues) {
 
         List<PreparedEntry> entries;
 
         if (param.isCacheable()) {
             LevelIndex<PreparedEntry> index = param.getIndex();
-            entries = index.find(levelValues);
+            entries = indexWalkerFactory.create(index, levelValues).find();
         } else {
             entries = paramPreparer.findEntries(param.getName(), levelValues);
         }
@@ -181,18 +196,6 @@ public class SmartParamEngine implements ParamEngine {
         if (levelValues.length != parameterLevelCount) {
             throw new InvalidLevelValuesQuery(levelValues, parameterLevelCount);
         }
-    }
-
-    private PreparedEntry[] findParameterEntries(PreparedParameter param, ParamContext ctx) {
-
-        if (ctx.getLevelValues() == null) {
-            evaluateLevelValues(param, ctx);
-        }
-
-        validateLevelValues(ctx.getLevelValues(), param.getInputLevelsCount());
-
-        String[] normalizedInputValues = InputValueNormalizer.normalize(param, ctx.getLevelValues());
-        return findParameterEntries(param, normalizedInputValues);
     }
 
     private PreparedParameter getPreparedParameter(String paramName) {

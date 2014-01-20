@@ -16,12 +16,10 @@
 package org.smartparam.engine.core.index;
 
 import org.smartparam.engine.core.matcher.Matcher;
-import java.util.List;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.Formatter;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
-import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
@@ -78,115 +76,6 @@ public class LevelIndexTest {
         // then
         assertThat(index.getTypes()).containsExactly(null, null);
         assertThat(index.getMatchers()).containsExactly(null, null);
-    }
-
-    @Test
-    public void shouldFindBestMatchPathToLeafAndReturnLeafValueUsingDefaultMatchers() {
-        // given
-        LevelIndex<String> index = levelIndex().withLevelCount(3).build();
-        index.add(new String[]{"A", "C", "Z"}, "noise");
-        index.add(new String[]{"A", "B", "C"}, "bestMatch");
-        index.add(new String[]{"A", "B", "Z"}, "noise");
-        index.add(new String[]{"C", "B", "C"}, "noise");
-
-        // when
-        List<String> value = index.find("A", "B", "C");
-
-        // then
-        assertThat(value).containsExactly("bestMatch");
-    }
-
-    @Test
-    public void shouldUseDefaultStarValueWhenNoOtherMatchFoundAtTheSameLevelAndDefaultIsDefined() {
-        // given
-        LevelIndex<String> index = levelIndex().withLevelCount(3).build();
-        index.add(new String[]{"A", "B", "*"}, "bestMatch");
-        index.add(new String[]{"A", "B", "Z"}, "noise");
-
-        // when
-        List<String> value = index.find("A", "B", "C");
-
-        // then
-        assertThat(value).containsExactly("bestMatch");
-    }
-
-    @Test
-    public void shouldAlwaysFavorConcreteResultToDefaultWhenBothFoundAtSameLevel() {
-        // given
-        LevelIndex<String> index = levelIndex().withLevelCount(3).build();
-        index.add(new String[]{"A", "B", "*"}, "default");
-        index.add(new String[]{"A", "B", "C"}, "bestMatch");
-
-        // when
-        List<String> value = index.find("A", "B", "C");
-
-        // then
-        assertThat(value).containsExactly("bestMatch");
-    }
-
-    @Test
-    public void shouldStayWithDefaultPathWhenNothingElseMatchesQuery() {
-        // given
-        LevelIndex<String> index = levelIndex().withLevelCount(3).build();
-        index.add(new String[]{"*", "*", "*"}, "defaultPath");
-        index.add(new String[]{"A", "B", "C"}, "noise");
-
-        // when
-        List<String> value = index.find("Z", "B", "C");
-
-        // then
-        assertThat(value).containsExactly("defaultPath");
-    }
-
-    @Test
-    public void shouldReturnNullWhenNoMatchingPathFound() {
-        // given
-        LevelIndex<String> index = levelIndex().withLevelCount(3).build();
-        index.add(new String[]{"A", "*", "*"}, "noise");
-        index.add(new String[]{"A", "B", "C"}, "noise");
-
-        // when
-        List<String> value = index.find("Z", "B", "C");
-
-        // then
-        assertThat(value).isNull();
-    }
-
-    @Test
-    public void shouldReturnMultipleValuesWhenThereAreMultipleSameMatches() {
-        // given
-        LevelIndex<String> index = levelIndex().withLevelCount(3).build();
-        index.add(new String[]{"A", "B", "C"}, "match1");
-        index.add(new String[]{"A", "B", "C"}, "match2");
-        index.add(new String[]{"A", "B", "*"}, "defaultMatch");
-
-        // when
-        List<String> value = index.find("A", "B", "C");
-
-        // then
-        assertThat(value).containsOnly("match1", "match2");
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    public void shouldUseProvidedMatchersInsteadOfDefaultsToFindValue() {
-        // given
-        Matcher matcher1 = mock(Matcher.class);
-        when(matcher1.matches(eq("A"), eq("valid-A"), any(Type.class))).thenReturn(true);
-
-        Matcher matcher2 = mock(Matcher.class);
-        when(matcher2.matches(eq("B"), eq("valid-B"), any(Type.class))).thenReturn(true);
-
-        LevelIndex<String> index = levelIndex().withLevelCount(3).withMatchers(matcher1, matcher2).build();
-        index.add(new String[]{"A", "invalid-B", "C"}, "noise");
-        index.add(new String[]{"valid-A", "valid-B", "C"}, "match");
-        index.add(new String[]{"valid-A", "valid-B", "*"}, "defaultMatch");
-
-        // when
-        List<String> value = index.find("A", "B", "C");
-
-        // then
-        assertThat(value).containsExactly("match");
     }
 
     @Test

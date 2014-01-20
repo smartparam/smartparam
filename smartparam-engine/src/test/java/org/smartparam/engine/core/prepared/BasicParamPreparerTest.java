@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.parameter.level.Level;
+import org.smartparam.engine.core.index.walker.FastLevelIndexWalker;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.core.parameter.ParameterFromRepositoryBuilder.repositoryParameter;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
@@ -91,7 +92,8 @@ public class BasicParamPreparerTest {
         PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
 
         // then
-        assertThat(preparedParameter.getIndex().find().get(0)).isExactlyInstanceOf(PreparedEntry.class);
+        FastLevelIndexWalker<PreparedEntry> walker = new FastLevelIndexWalker<PreparedEntry>(preparedParameter.getIndex());
+        assertThat(walker.find().get(0)).isExactlyInstanceOf(PreparedEntry.class);
     }
 
     @Test
@@ -112,7 +114,8 @@ public class BasicParamPreparerTest {
         PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
 
         // then
-        assertThat(preparedParameter.getIndex().find().get(0)).isInstanceOf(IdentifiablePreparedEntry.class);
+        FastLevelIndexWalker<PreparedEntry> walker = new FastLevelIndexWalker<PreparedEntry>(preparedParameter.getIndex());
+        assertThat(walker.find().get(0)).isInstanceOf(IdentifiablePreparedEntry.class);
     }
 
     @Test

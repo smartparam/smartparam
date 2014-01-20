@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index;
+package org.smartparam.engine.core.index.walker;
 
+import org.smartparam.engine.core.index.walker.FastLevelIndexWalker;
 import java.util.List;
+import org.smartparam.engine.core.index.LevelIndex;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.test.ParamEngineAssertions.*;
@@ -33,10 +35,10 @@ public class FastLevelIndexWalkerTest {
         levelIndex.add(new String[]{"*"}, 11);
         levelIndex.add(new String[]{"A"}, 42);
 
-        FastLevelIndexWalker<Integer> crawler = new FastLevelIndexWalker<Integer>(levelIndex, "A");
+        FastLevelIndexWalker<Integer> walker = new FastLevelIndexWalker<Integer>(levelIndex, "A");
 
         // when
-        List<Integer> node = crawler.find();
+        List<Integer> node = walker.find();
 
         // then
         assertThat(node).containsExactly(42);
@@ -49,10 +51,10 @@ public class FastLevelIndexWalkerTest {
         levelIndex.add(new String[]{"*"}, 42);
         levelIndex.add(new String[]{"A"}, 11);
 
-        FastLevelIndexWalker<Integer> crawler = new FastLevelIndexWalker<Integer>(levelIndex, "B");
+        FastLevelIndexWalker<Integer> walker = new FastLevelIndexWalker<Integer>(levelIndex, "B");
 
         // when
-        List<Integer> node = crawler.find();
+        List<Integer> node = walker.find();
 
         // then
         assertThat(node).containsExactly(42);
@@ -64,10 +66,10 @@ public class FastLevelIndexWalkerTest {
         LevelIndex<Integer> levelIndex = levelIndex().withLevelCount(1).build();
         levelIndex.add(new String[]{"A"}, 10);
 
-        FastLevelIndexWalker<Integer> crawler = new FastLevelIndexWalker<Integer>(levelIndex, "B");
+        FastLevelIndexWalker<Integer> walker = new FastLevelIndexWalker<Integer>(levelIndex, "B");
 
         // when
-        List<Integer> node = crawler.find();
+        List<Integer> node = walker.find();
 
         // then
         assertThat(node).isNull();
@@ -101,10 +103,10 @@ public class FastLevelIndexWalkerTest {
         levelIndex.add(new String[]{"*", "Z", "*"}, 22);
         levelIndex.add(new String[]{"*", "*", "*"}, 99);
 
-        FastLevelIndexWalker<Integer> crawler = new FastLevelIndexWalker<Integer>(levelIndex, levelValues);
+        FastLevelIndexWalker<Integer> walker = new FastLevelIndexWalker<Integer>(levelIndex, levelValues);
 
         // when
-        List<Integer> node = crawler.find();
+        List<Integer> node = walker.find();
 
         // then
         assertThat(node).containsExactly(expectedValue);

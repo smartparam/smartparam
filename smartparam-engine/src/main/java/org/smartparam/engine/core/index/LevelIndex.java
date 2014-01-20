@@ -16,7 +16,6 @@
 package org.smartparam.engine.core.index;
 
 import org.smartparam.engine.core.matcher.Matcher;
-import java.util.List;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.Formatter;
 
@@ -91,21 +90,6 @@ public class LevelIndex<T> {
      */
     public void add(String[] levelValues, T leaf) {
         root.add(levelValues, leaf, 0);
-    }
-
-    /**
-     * Find all values that match given values.
-     *
-     * @see {@link LevelNode#findNode(java.lang.String[], int) }
-     */
-    public List<T> find(String... levelValues) {
-        FastLevelIndexWalker<T> crawler = new FastLevelIndexWalker<T>(this, levelValues);
-        return crawler.find();
-    }
-
-    public List<T> customizedFind(IndexTraversalOverrides overrides, String... levelValues) {
-        CustomizableLevelIndexWalker<T> crawler = new CustomizableLevelIndexWalker<T>(overrides, this, levelValues);
-        return crawler.find();
     }
 
     /**

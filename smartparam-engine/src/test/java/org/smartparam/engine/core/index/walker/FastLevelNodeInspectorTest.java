@@ -13,9 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index;
+package org.smartparam.engine.core.index.walker;
 
+import org.smartparam.engine.core.index.walker.CustomizableLevelIndexWalker;
 import java.util.List;
+import org.smartparam.engine.core.index.IndexTraversalOverrides;
+import org.smartparam.engine.core.index.LevelIndex;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
