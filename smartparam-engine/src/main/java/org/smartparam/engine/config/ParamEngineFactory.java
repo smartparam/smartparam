@@ -27,6 +27,7 @@ import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;
+import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import static org.smartparam.engine.config.pico.ComponentDefinition.component;
@@ -91,5 +92,6 @@ public class ParamEngineFactory {
         container.getComponent(InvokerRepository.class).registerAll(config.getFunctionInvokers());
         container.getComponent(TypeRepository.class).registerAll(config.getTypes());
         container.getComponent(MatcherRepository.class).registerAll(config.getMatchers());
+        container.getComponent(MatcherDecoderRepository.class).registerAll(config.getMatcherDecoders());
     }
 }

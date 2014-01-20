@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
+import org.smartparam.engine.annotated.repository.*;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.engine.cache.MapFunctionCache;
 import org.smartparam.engine.cache.MapPreparedParamCache;
@@ -32,17 +33,16 @@ import org.smartparam.engine.core.prepared.BasicParamPreparer;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
-import org.smartparam.engine.annotated.repository.ScanningInvokerRepository;
-import org.smartparam.engine.annotated.repository.ScanningMatcherRepository;
-import org.smartparam.engine.annotated.repository.ScanningTypeRepository;
 import org.smartparam.engine.core.function.BasicFunctionManager;
-import org.smartparam.engine.annotated.repository.ScanningFunctionProvider;
 import org.smartparam.engine.config.pico.ComponentDefinition;
 import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.function.FunctionManager;
 import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.function.InvokerRepository;
+import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
+import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
+import org.smartparam.engine.core.output.entry.EntryMapFactory;
 import org.smartparam.engine.core.output.factory.ParamValueFactory;
 import org.smartparam.engine.core.parameter.BasicParameterProvider;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
@@ -72,6 +72,8 @@ public class ParamEngineConfig extends ComponentConfig {
 
     private final Map<String, Matcher> matchers = new HashMap<String, Matcher>();
 
+    private final Map<String, MatcherAwareDecoder<?>> matcherDecoders = new HashMap<String, MatcherAwareDecoder<?>>();
+
     private PreparedParamCache parameterCache;
 
     private FunctionCache functionCache;
@@ -93,6 +95,8 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(component(TypeRepository.class, ScanningTypeRepository.class));
         components.add(component(MatcherRepository.class, ScanningMatcherRepository.class));
         components.add(component(ParamValueFactory.class, ParamValueFactory.class));
+        components.add(component(MatcherDecoderRepository.class, ScanningMatcherDecoderRepository.class));
+        components.add(component(EntryMapFactory.class, EntryMapFactory.class));
     }
 
     public List<NamedParamRepository> getParameterRepositories() {
@@ -137,6 +141,14 @@ public class ParamEngineConfig extends ComponentConfig {
 
     protected void addMatcher(String key, Matcher matcher) {
         this.matchers.put(key, matcher);
+    }
+
+    public Map<String, MatcherAwareDecoder<?>> getMatcherDecoders() {
+        return Collections.unmodifiableMap(matcherDecoders);
+    }
+
+    protected void addMatcherDecoder(String key, MatcherAwareDecoder<?> matcherDecoder) {
+        this.matcherDecoders.put(key, matcherDecoder);
     }
 
     public FunctionCache getFunctionCache() {

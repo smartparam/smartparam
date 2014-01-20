@@ -23,6 +23,7 @@ import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
 import org.testng.annotations.BeforeMethod;
@@ -65,6 +66,7 @@ public class PicoParamEngineFactoryTest {
                 .withFunctionRepository("test", 1, mock(FunctionRepository.class))
                 .withParameterRepositories(mock(ParamRepository.class))
                 .withMatcher("test", mock(Matcher.class))
+                .withMatcherDecoder("test", mock(MatcherAwareDecoder.class))
                 .withType("test", mock(Type.class))
                 .build();
 
@@ -73,7 +75,7 @@ public class PicoParamEngineFactoryTest {
 
         // then
         assertThat(engine.runtimeConfiguration()).hasFunctionRepositories().hasInvokers()
-                .hasMachers().hasParamRepositories().hasTypes();
+                .hasMatchers().hasMatcherDecoders().hasParamRepositories().hasTypes();
     }
 
     @Test

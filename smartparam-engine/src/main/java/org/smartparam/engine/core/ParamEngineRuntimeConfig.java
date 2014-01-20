@@ -23,6 +23,7 @@ import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.type.Type;
@@ -50,6 +51,8 @@ public final class ParamEngineRuntimeConfig {
 
     private final MatcherRepository matcherRepository;
 
+    private final MatcherDecoderRepository matcherDecoderRepository;
+
     private final List<NamedParamRepository> paramRepositories;
 
     private final ParamRepositoriesNaming paramRepositoriesNaming;
@@ -64,7 +67,8 @@ public final class ParamEngineRuntimeConfig {
             List<NamedParamRepository> paramRepositories,
             Map<String, FunctionInvoker> invokers,
             Map<String, Type<?>> types,
-            MatcherRepository matcherRepository) {
+            MatcherRepository matcherRepository,
+            MatcherDecoderRepository matcherDecoderRepository) {
         this.functionCache = functionCache;
         this.paramCache = paramCache;
         this.functionRepositories = Collections.unmodifiableMap(functionRepositories);
@@ -74,6 +78,7 @@ public final class ParamEngineRuntimeConfig {
         this.matchers = Collections.unmodifiableMap(matcherRepository.registeredItems());
 
         this.matcherRepository = matcherRepository;
+        this.matcherDecoderRepository = matcherDecoderRepository;
 
         this.paramRepositoriesNaming = new ParamRepositoriesNaming(paramRepositories);
     }
@@ -90,6 +95,10 @@ public final class ParamEngineRuntimeConfig {
         return matcherRepository;
     }
 
+    public MatcherDecoderRepository getMatcherDecoderRepository() {
+        return matcherDecoderRepository;
+    }
+    
     public Map<String, FunctionRepository> getFunctionRepositories() {
         return functionRepositories;
     }

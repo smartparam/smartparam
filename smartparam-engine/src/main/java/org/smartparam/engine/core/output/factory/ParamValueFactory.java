@@ -18,6 +18,7 @@ package org.smartparam.engine.core.output.factory;
 import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.output.ParamValueImpl;
+import org.smartparam.engine.core.output.SlimMultiValue;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedEntry;
@@ -62,7 +63,7 @@ public class ParamValueFactory {
                 vector[columnIndex] = cellValue;
             }
 
-            row[rowIndex] = new MultiValue(extractEntryKey(pe), vector, parameter.getLevelNameMap());
+            row[rowIndex] = new SlimMultiValue(extractEntryKey(pe), vector, parameter.getLevelNameMap());
         }
 
         return new ParamValueImpl(row, parameter.getSourceRepository());

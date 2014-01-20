@@ -29,11 +29,11 @@ import static org.mockito.Mockito.mock;
  */
 public class PreparedLevelTest {
 
-    private IntegerType type = new IntegerType();
+    private final IntegerType type = new IntegerType();
 
-    private Matcher matcher = mock(Matcher.class);
+    private final Matcher matcher = mock(Matcher.class);
 
-    private Function levelCreator = mock(Function.class);
+    private final Function levelCreator = mock(Function.class);
 
     @Test
     public void testConstructor() {
@@ -42,7 +42,7 @@ public class PreparedLevelTest {
 		String name = "levelName";
 
         // when
-        PreparedLevel pl = new PreparedLevel(name, true, type, matcher, levelCreator);
+        PreparedLevel pl = new PreparedLevel(name, true, type, "matcher", matcher, levelCreator);
 
         // then
 		assertSame(name, pl.getName());

@@ -70,8 +70,13 @@ public class ParamEngineRuntimeConfigAssert extends AbstractAssert<ParamEngineRu
         return this;
     }
 
-    public ParamEngineRuntimeConfigAssert hasMachers() {
+    public ParamEngineRuntimeConfigAssert hasMatchers() {
         ParamEngineAssertions.assertThat(actual.getMatchers()).isNotEmpty();
+        return this;
+    }
+
+    public ParamEngineRuntimeConfigAssert hasMatcherDecoders() {
+        ParamEngineAssertions.assertThat(actual.getMatcherDecoderRepository().registeredItems()).isNotEmpty();
         return this;
     }
 

@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 /**
  * @author Przemek Hertel
  */
-public class MultiValueTest {
+public class SlimMultiValueTest {
 
     @Test
     public void testGetValue() {
@@ -43,7 +43,7 @@ public class MultiValueTest {
         Object[] values = {h1, h2, h3};
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(values);
+        MultiValue mv = new SlimMultiValue(values);
 
         // oczekiwane wartosci
         assertSame(h1, mv.getHolder(0));
@@ -62,7 +62,7 @@ public class MultiValueTest {
         Object[] values = {new ValueHolder[]{h1, h2}};       // 1 element typu AbstractHolder[]
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(values);
+        MultiValue mv = new SlimMultiValue(values);
 
         // indeksy, z ktorych nie mozna pobrac wartosci AbstractHolder
         int[] indices = {0, 1, 2};
@@ -89,7 +89,7 @@ public class MultiValueTest {
         ValueHolder h3 = new IntegerHolder(9L);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1, h2, h3});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2, h3});
 
         // oczekiwane wartosci
         assertEquals("a", mv.getString(0));
@@ -105,7 +105,7 @@ public class MultiValueTest {
         ValueHolder h2 = new NumberHolder(BigDecimal.TEN);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1, h2});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2});
 
         // oczekiwane wartosci
         assertEquals(BigDecimal.ONE, mv.getBigDecimal(0));
@@ -122,7 +122,7 @@ public class MultiValueTest {
         ValueHolder h2 = new DateHolder(d2);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1, h2});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2});
 
         // oczekiwane wartosci
         assertEquals(d1, mv.getDate(0));
@@ -136,7 +136,7 @@ public class MultiValueTest {
         ValueHolder h1 = new IntegerHolder(123L);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1});
 
         // oczekiwane wartosci
         assertEquals(new Integer(123), mv.getInteger(0));
@@ -149,7 +149,7 @@ public class MultiValueTest {
         ValueHolder h1 = new IntegerHolder(123L);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1});
 
         // oczekiwane wartosci
         assertEquals(new Long(123), mv.getLong(0));
@@ -177,7 +177,7 @@ public class MultiValueTest {
             ValueHolder h = tests[i];
             LetterType expectedResult = expected[i];
 
-            MultiValue mv = new MultiValue(new Object[]{h});
+            MultiValue mv = new SlimMultiValue(new Object[]{h});
 
             // test
             LetterType result = mv.getEnum(0, LetterType.class);
@@ -199,7 +199,7 @@ public class MultiValueTest {
         // testy
         for (int i = 0; i < tests.length; i++) {
             ValueHolder h = tests[i];
-            MultiValue mv = new MultiValue(new Object[]{h});
+            MultiValue mv = new SlimMultiValue(new Object[]{h});
 
             // test
             try {
@@ -223,7 +223,7 @@ public class MultiValueTest {
         ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{e1});       // 1 poziom typu tablicowego
+        MultiValue mv = new SlimMultiValue(new Object[]{e1});       // 1 poziom typu tablicowego
 
         // oczekiwane wartosci
         assertArrayEquals(new ValueHolder[]{h1, h2}, mv.getArray(0));
@@ -240,7 +240,7 @@ public class MultiValueTest {
         Object[] values = {h1, h2};       // nie ma elementow tablicowych
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(values);
+        MultiValue mv = new SlimMultiValue(values);
 
         // indeksy, z ktorych nie mozna pobrac wartosci AbstractHolder
         int[] indices = {0, 1, 2, 3};
@@ -273,7 +273,7 @@ public class MultiValueTest {
         Object element3 = h4;
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{element1, element2, element3});
+        MultiValue mv = new SlimMultiValue(new Object[]{element1, element2, element3});
 
         // test
         Object[] unwrapped = mv.unwrap();
@@ -300,7 +300,7 @@ public class MultiValueTest {
         ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt - value(1) to tablica
-        MultiValue mv = new MultiValue(new Object[]{e1});
+        MultiValue mv = new SlimMultiValue(new Object[]{e1});
 
         // oczekiwany wynik
         String[] expectedResult = {"100", "200"};
@@ -324,7 +324,7 @@ public class MultiValueTest {
         ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt - value(1) to tablica
-        MultiValue mv = new MultiValue(new Object[]{e1});
+        MultiValue mv = new SlimMultiValue(new Object[]{e1});
 
         // oczekiwany wynik
         Date[] expectedResult = {d1, d2};
@@ -344,7 +344,7 @@ public class MultiValueTest {
         ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt - value(1) to tablica
-        MultiValue mv = new MultiValue(new Object[]{e1});
+        MultiValue mv = new SlimMultiValue(new Object[]{e1});
 
         // oczekiwany wynik
         Integer[] expectedResult = {100, 200};
@@ -364,7 +364,7 @@ public class MultiValueTest {
         ValueHolder[] e1 = {h1, h2};
 
         // testowany obiekt - value(1) to tablica
-        MultiValue mv = new MultiValue(new Object[]{e1});
+        MultiValue mv = new SlimMultiValue(new Object[]{e1});
 
         // oczekiwany wynik
         BigDecimal[] expectedResult = {BigDecimal.ZERO, BigDecimal.ONE};
@@ -381,7 +381,7 @@ public class MultiValueTest {
         ValueHolder h2 = new IntegerHolder(200L);
 
         // testowany obiekt - value(1) to tablica
-        MultiValue mv = new MultiValue(new Object[]{h1, h2});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2});
 
         // oczekiwany wynik
         String[] expectedResult = {"100", "200"};
@@ -398,7 +398,7 @@ public class MultiValueTest {
         ValueHolder h2 = new IntegerHolder(200L);
 
         // testowany obiekt - value(1) to tablica
-        MultiValue mv = new MultiValue(new Object[]{h1, h2});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2});
 
         // oczekiwany wynik
         BigDecimal[] expectedResult = {BigDecimal.valueOf(100), BigDecimal.valueOf(200)};
@@ -418,7 +418,7 @@ public class MultiValueTest {
         };
 
         // konfiguracja
-        MultiValue mv = new MultiValue(values);
+        MultiValue mv = new SlimMultiValue(values);
 
         // oczekiwany wynik
         String expectedResult = "[AB, [1, 2, 3], 1.23]";
@@ -442,7 +442,7 @@ public class MultiValueTest {
         Object[] values = {h1, h2, h3};
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(values);
+        MultiValue mv = new SlimMultiValue(values);
 
         // oczekiwane wartosci
         assertSame(h1, mv.nextHolder());
@@ -459,7 +459,7 @@ public class MultiValueTest {
         ValueHolder h3 = new IntegerHolder(9L);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1, h2, h3});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2, h3});
 
         // oczekiwane wartosci
         assertEquals("a", mv.nextString());
@@ -475,7 +475,7 @@ public class MultiValueTest {
         ValueHolder h2 = new NumberHolder(BigDecimal.TEN);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1, h2});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2});
 
         // oczekiwane wartosci
         assertEquals(BigDecimal.ONE, mv.nextBigDecimal());
@@ -495,7 +495,7 @@ public class MultiValueTest {
         ValueHolder h3 = new IntegerHolder(v3);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1, h2, h3});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2, h3});
 
         // oczekiwane wartosci
         assertEquals(v1, mv.nextDate());
@@ -510,7 +510,7 @@ public class MultiValueTest {
         ValueHolder h1 = new IntegerHolder(123L);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1});
 
         // oczekiwane wartosci
         assertEquals(new Integer(123), mv.nextInteger());
@@ -523,7 +523,7 @@ public class MultiValueTest {
         ValueHolder h1 = new IntegerHolder(123L);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1});
 
         // oczekiwane wartosci
         assertEquals(new Long(123), mv.getLong(0));
@@ -540,7 +540,7 @@ public class MultiValueTest {
         };
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(tests);
+        MultiValue mv = new SlimMultiValue(tests);
 
         // weryfikacja
         assertEquals(LetterType.A3, mv.nextEnum(LetterType.class));
@@ -561,7 +561,7 @@ public class MultiValueTest {
         ValueHolder[] e2 = {h3};
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
+        MultiValue mv = new SlimMultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
 
         // oczekiwane wartosci
         assertArrayEquals(e1, mv.nextArray());
@@ -581,7 +581,7 @@ public class MultiValueTest {
         ValueHolder[] e2 = {h2, h3};
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
+        MultiValue mv = new SlimMultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
 
         // oczekiwane wartosci
         assertArrayEquals(new String[]{"A", "B"}, mv.nextStringArray());
@@ -605,7 +605,7 @@ public class MultiValueTest {
         ValueHolder[] e2 = {h2, h3};
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
+        MultiValue mv = new SlimMultiValue(new Object[]{e1, e2});       // 2 poziomy typu tablicowego
 
         // oczekiwane wartosci
         assertArrayEquals(new BigDecimal[]{v0, v1}, mv.nextBigDecimalArray());
@@ -622,7 +622,7 @@ public class MultiValueTest {
         ValueHolder h2 = new DateHolder(d2);
 
         // testowany obiekt
-        MultiValue mv = new MultiValue(new Object[]{h1, h2});
+        MultiValue mv = new SlimMultiValue(new Object[]{h1, h2});
 
         // oczekiwane wartosci
         assertEquals(d1, mv.nextDate());
