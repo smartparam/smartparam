@@ -20,9 +20,9 @@ import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.ParamRepositoriesNaming;
 import org.smartparam.engine.core.function.FunctionCache;
-import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
@@ -49,7 +49,7 @@ public class PicoParamEngineFactoryTest {
     @Test
     public void shouldCreateParamEngineInstanceWithDefaults() {
         // given
-        ParamEngineConfig config = paramEngineConfig().build();
+        ParamEngineConfig config = paramEngineConfig().withAnnotationScanDisabled().build();
 
         // when
         ParamEngine engine = paramEngineFactory.createParamEngine(config);
@@ -62,6 +62,7 @@ public class PicoParamEngineFactoryTest {
     public void shouldCreateParamEngineInstanceWithTypesInjectedIntoRepositories() {
         // given
         ParamEngineConfig config = paramEngineConfig()
+                .withAnnotationScanDisabled()
                 .withFunctionInvoker("test", mock(FunctionInvoker.class))
                 .withFunctionRepository("test", 1, mock(FunctionRepository.class))
                 .withParameterRepositories(mock(ParamRepository.class))

@@ -31,22 +31,22 @@ import static org.smartparam.engine.core.parameter.NamedParamRepositoryBuilder.n
  */
 public class ParamRepositoriesNamingTest {
 
-    @Test
-    public void shouldCreateNamingOutOfListOfNamedParameters() {
-        // given
-        ParamRepository repository1 = mock(ParamRepository.class);
-        ParamRepository repository2 = mock(ParamRepository.class);
-        List<NamedParamRepository> namedRepositories = Arrays.asList(
-                namedRepository(repository1).named("repository-one").build(),
-                namedRepository(repository2).named("repository-two").build()
-        );
-
-        // when
-        ParamRepositoriesNaming repositoriesNaming = new ParamRepositoriesNaming(namedRepositories);
-
-        // then
-        assertThat(repositoriesNaming.find("repository-one")).isSameAs(repository1);
-        assertThat(repositoriesNaming.find(RepositoryName.from("repository-two"))).isSameAs(repository2);
-    }
+//    @Test
+//    public void shouldCreateNamingOutOfListOfNamedParameters() {
+//        // given
+//        ParamRepository repository1 = mock(ParamRepository.class);
+//        ParamRepository repository2 = mock(ParamRepository.class);
+//        List<NamedParamRepository> namedRepositories = Arrays.asList(
+//                namedRepository(repository1).named("repository-one").build(),
+//                namedRepository(repository2).named("repository-two").build()
+//        );
+//
+//        // when
+//        ParamRepositoriesNaming repositoriesNaming = new ParamRepositoriesNaming(namedRepositories);
+//
+//        // then
+//        assertThat(repositoriesNaming.find("repository-one")).isSameAs(repository1);
+//        assertThat(repositoriesNaming.find(RepositoryName.from("repository-two"))).isSameAs(repository2);
+//    }
 
 }
