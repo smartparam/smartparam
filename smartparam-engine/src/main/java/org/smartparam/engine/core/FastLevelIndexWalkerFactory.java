@@ -13,13 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index;
+package org.smartparam.engine.core;
+
+import org.smartparam.engine.core.index.FastLevelIndexWalker;
+import org.smartparam.engine.core.index.LevelIndexWalker;
+import org.smartparam.engine.core.prepared.PreparedEntry;
+import org.smartparam.engine.core.prepared.PreparedParameter;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface LevelIndexWalkerFactory<T> {
+class FastLevelIndexWalkerFactory implements LevelIndexWalkerFactory<PreparedEntry> {
 
-    LevelIndexWalker<T> create(LevelIndex<T> index, String... values);
+    @Override
+    public LevelIndexWalker<PreparedEntry> create(PreparedParameter parameter, String... levelValues) {
+        return new FastLevelIndexWalker<PreparedEntry>(parameter.getIndex(), levelValues);
+    }
+
 }

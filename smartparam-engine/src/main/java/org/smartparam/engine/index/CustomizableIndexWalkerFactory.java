@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.smartparam.engine.index;
 
-package org.smartparam.engine.core;
-
-import org.smartparam.engine.core.index.IndexTraversalOverrides;
+import org.smartparam.engine.core.index.LevelIndexWalker;
+import org.smartparam.engine.core.LevelIndexWalkerFactory;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.matcher.MatcherRepository;
+import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedLevel;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 
@@ -26,15 +27,23 @@ import org.smartparam.engine.core.prepared.PreparedParameter;
  *
  * @author Adam Dubiel
  */
-public class IndexTraversalOverridesFactory {
+public class CustomizableIndexWalkerFactory implements LevelIndexWalkerFactory<PreparedEntry> {
 
     private final MatcherRepository matcherRepository;
 
-    public IndexTraversalOverridesFactory(MatcherRepository matcherRepository) {
+    private final CustomizableLevelIndexWalkerConfig config;
+
+    CustomizableIndexWalkerFactory(MatcherRepository matcherRepository, CustomizableLevelIndexWalkerConfig walkerConfig) {
         this.matcherRepository = matcherRepository;
+        this.config = walkerConfig;
     }
 
-    public IndexTraversalOverrides create(PreparedParameter parameter, ParamEvaluationOptions options) {
+    @Override
+    public LevelIndexWalker<PreparedEntry> create(PreparedParameter preparedParameter, String... levelValues) {
+        return new CustomizableLevelIndexWalker<PreparedEntry>(convert(preparedParameter), preparedParameter.getIndex(), levelValues);
+    }
+
+    private IndexTraversalOverrides convert(PreparedParameter parameter) {
         int totalDepth = parameter.getInputLevelsCount();
 
         boolean[] greedinessMatrix = new boolean[totalDepth];
@@ -48,13 +57,12 @@ public class IndexTraversalOverridesFactory {
             }
 
             levelName = level.getName();
-            greedinessMatrix[depth] = options.greedy(levelName);
-            overridenMatchers[depth] = options.overrideMatcher(levelName) ? matcherRepository.getMatcher(options.overridenMatcher(levelName)) : null;
+            greedinessMatrix[depth] = config.greedy(levelName);
+            overridenMatchers[depth] = config.overrideMatcher(levelName) ? matcherRepository.getMatcher(config.overridenMatcher(levelName)) : null;
 
             depth++;
         }
 
         return new IndexTraversalOverrides(greedinessMatrix, overridenMatchers);
     }
-
 }

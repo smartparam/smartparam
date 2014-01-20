@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index;
+package org.smartparam.engine.index;
 
 import org.smartparam.engine.core.matcher.Matcher;
 

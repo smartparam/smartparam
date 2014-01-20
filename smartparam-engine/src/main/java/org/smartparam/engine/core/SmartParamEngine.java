@@ -28,11 +28,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.function.Function;
-import org.smartparam.engine.core.index.LevelIndexWalkerFactory;
-import org.smartparam.engine.core.index.walker.FastLevelIndexWalker;
 import org.smartparam.engine.core.output.factory.ParamValueFactory;
 import org.smartparam.engine.core.prepared.InputValueNormalizer;
 import org.smartparam.engine.types.string.StringHolder;
@@ -54,7 +51,7 @@ public class SmartParamEngine implements ParamEngine {
 
     private final ParamValueFactory paramValueFactory;
 
-    private final LevelIndexWalkerFactory<PreparedEntry> fastIndexWalkerFactory = new FastLevelIndexWalker.Factory<PreparedEntry>();
+    private final LevelIndexWalkerFactory<PreparedEntry> fastIndexWalkerFactory = new FastLevelIndexWalkerFactory();
 
     public SmartParamEngine(ParamPreparer paramPreparer,
             FunctionManager functionManager,
@@ -140,7 +137,7 @@ public class SmartParamEngine implements ParamEngine {
         return null;
     }
 
-    void evaluateLevelValues(PreparedParameter param, ParamContext ctx) {
+    private void evaluateLevelValues(PreparedParameter param, ParamContext ctx) {
         logger.trace("evaluating level values");
 
         PreparedLevel[] levels = param.getLevels();
@@ -183,8 +180,7 @@ public class SmartParamEngine implements ParamEngine {
         List<PreparedEntry> entries;
 
         if (param.isCacheable()) {
-            LevelIndex<PreparedEntry> index = param.getIndex();
-            entries = indexWalkerFactory.create(index, levelValues).find();
+            entries = indexWalkerFactory.create(param, levelValues).find();
         } else {
             entries = paramPreparer.findEntries(param.getName(), levelValues);
         }

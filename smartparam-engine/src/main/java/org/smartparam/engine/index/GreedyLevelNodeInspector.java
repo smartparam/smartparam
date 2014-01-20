@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index.walker;
+package org.smartparam.engine.index;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,51 +28,41 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class FastLevelNodeInspector<T> implements LevelNodeInspector<T> {
+public class GreedyLevelNodeInspector<T> implements LevelNodeInspector<T> {
 
     private final CustomizableLevelIndexWalker<T> indexCrawler;
 
-    public FastLevelNodeInspector(CustomizableLevelIndexWalker<T> indexCrawler) {
+    public GreedyLevelNodeInspector(CustomizableLevelIndexWalker<T> indexCrawler) {
         this.indexCrawler = indexCrawler;
     }
 
     @Override
     public List<LevelNode<T>> inspect(LevelNode<T> currentNode, String levelValue, int currentDepth) {
+        List<LevelNode<T>> matchedNodes = new ArrayList<LevelNode<T>>();
+
         Matcher matcher = indexCrawler.matcherFor(currentDepth);
         Type<?> type = indexCrawler.typeFor(currentDepth);
 
-        List<LevelNode<T>> matchedLeafs = null;
-
         if (currentNode.getChildren() != null) {
-            if (matcher == null) {
-                LevelNode<T> matchedLeaf = currentNode.getChildren().get(levelValue);
-                if (matchedLeaf != null) {
-                    List<LevelNode<T>> leafs = indexCrawler.inspect(matchedLeaf, currentDepth + 1);
-                    if (leafs != null) {
-                        return leafs;
-                    }
-                }
-            }
-
-            matchedLeafs = match(currentNode, levelValue, matcher, type, currentDepth);
+            matchedNodes.addAll(match(currentNode, levelValue, matcher, type, currentDepth));
         }
 
-        if (matchedLeafs == null && currentNode.getDefaultNode() != null) {
-            matchedLeafs = indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1);
+        if (currentNode.getDefaultNode() != null) {
+            matchedNodes.addAll(indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1));
         }
 
-        return matchedLeafs != null ? matchedLeafs : new ArrayList<LevelNode<T>>();
+        return matchedNodes;
     }
 
     private List<LevelNode<T>> match(LevelNode<T> currentNode, String val, Matcher matcher, Type<?> type, int currentDepth) {
-        List<LevelNode<T>> leafs = null;
+        List<LevelNode<T>> leafs = new ArrayList<LevelNode<T>>();
         Iterator<Map.Entry<String, LevelNode<T>>> childrenIterator = currentNode.getChildren().entrySet().iterator();
 
         Map.Entry<String, LevelNode<T>> entry;
-        while (leafs == null && childrenIterator.hasNext()) {
+        while (childrenIterator.hasNext()) {
             entry = childrenIterator.next();
             if (patternMatches(val, matcher, type, entry.getKey())) {
-                leafs = traverseChildNode(entry.getValue(), currentDepth);
+                leafs.addAll(traverseChildNode(entry.getValue(), currentDepth));
             }
         }
 
@@ -93,5 +83,4 @@ public class FastLevelNodeInspector<T> implements LevelNodeInspector<T> {
     private List<LevelNode<T>> traverseChildNode(LevelNode<T> child, int currentDepth) {
         return indexCrawler.inspect(child, currentDepth + 1);
     }
-
 }

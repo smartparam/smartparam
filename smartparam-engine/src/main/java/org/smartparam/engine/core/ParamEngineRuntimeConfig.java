@@ -23,6 +23,7 @@ import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.type.Type;
 
@@ -47,6 +48,8 @@ public final class ParamEngineRuntimeConfig {
 
     private final Map<String, FunctionRepository> functionRepositories;
 
+    private final MatcherRepository matcherRepository;
+
     private final List<NamedParamRepository> paramRepositories;
 
     private final ParamRepositoriesNaming paramRepositoriesNaming;
@@ -61,14 +64,16 @@ public final class ParamEngineRuntimeConfig {
             List<NamedParamRepository> paramRepositories,
             Map<String, FunctionInvoker> invokers,
             Map<String, Type<?>> types,
-            Map<String, Matcher> matchers) {
+            MatcherRepository matcherRepository) {
         this.functionCache = functionCache;
         this.paramCache = paramCache;
         this.functionRepositories = Collections.unmodifiableMap(functionRepositories);
         this.paramRepositories = Collections.unmodifiableList(paramRepositories);
         this.invokers = Collections.unmodifiableMap(invokers);
         this.types = Collections.unmodifiableMap(types);
-        this.matchers = Collections.unmodifiableMap(matchers);
+        this.matchers = Collections.unmodifiableMap(matcherRepository.registeredItems());
+
+        this.matcherRepository = matcherRepository;
 
         this.paramRepositoriesNaming = new ParamRepositoriesNaming(paramRepositories);
     }
@@ -79,6 +84,10 @@ public final class ParamEngineRuntimeConfig {
 
     public PreparedParamCache getParamCache() {
         return paramCache;
+    }
+
+    public MatcherRepository getMatcherRepository() {
+        return matcherRepository;
     }
 
     public Map<String, FunctionRepository> getFunctionRepositories() {

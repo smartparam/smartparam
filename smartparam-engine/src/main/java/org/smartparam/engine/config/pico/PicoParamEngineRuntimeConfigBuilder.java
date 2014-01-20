@@ -49,7 +49,7 @@ public class PicoParamEngineRuntimeConfigBuilder implements ParamEngineRuntimeCo
                 engineContainer.getComponent(ParameterProvider.class).registeredItems(),
                 engineContainer.getComponent(InvokerRepository.class).registeredItems(),
                 engineContainer.getComponent(TypeRepository.class).registeredItems(),
-                engineContainer.getComponent(MatcherRepository.class).registeredItems());
+                engineContainer.getComponent(MatcherRepository.class));
 
     }
 

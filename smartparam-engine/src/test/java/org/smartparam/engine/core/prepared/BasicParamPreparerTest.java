@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.parameter.level.Level;
-import org.smartparam.engine.core.index.walker.FastLevelIndexWalker;
+import org.smartparam.engine.core.index.FastLevelIndexWalker;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.core.parameter.ParameterFromRepositoryBuilder.repositoryParameter;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;

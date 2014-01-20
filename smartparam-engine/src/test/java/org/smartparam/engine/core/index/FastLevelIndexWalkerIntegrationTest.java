@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index.walker;
+package org.smartparam.engine.core.index;
 
-import org.smartparam.engine.core.index.walker.FastLevelIndexWalker;
 import java.util.List;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.matcher.Matcher;

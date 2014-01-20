@@ -38,7 +38,6 @@ import org.smartparam.engine.annotated.repository.ScanningTypeRepository;
 import org.smartparam.engine.core.function.BasicFunctionManager;
 import org.smartparam.engine.annotated.repository.ScanningFunctionProvider;
 import org.smartparam.engine.config.pico.ComponentDefinition;
-import org.smartparam.engine.core.IndexTraversalOverridesFactory;
 import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.function.FunctionManager;
 import org.smartparam.engine.core.function.FunctionProvider;
@@ -94,7 +93,6 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(component(TypeRepository.class, ScanningTypeRepository.class));
         components.add(component(MatcherRepository.class, ScanningMatcherRepository.class));
         components.add(component(ParamValueFactory.class, ParamValueFactory.class));
-        components.add(component(IndexTraversalOverridesFactory.class, IndexTraversalOverridesFactory.class));
     }
 
     public List<NamedParamRepository> getParameterRepositories() {

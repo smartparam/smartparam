@@ -13,17 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.core.index.walker;
+package org.smartparam.engine.core.index;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.core.index.LevelIndex;
-import org.smartparam.engine.core.index.LevelIndexWalker;
-import org.smartparam.engine.core.index.LevelIndexWalkerFactory;
-import org.smartparam.engine.core.index.LevelNode;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.core.type.Type;
 
 /**
@@ -40,13 +35,6 @@ public class FastLevelIndexWalker<T> implements LevelIndexWalker<T> {
     public FastLevelIndexWalker(LevelIndex<T> index, String... levelValues) {
         this.index = index;
         this.levelValues = levelValues;
-    }
-
-    public static class Factory<T> implements LevelIndexWalkerFactory<T> {
-        @Override
-        public LevelIndexWalker<T> create(LevelIndex<T> index, String... levelValues) {
-            return new FastLevelIndexWalker<T>(index, levelValues);
-        }
     }
 
     @Override
