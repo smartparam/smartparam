@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 /**
  * @author Przemek Hertel
  */
-public class SlimMultiValueTest {
+public class DefaultMultiValueTest {
 
     @Test
     public void testGetValue() {
