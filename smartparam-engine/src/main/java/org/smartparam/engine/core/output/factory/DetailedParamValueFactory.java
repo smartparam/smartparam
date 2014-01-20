@@ -15,9 +15,12 @@
  */
 package org.smartparam.engine.core.output.factory;
 
-import org.smartparam.engine.core.output.FatMultiValue;
-import org.smartparam.engine.core.output.entry.MapEntryFactory;
+import java.util.List;
+import org.smartparam.engine.core.output.DetailedMultiValue;
+import org.smartparam.engine.core.output.DetailedParamValue;
+import org.smartparam.engine.core.output.DetailedParamValueImpl;
 import org.smartparam.engine.core.output.entry.MapEntry;
+import org.smartparam.engine.core.output.entry.MapEntryFactory;
 import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 
@@ -27,18 +30,24 @@ import static org.smartparam.engine.core.output.factory.ParameterEntryKeyExtract
  *
  * @author Adam Dubiel
  */
-public class FatMultiValueFactory implements MultiValueFactory<FatMultiValue> {
+public class DetailedParamValueFactory extends AbstractParamValueFactory<DetailedMultiValue> implements ParamValueFactory {
 
     private final MapEntryFactory entryMapFactory;
 
-    public FatMultiValueFactory(MapEntryFactory entryMapFactory) {
+    public DetailedParamValueFactory(MapEntryFactory entryMapFactory) {
         this.entryMapFactory = entryMapFactory;
     }
 
     @Override
-    public FatMultiValue create(PreparedParameter parameter, PreparedEntry preparedEntry, Object[] values) {
+    public DetailedParamValue create(PreparedParameter parameter, PreparedEntry[] preparedEntries) {
+        List<DetailedMultiValue> rows = createRows(parameter, preparedEntries);
+        return new DetailedParamValueImpl(rows, parameter.getSourceRepository());
+    }
+
+    @Override
+    protected DetailedMultiValue createMultiValue(PreparedParameter parameter, PreparedEntry preparedEntry, Object[] values) {
         MapEntry entry = entryMapFactory.asMap(parameter, preparedEntry);
-        return new FatMultiValue(entry, extractEntryKey(preparedEntry), values, parameter.getLevelNameMap());
+        return new DetailedMultiValue(entry, extractEntryKey(preparedEntry), values, parameter.getLevelNameMap());
     }
 
 }

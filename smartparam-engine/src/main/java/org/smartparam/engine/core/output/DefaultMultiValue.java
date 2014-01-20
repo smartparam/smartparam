@@ -27,7 +27,7 @@ import org.smartparam.engine.util.Printer;
  *
  * @author Adam Dubiel
  */
-public class SlimMultiValue implements MultiValue {
+public class DefaultMultiValue implements MultiValue {
 
     private static final int INLINE_TO_STRING_LENGTH = 100;
 
@@ -45,16 +45,16 @@ public class SlimMultiValue implements MultiValue {
      */
     private int last = 0;
 
-    public SlimMultiValue(Object[] values) {
+    public DefaultMultiValue(Object[] values) {
         this.values = Arrays.copyOf(values, values.length);
     }
 
-    public SlimMultiValue(Object[] values, Map<String, Integer> indexMap) {
+    public DefaultMultiValue(Object[] values, Map<String, Integer> indexMap) {
         this(values);
         this.indexMap = indexMap;
     }
 
-    public SlimMultiValue(ParameterEntryKey key, Object[] values, Map<String, Integer> indexMap) {
+    public DefaultMultiValue(ParameterEntryKey key, Object[] values, Map<String, Integer> indexMap) {
         this(values, indexMap);
         this.key = key;
     }

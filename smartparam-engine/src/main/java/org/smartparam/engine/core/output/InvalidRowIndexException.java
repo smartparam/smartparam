@@ -15,9 +15,7 @@
  */
 package org.smartparam.engine.core.output;
 
-import java.util.List;
 import org.smartparam.engine.core.exception.SmartParamException;
-
 
 /**
  *
@@ -26,9 +24,9 @@ import org.smartparam.engine.core.exception.SmartParamException;
 @SuppressWarnings("serial")
 public class InvalidRowIndexException extends SmartParamException {
 
-    InvalidRowIndexException(int rowIndex, List<MultiValue> rows) {
+    InvalidRowIndexException(int rowIndex, int rowsSize) {
         super("INVALID_ROW_INDEX",
-                String.format("Trying to get non-existing row: %d. Available rows: %d..%d", rowIndex, 0, rows.size() - 1));
+                String.format("Trying to get non-existing row: %d. Available rows: %d..%d", rowIndex, 0, rowsSize - 1));
     }
 
 }

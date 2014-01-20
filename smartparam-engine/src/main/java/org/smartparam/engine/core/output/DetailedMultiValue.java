@@ -15,34 +15,29 @@
  */
 package org.smartparam.engine.core.output;
 
-import java.util.Iterator;
-import java.util.List;
-import org.smartparam.engine.core.repository.RepositoryName;
+import java.util.Map;
+import org.smartparam.engine.core.output.entry.MapEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class FatParamValue extends AbstractParamValue<FatMultiValue> {
+public class DetailedMultiValue extends DefaultMultiValue implements MultiValue {
 
-    public FatParamValue(List<FatMultiValue> rows, RepositoryName sourceRepository) {
-        super(rows, sourceRepository);
+    private final MapEntry entry;
+
+    public DetailedMultiValue(MapEntry entry, Object[] values, Map<String, Integer> indexMap) {
+        super(values, indexMap);
+        this.entry = entry;
     }
 
-    public List<FatMultiValue> fatRows() {
-        return fatRows();
+    public DetailedMultiValue(MapEntry entry, ParameterEntryKey key, Object[] values, Map<String, Integer> indexMap) {
+        super(key, values, indexMap);
+        this.entry = entry;
     }
 
-    public Iterable<FatMultiValue> fatIterator() {
-        return new FatMultiValueIterable();
+    public MapEntry entry() {
+        return entry;
     }
-
-    private class FatMultiValueIterable implements Iterable<FatMultiValue> {
-
-        @Override
-        public Iterator<FatMultiValue> iterator() {
-            return rawRows().iterator();
-        }
-    }
-
 }

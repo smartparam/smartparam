@@ -67,6 +67,6 @@ public class PreparedEntry {
     }
 
     public String getLevel(int k) {
-        return (k >= 1 && k <= levels.length) ? levels[k - 1] : null;
+        return (k >= 0 && k < levels.length) ? levels[k] : null;
     }
 }

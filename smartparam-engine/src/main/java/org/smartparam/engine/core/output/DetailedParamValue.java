@@ -15,29 +15,26 @@
  */
 package org.smartparam.engine.core.output;
 
-import java.util.Map;
 import org.smartparam.engine.core.output.entry.MapEntry;
-import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class FatMultiValue extends SlimMultiValue implements MultiValue {
+public interface DetailedParamValue extends ParamValue {
 
-    private final MapEntry entry;
+    /**
+     * Return resulting matrix row.
+     */
+    DetailedMultiValue detailedRow(int rowNo);
 
-    public FatMultiValue(MapEntry entry, Object[] values, Map<String, Integer> indexMap) {
-        super(values, indexMap);
-        this.entry = entry;
-    }
+    /**
+     * Returns first row of matrix.
+     */
+    DetailedMultiValue detailedRow();
 
-    public FatMultiValue(MapEntry entry, ParameterEntryKey key, Object[] values, Map<String, Integer> indexMap) {
-        super(key, values, indexMap);
-        this.entry = entry;
-    }
+    Iterable<DetailedMultiValue> detailedRows();
 
-    public MapEntry entry() {
-        return entry;
-    }
+    Iterable<MapEntry> detailedEntries();
+
 }

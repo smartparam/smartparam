@@ -43,7 +43,8 @@ import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
 import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.output.entry.MapEntryFactory;
-import org.smartparam.engine.core.output.factory.ParamValueFactory;
+import org.smartparam.engine.core.output.factory.DefaultParamValueFactory;
+import org.smartparam.engine.core.output.factory.DetailedParamValueFactory;
 import org.smartparam.engine.core.parameter.BasicParameterProvider;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParameterProvider;
@@ -94,9 +95,10 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(component(ParameterProvider.class, BasicParameterProvider.class));
         components.add(component(TypeRepository.class, ScanningTypeRepository.class));
         components.add(component(MatcherRepository.class, ScanningMatcherRepository.class));
-        components.add(component(ParamValueFactory.class, ParamValueFactory.class));
         components.add(component(MatcherDecoderRepository.class, ScanningMatcherDecoderRepository.class));
         components.add(component(MapEntryFactory.class, MapEntryFactory.class));
+        components.add(component(DefaultParamValueFactory.class, DefaultParamValueFactory.class));
+        components.add(component(DetailedParamValueFactory.class, DetailedParamValueFactory.class));
     }
 
     public List<NamedParamRepository> getParameterRepositories() {

@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.output.MultiValue;
-import org.smartparam.engine.core.output.SlimMultiValue;
+import org.smartparam.engine.core.output.DefaultMultiValue;
 import org.smartparam.engine.core.type.ObjectHolder;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.types.bool.BooleanHolder;
@@ -49,7 +49,7 @@ public final class MultiValueBuilder {
     }
 
     public MultiValue build() {
-        return new SlimMultiValue(values.toArray(), indexMap);
+        return new DefaultMultiValue(values.toArray(), indexMap);
     }
 
     public MultiValueBuilder withNamedLevels(Map<String, Integer> indexMap) {

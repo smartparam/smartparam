@@ -16,6 +16,7 @@
 package org.smartparam.engine.core.output;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.smartparam.engine.core.repository.RepositoryName;
 
@@ -23,13 +24,32 @@ import org.smartparam.engine.core.repository.RepositoryName;
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public class DefaultParamValue extends AbstractParamValue<MultiValue> {
+public class DefaultParamValue extends AbstractParamValue {
+
+    private final List<MultiValue> rows;
 
     public DefaultParamValue(List<MultiValue> rows, RepositoryName sourceRepository) {
-        super(rows, sourceRepository);
+        super(sourceRepository);
+        this.rows = rows;
     }
 
     public static ParamValue empty() {
         return new DefaultParamValue(new ArrayList<MultiValue>(), null);
     }
+
+    @Override
+    protected MultiValue rawRowAt(int rowNo) {
+        return rows.get(rowNo);
+    }
+
+    @Override
+    protected List<? extends MultiValue> rawRows() {
+        return rows;
+    }
+
+    @Override
+    public Iterator<MultiValue> iterator() {
+        return rows.iterator();
+    }
+
 }

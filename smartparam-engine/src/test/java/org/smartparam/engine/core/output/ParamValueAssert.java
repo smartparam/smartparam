@@ -16,8 +16,6 @@
 package org.smartparam.engine.core.output;
 
 import org.assertj.core.api.AbstractAssert;
-import org.smartparam.engine.core.output.MultiValue;
-import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
@@ -47,7 +45,7 @@ public class ParamValueAssert extends AbstractAssert<ParamValueAssert, ParamValu
 
     public ParamValueAssert hasRowWithValues(Object... values) {
         boolean anyMatches = false;
-        for(MultiValue row : actual.rows()) {
+        for(MultiValue row : actual) {
             if(rowValuesMatch(row, values)) {
                 anyMatches = true;
                 break;
@@ -86,7 +84,7 @@ public class ParamValueAssert extends AbstractAssert<ParamValueAssert, ParamValu
     }
 
     public ParamValueAssert hasRows(int count) {
-        ParamEngineAssertions.assertThat(actual.rows()).hasSize(count);
+        ParamEngineAssertions.assertThat(actual.size()).isEqualTo(count);
         return this;
     }
 }

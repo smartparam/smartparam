@@ -40,9 +40,12 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import org.assertj.core.api.Assertions;
+import org.smartparam.engine.core.output.DetailedParamValue;
 
 import org.smartparam.engine.core.output.GettingKeyNotIdentifiableParameterException;
 import org.smartparam.engine.core.output.GettingWrongTypeException;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
 import static org.mockito.Mockito.*;
@@ -241,6 +244,32 @@ public class ParamEngineIntegrationTest {
     }
 
     @Test
+    public void shouldReturnDetailedValuesThatContainWholeParamEntries() {
+        // given
+        Level[] levels = new Level[]{
+            level().withName("level1").withType("string").build(),
+            level().withName("level2").withType("string").build(),
+            level().withName("level3").withType("string").build(),
+            level().withName("output").withType("integer").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("A", "B", "C", "11").build(),
+            parameterEntry().withLevels("C", "B", "D", "12").build(),};
+        Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(3).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        DetailedParamValue value = engine.getDetailed("parameter", LevelValues.from("A", "B", "C"));
+
+        // then
+        MapEntry details = value.detailedRow().entry();
+        assertThat(details.get("level1")).isEqualTo("A");
+        assertThat(details.get("level2")).isEqualTo("B");
+        assertThat(details.get("level3")).isEqualTo("C");
+        assertThat(details.get("output")).isEqualTo(11L);
+    }
+
+    @Test
     public void shouldMatchNullLevelValues() {
         // given
         Level[] levels = new Level[]{
@@ -420,10 +449,12 @@ public class ParamEngineIntegrationTest {
 
         // when
         ParamValue value = engine.get("parameter", "A");
-        catchException(value).key();
-
-        // then
-        assertThat(caughtException()).isInstanceOf(GettingKeyNotIdentifiableParameterException.class);
+        try {
+            value.key();
+            Assertions.fail("Expected GettingKeyNotIdentifiableParameterException.");
+        } catch (GettingKeyNotIdentifiableParameterException exception) {
+            // then
+        }
     }
 
     @Test

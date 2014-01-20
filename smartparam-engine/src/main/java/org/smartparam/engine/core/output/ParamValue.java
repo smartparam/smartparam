@@ -51,11 +51,6 @@ public interface ParamValue extends Iterable<MultiValue> {
     MultiValue row();
 
     /**
-     * Return all rows of matrix.
-     */
-    List<MultiValue> rows();
-
-    /**
      * Return name of repository from which this parameter was loaded.
      */
     RepositoryName sourceRepository();

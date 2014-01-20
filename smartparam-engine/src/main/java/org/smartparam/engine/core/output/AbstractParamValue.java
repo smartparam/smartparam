@@ -27,49 +27,35 @@ import org.smartparam.engine.util.Printer;
  *
  * @author Adam Dubiel
  */
-abstract class AbstractParamValue<M extends MultiValue> implements ParamValue {
-
-    private final List<M> rows = new ArrayList<M>();
+abstract class AbstractParamValue implements ParamValue {
 
     private final RepositoryName sourceRepository;
 
-    AbstractParamValue(List<M> rows, RepositoryName sourceRepository) {
-        this.rows.addAll(rows);
+    AbstractParamValue(RepositoryName sourceRepository) {
         this.sourceRepository = sourceRepository;
     }
 
+    protected abstract MultiValue rawRowAt(int rowNo);
+
+    protected abstract List<? extends MultiValue> rawRows();
+
     @Override
     public boolean isEmpty() {
-        return rows.isEmpty();
+        return rawRows().isEmpty();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public MultiValue row(int rowNo) {
-        if (rowNo >= 0 && rowNo < size()) {
-            return rows.get(rowNo);
+        if (rowNo >= 0 && rowNo < rawRows().size()) {
+            return rawRowAt(rowNo);
         }
-        throw new InvalidRowIndexException(rowNo, (List<MultiValue>) rows);
+        throw new InvalidRowIndexException(rowNo, rawRows().size());
     }
 
     @Override
     public MultiValue row() {
         return row(0);
-    }
-
-    protected List<M> rawRows() {
-        return Collections.unmodifiableList(rows);
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<MultiValue> rows() {
-        return (List<MultiValue>) Collections.unmodifiableList(rows);
-    }
-
-    @Override
-    public Iterator<MultiValue> iterator() {
-        return rows().iterator();
     }
 
     @Override
@@ -224,12 +210,12 @@ abstract class AbstractParamValue<M extends MultiValue> implements ParamValue {
 
     @Override
     public int size() {
-        return rows.size();
+        return rawRows().size();
     }
 
     @Override
     public String toString() {
-        return Printer.print(rows, "ParamValue", 0, new MultiValueInlineFormatter());
+        return Printer.print(rawRows(), "ParamValue", 0, new MultiValueInlineFormatter());
     }
 
     static final class MultiValueInlineFormatter implements Formatter {

@@ -13,19 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.smartparam.engine.core.output.factory;
 
-import org.smartparam.engine.core.output.MultiValue;
+import java.util.List;
+import org.smartparam.engine.core.output.*;
 import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedParameter;
+
+import static org.smartparam.engine.core.output.factory.ParameterEntryKeyExtractor.extractEntryKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface MultiValueFactory<M extends MultiValue> {
+public class DefaultParamValueFactory extends AbstractParamValueFactory<MultiValue> implements ParamValueFactory {
 
-    M create(PreparedParameter parameter, PreparedEntry preparedEntry, Object[] values);
+    @Override
+    public ParamValue create(PreparedParameter parameter, PreparedEntry[] preparedEntries) {
+        List<MultiValue> rows = createRows(parameter, preparedEntries);
+        return new DefaultParamValue(rows, parameter.getSourceRepository());
+    }
+
+    @Override
+    protected MultiValue createMultiValue(PreparedParameter parameter, PreparedEntry preparedEntry, Object[] values) {
+        return new DefaultMultiValue(extractEntryKey(preparedEntry), values, parameter.getLevelNameMap());
+    }
 
 }

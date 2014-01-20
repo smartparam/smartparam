@@ -28,4 +28,8 @@ public class LevelValues extends BaseParamContext {
     public LevelValues(Object... values) {
         setLevelValues(values);
     }
+
+    public static LevelValues from(Object... values) {
+        return new LevelValues(values);
+    }
 }

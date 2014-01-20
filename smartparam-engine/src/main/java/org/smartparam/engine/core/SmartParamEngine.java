@@ -30,6 +30,9 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.output.DetailedParamValue;
+import org.smartparam.engine.core.output.factory.DefaultParamValueFactory;
+import org.smartparam.engine.core.output.factory.DetailedParamValueFactory;
 import org.smartparam.engine.core.output.factory.ParamValueFactory;
 import org.smartparam.engine.core.prepared.InputValueNormalizer;
 import org.smartparam.engine.types.string.StringHolder;
@@ -49,18 +52,22 @@ public class SmartParamEngine implements ParamEngine {
 
     private final FunctionManager functionManager;
 
-    private final ParamValueFactory paramValueFactory;
+    private final DefaultParamValueFactory defaultParamValueFactory;
+
+    private final DetailedParamValueFactory detailedParamValueFactory;
 
     private final LevelIndexWalkerFactory fastIndexWalkerFactory = new FastLevelIndexWalkerFactory();
 
-    public SmartParamEngine(ParamPreparer paramPreparer,
+    public SmartParamEngine(ParamEngineRuntimeConfigBuilder configBuilder,
+            ParamPreparer paramPreparer,
             FunctionManager functionManager,
-            ParamValueFactory paramValueFactory,
-            ParamEngineRuntimeConfigBuilder configBuilder) {
+            DefaultParamValueFactory defaultParamValueFactory,
+            DetailedParamValueFactory detailedParamValueFactory) {
+        this.configBuilder = configBuilder;
         this.paramPreparer = paramPreparer;
         this.functionManager = functionManager;
-        this.paramValueFactory = paramValueFactory;
-        this.configBuilder = configBuilder;
+        this.defaultParamValueFactory = defaultParamValueFactory;
+        this.detailedParamValueFactory = detailedParamValueFactory;
     }
 
     @Override
@@ -75,13 +82,27 @@ public class SmartParamEngine implements ParamEngine {
 
     @Override
     public ParamValue get(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamContext context) {
+        return get(parameterName, customWalkerFactory, defaultParamValueFactory, context);
+    }
+
+    @Override
+    public DetailedParamValue getDetailed(String parameterName, ParamContext context) {
+        return getDetailed(parameterName, fastIndexWalkerFactory, context);
+    }
+
+    @Override
+    public DetailedParamValue getDetailed(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamContext context) {
+        return (DetailedParamValue) get(parameterName, customWalkerFactory, detailedParamValueFactory, context);
+    }
+
+    private ParamValue get(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamValueFactory paramValueFactory, ParamContext context) {
         logger.debug("enter get[{}], walker={}, ctx={}", parameterName, customWalkerFactory.getClass().getSimpleName(), context);
 
         // obtain prepared parameter
         PreparedParameter param = getPreparedParameter(parameterName);
 
         // find entries matching given context
-        PreparedEntry[] rows = findParameterEntries(fastIndexWalkerFactory, param, context);
+        PreparedEntry[] rows = findParameterEntries(customWalkerFactory, param, context);
 
         if (rows.length == 0) {
             if (param.isNullable()) {

@@ -66,9 +66,8 @@ public class PreparedEntryTest {
         PreparedEntry entry = new PreparedEntry(parameterEntry().withLevels("A", "B").build());
 
         // testy
-        assertEquals("A", entry.getLevel(1));
-        assertEquals("B", entry.getLevel(2));
-        assertEquals(null, entry.getLevel(3));
-        assertEquals(null, entry.getLevel(0));
+        assertEquals("A", entry.getLevel(0));
+        assertEquals("B", entry.getLevel(1));
+        assertEquals(null, entry.getLevel(2));
     }
 }
