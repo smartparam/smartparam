@@ -24,11 +24,11 @@ import org.smartparam.engine.core.prepared.PreparedParameter;
  *
  * @author Adam Dubiel
  */
-class FastLevelIndexWalkerFactory implements LevelIndexWalkerFactory<PreparedEntry> {
+class FastLevelIndexWalkerFactory implements LevelIndexWalkerFactory {
 
     @Override
-    public LevelIndexWalker<PreparedEntry> create(PreparedParameter parameter, String... levelValues) {
-        return new FastLevelIndexWalker<PreparedEntry>(parameter.getIndex(), levelValues);
+    public LevelIndexWalker<PreparedEntry> create(PreparedParameter preparedParameter, String... values) {
+        return new FastLevelIndexWalker<PreparedEntry>(preparedParameter.getIndex(), values);
     }
 
 }

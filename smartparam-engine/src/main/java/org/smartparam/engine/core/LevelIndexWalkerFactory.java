@@ -16,13 +16,14 @@
 package org.smartparam.engine.core;
 
 import org.smartparam.engine.core.index.LevelIndexWalker;
+import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface LevelIndexWalkerFactory<T> {
+public interface LevelIndexWalkerFactory {
 
-    LevelIndexWalker<T> create(PreparedParameter preparedParameter, String... values);
+    LevelIndexWalker<PreparedEntry> create(PreparedParameter preparedParameter, String... values);
 }

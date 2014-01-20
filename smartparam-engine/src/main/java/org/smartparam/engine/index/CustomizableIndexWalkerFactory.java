@@ -27,7 +27,7 @@ import org.smartparam.engine.core.prepared.PreparedParameter;
  *
  * @author Adam Dubiel
  */
-public class CustomizableIndexWalkerFactory implements LevelIndexWalkerFactory<PreparedEntry> {
+public class CustomizableIndexWalkerFactory implements LevelIndexWalkerFactory {
 
     private final MatcherRepository matcherRepository;
 

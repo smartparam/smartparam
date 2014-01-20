@@ -38,6 +38,8 @@ public interface ParamEngine {
      */
     ParamValue get(String parameterName, ParamContext context);
 
+    ParamValue get(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamContext context);
+
     /**
      * Return submatrix of parameter rows that match provided query values.
      * Input levels array should have length equal to parameters input levels count.
