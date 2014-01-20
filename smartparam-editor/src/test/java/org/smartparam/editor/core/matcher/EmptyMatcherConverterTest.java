@@ -15,15 +15,12 @@
  */
 package org.smartparam.editor.core.matcher;
 
-import org.smartparam.editor.matcher.EmptyMatcherConverter;
-import org.smartparam.editor.core.entry.Star;
-import org.smartparam.engine.core.type.ObjectHolder;
-import org.smartparam.engine.core.type.Type;
+import org.smartparam.editor.matcher.EmptyMatcherEncoder;
+import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.types.string.StringType;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 /**
  *
@@ -31,49 +28,7 @@ import static org.mockito.Mockito.*;
  */
 public class EmptyMatcherConverterTest {
 
-    private final EmptyMatcherConverter converter = new EmptyMatcherConverter();
-
-    @Test
-    public void shouldDecodeValueAsStarWhenEqualsStarSymbol() {
-        // when
-        Object decoded = converter.decode("*", null, null);
-
-        // then
-        assertThat(decoded).isInstanceOf(Star.class);
-    }
-
-    @Test
-    public void shouldDecodeValueAsRawStringValueWhenNoTypeDeclared() {
-        // when
-        Object decoded = converter.decode("value", null, null);
-
-        // then
-        assertThat(decoded).isEqualTo("value");
-    }
-
-    @Test
-    public void shouldDecodeEmptyStringAsNullWhenNoTypeDeclared() {
-        // when
-        Object decoded = converter.decode("", null, null);
-
-        // then
-        assertThat(decoded).isNull();
-    }
-
-    @Test
-    public void shouldDecodeUsingTypeWhenProvided() {
-        // given
-        String valueToDecode = "value";
-
-        Type<?> type = mock(Type.class);
-        when(type.decode(valueToDecode)).thenReturn(new ObjectHolder("hello"));
-
-        // when
-        Object decoded = converter.decode("value", type, null);
-
-        // then
-        assertThat(decoded).isEqualTo("hello");
-    }
+    private final EmptyMatcherEncoder converter = new EmptyMatcherEncoder();
 
     @Test
     public void shouldEncodeStarObjectAsStar() {

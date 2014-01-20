@@ -26,46 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class BetweenMatcherConverterTest {
 
-    private final BetweenMatcherConverter converter = new BetweenMatcherConverter();
-
-    @Test
-    public void shouldDecodeValueAsRangeObjectUsingFirstSeparatorFromMatcherFoundInValue() {
-        // given
-        BetweenMatcher matcher = new BetweenMatcher(true, true, "~#");
-
-        // when
-        Range decoded = converter.decode("A#B", null, matcher);
-
-        // then
-        assertThat(decoded.from()).isEqualTo("A");
-        assertThat(decoded.to()).isEqualTo("B");
-    }
-
-    @Test
-    public void shouldDecodeValueAsRangeWithBeginningOnlyWhenItsImpossibleToSplitValueUsingSeparators() {
-        // given
-        BetweenMatcher matcher = new BetweenMatcher(true, true, "~#");
-
-        // when
-        Range decoded = converter.decode("A:B", null, matcher);
-
-        // then
-        assertThat(decoded.from()).isEqualTo("A:B");
-        assertThat(decoded.to()).isEqualTo(null);
-    }
-
-    @Test
-    public void shouldTrimAllWhitespacesFromRangeBeginningAndEndBeforePassingToTypeDecoding() {
-        // given
-        BetweenMatcher matcher = new BetweenMatcher(true, true, "~");
-
-        // when
-        Range decoded = converter.decode("  A ~ B  ", null, matcher);
-
-        // then
-        assertThat(decoded.from()).isEqualTo("A");
-        assertThat(decoded.to()).isEqualTo("B");
-    }
+    private final BetweenMatcherEncoder converter = new BetweenMatcherEncoder();
 
     @Test
     public void shouldEncodeRangeAsEncodedValuesSeparatedByFirstSeparatorThatDoesNotExistInAnyEncodedValue() {

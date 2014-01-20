@@ -47,8 +47,8 @@ public class ParamEditorFactoryIntegrationTest {
         // then
         assertThat(paramEditor).isNotNull();
         assertThat(paramViewer).isNotNull();
-        assertThat(paramEditor.runtimeConfig().matcherConverters()).hasSize(4);
-        assertThat(paramViewer.runtimeConfig().matcherConverters()).hasSize(4);
+        assertThat(paramEditor.runtimeConfig().matcherEncoders()).hasSize(4);
+        assertThat(paramViewer.runtimeConfig().matcherEncoders()).hasSize(4);
     }
 
 }

@@ -46,7 +46,7 @@ public class SpringParamEngineFactoryTest {
 
         // then
         assertThat(paramEngine.runtimeConfiguration()).hasFunctionRepositories().hasInvokers()
-                .hasMachers().hasTypes();
+                .hasMatchers().hasTypes();
     }
 
     @Test

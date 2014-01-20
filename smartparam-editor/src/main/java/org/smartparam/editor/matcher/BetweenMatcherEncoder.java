@@ -15,46 +15,20 @@
  */
 package org.smartparam.editor.matcher;
 
-import org.smartparam.editor.core.matcher.MatcherAwareConverter;
-import org.smartparam.editor.annotated.ParamMatcherConverter;
+import org.smartparam.editor.core.matcher.MatcherAwareEncoder;
+import org.smartparam.editor.annotated.ParamMatcherEncoder;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.matchers.BetweenMatcher;
-import org.smartparam.engine.util.EngineUtil;
 
 /**
  *
  * @author Adam Dubiel
  */
-@ParamMatcherConverter(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
-public class BetweenMatcherConverter implements MatcherAwareConverter<Range> {
+@ParamMatcherEncoder(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
+public class BetweenMatcherEncoder implements MatcherAwareEncoder<Range> {
 
-    private final EmptyMatcherConverter simpleConverter = new EmptyMatcherConverter();
-
-    @Override
-    public Range decode(String value, Type<?> type, Matcher matcher) {
-        BetweenMatcher betweenMatcher = (BetweenMatcher) matcher;
-        char separator = findSeparator(value, betweenMatcher.separators());
-
-        String[] values = EngineUtil.split2(value, separator);
-        String from = values[0].trim();
-        String to = values[1].trim();
-
-        return new Range(decodeValue(from, type), decodeValue(to, type));
-    }
-
-    private char findSeparator(String pattern, char[] separators) {
-        for (char ch : separators) {
-            if (pattern.indexOf(ch) >= 0) {
-                return ch;
-            }
-        }
-        return separators[0];
-    }
-
-    private Object decodeValue(String value, Type<?> type) {
-        return simpleConverter.decode(value, type, null);
-    }
+    private final EmptyMatcherEncoder simpleConverter = new EmptyMatcherEncoder();
 
     @Override
     public String encode(Range object, Type<?> type, Matcher matcher) {

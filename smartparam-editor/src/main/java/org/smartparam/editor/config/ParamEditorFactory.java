@@ -19,7 +19,7 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.smartparam.editor.core.ParamEditor;
 import org.smartparam.editor.core.ParamViewer;
-import org.smartparam.editor.core.matcher.MatcherConverterRepository;
+import org.smartparam.editor.core.matcher.MatcherEncoderRepository;
 import org.smartparam.engine.config.initialization.BasicComponentInitializerRunner;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.config.pico.PicoContainerUtil;
@@ -76,6 +76,6 @@ public final class ParamEditorFactory {
     }
 
     private void initializeRepositories(PicoContainer container, ParamEditorConfig config) {
-        container.getComponent(MatcherConverterRepository.class).registerAll(config.getMatcherConverters());
+        container.getComponent(MatcherEncoderRepository.class).registerAll(config.getMatcherEncoders());
     }
 }

@@ -27,7 +27,7 @@ import org.smartparam.engine.annotated.annotations.ObjectInstance;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ParamMatcherConverter {
+public @interface ParamMatcherEncoder {
 
     /**
      * Name of matcher this converter supports.

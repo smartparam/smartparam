@@ -16,9 +16,9 @@
 package org.smartparam.editor.annotated;
 
 import java.util.Map;
-import org.smartparam.editor.matcher.EmptyMatcherConverter;
-import org.smartparam.editor.core.matcher.MatcherAwareConverter;
-import org.smartparam.editor.core.matcher.MatcherConverterRepository;
+import org.smartparam.editor.matcher.EmptyMatcherEncoder;
+import org.smartparam.editor.core.matcher.MatcherAwareEncoder;
+import org.smartparam.editor.core.matcher.MatcherEncoderRepository;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.repository.TypeScanningRepository;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
@@ -29,21 +29,21 @@ import org.smartparam.engine.core.repository.MapRepository;
  *
  * @author Adam Dubiel
  */
-public class ScanningMatcherConverterRepository implements MatcherConverterRepository, TypeScanningRepository {
+public class ScanningMatcherEncoderRepository implements MatcherEncoderRepository, TypeScanningRepository {
 
-    private final MatcherAwareConverter<?> defaultConverter = new EmptyMatcherConverter();
+    private final MatcherAwareEncoder<?> defaultConverter = new EmptyMatcherEncoder();
 
-    private final MapRepository<MatcherAwareConverter<?>> innerRepository = new MapRepository<MatcherAwareConverter<?>>(MatcherAwareConverter.class);
+    private final MapRepository<MatcherAwareEncoder<?>> innerRepository = new MapRepository<MatcherAwareEncoder<?>>(MatcherAwareEncoder.class);
 
     @Override
     public void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner componentInitializerRunner) {
-        Map<RepositoryObjectKey, MatcherAwareConverter<?>> matcherConverters = scanner.scanTypes(ParamMatcherConverter.class);
+        Map<RepositoryObjectKey, MatcherAwareEncoder<?>> matcherConverters = scanner.scanTypes(ParamMatcherEncoder.class);
         innerRepository.registerAll(matcherConverters);
     }
 
     @Override
-    public MatcherAwareConverter<?> getConverter(String matcherCode) {
-        MatcherAwareConverter<?> converter = innerRepository.getItem(matcherCode);
+    public MatcherAwareEncoder<?> getEncoder(String matcherCode) {
+        MatcherAwareEncoder<?> converter = innerRepository.getItem(matcherCode);
         if (converter == null) {
             converter = defaultConverter;
         }
@@ -51,17 +51,17 @@ public class ScanningMatcherConverterRepository implements MatcherConverterRepos
     }
 
     @Override
-    public void register(String key, MatcherAwareConverter<?> type) {
+    public void register(String key, MatcherAwareEncoder<?> type) {
         innerRepository.register(key, type);
     }
 
     @Override
-    public Map<String, MatcherAwareConverter<?>> registeredItems() {
+    public Map<String, MatcherAwareEncoder<?>> registeredItems() {
         return innerRepository.getItemsUnordered();
     }
 
     @Override
-    public void registerAll(Map<String, MatcherAwareConverter<?>> objects) {
+    public void registerAll(Map<String, MatcherAwareEncoder<?>> objects) {
         innerRepository.registerAllUnordered(objects);
     }
 }

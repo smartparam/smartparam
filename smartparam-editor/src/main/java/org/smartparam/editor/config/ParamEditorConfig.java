@@ -16,11 +16,11 @@
 package org.smartparam.editor.config;
 
 import java.util.*;
-import org.smartparam.editor.annotated.ScanningMatcherConverterRepository;
+import org.smartparam.editor.annotated.ScanningMatcherEncoderRepository;
 import org.smartparam.editor.core.*;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
-import org.smartparam.editor.core.matcher.MatcherAwareConverter;
-import org.smartparam.editor.core.matcher.MatcherConverterRepository;
+import org.smartparam.editor.core.matcher.MatcherAwareEncoder;
+import org.smartparam.editor.core.matcher.MatcherEncoderRepository;
 import org.smartparam.engine.config.initialization.ComponentInitializer;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.config.pico.ComponentConfig;
@@ -41,7 +41,7 @@ public class ParamEditorConfig extends ComponentConfig {
 
     private final List<ComponentInitializer> componentInitializers = new ArrayList<ComponentInitializer>();
 
-    private final Map<String, MatcherAwareConverter<?>> matcherConverter = new HashMap<String, MatcherAwareConverter<?>>();
+    private final Map<String, MatcherAwareEncoder<?>> matcherEncoders = new HashMap<String, MatcherAwareEncoder<?>>();
 
     public ParamEditorConfig(ParamEngine paramEngine) {
         this.paramEngine = paramEngine;
@@ -52,7 +52,7 @@ public class ParamEditorConfig extends ComponentConfig {
         components.add(component(ParamEditor.class, BasicParamEditor.class));
         components.add(component(ParamViewer.class, BasicParamViewer.class));
         components.add(component(ParameterEntryMapConverter.class, ParameterEntryMapConverter.class));
-        components.add(component(MatcherConverterRepository.class, ScanningMatcherConverterRepository.class));
+        components.add(component(MatcherEncoderRepository.class, ScanningMatcherEncoderRepository.class));
     }
 
     ParamEngine paramEngine() {
@@ -75,12 +75,12 @@ public class ParamEditorConfig extends ComponentConfig {
         this.initializationRunner = initializationRunner;
     }
 
-    public Map<String, MatcherAwareConverter<?>> getMatcherConverters() {
-        return Collections.unmodifiableMap(matcherConverter);
+    public Map<String, MatcherAwareEncoder<?>> getMatcherEncoders() {
+        return Collections.unmodifiableMap(matcherEncoders);
     }
 
-    protected void addMatcherConverter(String key, MatcherAwareConverter<?> matcherConverter) {
-        this.matcherConverter.put(key, matcherConverter);
+    protected void addMatcherEncoder(String matcherCode, MatcherAwareEncoder<?> matcherEncoder) {
+        this.matcherEncoders.put(matcherCode, matcherEncoder);
     }
 
 }

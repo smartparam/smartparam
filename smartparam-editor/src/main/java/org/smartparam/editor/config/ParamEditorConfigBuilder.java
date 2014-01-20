@@ -16,7 +16,7 @@
 package org.smartparam.editor.config;
 
 import java.util.Arrays;
-import org.smartparam.editor.core.matcher.MatcherAwareConverter;
+import org.smartparam.editor.core.matcher.MatcherAwareEncoder;
 import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
 import org.smartparam.engine.annotated.initialization.TypeScannerInitializer;
@@ -118,10 +118,10 @@ public final class ParamEditorConfigBuilder {
     }
 
     /**
-     * Register {@link MatcherAwareConverter}.
+     * Register {@link MatcherAwareEncoder}.
      */
-    public ParamEditorConfigBuilder withMatcherConverter(String functionType, MatcherAwareConverter<?> matcherConverter) {
-        config.addMatcherConverter(functionType, matcherConverter);
+    public ParamEditorConfigBuilder withMatcherEncoder(String matcherCode, MatcherAwareEncoder<?> matcherEncoder) {
+        config.addMatcherEncoder(matcherCode, matcherEncoder);
         return this;
     }
 

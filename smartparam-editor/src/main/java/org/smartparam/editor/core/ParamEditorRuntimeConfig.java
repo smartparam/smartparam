@@ -17,7 +17,7 @@ package org.smartparam.editor.core;
 
 import java.util.Collections;
 import java.util.Map;
-import org.smartparam.editor.core.matcher.MatcherAwareConverter;
+import org.smartparam.editor.core.matcher.MatcherAwareEncoder;
 
 /**
  *
@@ -25,13 +25,13 @@ import org.smartparam.editor.core.matcher.MatcherAwareConverter;
  */
 public class ParamEditorRuntimeConfig {
 
-    private final Map<String, MatcherAwareConverter<?>> matcherConverters;
+    private final Map<String, MatcherAwareEncoder<?>> matcherEncoders;
 
-    public ParamEditorRuntimeConfig(Map<String, MatcherAwareConverter<?>> matcherConverters) {
-        this.matcherConverters = Collections.unmodifiableMap(matcherConverters);
+    public ParamEditorRuntimeConfig(Map<String, MatcherAwareEncoder<?>> matcherEncoders) {
+        this.matcherEncoders = Collections.unmodifiableMap(matcherEncoders);
     }
 
-    public Map<String, MatcherAwareConverter<?>> matcherConverters() {
-        return matcherConverters;
+    public Map<String, MatcherAwareEncoder<?>> matcherEncoders() {
+        return matcherEncoders;
     }
 }

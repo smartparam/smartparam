@@ -19,11 +19,10 @@ import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
 /**
- * Converts text representation of matched value to object and vice versa. Complex matchers, i.e. between matcher have
+ * Converts object representation of matched value to string. Complex matchers, i.e. between matcher have
  * in fact a hidden data model. This model resides in format of pattern (for between matcher: *from* - *to*). Matcher
  * converters help in discovering and naming this model for editing purposes. This way it is not necessary to concatenate
  * strings to create a pattern, user can pass an object understood by converter which will be converted to string internally.
- * Same with inspecting parameter entries - user receives Java object instead of plain string.
  *
  * For between matcher instead of "*from* - *to*" user can pass Range object.
  *
@@ -32,17 +31,11 @@ import org.smartparam.engine.core.type.Type;
  * decode(encode(obj)) == obj
  * </pre>
  *
- * @see org.smartparam.editor.matcher.BetweenMatcherConverter
+ * @see org.smartparam.editor.matcher.BetweenMatcherEncoder
  *
  * @author Adam Dubiel
  */
-public interface MatcherAwareConverter<T> {
-
-    /**
-     * Decode string value of given type for given matcher into Java object. Matcher is here so it is possible to
-     * access it's runtime properties (like registered separators etc).
-     */
-    T decode(String value, Type<?> type, Matcher matcher);
+public interface MatcherAwareEncoder<T> {
 
     /**
      * Encode object into string recognized by matcher.

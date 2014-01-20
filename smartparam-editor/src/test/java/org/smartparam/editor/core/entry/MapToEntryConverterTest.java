@@ -15,10 +15,11 @@
  */
 package org.smartparam.editor.core.entry;
 
+import org.smartparam.engine.core.index.Star;
 import java.text.ParseException;
 import java.util.Date;
-import org.smartparam.editor.matcher.EmptyMatcherConverter;
-import org.smartparam.editor.core.matcher.MatcherConverterRepository;
+import org.smartparam.editor.matcher.EmptyMatcherEncoder;
+import org.smartparam.editor.core.matcher.MatcherEncoderRepository;
 import org.smartparam.editor.model.simple.SimpleLevel;
 import org.smartparam.editor.model.simple.SimpleParameter;
 import org.smartparam.engine.config.ParamEngineConfig;
@@ -54,8 +55,8 @@ public class MapToEntryConverterTest {
                 .withType("date", new DateType())
                 .withMatcher("between/ie", new BetweenMatcher())
                 .build();
-        MatcherConverterRepository converterRepository = mock(MatcherConverterRepository.class);
-        doReturn(new EmptyMatcherConverter()).when(converterRepository).getConverter(anyString());
+        MatcherEncoderRepository converterRepository = mock(MatcherEncoderRepository.class);
+        doReturn(new EmptyMatcherEncoder()).when(converterRepository).getEncoder(anyString());
 
         converter = new MapToEntryConverter(ParamEngineFactory.paramEngine(config).runtimeConfiguration(), converterRepository);
     }

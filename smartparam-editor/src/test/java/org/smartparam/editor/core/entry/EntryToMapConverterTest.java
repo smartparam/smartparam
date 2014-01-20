@@ -15,9 +15,8 @@
  */
 package org.smartparam.editor.core.entry;
 
+import org.smartparam.engine.core.index.Star;
 import java.util.Date;
-import org.smartparam.editor.matcher.EmptyMatcherConverter;
-import org.smartparam.editor.core.matcher.MatcherConverterRepository;
 import org.smartparam.editor.model.simple.SimpleLevel;
 import org.smartparam.editor.model.simple.SimpleParameter;
 import org.smartparam.editor.model.simple.SimpleParameterEntry;
@@ -32,7 +31,6 @@ import org.smartparam.engine.types.string.StringType;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 /**
  *
@@ -50,10 +48,7 @@ public class EntryToMapConverterTest {
                 .withType("date", new DateType())
                 .withMatcher("between/ie", new BetweenMatcher())
                 .build();
-        MatcherConverterRepository converterRepository = mock(MatcherConverterRepository.class);
-        doReturn(new EmptyMatcherConverter()).when(converterRepository).getConverter(anyString());
-
-        converter = new EntryToMapConverter(ParamEngineFactory.paramEngine(config).runtimeConfiguration(), converterRepository);
+        converter = new EntryToMapConverter(ParamEngineFactory.paramEngine(config).runtimeConfiguration());
     }
 
     @Test

@@ -15,8 +15,8 @@
  */
 package org.smartparam.editor.matcher;
 
-import org.smartparam.editor.core.entry.Star;
-import org.smartparam.editor.core.matcher.MatcherAwareConverter;
+import org.smartparam.engine.core.index.Star;
+import org.smartparam.editor.core.matcher.MatcherAwareEncoder;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
@@ -24,24 +24,7 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class EmptyMatcherConverter implements MatcherAwareConverter<Object> {
-
-    @Override
-    public Object decode(String value, Type<?> type, Matcher matcher) {
-        if (value != null && value.equals("*")) {
-            return Star.star();
-        }
-
-        if (type != null) {
-            return type.decode(value).getValue();
-        }
-
-        if (value != null && value.isEmpty()) {
-            return null;
-        }
-
-        return value;
-    }
+public class EmptyMatcherEncoder implements MatcherAwareEncoder<Object> {
 
     @Override
     @SuppressWarnings("unchecked")
