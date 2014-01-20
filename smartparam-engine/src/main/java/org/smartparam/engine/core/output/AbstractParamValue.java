@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,49 +16,40 @@
 package org.smartparam.engine.core.output;
 
 import java.math.BigDecimal;
+import java.util.*;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.util.Formatter;
 import org.smartparam.engine.util.Printer;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
-import org.smartparam.engine.core.repository.RepositoryName;
-
 /**
- * @author Przemek Hertel
- * @since 1.0.0
+ *
+ * @author Adam Dubiel
  */
-public class ParamValueImpl implements ParamValue {
+abstract class AbstractParamValue<M extends MultiValue> implements ParamValue {
 
-    private static final MultiValue[] EMPTY = {};
-
-    private final MultiValue[] rows;
+    private final List<M> rows = new ArrayList<M>();
 
     private final RepositoryName sourceRepository;
 
-    public ParamValueImpl(MultiValue[] rows, RepositoryName sourceRepository) {
-        this.rows = Arrays.copyOf(rows, rows.length);
+    AbstractParamValue(List<M> rows, RepositoryName sourceRepository) {
+        this.rows.addAll(rows);
         this.sourceRepository = sourceRepository;
-    }
-
-    public static ParamValueImpl empty() {
-        return new ParamValueImpl(EMPTY, null);
     }
 
     @Override
     public boolean isEmpty() {
-        return rows == EMPTY || rows.length == 0;
+        return rows.isEmpty();
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public MultiValue row(int rowNo) {
         if (rowNo >= 0 && rowNo < size()) {
-            return rows[rowNo];
+            return rows.get(rowNo);
         }
-        throw new InvalidRowIndexException(rowNo, rows);
+        throw new InvalidRowIndexException(rowNo, (List<MultiValue>) rows);
     }
 
     @Override
@@ -66,9 +57,14 @@ public class ParamValueImpl implements ParamValue {
         return row(0);
     }
 
+    protected List<M> rawRows() {
+        return Collections.unmodifiableList(rows);
+    }
+
     @Override
+    @SuppressWarnings("unchecked")
     public List<MultiValue> rows() {
-        return Arrays.asList(rows);
+        return (List<MultiValue>) Collections.unmodifiableList(rows);
     }
 
     @Override
@@ -228,12 +224,12 @@ public class ParamValueImpl implements ParamValue {
 
     @Override
     public int size() {
-        return rows != null ? rows.length : 0;
+        return rows.size();
     }
 
     @Override
     public String toString() {
-        return Printer.print(Arrays.asList(rows), "ParamValue", 0, new MultiValueInlineFormatter());
+        return Printer.print(rows, "ParamValue", 0, new MultiValueInlineFormatter());
     }
 
     static final class MultiValueInlineFormatter implements Formatter {
@@ -244,4 +240,5 @@ public class ParamValueImpl implements ParamValue {
             return mv.toStringInline();
         }
     }
+
 }

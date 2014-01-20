@@ -19,7 +19,7 @@ import java.util.*;
 
 import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.output.ParamValue;
-import org.smartparam.engine.core.output.ParamValueImpl;
+import org.smartparam.engine.core.output.DefaultParamValue;
 import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.type.ValueHolder;
 import static org.smartparam.test.MultiValueBuilder.multiValue;
@@ -56,7 +56,7 @@ public final class ParamValueBuilder {
     }
 
     public ParamValue build() {
-        return new ParamValueImpl(rows.toArray(new MultiValue[rows.size()]), sourceRepository);
+        return new DefaultParamValue(rows, sourceRepository);
     }
 
     public ParamValueBuilder withNamedLevels(String... levelNames) {

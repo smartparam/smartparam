@@ -15,9 +15,11 @@
  */
 package org.smartparam.engine.core.output.factory;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.smartparam.engine.core.output.MultiValue;
 import org.smartparam.engine.core.output.ParamValue;
-import org.smartparam.engine.core.output.ParamValueImpl;
+import org.smartparam.engine.core.output.DefaultParamValue;
 import org.smartparam.engine.core.output.SlimMultiValue;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
@@ -39,16 +41,13 @@ public class ParamValueFactory {
         int inputLevelCount = parameter.getInputLevelsCount();
         int oputputLevelCount = parameter.getLevelCount() - inputLevelCount;
 
-        MultiValue[] row = new MultiValue[rows.length];
-
-        for (int rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-            PreparedEntry pe = rows[rowIndex];
-
+        List<MultiValue> row = new ArrayList<MultiValue>(rows.length);
+        for (PreparedEntry preparedEntry : rows) {
             PreparedLevel[] levels = parameter.getLevels();
             Object[] vector = new Object[oputputLevelCount];
 
             for (int columnIndex = 0; columnIndex < oputputLevelCount; ++columnIndex) {
-                String cellText = pe.getLevel(inputLevelCount + columnIndex + 1);
+                String cellText = preparedEntry.getLevel(inputLevelCount + columnIndex + 1);
                 PreparedLevel level = levels[inputLevelCount + columnIndex];
 
                 Type<?> cellType = level.getType();
@@ -63,10 +62,10 @@ public class ParamValueFactory {
                 vector[columnIndex] = cellValue;
             }
 
-            row[rowIndex] = new SlimMultiValue(extractEntryKey(pe), vector, parameter.getLevelNameMap());
+            row.add(new SlimMultiValue(extractEntryKey(preparedEntry), vector, parameter.getLevelNameMap()));
         }
 
-        return new ParamValueImpl(row, parameter.getSourceRepository());
+        return new DefaultParamValue(row, parameter.getSourceRepository());
     }
 
     private ValueHolder[] evaluateStringAsArray(String value, Type<?> type, char separator) {

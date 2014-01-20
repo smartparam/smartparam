@@ -48,7 +48,7 @@ public final class ParamValueBuilder {
     }
 
     public ParamValue build() {
-        return new ParamValueImpl(rows.toArray(new MultiValue[rows.size()]), sourceRepository);
+        return new DefaultParamValue(rows, sourceRepository);
     }
 
     public ParamValueBuilder withNamedLevels(String... levelNames) {

@@ -15,20 +15,21 @@
  */
 package org.smartparam.engine.core.output;
 
+import java.util.ArrayList;
 import java.util.List;
-import org.smartparam.engine.core.exception.SmartParamException;
-
+import org.smartparam.engine.core.repository.RepositoryName;
 
 /**
- *
- * @author Adam Dubiel
+ * @author Przemek Hertel
+ * @since 1.0.0
  */
-@SuppressWarnings("serial")
-public class InvalidRowIndexException extends SmartParamException {
+public class DefaultParamValue extends AbstractParamValue<MultiValue> {
 
-    InvalidRowIndexException(int rowIndex, List<MultiValue> rows) {
-        super("INVALID_ROW_INDEX",
-                String.format("Trying to get non-existing row: %d. Available rows: %d..%d", rowIndex, 0, rows.size() - 1));
+    public DefaultParamValue(List<MultiValue> rows, RepositoryName sourceRepository) {
+        super(rows, sourceRepository);
     }
 
+    public static ParamValue empty() {
+        return new DefaultParamValue(new ArrayList<MultiValue>(), null);
+    }
 }

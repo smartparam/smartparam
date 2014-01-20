@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core;
 
-import org.smartparam.engine.core.output.ParamValueImpl;
+import org.smartparam.engine.core.output.DefaultParamValue;
 import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParameter;
@@ -86,7 +86,7 @@ public class SmartParamEngine implements ParamEngine {
         if (rows.length == 0) {
             if (param.isNullable()) {
                 logger.debug("leave get[{}], result=null", parameterName);
-                return ParamValueImpl.empty();
+                return DefaultParamValue.empty();
             }
 
             throw new ParameterValueNotFoundException(parameterName, context);
