@@ -40,7 +40,7 @@ public final class ParamEditorConfigBuilder {
 
     private ParamEditorConfigBuilder(ParamEngine paramEngine) {
         config = new ParamEditorConfig(paramEngine);
-        packageList = new PackageList("org.smartparam.editor");
+        packageList = new PackageList("org.smartparam.editor.matcher");
     }
 
     public static ParamEditorConfigBuilder paramEditorConfig(ParamEngine paramEngine) {

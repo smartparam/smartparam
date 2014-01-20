@@ -51,9 +51,6 @@ public class SpringParamEngineFactoryTest {
 
     @Test
     public void shouldCreateNewConfigObjectIfNoneSpecified() throws Exception {
-        // given
-        // noop
-
         // when
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 

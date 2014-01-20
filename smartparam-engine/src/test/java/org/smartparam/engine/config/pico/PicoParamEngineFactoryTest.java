@@ -59,6 +59,19 @@ public class PicoParamEngineFactoryTest {
     }
 
     @Test
+    public void shouldCreateParamEngineInstanceWithAnnotationScanning() {
+        // given
+        ParamEngineConfig config = paramEngineConfig().build();
+
+        // when
+        ParamEngine engine = paramEngineFactory.createParamEngine(config);
+
+        // then
+        assertThat(engine.runtimeConfiguration()).hasFunctionRepositories().hasInvokers()
+                .hasMatchers().hasMatcherDecoders().hasTypes();
+    }
+
+    @Test
     public void shouldCreateParamEngineInstanceWithTypesInjectedIntoRepositories() {
         // given
         ParamEngineConfig config = paramEngineConfig()
