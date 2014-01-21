@@ -107,7 +107,7 @@ public class SmartParamEngine implements ParamEngine {
         if (rows.length == 0) {
             if (param.isNullable()) {
                 logger.debug("leave get[{}], result=null", parameterName);
-                return DefaultParamValue.empty();
+                return paramValueFactory.empty();
             }
 
             throw new ParameterValueNotFoundException(parameterName, context);

@@ -35,6 +35,11 @@ public class DefaultParamValueFactory extends AbstractParamValueFactory<MultiVal
     }
 
     @Override
+    public ParamValue empty() {
+        return DefaultParamValue.empty();
+    }
+
+    @Override
     protected MultiValue createMultiValue(PreparedParameter parameter, PreparedEntry preparedEntry, Object[] values) {
         return new DefaultMultiValue(extractEntryKey(preparedEntry), values, parameter.getLevelNameMap());
     }

@@ -33,7 +33,7 @@ public class CustomizableLevelIndexWalkerConfig {
     }
 
     public CustomizableLevelIndexWalkerConfig withOverridenMatcher(String levelName, String matcherCode) {
-        overridenMatchers.put(levelName, levelName);
+        overridenMatchers.put(levelName, matcherCode);
         return this;
     }
 

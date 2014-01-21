@@ -19,6 +19,7 @@ import java.util.List;
 import org.smartparam.engine.core.output.DetailedMultiValue;
 import org.smartparam.engine.core.output.DetailedParamValue;
 import org.smartparam.engine.core.output.DetailedParamValueImpl;
+import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.output.entry.MapEntryFactory;
 import org.smartparam.engine.core.prepared.PreparedEntry;
@@ -42,6 +43,11 @@ public class DetailedParamValueFactory extends AbstractParamValueFactory<Detaile
     public DetailedParamValue create(PreparedParameter parameter, PreparedEntry[] preparedEntries) {
         List<DetailedMultiValue> rows = createRows(parameter, preparedEntries);
         return new DetailedParamValueImpl(rows, parameter.getSourceRepository());
+    }
+
+    @Override
+    public ParamValue empty() {
+        return DetailedParamValueImpl.empty();
     }
 
     @Override

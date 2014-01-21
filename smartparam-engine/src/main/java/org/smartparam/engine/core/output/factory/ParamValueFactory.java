@@ -27,4 +27,5 @@ public interface ParamValueFactory {
 
     ParamValue create(PreparedParameter parameter, PreparedEntry[] preparedEntries);
 
+    ParamValue empty();
 }

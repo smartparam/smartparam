@@ -15,10 +15,7 @@
  */
 package org.smartparam.engine.core.output;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.repository.RepositoryName;
 
@@ -33,6 +30,10 @@ public class DetailedParamValueImpl extends AbstractParamValue implements Detail
     public DetailedParamValueImpl(List<DetailedMultiValue> rows, RepositoryName sourceRepository) {
         super(sourceRepository);
         this.rows = rows;
+    }
+
+    public static DetailedParamValue empty() {
+        return new DetailedParamValueImpl(new ArrayList<DetailedMultiValue>(), null);
     }
 
     @Override
