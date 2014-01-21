@@ -25,9 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.editor.core.capabilities.RepositoryCapabilities;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
-import org.smartparam.editor.core.entry.ParameterEntryMap;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
 import org.smartparam.engine.core.ParamEngine;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
@@ -130,25 +130,25 @@ public class BasicParamViewer implements ParamViewer {
     }
 
     @Override
-    public DescribedCollection<ParameterEntryMap> getParameterEntries(RepositoryName from, String parameterName, Iterable<ParameterEntryKey> parameterEntryKeys) {
+    public DescribedCollection<MapEntry> getParameterEntries(RepositoryName from, String parameterName, Iterable<ParameterEntryKey> parameterEntryKeys) {
         ViewableParamRepository repository = repositories.get(from);
         Parameter metadata = repository.getParameterMetadata(parameterName);
         return convert(from, metadata, repository.getParameterEntries(parameterName, parameterEntryKeys));
     }
 
     @Override
-    public DescribedCollection<ParameterEntryMap> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter) {
+    public DescribedCollection<MapEntry> listParameterEntries(RepositoryName from, String parameterName, ParameterEntriesFilter filter) {
         ViewableParamRepository repository = repositories.get(from);
         Parameter metadata = repository.getParameterMetadata(parameterName);
         return convert(from, metadata, repository.listEntries(parameterName, filter));
     }
 
-    private DescribedCollection<ParameterEntryMap> convert(RepositoryName from, Parameter metadata, List<ParameterEntry> entries) {
-        List<ParameterEntryMap> describedEntries = new ArrayList<ParameterEntryMap>();
+    private DescribedCollection<MapEntry> convert(RepositoryName from, Parameter metadata, List<ParameterEntry> entries) {
+        List<MapEntry> describedEntries = new ArrayList<MapEntry>();
         for (ParameterEntry entry : entries) {
             describedEntries.add(converter.asMap(metadata, entry));
         }
-        return new DescribedCollection<ParameterEntryMap>(from, describedEntries);
+        return new DescribedCollection<MapEntry>(from, describedEntries);
     }
 
     @Override

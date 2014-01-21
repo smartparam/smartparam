@@ -15,11 +15,13 @@
  */
 package org.smartparam.engine.core.output.entry;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
@@ -70,6 +72,10 @@ public class MapEntry implements Iterable<Entry<String, Object>> {
         return this;
     }
 
+    public boolean isStar(String levelName) {
+        return getRaw(levelName) instanceof Star;
+    }
+
     public Object getRaw(String levelName) {
         return this.values.get(levelName);
     }
@@ -82,6 +88,18 @@ public class MapEntry implements Iterable<Entry<String, Object>> {
     @SuppressWarnings("unchecked")
     public <T> T getAs(String levelName, Class<T> clazz) {
         return (T) this.values.get(levelName);
+    }
+
+    public String getString(String levelName) {
+        return getRaw(levelName).toString();
+    }
+
+    public BigDecimal getBigDecimal(String levelName) {
+        return getAs(levelName, BigDecimal.class);
+    }
+
+    public <T extends Enum<T>> T getEnum(String levelName, Class<T> enumClass) {
+        return Enum.valueOf(enumClass, getString(levelName));
     }
 
     @Override

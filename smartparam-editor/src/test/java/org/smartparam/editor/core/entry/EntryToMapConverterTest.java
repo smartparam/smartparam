@@ -23,6 +23,7 @@ import org.smartparam.editor.model.simple.SimpleParameterEntry;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
@@ -58,7 +59,7 @@ public class EntryToMapConverterTest {
         ParameterEntry entry = new SimpleParameterEntry("*");
 
         // when
-        ParameterEntryMap map = converter.asMap(metadata, entry);
+        MapEntry map = converter.asMap(metadata, entry);
 
         // then
         assertThat(map.get("star")).isInstanceOf(Star.class);
@@ -71,7 +72,7 @@ public class EntryToMapConverterTest {
         ParameterEntry entry = new SimpleParameterEntry("something");
 
         // when
-        ParameterEntryMap map = converter.asMap(metadata, entry);
+        MapEntry map = converter.asMap(metadata, entry);
 
         // then
         assertThat(map.get("rawValue")).isEqualTo("something");
@@ -84,7 +85,7 @@ public class EntryToMapConverterTest {
         ParameterEntry entry = new SimpleParameterEntry((String) null);
 
         // when
-        ParameterEntryMap map = converter.asMap(metadata, entry);
+        MapEntry map = converter.asMap(metadata, entry);
 
         // then
         assertThat(map.get("nullValue")).isNull();
@@ -97,7 +98,7 @@ public class EntryToMapConverterTest {
         ParameterEntry entry = new SimpleParameterEntry("2012-02-12");
 
         // when
-        ParameterEntryMap map = converter.asMap(metadata, entry);
+        MapEntry map = converter.asMap(metadata, entry);
 
         // then
         assertThat(map.getAs("date", Date.class)).isEqualTo("2012-02-12");

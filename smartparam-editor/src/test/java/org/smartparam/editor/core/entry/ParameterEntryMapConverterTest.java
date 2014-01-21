@@ -23,6 +23,7 @@ import org.smartparam.editor.model.simple.SimpleParameterEntry;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
@@ -67,7 +68,7 @@ public class ParameterEntryMapConverterTest {
         ParameterEntry entry = new SimpleParameterEntry("value1", "value2");
 
         // when
-        ParameterEntryMap map = converter.asMap(metadata, entry);
+        MapEntry map = converter.asMap(metadata, entry);
         ParameterEntry convertedEntry = converter.asEntry(metadata, map);
 
         // then

@@ -23,7 +23,6 @@ import org.smartparam.editor.config.ParamEditorFactory;
 import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.parameter.level.LevelKey;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
-import org.smartparam.editor.core.entry.ParameterEntryMap;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
 import org.smartparam.editor.model.simple.SimpleLevel;
 import org.smartparam.editor.model.simple.SimpleLevelKey;
@@ -35,6 +34,7 @@ import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.core.ParamEngine;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
@@ -73,8 +73,8 @@ public class BasicParamEditorTest {
         ParamEngine paramEngine = ParamEngineFactory.paramEngine(config);
 
         ParameterEntryMapConverter entryMapConverter = mock(ParameterEntryMapConverter.class);
-        when(entryMapConverter.asEntry(any(Parameter.class), any(ParameterEntryMap.class))).thenReturn(new SimpleParameterEntry());
-        when(entryMapConverter.asMap(any(Parameter.class), any(ParameterEntry.class))).thenReturn(new ParameterEntryMap());
+        when(entryMapConverter.asEntry(any(Parameter.class), any(MapEntry.class))).thenReturn(new SimpleParameterEntry());
+        when(entryMapConverter.asMap(any(Parameter.class), any(ParameterEntry.class))).thenReturn(new MapEntry());
 
         ParamEditorConfig editorConfig = ParamEditorConfigBuilder.paramEditorConfig(paramEngine).build();
         paramEditor = new ParamEditorFactory(editorConfig).editor();
@@ -192,7 +192,7 @@ public class BasicParamEditorTest {
     @Test
     public void shouldAddEntryToParameterAndInvalidateCacheForThisParameter() {
         // given
-        ParameterEntryMap entry = new ParameterEntryMap();
+        MapEntry entry = new MapEntry();
 
         // when
         paramEditor.addEntry(REPOSITORY_NAME, "parameter", entry);
@@ -206,7 +206,7 @@ public class BasicParamEditorTest {
     @SuppressWarnings("unchecked")
     public void shouldAddMultipleEntriesToParameterInOneTransactionAndInvalidateCacheForThisParameter() {
         // given
-        List<ParameterEntryMap> entries = Arrays.asList(new ParameterEntryMap());
+        List<MapEntry> entries = Arrays.asList(new MapEntry());
 
         // when
         paramEditor.addEntries(REPOSITORY_NAME, "parameter", entries);
@@ -220,7 +220,7 @@ public class BasicParamEditorTest {
     public void shouldUpdateEntryInParameterAndInvalidateCacheForThisParameter() {
         // given
         ParameterEntryKey entryKey = new SimpleParameterEntryKey("key");
-        ParameterEntryMap entry = new ParameterEntryMap();
+        MapEntry entry = new MapEntry();
 
         // when
         paramEditor.updateEntry(REPOSITORY_NAME, "parameter", entryKey, entry);

@@ -27,9 +27,9 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.level.LevelKey;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParameterKey;
-import org.smartparam.editor.core.entry.ParameterEntryMap;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 
@@ -119,7 +119,7 @@ public class BasicParamEditor implements ParamEditor {
     }
 
     @Override
-    public DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntryMap entryMap) {
+    public DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, MapEntry entryMap) {
         EditableParamRepository repository = repositories.get(in);
         ParameterEntry entry = convert(repository, entryMap, parameterName);
 
@@ -130,7 +130,7 @@ public class BasicParamEditor implements ParamEditor {
     }
 
     @Override
-    public DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntryMap> entries) {
+    public DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<MapEntry> entries) {
         EditableParamRepository repository = repositories.get(in);
         List<ParameterEntryKey> addedEntryKeys = repository.addEntries(parameterName, convert(repository, entries, parameterName));
         clearCache(parameterName);
@@ -139,7 +139,7 @@ public class BasicParamEditor implements ParamEditor {
     }
 
     @Override
-    public void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, ParameterEntryMap entryMap) {
+    public void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, MapEntry entryMap) {
         EditableParamRepository repository = repositories.get(in);
         ParameterEntry entry = convert(repository, entryMap, parameterName);
 
@@ -168,15 +168,15 @@ public class BasicParamEditor implements ParamEditor {
         clearCache(parameterName);
     }
 
-    private ParameterEntry convert(EditableParamRepository repository, ParameterEntryMap entryMap, String parameterName) {
+    private ParameterEntry convert(EditableParamRepository repository, MapEntry entryMap, String parameterName) {
         Parameter metadata = repository.getParameterMetadata(parameterName);
         return converter.asEntry(metadata, entryMap);
     }
 
-    private List<ParameterEntry> convert(EditableParamRepository repository, Iterable<ParameterEntryMap> entryMaps, String parameterName) {
+    private List<ParameterEntry> convert(EditableParamRepository repository, Iterable<MapEntry> entryMaps, String parameterName) {
         Parameter metadata = repository.getParameterMetadata(parameterName);
         List<ParameterEntry> entries = new ArrayList<ParameterEntry>();
-        for (ParameterEntryMap entryMap : entryMaps) {
+        for (MapEntry entryMap : entryMaps) {
             entries.add(converter.asEntry(metadata, entryMap));
         }
         return entries;

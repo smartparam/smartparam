@@ -18,6 +18,7 @@ package org.smartparam.editor.core.entry;
 import org.smartparam.editor.core.matcher.MatcherEncoderRepository;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
@@ -37,11 +38,11 @@ public class ParameterEntryMapConverter {
         mapToEntry = new MapToEntryConverter(engineConfig, encoderRepository);
     }
 
-    public ParameterEntry asEntry(Parameter metadata, ParameterEntryMap entryMap) {
+    public ParameterEntry asEntry(Parameter metadata, MapEntry entryMap) {
         return mapToEntry.asEntry(metadata, entryMap);
     }
 
-    public ParameterEntryMap asMap(Parameter metadata, ParameterEntry parameterEntry) {
+    public MapEntry asMap(Parameter metadata, ParameterEntry parameterEntry) {
         return entryToMap.asMap(metadata, parameterEntry);
     }
 

@@ -20,6 +20,7 @@ import org.smartparam.editor.core.matcher.MatcherEncoderRepository;
 import org.smartparam.editor.model.simple.SimpleParameterEntry;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.matcher.Matcher;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
@@ -40,7 +41,7 @@ class MapToEntryConverter {
         this.converterRepository = converterRepository;
     }
 
-    ParameterEntry asEntry(Parameter metadata, ParameterEntryMap entryMap) {
+    ParameterEntry asEntry(Parameter metadata, MapEntry entryMap) {
         String[] levelValues = new String[metadata.getLevels().size()];
 
         int index = 0;

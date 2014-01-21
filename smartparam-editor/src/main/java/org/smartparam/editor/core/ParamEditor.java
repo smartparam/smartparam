@@ -18,13 +18,13 @@ package org.smartparam.editor.core;
 import java.util.List;
 import org.smartparam.editor.core.identity.DescribedCollection;
 import org.smartparam.editor.core.identity.DescribedEntity;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.level.LevelKey;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.parameter.ParameterKey;
-import org.smartparam.editor.core.entry.ParameterEntryMap;
 
 /**
  *
@@ -48,11 +48,11 @@ public interface ParamEditor {
 
     void deleteLevel(RepositoryName in, String parameterName, LevelKey levelKey);
 
-    DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, ParameterEntryMap entryMap);
+    DescribedEntity<ParameterEntryKey> addEntry(RepositoryName in, String parameterName, MapEntry entryMap);
 
-    DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<ParameterEntryMap> entriesMaps);
+    DescribedCollection<ParameterEntryKey> addEntries(RepositoryName in, String parameterName, Iterable<MapEntry> entriesMaps);
 
-    void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, ParameterEntryMap entryMap);
+    void updateEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey, MapEntry entryMap);
 
     void deleteEntry(RepositoryName in, String parameterName, ParameterEntryKey entryKey);
 

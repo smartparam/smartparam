@@ -25,6 +25,7 @@ import org.smartparam.editor.model.simple.SimpleParameter;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
@@ -65,7 +66,7 @@ public class MapToEntryConverterTest {
     public void shouldReturnStarStringWhenMapValueStarObject() {
         // given
         Parameter metadata = new SimpleParameter().withLevel(new SimpleLevel().withName("star"));
-        ParameterEntryMap map = new ParameterEntryMap().put("star", Star.star());
+        MapEntry map = new MapEntry().put("star", Star.star());
 
         // when
         ParameterEntry entry = converter.asEntry(metadata, map);
@@ -78,7 +79,7 @@ public class MapToEntryConverterTest {
     public void shouldReturnEmptyStringWhenNullLevelValueAndNoTypeRegistered() {
         // given
         Parameter metadata = new SimpleParameter().withLevel(new SimpleLevel().withName("null"));
-        ParameterEntryMap map = new ParameterEntryMap().put("null", null);
+        MapEntry map = new MapEntry().put("null", null);
 
         // when
         ParameterEntry entry = converter.asEntry(metadata, map);
@@ -91,7 +92,7 @@ public class MapToEntryConverterTest {
     public void shouldReturnObjectToStringWhenNoTypeRegistered() {
         // given
         Parameter metadata = new SimpleParameter().withLevel(new SimpleLevel().withName("string"));
-        ParameterEntryMap map = new ParameterEntryMap().put("string", "something");
+        MapEntry map = new MapEntry().put("string", "something");
 
         // when
         ParameterEntry entry = converter.asEntry(metadata, map);
@@ -106,7 +107,7 @@ public class MapToEntryConverterTest {
         Date date = SimpleDateFormatPool.get("yyyy-MM-dd").parse("2013-12-04");
 
         Parameter metadata = new SimpleParameter().withLevel(new SimpleLevel().withName("date").withType("date"));
-        ParameterEntryMap map = new ParameterEntryMap().put("date", date);
+        MapEntry map = new MapEntry().put("date", date);
 
         // when
         ParameterEntry entry = converter.asEntry(metadata, map);
@@ -120,7 +121,7 @@ public class MapToEntryConverterTest {
         // given
         Parameter metadata = new SimpleParameter().withLevel(new SimpleLevel().withName("string"))
                 .withLevel(new SimpleLevel().withName("string2"));
-        ParameterEntryMap map = new ParameterEntryMap().put("string", "something")
+        MapEntry map = new MapEntry().put("string", "something")
                 .put("string2", "else");
 
         // when
