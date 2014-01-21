@@ -23,12 +23,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Adam Dubiel
  */
-public class AllowAllMatcherTest {
+public class MatchAllMatcherTest {
 
     @Test
     public void shouldAlwaysAllowAllValues() {
         // given
-        AllowAllMatcher matcher = new AllowAllMatcher();
+        MatchAllMatcher matcher = new MatchAllMatcher();
 
         // when
         boolean matches = matcher.matches("something", "whatever", null);

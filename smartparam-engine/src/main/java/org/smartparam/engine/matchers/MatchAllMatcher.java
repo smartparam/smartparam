@@ -24,8 +24,8 @@ import org.smartparam.engine.core.type.ValueHolder;
  *
  * @author Adam Dubiel
  */
-@ParamMatcher("allowAll")
-public class AllowAllMatcher implements Matcher {
+@ParamMatcher("matchAll")
+public class MatchAllMatcher implements Matcher {
 
     @Override
     public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {
