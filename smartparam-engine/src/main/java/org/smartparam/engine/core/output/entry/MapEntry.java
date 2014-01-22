@@ -91,7 +91,11 @@ public class MapEntry implements Iterable<Entry<String, Object>> {
     }
 
     public String getString(String levelName) {
-        return getRaw(levelName).toString();
+        return getRaw(levelName) != null ? getRaw(levelName).toString() : null;
+    }
+
+    public Long getLong(String levelName) {
+        return getAs(levelName, Long.class);
     }
 
     public BigDecimal getBigDecimal(String levelName) {

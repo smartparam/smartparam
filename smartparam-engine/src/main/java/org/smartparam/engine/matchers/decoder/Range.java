@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.matchers.decoder;
 
+import org.smartparam.engine.core.index.Star;
+
 /**
  *
  * @author Adam Dubiel
@@ -38,18 +40,26 @@ public class Range {
         return from;
     }
 
+    public boolean isFromStar() {
+        return from instanceof Star;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T fromAs(Class<T> clazz) {
-        return (T) from;
+        return isFromStar() ? null : (T) from;
     }
 
     public Object to() {
         return to;
     }
 
+    public boolean isToStar() {
+        return to instanceof Star;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T toAs(Class<T> clazz) {
-        return (T) to;
+        return isToStar() ? null : (T) to;
     }
 
     @Override
