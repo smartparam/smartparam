@@ -15,34 +15,27 @@
  */
 package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.engine.core.parameter.identity.AbstractEntityKey;
 import org.smartparam.engine.core.parameter.level.LevelKey;
-import static org.smartparam.repository.jdbc.model.JdbcParameterKey.SYMBOL;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JdbcLevelKey extends AbstractEntityKey implements LevelKey {
-
-    private final String value;
+public class JdbcLevelKey implements LevelKey {
 
     private final long levelId;
 
     public JdbcLevelKey(long levelId) {
-        this.value = format(SYMBOL, Long.toString(levelId));
         this.levelId = levelId;
     }
 
     public JdbcLevelKey(LevelKey levelKey) {
-        String[] segments = parse(SYMBOL, levelKey.value());
-        value = levelKey.value();
-        levelId = Long.parseLong(segments[0]);
+        levelId = Long.parseLong(levelKey.value());
     }
 
     @Override
     public String value() {
-        return value;
+        return Long.toString(levelId);
     }
 
     public long levelId() {
