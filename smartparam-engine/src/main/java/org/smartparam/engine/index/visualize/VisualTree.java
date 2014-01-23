@@ -33,7 +33,7 @@ public class VisualTree<T> {
     }
 
     public void insertValue(String[] levelValues, T value) {
-        root.appendPath(levelValues, 0, value);
+        root.insertPath(levelValues, 0, value);
     }
 
     public List<T> harvestLeavesValues() {

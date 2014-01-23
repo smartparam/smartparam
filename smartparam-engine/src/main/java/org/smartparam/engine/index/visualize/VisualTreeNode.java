@@ -66,7 +66,7 @@ public class VisualTreeNode<T> {
         return child;
     }
 
-    public void appendPath(String[] levelValues, int currentDepth, T value) {
+    public void insertPath(String[] levelValues, int currentDepth, T value) {
         if (currentDepth >= levelValues.length) {
             // matcher
             this.value = value;
@@ -74,26 +74,35 @@ public class VisualTreeNode<T> {
         }
 
         String levelValue = levelValues[currentDepth];
-        if ("*".equals(levelValue) && containsDefault) {
-            children.get("*").appendPath(levelValues, currentDepth + 1, value);
-        } else {
-            if (!children.containsKey(levelValue)) {
-                if (containsDefault) {
-                    // merging dates etc
-                    addLevelFromPath(levelValue, currentDepth, levelValues.length);
-                } else {
-                    throw new ParameterValueDoesNotMatchDictionary(this.level, currentDepth, levelValue);
-                }
+        if ("*".equals(levelValue)) {
+            if (containsDefault) {
+                children.get("*").insertPath(levelValues, currentDepth + 1, value);
+            } else {
+                insertPathToAllChildren(levelValues, currentDepth + 1, value);
             }
-            children.get(levelValue).appendPath(levelValues, currentDepth + 1, value);
+        } else {
+            VisualTreeNode<T> childNode = children.get(levelValue);
+            if (childNode == null && containsDefault) {
+                childNode = addLevelFromPath(levelValue, currentDepth, levelValues.length);
+            }
+            if (childNode != null) {
+                children.get(levelValue).insertPath(levelValues, currentDepth + 1, value);
+            }
         }
     }
 
-    private void addLevelFromPath(String levelValue, int currentDepth, int levelsTotal) {
+    private void insertPathToAllChildren(String[] levelValues, int currentDepth, T value) {
+        for (VisualTreeNode<T> child : children.values()) {
+            child.insertPath(levelValues, currentDepth, value);
+        }
+    }
+
+    private VisualTreeNode<T> addLevelFromPath(String levelValue, int currentDepth, int levelsTotal) {
         VisualTreeNode<T> addedLevel = addLevel(levelValue);
         if (currentDepth < levelsTotal - 1) {
             addedLevel.addAnyLevel();
         }
+        return addedLevel;
     }
 
     public void harvestLeavesValues(List<T> appendTo) {

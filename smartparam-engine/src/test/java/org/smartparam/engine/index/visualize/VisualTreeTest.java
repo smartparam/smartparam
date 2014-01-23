@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
-import static com.googlecode.catchexception.CatchException.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -49,17 +48,17 @@ public class VisualTreeTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenTryingToAddValueOutOfDictionaryToDictionaryOnlyLevel() {
+    public void shouldSilentlyIngoreWhenTryingToAddValueOutOfDictionaryToDictionaryOnlyLevel() {
         // given
         VisualTree<String> tree = new VisualTree<String>();
         tree.root().addDictionaryLevel("FIRST_LEVEL");
 
         // when
-        catchException(tree).insertValue(new String[]{"INVALID_VALUE"}, "VALUE");
+        tree.insertValue(new String[]{"INVALID_VALUE"}, "VALUE");
         logger.debug(tree.printTree());
 
         // then
-        assertThat(caughtException()).isInstanceOf(ParameterValueDoesNotMatchDictionary.class);
+        assertThat(tree.harvestLeavesValues()).isEmpty();
     }
 
     @Test
@@ -123,10 +122,39 @@ public class VisualTreeTest {
     }
 
     @Test
-    public void should() {
-    // given
+    public void shouldSpreadDefaultPathAmongAllLevelChildren() {
+        // given
+        VisualTree<String> tree = new VisualTree<String>();
+        tree.root().addDictionaryLevel("A")
+                .addDictionaryLevel("A-A").parent()
+                .addDictionaryLevel("A-B").parent()
+                .addDictionaryLevel("A-C");
 
-    // when
-    // then
+        // when
+        tree.insertValue(new String[] {"A", "*"}, "VIRAL");
+        logger.debug(tree.printTree());
+
+        // then
+        assertThat(tree.harvestLeavesValues()).hasSize(3).containsOnly("VIRAL");
+    }
+
+    @Test
+    public void shouldSpreadDefaultPathOnlyOnSameLevelAndUseConcreteMatchingLower() {
+        // given
+        VisualTree<String> tree = new VisualTree<String>();
+        tree.root().addDictionaryLevel("A")
+                .addDictionaryLevel("A-A")
+                .addDictionaryLevel("A-A-A").parent().parent()
+                .addDictionaryLevel("A-B")
+                .addDictionaryLevel("A-B-A").parent().parent()
+                .addDictionaryLevel("A-C")
+                .addDictionaryLevel("A-C-A");
+
+        // when
+        tree.insertValue(new String[] {"A", "*", "A-A-A"}, "CONTAINED_VIRAL");
+        logger.debug(tree.printTree());
+
+        // then
+        assertThat(tree.harvestLeavesValues()).hasSize(1).containsOnly("CONTAINED_VIRAL");
     }
 }
