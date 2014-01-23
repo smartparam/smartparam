@@ -16,11 +16,11 @@
 package org.smartparam.engine.core.index;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.util.Formatter;
+import org.smartparam.engine.util.Printer;
 
 /**
  *
@@ -130,7 +130,7 @@ public class LevelNode<T> {
     }
 
     public void printNode(StringBuilder sb, int level) {
-        String indent = repeat(' ', level << 2);
+        String indent = Printer.repeat(' ', level << 2);
         boolean leaf = isLeaf();
 
         sb.append(indent).append("path : ").append(getLevelPath());
@@ -163,12 +163,6 @@ public class LevelNode<T> {
         }
         sb.append(']');
         return sb.toString();
-    }
-
-    private String repeat(char c, int count) {
-        char[] str = new char[count];
-        Arrays.fill(str, c);
-        return new String(str);
     }
 
     private String getLevelPath() {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.smartparam.engine.index.visualize;
 
-package org.smartparam.engine.index.merge;
-
-import java.util.List;
-import org.smartparam.engine.core.prepared.PreparedParameter;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface TreePathMerger<T> {
+@SuppressWarnings("serial")
+public class ParameterValueDoesNotMatchDictionary extends SmartParamException {
 
-    List<T> merge(PreparedParameter parameter, List<T> paths);
+    ParameterValueDoesNotMatchDictionary(String currentLevel, int currentDepth, String valueToAdd) {
+        super("PARAMETER_VALUE_DOES_NOT_MATCH_DICTIONARY", String.format(
+                "Trying to add value [%s] that does not belong to dictionary at level %d [%s]",
+                valueToAdd, currentDepth, currentLevel
+        ));
+    }
 
 }
