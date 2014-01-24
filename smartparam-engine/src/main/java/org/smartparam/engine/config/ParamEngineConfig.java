@@ -53,6 +53,7 @@ import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.type.TypeRepository;
+import org.smartparam.engine.report.OverlappingSetsSplitterRepository;
 import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
 /**
@@ -99,6 +100,7 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(component(MapEntryFactory.class, MapEntryFactory.class));
         components.add(component(DefaultParamValueFactory.class, DefaultParamValueFactory.class));
         components.add(component(DetailedParamValueFactory.class, DetailedParamValueFactory.class));
+        components.add(component(OverlappingSetsSplitterRepository.class, ScanningOverlappingSetsSplitterRepository.class));
     }
 
     public List<NamedParamRepository> getParameterRepositories() {

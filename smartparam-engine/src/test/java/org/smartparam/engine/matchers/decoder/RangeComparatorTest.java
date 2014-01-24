@@ -31,64 +31,64 @@ public class RangeComparatorTest {
     @Test
     public void shouldCompareRangesInAscendingOrderUsingLowerBoundByDefault() {
         // given
-        List<Range> ranges = Arrays.asList(
-                new Range(1, 12),
-                new Range(10, 3),
-                new Range(5, 6)
+        List<Range<Integer>> ranges = Arrays.asList(
+                new Range<Integer>(1, 12),
+                new Range<Integer>(10, 12),
+                new Range<Integer>(5, 6)
         );
 
         // when
         Collections.sort(ranges, new RangeComparator());
 
         // then
-        assertThat(ranges).containsExactly(new Range(1, 12), new Range(5, 6), new Range(10, 3));
+        assertThat(ranges).containsExactly(new Range<Integer>(1, 12), new Range<Integer>(5, 6), new Range<Integer>(10, 12));
     }
 
     @Test
     public void shouldCompareRangesInDescendingOrderUsingLowerBound() {
         // given
-        List<Range> ranges = Arrays.asList(
-                new Range(1, 12),
-                new Range(10, 3),
-                new Range(5, 6)
+        List<Range<Integer>> ranges = Arrays.asList(
+                new Range<Integer>(1, 12),
+                new Range<Integer>(10, 12),
+                new Range<Integer>(5, 6)
         );
 
         // when
         Collections.sort(ranges, new RangeComparator(false));
 
         // then
-        assertThat(ranges).containsExactly(new Range(10, 3), new Range(5, 6), new Range(1, 12));
+        assertThat(ranges).containsExactly(new Range<Integer>(10, 12), new Range<Integer>(5, 6), new Range<Integer>(1, 12));
     }
 
     @Test
-    public void shouldCompareRangesInAscendingOrderUsingUpperBoundBy() {
+    public void shouldCompareRangesInAscendingOrderUsingUpperBound() {
         // given
-        List<Range> ranges = Arrays.asList(
-                new Range(1, 12),
-                new Range(10, 3),
-                new Range(5, 6)
+        List<Range<Integer>> ranges = Arrays.asList(
+                new Range<Integer>(1, 12),
+                new Range<Integer>(10, 14),
+                new Range<Integer>(5, 6)
         );
 
         // when
-        Collections.sort(ranges, new RangeComparator(true, false));
+        Collections.sort(ranges, new RangeComparator(false, true));
 
         // then
-        assertThat(ranges).containsExactly(new Range(10, 3), new Range(5, 6), new Range(1, 12));
+        assertThat(ranges).containsExactly(new Range<Integer>(5, 6), new Range<Integer>(1, 12), new Range<Integer>(10, 14));
     }
 
     @Test
     public void shouldCompareRangesInDescendingOrderUsingUpperBound() {
         // given
-        List<Range> ranges = Arrays.asList(
-                new Range(1, 12),
-                new Range(10, 3),
-                new Range(5, 6)
+        List<Range<Integer>> ranges = Arrays.asList(
+                new Range<Integer>(1, 12),
+                new Range<Integer>(10, 14),
+                new Range<Integer>(5, 6)
         );
 
         // when
         Collections.sort(ranges, new RangeComparator(false, false));
 
         // then
-        assertThat(ranges).containsExactly(new Range(1, 12), new Range(5, 6), new Range(10, 3));
+        assertThat(ranges).containsExactly(new Range<Integer>(10, 14), new Range<Integer>(1, 12), new Range<Integer>(5, 6));
     }
 }

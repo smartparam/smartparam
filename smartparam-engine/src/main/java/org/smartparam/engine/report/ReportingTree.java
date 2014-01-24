@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.index.visualize;
+package org.smartparam.engine.report;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +22,13 @@ import java.util.List;
  *
  * @author Adam Dubiel
  */
-public class VisualTree<T> {
+public class ReportingTree<T> {
 
     private static final int PRINT_DEFAULT_SIZE = 200;
 
-    private final VisualTreeNode<T> root = new VisualTreeNode<T>(null, null);
+    private final ReportingTreeNode<T> root = new ReportingTreeNode<T>(null, null);
 
-    public VisualTreeNode<T> root() {
+    public ReportingTreeNode<T> root() {
         return root;
     }
 

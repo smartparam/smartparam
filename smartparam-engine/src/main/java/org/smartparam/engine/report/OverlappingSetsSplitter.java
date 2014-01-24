@@ -13,22 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.index.visualize;
 
-import org.smartparam.engine.core.exception.SmartParamException;
+package org.smartparam.engine.report;
 
 /**
  *
  * @author Adam Dubiel
  */
-@SuppressWarnings("serial")
-public class ParameterValueDoesNotMatchDictionary extends SmartParamException {
+public interface OverlappingSetsSplitter<T> {
 
-    ParameterValueDoesNotMatchDictionary(String currentLevel, int currentDepth, String valueToAdd) {
-        super("PARAMETER_VALUE_DOES_NOT_MATCH_DICTIONARY", String.format(
-                "Trying to add value [%s] that does not belong to dictionary at level %d [%s]",
-                valueToAdd, currentDepth, currentLevel
-        ));
-    }
+    DisjointSets<T> split(T existingSet, T incomingSet);
 
 }

@@ -66,4 +66,16 @@ public class BetweenMatcherDecoderTest {
         assertThat(decoded.from()).isEqualTo("A");
         assertThat(decoded.to()).isEqualTo("B");
     }
+
+    @Test
+    public void shouldEncodeRangeAsEncodedValuesSeparatedByFirstSeparatorThatDoesNotExistInAnyEncodedValue() {
+        // given
+        BetweenMatcher matcher = new BetweenMatcher(true, true, "~#");
+
+        // when
+        String encoded = decoder.encode(new Range("A~", "B"), null, matcher);
+
+        // then
+        assertThat(encoded).isEqualTo("A~#B");
+    }
 }

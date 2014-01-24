@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.index.visualize;
+package org.smartparam.engine.report;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +25,11 @@ import org.smartparam.engine.util.Printer;
  *
  * @author Adam Dubiel
  */
-public class VisualTreeNode<T> {
+public class ReportingTreeNode<T> {
 
-    private final Map<String, VisualTreeNode<T>> children = new HashMap<String, VisualTreeNode<T>>();
+    private final Map<String, ReportingTreeNode<T>> children = new HashMap<String, ReportingTreeNode<T>>();
 
-    private final VisualTreeNode<T> parent;
+    private final ReportingTreeNode<T> parent;
 
     private final String level;
 
@@ -37,7 +37,7 @@ public class VisualTreeNode<T> {
 
     private boolean containsDefault = false;
 
-    public VisualTreeNode(VisualTreeNode<T> parent, String level) {
+    public ReportingTreeNode(ReportingTreeNode<T> parent, String level) {
         this.parent = parent;
         this.level = level;
     }
@@ -46,21 +46,21 @@ public class VisualTreeNode<T> {
         return value;
     }
 
-    public VisualTreeNode<T> parent() {
+    public ReportingTreeNode<T> parent() {
         return parent;
     }
 
-    public VisualTreeNode<T> addDictionaryLevel(String levelValue) {
+    public ReportingTreeNode<T> addDictionaryLevel(String levelValue) {
         return addLevel(levelValue);
     }
 
-    public VisualTreeNode<T> addAnyLevel() {
+    public ReportingTreeNode<T> addAnyLevel() {
         containsDefault = true;
         return addLevel("*");
     }
 
-    private VisualTreeNode<T> addLevel(String levelValue) {
-        VisualTreeNode<T> child = new VisualTreeNode<T>(this, levelValue);
+    private ReportingTreeNode<T> addLevel(String levelValue) {
+        ReportingTreeNode<T> child = new ReportingTreeNode<T>(this, levelValue);
         children.put(levelValue, child);
 
         return child;
@@ -81,7 +81,7 @@ public class VisualTreeNode<T> {
                 insertPathToAllChildren(levelValues, currentDepth + 1, value);
             }
         } else {
-            VisualTreeNode<T> childNode = children.get(levelValue);
+            ReportingTreeNode<T> childNode = children.get(levelValue);
             if (childNode == null && containsDefault) {
                 childNode = addLevelFromPath(levelValue, currentDepth, levelValues.length);
             }
@@ -92,13 +92,13 @@ public class VisualTreeNode<T> {
     }
 
     private void insertPathToAllChildren(String[] levelValues, int currentDepth, T value) {
-        for (VisualTreeNode<T> child : children.values()) {
+        for (ReportingTreeNode<T> child : children.values()) {
             child.insertPath(levelValues, currentDepth, value);
         }
     }
 
-    private VisualTreeNode<T> addLevelFromPath(String levelValue, int currentDepth, int levelsTotal) {
-        VisualTreeNode<T> addedLevel = addLevel(levelValue);
+    private ReportingTreeNode<T> addLevelFromPath(String levelValue, int currentDepth, int levelsTotal) {
+        ReportingTreeNode<T> addedLevel = addLevel(levelValue);
         if (currentDepth < levelsTotal - 1) {
             addedLevel.addAnyLevel();
         }
@@ -111,7 +111,7 @@ public class VisualTreeNode<T> {
                 appendTo.add(value);
             }
         } else {
-            for (VisualTreeNode<T> child : children.values()) {
+            for (ReportingTreeNode<T> child : children.values()) {
                 child.harvestLeavesValues(appendTo);
             }
         }
@@ -132,7 +132,7 @@ public class VisualTreeNode<T> {
         sb.append(Formatter.NL);
 
         if (children != null) {
-            for (VisualTreeNode<T> child : children.values()) {
+            for (ReportingTreeNode<T> child : children.values()) {
                 child.printNode(sb, level + 1);
             }
         }

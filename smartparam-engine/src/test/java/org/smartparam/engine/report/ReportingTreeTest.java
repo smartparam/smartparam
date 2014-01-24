@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.index.visualize;
+package org.smartparam.engine.report;
 
 import java.util.Arrays;
 import org.slf4j.Logger;
@@ -26,15 +26,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Adam Dubiel
  */
-public class VisualTreeTest {
+public class ReportingTreeTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(VisualTreeTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReportingTreeTest.class);
 
     @Test
     public void shouldInsertValueWithDictionaryPathValuesToDictionaryOnlyTree() {
         // given
-        VisualTree<String> tree = new VisualTree<String>();
-        VisualTreeNode<String> firstLevel = tree.root().addDictionaryLevel("FIRST_LEVEL");
+        ReportingTree<String> tree = new ReportingTree<String>();
+        ReportingTreeNode<String> firstLevel = tree.root().addDictionaryLevel("FIRST_LEVEL");
         for (String secondLevel : Arrays.asList("SECOND_LEVEL_A", "SECOND_LEVEL_B", "SECOND_LEVEL_C")) {
             firstLevel.addDictionaryLevel(secondLevel).addDictionaryLevel("THIRD_LEVEL_X");
         }
@@ -50,7 +50,7 @@ public class VisualTreeTest {
     @Test
     public void shouldSilentlyIngoreWhenTryingToAddValueOutOfDictionaryToDictionaryOnlyLevel() {
         // given
-        VisualTree<String> tree = new VisualTree<String>();
+        ReportingTree<String> tree = new ReportingTree<String>();
         tree.root().addDictionaryLevel("FIRST_LEVEL");
 
         // when
@@ -64,7 +64,7 @@ public class VisualTreeTest {
     @Test
     public void shouldInsertValueWithAnyPathValuesIntoFreeFormTree() {
         // given
-        VisualTree<String> tree = new VisualTree<String>();
+        ReportingTree<String> tree = new ReportingTree<String>();
         tree.root().addAnyLevel().addAnyLevel();
 
         // when
@@ -78,7 +78,7 @@ public class VisualTreeTest {
     @Test
     public void shouldInsertValueWithPathIntoMixedTree() {
         // given
-        VisualTree<String> tree = new VisualTree<String>();
+        ReportingTree<String> tree = new ReportingTree<String>();
         tree.root().addAnyLevel();
         tree.root().addDictionaryLevel("FIRST_LEVEL_A")
                 .addDictionaryLevel("SECOND_LEVEL_A");
@@ -96,7 +96,7 @@ public class VisualTreeTest {
     @Test
     public void shouldInsertMultiplePathsIntoOneTree() {
         // given
-        VisualTree<String> tree = new VisualTree<String>();
+        ReportingTree<String> tree = new ReportingTree<String>();
         tree.root()
                 .addDictionaryLevel("A")
                 .addDictionaryLevel("A-A")
@@ -124,7 +124,7 @@ public class VisualTreeTest {
     @Test
     public void shouldSpreadDefaultPathAmongAllLevelChildren() {
         // given
-        VisualTree<String> tree = new VisualTree<String>();
+        ReportingTree<String> tree = new ReportingTree<String>();
         tree.root().addDictionaryLevel("A")
                 .addDictionaryLevel("A-A").parent()
                 .addDictionaryLevel("A-B").parent()
@@ -141,7 +141,7 @@ public class VisualTreeTest {
     @Test
     public void shouldSpreadDefaultPathOnlyOnSameLevelAndUseConcreteMatchingLower() {
         // given
-        VisualTree<String> tree = new VisualTree<String>();
+        ReportingTree<String> tree = new ReportingTree<String>();
         tree.root().addDictionaryLevel("A")
                 .addDictionaryLevel("A-A")
                 .addDictionaryLevel("A-A-A").parent().parent()

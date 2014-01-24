@@ -85,4 +85,34 @@ class RangeBoundary<C extends Comparable<? super C>> implements Comparable<Range
         return value.toString();
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + (this.value != null ? this.value.hashCode() : 0);
+        hash = 47 * hash + (this.infinity ? 1 : 0);
+        hash = 47 * hash + this.infinitySign;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final RangeBoundary<?> other = (RangeBoundary<?>) obj;
+        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
+            return false;
+        }
+        if (this.infinity != other.infinity) {
+            return false;
+        }
+        if (this.infinitySign != other.infinitySign) {
+            return false;
+        }
+        return true;
+    }
+
 }

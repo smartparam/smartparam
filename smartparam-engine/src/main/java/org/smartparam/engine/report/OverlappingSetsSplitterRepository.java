@@ -13,19 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.smartparam.engine.report;
 
-package org.smartparam.engine.index.visualize;
-
-import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
-import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.core.repository.Repository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface SetsDisjoiner<T> {
+public interface OverlappingSetsSplitterRepository extends Repository<OverlappingSetsSplitter<?>> {
 
-    DisjointSets disjoin(String existingSet, String incomingSet, MatcherAwareDecoder<T> decoder, Matcher matcher, Type<?> valuesType);
+    OverlappingSetsSplitter<?> getSplitter(String matcherCode);
 
 }

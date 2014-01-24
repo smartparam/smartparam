@@ -42,4 +42,21 @@ public class EmptyMatcherDecoder implements MatcherAwareDecoder<Object> {
 
         return value;
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public String encode(Object object, Type type, Matcher matcher) {
+        if (object instanceof Star) {
+            return "*";
+        }
+
+        String value;
+        if (type != null) {
+            value = type.encode(type.convert(object));
+        } else {
+            value = object == null ? "" : object.toString();
+        }
+
+        return value == null ? "*" : value;
+    }
 }

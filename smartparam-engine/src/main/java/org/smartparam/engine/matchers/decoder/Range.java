@@ -99,8 +99,12 @@ public class Range<C extends Comparable<C>> {
 
         if (intersection != null && !other.contains(this)) {
             if (this.contains(other)) {
-                difference.add(new Range<C>(this.from, intersection.from));
-                difference.add(new Range<C>(intersection.to, this.to));
+                if (from.compareTo(intersection.from) != 0) {
+                    difference.add(new Range<C>(this.from, intersection.from));
+                }
+                if (to.compareTo(intersection.to) != 0) {
+                    difference.add(new Range<C>(intersection.to, this.to));
+                }
             } else if (this.contains(intersection.from())) {
                 difference.add(new Range<C>(this.from, intersection.from));
             } else {

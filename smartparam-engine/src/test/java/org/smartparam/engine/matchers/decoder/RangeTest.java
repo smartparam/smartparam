@@ -86,6 +86,19 @@ public class RangeTest {
     }
 
     @Test
+    public void shouldTreatRangesWithOneCommonPointAsDisjoint() {
+        // given
+        Range<Integer> rangeA = new Range<Integer>(5, 10);
+        Range<Integer> rangeB = new Range<Integer>(10, 15);
+
+        // when
+        boolean disjoint = rangeA.disjoint(rangeB);
+
+        // then
+        assertThat(disjoint).isTrue();
+    }
+
+    @Test
     public void shouldReturnTrueIfOtherRangeIsFullyContainedInRange() {
         // given
         Range<Integer> rangeA = new Range<Integer>(0, 10);
@@ -241,7 +254,7 @@ public class RangeTest {
     }
 
     @Test
-    public void shouldReturnEmptyListWhenTryingTOSubtractDisjointRanges() {
+    public void shouldReturnEmptyListWhenTryingToSubtractDisjointRanges() {
         // given
         Range<Integer> rangeA = new Range<Integer>(5, 10);
         Range<Integer> rangeB = new Range<Integer>(20, 25);
@@ -251,5 +264,20 @@ public class RangeTest {
 
         // then
         assertThat(difference).isEmpty();
+    }
+
+    @Test
+    public void shouldNotAddSinglePointRangesToSubtractionResultWhenThisContainsOther() {
+        // given
+        Range<Integer> rangeA = new Range<Integer>(5, 10);
+        Range<Integer> rangeB = new Range<Integer>(7, 10);
+
+        // when
+        List<Range<Integer>> difference = rangeA.subtract(rangeB);
+
+        // then
+        assertThat(difference).hasSize(1);
+        assertThat(difference.get(0).from()).isEqualTo(5);
+        assertThat(difference.get(0).to()).isEqualTo(7);
     }
 }
