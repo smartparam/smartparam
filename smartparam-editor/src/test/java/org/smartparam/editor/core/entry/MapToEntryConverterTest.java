@@ -18,17 +18,17 @@ package org.smartparam.editor.core.entry;
 import org.smartparam.engine.core.index.Star;
 import java.text.ParseException;
 import java.util.Date;
-import org.smartparam.editor.matcher.EmptyMatcherEncoder;
-import org.smartparam.editor.core.matcher.MatcherEncoderRepository;
 import org.smartparam.editor.model.simple.SimpleLevel;
 import org.smartparam.editor.model.simple.SimpleParameter;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
+import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
+import org.smartparam.engine.matchers.decoder.EmptyMatcherDecoder;
 import org.smartparam.engine.types.date.DateType;
 import org.smartparam.engine.types.date.SimpleDateFormatPool;
 import org.smartparam.engine.types.string.StringType;
@@ -56,8 +56,8 @@ public class MapToEntryConverterTest {
                 .withType("date", new DateType())
                 .withMatcher("between/ie", new BetweenMatcher())
                 .build();
-        MatcherEncoderRepository converterRepository = mock(MatcherEncoderRepository.class);
-        doReturn(new EmptyMatcherEncoder()).when(converterRepository).getEncoder(anyString());
+        MatcherDecoderRepository converterRepository = mock(MatcherDecoderRepository.class);
+        doReturn(new EmptyMatcherDecoder()).when(converterRepository).getDecoder(anyString());
 
         converter = new MapToEntryConverter(ParamEngineFactory.paramEngine(config).runtimeConfiguration(), converterRepository);
     }

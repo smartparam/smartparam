@@ -95,7 +95,7 @@ public class BasicParamEditorTest {
         ParamEngine paramEngine = ParamEngineFactory.paramEngine(config);
 
         // when
-        BasicParamEditor localParamEditor = new BasicParamEditor(paramEngine, null, null);
+        BasicParamEditor localParamEditor = new BasicParamEditor(paramEngine, null);
 
         // then
         assertThat(localParamEditor.repositories()).containsOnly(RepositoryName.from("fake1"), RepositoryName.from("fake2"));
