@@ -157,4 +157,12 @@ public class VisualTreeTest {
         // then
         assertThat(tree.harvestLeavesValues()).hasSize(1).containsOnly("CONTAINED_VIRAL");
     }
+
+    @Test
+    public void should() {
+    // given
+
+    // when
+    // then
+    }
 }

@@ -15,51 +15,100 @@
  */
 package org.smartparam.engine.matchers.decoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.smartparam.engine.core.index.Star;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class Range {
+public class Range<C extends Comparable<C>> {
 
-    private final Object from;
+    private final RangeBoundary<C> from;
 
-    private final Object to;
+    private final RangeBoundary<C> to;
 
+    @SuppressWarnings("unchecked")
     public Range(Object from, Object to) {
-        this.from = from;
-        this.to = to;
+        this(
+                (RangeBoundary<C>) ((from instanceof Star) ? RangeBoundary.minusInfinity() : new RangeBoundary<C>((C) from)),
+                (RangeBoundary<C>) ((to instanceof Star) ? RangeBoundary.plusInfinity() : new RangeBoundary<C>((C) to))
+        );
     }
 
-    public static Range of(Object from, Object to) {
-        return new Range(from, to);
+    public Range(C from, C to) {
+        this(new RangeBoundary<C>(from), new RangeBoundary<C>(to));
     }
 
-    public Object from() {
-        return from;
+    Range(RangeBoundary<C> from, RangeBoundary<C> to) {
+        boolean swap = from.compareTo(to) > 0;
+        this.from = !swap ? from : to;
+        this.to = !swap ? to : from;
     }
 
-    public boolean isFromStar() {
-        return from instanceof Star;
+    public C from() {
+        return from.value();
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T fromAs(Class<T> clazz) {
-        return isFromStar() ? null : (T) from;
+    public boolean isFromInfinity() {
+        return from.isMinusInfinity();
     }
 
-    public Object to() {
-        return to;
+    public C to() {
+        return to.value();
     }
 
-    public boolean isToStar() {
-        return to instanceof Star;
+    public boolean isToInfinity() {
+        return to.isPlusInfinity();
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T toAs(Class<T> clazz) {
-        return isToStar() ? null : (T) to;
+    public boolean disjoint(Range<C> other) {
+        return this.to.compareTo(other.from) <= 0 || this.from.compareTo(other.to) >= 0;
+    }
+
+    public boolean contains(C value) {
+        RangeBoundary<C> encapsulatedValue = new RangeBoundary<C>(value);
+        return this.from.compareTo(encapsulatedValue) < 0 && this.to.compareTo(encapsulatedValue) > 0;
+    }
+
+    public boolean contains(Range<C> other) {
+        return this.from.compareTo(other.from) <= 0 && this.to.compareTo(other.to) >= 0;
+    }
+
+    public Range<C> intersection(Range<C> other) {
+        if (disjoint(other)) {
+            return null;
+        }
+        if (this.contains(other)) {
+            return new Range<C>(other.from, other.to);
+        }
+        if (other.contains(this)) {
+            return new Range<C>(this.from, this.to);
+        }
+        if (this.contains(other.from.value())) {
+            return new Range<C>(other.from, this.to);
+        } else {
+            return new Range<C>(this.from, other.to);
+        }
+    }
+
+    public List<Range<C>> subtract(Range<C> other) {
+        List<Range<C>> difference = new ArrayList<Range<C>>();
+        Range<C> intersection = this.intersection(other);
+
+        if (intersection != null && !other.contains(this)) {
+            if (this.contains(other)) {
+                difference.add(new Range<C>(this.from, intersection.from));
+                difference.add(new Range<C>(intersection.to, this.to));
+            } else if (this.contains(intersection.from())) {
+                difference.add(new Range<C>(this.from, intersection.from));
+            } else {
+                difference.add(new Range<C>(intersection.to, this.to));
+            }
+        }
+
+        return difference;
     }
 
     @Override

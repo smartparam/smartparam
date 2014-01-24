@@ -27,12 +27,12 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Adam Dubiel
  */
 @ParamMatcherDecoder(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
-public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range> {
+public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range<?>> {
 
     private final EmptyMatcherDecoder simpleConverter = new EmptyMatcherDecoder();
 
     @Override
-    public Range decode(String value, Type<?> type, Matcher matcher) {
+    public Range<?> decode(String value, Type<?> type, Matcher matcher) {
         BetweenMatcher betweenMatcher = (BetweenMatcher) matcher;
         char separator = findSeparator(value, betweenMatcher.separators());
 
