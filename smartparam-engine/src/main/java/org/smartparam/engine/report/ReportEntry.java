@@ -13,33 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
 
-import java.util.List;
+package org.smartparam.engine.report;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportingTreeNode<V> {
+public class ReportEntry {
 
-    ReportingTree<V> tree();
+    private String[] values;
 
-    ReportingTreeNode<V> addChild(String levelValue);
+    public ReportEntry(String[] values) {
+        this.values = values;
+    }
 
-    void insertPath(ReportingTreePath<V> path);
-
-    ReportingTreeNode<V> cloneBranch();
-
-    ReportingTreeNode<V> parent();
-
-    int depth();
-
-    boolean leaf();
-
-    void harvestLeavesValues(List<V> leafBucket);
-
-    void printNode(StringBuilder builder);
-
-    String levelPath();
 }

@@ -28,7 +28,7 @@ import org.smartparam.engine.types.date.DateType;
  */
 public final class ReportingTreeBuilder {
 
-    private final List<ReportingTreeLevelOperations> operations = new ArrayList<ReportingTreeLevelOperations>();
+    private final List<ReportingTreeLevel> operations = new ArrayList<ReportingTreeLevel>();
 
     private ReportingTreeBuilder() {
         addExactLevel();
@@ -43,7 +43,7 @@ public final class ReportingTreeBuilder {
     }
 
     public ReportingTreeBuilder addAmbiguousDateLevel() {
-        operations.add(new ReportingTreeLevelOperations(true,
+        operations.add(new ReportingTreeLevel(true,
                 new BetweenMatcher(true, false, "~"),
                 new DateType(),
                 new BetweenMatcherDecoder(),
@@ -53,7 +53,7 @@ public final class ReportingTreeBuilder {
     }
 
     public ReportingTreeBuilder addExactLevel() {
-        operations.add(ReportingTreeLevelOperations.exact());
+        operations.add(new ReportingTreeLevel(false, null, null, null, null));
         return this;
     }
 

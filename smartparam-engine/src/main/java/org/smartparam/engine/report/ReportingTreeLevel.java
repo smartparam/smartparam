@@ -23,9 +23,9 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public class ReportingTreeLevelOperations {
+public class ReportingTreeLevel {
 
-    private final boolean potentiallyAmbiguous;
+    private final boolean ambiguous;
 
     private final Matcher matcher;
 
@@ -35,43 +35,33 @@ public class ReportingTreeLevelOperations {
 
     private final OverlappingSetsSplitter splitter;
 
-    public ReportingTreeLevelOperations(boolean potentiallyAmbiguous, Matcher matcher,
+    public ReportingTreeLevel(boolean ambiguous, Matcher matcher,
             Type<?> type, MatcherAwareDecoder<?> matcherDecoder,
             OverlappingSetsSplitter<?> splitter) {
-        this.potentiallyAmbiguous = potentiallyAmbiguous;
+        this.ambiguous = ambiguous;
         this.matcher = matcher;
         this.type = type;
         this.matcherDecoder = matcherDecoder;
         this.splitter = splitter;
     }
 
-    public static ReportingTreeLevelOperations exact() {
-        return new ReportingTreeLevelOperations(false, null, null, null, null);
-    }
-
     boolean ambiguous() {
-        return potentiallyAmbiguous;
+        return ambiguous;
     }
 
     @SuppressWarnings("unchecked")
-    DisjointSets<String> split(String existingSet, String incomingSet) {
-        DisjointSets<Object> splitProduct = splitter.split(
-                matcherDecoder.decode(existingSet, type, matcher),
-                matcherDecoder.decode(incomingSet, type, matcher)
-        );
+    public <T> T decode(String string) {
+        return (T) matcherDecoder.decode(string, type, matcher);
+    }
 
-        DisjointSets<String> splitSets = new DisjointSets<String>();
-        for (Object object : splitProduct.setAParts()) {
-            splitSets.withPartOfSetA(matcherDecoder.encode(object, type, matcher));
-        }
-        if (splitSets.intersection() != null) {
-            splitSets.withIntersection(matcherDecoder.encode(splitSets.intersection(), type, matcher));
-        }
-        for (Object object : splitProduct.setBParts()) {
-            splitSets.withPartOfSetB(matcherDecoder.encode(object, type, matcher));
-        }
+    @SuppressWarnings("unchecked")
+    public <T> String encode(T object) {
+        return matcherDecoder.encode(object, type, matcher);
+    }
 
-        return splitSets;
+    @SuppressWarnings("unchecked")
+    public <T> DisjointSets<T> split(T existing, T incoming) {
+        return splitter.split(existing, incoming);
     }
 
     <T> T chooseValue(T existing, T incoming) {

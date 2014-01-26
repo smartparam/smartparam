@@ -15,31 +15,34 @@
  */
 package org.smartparam.engine.report;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportingTreeNode<V> {
+public class ReportingTreePath<T> {
 
-    ReportingTree<V> tree();
+    private final List<String> segments = new ArrayList<String>();
 
-    ReportingTreeNode<V> addChild(String levelValue);
+    private final T value;
 
-    void insertPath(ReportingTreePath<V> path);
+    public ReportingTreePath(String[] segments, T value) {
+        this.segments.addAll(Arrays.asList(segments));
+        this.value = value;
+    }
 
-    ReportingTreeNode<V> cloneBranch();
+    public T value() {
+        return value;
+    }
 
-    ReportingTreeNode<V> parent();
+    public String segmentAt(int index) {
+        return segments.get(index);
+    }
 
-    int depth();
-
-    boolean leaf();
-
-    void harvestLeavesValues(List<V> leafBucket);
-
-    void printNode(StringBuilder builder);
-
-    String levelPath();
+    public int length() {
+        return segments.size();
+    }
 }

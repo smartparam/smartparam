@@ -22,44 +22,48 @@ import java.util.List;
  *
  * @author Adam Dubiel
  */
-public class ReportingTree<T> {
+public class ReportingTree<V> {
 
     private static final int PRINT_DEFAULT_SIZE = 200;
 
-    private final ReportingTreeNode<T> root = new ReportingTreeNode<T>(this, null, null);
+    private final ReportingTreeNode<V> root;
 
-    private final List<ReportingTreeLevelOperations> operations;
+    private final List<ReportingTreeLevel> levelDescriptors;
 
-    public ReportingTree(List<ReportingTreeLevelOperations> operations) {
-        this.operations = operations;
+    public ReportingTree(List<ReportingTreeLevel> levelDescriptors) {
+        this.levelDescriptors = levelDescriptors;
+        root = createNode(null, "ROOT");
     }
 
-    public ReportingTreeNode<T> root() {
+    public ReportingTreeNode<V> root() {
         return root;
     }
 
-    public void insertValue(String[] levelValues, T value) {
-        root.insertPath(levelValues, 0, value);
+    public void insertValue(String[] levelValues, V value) {
+        root.insertPath(new ReportingTreePath<V>(levelValues, value));
     }
 
-    public List<T> harvestLeavesValues() {
-        List<T> crops = new ArrayList<T>();
+    public List<V> harvestLeavesValues() {
+        List<V> crops = new ArrayList<V>();
         root.harvestLeavesValues(crops);
         return crops;
     }
 
-    boolean isPotentiallyAmbiguous(int levelIndex) {
-        return operations.get(levelIndex).ambiguous();
+    final ReportingTreeNode<V> createNode(ReportingTreeNode<V> parent, String levelValue) {
+        int depth = parent == null ? 0 : parent.depth() + 1;
+        return descriptorFor(depth).ambiguous()
+                ? new AmbiguousReportingTreeNode<V>(this, parent, levelValue)
+                : new SimpleReportingTreeNode<V>(this, parent, levelValue);
     }
 
-    ReportingTreeLevelOperations operationsFor(int levelIndex) {
-        return operations.get(levelIndex);
+    ReportingTreeLevel descriptorFor(int levelIndex) {
+        return levelDescriptors.get(levelIndex);
     }
 
     public String printTree() {
         StringBuilder builder = new StringBuilder(PRINT_DEFAULT_SIZE);
         builder.append("VisualTree ");
-        root.printNode(builder, 0);
+        root.printNode(builder);
         return builder.toString();
     }
 

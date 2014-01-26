@@ -28,25 +28,25 @@ import static org.smartparam.engine.report.ReportingTreeBuilder.reportingTree;
  *
  * @author Adam Dubiel
  */
-public class ReportingTreeNodeTest {
+public class SimpleReportingTreeNodeTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReportingTreeNodeTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(SimpleReportingTreeNodeTest.class);
 
     @Test
-    public void shouldCopyWholeSubtreeIncludingClonedNodeWhenUsingCopyConstructor() {
+    public void shouldCopyWholeSubtreeIncludingClonedNodeWhenCopyingBranch() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root().addDictionaryLevel("A")
-                .addDictionaryLevel("A-A").parent()
-                .addDictionaryLevel("A-B").parent()
-                .addAnyLevel();
+        tree.root().addChild("A")
+                .addChild("A-A").parent()
+                .addChild("A-B").parent()
+                .addChild("*");
         tree.insertValue(new String[]{"A", "A-A"}, "VALUE_A");
         tree.insertValue(new String[]{"A", "A-B"}, "VALUE_B");
         tree.insertValue(new String[]{"A", "*"}, "VALUE_ANY");
 
         // when
         logger.debug(tree.printTree());
-        ReportingTreeNode<String> clone = new ReportingTreeNode<String>(tree.root());
+        ReportingTreeNode<String> clone = tree.root().cloneBranch();
         printNode(clone);
 
         // then
@@ -57,7 +57,7 @@ public class ReportingTreeNodeTest {
 
     private void printNode(ReportingTreeNode<?> node) {
         StringBuilder builder = new StringBuilder(100);
-        node.printNode(builder, 0);
+        node.printNode(builder);
         logger.debug(builder.toString());
     }
 }

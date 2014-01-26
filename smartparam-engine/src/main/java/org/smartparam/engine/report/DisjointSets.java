@@ -64,6 +64,10 @@ public class DisjointSets<T> {
         return intersection;
     }
 
+    public boolean intersectionExists() {
+        return intersection != null;
+    }
+
     public List<T> setBParts() {
         return Collections.unmodifiableList(setBParts);
     }
