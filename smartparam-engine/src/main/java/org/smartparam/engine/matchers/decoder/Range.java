@@ -23,7 +23,7 @@ import org.smartparam.engine.core.index.Star;
  *
  * @author Adam Dubiel
  */
-public class Range<C extends Comparable<C>> {
+public class Range<C extends Comparable<? super C>> {
 
     private final RangeBoundary<C> from;
 

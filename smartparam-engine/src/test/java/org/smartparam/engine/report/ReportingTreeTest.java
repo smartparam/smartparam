@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.smartparam.engine.report.ReportingTreeBuilder.reportingTree;
 
 /**
  *
@@ -33,7 +34,8 @@ public class ReportingTreeTest {
     @Test
     public void shouldInsertValueWithDictionaryPathValuesToDictionaryOnlyTree() {
         // given
-        ReportingTree<String> tree = new ReportingTree<String>();
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(3).build();
+
         ReportingTreeNode<String> firstLevel = tree.root().addDictionaryLevel("FIRST_LEVEL");
         for (String secondLevel : Arrays.asList("SECOND_LEVEL_A", "SECOND_LEVEL_B", "SECOND_LEVEL_C")) {
             firstLevel.addDictionaryLevel(secondLevel).addDictionaryLevel("THIRD_LEVEL_X");
@@ -50,7 +52,7 @@ public class ReportingTreeTest {
     @Test
     public void shouldSilentlyIngoreWhenTryingToAddValueOutOfDictionaryToDictionaryOnlyLevel() {
         // given
-        ReportingTree<String> tree = new ReportingTree<String>();
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(1).build();
         tree.root().addDictionaryLevel("FIRST_LEVEL");
 
         // when
@@ -64,7 +66,7 @@ public class ReportingTreeTest {
     @Test
     public void shouldInsertValueWithAnyPathValuesIntoFreeFormTree() {
         // given
-        ReportingTree<String> tree = new ReportingTree<String>();
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
         tree.root().addAnyLevel().addAnyLevel();
 
         // when
@@ -78,7 +80,7 @@ public class ReportingTreeTest {
     @Test
     public void shouldInsertValueWithPathIntoMixedTree() {
         // given
-        ReportingTree<String> tree = new ReportingTree<String>();
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
         tree.root().addAnyLevel();
         tree.root().addDictionaryLevel("FIRST_LEVEL_A")
                 .addDictionaryLevel("SECOND_LEVEL_A");
@@ -96,7 +98,7 @@ public class ReportingTreeTest {
     @Test
     public void shouldInsertMultiplePathsIntoOneTree() {
         // given
-        ReportingTree<String> tree = new ReportingTree<String>();
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(4).build();
         tree.root()
                 .addDictionaryLevel("A")
                 .addDictionaryLevel("A-A")
@@ -124,7 +126,7 @@ public class ReportingTreeTest {
     @Test
     public void shouldSpreadDefaultPathAmongAllLevelChildren() {
         // given
-        ReportingTree<String> tree = new ReportingTree<String>();
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
         tree.root().addDictionaryLevel("A")
                 .addDictionaryLevel("A-A").parent()
                 .addDictionaryLevel("A-B").parent()
@@ -141,7 +143,7 @@ public class ReportingTreeTest {
     @Test
     public void shouldSpreadDefaultPathOnlyOnSameLevelAndUseConcreteMatchingLower() {
         // given
-        ReportingTree<String> tree = new ReportingTree<String>();
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(3).build();
         tree.root().addDictionaryLevel("A")
                 .addDictionaryLevel("A-A")
                 .addDictionaryLevel("A-A-A").parent().parent()
@@ -156,13 +158,5 @@ public class ReportingTreeTest {
 
         // then
         assertThat(tree.harvestLeavesValues()).hasSize(1).containsOnly("CONTAINED_VIRAL");
-    }
-
-    @Test
-    public void should() {
-    // given
-
-    // when
-    // then
     }
 }

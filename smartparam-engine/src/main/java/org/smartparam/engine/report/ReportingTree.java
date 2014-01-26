@@ -26,7 +26,13 @@ public class ReportingTree<T> {
 
     private static final int PRINT_DEFAULT_SIZE = 200;
 
-    private final ReportingTreeNode<T> root = new ReportingTreeNode<T>(null, null);
+    private final ReportingTreeNode<T> root = new ReportingTreeNode<T>(this, null, null);
+
+    private final List<ReportingTreeLevelOperations> operations;
+
+    public ReportingTree(List<ReportingTreeLevelOperations> operations) {
+        this.operations = operations;
+    }
 
     public ReportingTreeNode<T> root() {
         return root;
@@ -40,6 +46,14 @@ public class ReportingTree<T> {
         List<T> crops = new ArrayList<T>();
         root.harvestLeavesValues(crops);
         return crops;
+    }
+
+    boolean isPotentiallyAmbiguous(int levelIndex) {
+        return operations.get(levelIndex).ambiguous();
+    }
+
+    ReportingTreeLevelOperations operationsFor(int levelIndex) {
+        return operations.get(levelIndex);
     }
 
     public String printTree() {
