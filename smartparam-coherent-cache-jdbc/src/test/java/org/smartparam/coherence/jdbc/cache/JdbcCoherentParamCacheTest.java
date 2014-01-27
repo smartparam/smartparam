@@ -52,6 +52,22 @@ public class JdbcCoherentParamCacheTest {
     }
 
     @Test
+    public void shouldInvalidateAllParams() {
+        // given
+        PreparedParameter someParam = preparedParameter().forParameter(parameter().build()).build();
+        coherentCache.put("someParam", someParam);
+        coherentCache.put("otherParam", someParam);
+
+        // when
+        coherentCache.invalidate();
+
+        // then
+        assertThat(coherentCache.cachedParameterNames()).isEmpty();
+        verify(versionRepository).incrementVersion("someParam");
+        verify(versionRepository).incrementVersion("otherParam");
+    }
+
+    @Test
     public void shouldNotifyVersionRepositoryAboutParamBeingInvalidated() {
         // given
         PreparedParameter someParam = preparedParameter().forParameter(parameter().build()).build();

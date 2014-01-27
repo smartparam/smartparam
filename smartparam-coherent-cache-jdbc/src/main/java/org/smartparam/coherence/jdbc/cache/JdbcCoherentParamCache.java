@@ -4,6 +4,7 @@ import org.smartparam.coherence.jdbc.repository.ParamVersionRepository;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +33,9 @@ public class JdbcCoherentParamCache implements CoherentParamCache {
 
     @Override
     public void invalidate() {
-        decoratedCache.invalidate();
+        for (String cachedParamName : cachedParameterNames()) {
+            invalidate(cachedParamName);
+        }
     }
 
     @Override
@@ -55,5 +58,10 @@ public class JdbcCoherentParamCache implements CoherentParamCache {
 
     private void invalidateWithoutNotifying(String paramName) {
         decoratedCache.invalidate(paramName);
+    }
+
+    @Override
+    public Collection<String> cachedParameterNames() {
+        return decoratedCache.cachedParameterNames();
     }
 }
