@@ -36,10 +36,10 @@ public class SimpleReportingTreeNodeTest {
     public void shouldCopyWholeSubtreeIncludingClonedNodeWhenCopyingBranch() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root().addChild("A")
-                .addChild("A-A").parent()
-                .addChild("A-B").parent()
-                .addChild("*");
+        tree.root().addDictionaryChild("A")
+                .addDictionaryChild("A-A").parent()
+                .addDictionaryChild("A-B").parent()
+                .addDictionaryChild("*");
         tree.insertValue(new String[]{"A", "A-A"}, "VALUE_A");
         tree.insertValue(new String[]{"A", "A-B"}, "VALUE_B");
         tree.insertValue(new String[]{"A", "*"}, "VALUE_ANY");

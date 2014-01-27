@@ -60,6 +60,10 @@ public class ReportingTree<V> {
         return levelDescriptors.get(levelIndex);
     }
 
+    int height() {
+        return levelDescriptors.size();
+    }
+
     public String printTree() {
         StringBuilder builder = new StringBuilder(PRINT_DEFAULT_SIZE);
         builder.append("VisualTree ");

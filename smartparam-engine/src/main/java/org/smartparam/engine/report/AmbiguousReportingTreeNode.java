@@ -26,7 +26,7 @@ import java.util.TreeMap;
  *
  * @author Adam Dubiel
  */
-public class AmbiguousReportingTreeNode<V> extends AbstractReportingTreeNode<V> {
+public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
 
     private final Map<Object, ReportingTreeNode<V>> children = new TreeMap<Object, ReportingTreeNode<V>>();
 
@@ -39,16 +39,27 @@ public class AmbiguousReportingTreeNode<V> extends AbstractReportingTreeNode<V> 
     }
 
     @Override
+    protected void allowAnyValues(boolean state) {
+        // noop - non-ditionary only by default and can't be changed
+    }
+
+    @Override
     protected Collection<ReportingTreeNode<V>> children() {
         return children.values();
     }
 
     @Override
-    public ReportingTreeNode<V> addChild(String levelValue) {
+    public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
         ReportingTreeNode<V> child = tree().createNode(this, levelValue);
         children.put(levelValue, child);
 
         return child;
+    }
+
+    @Override
+    public ReportingTreeNode<V> addAnyChild() {
+        return addDictionaryChild("*");
+
     }
 
     @Override
@@ -118,10 +129,5 @@ public class AmbiguousReportingTreeNode<V> extends AbstractReportingTreeNode<V> 
         }
 
         return offspringRoot;
-    }
-
-    @Override
-    public boolean leaf() {
-        return children.isEmpty();
     }
 }

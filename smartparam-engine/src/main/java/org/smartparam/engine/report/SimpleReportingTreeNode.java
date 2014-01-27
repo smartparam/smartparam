@@ -24,7 +24,7 @@ import java.util.Map.Entry;
  *
  * @author Adam Dubiel
  */
-public class SimpleReportingTreeNode<V> extends AbstractReportingTreeNode<V> {
+public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
 
     private final Map<String, ReportingTreeNode<V>> children = new HashMap<String, ReportingTreeNode<V>>();
 
@@ -39,13 +39,28 @@ public class SimpleReportingTreeNode<V> extends AbstractReportingTreeNode<V> {
     }
 
     @Override
-    public ReportingTreeNode<V> addChild(String levelValue) {
+    protected void allowAnyValues(boolean state) {
+        this.dictionaryOnlyLevel = !state;
+    }
+
+    @Override
+    public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
+        return addChild(levelValue, false);
+    }
+
+    @Override
+    public ReportingTreeNode<V> addAnyChild() {
+        return addChild("*", true);
+    }
+
+    private ReportingTreeNode<V> addChild(String levelValue, boolean forceAllowAnyValues) {
         ReportingTreeNode<V> child = tree().createNode(this, levelValue);
         children.put(levelValue, child);
 
         if ("*".equals(levelValue)) {
             dictionaryOnlyLevel = false;
         }
+        child.allowAnyValues(forceAllowAnyValues);
 
         return child;
     }
@@ -53,19 +68,19 @@ public class SimpleReportingTreeNode<V> extends AbstractReportingTreeNode<V> {
     @Override
     public void insertPath(ReportingTreePath<V> path) {
         if (leaf()) {
-            if(leafValue == null) {
+            if (leafValue == null) {
                 this.leafValue = path.value();
             }
             return;
         }
 
         String valueToInsert = path.segmentAt(depth);
-        if ("*".equals(valueToInsert)) {
+        if ("*".equals(valueToInsert) && dictionaryOnlyLevel) {
             insertPathToAllChildren(path);
         } else {
             ReportingTreeNode<V> childNode = children.get(valueToInsert);
             if (childNode == null && !dictionaryOnlyLevel) {
-                childNode = addChild(valueToInsert);
+                childNode = addChild(valueToInsert, true);
             }
             if (childNode != null) {
                 childNode.insertPath(path);
@@ -77,11 +92,6 @@ public class SimpleReportingTreeNode<V> extends AbstractReportingTreeNode<V> {
         for (ReportingTreeNode<V> child : children.values()) {
             child.insertPath(path);
         }
-    }
-
-    @Override
-    public boolean leaf() {
-        return children.isEmpty();
     }
 
     @Override

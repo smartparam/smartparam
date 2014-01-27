@@ -15,31 +15,111 @@
  */
 package org.smartparam.engine.report;
 
+import java.util.Collection;
 import java.util.List;
+import org.smartparam.engine.util.Formatter;
+import org.smartparam.engine.util.Printer;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportingTreeNode<V> {
+public abstract class ReportingTreeNode<V> {
 
-    ReportingTree<V> tree();
+    private final ReportingTree<V> tree;
 
-    ReportingTreeNode<V> addChild(String levelValue);
+    private final ReportingTreeNode<V> parent;
 
-    void insertPath(ReportingTreePath<V> path);
+    private final ReportingTreeLevel levelDescriptor;
 
-    ReportingTreeNode<V> cloneBranch();
+    protected final int depth;
 
-    ReportingTreeNode<V> parent();
+    protected final String levelValue;
 
-    int depth();
+    protected V leafValue;
 
-    boolean leaf();
+    public ReportingTreeNode(ReportingTree<V> tree, ReportingTreeNode<V> parent, String levelValue) {
+        this.tree = tree;
+        this.parent = parent;
+        this.depth = parent == null ? 0 : parent.depth() + 1;
+        this.levelDescriptor = tree.descriptorFor(depth);
+        this.levelValue = levelValue;
+    }
 
-    void harvestLeavesValues(List<V> leafBucket);
+    protected ReportingTreeNode(ReportingTreeNode<V> patternToClone) {
+        this.tree = patternToClone.tree;
+        this.parent = patternToClone.parent;
+        this.levelDescriptor = patternToClone.levelDescriptor;
+        this.depth = patternToClone.depth;
+        this.levelValue = patternToClone.levelValue;
+        this.leafValue = patternToClone.leafValue;
+    }
 
-    void printNode(StringBuilder builder);
+    public abstract ReportingTreeNode<V> addDictionaryChild(String levelValue);
 
-    String levelPath();
+    public abstract ReportingTreeNode<V> addAnyChild();
+
+    public abstract void insertPath(ReportingTreePath<V> path);
+
+    public abstract ReportingTreeNode<V> cloneBranch();
+
+    protected abstract void allowAnyValues(boolean state);
+
+    protected ReportingTreeLevel levelDescriptor() {
+        return levelDescriptor;
+    }
+
+    protected int treeHeight() {
+        return tree.height();
+    }
+
+    protected boolean leaf() {
+        return depth >= treeHeight() - 1;
+    }
+
+    protected ReportingTree<V> tree() {
+        return tree;
+    }
+
+    protected int depth() {
+        return depth;
+    }
+
+    public ReportingTreeNode<V> parent() {
+        return parent;
+    }
+
+    public void harvestLeavesValues(List<V> leafBucket) {
+        if (leaf()) {
+            if (leafValue != null) {
+                leafBucket.add(leafValue);
+            }
+        } else {
+            for (ReportingTreeNode<V> child : children()) {
+                child.harvestLeavesValues(leafBucket);
+            }
+        }
+    }
+
+    protected abstract Collection<ReportingTreeNode<V>> children();
+
+    public void printNode(StringBuilder sb) {
+        String indent = Printer.repeat(' ', depth << 2);
+        boolean leaf = leaf();
+
+        sb.append(indent).append("path : ").append(levelPath());
+        if (leaf) {
+            sb.append("   (leaf=").append(leafValue).append(')');
+        }
+        sb.append(Formatter.NL);
+
+        for (ReportingTreeNode<V> child : children()) {
+            child.printNode(sb);
+        }
+    }
+
+    public String levelPath() {
+        String lv = levelValue != null ? levelValue : "";
+        return parent != null ? parent.levelPath() + "/" + lv : lv;
+    }
 }

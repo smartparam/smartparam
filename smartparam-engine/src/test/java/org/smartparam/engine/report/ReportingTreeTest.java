@@ -36,9 +36,9 @@ public class ReportingTreeTest {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(3).build();
 
-        ReportingTreeNode<String> firstLevel = tree.root().addChild("FIRST_LEVEL");
+        ReportingTreeNode<String> firstLevel = tree.root().addDictionaryChild("FIRST_LEVEL");
         for (String secondLevel : Arrays.asList("SECOND_LEVEL_A", "SECOND_LEVEL_B", "SECOND_LEVEL_C")) {
-            firstLevel.addChild(secondLevel).addChild("THIRD_LEVEL_X");
+            firstLevel.addDictionaryChild(secondLevel).addDictionaryChild("THIRD_LEVEL_X");
         }
 
         // when
@@ -53,7 +53,7 @@ public class ReportingTreeTest {
     public void shouldSilentlyIngoreWhenTryingToAddValueOutOfDictionaryToDictionaryOnlyLevel() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(1).build();
-        tree.root().addChild("FIRST_LEVEL");
+        tree.root().addDictionaryChild("FIRST_LEVEL");
 
         // when
         tree.insertValue(new String[]{"INVALID_VALUE"}, "VALUE");
@@ -67,7 +67,7 @@ public class ReportingTreeTest {
     public void shouldInsertValueWithAnyPathValuesIntoFreeFormTree() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root().addChild("*").addChild("*");
+        tree.root().addDictionaryChild("*").addDictionaryChild("*");
 
         // when
         tree.insertValue(new String[]{"FIRST_LEVEL", "SECOND_LEVEL"}, "VALUE");
@@ -81,11 +81,11 @@ public class ReportingTreeTest {
     public void shouldInsertValueWithPathIntoMixedTree() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root().addChild("*");
-        tree.root().addChild("FIRST_LEVEL_A")
-                .addChild("SECOND_LEVEL_A");
-        tree.root().addChild("FIRST_LEVEL_B")
-                .addChild("*");
+        tree.root().addDictionaryChild("*");
+        tree.root().addDictionaryChild("FIRST_LEVEL_A")
+                .addDictionaryChild("SECOND_LEVEL_A");
+        tree.root().addDictionaryChild("FIRST_LEVEL_B")
+                .addDictionaryChild("*");
 
         // when
         tree.insertValue(new String[]{"FIRST_LEVEL_A", "SECOND_LEVEL_A"}, "VALUE");
@@ -100,18 +100,18 @@ public class ReportingTreeTest {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(4).build();
         tree.root()
-                .addChild("A")
-                .addChild("A-A")
-                .addChild("A-A-A")
-                .addChild("*").parent()
+                .addDictionaryChild("A")
+                .addDictionaryChild("A-A")
+                .addDictionaryChild("A-A-A")
+                .addDictionaryChild("*").parent()
                 .parent()
-                .addChild("A-A-B")
-                .addChild("*").parent()
+                .addDictionaryChild("A-A-B")
+                .addDictionaryChild("*").parent()
                 .parent()
                 .parent()
-                .addChild("A-B")
-                .addChild("A-B-A")
-                .addChild("*");
+                .addDictionaryChild("A-B")
+                .addDictionaryChild("A-B-A")
+                .addDictionaryChild("*");
 
         // when
         tree.insertValue(new String[]{"A", "A-A", "A-A-A", "C"}, "VALUE_1");
@@ -127,10 +127,10 @@ public class ReportingTreeTest {
     public void shouldSpreadDefaultPathAmongAllLevelChildren() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root().addChild("A")
-                .addChild("A-A").parent()
-                .addChild("A-B").parent()
-                .addChild("A-C");
+        tree.root().addDictionaryChild("A")
+                .addDictionaryChild("A-A").parent()
+                .addDictionaryChild("A-B").parent()
+                .addDictionaryChild("A-C");
 
         // when
         tree.insertValue(new String[]{"A", "*"}, "VIRAL");
@@ -144,13 +144,13 @@ public class ReportingTreeTest {
     public void shouldSpreadDefaultPathOnlyOnSameLevelAndUseConcreteMatchingLower() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(3).build();
-        tree.root().addChild("A")
-                .addChild("A-A")
-                .addChild("A-A-A").parent().parent()
-                .addChild("A-B")
-                .addChild("A-B-A").parent().parent()
-                .addChild("A-C")
-                .addChild("A-C-A");
+        tree.root().addDictionaryChild("A")
+                .addDictionaryChild("A-A")
+                .addDictionaryChild("A-A-A").parent().parent()
+                .addDictionaryChild("A-B")
+                .addDictionaryChild("A-B-A").parent().parent()
+                .addDictionaryChild("A-C")
+                .addDictionaryChild("A-C-A");
 
         // when
         tree.insertValue(new String[]{"A", "*", "A-A-A"}, "CONTAINED_VIRAL");
@@ -158,5 +158,25 @@ public class ReportingTreeTest {
 
         // then
         assertThat(tree.harvestLeavesValues()).hasSize(1).containsOnly("CONTAINED_VIRAL");
+    }
+
+    @Test
+    public void shouldInsertAnyPathIntoLevelAcceptingDefaults() {
+        // given
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(3).build();
+        tree.root().addAnyChild()
+                .addDictionaryChild("A-A")
+                .addDictionaryChild("A-A-A").parent().parent()
+                .addDictionaryChild("A-B")
+                .addDictionaryChild("A-B-A").parent().parent()
+                .addDictionaryChild("A-C")
+                .addDictionaryChild("A-C-A").parent().parent();
+
+        // when
+        tree.insertValue(new String[]{"B", "A-A", "A-C-A"}, "ANYTHING");
+        logger.debug(tree.printTree());
+
+        // then
+        assertThat(tree.harvestLeavesValues()).hasSize(1).containsOnly("ANYTHING");
     }
 }
