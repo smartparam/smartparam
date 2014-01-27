@@ -15,9 +15,7 @@
  */
 package org.smartparam.engine.cache;
 
-import org.smartparam.engine.cache.MapCache;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
-import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 
 /**

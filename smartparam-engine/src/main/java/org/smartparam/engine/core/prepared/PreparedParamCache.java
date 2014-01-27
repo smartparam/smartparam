@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.prepared.PreparedParameter;
+import java.util.Collection;
 
 /**
  * Kontrakt zapewniajacy cache'owanie przygotowanych parametrow ({@link PreparedParameter}).
@@ -59,4 +59,6 @@ public interface PreparedParamCache {
      * Usuwa z cache'a wszystkie parametry.
      */
     void invalidate();
+
+    Collection<String> cachedParameterNames();
 }

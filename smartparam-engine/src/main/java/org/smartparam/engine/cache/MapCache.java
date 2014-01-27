@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.cache;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -46,5 +48,9 @@ public class MapCache<T> {
 
     public void invalidate() {
         cache.clear();
+    }
+
+    public Collection<String> cachedParameterNames() {
+        return Collections.unmodifiableCollection(cache.keySet());
     }
 }

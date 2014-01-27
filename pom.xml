@@ -52,6 +52,7 @@
         <module>smartparam-transferer</module>
         <module>smartparam-test</module>
         <module>smartparam-editor</module>
+        <module>smartparam-coherent-cache-jdbc</module>
     </modules>
 
     <dependencyManagement>
