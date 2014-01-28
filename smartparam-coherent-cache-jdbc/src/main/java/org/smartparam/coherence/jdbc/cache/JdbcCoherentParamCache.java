@@ -1,6 +1,7 @@
 package org.smartparam.coherence.jdbc.cache;
 
-import org.smartparam.coherence.jdbc.repository.ParamVersionRepository;
+import org.smartparam.coherence.jdbc.repository.JdbcParamVersionRepository;
+import org.smartparam.engine.config.initialization.InitializableComponent;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 
@@ -8,15 +9,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JdbcCoherentParamCache implements CoherentParamCache {
+public class JdbcCoherentParamCache implements CoherentParamCache, InitializableComponent {
 
     private PreparedParamCache decoratedCache;
 
-    private ParamVersionRepository versionRepository;
+    private JdbcParamVersionRepository versionRepository;
 
     private Map<String, Long> localVersions = new HashMap<String, Long>();
 
-    public JdbcCoherentParamCache(PreparedParamCache decoratedCache, ParamVersionRepository versionRepository) {
+    public JdbcCoherentParamCache(PreparedParamCache decoratedCache, JdbcParamVersionRepository versionRepository) {
         this.decoratedCache = decoratedCache;
         this.versionRepository = versionRepository;
     }
@@ -63,5 +64,10 @@ public class JdbcCoherentParamCache implements CoherentParamCache {
     @Override
     public Collection<String> cachedParameterNames() {
         return decoratedCache.cachedParameterNames();
+    }
+
+    @Override
+    public void initialize() {
+        versionRepository.initialize();
     }
 }
