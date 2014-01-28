@@ -1,5 +1,6 @@
 package org.smartparam.coherence.jdbc.cache;
 
+import org.smartparam.coherence.jdbc.repository.JdbcParamVersionRepository;
 import org.smartparam.coherence.jdbc.repository.ParamVersionRepository;
 import org.smartparam.engine.cache.MapPreparedParamCache;
 import org.smartparam.engine.core.prepared.PreparedParameter;
@@ -14,13 +15,13 @@ import static org.smartparam.engine.core.prepared.PreparedParameterTestBuilder.p
 
 public class JdbcCoherentParamCacheTest {
 
-    private ParamVersionRepository versionRepository;
+    private JdbcParamVersionRepository versionRepository;
 
     private CoherentParamCache coherentCache;
 
     @BeforeMethod
     public void setUp() {
-        versionRepository = mock(ParamVersionRepository.class);
+        versionRepository = mock(JdbcParamVersionRepository.class);
         coherentCache = new JdbcCoherentParamCache(new MapPreparedParamCache(), versionRepository);
     }
 
