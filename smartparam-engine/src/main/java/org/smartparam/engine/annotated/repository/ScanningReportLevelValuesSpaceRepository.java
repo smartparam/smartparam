@@ -40,8 +40,8 @@ public class ScanningReportLevelValuesSpaceRepository implements ReportLevelValu
     }
 
     @Override
-    public ReportLevelValuesSpace<?> getSpace(String matcherCode) {
-        return innerRepository.getItem(matcherCode).createSpace();
+    public ReportLevelValuesSpaceFactory getSpaceFactory(String matcherCode) {
+        return innerRepository.getItem(matcherCode);
     }
 
     @Override

@@ -198,7 +198,7 @@ public class ReportingTreeTest {
         logger.info(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(4).containsOnly("VALUE: 0-10");
+        assertThat(tree.harvestLeavesValues()).hasSize(3).containsOnly("VALUE: 0-10");
     }
 
     @Test

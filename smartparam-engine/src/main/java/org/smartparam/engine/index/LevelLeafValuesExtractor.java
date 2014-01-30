@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report.space;
 
-import org.smartparam.engine.core.repository.Repository;
+package org.smartparam.engine.index;
+
+import java.util.List;
+import org.smartparam.engine.core.index.LevelNode;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportLevelValuesSpaceRepository extends Repository<ReportLevelValuesSpaceFactory> {
+public interface LevelLeafValuesExtractor<T> {
 
-    ReportLevelValuesSpaceFactory getSpaceFactory(String matcherCode);
+    List<T> extract(CustomizableLevelIndexWalker<T> indexWalker, List<LevelNode<T>> nodes);
 
 }

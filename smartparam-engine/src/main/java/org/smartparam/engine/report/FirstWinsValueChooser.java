@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report.space;
 
-import org.smartparam.engine.core.repository.Repository;
+package org.smartparam.engine.report;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportLevelValuesSpaceRepository extends Repository<ReportLevelValuesSpaceFactory> {
+public class FirstWinsValueChooser<V> implements ReportValueChooser<V> {
 
-    ReportLevelValuesSpaceFactory getSpaceFactory(String matcherCode);
+    @Override
+    public V choose(V current, V incoming) {
+        return current != null ? current : incoming;
+    }
 
 }

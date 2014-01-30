@@ -19,6 +19,7 @@ import java.util.List;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
+import static org.smartparam.engine.index.IndexTraversalOverridesTestBuilder.indexTraversalOverrides;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
@@ -36,7 +37,10 @@ public class FastLevelNodeInspectorTest {
         index.add(new String[]{"C"}, "noise");
 
         CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
-                new IndexTraversalOverrides(new boolean[]{false}), index, "A");
+                indexTraversalOverrides().withGreediness(false).build(),
+                new SimpleLevelLeafValuesExtractor<String>(),
+                index,
+                "A");
 
         // when
         List<String> values = crawler.find();
@@ -53,7 +57,10 @@ public class FastLevelNodeInspectorTest {
         index.add(new String[]{"C"}, "noise");
 
         CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
-                new IndexTraversalOverrides(new boolean[]{false}), index, "A");
+                indexTraversalOverrides().withGreediness(false).build(),
+                new SimpleLevelLeafValuesExtractor<String>(),
+                index,
+                "A");
 
         // when
         List<String> values = crawler.find();
@@ -69,7 +76,10 @@ public class FastLevelNodeInspectorTest {
         index.add(new String[]{"C"}, "noise");
 
         CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
-                new IndexTraversalOverrides(new boolean[]{false}), index, "A");
+                indexTraversalOverrides().withGreediness(false).build(),
+                new SimpleLevelLeafValuesExtractor<String>(),
+                index,
+                "A");
 
         // when
         List<String> values = crawler.find();

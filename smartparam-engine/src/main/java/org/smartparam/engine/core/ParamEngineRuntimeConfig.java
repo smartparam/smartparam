@@ -27,6 +27,7 @@ import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
 
 /**
  * Snapshot of runtime configuration of ParamEngine, all collections are immutable.
@@ -53,6 +54,8 @@ public final class ParamEngineRuntimeConfig {
 
     private final MatcherDecoderRepository matcherDecoderRepository;
 
+    private final ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository;
+
     private final List<NamedParamRepository> paramRepositories;
 
     private final ParamRepositoriesNaming paramRepositoriesNaming;
@@ -68,7 +71,8 @@ public final class ParamEngineRuntimeConfig {
             Map<String, FunctionInvoker> invokers,
             Map<String, Type<?>> types,
             MatcherRepository matcherRepository,
-            MatcherDecoderRepository matcherDecoderRepository) {
+            MatcherDecoderRepository matcherDecoderRepository,
+            ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository) {
         this.functionCache = functionCache;
         this.paramCache = paramCache;
         this.functionRepositories = Collections.unmodifiableMap(functionRepositories);
@@ -79,6 +83,7 @@ public final class ParamEngineRuntimeConfig {
 
         this.matcherRepository = matcherRepository;
         this.matcherDecoderRepository = matcherDecoderRepository;
+        this.reportLevelValuesSpaceRepository = reportLevelValuesSpaceRepository;
 
         this.paramRepositoriesNaming = new ParamRepositoriesNaming(paramRepositories);
     }
@@ -98,7 +103,11 @@ public final class ParamEngineRuntimeConfig {
     public MatcherDecoderRepository getMatcherDecoderRepository() {
         return matcherDecoderRepository;
     }
-    
+
+    public ReportLevelValuesSpaceRepository getReportLevelValuesSpaceRepository() {
+        return reportLevelValuesSpaceRepository;
+    }
+
     public Map<String, FunctionRepository> getFunctionRepositories() {
         return functionRepositories;
     }

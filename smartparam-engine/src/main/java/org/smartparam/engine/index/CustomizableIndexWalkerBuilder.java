@@ -17,6 +17,7 @@ package org.smartparam.engine.index;
 
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.matcher.MatcherRepository;
+import org.smartparam.engine.core.prepared.PreparedEntry;
 
 /**
  *
@@ -48,6 +49,11 @@ public final class CustomizableIndexWalkerBuilder {
 
     public CustomizableIndexWalkerBuilder withOverridenMatcher(String levelName, String matcherCode) {
         config.withOverridenMatcher(levelName, matcherCode);
+        return this;
+    }
+
+    public CustomizableIndexWalkerBuilder withValuesExtractor(LevelLeafValuesExtractor<PreparedEntry> valuesExtractor) {
+        config.withValuesExtractor(valuesExtractor);
         return this;
     }
 }

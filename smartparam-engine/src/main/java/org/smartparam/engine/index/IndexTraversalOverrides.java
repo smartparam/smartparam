@@ -27,14 +27,16 @@ public class IndexTraversalOverrides {
 
     private final Matcher[] overridenMatchers;
 
-    public IndexTraversalOverrides(boolean[] greedinessMatrix, Matcher[] overridenMatchers) {
+    private final String[] matcherCodes;
+
+    private final String[] levelNames;
+
+    public IndexTraversalOverrides(boolean[] greedinessMatrix, Matcher[] overridenMatchers,
+            String[] matcherCodes, String[] levelNames) {
         this.greedinessMatrix = greedinessMatrix;
         this.overridenMatchers = overridenMatchers;
-    }
-
-    public IndexTraversalOverrides(boolean[] greedinessMatrix) {
-        this.greedinessMatrix = greedinessMatrix;
-        this.overridenMatchers = new Matcher[greedinessMatrix.length];
+        this.matcherCodes = matcherCodes;
+        this.levelNames = levelNames;
     }
 
     public boolean isGreedy(int levelDepth) {
@@ -49,4 +51,11 @@ public class IndexTraversalOverrides {
         return overridenMatchers[levelDepth];
     }
 
+    public String matcherCode(int levelDepth) {
+        return matcherCodes[levelDepth];
+    }
+
+    public String levelName(int levelDepth) {
+        return levelNames[levelDepth];
+    }
 }

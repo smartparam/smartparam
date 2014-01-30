@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.index;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.smartparam.engine.core.index.LevelIndex;
@@ -41,8 +40,13 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
 
     private final IndexTraversalOverrides overrides;
 
-    public CustomizableLevelIndexWalker(IndexTraversalOverrides overrides, LevelIndex<T> index, String... levelValues) {
+    private final LevelLeafValuesExtractor<T> levelLeafValuesExtractor;
+
+    public CustomizableLevelIndexWalker(IndexTraversalOverrides overrides,
+            LevelLeafValuesExtractor<T> levelLeafValuesExtractor,
+            LevelIndex<T> index, String... levelValues) {
         this.overrides = overrides;
+        this.levelLeafValuesExtractor = levelLeafValuesExtractor;
         this.index = index;
         this.levelValues = levelValues;
     }
@@ -50,12 +54,7 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
     @Override
     public List<T> find() {
         List<LevelNode<T>> nodes = inspect(index.getRoot(), 0);
-
-        List<T> values = new ArrayList<T>();
-        for (LevelNode<T> node : nodes) {
-            values.addAll(node.getLeafList());
-        }
-        return values;
+        return levelLeafValuesExtractor.extract(this, nodes);
     }
 
     @SuppressWarnings("unchecked")
@@ -66,6 +65,10 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
         return inspectorFor(depth).inspect(currentNode, levelValues[depth], depth);
     }
 
+    public int indexDepth() {
+        return index.getLevelCount();
+    }
+
     private LevelNodeInspector<T> inspectorFor(int depth) {
         return overrides.isGreedy(depth) ? greedyNodeInspector : fastNodeInspector;
     }
@@ -74,7 +77,15 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
         return overrides.overrideMatcher(depth) ? overrides.overridenMatcher(depth) : index.getMatcher(depth);
     }
 
+    public String matcherCodeFor(int depth) {
+        return overrides.matcherCode(depth);
+    }
+
     public Type<?> typeFor(int depth) {
         return index.getType(depth);
+    }
+
+    public String levelNameFor(int depth) {
+        return overrides.levelName(depth);
     }
 }
