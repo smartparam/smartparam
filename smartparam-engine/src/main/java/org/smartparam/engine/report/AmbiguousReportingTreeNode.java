@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.report;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +26,8 @@ import java.util.TreeMap;
  * @author Adam Dubiel
  */
 public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
+
+    private ReportingAmbiguousLevelValuesSpace<V> space;
 
     private final Map<Object, ReportingTreeNode<V>> children = new TreeMap<Object, ReportingTreeNode<V>>();
 
@@ -40,17 +41,18 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
 
     @Override
     protected void allowAnyValues(boolean state) {
-        // noop - non-ditionary only by default and can't be changed
+        // noop - non-dictionary only by default and can't be changed
     }
 
     @Override
-    protected Collection<ReportingTreeNode<V>> children() {
-        return children.values();
+    protected Iterable<ReportingTreeNode<V>> children() {
+        return space.values();
     }
 
     @Override
     public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
         ReportingTreeNode<V> child = tree().createNode(this, levelValue);
+        space.unsafePut(decodeLevelValue(levelValue), child);
         children.put(levelValue, child);
 
         return child;
@@ -65,7 +67,15 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     @Override
     public void insertPath(ReportingTreePath<V> path) {
         Object incomingKey = levelDescriptor().decode(path.segmentAt(depth()));
-        disjointPut(incomingKey, path);
+        boolean added = space.insertPath(incomingKey, path, levelDescriptor());
+        if (!added) {
+            plantNewBranch(incomingKey, path);
+        }
+    }
+
+    private void plantNewBranch(Object key, ReportingTreePath<V> withPath) {
+        ReportingTreeNode<V> offspring = tree().createNode(this, levelValue);
+        space.unsafePut(key, offspring);
     }
 
     private void disjointPut(Object incomingKey, ReportingTreePath<V> path) {
@@ -124,10 +134,7 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     @Override
     public ReportingTreeNode<V> cloneBranch() {
         AmbiguousReportingTreeNode<V> offspringRoot = new AmbiguousReportingTreeNode<V>(this);
-        for (Map.Entry<Object, ReportingTreeNode<V>> entry : children.entrySet()) {
-            offspringRoot.children.put(entry.getKey(), entry.getValue().cloneBranch());
-        }
-
+        offspringRoot.space = this.space.cloneSpace();
         return offspringRoot;
     }
 }

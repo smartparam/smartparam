@@ -34,7 +34,7 @@ public abstract class ReportingTreeNode<V> {
 
     protected final int depth;
 
-    protected final String levelValue;
+    protected String levelValue;
 
     protected V leafValue;
 
@@ -85,8 +85,20 @@ public abstract class ReportingTreeNode<V> {
         return depth;
     }
 
+    protected Object decodeLevelValue(String levelValue) {
+        return tree.descriptorFor(depth).decode(levelValue);
+    }
+
+    protected String encodeLevelValue(Object levelValue) {
+        return tree.descriptorFor(depth).encode(levelValue);
+    }
+
     public ReportingTreeNode<V> parent() {
         return parent;
+    }
+
+    public void updateLevelValue(String newValue) {
+        this.levelValue = newValue;
     }
 
     public void harvestLeavesValues(List<V> leafBucket) {
@@ -101,7 +113,7 @@ public abstract class ReportingTreeNode<V> {
         }
     }
 
-    protected abstract Collection<ReportingTreeNode<V>> children();
+    protected abstract Iterable<ReportingTreeNode<V>> children();
 
     public void printNode(StringBuilder sb) {
         String indent = Printer.repeat(' ', depth << 2);

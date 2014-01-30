@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report.segments;
+package org.smartparam.engine.report;
+
+import org.smartparam.engine.annotated.annotations.ParamReportingAmbiguousLevelValuesSpace;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class SpaceSet<C extends Comparable<? super C>> {
+public interface ReportingAmbiguousLevelValuesSpace<V> {
 
-    private final C from;
+    void unsafePut(Object key, ReportingTreeNode<V> node);
 
-    private final C to;
+    boolean insertPath(Object key, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor);
 
-    public SpaceSet(C from, C to) {
-        this.from = from;
-        this.to = to;
-    }
+    Iterable<ReportingTreeNode<V>> values();
 
-    C from() {
-        return from;
-    }
+    boolean empty();
 
-    C to() {
-        return to;
-    }
-
+    ReportingAmbiguousLevelValuesSpace<V> cloneSpace();
 }

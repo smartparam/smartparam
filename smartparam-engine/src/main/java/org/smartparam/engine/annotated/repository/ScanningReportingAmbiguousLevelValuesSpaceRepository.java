@@ -17,44 +17,43 @@ package org.smartparam.engine.annotated.repository;
 
 import java.util.Map;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
-import org.smartparam.engine.annotated.annotations.ParamOverlappingSetsSplitter;
+import org.smartparam.engine.annotated.annotations.ParamReportingAmbiguousLevelValuesSpace;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MapRepository;
-import org.smartparam.engine.report.OverlappingSetsSplitter;
-import org.smartparam.engine.report.OverlappingSetsSplitterRepository;
+import org.smartparam.engine.report.ReportingAmbiguousLevelValuesSpace;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ScanningOverlappingSetsSplitterRepository implements OverlappingSetsSplitterRepository, TypeScanningRepository {
+public class ScanningReportingAmbiguousLevelValuesSpaceRepository implements org.smartparam.engine.report.ReportingAmbiguousLevelValuesSpaceRepository, TypeScanningRepository {
 
-    private final MapRepository<OverlappingSetsSplitter<?>> innerRepository = new MapRepository<OverlappingSetsSplitter<?>>(OverlappingSetsSplitter.class);
+    private final MapRepository<ReportingAmbiguousLevelValuesSpace<?>> innerRepository = new MapRepository<ReportingAmbiguousLevelValuesSpace<?>>(ReportingAmbiguousLevelValuesSpace.class);
 
     @Override
     public void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner componentInitializerRunner) {
-        Map<RepositoryObjectKey, OverlappingSetsSplitter<?>> splitters = scanner.scanTypes(ParamOverlappingSetsSplitter.class);
+        Map<RepositoryObjectKey, ReportingAmbiguousLevelValuesSpace<?>> splitters = scanner.scanTypes(ParamReportingAmbiguousLevelValuesSpace.class);
         innerRepository.registerAll(splitters);
     }
 
     @Override
-    public OverlappingSetsSplitter<?> getSplitter(String matcherCode) {
+    public ReportingAmbiguousLevelValuesSpace<?> getSpace(String matcherCode) {
         return innerRepository.getItem(matcherCode);
     }
 
     @Override
-    public void register(String key, OverlappingSetsSplitter<?> type) {
+    public void register(String key, ReportingAmbiguousLevelValuesSpace<?> type) {
         innerRepository.register(key, type);
     }
 
     @Override
-    public Map<String, OverlappingSetsSplitter<?>> registeredItems() {
+    public Map<String, ReportingAmbiguousLevelValuesSpace<?>> registeredItems() {
         return innerRepository.getItemsUnordered();
     }
 
     @Override
-    public void registerAll(Map<String, OverlappingSetsSplitter<?>> objects) {
+    public void registerAll(Map<String, ReportingAmbiguousLevelValuesSpace<?>> objects) {
         innerRepository.registerAllUnordered(objects);
     }
 }

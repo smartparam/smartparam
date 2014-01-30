@@ -16,14 +16,13 @@
 package org.smartparam.engine.report;
 
 import java.util.List;
-import org.smartparam.engine.annotated.annotations.ParamOverlappingSetsSplitter;
+import org.smartparam.engine.annotated.annotations.ParamReportingAmbiguousLevelValuesSpace;
 import org.smartparam.engine.matchers.decoder.Range;
 
 /**
  *
  * @author Adam Dubiel
  */
-@ParamOverlappingSetsSplitter(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
 public class OverlappingRangesSplitter<C extends Comparable<C>> implements OverlappingSetsSplitter<Range<C>> {
 
     @Override

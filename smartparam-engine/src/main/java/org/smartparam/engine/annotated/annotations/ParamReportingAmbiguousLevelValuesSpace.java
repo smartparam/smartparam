@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ParamOverlappingSetsSplitter {
+public @interface ParamReportingAmbiguousLevelValuesSpace {
 
     /**
      * Name of matcher this converter supports.
