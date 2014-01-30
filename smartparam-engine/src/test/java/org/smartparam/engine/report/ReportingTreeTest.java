@@ -179,4 +179,46 @@ public class ReportingTreeTest {
         // then
         assertThat(tree.harvestLeavesValues()).hasSize(1).containsOnly("ANYTHING");
     }
+
+    @Test
+    public void shouldCreateTreeWithAmbiguousLevelAtTheBottom() {
+        // given
+        ReportingTree<String> tree = reportingTree()
+                .addExactLevel()
+                .addAmbiguousIntegerLevel()
+                .addExactLevel()
+                .build();
+        tree.root().addDictionaryChild("A")
+                .addDictionaryChild("A-A")
+                .addAnyChild();
+
+        // when
+        tree.insertValue(new String[]{"A", "A-A", "0~10"}, "VALUE: 0-10");
+        tree.insertValue(new String[]{"A", "A-A", "2~5"}, "VALUE: 2-5");
+        logger.info(tree.printTree());
+
+        // then
+        assertThat(tree.harvestLeavesValues()).hasSize(4).containsOnly("VALUE: 0-10");
+    }
+
+    @Test
+    public void shouldCreateTreeWithAmbiguousLevelInTheMiddleAndNeverReplaceOnceSetValue() {
+        // given
+        ReportingTree<String> tree = reportingTree()
+                .addAmbiguousIntegerLevel()
+                .addExactLevel()
+                .addExactLevel()
+                .build();
+        tree.root().addDictionaryChild("A")
+                .addAnyChild()
+                .addDictionaryChild("A-A");
+
+        // when
+        tree.insertValue(new String[]{"A", "0~10", "A-A"}, "VALUE: A-A");
+        tree.insertValue(new String[]{"A", "2~5", "A-B"}, "VALUE: A-B");
+        logger.info(tree.printTree());
+
+        // then
+        assertThat(tree.harvestLeavesValues()).hasSize(3).containsOnly("VALUE: A-A");
+    }
 }

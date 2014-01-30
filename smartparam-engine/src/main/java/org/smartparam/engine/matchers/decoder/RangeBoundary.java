@@ -19,7 +19,7 @@ package org.smartparam.engine.matchers.decoder;
  *
  * @author Adam Dubiel
  */
-class RangeBoundary<C extends Comparable<? super C>> implements Comparable<RangeBoundary<C>> {
+public class RangeBoundary<C extends Comparable<? super C>> implements Comparable<RangeBoundary<C>> {
 
     private final C value;
 
@@ -33,7 +33,7 @@ class RangeBoundary<C extends Comparable<? super C>> implements Comparable<Range
         this.infinitySign = infinitySign;
     }
 
-    RangeBoundary(C value) {
+    public RangeBoundary(C value) {
         this(value, value == null, 1);
     }
 

@@ -36,23 +36,42 @@ public class SimpleReportingTreeNodeTest {
     public void shouldCopyWholeSubtreeIncludingClonedNodeWhenCopyingBranch() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root().addDictionaryChild("A")
-                .addDictionaryChild("A-A").parent()
+        ReportingTreeNode<String> firstLevel = tree.root().addDictionaryChild("A");
+        firstLevel.addDictionaryChild("A-A").parent()
                 .addDictionaryChild("A-B").parent()
                 .addDictionaryChild("*");
         tree.insertValue(new String[]{"A", "A-A"}, "VALUE_A");
         tree.insertValue(new String[]{"A", "A-B"}, "VALUE_B");
         tree.insertValue(new String[]{"A", "*"}, "VALUE_ANY");
 
+        ReportingTreeNode<String> newParent = new SimpleReportingTreeNode<String>(tree, null, "NEW_ROOT_PARENT");
+
         // when
         logger.debug(tree.printTree());
-        ReportingTreeNode<String> clone = tree.root().cloneBranch();
+        ReportingTreeNode<String> clone = firstLevel.cloneBranch(newParent);
         printNode(clone);
 
         // then
         List<String> values = new ArrayList<String>();
         clone.harvestLeavesValues(values);
         assertThat(values).containsOnly("VALUE_A", "VALUE_B", "VALUE_ANY");
+        assertThat(clone.parent()).isSameAs(newParent);
+    }
+
+    @Test
+    public void shouldNotChangeParentOfClonedBranchWheNCloningRootNode() {
+        // given
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(1).build();
+        tree.root().addDictionaryChild("A");
+        tree.insertValue(new String[]{"A"}, "VALUE_A");
+
+        ReportingTreeNode<String> newParent = new SimpleReportingTreeNode<String>(tree, null, "NEW_PARENT");
+
+        // when
+        ReportingTreeNode<String> clone = tree.root().cloneBranch(newParent);
+
+        // then
+        assertThat(clone.parent()).isNull();
     }
 
     private void printNode(ReportingTreeNode<?> node) {

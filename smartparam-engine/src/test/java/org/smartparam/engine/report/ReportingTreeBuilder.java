@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.decoder.BetweenMatcherDecoder;
-import org.smartparam.engine.types.date.DateType;
+import org.smartparam.engine.types.integer.IntegerType;
 
 /**
  *
@@ -42,12 +42,12 @@ public final class ReportingTreeBuilder {
         return new ReportingTree<String>(operations);
     }
 
-    public ReportingTreeBuilder addAmbiguousDateLevel() {
+    public ReportingTreeBuilder addAmbiguousIntegerLevel() {
         operations.add(new ReportingTreeLevel(true,
                 new BetweenMatcher(true, false, "~"),
-                new DateType(),
+                new IntegerType(),
                 new BetweenMatcherDecoder(),
-                new OverlappingRangesSplitter<Date>()
+                new ContinuousSegmentsSpaceFactory()
         ));
         return this;
     }

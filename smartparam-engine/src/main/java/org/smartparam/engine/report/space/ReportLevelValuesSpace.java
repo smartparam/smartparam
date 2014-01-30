@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
+package org.smartparam.engine.report.space;
 
-import org.smartparam.engine.annotated.annotations.ParamReportingAmbiguousLevelValuesSpace;
+import org.smartparam.engine.report.ReportingTreeLevel;
+import org.smartparam.engine.report.ReportingTreeNode;
+import org.smartparam.engine.report.ReportingTreePath;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportingAmbiguousLevelValuesSpace<V> {
+public interface ReportLevelValuesSpace<V> {
 
     void unsafePut(Object key, ReportingTreeNode<V> node);
 
@@ -31,5 +33,5 @@ public interface ReportingAmbiguousLevelValuesSpace<V> {
 
     boolean empty();
 
-    ReportingAmbiguousLevelValuesSpace<V> cloneSpace();
+    ReportLevelValuesSpace<V> cloneSpace(ReportingTreeNode<V> newParent);
 }

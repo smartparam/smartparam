@@ -41,7 +41,7 @@ public class Range<C extends Comparable<? super C>> {
         this(new RangeBoundary<C>(from), new RangeBoundary<C>(to));
     }
 
-    Range(RangeBoundary<C> from, RangeBoundary<C> to) {
+    public Range(RangeBoundary<C> from, RangeBoundary<C> to) {
         boolean swap = from.compareTo(to) > 0;
         this.from = !swap ? from : to;
         this.to = !swap ? to : from;
@@ -49,6 +49,14 @@ public class Range<C extends Comparable<? super C>> {
 
     public C from() {
         return from.value();
+    }
+
+    public RangeBoundary<C> boundaryFrom() {
+        return from;
+    }
+
+    public RangeBoundary<C> boundaryTo() {
+        return to;
     }
 
     public boolean isFromInfinity() {

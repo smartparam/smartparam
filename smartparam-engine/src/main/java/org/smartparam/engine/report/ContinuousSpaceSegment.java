@@ -15,19 +15,27 @@
  */
 package org.smartparam.engine.report;
 
+import org.smartparam.engine.matchers.decoder.RangeBoundary;
+
 /**
  *
  * @author Adam Dubiel
  */
 public class ContinuousSpaceSegment<C extends Comparable<? super C>, V> implements Comparable<ContinuousSpaceSegment<C, V>> {
 
-    private final C segmentStart;
+    private final RangeBoundary<C> segmentStart;
 
-    private final C segmentEnd;
+    private final RangeBoundary<C> segmentEnd;
 
     private final V value;
 
     public ContinuousSpaceSegment(C from, C to, V value) {
+        this.segmentStart = new RangeBoundary<C>(from);
+        this.segmentEnd = new RangeBoundary<C>(to);
+        this.value = value;
+    }
+
+    public ContinuousSpaceSegment(RangeBoundary<C> from, RangeBoundary<C> to, V value) {
         this.segmentStart = from;
         this.segmentEnd = to;
         this.value = value;
@@ -39,11 +47,20 @@ public class ContinuousSpaceSegment<C extends Comparable<? super C>, V> implemen
         this.value = value;
     }
 
-    public boolean contains(C point) {
+    public boolean contains(RangeBoundary<C> point) {
         return segmentStart.compareTo(point) < 0 && segmentEnd.compareTo(point) > 0;
     }
 
+    public boolean contains(C point) {
+        RangeBoundary<C> boundedPoint = new RangeBoundary<C>(point);
+        return segmentStart.compareTo(boundedPoint) < 0 && segmentEnd.compareTo(boundedPoint) > 0;
+    }
+
     IntersectionType intersects(C from, C to) {
+        return intersects(new RangeBoundary<C>(from), new RangeBoundary<C>(to));
+    }
+
+    IntersectionType intersects(RangeBoundary<C> from, RangeBoundary<C> to) {
         boolean containsFrom = contains(from);
         boolean containsTo = contains(to);
 
@@ -59,11 +76,11 @@ public class ContinuousSpaceSegment<C extends Comparable<? super C>, V> implemen
         return IntersectionType.NONE;
     }
 
-    public C segmentStart() {
+    public RangeBoundary<C> segmentStart() {
         return segmentStart;
     }
 
-    public C segmentEnd() {
+    public RangeBoundary<C> segmentEnd() {
         return segmentEnd;
     }
 

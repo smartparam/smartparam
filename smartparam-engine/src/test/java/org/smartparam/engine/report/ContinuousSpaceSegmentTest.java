@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.report;
 
-import org.smartparam.engine.report.ContinuousSpaceSegment;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

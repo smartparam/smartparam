@@ -15,23 +15,23 @@
  */
 package org.smartparam.engine.report;
 
+import org.smartparam.engine.report.space.ReportLevelValuesSpace;
 import java.util.*;
-import org.smartparam.engine.annotated.annotations.ParamReportingAmbiguousLevelValuesSpace;
 import org.smartparam.engine.matchers.decoder.Range;
+import org.smartparam.engine.matchers.decoder.RangeBoundary;
 
 /**
  *
  * @author Adam Dubiel
  */
-@ParamReportingAmbiguousLevelValuesSpace(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
-public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> implements ReportingAmbiguousLevelValuesSpace<V> {
+public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> implements ReportLevelValuesSpace<V> {
 
     private final Set<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> segments = new TreeSet<ContinuousSpaceSegment<C, ReportingTreeNode<V>>>();
 
     @Override
     public void unsafePut(Object key, ReportingTreeNode<V> node) {
         Range<C> range = asRange(key);
-        segments.add(new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(range.from(), range.to(), node));
+        segments.add(new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(range.boundaryFrom(), range.boundaryTo(), node));
     }
 
     @SuppressWarnings("unchecked")
@@ -42,10 +42,10 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
     @Override
     public boolean insertPath(Object key, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor) {
         Range<C> range = asRange(key);
-        return insertPath(range.from(), range.to(), path, levelDescriptor);
+        return insertPath(range.boundaryFrom(), range.boundaryTo(), path, levelDescriptor);
     }
 
-    private boolean insertPath(C from, C to, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor) {
+    private boolean insertPath(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor) {
         List<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> refreshed = new ArrayList<ContinuousSpaceSegment<C, ReportingTreeNode<V>>>();
         boolean pathAdded = false;
 
@@ -77,19 +77,19 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
         return pathAdded;
     }
 
-    private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(C from, C to, ReportingTreeNode<V> toClone, ReportingTreeLevel levelDescriptor) {
-        ReportingTreeNode<V> clone = toClone.cloneBranch();
+    private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreeLevel levelDescriptor) {
+        ReportingTreeNode<V> clone = toClone.cloneBranch(toClone.parent());
         clone.updateLevelValue(levelDescriptor.encode(new Range<C>(from, to)));
 
-        return new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(from, to, toClone);
+        return new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(from, to, clone);
     }
 
-    private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(C from, C to, ReportingTreeNode<V> toClone, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor) {
-        ReportingTreeNode<V> clone = toClone.cloneBranch();
+    private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor) {
+        ReportingTreeNode<V> clone = toClone.cloneBranch(toClone.parent());
         clone.updateLevelValue(levelDescriptor.encode(new Range<C>(from, to)));
         clone.insertPath(path);
 
-        return new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(from, to, toClone);
+        return new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(from, to, clone);
     }
 
     @Override
@@ -128,10 +128,10 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
     }
 
     @Override
-    public ReportingAmbiguousLevelValuesSpace<V> cloneSpace() {
+    public ReportLevelValuesSpace<V> cloneSpace(ReportingTreeNode<V> newParent) {
         ContinuousSegmentsSpace<C, V> clone = new ContinuousSegmentsSpace<C, V>();
         for (ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment : segments) {
-            ContinuousSpaceSegment<C, ReportingTreeNode<V>> cloneSegment = new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(segment, segment.value().cloneBranch());
+            ContinuousSpaceSegment<C, ReportingTreeNode<V>> cloneSegment = new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(segment, segment.value().cloneBranch(newParent));
             clone.segments.add(cloneSegment);
         }
 

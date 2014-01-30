@@ -17,43 +17,45 @@ package org.smartparam.engine.annotated.repository;
 
 import java.util.Map;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
-import org.smartparam.engine.annotated.annotations.ParamReportingAmbiguousLevelValuesSpace;
+import org.smartparam.engine.annotated.annotations.ParamReportLevelSpaceFactory;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MapRepository;
-import org.smartparam.engine.report.ReportingAmbiguousLevelValuesSpace;
+import org.smartparam.engine.report.space.ReportLevelValuesSpace;
+import org.smartparam.engine.report.space.ReportLevelValuesSpaceFactory;
+import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ScanningReportingAmbiguousLevelValuesSpaceRepository implements org.smartparam.engine.report.ReportingAmbiguousLevelValuesSpaceRepository, TypeScanningRepository {
+public class ScanningReportLevelValuesSpaceRepository implements ReportLevelValuesSpaceRepository, TypeScanningRepository {
 
-    private final MapRepository<ReportingAmbiguousLevelValuesSpace<?>> innerRepository = new MapRepository<ReportingAmbiguousLevelValuesSpace<?>>(ReportingAmbiguousLevelValuesSpace.class);
+    private final MapRepository<ReportLevelValuesSpaceFactory> innerRepository = new MapRepository<ReportLevelValuesSpaceFactory>(ReportLevelValuesSpaceFactory.class);
 
     @Override
     public void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner componentInitializerRunner) {
-        Map<RepositoryObjectKey, ReportingAmbiguousLevelValuesSpace<?>> splitters = scanner.scanTypes(ParamReportingAmbiguousLevelValuesSpace.class);
-        innerRepository.registerAll(splitters);
+        Map<RepositoryObjectKey, ReportLevelValuesSpaceFactory> factories = scanner.scanTypes(ParamReportLevelSpaceFactory.class);
+        innerRepository.registerAll(factories);
     }
 
     @Override
-    public ReportingAmbiguousLevelValuesSpace<?> getSpace(String matcherCode) {
-        return innerRepository.getItem(matcherCode);
+    public ReportLevelValuesSpace<?> getSpace(String matcherCode) {
+        return innerRepository.getItem(matcherCode).createSpace();
     }
 
     @Override
-    public void register(String key, ReportingAmbiguousLevelValuesSpace<?> type) {
+    public void register(String key, ReportLevelValuesSpaceFactory type) {
         innerRepository.register(key, type);
     }
 
     @Override
-    public Map<String, ReportingAmbiguousLevelValuesSpace<?>> registeredItems() {
+    public Map<String, ReportLevelValuesSpaceFactory> registeredItems() {
         return innerRepository.getItemsUnordered();
     }
 
     @Override
-    public void registerAll(Map<String, ReportingAmbiguousLevelValuesSpace<?>> objects) {
+    public void registerAll(Map<String, ReportLevelValuesSpaceFactory> objects) {
         innerRepository.registerAllUnordered(objects);
     }
 }

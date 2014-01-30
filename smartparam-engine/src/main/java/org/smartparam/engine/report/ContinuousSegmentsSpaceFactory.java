@@ -15,14 +15,21 @@
  */
 package org.smartparam.engine.report;
 
-import org.smartparam.engine.core.repository.Repository;
+import org.smartparam.engine.annotated.annotations.ParamReportLevelSpaceFactory;
+import org.smartparam.engine.report.space.ReportLevelValuesSpace;
+import org.smartparam.engine.report.space.ReportLevelValuesSpaceFactory;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportingAmbiguousLevelValuesSpaceRepository extends Repository<ReportingAmbiguousLevelValuesSpace<?>> {
+@ParamReportLevelSpaceFactory(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
+public class ContinuousSegmentsSpaceFactory implements ReportLevelValuesSpaceFactory {
 
-    ReportingAmbiguousLevelValuesSpace<?> getSpace(String matcherCode);
+    @Override
+    @SuppressWarnings("unchecked")
+    public <V> ReportLevelValuesSpace<V> createSpace() {
+        return new ContinuousSegmentsSpace();
+    }
 
 }

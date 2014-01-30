@@ -34,8 +34,8 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
         super(tree, parent, levelValue);
     }
 
-    private SimpleReportingTreeNode(SimpleReportingTreeNode<V> patternToClone) {
-        super(patternToClone);
+    private SimpleReportingTreeNode(ReportingTreeNode<V> patternToClone, ReportingTreeNode<V> newParent) {
+        super(patternToClone, newParent);
     }
 
     @Override
@@ -95,10 +95,10 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
-    public ReportingTreeNode<V> cloneBranch() {
-        SimpleReportingTreeNode<V> offspringRoot = new SimpleReportingTreeNode<V>(this);
+    public ReportingTreeNode<V> cloneBranch(ReportingTreeNode<V> newParent) {
+        SimpleReportingTreeNode<V> offspringRoot = new SimpleReportingTreeNode<V>(this, newParent);
         for (Entry<String, ReportingTreeNode<V>> entry : children.entrySet()) {
-            offspringRoot.children.put(entry.getKey(), entry.getValue().cloneBranch());
+            offspringRoot.children.put(entry.getKey(), entry.getValue().cloneBranch(offspringRoot));
         }
 
         return offspringRoot;

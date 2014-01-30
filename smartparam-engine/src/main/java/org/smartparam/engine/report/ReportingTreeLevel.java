@@ -15,9 +15,11 @@
  */
 package org.smartparam.engine.report;
 
+import org.smartparam.engine.report.space.ReportLevelValuesSpace;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
 import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.report.space.ReportLevelValuesSpaceFactory;
 
 /**
  *
@@ -33,16 +35,16 @@ public class ReportingTreeLevel {
 
     private final MatcherAwareDecoder matcherDecoder;
 
-    private final OverlappingSetsSplitter splitter;
+    private final ReportLevelValuesSpaceFactory ambiguousSpaceFactory;
 
     public ReportingTreeLevel(boolean ambiguous, Matcher matcher,
             Type<?> type, MatcherAwareDecoder<?> matcherDecoder,
-            OverlappingSetsSplitter<?> splitter) {
+            ReportLevelValuesSpaceFactory ambiguousSpaceFactory) {
         this.ambiguous = ambiguous;
         this.matcher = matcher;
         this.type = type;
         this.matcherDecoder = matcherDecoder;
-        this.splitter = splitter;
+        this.ambiguousSpaceFactory = ambiguousSpaceFactory;
     }
 
     boolean ambiguous() {
@@ -59,9 +61,8 @@ public class ReportingTreeLevel {
         return matcherDecoder.encode(object, type, matcher);
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> DisjointSets<T> split(T existing, T incoming) {
-        return splitter.split(existing, incoming);
+    public <V> ReportLevelValuesSpace<V> createSpace() {
+        return ambiguousSpaceFactory.createSpace();
     }
 
     <T> T chooseValue(T existing, T incoming) {

@@ -15,9 +15,7 @@
  */
 package org.smartparam.engine.report;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import org.smartparam.engine.report.space.ReportLevelValuesSpace;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -27,16 +25,18 @@ import java.util.TreeMap;
  */
 public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
 
-    private ReportingAmbiguousLevelValuesSpace<V> space;
+    private final ReportLevelValuesSpace<V> space;
 
     private final Map<Object, ReportingTreeNode<V>> children = new TreeMap<Object, ReportingTreeNode<V>>();
 
     public AmbiguousReportingTreeNode(ReportingTree<V> tree, ReportingTreeNode<V> parent, String levelValue) {
         super(tree, parent, levelValue);
+        space = tree().descriptorFor(depth).createSpace();
     }
 
-    private AmbiguousReportingTreeNode(AmbiguousReportingTreeNode<V> patternToClone) {
-        super(patternToClone);
+    private AmbiguousReportingTreeNode(AmbiguousReportingTreeNode<V> patternToClone, ReportingTreeNode<V> newParent, ReportLevelValuesSpace<V> spaceToClone) {
+        super(patternToClone, newParent);
+        space = spaceToClone.cloneSpace(newParent);
     }
 
     @Override
@@ -66,6 +66,13 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
 
     @Override
     public void insertPath(ReportingTreePath<V> path) {
+        if (leaf()) {
+            if (leafValue == null) {
+                this.leafValue = path.value();
+            }
+            return;
+        }
+
         Object incomingKey = levelDescriptor().decode(path.segmentAt(depth()));
         boolean added = space.insertPath(incomingKey, path, levelDescriptor());
         if (!added) {
@@ -75,66 +82,13 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
 
     private void plantNewBranch(Object key, ReportingTreePath<V> withPath) {
         ReportingTreeNode<V> offspring = tree().createNode(this, levelValue);
+        offspring.insertPath(withPath);
         space.unsafePut(key, offspring);
     }
 
-    private void disjointPut(Object incomingKey, ReportingTreePath<V> path) {
-        Map<Object, ReportingTreeNode<V>> nodesAfterPut = new HashMap<Object, ReportingTreeNode<V>>();
-
-        boolean putViaIntersection = false;
-
-        Iterator<Object> existingKeys = children.keySet().iterator();
-        while (existingKeys.hasNext()) {
-            Object existingKey = existingKeys.next();
-            ReportingTreeNode<V> branch = children.get(existingKey);
-
-            DisjointSets<Object> disjoint = levelDescriptor().split(existingKey, incomingKey);
-            if (disjoint.intersectionExists()) {
-                putViaIntersection = true;
-
-                plantCloneBranches(children, disjoint.setAParts(), branch);
-                plantNewBranches(children, disjoint.setBParts(), path);
-                plantMergedBranch(children, existingKey, branch, path);
-            } else {
-                nodesAfterPut.put(existingKey, children.get(existingKey));
-            }
-        }
-
-        if (!putViaIntersection) {
-            plantNewBranch(children, incomingKey, path);
-        }
-
-        children.clear();
-        children.putAll(nodesAfterPut);
-    }
-
-    private void plantCloneBranches(Map<Object, ReportingTreeNode<V>> target, List<Object> keys, ReportingTreeNode<V> value) {
-        for (Object key : keys) {
-            target.put(key, value.cloneBranch());
-        }
-    }
-
-    private void plantNewBranches(Map<Object, ReportingTreeNode<V>> target, List<Object> keys, ReportingTreePath<V> withPath) {
-        for (Object key : keys) {
-            plantNewBranch(target, key, withPath);
-        }
-    }
-
-    private void plantNewBranch(Map<Object, ReportingTreeNode<V>> target, Object key, ReportingTreePath<V> withPath) {
-        ReportingTreeNode<V> offspring = tree().createNode(this, levelValue);
-        offspring.insertPath(withPath);
-        target.put(key, offspring);
-    }
-
-    private void plantMergedBranch(Map<Object, ReportingTreeNode<V>> target, Object key, ReportingTreeNode<V> value, ReportingTreePath<V> pathToAdd) {
-        target.put(key, value);
-        value.insertPath(pathToAdd);
-    }
-
     @Override
-    public ReportingTreeNode<V> cloneBranch() {
-        AmbiguousReportingTreeNode<V> offspringRoot = new AmbiguousReportingTreeNode<V>(this);
-        offspringRoot.space = this.space.cloneSpace();
+    public ReportingTreeNode<V> cloneBranch(ReportingTreeNode<V> newParent) {
+        AmbiguousReportingTreeNode<V> offspringRoot = new AmbiguousReportingTreeNode<V>(this, newParent, this.space);
         return offspringRoot;
     }
 }

@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
 
-import org.smartparam.engine.core.repository.Repository;
+package org.smartparam.engine.report.space;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface OverlappingSetsSplitterRepository extends Repository<OverlappingSetsSplitter<?>> {
+public interface ReportLevelValuesSpaceFactory {
 
-    OverlappingSetsSplitter<?> getSplitter(String matcherCode);
+    <V> ReportLevelValuesSpace<V> createSpace();
 
 }

@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.report;
 
-import java.util.Collection;
 import java.util.List;
 import org.smartparam.engine.util.Formatter;
 import org.smartparam.engine.util.Printer;
@@ -55,13 +54,22 @@ public abstract class ReportingTreeNode<V> {
         this.leafValue = patternToClone.leafValue;
     }
 
+    protected ReportingTreeNode(ReportingTreeNode<V> patternToClone, ReportingTreeNode<V> newParent) {
+        this.tree = patternToClone.tree;
+        this.parent = patternToClone.root() ? null : newParent;
+        this.levelDescriptor = patternToClone.levelDescriptor;
+        this.depth = patternToClone.depth;
+        this.levelValue = patternToClone.levelValue;
+        this.leafValue = patternToClone.leafValue;
+    }
+
     public abstract ReportingTreeNode<V> addDictionaryChild(String levelValue);
 
     public abstract ReportingTreeNode<V> addAnyChild();
 
     public abstract void insertPath(ReportingTreePath<V> path);
 
-    public abstract ReportingTreeNode<V> cloneBranch();
+    public abstract ReportingTreeNode<V> cloneBranch(ReportingTreeNode<V> newParent);
 
     protected abstract void allowAnyValues(boolean state);
 
@@ -75,6 +83,10 @@ public abstract class ReportingTreeNode<V> {
 
     protected boolean leaf() {
         return depth >= treeHeight() - 1;
+    }
+
+    protected boolean root() {
+        return parent == null;
     }
 
     protected ReportingTree<V> tree() {
@@ -97,7 +109,7 @@ public abstract class ReportingTreeNode<V> {
         return parent;
     }
 
-    public void updateLevelValue(String newValue) {
+    protected void updateLevelValue(String newValue) {
         this.levelValue = newValue;
     }
 
