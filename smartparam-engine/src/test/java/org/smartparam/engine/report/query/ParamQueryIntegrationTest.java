@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.report.query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
@@ -27,6 +29,7 @@ import org.smartparam.engine.core.parameter.ParameterTestBuilder;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.matchers.MatchAllMatcher;
+import org.smartparam.engine.matchers.decoder.Range;
 import org.smartparam.engine.report.sekleton.ReportLevel;
 import org.smartparam.engine.report.sekleton.ReportSkeleton;
 import org.testng.annotations.BeforeMethod;
@@ -57,7 +60,7 @@ public class ParamQueryIntegrationTest {
     }
 
     @Test
-    public void shouldPerformComplexQueryReturningOnlyOneValue() {
+    public void shouldFindDetailedValueWithModifiedRangeAfterPerformigQueryWithAmbiguousValueAtLastLevel() {
         // given
         Level[] levels = new Level[]{
             level().withName("first").withType("string").build(),
@@ -67,8 +70,8 @@ public class ParamQueryIntegrationTest {
             level().withName("value").withType("string").build()
         };
         ParameterEntry[] entries = new ParameterEntry[]{
-            parameterEntry().withLevels("FIRST", "SECOND-A", "*", "0-10", "VALUE-A").build(),
-            parameterEntry().withLevels("FIRST", "SECOND-B", "*", "20-30", "VALUE_B").build()
+            parameterEntry().withLevels("FIRST", "SECOND_A", "*", "0-10", "VALUE_A").build(),
+            parameterEntry().withLevels("FIRST", "SECOND_A", "*", "5-15", "VALUE_B").build()
         };
 
         Parameter parameter = ParameterTestBuilder.parameter()
@@ -79,7 +82,7 @@ public class ParamQueryIntegrationTest {
         when(repository.load("test")).thenReturn(parameter);
 
         ReportSkeleton skeleton = ReportSkeleton.reportSkeleton();
-        skeleton.withRootLevel(
+        skeleton.withLevel(
                 "FIRST", ReportLevel.level().withChild(
                         "SECOND_A", ReportLevel.level().withChild(
                                 ReportLevel.level().withChild(
@@ -95,7 +98,7 @@ public class ParamQueryIntegrationTest {
                         )
                 )
         );
-        skeleton.ambigousChildren("");
+        skeleton.levelWithAmbigousChildren("ambigous");
 
         // when
         DetailedParamValue paramValue = ParamQuery.select(paramEngine)
@@ -110,6 +113,7 @@ public class ParamQueryIntegrationTest {
 
         // then
         assertThat(paramValue).hasSize(1);
+        assertThat(paramValue.detailedEntry().getAs("ambigous", Range.class)).isEqualTo(new Range(5L, 10L));
     }
 
 }

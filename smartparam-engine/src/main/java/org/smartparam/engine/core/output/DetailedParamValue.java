@@ -19,25 +19,42 @@ import java.util.Comparator;
 import org.smartparam.engine.core.output.entry.MapEntry;
 
 /**
+ * Detailed parameter output allows on accessing all parameter values - not only output. This way it is possible
+ * to display exactly what values were matched by query. Detailed information is returned in friendly form via
+ * {@link MapEntry}.
  *
  * @author Adam Dubiel
  */
 public interface DetailedParamValue extends ParamValue {
 
     /**
-     * Return resulting matrix row.
+     * Return row with detailed information from matrix.
      */
     DetailedMultiValue detailedRow(int rowNo);
 
     /**
-     * Returns first row of matrix.
+     * Returns first row with detailed information.
      */
     DetailedMultiValue detailedRow();
 
+    /**
+     * Iterate over all detailed rows.
+     */
     Iterable<DetailedMultiValue> detailedRows();
 
+    /**
+     * Iterate over all detailed entries.
+     */
     Iterable<MapEntry> detailedEntries();
 
+    /**
+     * Returns detailed entry from first matrix row.
+     */
+    MapEntry detailedEntry();
+
+    /**
+     * Apply sorting to matrix.
+     */
     void sort(Comparator<MapEntry> comparator);
 
 }

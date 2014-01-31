@@ -41,7 +41,7 @@ public abstract class ReportingTreeNode<V> {
         this.tree = tree;
         this.parent = parent;
         this.depth = parent == null ? 0 : parent.depth() + 1;
-        this.levelDescriptor = tree.descriptorFor(depth);
+        this.levelDescriptor = tree.leafLevel(depth) ? null : tree.descriptorFor(depth);
         this.levelValue = levelValue;
     }
 
@@ -86,7 +86,7 @@ public abstract class ReportingTreeNode<V> {
     }
 
     protected boolean leaf() {
-        return depth >= treeHeight() - 1;
+        return depth >= treeHeight();
     }
 
     protected boolean root() {
@@ -127,7 +127,9 @@ public abstract class ReportingTreeNode<V> {
 
                 ReportingTreeNode<V> ascendParent = parent;
                 while (ascendParent != null) {
-                    path.addSegment(ascendParent.levelValue);
+                    if(ascendParent.parent != null) {
+                        path.pushSegment(ascendParent.levelValue);
+                    }
                     ascendParent = ascendParent.parent();
                 }
 
@@ -143,6 +145,11 @@ public abstract class ReportingTreeNode<V> {
     protected abstract Iterable<ReportingTreeNode<V>> allChildren();
 
     protected abstract Iterable<ReportingTreeNode<V>> matchingChildren();
+
+    @Override
+    public String toString() {
+        return "[ReportingTreeNode depth: " + depth + " path: " + levelPath() + " value: " + leafValue + "]";
+    }
 
     public void printNode(StringBuilder sb) {
         String indent = Printer.repeat(' ', depth << 2);

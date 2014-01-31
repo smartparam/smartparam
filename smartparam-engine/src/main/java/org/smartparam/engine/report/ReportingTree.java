@@ -66,12 +66,24 @@ public class ReportingTree<V> {
 
     final ReportingTreeNode<V> createNode(ReportingTreeNode<V> parent, String levelValue) {
         int depth = parent == null ? 0 : parent.depth() + 1;
+
+        if(leafLevel(depth)) {
+            return new SimpleReportingTreeNode<V>(this, parent, levelValue);
+        }
+
         return descriptorFor(depth).ambiguous()
                 ? new AmbiguousReportingTreeNode<V>(this, parent, levelValue)
                 : new SimpleReportingTreeNode<V>(this, parent, levelValue);
     }
 
+    boolean leafLevel(int depth) {
+        return depth == height();
+    }
+
     ReportingTreeLevel descriptorFor(int levelIndex) {
+        if(leafLevel(levelIndex)) {
+            throw new IllegalArgumentException("Trying to get descriptor for leaf level - this should never happen.");
+        }
         return levelDescriptors.get(levelIndex);
     }
 
@@ -85,7 +97,7 @@ public class ReportingTree<V> {
 
     public String printTree() {
         StringBuilder builder = new StringBuilder(PRINT_DEFAULT_SIZE);
-        builder.append("VisualTree ");
+        builder.append("ReportingTree ");
         root.printNode(builder);
         return builder.toString();
     }

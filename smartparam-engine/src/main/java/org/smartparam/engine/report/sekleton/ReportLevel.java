@@ -17,6 +17,7 @@ package org.smartparam.engine.report.sekleton;
 
 import java.util.*;
 import org.smartparam.engine.core.index.Star;
+import org.smartparam.engine.util.Printer;
 
 /**
  *
@@ -33,6 +34,10 @@ public class ReportLevel implements Iterable<ReportLevel> {
     private String value;
 
     public ReportLevel() {
+    }
+
+    ReportLevel(String value) {
+        this.value = value;
     }
 
     public static ReportLevel level() {
@@ -66,5 +71,27 @@ public class ReportLevel implements Iterable<ReportLevel> {
 
     public boolean onlyDictionaryValues() {
         return dictionaryOnly;
+    }
+
+    public void printNode(StringBuilder sb, int depth) {
+        String indent = Printer.repeat(' ', depth << 2);
+        boolean leaf = leaf();
+
+        sb.append(indent).append("path : ").append(levelPath()).append(" dictionary: ").append(dictionaryOnly);
+        sb.append(org.smartparam.engine.util.Formatter.NL);
+
+        for (ReportLevel child : children.values()) {
+            child.printNode(sb, depth + 1);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "[ReportLevel " + levelPath() + " dictionary: " + dictionaryOnly + "]";
+    }
+
+    public String levelPath() {
+        String lv = value != null ? value : "";
+        return parent != null ? parent.levelPath() + "/" + lv : lv;
     }
 }

@@ -18,16 +18,12 @@ package org.smartparam.engine.report;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.index.LevelNode;
-import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedEntry;
-import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.index.CustomizableLevelIndexWalker;
 import org.smartparam.engine.index.LevelLeafValuesExtractor;
 import org.smartparam.engine.report.sekleton.ReportLevel;
@@ -40,8 +36,6 @@ import org.smartparam.engine.util.ArraysUtil;
  * @author Adam Dubiel
  */
 public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtractor<PreparedEntry> {
-
-    private static final Logger logger = LoggerFactory.getLogger(ReportingLevelLeafValuesExtractor.class);
 
     private final MatcherDecoderRepository matcherDecoderRepository;
 
@@ -66,12 +60,13 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
         ReportingTree<PreparedEntry> reportingTree = new ReportingTree<PreparedEntry>(createLevelDescriptors(indexWalker), valueChooser);
         createTreeLevels(reportingTree);
 
-        for (LevelNode<PreparedEntry> node : nodes) {
-            PreparedEntry entry = node.getLeafValue();
-            reportingTree.insertValue(Arrays.copyOf(entry.getLevels(), indexWalker.indexDepth()), entry);
-        }
+        int inputLevels = indexWalker.indexDepth();
 
-        logger.info(reportingTree.printTree());
+        for (LevelNode<PreparedEntry> node : nodes) {
+            for(PreparedEntry entry : node.getLeafList()) {
+                reportingTree.insertValue(Arrays.copyOf(entry.getLevels(), inputLevels), entry);
+            }
+        }
 
         return convertPathsToEntries(reportingTree.harvestLeavesValues());
     }
@@ -80,25 +75,14 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
         List<ReportingTreeLevel> levelDescriptors = new ArrayList<ReportingTreeLevel>();
 
         for (int levelIndex = 0; levelIndex < indexWalker.indexDepth(); ++levelIndex) {
-            String valueSearchedInChild = null;
-            String childOriginalMatcherCode = null;
-            Matcher originalChildMatcher = null;
-            Matcher overridenChildMatcher = null;
-            Type<?> childType = null;
-            if(levelIndex + 1 < indexWalker.indexDepth()) {
-                childOriginalMatcherCode = indexWalker.originalMatcherCodeFor(levelIndex + 1);
-                originalChildMatcher = indexWalker.originalMatcherFor(levelIndex + 1);
-                overridenChildMatcher = indexWalker.matcherFor(levelIndex + 1);
-                childType = indexWalker.typeFor(levelIndex + 1);
-                valueSearchedInChild = indexWalker.levelValueFor(levelIndex + 1);
-            }
+            String childOriginalMatcherCode = indexWalker.originalMatcherCodeFor(levelIndex);
 
             ReportingTreeLevel level = new ReportingTreeLevel(
-                    valueSearchedInChild,
+                    indexWalker.levelValueFor(levelIndex),
                     reportSkeleton.ambigousChildren(indexWalker.levelNameFor(levelIndex)),
-                    originalChildMatcher,
-                    overridenChildMatcher,
-                    childType,
+                    indexWalker.originalMatcherFor(levelIndex),
+                    indexWalker.matcherFor(levelIndex),
+                    indexWalker.typeFor(levelIndex),
                     matcherDecoderRepository.getDecoder(childOriginalMatcherCode),
                     reportLevelValuesSpaceRepository.getSpaceFactory(childOriginalMatcherCode)
             );
@@ -120,7 +104,7 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
 
         ReportingTreeNode<PreparedEntry> childNode;
         for (ReportLevel childSkeletonLevel : currentSkeletonLevel) {
-            if (childSkeletonLevel.onlyDictionaryValues()) {
+            if (currentSkeletonLevel.onlyDictionaryValues()) {
                 childNode = currentNode.addDictionaryChild(childSkeletonLevel.value());
             } else {
                 childNode = currentNode.addAnyChild();

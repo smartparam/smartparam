@@ -98,7 +98,7 @@ public class RangeBoundary<C extends Comparable<? super C>> implements Comparabl
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
-        }
+         }
         if (getClass() != obj.getClass()) {
             return false;
         }
@@ -109,10 +109,7 @@ public class RangeBoundary<C extends Comparable<? super C>> implements Comparabl
         if (this.infinity != other.infinity) {
             return false;
         }
-        if (this.infinitySign != other.infinitySign) {
-            return false;
-        }
-        return true;
+        return this.infinitySign == other.infinitySign;
     }
 
 }

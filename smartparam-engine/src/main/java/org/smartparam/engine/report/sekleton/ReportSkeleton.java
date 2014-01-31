@@ -23,7 +23,9 @@ import java.util.*;
  */
 public class ReportSkeleton implements Iterable<ReportLevel> {
 
-    private final ReportLevel rootLevel = new ReportLevel();
+    private static final int TO_STRING_LENGTH = 100;
+
+    private final ReportLevel rootLevel = new ReportLevel("ROOT");
 
     private final Set<String> ambiguousLevels = new HashSet<String>();
 
@@ -49,7 +51,7 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
         return this;
     }
 
-    public ReportSkeleton withRootLevel(String key, ReportLevel level) {
+    public ReportSkeleton withLevel(String key, ReportLevel level) {
         rootLevel.withChild(key, level);
         return this;
     }
@@ -61,6 +63,13 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
     @Override
     public Iterator<ReportLevel> iterator() {
         return rootLevel.iterator();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder(TO_STRING_LENGTH);
+        rootLevel.printNode(builder, 0);
+        return builder.toString();
     }
 
     public boolean ambigousChildren(String levelName) {

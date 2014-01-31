@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.matchers.decoder;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.smartparam.engine.core.index.Star;
 
 /**
@@ -71,58 +69,6 @@ public class Range<C extends Comparable<? super C>> {
         return to.isPlusInfinity();
     }
 
-    public boolean disjoint(Range<C> other) {
-        return this.to.compareTo(other.from) <= 0 || this.from.compareTo(other.to) >= 0;
-    }
-
-    public boolean contains(C value) {
-        RangeBoundary<C> encapsulatedValue = new RangeBoundary<C>(value);
-        return this.from.compareTo(encapsulatedValue) < 0 && this.to.compareTo(encapsulatedValue) > 0;
-    }
-
-    public boolean contains(Range<C> other) {
-        return this.from.compareTo(other.from) <= 0 && this.to.compareTo(other.to) >= 0;
-    }
-
-    public Range<C> intersection(Range<C> other) {
-        if (disjoint(other)) {
-            return null;
-        }
-        if (this.contains(other)) {
-            return new Range<C>(other.from, other.to);
-        }
-        if (other.contains(this)) {
-            return new Range<C>(this.from, this.to);
-        }
-        if (this.contains(other.from.value())) {
-            return new Range<C>(other.from, this.to);
-        } else {
-            return new Range<C>(this.from, other.to);
-        }
-    }
-
-    public List<Range<C>> subtract(Range<C> other) {
-        List<Range<C>> difference = new ArrayList<Range<C>>();
-        Range<C> intersection = this.intersection(other);
-
-        if (intersection != null && !other.contains(this)) {
-            if (this.contains(other)) {
-                if (from.compareTo(intersection.from) != 0) {
-                    difference.add(new Range<C>(this.from, intersection.from));
-                }
-                if (to.compareTo(intersection.to) != 0) {
-                    difference.add(new Range<C>(intersection.to, this.to));
-                }
-            } else if (this.contains(intersection.from())) {
-                difference.add(new Range<C>(this.from, intersection.from));
-            } else {
-                difference.add(new Range<C>(intersection.to, this.to));
-            }
-        }
-
-        return difference;
-    }
-
     @Override
     public String toString() {
         return "Range[" + boundAsString(from) + " - " + boundAsString(to) + "]";
@@ -148,14 +94,11 @@ public class Range<C extends Comparable<? super C>> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Range other = (Range) obj;
+        final Range<?> other = (Range) obj;
         if (this.from != other.from && (this.from == null || !this.from.equals(other.from))) {
             return false;
         }
-        if (this.to != other.to && (this.to == null || !this.to.equals(other.to))) {
-            return false;
-        }
-        return true;
+        return this.to == other.to || (this.to != null && this.to.equals(other.to));
     }
 
 }

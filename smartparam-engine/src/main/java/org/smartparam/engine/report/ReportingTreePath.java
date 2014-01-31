@@ -55,6 +55,10 @@ public class ReportingTreePath<T> {
         this.segments.add(value);
     }
 
+    public void pushSegment(String value) {
+        this.segments.add(0, value);
+    }
+
     public List<String> segments() {
         return Collections.unmodifiableList(segments);
     }
