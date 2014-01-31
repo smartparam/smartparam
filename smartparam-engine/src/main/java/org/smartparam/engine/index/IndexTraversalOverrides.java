@@ -27,15 +27,15 @@ public class IndexTraversalOverrides {
 
     private final Matcher[] overridenMatchers;
 
-    private final String[] matcherCodes;
+    private final String[] originalMatcherCodes;
 
     private final String[] levelNames;
 
     public IndexTraversalOverrides(boolean[] greedinessMatrix, Matcher[] overridenMatchers,
-            String[] matcherCodes, String[] levelNames) {
+            String[] originalMatcherCodes, String[] levelNames) {
         this.greedinessMatrix = greedinessMatrix;
         this.overridenMatchers = overridenMatchers;
-        this.matcherCodes = matcherCodes;
+        this.originalMatcherCodes = originalMatcherCodes;
         this.levelNames = levelNames;
     }
 
@@ -51,8 +51,8 @@ public class IndexTraversalOverrides {
         return overridenMatchers[levelDepth];
     }
 
-    public String matcherCode(int levelDepth) {
-        return matcherCodes[levelDepth];
+    public String originalMatcherCode(int levelDepth) {
+        return originalMatcherCodes[levelDepth];
     }
 
     public String levelName(int levelDepth) {

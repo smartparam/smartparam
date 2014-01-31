@@ -81,8 +81,8 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
         return overrides.overrideMatcher(depth) ? overrides.overridenMatcher(depth) : index.getMatcher(depth);
     }
 
-    public String matcherCodeFor(int depth) {
-        return overrides.matcherCode(depth);
+    public String originalMatcherCodeFor(int depth) {
+        return overrides.originalMatcherCode(depth);
     }
 
     public Type<?> typeFor(int depth) {

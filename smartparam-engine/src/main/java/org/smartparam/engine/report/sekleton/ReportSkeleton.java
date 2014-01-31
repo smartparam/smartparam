@@ -34,18 +34,23 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
         return new ReportSkeleton();
     }
 
-    public ReportSkeleton withAmbiguousLevel(String levelName) {
+    public ReportSkeleton levelWithAmbigousChildren(String levelName) {
         ambiguousLevels.add(levelName);
         return this;
     }
 
-    public ReportSkeleton withAmbiguousLevels(String... levelNames) {
+    public ReportSkeleton levelsWithAmbigousChildren(String... levelNames) {
         ambiguousLevels.addAll(Arrays.asList(levelNames));
         return this;
     }
 
     public ReportSkeleton withRootLevel(ReportLevel level) {
         rootLevel.withChild(level);
+        return this;
+    }
+
+    public ReportSkeleton withRootLevel(String key, ReportLevel level) {
+        rootLevel.withChild(key, level);
         return this;
     }
 
@@ -58,7 +63,7 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
         return rootLevel.iterator();
     }
 
-    public boolean ambiguousLevel(String levelName) {
+    public boolean ambigousChildren(String levelName) {
         return ambiguousLevels.contains(levelName);
     }
 }

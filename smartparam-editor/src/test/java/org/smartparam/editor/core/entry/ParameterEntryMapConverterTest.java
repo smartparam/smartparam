@@ -21,7 +21,6 @@ import org.smartparam.editor.model.simple.SimpleParameterEntry;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
-import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
 import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
@@ -32,9 +31,6 @@ import org.smartparam.engine.types.string.StringType;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
