@@ -27,9 +27,13 @@ import org.smartparam.engine.report.space.ReportLevelValuesSpaceFactory;
  */
 public class ReportingTreeLevel {
 
+    private final String searchedValue;
+
     private final boolean ambiguous;
 
-    private final Matcher matcher;
+    private final Matcher originalMatcher;
+
+    private final Matcher overridenMatcher;
 
     private final Type<?> type;
 
@@ -37,11 +41,15 @@ public class ReportingTreeLevel {
 
     private final ReportLevelValuesSpaceFactory ambiguousSpaceFactory;
 
-    public ReportingTreeLevel(boolean ambiguous, Matcher matcher,
+    public ReportingTreeLevel(String searchedValue, boolean ambiguous,
+            Matcher originalMatcher,
+            Matcher overridenMatcher,
             Type<?> type, MatcherAwareDecoder<?> matcherDecoder,
             ReportLevelValuesSpaceFactory ambiguousSpaceFactory) {
+        this.searchedValue = searchedValue;
         this.ambiguous = ambiguous;
-        this.matcher = matcher;
+        this.originalMatcher = originalMatcher;
+        this.overridenMatcher = overridenMatcher;
         this.type = type;
         this.matcherDecoder = matcherDecoder;
         this.ambiguousSpaceFactory = ambiguousSpaceFactory;
@@ -53,22 +61,19 @@ public class ReportingTreeLevel {
 
     @SuppressWarnings("unchecked")
     public <T> T decode(String string) {
-        return (T) matcherDecoder.decode(string, type, matcher);
+        return (T) matcherDecoder.decode(string, type, originalMatcher);
     }
 
     @SuppressWarnings("unchecked")
     public <T> String encode(T object) {
-        return matcherDecoder.encode(object, type, matcher);
+        return matcherDecoder.encode(object, type, originalMatcher);
     }
 
     public <V> ReportLevelValuesSpace<V> createSpace() {
         return ambiguousSpaceFactory.createSpace();
     }
 
-    <T> T chooseValue(T existing, T incoming) {
-        if (existing != null) {
-            return existing;
-        }
-        return incoming;
+    public boolean matches(String pattern) {
+        return overridenMatcher.matches(searchedValue, pattern, type);
     }
 }

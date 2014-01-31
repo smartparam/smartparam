@@ -52,11 +52,9 @@ public class ParameterEntryMapConverterTest {
                 .withType("string", new StringType())
                 .withType("date", new DateType())
                 .withMatcher("between/ie", new BetweenMatcher())
+                .withMatcherDecoder("between/ie", new EmptyMatcherDecoder())
                 .build();
-        MatcherDecoderRepository converterRepository = mock(MatcherDecoderRepository.class);
-        doReturn(new EmptyMatcherDecoder()).when(converterRepository).getDecoder(anyString());
-
-        converter = new ParameterEntryMapConverter(ParamEngineFactory.paramEngine(config), converterRepository);
+        converter = new ParameterEntryMapConverter(ParamEngineFactory.paramEngine(config));
     }
 
     @Test

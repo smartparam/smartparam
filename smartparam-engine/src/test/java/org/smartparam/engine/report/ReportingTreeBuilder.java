@@ -16,8 +16,8 @@
 package org.smartparam.engine.report;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.decoder.BetweenMatcherDecoder;
 import org.smartparam.engine.types.integer.IntegerType;
@@ -39,12 +39,13 @@ public final class ReportingTreeBuilder {
     }
 
     public ReportingTree<String> build() {
-        return new ReportingTree<String>(operations);
+        return new ReportingTree<String>(operations, new FirstWinsValueChooser<String>());
     }
 
-    public ReportingTreeBuilder addAmbiguousIntegerLevel() {
-        operations.add(new ReportingTreeLevel(true,
+    public ReportingTreeBuilder addAmbiguousIntegerLevel(String searchedValue, Matcher overridenMatcher) {
+        operations.add(new ReportingTreeLevel(searchedValue, true,
                 new BetweenMatcher(true, false, "~"),
+                overridenMatcher,
                 new IntegerType(),
                 new BetweenMatcherDecoder(),
                 new ContinuousSegmentsSpaceFactory()
@@ -53,7 +54,7 @@ public final class ReportingTreeBuilder {
     }
 
     public ReportingTreeBuilder addExactLevel() {
-        operations.add(new ReportingTreeLevel(false, null, null, null, null));
+        operations.add(new ReportingTreeLevel("", false, null, null, null, null, null));
         return this;
     }
 

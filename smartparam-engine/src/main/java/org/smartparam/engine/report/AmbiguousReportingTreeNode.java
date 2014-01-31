@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.report;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.smartparam.engine.report.space.ReportLevelValuesSpace;
 import java.util.Map;
 import java.util.TreeMap;
@@ -45,8 +47,19 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
-    protected Iterable<ReportingTreeNode<V>> children() {
+    protected Iterable<ReportingTreeNode<V>> allChildren() {
         return space.values();
+    }
+
+    @Override
+    protected Iterable<ReportingTreeNode<V>> matchingChildren() {
+        List<ReportingTreeNode<V>> matchingNodes = new ArrayList<ReportingTreeNode<V>>();
+        for (ReportingTreeNode<V> node : allChildren()) {
+            if (tree().descriptorFor(depth).matches(node.levelValue)) {
+                matchingNodes.add(node);
+            }
+        }
+        return matchingNodes;
     }
 
     @Override
@@ -67,9 +80,7 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     @Override
     public void insertPath(ReportingTreePath<V> path) {
         if (leaf()) {
-            if (leafValue == null) {
-                this.leafValue = path.value();
-            }
+            this.leafValue = chooseValue(leafValue, path.value());
             return;
         }
 

@@ -16,17 +16,20 @@
 package org.smartparam.engine.report;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.index.LevelNode;
 import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
+import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.index.CustomizableLevelIndexWalker;
 import org.smartparam.engine.index.LevelLeafValuesExtractor;
 import org.smartparam.engine.report.sekleton.ReportLevel;
 import org.smartparam.engine.report.sekleton.ReportSkeleton;
 import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
+import org.smartparam.engine.util.ArraysUtil;
 
 /**
  *
@@ -54,7 +57,7 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
 
     @Override
     public List<PreparedEntry> extract(CustomizableLevelIndexWalker<PreparedEntry> indexWalker, List<LevelNode<PreparedEntry>> nodes) {
-        ReportingTree<PreparedEntry> reportingTree = new ReportingTree<PreparedEntry>(createLevelDescriptors(indexWalker));
+        ReportingTree<PreparedEntry> reportingTree = new ReportingTree<PreparedEntry>(createLevelDescriptors(indexWalker), valueChooser);
         createTreeLevels(reportingTree);
 
         for (LevelNode<PreparedEntry> node : nodes) {
@@ -62,14 +65,17 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
             reportingTree.insertValue(entry.getLevels(), entry);
         }
 
-        return null;
+        return convertPathsToEntries(reportingTree.harvestLeavesValues());
     }
 
     private List<ReportingTreeLevel> createLevelDescriptors(CustomizableLevelIndexWalker<PreparedEntry> indexWalker) {
         List<ReportingTreeLevel> levelDescriptors = new ArrayList<ReportingTreeLevel>();
 
         for (int levelIndex = 0; levelIndex < indexWalker.indexDepth(); ++levelIndex) {
-            ReportingTreeLevel level = new ReportingTreeLevel(reportSkeleton.ambiguousLevel(indexWalker.levelNameFor(levelIndex)),
+            ReportingTreeLevel level = new ReportingTreeLevel(
+                    indexWalker.levelValueFor(levelIndex),
+                    reportSkeleton.ambiguousLevel(indexWalker.levelNameFor(levelIndex)),
+                    indexWalker.originalMatcherFor(levelIndex),
                     indexWalker.matcherFor(levelIndex),
                     indexWalker.typeFor(levelIndex),
                     matcherDecoderRepository.getDecoder(indexWalker.matcherCodeFor(levelIndex)),
@@ -100,5 +106,31 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
             }
             createLevelSkeleton(childNode, childSkeletonLevel);
         }
+    }
+
+    private List<PreparedEntry> convertPathsToEntries(List<ReportingTreePath<PreparedEntry>> paths) {
+        List<PreparedEntry> entries = new ArrayList<PreparedEntry>();
+        for (ReportingTreePath<PreparedEntry> path : paths) {
+            entries.add(createEntry(path));
+        }
+
+        return entries;
+    }
+
+    private PreparedEntry createEntry(ReportingTreePath<PreparedEntry> path) {
+        PreparedEntry originalEntry = path.value();
+
+        String[] entryValues = ArraysUtil.concat(path.segmentsArray(), extractOutputValues(path.length(), originalEntry));
+
+        if (originalEntry instanceof IdentifiablePreparedEntry) {
+            IdentifiablePreparedEntry identifiableEntry = (IdentifiablePreparedEntry) originalEntry;
+            return new IdentifiablePreparedEntry(identifiableEntry.getKey(), entryValues);
+        } else {
+            return new PreparedEntry(entryValues);
+        }
+    }
+
+    private String[] extractOutputValues(int inputLevels, PreparedEntry entry) {
+        return Arrays.copyOfRange(entry.getLevels(), inputLevels, entry.getLevels().length);
     }
 }

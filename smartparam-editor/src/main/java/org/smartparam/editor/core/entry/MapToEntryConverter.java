@@ -36,9 +36,9 @@ class MapToEntryConverter {
 
     private final MatcherDecoderRepository converterRepository;
 
-    MapToEntryConverter(ParamEngineRuntimeConfig engineConfig, MatcherDecoderRepository converterRepository) {
+    MapToEntryConverter(ParamEngineRuntimeConfig engineConfig) {
         this.engineConfig = engineConfig;
-        this.converterRepository = converterRepository;
+        this.converterRepository = engineConfig.getMatcherDecoderRepository();
     }
 
     ParameterEntry asEntry(Parameter metadata, MapEntry entryMap) {

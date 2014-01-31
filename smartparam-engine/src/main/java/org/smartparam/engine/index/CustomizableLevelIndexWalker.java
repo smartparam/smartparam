@@ -73,6 +73,10 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
         return overrides.isGreedy(depth) ? greedyNodeInspector : fastNodeInspector;
     }
 
+    public Matcher originalMatcherFor(int depth) {
+        return index.getMatcher(depth);
+    }
+
     public Matcher matcherFor(int depth) {
         return overrides.overrideMatcher(depth) ? overrides.overridenMatcher(depth) : index.getMatcher(depth);
     }
@@ -87,5 +91,9 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
 
     public String levelNameFor(int depth) {
         return overrides.levelName(depth);
+    }
+
+    public String levelValueFor(int depth) {
+        return levelValues[depth];
     }
 }

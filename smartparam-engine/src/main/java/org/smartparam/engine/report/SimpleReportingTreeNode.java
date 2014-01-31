@@ -68,9 +68,7 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
     @Override
     public void insertPath(ReportingTreePath<V> path) {
         if (leaf()) {
-            if (leafValue == null) {
-                this.leafValue = path.value();
-            }
+            this.leafValue = chooseValue(leafValue, path.value());
             return;
         }
 
@@ -105,7 +103,12 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
-    protected Collection<ReportingTreeNode<V>> children() {
+    protected Collection<ReportingTreeNode<V>> allChildren() {
         return children.values();
+    }
+
+    @Override
+    protected Iterable<ReportingTreeNode<V>> matchingChildren() {
+        return allChildren();
     }
 }

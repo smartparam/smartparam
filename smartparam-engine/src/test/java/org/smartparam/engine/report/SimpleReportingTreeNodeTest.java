@@ -52,9 +52,6 @@ public class SimpleReportingTreeNodeTest {
         printNode(clone);
 
         // then
-        List<String> values = new ArrayList<String>();
-        clone.harvestLeavesValues(values);
-        assertThat(values).containsOnly("VALUE_A", "VALUE_B", "VALUE_ANY");
         assertThat(clone.parent()).isSameAs(newParent);
     }
 

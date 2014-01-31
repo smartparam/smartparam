@@ -17,6 +17,7 @@ package org.smartparam.engine.report;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,6 +35,10 @@ public class ReportingTreePath<T> {
         this.value = value;
     }
 
+    public ReportingTreePath(T value) {
+        this.value = value;
+    }
+
     public T value() {
         return value;
     }
@@ -44,5 +49,17 @@ public class ReportingTreePath<T> {
 
     public int length() {
         return segments.size();
+    }
+
+    public void addSegment(String value) {
+        this.segments.add(value);
+    }
+
+    public List<String> segments() {
+        return Collections.unmodifiableList(segments);
+    }
+
+    public String[] segmentsArray() {
+        return segments.toArray(new String[segments.size()]);
     }
 }

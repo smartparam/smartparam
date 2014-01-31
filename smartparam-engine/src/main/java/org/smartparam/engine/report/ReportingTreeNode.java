@@ -69,6 +69,10 @@ public abstract class ReportingTreeNode<V> {
 
     public abstract void insertPath(ReportingTreePath<V> path);
 
+    protected V chooseValue(V current, V incoming) {
+        return tree().valueChooser().choose(current, incoming);
+    }
+
     public abstract ReportingTreeNode<V> cloneBranch(ReportingTreeNode<V> newParent);
 
     protected abstract void allowAnyValues(boolean state);
@@ -113,19 +117,32 @@ public abstract class ReportingTreeNode<V> {
         this.levelValue = newValue;
     }
 
-    public void harvestLeavesValues(List<V> leafBucket) {
+    public void harvestLeavesValues(List<ReportingTreePath<V>> leafBucket) {
         if (leaf()) {
             if (leafValue != null) {
-                leafBucket.add(leafValue);
+                // unoptimized go up&down algorithm, should collect all during one
+                // descend
+                ReportingTreePath<V> path = new ReportingTreePath<V>(leafValue);
+                path.addSegment(levelValue);
+
+                ReportingTreeNode<V> ascendParent = parent;
+                while (ascendParent != null) {
+                    path.addSegment(ascendParent.levelValue);
+                    ascendParent = ascendParent.parent();
+                }
+
+                leafBucket.add(path);
             }
         } else {
-            for (ReportingTreeNode<V> child : children()) {
+            for (ReportingTreeNode<V> child : matchingChildren()) {
                 child.harvestLeavesValues(leafBucket);
             }
         }
     }
 
-    protected abstract Iterable<ReportingTreeNode<V>> children();
+    protected abstract Iterable<ReportingTreeNode<V>> allChildren();
+
+    protected abstract Iterable<ReportingTreeNode<V>> matchingChildren();
 
     public void printNode(StringBuilder sb) {
         String indent = Printer.repeat(' ', depth << 2);
@@ -137,7 +154,7 @@ public abstract class ReportingTreeNode<V> {
         }
         sb.append(Formatter.NL);
 
-        for (ReportingTreeNode<V> child : children()) {
+        for (ReportingTreeNode<V> child : allChildren()) {
             child.printNode(sb);
         }
     }

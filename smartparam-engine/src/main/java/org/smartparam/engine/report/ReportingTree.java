@@ -30,8 +30,11 @@ public class ReportingTree<V> {
 
     private final List<ReportingTreeLevel> levelDescriptors;
 
-    public ReportingTree(List<ReportingTreeLevel> levelDescriptors) {
+    private final ReportValueChooser<V> valueChooser;
+
+    public ReportingTree(List<ReportingTreeLevel> levelDescriptors, ReportValueChooser<V> valueChooser) {
         this.levelDescriptors = levelDescriptors;
+        this.valueChooser = valueChooser;
         root = createNode(null, "ROOT");
     }
 
@@ -43,10 +46,22 @@ public class ReportingTree<V> {
         root.insertPath(new ReportingTreePath<V>(levelValues, value));
     }
 
-    public List<V> harvestLeavesValues() {
-        List<V> crops = new ArrayList<V>();
+    public List<ReportingTreePath<V>> harvestLeavesValues() {
+        List<ReportingTreePath<V>> crops = new ArrayList<ReportingTreePath<V>>();
         root.harvestLeavesValues(crops);
         return crops;
+    }
+
+    public List<V> harvestRawLeavesValues() {
+        List<V> rawCrops = new ArrayList<V>();
+
+        List<ReportingTreePath<V>> crops = new ArrayList<ReportingTreePath<V>>();
+        root.harvestLeavesValues(crops);
+        for (ReportingTreePath<V> path : crops) {
+            rawCrops.add(path.value());
+        }
+
+        return rawCrops;
     }
 
     final ReportingTreeNode<V> createNode(ReportingTreeNode<V> parent, String levelValue) {
@@ -58,6 +73,10 @@ public class ReportingTree<V> {
 
     ReportingTreeLevel descriptorFor(int levelIndex) {
         return levelDescriptors.get(levelIndex);
+    }
+
+    ReportValueChooser<V> valueChooser() {
+        return valueChooser;
     }
 
     int height() {

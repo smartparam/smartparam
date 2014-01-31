@@ -31,6 +31,11 @@ public class IdentifiablePreparedEntry extends PreparedEntry {
         this.key = parameterEntry.getKey().value();
     }
 
+    public IdentifiablePreparedEntry(ParameterEntryKey key, String[] values) {
+        super(values);
+        this.key = key.value();
+    }
+
     public ParameterEntryKey getKey() {
         return new PreparedEntryKey(key);
     }

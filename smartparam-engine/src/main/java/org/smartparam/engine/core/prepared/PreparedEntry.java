@@ -35,6 +35,10 @@ public class PreparedEntry {
         this.levels = normalizeLevels(parameterEntry.getLevels());
     }
 
+    public PreparedEntry(String[] levels) {
+        this.levels = normalizeLevels(levels);
+    }
+
     public String[] getLevels() {
         return levels;
     }

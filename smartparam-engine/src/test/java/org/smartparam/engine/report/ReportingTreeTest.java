@@ -18,6 +18,7 @@ package org.smartparam.engine.report;
 import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.engine.matchers.MatchAllMatcher;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +47,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(1).containsExactly("VALUE");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsExactly("VALUE");
     }
 
     @Test
@@ -60,7 +61,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).isEmpty();
+        assertThat(tree.harvestRawLeavesValues()).isEmpty();
     }
 
     @Test
@@ -74,7 +75,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(1).containsExactly("VALUE");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsExactly("VALUE");
     }
 
     @Test
@@ -92,7 +93,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(1).containsExactly("VALUE");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsExactly("VALUE");
     }
 
     @Test
@@ -120,7 +121,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(3).containsOnly("VALUE_1", "VALUE_2", "VALUE_3");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(3).containsOnly("VALUE_1", "VALUE_2", "VALUE_3");
     }
 
     @Test
@@ -137,7 +138,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(3).containsOnly("VIRAL");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(3).containsOnly("VIRAL");
     }
 
     @Test
@@ -157,7 +158,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(1).containsOnly("CONTAINED_VIRAL");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsOnly("CONTAINED_VIRAL");
     }
 
     @Test
@@ -177,7 +178,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(1).containsOnly("ANYTHING");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsOnly("ANYTHING");
     }
 
     @Test
@@ -185,7 +186,7 @@ public class ReportingTreeTest {
         // given
         ReportingTree<String> tree = reportingTree()
                 .addExactLevel()
-                .addAmbiguousIntegerLevel()
+                .addAmbiguousIntegerLevel("4", new MatchAllMatcher())
                 .addExactLevel()
                 .build();
         tree.root().addDictionaryChild("A")
@@ -195,17 +196,17 @@ public class ReportingTreeTest {
         // when
         tree.insertValue(new String[]{"A", "A-A", "0~10"}, "VALUE: 0-10");
         tree.insertValue(new String[]{"A", "A-A", "2~5"}, "VALUE: 2-5");
-        logger.info(tree.printTree());
+        logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(3).containsOnly("VALUE: 0-10");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(3).containsOnly("VALUE: 0-10");
     }
 
     @Test
     public void shouldCreateTreeWithAmbiguousLevelInTheMiddleAndNeverReplaceOnceSetValue() {
         // given
         ReportingTree<String> tree = reportingTree()
-                .addAmbiguousIntegerLevel()
+                .addAmbiguousIntegerLevel("4", new MatchAllMatcher())
                 .addExactLevel()
                 .addExactLevel()
                 .build();
@@ -216,9 +217,9 @@ public class ReportingTreeTest {
         // when
         tree.insertValue(new String[]{"A", "0~10", "A-A"}, "VALUE: A-A");
         tree.insertValue(new String[]{"A", "2~5", "A-B"}, "VALUE: A-B");
-        logger.info(tree.printTree());
+        logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestLeavesValues()).hasSize(3).containsOnly("VALUE: A-A");
+        assertThat(tree.harvestRawLeavesValues()).hasSize(3).containsOnly("VALUE: A-A");
     }
 }
