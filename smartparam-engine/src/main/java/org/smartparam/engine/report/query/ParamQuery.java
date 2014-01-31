@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.report.query;
 
-import org.smartparam.engine.report.sekleton.ReportSkeleton;
+import org.smartparam.engine.report.skeleton.ReportSkeleton;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.context.ParamContext;
 import org.smartparam.engine.core.output.DetailedParamValue;
@@ -54,6 +54,10 @@ public final class ParamQuery {
     }
 
     public DetailedParamValue execute() {
+        if (reportSkeleton == null) {
+            reportSkeleton = ReportSkeleton.reportSkeleton();
+        }
+
         ReportingLevelLeafValuesExtractor valuesExtractor = new ReportingLevelLeafValuesExtractor(paramEngine, reportSkeleton, valueChooser);
         walkerBuilder.withValuesExtractor(valuesExtractor);
         CustomizableIndexWalkerFactory factory = walkerBuilder.build();

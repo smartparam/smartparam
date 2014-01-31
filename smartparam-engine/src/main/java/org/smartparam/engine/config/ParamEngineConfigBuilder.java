@@ -28,7 +28,7 @@ import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
-import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
+import org.smartparam.engine.core.matcher.MatcherType;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
@@ -211,10 +211,10 @@ public final class ParamEngineConfigBuilder {
     }
 
     /**
-     * Register {@link MatcherAwareDecoder}.
+     * Register {@link MatcherType}.
      */
-    public ParamEngineConfigBuilder withMatcherDecoder(String matcherCode, MatcherAwareDecoder<?> matcherDecoder) {
-        paramEngineConfig.addMatcherDecoder(matcherCode, matcherDecoder);
+    public ParamEngineConfigBuilder withMatcherType(String matcherCode, MatcherType<?> matcherType) {
+        paramEngineConfig.addMatcherType(matcherCode, matcherType);
         return this;
     }
 

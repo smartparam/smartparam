@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.matchers.decoder;
+package org.smartparam.engine.matchers.type;
 
-import org.smartparam.engine.annotated.annotations.ParamMatcherDecoder;
+import org.smartparam.engine.annotated.annotations.ParamMatcherType;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
+import org.smartparam.engine.core.matcher.MatcherType;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.util.EngineUtil;
@@ -26,13 +26,18 @@ import org.smartparam.engine.util.EngineUtil;
  *
  * @author Adam Dubiel
  */
-@ParamMatcherDecoder(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
-public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range<?>> {
+@ParamMatcherType(value = "", values = {
+    BetweenMatcher.BETWEEN_IE,
+    BetweenMatcher.BETWEEN_EI,
+    BetweenMatcher.BETWEEN_EE,
+    BetweenMatcher.BETWEEN_II
+})
+public class BetweenMatcherType<C extends Comparable<? super C>> implements MatcherType<Range<C>> {
 
-    private final EmptyMatcherDecoder simpleConverter = new EmptyMatcherDecoder();
+    private final SimpleMatcherType simpleType = new SimpleMatcherType();
 
     @Override
-    public Range<?> decode(String value, Type<?> type, Matcher matcher) {
+    public Range<C> decode(String value, Type<?> type, Matcher matcher) {
         BetweenMatcher betweenMatcher = (BetweenMatcher) matcher;
         char separator = findSeparator(value, betweenMatcher.separators());
 
@@ -40,7 +45,7 @@ public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range<?>> {
         String from = values[0].trim();
         String to = values[1].trim();
 
-        return new Range(decodeValue(from, type), decodeValue(to, type));
+        return new Range<C>(decodeValue(from, type), decodeValue(to, type));
     }
 
     private char findSeparator(String pattern, char[] separators) {
@@ -52,12 +57,13 @@ public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range<?>> {
         return separators[0];
     }
 
-    private Object decodeValue(String value, Type<?> type) {
-        return simpleConverter.decode(value, type, null);
+    @SuppressWarnings("unchecked")
+    private C decodeValue(String value, Type<?> type) {
+        return (C) simpleType.decode(value, type, null);
     }
 
     @Override
-    public String encode(Range<?> object, Type<?> type, Matcher matcher) {
+    public String encode(Range<C> object, Type<?> type, Matcher matcher) {
         BetweenMatcher betweenMatcher = (BetweenMatcher) matcher;
         String from = encodeValue(object.from(), type);
         String to = encodeValue(object.to(), type);
@@ -77,6 +83,6 @@ public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range<?>> {
     }
 
     private String encodeValue(Object value, Type<?> type) {
-        return simpleConverter.encode(value, type, null);
+        return simpleType.encode(value, type, null);
     }
 }

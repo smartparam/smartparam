@@ -16,7 +16,7 @@
 package org.smartparam.engine.core.output.entry;
 
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedEntry;
@@ -30,9 +30,9 @@ import org.smartparam.engine.core.type.Type;
  */
 public class MapEntryFactory {
 
-    private final MatcherDecoderRepository matcherDecoderRepository;
+    private final MatcherTypeRepository matcherDecoderRepository;
 
-    public MapEntryFactory(MatcherDecoderRepository matcherDecoderRepository) {
+    public MapEntryFactory(MatcherTypeRepository matcherDecoderRepository) {
         this.matcherDecoderRepository = matcherDecoderRepository;
     }
 
@@ -59,6 +59,6 @@ public class MapEntryFactory {
         Type<?> type = level.getType();
         Matcher matcher = level.getMatcher();
 
-        return matcherDecoderRepository.getDecoder(level.getMatcherName()).decode(levelValue, type, matcher);
+        return matcherDecoderRepository.getMatcherType(level.getMatcherName()).decode(levelValue, type, matcher);
     }
 }

@@ -21,13 +21,13 @@ import java.util.List;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.index.LevelNode;
-import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.index.CustomizableLevelIndexWalker;
 import org.smartparam.engine.index.LevelLeafValuesExtractor;
-import org.smartparam.engine.report.sekleton.ReportLevel;
-import org.smartparam.engine.report.sekleton.ReportSkeleton;
+import org.smartparam.engine.report.skeleton.ReportLevel;
+import org.smartparam.engine.report.skeleton.ReportSkeleton;
 import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
 import org.smartparam.engine.util.ArraysUtil;
 
@@ -37,7 +37,7 @@ import org.smartparam.engine.util.ArraysUtil;
  */
 public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtractor<PreparedEntry> {
 
-    private final MatcherDecoderRepository matcherDecoderRepository;
+    private final MatcherTypeRepository matcherDecoderRepository;
 
     private final ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository;
 
@@ -83,7 +83,7 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
                     indexWalker.originalMatcherFor(levelIndex),
                     indexWalker.matcherFor(levelIndex),
                     indexWalker.typeFor(levelIndex),
-                    matcherDecoderRepository.getDecoder(childOriginalMatcherCode),
+                    matcherDecoderRepository.getMatcherType(childOriginalMatcherCode),
                     reportLevelValuesSpaceRepository.getSpaceFactory(childOriginalMatcherCode)
             );
             levelDescriptors.add(level);

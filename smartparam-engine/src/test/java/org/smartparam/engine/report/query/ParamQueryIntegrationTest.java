@@ -29,9 +29,9 @@ import org.smartparam.engine.core.parameter.ParameterTestBuilder;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.matchers.MatchAllMatcher;
-import org.smartparam.engine.matchers.decoder.Range;
-import org.smartparam.engine.report.sekleton.ReportLevel;
-import org.smartparam.engine.report.sekleton.ReportSkeleton;
+import org.smartparam.engine.matchers.type.Range;
+import org.smartparam.engine.report.skeleton.ReportLevel;
+import org.smartparam.engine.report.skeleton.ReportSkeleton;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

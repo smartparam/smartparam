@@ -27,7 +27,7 @@ import org.smartparam.engine.core.type.ValueHolder;
 @ParamMatcher(MatchAllMatcher.MATCH_ALL)
 public class MatchAllMatcher implements Matcher {
 
-    public static final String MATCH_ALL = "matchAll";
+    public static final String MATCH_ALL = "equals/anything";
 
     @Override
     public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {

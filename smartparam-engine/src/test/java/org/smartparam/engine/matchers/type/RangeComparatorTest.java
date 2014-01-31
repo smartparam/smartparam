@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.matchers.decoder;
+package org.smartparam.engine.matchers.type;
 
+import org.smartparam.engine.matchers.type.RangeComparator;
+import org.smartparam.engine.matchers.type.Range;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.matchers.BetweenMatcher;
-import org.smartparam.engine.matchers.decoder.BetweenMatcherDecoder;
+import org.smartparam.engine.matchers.type.BetweenMatcherType;
 import org.smartparam.engine.types.integer.IntegerType;
 
 /**
@@ -46,7 +46,7 @@ public final class ReportingTreeBuilder {
                 new BetweenMatcher(true, false, "~"),
                 overridenMatcher,
                 new IntegerType(),
-                new BetweenMatcherDecoder(),
+                new BetweenMatcherType(),
                 new ContinuousSegmentsSpaceFactory()
         ));
         return this;

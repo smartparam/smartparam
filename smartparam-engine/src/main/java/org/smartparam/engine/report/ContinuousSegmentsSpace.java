@@ -17,8 +17,8 @@ package org.smartparam.engine.report;
 
 import org.smartparam.engine.report.space.ReportLevelValuesSpace;
 import java.util.*;
-import org.smartparam.engine.matchers.decoder.Range;
-import org.smartparam.engine.matchers.decoder.RangeBoundary;
+import org.smartparam.engine.matchers.type.Range;
+import org.smartparam.engine.matchers.type.RangeBoundary;
 
 /**
  *

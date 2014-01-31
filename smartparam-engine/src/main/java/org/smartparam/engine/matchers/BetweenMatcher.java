@@ -17,6 +17,7 @@ package org.smartparam.engine.matchers;
 
 import org.smartparam.engine.annotated.annotations.ParamMatcher;
 import org.smartparam.engine.annotated.annotations.ObjectInstance;
+import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
@@ -39,14 +40,22 @@ import org.smartparam.engine.util.EngineUtil;
  * @since 0.9.0
  */
 @ParamMatcher(value = "", instances = {
-    @ObjectInstance(value = "between/ie", constructorArgs = {"true", "false"}),
-    @ObjectInstance(value = "between/ei", constructorArgs = {"false", "true"}),
-    @ObjectInstance(value = "between/ii", constructorArgs = {"true", "true"}),
-    @ObjectInstance(value = "between/ee", constructorArgs = {"false", "false"})
+    @ObjectInstance(value = BetweenMatcher.BETWEEN_IE, constructorArgs = {"true", "false"}),
+    @ObjectInstance(value = BetweenMatcher.BETWEEN_EI, constructorArgs = {"false", "true"}),
+    @ObjectInstance(value = BetweenMatcher.BETWEEN_II, constructorArgs = {"true", "true"}),
+    @ObjectInstance(value = BetweenMatcher.BETWEEN_EE, constructorArgs = {"false", "false"})
 })
 public class BetweenMatcher implements Matcher {
 
     private static final char[] DEFAULT_SEPARATORS = {'~', ':', '-', ','};
+
+    public static final String BETWEEN_IE = "between/ie";
+
+    public static final String BETWEEN_EI = "between/ie";
+
+    public static final String BETWEEN_II = "between/ii";
+
+    public static final String BETWEEN_EE = "between/ee";
 
     private boolean lowerInclusive = true;
 
@@ -102,7 +111,7 @@ public class BetweenMatcher implements Matcher {
     }
 
     private <T extends ValueHolder> boolean lowerCondition(T v, String lower, Type<T> type) {
-        if ("*".equals(lower) || "".equals(lower)) {
+        if (Star.SYMBOL.equals(lower) || "".equals(lower)) {
             return true;
         }
 
@@ -112,7 +121,7 @@ public class BetweenMatcher implements Matcher {
     }
 
     private <T extends ValueHolder> boolean upperCondition(T v, String upper, Type<T> type) {
-        if ("*".equals(upper) || "".equals(upper)) {
+        if (Star.SYMBOL.equals(upper) || "".equals(upper)) {
             return true;
         }
 

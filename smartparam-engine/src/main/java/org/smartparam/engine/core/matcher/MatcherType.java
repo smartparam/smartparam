@@ -20,12 +20,12 @@ import org.smartparam.engine.core.type.Type;
 /**
  * Converts text representation of matched value to object and vice versa. Complex matchers, i.e. between matcher have
  * in fact a hidden data model. This model resides in format of pattern (for between matcher: *from* - *to*). Matcher
- * converters help in discovering and naming this model for editing purposes. This way it is not necessary to split
- * strings to - user receives Java object instead of plain string.
+ * types help in discovering and naming this model for editing purposes. This way it is not necessary to split
+ * strings - user receives Java object instead of plain string.
  *
  * For between matcher instead of "*from* - *to*" user can pass Range object.
  *
- * Matcher converters are matched with matchers by their name. Converter methods should produce reversable results, meaning:
+ * Matcher types are matched with matchers by their name. Type methods should produce reversable results, meaning:
  * <pre>
  * decode(encode(obj)) == obj
  * </pre>
@@ -34,7 +34,7 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-public interface MatcherAwareDecoder<T> {
+public interface MatcherType<T> {
 
     /**
      * Decode string value of given type for given matcher into Java object. Matcher is here so it is possible to

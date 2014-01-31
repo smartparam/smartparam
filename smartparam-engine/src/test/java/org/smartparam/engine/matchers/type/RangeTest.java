@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.matchers.decoder;
+package org.smartparam.engine.matchers.type;
 
+import org.smartparam.engine.matchers.type.Range;
 import org.smartparam.engine.core.index.Star;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;

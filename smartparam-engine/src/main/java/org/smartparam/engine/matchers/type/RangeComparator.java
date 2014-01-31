@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.matchers.decoder;
+package org.smartparam.engine.matchers.type;
 
 import java.util.Comparator;
 
@@ -21,7 +21,7 @@ import java.util.Comparator;
  *
  * @author Adam Dubiel
  */
-public class RangeComparator implements Comparator<Range> {
+public class RangeComparator implements Comparator<Range<?>> {
 
     private boolean byLowerBound = true;
 
@@ -41,7 +41,7 @@ public class RangeComparator implements Comparator<Range> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public int compare(Range o1, Range o2) {
+    public int compare(Range<?> o1, Range<?> o2) {
         Comparable val1 = extractComparable(o1);
         Comparable val2 = extractComparable(o2);
 
@@ -50,7 +50,7 @@ public class RangeComparator implements Comparator<Range> {
         return val1.compareTo(val2) * direction;
     }
 
-    private Comparable extractComparable(Range o1) {
-        return (Comparable) (byLowerBound ? o1.from() : o1.to());
+    private Comparable<?> extractComparable(Range<?> o1) {
+        return byLowerBound ? o1.from() : o1.to();
     }
 }

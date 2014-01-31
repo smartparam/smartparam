@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.matchers.decoder;
+package org.smartparam.engine.matchers.type;
 
 import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
+import org.smartparam.engine.core.matcher.MatcherType;
 import org.smartparam.engine.core.type.Type;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class EmptyMatcherDecoder implements MatcherAwareDecoder<Object> {
+public class SimpleMatcherType implements MatcherType<Object> {
 
     @Override
     public Object decode(String value, Type<?> type, Matcher matcher) {

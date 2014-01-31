@@ -17,33 +17,33 @@ package org.smartparam.engine.annotated.repository;
 
 import java.util.Map;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
-import org.smartparam.engine.annotated.annotations.ParamMatcherDecoder;
+import org.smartparam.engine.annotated.annotations.ParamMatcherType;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
-import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
-import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
+import org.smartparam.engine.core.matcher.MatcherType;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.repository.MapRepository;
-import org.smartparam.engine.matchers.decoder.EmptyMatcherDecoder;
+import org.smartparam.engine.matchers.type.SimpleMatcherType;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ScanningMatcherDecoderRepository implements MatcherDecoderRepository, TypeScanningRepository {
+public class ScanningMatcherTypeRepository implements MatcherTypeRepository, TypeScanningRepository {
 
-    private final MatcherAwareDecoder<?> defaultDecoder = new EmptyMatcherDecoder();
+    private final MatcherType<?> defaultDecoder = new SimpleMatcherType();
 
-    private final MapRepository<MatcherAwareDecoder<?>> innerRepository = new MapRepository<MatcherAwareDecoder<?>>(MatcherAwareDecoder.class);
+    private final MapRepository<MatcherType<?>> innerRepository = new MapRepository<MatcherType<?>>(MatcherType.class);
 
     @Override
     public void scanAnnotations(TypeScanner scanner, ComponentInitializerRunner componentInitializerRunner) {
-        Map<RepositoryObjectKey, MatcherAwareDecoder<?>> matcherConverters = scanner.scanTypes(ParamMatcherDecoder.class);
-        innerRepository.registerAll(matcherConverters);
+        Map<RepositoryObjectKey, MatcherType<?>> types = scanner.scanTypes(ParamMatcherType.class);
+        innerRepository.registerAll(types);
     }
 
     @Override
-    public MatcherAwareDecoder<?> getDecoder(String matcherCode) {
-        MatcherAwareDecoder<?> converter = innerRepository.getItem(matcherCode);
+    public MatcherType<?> getMatcherType(String matcherCode) {
+        MatcherType<?> converter = innerRepository.getItem(matcherCode);
         if (converter == null) {
             converter = defaultDecoder;
         }
@@ -51,17 +51,17 @@ public class ScanningMatcherDecoderRepository implements MatcherDecoderRepositor
     }
 
     @Override
-    public void register(String key, MatcherAwareDecoder<?> type) {
+    public void register(String key, MatcherType<?> type) {
         innerRepository.register(key, type);
     }
 
     @Override
-    public Map<String, MatcherAwareDecoder<?>> registeredItems() {
+    public Map<String, MatcherType<?>> registeredItems() {
         return innerRepository.getItemsUnordered();
     }
 
     @Override
-    public void registerAll(Map<String, MatcherAwareDecoder<?>> objects) {
+    public void registerAll(Map<String, MatcherType<?>> objects) {
         innerRepository.registerAllUnordered(objects);
     }
 }

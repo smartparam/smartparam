@@ -24,7 +24,7 @@ import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;
-import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
 
@@ -52,7 +52,7 @@ public class PicoParamEngineRuntimeConfigBuilder implements ParamEngineRuntimeCo
                 engineContainer.getComponent(InvokerRepository.class).registeredItems(),
                 engineContainer.getComponent(TypeRepository.class).registeredItems(),
                 engineContainer.getComponent(MatcherRepository.class),
-                engineContainer.getComponent(MatcherDecoderRepository.class),
+                engineContainer.getComponent(MatcherTypeRepository.class),
                 engineContainer.getComponent(ReportLevelValuesSpaceRepository.class));
 
     }

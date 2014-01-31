@@ -39,8 +39,8 @@ import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.function.FunctionManager;
 import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.function.InvokerRepository;
-import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
-import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
+import org.smartparam.engine.core.matcher.MatcherType;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.output.entry.MapEntryFactory;
 import org.smartparam.engine.core.output.factory.DefaultParamValueFactory;
@@ -74,7 +74,7 @@ public class ParamEngineConfig extends ComponentConfig {
 
     private final Map<String, Matcher> matchers = new HashMap<String, Matcher>();
 
-    private final Map<String, MatcherAwareDecoder<?>> matcherDecoders = new HashMap<String, MatcherAwareDecoder<?>>();
+    private final Map<String, MatcherType<?>> matcherTypes = new HashMap<String, MatcherType<?>>();
 
     private PreparedParamCache parameterCache;
 
@@ -96,7 +96,7 @@ public class ParamEngineConfig extends ComponentConfig {
         components.add(component(ParameterProvider.class, BasicParameterProvider.class));
         components.add(component(TypeRepository.class, ScanningTypeRepository.class));
         components.add(component(MatcherRepository.class, ScanningMatcherRepository.class));
-        components.add(component(MatcherDecoderRepository.class, ScanningMatcherDecoderRepository.class));
+        components.add(component(MatcherTypeRepository.class, ScanningMatcherTypeRepository.class));
         components.add(component(MapEntryFactory.class, MapEntryFactory.class));
         components.add(component(DefaultParamValueFactory.class, DefaultParamValueFactory.class));
         components.add(component(DetailedParamValueFactory.class, DetailedParamValueFactory.class));
@@ -147,12 +147,12 @@ public class ParamEngineConfig extends ComponentConfig {
         this.matchers.put(key, matcher);
     }
 
-    public Map<String, MatcherAwareDecoder<?>> getMatcherDecoders() {
-        return Collections.unmodifiableMap(matcherDecoders);
+    public Map<String, MatcherType<?>> getMatcherTypes() {
+        return Collections.unmodifiableMap(matcherTypes);
     }
 
-    protected void addMatcherDecoder(String key, MatcherAwareDecoder<?> matcherDecoder) {
-        this.matcherDecoders.put(key, matcherDecoder);
+    protected void addMatcherType(String key, MatcherType<?> matcherType) {
+        this.matcherTypes.put(key, matcherType);
     }
 
     public FunctionCache getFunctionCache() {

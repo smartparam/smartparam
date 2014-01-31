@@ -23,7 +23,7 @@ import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
-import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.type.Type;
@@ -52,7 +52,7 @@ public final class ParamEngineRuntimeConfig {
 
     private final MatcherRepository matcherRepository;
 
-    private final MatcherDecoderRepository matcherDecoderRepository;
+    private final MatcherTypeRepository matcherDecoderRepository;
 
     private final ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository;
 
@@ -71,7 +71,7 @@ public final class ParamEngineRuntimeConfig {
             Map<String, FunctionInvoker> invokers,
             Map<String, Type<?>> types,
             MatcherRepository matcherRepository,
-            MatcherDecoderRepository matcherDecoderRepository,
+            MatcherTypeRepository matcherDecoderRepository,
             ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository) {
         this.functionCache = functionCache;
         this.paramCache = paramCache;
@@ -100,7 +100,7 @@ public final class ParamEngineRuntimeConfig {
         return matcherRepository;
     }
 
-    public MatcherDecoderRepository getMatcherDecoderRepository() {
+    public MatcherTypeRepository getMatcherDecoderRepository() {
         return matcherDecoderRepository;
     }
 

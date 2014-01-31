@@ -21,8 +21,8 @@ import org.smartparam.engine.core.repository.Repository;
  *
  * @author Adam Dubiel
  */
-public interface MatcherDecoderRepository extends Repository<MatcherAwareDecoder<?>> {
+public interface MatcherTypeRepository extends Repository<MatcherType<?>> {
 
-    MatcherAwareDecoder<?> getDecoder(String matcherCode);
+    MatcherType<?> getMatcherType(String matcherCode);
 
 }

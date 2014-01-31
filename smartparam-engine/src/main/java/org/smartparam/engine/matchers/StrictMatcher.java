@@ -16,6 +16,7 @@
 package org.smartparam.engine.matchers;
 
 import org.smartparam.engine.annotated.annotations.ParamMatcher;
+import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.type.ValueHolder;
@@ -28,12 +29,12 @@ import org.smartparam.engine.util.EngineUtil;
 @ParamMatcher("equals/strict")
 public class StrictMatcher implements Matcher {
 
-    public static final String CODE = "equals/strict";
+    public static final String STRICT = "equals/strict";
 
     @Override
     public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {
         if(!EngineUtil.hasText(value)) {
-            return "*".equals(pattern);
+            return Star.SYMBOL.equals(pattern);
         }
         return pattern.equals(value);
     }

@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.report;
 
-import org.smartparam.engine.matchers.decoder.RangeBoundary;
+import org.smartparam.engine.matchers.type.RangeBoundary;
 
 /**
  *

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.matchers.decoder;
+package org.smartparam.engine.matchers.type;
 
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.testng.annotations.Test;
@@ -24,9 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Adam Dubiel
  */
-public class BetweenMatcherDecoderTest {
+public class BetweenMatcherTypeTest {
 
-    private final BetweenMatcherDecoder decoder = new BetweenMatcherDecoder();
+    private final BetweenMatcherType<String> type = new BetweenMatcherType<String>();
 
     @Test
     public void shouldDecodeValueAsRangeObjectUsingFirstSeparatorFromMatcherFoundInValue() {
@@ -34,7 +34,7 @@ public class BetweenMatcherDecoderTest {
         BetweenMatcher matcher = new BetweenMatcher(true, true, "~#");
 
         // when
-        Range decoded = decoder.decode("A#B", null, matcher);
+        Range<String> decoded = type.decode("A#B", null, matcher);
 
         // then
         assertThat(decoded.from()).isEqualTo("A");
@@ -47,7 +47,7 @@ public class BetweenMatcherDecoderTest {
         BetweenMatcher matcher = new BetweenMatcher(true, true, "~#");
 
         // when
-        Range decoded = decoder.decode("A:B", null, matcher);
+        Range<String> decoded = type.decode("A:B", null, matcher);
 
         // then
         assertThat(decoded.from()).isEqualTo("A:B");
@@ -60,7 +60,7 @@ public class BetweenMatcherDecoderTest {
         BetweenMatcher matcher = new BetweenMatcher(true, true, "~");
 
         // when
-        Range decoded = decoder.decode("  A ~ B  ", null, matcher);
+        Range<String> decoded = type.decode("  A ~ B  ", null, matcher);
 
         // then
         assertThat(decoded.from()).isEqualTo("A");
@@ -73,7 +73,7 @@ public class BetweenMatcherDecoderTest {
         BetweenMatcher matcher = new BetweenMatcher(true, true, "~#");
 
         // when
-        String encoded = decoder.encode(new Range("A~", "B"), null, matcher);
+        String encoded = type.encode(new Range<String>("A~", "B"), null, matcher);
 
         // then
         assertThat(encoded).isEqualTo("A~#B");

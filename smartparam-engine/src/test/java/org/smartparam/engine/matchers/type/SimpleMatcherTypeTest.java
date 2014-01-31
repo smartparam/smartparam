@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.matchers.decoder;
+package org.smartparam.engine.matchers.type;
 
 import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.type.ObjectHolder;
@@ -28,14 +28,14 @@ import static org.mockito.Mockito.*;
  *
  * @author Adam Dubiel
  */
-public class EmptyMatcherDecoderTest {
+public class SimpleMatcherTypeTest {
 
-    private final EmptyMatcherDecoder decoder = new EmptyMatcherDecoder();
+    private final SimpleMatcherType type = new SimpleMatcherType();
 
     @Test
     public void shouldDecodeValueAsStarWhenEqualsStarSymbol() {
         // when
-        Object decoded = decoder.decode("*", null, null);
+        Object decoded = type.decode("*", null, null);
 
         // then
         assertThat(decoded).isInstanceOf(Star.class);
@@ -44,7 +44,7 @@ public class EmptyMatcherDecoderTest {
     @Test
     public void shouldDecodeValueAsRawStringValueWhenNoTypeDeclared() {
         // when
-        Object decoded = decoder.decode("value", null, null);
+        Object decoded = type.decode("value", null, null);
 
         // then
         assertThat(decoded).isEqualTo("value");
@@ -53,7 +53,7 @@ public class EmptyMatcherDecoderTest {
     @Test
     public void shouldDecodeEmptyStringAsNullWhenNoTypeDeclared() {
         // when
-        Object decoded = decoder.decode("", null, null);
+        Object decoded = type.decode("", null, null);
 
         // then
         assertThat(decoded).isNull();
@@ -64,11 +64,11 @@ public class EmptyMatcherDecoderTest {
         // given
         String valueToDecode = "value";
 
-        Type<?> type = mock(Type.class);
-        when(type.decode(valueToDecode)).thenReturn(new ObjectHolder("hello"));
+        Type<?> anyType = mock(Type.class);
+        when(anyType.decode(valueToDecode)).thenReturn(new ObjectHolder("hello"));
 
         // when
-        Object decoded = decoder.decode("value", type, null);
+        Object decoded = type.decode("value", anyType, null);
 
         // then
         assertThat(decoded).isEqualTo("hello");
@@ -77,7 +77,7 @@ public class EmptyMatcherDecoderTest {
     @Test
     public void shouldEncodeStarObjectAsStar() {
         // when
-        String encoded = decoder.encode(Star.star(), null, null);
+        String encoded = type.encode(Star.star(), null, null);
 
         // then
         assertThat(encoded).isEqualTo("*");
@@ -86,7 +86,7 @@ public class EmptyMatcherDecoderTest {
     @Test
     public void shouldEncodeValueAsEmptyStringWhenNoTypeAndValueIsNull() {
         // when
-        String encoded = decoder.encode(null, null, null);
+        String encoded = type.encode(null, null, null);
 
         // then
         assertThat(encoded).isEqualTo("");
@@ -95,7 +95,7 @@ public class EmptyMatcherDecoderTest {
     @Test
     public void shouldEncodeValueUsingToStringWhenNoTypeProvied() {
         // when
-        String encoded = decoder.encode("value", null, null);
+        String encoded = type.encode("value", null, null);
 
         // then
         assertThat(encoded).isEqualTo("value");
@@ -104,10 +104,10 @@ public class EmptyMatcherDecoderTest {
     @Test
     public void shouldEncodeValueusingTypeWhenTypeProvided() {
         // given
-        StringType type = new StringType();
+        StringType stringType = new StringType();
 
         // when
-        String encoded = decoder.encode(new SimpleObject(), type, null);
+        String encoded = type.encode(new SimpleObject(), stringType, null);
 
         // then
         assertThat(encoded).isEqualTo("simpleObject");

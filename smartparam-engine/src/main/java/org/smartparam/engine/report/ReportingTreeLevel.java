@@ -17,7 +17,7 @@ package org.smartparam.engine.report;
 
 import org.smartparam.engine.report.space.ReportLevelValuesSpace;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
+import org.smartparam.engine.core.matcher.MatcherType;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.report.space.ReportLevelValuesSpaceFactory;
 
@@ -37,14 +37,14 @@ public class ReportingTreeLevel {
 
     private final Type<?> type;
 
-    private final MatcherAwareDecoder matcherDecoder;
+    private final MatcherType matcherDecoder;
 
     private final ReportLevelValuesSpaceFactory ambiguousSpaceFactory;
 
     public ReportingTreeLevel(String searchedValue, boolean ambiguous,
             Matcher originalMatcher,
             Matcher overridenMatcher,
-            Type<?> type, MatcherAwareDecoder<?> matcherDecoder,
+            Type<?> type, MatcherType<?> matcherDecoder,
             ReportLevelValuesSpaceFactory ambiguousSpaceFactory) {
         this.searchedValue = searchedValue;
         this.ambiguous = ambiguous;
