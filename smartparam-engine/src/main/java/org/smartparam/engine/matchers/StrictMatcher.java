@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,29 +17,25 @@ package org.smartparam.engine.matchers;
 
 import org.smartparam.engine.annotated.annotations.ParamMatcher;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.core.type.ValueHolder;
+import org.smartparam.engine.util.EngineUtil;
 
 /**
  *
  * @author Adam Dubiel
  */
-@ParamMatcher("equals/type")
-public class TypeMatcher implements Matcher {
+@ParamMatcher("equals/strict")
+public class StrictMatcher implements Matcher {
+
+    public static final String CODE = "equals/strict";
 
     @Override
     public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {
-        if ("*".equals(pattern)) {
-            return true;
+        if(!EngineUtil.hasText(value)) {
+            return "*".equals(pattern);
         }
-
-        T patternObject = type.decode(pattern);
-        T valueObject = type.decode(value);
-
-        if (patternObject.isComparable()) {
-            return patternObject.compareTo(valueObject) == 0;
-        }
-        return patternObject.getValue().equals(valueObject.getValue());
+        return pattern.equals(value);
     }
 
 }
