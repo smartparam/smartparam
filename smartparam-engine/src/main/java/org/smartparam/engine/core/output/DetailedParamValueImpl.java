@@ -65,6 +65,11 @@ public class DetailedParamValueImpl extends AbstractParamValue implements Detail
     }
 
     @Override
+    public MapEntry detailedEntry() {
+        return detailedRow().entry();
+    }
+
+    @Override
     public Iterable<DetailedMultiValue> detailedRows() {
         return new Iterable<DetailedMultiValue>() {
             @Override

@@ -13,16 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core.matcher;
 
-import org.smartparam.engine.core.repository.Repository;
+package org.smartparam.engine.report.space;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface MatcherEncoderRepository extends Repository<MatcherAwareEncoder<?>> {
+public interface ReportLevelValuesSpaceFactory {
 
-    MatcherAwareEncoder<?> getEncoder(String matcherCode);
+    <V> ReportLevelValuesSpace<V> createSpace();
 
 }

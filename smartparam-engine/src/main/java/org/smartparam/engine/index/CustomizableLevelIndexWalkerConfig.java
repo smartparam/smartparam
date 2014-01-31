@@ -16,6 +16,7 @@
 package org.smartparam.engine.index;
 
 import java.util.*;
+import org.smartparam.engine.core.prepared.PreparedEntry;
 
 /**
  *
@@ -27,6 +28,8 @@ public class CustomizableLevelIndexWalkerConfig {
 
     private final Map<String, String> overridenMatchers = new HashMap<String, String>();
 
+    private LevelLeafValuesExtractor<PreparedEntry> levelLeafValuesExtractor;
+
     public CustomizableLevelIndexWalkerConfig withGreedyLevels(String... levelNames) {
         greedyLevels.addAll(Arrays.asList(levelNames));
         return this;
@@ -35,6 +38,15 @@ public class CustomizableLevelIndexWalkerConfig {
     public CustomizableLevelIndexWalkerConfig withOverridenMatcher(String levelName, String matcherCode) {
         overridenMatchers.put(levelName, matcherCode);
         return this;
+    }
+
+    public CustomizableLevelIndexWalkerConfig withValuesExtractor(LevelLeafValuesExtractor<PreparedEntry> levelLeafValuesExtractor) {
+        this.levelLeafValuesExtractor = levelLeafValuesExtractor;
+        return this;
+    }
+
+    public LevelLeafValuesExtractor<PreparedEntry> valuesExtractor() {
+        return levelLeafValuesExtractor == null ? new SimpleLevelLeafValuesExtractor<PreparedEntry>() : levelLeafValuesExtractor;
     }
 
     public boolean greedy(String levelName) {

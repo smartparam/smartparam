@@ -23,6 +23,13 @@ import org.smartparam.engine.core.type.Type;
  * converters help in discovering and naming this model for editing purposes. This way it is not necessary to split
  * strings to - user receives Java object instead of plain string.
  *
+ * For between matcher instead of "*from* - *to*" user can pass Range object.
+ *
+ * Matcher converters are matched with matchers by their name. Converter methods should produce reversable results, meaning:
+ * <pre>
+ * decode(encode(obj)) == obj
+ * </pre>
+ *
  * @see org.smartparam.engine.matchers.decoder.BetweenMatcherDecoder
  *
  * @author Adam Dubiel
@@ -34,4 +41,10 @@ public interface MatcherAwareDecoder<T> {
      * access it's runtime properties (like registered separators etc).
      */
     T decode(String value, Type<?> type, Matcher matcher);
+
+    /**
+     * Encode object into string recognized by matcher.
+     */
+    String encode(T object, Type<?> type, Matcher matcher);
+
 }

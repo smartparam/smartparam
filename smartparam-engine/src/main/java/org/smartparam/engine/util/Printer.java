@@ -148,4 +148,10 @@ public final class Printer {
             return numberString;
         }
     }
+
+    public static String repeat(char c, int count) {
+        char[] str = new char[count];
+        Arrays.fill(str, c);
+        return new String(str);
+    }
 }

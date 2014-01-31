@@ -18,8 +18,6 @@ package org.smartparam.editor.core.entry;
 import org.smartparam.engine.core.index.Star;
 import java.text.ParseException;
 import java.util.Date;
-import org.smartparam.editor.matcher.EmptyMatcherEncoder;
-import org.smartparam.editor.core.matcher.MatcherEncoderRepository;
 import org.smartparam.editor.model.simple.SimpleLevel;
 import org.smartparam.editor.model.simple.SimpleParameter;
 import org.smartparam.engine.config.ParamEngineConfig;
@@ -29,15 +27,13 @@ import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
+import org.smartparam.engine.matchers.decoder.EmptyMatcherDecoder;
 import org.smartparam.engine.types.date.DateType;
 import org.smartparam.engine.types.date.SimpleDateFormatPool;
 import org.smartparam.engine.types.string.StringType;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
@@ -55,11 +51,9 @@ public class MapToEntryConverterTest {
                 .withType("string", new StringType())
                 .withType("date", new DateType())
                 .withMatcher("between/ie", new BetweenMatcher())
+                .withMatcherDecoder("between/ie", new EmptyMatcherDecoder())
                 .build();
-        MatcherEncoderRepository converterRepository = mock(MatcherEncoderRepository.class);
-        doReturn(new EmptyMatcherEncoder()).when(converterRepository).getEncoder(anyString());
-
-        converter = new MapToEntryConverter(ParamEngineFactory.paramEngine(config).runtimeConfiguration(), converterRepository);
+        converter = new MapToEntryConverter(ParamEngineFactory.paramEngine(config).runtimeConfiguration());
     }
 
     @Test

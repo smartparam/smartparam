@@ -13,30 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.matcher;
+package org.smartparam.engine.index;
 
-import org.smartparam.engine.core.index.Star;
-import org.smartparam.editor.core.matcher.MatcherAwareEncoder;
-import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.type.Type;
+import java.util.ArrayList;
+import java.util.List;
+import org.smartparam.engine.core.index.LevelNode;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class EmptyMatcherEncoder implements MatcherAwareEncoder<Object> {
+public class SimpleLevelLeafValuesExtractor<T> implements LevelLeafValuesExtractor<T> {
 
     @Override
-    @SuppressWarnings("unchecked")
-    public String encode(Object object, Type type, Matcher matcher) {
-        if (object instanceof Star) {
-            return "*";
+    public List<T> extract(CustomizableLevelIndexWalker<T> indexWalker, List<LevelNode<T>> nodes) {
+        List<T> values = new ArrayList<T>();
+        for (LevelNode<T> node : nodes) {
+            values.addAll(node.getLeafList());
         }
-
-        if (type != null) {
-            return type.encode(type.convert(object));
-        }
-        return object == null ? "" : object.toString();
+        return values;
     }
 
 }

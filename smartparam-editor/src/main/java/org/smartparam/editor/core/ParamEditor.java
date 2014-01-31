@@ -59,6 +59,4 @@ public interface ParamEditor {
     void deleteEntries(RepositoryName in, String parameterName, Iterable<ParameterEntryKey> entryKeys);
 
     void deleteEntries(RepositoryName in, String parameterName);
-
-    ParamEditorRuntimeConfig runtimeConfig();
 }

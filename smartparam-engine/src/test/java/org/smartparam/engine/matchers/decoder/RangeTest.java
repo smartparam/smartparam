@@ -13,31 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.matcher;
+package org.smartparam.engine.matchers.decoder;
 
-import org.smartparam.engine.matchers.BetweenMatcher;
-import org.smartparam.engine.matchers.decoder.Range;
+import org.smartparam.engine.core.index.Star;
 import org.testng.annotations.Test;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class BetweenMatcherConverterTest {
-
-    private final BetweenMatcherEncoder converter = new BetweenMatcherEncoder();
+public class RangeTest {
 
     @Test
-    public void shouldEncodeRangeAsEncodedValuesSeparatedByFirstSeparatorThatDoesNotExistInAnyEncodedValue() {
-        // given
-        BetweenMatcher matcher = new BetweenMatcher(true, true, "~#");
-
+    public void shouldAlwaysProduceSortedRange() {
         // when
-        String encoded = converter.encode(new Range("A~", "B"), null, matcher);
+        Range<Integer> range = new Range<Integer>(100, -100);
 
         // then
-        assertThat(encoded).isEqualTo("A~#B");
+        assertThat(range.from()).isEqualTo(-100);
+        assertThat(range.to()).isEqualTo(100);
+    }
+
+    @Test
+    public void shouldTreatStarAsMinusInfinityOrPlusInfinity() {
+        // when
+        Range<Integer> range = new Range<Integer>(Star.star(), Star.star());
+
+        // then
+        assertThat(range.isFromInfinity()).isTrue();
+        assertThat(range.isToInfinity()).isTrue();
     }
 }

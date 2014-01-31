@@ -19,6 +19,7 @@ import java.util.List;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.testng.annotations.Test;
 import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
+import static org.smartparam.engine.index.IndexTraversalOverridesTestBuilder.indexTraversalOverrides;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
@@ -35,11 +36,14 @@ public class GreedyLevelNodeInspectorTest {
         index.add(new String[]{"A"}, "value");
         index.add(new String[]{"C"}, "noise");
 
-        CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
-                new IndexTraversalOverrides(new boolean[] {true}), index, "A");
+        CustomizableLevelIndexWalker<String> walker = new CustomizableLevelIndexWalker<String>(
+                indexTraversalOverrides().withGreediness(true).build(),
+                new SimpleLevelLeafValuesExtractor<String>(),
+                index,
+                "A");
 
         // when
-        List<String> values = crawler.find();
+        List<String> values = walker.find();
 
         // then
         assertThat(values).containsOnly("value", "default");

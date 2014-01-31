@@ -29,6 +29,7 @@ public class PackageList implements Iterable<String> {
         "org.smartparam.engine.matchers",
         "org.smartparam.engine.types",
         "org.smartparam.engine.functions",
+        "org.smartparam.engine.report",
         "org.smartparam.engine.annotated.repository"};
 
     private final List<String> defaultPackages = new ArrayList<String>();

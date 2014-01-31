@@ -27,12 +27,12 @@ import org.smartparam.engine.util.EngineUtil;
  * @author Adam Dubiel
  */
 @ParamMatcherDecoder(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
-public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range> {
+public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range<?>> {
 
     private final EmptyMatcherDecoder simpleConverter = new EmptyMatcherDecoder();
 
     @Override
-    public Range decode(String value, Type<?> type, Matcher matcher) {
+    public Range<?> decode(String value, Type<?> type, Matcher matcher) {
         BetweenMatcher betweenMatcher = (BetweenMatcher) matcher;
         char separator = findSeparator(value, betweenMatcher.separators());
 
@@ -54,5 +54,29 @@ public class BetweenMatcherDecoder implements MatcherAwareDecoder<Range> {
 
     private Object decodeValue(String value, Type<?> type) {
         return simpleConverter.decode(value, type, null);
+    }
+
+    @Override
+    public String encode(Range<?> object, Type<?> type, Matcher matcher) {
+        BetweenMatcher betweenMatcher = (BetweenMatcher) matcher;
+        String from = encodeValue(object.from(), type);
+        String to = encodeValue(object.to(), type);
+
+        char separator = findSeparator(from, to, betweenMatcher.separators());
+
+        return from + separator + to;
+    }
+
+    private char findSeparator(String encodedFrom, String encodedTo, char[] separators) {
+        for (char ch : separators) {
+            if (encodedFrom.indexOf(ch) == -1 && encodedTo.indexOf(ch) == -1) {
+                return ch;
+            }
+        }
+        return separators[0];
+    }
+
+    private String encodeValue(Object value, Type<?> type) {
+        return simpleConverter.encode(value, type, null);
     }
 }

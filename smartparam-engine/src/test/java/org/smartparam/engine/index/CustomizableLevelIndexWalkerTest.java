@@ -18,12 +18,12 @@ package org.smartparam.engine.index;
 import java.util.List;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.matchers.MatchAllMatcher;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 import static org.smartparam.engine.core.index.LevelIndexTestBuilder.levelIndex;
+import static org.smartparam.engine.index.IndexTraversalOverridesTestBuilder.indexTraversalOverrides;
 
 /**
  *
@@ -40,7 +40,10 @@ public class CustomizableLevelIndexWalkerTest {
         index.add(new String[]{"A", "C", "*"}, "noise");
 
         CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
-                new IndexTraversalOverrides(new boolean[]{true, true, true}), index, "A", "B", "C");
+                indexTraversalOverrides().withGreediness(true, true, true).build(),
+                new SimpleLevelLeafValuesExtractor<String>(),
+                index,
+                "A", "B", "C");
 
         // when
         List<String> values = crawler.find();
@@ -57,11 +60,11 @@ public class CustomizableLevelIndexWalkerTest {
         index.add(new String[]{"A", "B", "C"}, "value");
         index.add(new String[]{"A", "C", "*"}, "allowAllValue");
 
-        Matcher allowAll = mock(Matcher.class);
-        when(allowAll.matches(anyString(), anyString(), any(Type.class))).thenReturn(true);
+        Matcher allowAll = new MatchAllMatcher();
 
         CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
-                new IndexTraversalOverrides(new boolean[]{true, true, true}, new Matcher[]{null, allowAll, null}),
+                indexTraversalOverrides().withGreediness(true, true, true).overridingMatchers(null, allowAll, null).build(),
+                new SimpleLevelLeafValuesExtractor<String>(),
                 index, "A", "B", "C");
 
         // when
@@ -79,11 +82,11 @@ public class CustomizableLevelIndexWalkerTest {
         index.add(new String[]{"A", "B", "C"}, "value");
         index.add(new String[]{"A", "C", "*"}, "allowAllValue");
 
-        Matcher allowAll = mock(Matcher.class);
-        when(allowAll.matches(anyString(), anyString(), any(Type.class))).thenReturn(true);
+        Matcher allowAll = new MatchAllMatcher();
 
         CustomizableLevelIndexWalker<String> crawler = new CustomizableLevelIndexWalker<String>(
-                new IndexTraversalOverrides(new boolean[]{false, true, false}, new Matcher[]{null, allowAll, null}),
+                indexTraversalOverrides().withGreediness(false, true, false).overridingMatchers(null, allowAll, null).build(),
+                new SimpleLevelLeafValuesExtractor<String>(),
                 index, "A", "B", "C");
 
         // when

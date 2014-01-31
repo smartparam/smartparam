@@ -42,17 +42,12 @@ public class BasicParamViewer implements ParamViewer {
 
     private final ParameterEntryMapConverter converter;
 
-    private final ParamEditorRuntimeConfigBuilder runtimeConfigBuilder;
-
     public BasicParamViewer(ParamEngine paramEngine,
-            ParameterEntryMapConverter entryMapConverter,
-            ParamEditorRuntimeConfigBuilder runtimeConfigBuilder) {
+            ParameterEntryMapConverter entryMapConverter) {
         List<NamedParamRepository> registeredRepositories = paramEngine.runtimeConfiguration().getParamRepositories();
 
         repositories = new RepositoryStore<ViewableParamRepository>(registeredRepositories, ViewableParamRepository.class);
         converter = entryMapConverter;
-
-        this.runtimeConfigBuilder = runtimeConfigBuilder;
     }
 
     @Override
@@ -150,10 +145,4 @@ public class BasicParamViewer implements ParamViewer {
         }
         return new DescribedCollection<MapEntry>(from, describedEntries);
     }
-
-    @Override
-    public ParamEditorRuntimeConfig runtimeConfig() {
-        return runtimeConfigBuilder.buildConfig();
-    }
-
 }

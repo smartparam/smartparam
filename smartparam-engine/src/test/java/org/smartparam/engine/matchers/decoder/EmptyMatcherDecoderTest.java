@@ -18,6 +18,7 @@ package org.smartparam.engine.matchers.decoder;
 import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.type.ObjectHolder;
 import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.types.string.StringType;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,5 +72,53 @@ public class EmptyMatcherDecoderTest {
 
         // then
         assertThat(decoded).isEqualTo("hello");
+    }
+
+    @Test
+    public void shouldEncodeStarObjectAsStar() {
+        // when
+        String encoded = decoder.encode(Star.star(), null, null);
+
+        // then
+        assertThat(encoded).isEqualTo("*");
+    }
+
+    @Test
+    public void shouldEncodeValueAsEmptyStringWhenNoTypeAndValueIsNull() {
+        // when
+        String encoded = decoder.encode(null, null, null);
+
+        // then
+        assertThat(encoded).isEqualTo("");
+    }
+
+    @Test
+    public void shouldEncodeValueUsingToStringWhenNoTypeProvied() {
+        // when
+        String encoded = decoder.encode("value", null, null);
+
+        // then
+        assertThat(encoded).isEqualTo("value");
+    }
+
+    @Test
+    public void shouldEncodeValueusingTypeWhenTypeProvided() {
+        // given
+        StringType type = new StringType();
+
+        // when
+        String encoded = decoder.encode(new SimpleObject(), type, null);
+
+        // then
+        assertThat(encoded).isEqualTo("simpleObject");
+    }
+
+    private static class SimpleObject {
+
+        @Override
+        public String toString() {
+            return "simpleObject";
+        }
+
     }
 }

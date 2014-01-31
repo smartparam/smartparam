@@ -13,25 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core;
-
-import java.util.Collections;
-import java.util.Map;
-import org.smartparam.editor.core.matcher.MatcherAwareEncoder;
+package org.smartparam.engine.report;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ParamEditorRuntimeConfig {
+public interface ReportValueChooser<V> {
 
-    private final Map<String, MatcherAwareEncoder<?>> matcherEncoders;
+    V choose(V current, V incoming);
 
-    public ParamEditorRuntimeConfig(Map<String, MatcherAwareEncoder<?>> matcherEncoders) {
-        this.matcherEncoders = Collections.unmodifiableMap(matcherEncoders);
-    }
-
-    public Map<String, MatcherAwareEncoder<?>> matcherEncoders() {
-        return matcherEncoders;
-    }
 }

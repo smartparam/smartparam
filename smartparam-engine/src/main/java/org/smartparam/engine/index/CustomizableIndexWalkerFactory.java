@@ -40,7 +40,10 @@ public class CustomizableIndexWalkerFactory implements LevelIndexWalkerFactory {
 
     @Override
     public LevelIndexWalker<PreparedEntry> create(PreparedParameter preparedParameter, String... levelValues) {
-        return new CustomizableLevelIndexWalker<PreparedEntry>(convert(preparedParameter), preparedParameter.getIndex(), levelValues);
+        return new CustomizableLevelIndexWalker<PreparedEntry>(
+                convert(preparedParameter),
+                config.valuesExtractor(),
+                preparedParameter.getIndex(), levelValues);
     }
 
     private IndexTraversalOverrides convert(PreparedParameter parameter) {
@@ -48,6 +51,8 @@ public class CustomizableIndexWalkerFactory implements LevelIndexWalkerFactory {
 
         boolean[] greedinessMatrix = new boolean[totalDepth];
         Matcher[] overridenMatchers = new Matcher[totalDepth];
+        String[] originalMatcherCodes = new String[totalDepth];
+        String[] levelNames = new String[totalDepth];
 
         int depth = 0;
         String levelName;
@@ -59,10 +64,12 @@ public class CustomizableIndexWalkerFactory implements LevelIndexWalkerFactory {
             levelName = level.getName();
             greedinessMatrix[depth] = config.greedy(levelName);
             overridenMatchers[depth] = config.overrideMatcher(levelName) ? matcherRepository.getMatcher(config.overridenMatcher(levelName)) : null;
+            originalMatcherCodes[depth] = level.getMatcherName();
+            levelNames[depth] = levelName;
 
             depth++;
         }
 
-        return new IndexTraversalOverrides(greedinessMatrix, overridenMatchers);
+        return new IndexTraversalOverrides(greedinessMatrix, overridenMatchers, originalMatcherCodes, levelNames);
     }
 }

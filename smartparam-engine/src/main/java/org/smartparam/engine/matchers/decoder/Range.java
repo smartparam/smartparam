@@ -21,45 +21,52 @@ import org.smartparam.engine.core.index.Star;
  *
  * @author Adam Dubiel
  */
-public class Range {
+public class Range<C extends Comparable<? super C>> {
 
-    private final Object from;
+    private final RangeBoundary<C> from;
 
-    private final Object to;
+    private final RangeBoundary<C> to;
 
+    @SuppressWarnings("unchecked")
     public Range(Object from, Object to) {
-        this.from = from;
-        this.to = to;
+        this(
+                (RangeBoundary<C>) ((from instanceof Star) ? RangeBoundary.minusInfinity() : new RangeBoundary<C>((C) from)),
+                (RangeBoundary<C>) ((to instanceof Star) ? RangeBoundary.plusInfinity() : new RangeBoundary<C>((C) to))
+        );
     }
 
-    public static Range of(Object from, Object to) {
-        return new Range(from, to);
+    public Range(C from, C to) {
+        this(new RangeBoundary<C>(from), new RangeBoundary<C>(to));
     }
 
-    public Object from() {
+    public Range(RangeBoundary<C> from, RangeBoundary<C> to) {
+        boolean swap = from.compareTo(to) > 0;
+        this.from = !swap ? from : to;
+        this.to = !swap ? to : from;
+    }
+
+    public C from() {
+        return from.value();
+    }
+
+    public RangeBoundary<C> boundaryFrom() {
         return from;
     }
 
-    public boolean isFromStar() {
-        return from instanceof Star;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T fromAs(Class<T> clazz) {
-        return isFromStar() ? null : (T) from;
-    }
-
-    public Object to() {
+    public RangeBoundary<C> boundaryTo() {
         return to;
     }
 
-    public boolean isToStar() {
-        return to instanceof Star;
+    public boolean isFromInfinity() {
+        return from.isMinusInfinity();
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> T toAs(Class<T> clazz) {
-        return isToStar() ? null : (T) to;
+    public C to() {
+        return to.value();
+    }
+
+    public boolean isToInfinity() {
+        return to.isPlusInfinity();
     }
 
     @Override
@@ -87,14 +94,11 @@ public class Range {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Range other = (Range) obj;
+        final Range<?> other = (Range) obj;
         if (this.from != other.from && (this.from == null || !this.from.equals(other.from))) {
             return false;
         }
-        if (this.to != other.to && (this.to == null || !this.to.equals(other.to))) {
-            return false;
-        }
-        return true;
+        return this.to == other.to || (this.to != null && this.to.equals(other.to));
     }
 
 }

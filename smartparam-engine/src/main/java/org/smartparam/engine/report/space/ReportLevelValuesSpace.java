@@ -13,14 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.editor.core;
+package org.smartparam.engine.report.space;
+
+import org.smartparam.engine.report.ReportingTreeLevel;
+import org.smartparam.engine.report.ReportingTreeNode;
+import org.smartparam.engine.report.ReportingTreePath;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ParamEditorRuntimeConfigBuilder {
+public interface ReportLevelValuesSpace<V> {
 
-    ParamEditorRuntimeConfig buildConfig();
+    void unsafePut(Object key, ReportingTreeNode<V> node);
 
+    boolean insertPath(Object key, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor);
+
+    Iterable<ReportingTreeNode<V>> values();
+
+    boolean empty();
+
+    ReportLevelValuesSpace<V> cloneSpace(ReportingTreeNode<V> newParent);
 }
