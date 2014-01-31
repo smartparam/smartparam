@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.matchers.decoder;
 
+import org.smartparam.engine.core.index.Star;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -32,5 +33,15 @@ public class RangeTest {
         // then
         assertThat(range.from()).isEqualTo(-100);
         assertThat(range.to()).isEqualTo(100);
+    }
+
+    @Test
+    public void shouldTreatStarAsMinusInfinityOrPlusInfinity() {
+        // when
+        Range<Integer> range = new Range<Integer>(Star.star(), Star.star());
+
+        // then
+        assertThat(range.isFromInfinity()).isTrue();
+        assertThat(range.isToInfinity()).isTrue();
     }
 }
