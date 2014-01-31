@@ -36,12 +36,12 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
         return new ReportSkeleton();
     }
 
-    public ReportSkeleton levelWithAmbigousChildren(String levelName) {
+    public ReportSkeleton withAmbigousLevel(String levelName) {
         ambiguousLevels.add(levelName);
         return this;
     }
 
-    public ReportSkeleton levelsWithAmbigousChildren(String... levelNames) {
+    public ReportSkeleton withAmbigousLevels(String... levelNames) {
         ambiguousLevels.addAll(Arrays.asList(levelNames));
         return this;
     }

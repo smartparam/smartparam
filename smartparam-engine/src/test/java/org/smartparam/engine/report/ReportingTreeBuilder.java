@@ -31,7 +31,6 @@ public final class ReportingTreeBuilder {
     private final List<ReportingTreeLevel> operations = new ArrayList<ReportingTreeLevel>();
 
     private ReportingTreeBuilder() {
-        addExactLevel();
     }
 
     public static ReportingTreeBuilder reportingTree() {

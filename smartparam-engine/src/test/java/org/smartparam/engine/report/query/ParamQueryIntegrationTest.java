@@ -98,7 +98,7 @@ public class ParamQueryIntegrationTest {
                         )
                 )
         );
-        skeleton.levelWithAmbigousChildren("ambigous");
+        skeleton.withAmbigousLevel("ambigous");
 
         // when
         DetailedParamValue paramValue = ParamQuery.select(paramEngine)
