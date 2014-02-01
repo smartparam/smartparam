@@ -51,6 +51,6 @@ public class RangeComparator implements Comparator<Range<?>> {
     }
 
     private Comparable<?> extractComparable(Range<?> o1) {
-        return byLowerBound ? o1.from() : o1.to();
+        return byLowerBound ? o1.boundaryFrom() : o1.boundaryTo();
     }
 }
