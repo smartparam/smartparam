@@ -16,6 +16,7 @@
 package org.smartparam.engine.matchers.type;
 
 import org.smartparam.engine.core.index.Star;
+import org.smartparam.engine.util.Objects;
 
 /**
  *
@@ -80,25 +81,16 @@ public class Range<C extends Comparable<? super C>> {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + (this.from != null ? this.from.hashCode() : 0);
-        hash = 67 * hash + (this.to != null ? this.to.hashCode() : 0);
-        return hash;
+        return Objects.hash(this.from, this.to);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (!Objects.classEquals(this, obj)) {
             return false;
         }
         final Range<?> other = (Range) obj;
-        if (this.from != other.from && (this.from == null || !this.from.equals(other.from))) {
-            return false;
-        }
-        return this.to == other.to || (this.to != null && this.to.equals(other.to));
+        return Objects.equals(this.from, other.from) && Objects.equals(this.to, other.to);
     }
 
 }

@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.repository;
 
+import org.smartparam.engine.util.Objects;
+
 /**
  *
  * @author Adam Dubiel
@@ -42,9 +44,7 @@ public class RepositoryName {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + (this.name != null ? this.name.hashCode() : 0);
-        return hash;
+        return Objects.hash(name);
     }
 
     @Override

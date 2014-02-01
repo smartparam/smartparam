@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.annotated;
 
+import org.smartparam.engine.util.Objects;
+
 /**
  * Complex key that can be used in maps that need only unique entries and
  * custom ordering at the same time.
@@ -94,9 +96,7 @@ public class RepositoryObjectKey implements Comparable<RepositoryObjectKey> {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 53 * hash + (this.key != null ? this.key.hashCode() : 0);
-        return hash;
+        return Objects.hash(key);
     }
 
     @Override

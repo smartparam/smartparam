@@ -27,7 +27,7 @@ import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
-import org.smartparam.engine.matchers.decoder.EmptyMatcherDecoder;
+import org.smartparam.engine.matchers.type.SimpleMatcherType;
 import org.smartparam.engine.types.date.DateType;
 import org.smartparam.engine.types.date.SimpleDateFormatPool;
 import org.smartparam.engine.types.string.StringType;
@@ -51,7 +51,7 @@ public class MapToEntryConverterTest {
                 .withType("string", new StringType())
                 .withType("date", new DateType())
                 .withMatcher("between/ie", new BetweenMatcher())
-                .withMatcherDecoder("between/ie", new EmptyMatcherDecoder())
+                .withMatcherType("between/ie", new SimpleMatcherType())
                 .build();
         converter = new MapToEntryConverter(ParamEngineFactory.paramEngine(config).runtimeConfiguration());
     }

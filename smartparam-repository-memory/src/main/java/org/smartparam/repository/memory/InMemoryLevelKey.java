@@ -18,6 +18,7 @@ package org.smartparam.repository.memory;
 import java.util.UUID;
 import org.smartparam.engine.core.parameter.identity.AbstractEntityKey;
 import org.smartparam.engine.core.parameter.level.LevelKey;
+import org.smartparam.engine.util.Objects;
 import static org.smartparam.repository.memory.InMemoryParameterKey.SYMBOL;
 
 /**
@@ -44,9 +45,7 @@ public class InMemoryLevelKey extends AbstractEntityKey implements LevelKey {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 53 * hash + (this.value != null ? this.value.hashCode() : 0);
-        return hash;
+        return Objects.hash(value);
     }
 
     @Override

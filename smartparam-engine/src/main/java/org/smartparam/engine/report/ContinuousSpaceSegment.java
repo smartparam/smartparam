@@ -16,6 +16,7 @@
 package org.smartparam.engine.report;
 
 import org.smartparam.engine.matchers.type.RangeBoundary;
+import org.smartparam.engine.util.Objects;
 
 /**
  *
@@ -99,33 +100,23 @@ public class ContinuousSpaceSegment<C extends Comparable<? super C>, V> implemen
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + (this.segmentStart != null ? this.segmentStart.hashCode() : 0);
-        hash = 97 * hash + (this.segmentEnd != null ? this.segmentEnd.hashCode() : 0);
-        hash = 97 * hash + (this.value != null ? this.value.hashCode() : 0);
-        return hash;
+        return Objects.hash(segmentStart, segmentEnd, value);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (!Objects.classEquals(this, obj)) {
             return false;
         }
         final ContinuousSpaceSegment<?, ?> other = (ContinuousSpaceSegment<?, ?>) obj;
-        if (this.segmentStart != other.segmentStart && !this.segmentStart.equals(other.segmentStart)) {
-            return false;
-        }
-        if (this.segmentEnd != other.segmentEnd && !this.segmentEnd.equals(other.segmentEnd)) {
-            return false;
-        }
-        return this.value == other.value || this.value.equals(other.value);
+        return Objects.equals(segmentStart, other.segmentStart)
+                && Objects.equals(segmentEnd, other.segmentEnd)
+                && Objects.equals(value, other.value);
     }
 
     static enum IntersectionType {
 
         NONE, IDENTICAL, BEFORE, CONTAINS, AFTER
+
     }
 }

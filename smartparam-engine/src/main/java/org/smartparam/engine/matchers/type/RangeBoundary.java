@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.matchers.type;
 
+import org.smartparam.engine.util.Objects;
+
 /**
  *
  * @author Adam Dubiel
@@ -87,29 +89,18 @@ public class RangeBoundary<C extends Comparable<? super C>> implements Comparabl
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 47 * hash + (this.value != null ? this.value.hashCode() : 0);
-        hash = 47 * hash + (this.infinity ? 1 : 0);
-        hash = 47 * hash + this.infinitySign;
-        return hash;
+        return Objects.hash(value, infinity, infinitySign);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-         }
-        if (getClass() != obj.getClass()) {
+        if (!Objects.classEquals(this, obj)) {
             return false;
         }
         final RangeBoundary<?> other = (RangeBoundary<?>) obj;
-        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
-            return false;
-        }
-        if (this.infinity != other.infinity) {
-            return false;
-        }
-        return this.infinitySign == other.infinitySign;
+        return Objects.equals(value, other.value)
+                && Objects.equals(this.infinity, other.infinity)
+                && Objects.equals(this.infinitySign, infinitySign);
     }
 
 }

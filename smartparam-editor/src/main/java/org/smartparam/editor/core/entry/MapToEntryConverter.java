@@ -18,8 +18,8 @@ package org.smartparam.editor.core.entry;
 import org.smartparam.editor.model.simple.SimpleParameterEntry;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.matcher.MatcherAwareDecoder;
-import org.smartparam.engine.core.matcher.MatcherDecoderRepository;
+import org.smartparam.engine.core.matcher.MatcherType;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.output.entry.MapEntry;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
@@ -34,11 +34,11 @@ class MapToEntryConverter {
 
     private final ParamEngineRuntimeConfig engineConfig;
 
-    private final MatcherDecoderRepository converterRepository;
+    private final MatcherTypeRepository converterRepository;
 
     MapToEntryConverter(ParamEngineRuntimeConfig engineConfig) {
         this.engineConfig = engineConfig;
-        this.converterRepository = engineConfig.getMatcherDecoderRepository();
+        this.converterRepository = engineConfig.getMatcherTypeRepository();
     }
 
     ParameterEntry asEntry(Parameter metadata, MapEntry entryMap) {
@@ -57,7 +57,7 @@ class MapToEntryConverter {
     private String asString(Level level, Object object) {
         Type<?> type = engineConfig.getTypes().get(level.getType());
         Matcher matcher = engineConfig.getMatchers().get(level.getMatcher());
-        MatcherAwareDecoder converter = converterRepository.getDecoder(level.getMatcher());
+        MatcherType converter = converterRepository.getMatcherType(level.getMatcher());
 
         return converter.encode(object, type, matcher);
     }
