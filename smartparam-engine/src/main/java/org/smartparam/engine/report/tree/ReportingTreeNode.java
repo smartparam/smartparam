@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
+package org.smartparam.engine.report.tree;
 
 import java.util.List;
 import org.smartparam.engine.util.Formatter;
@@ -29,13 +29,13 @@ public abstract class ReportingTreeNode<V> {
 
     private final ReportingTreeNode<V> parent;
 
-    private final ReportingTreeLevel levelDescriptor;
+    private final ReportingTreeLevelDescriptor levelDescriptor;
 
-    protected final int depth;
+    private final int depth;
 
-    protected String levelValue;
+    private String levelValue;
 
-    protected V leafValue;
+    private V leafValue;
 
     public ReportingTreeNode(ReportingTree<V> tree, ReportingTreeNode<V> parent, String levelValue) {
         this.tree = tree;
@@ -69,15 +69,11 @@ public abstract class ReportingTreeNode<V> {
 
     public abstract void insertPath(ReportingTreePath<V> path);
 
-    protected V chooseValue(V current, V incoming) {
-        return tree().valueChooser().choose(current, incoming);
-    }
-
     public abstract ReportingTreeNode<V> cloneBranch(ReportingTreeNode<V> newParent);
 
     protected abstract void allowAnyValues(boolean state);
 
-    protected ReportingTreeLevel levelDescriptor() {
+    protected ReportingTreeLevelDescriptor levelDescriptor() {
         return levelDescriptor;
     }
 
@@ -101,6 +97,14 @@ public abstract class ReportingTreeNode<V> {
         return depth;
     }
 
+    protected String levelValue() {
+        return levelValue;
+    }
+
+    protected void chooseLeafValue(V incomingValue) {
+        this.leafValue = tree().valueChooser().choose(leafValue, incomingValue);
+    }
+
     protected Object decodeLevelValue(String levelValue) {
         return tree.descriptorFor(depth).decode(levelValue);
     }
@@ -113,7 +117,7 @@ public abstract class ReportingTreeNode<V> {
         return parent;
     }
 
-    protected void updateLevelValue(String newValue) {
+    public void updateLevelValue(String newValue) {
         this.levelValue = newValue;
     }
 

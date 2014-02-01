@@ -16,14 +16,20 @@
 package org.smartparam.engine.report;
 
 import org.smartparam.engine.annotated.annotations.ParamReportLevelSpaceFactory;
-import org.smartparam.engine.report.space.ReportLevelValuesSpace;
-import org.smartparam.engine.report.space.ReportLevelValuesSpaceFactory;
+import org.smartparam.engine.matchers.BetweenMatcher;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpace;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceFactory;
 
 /**
  *
  * @author Adam Dubiel
  */
-@ParamReportLevelSpaceFactory(value = "", values = {"between/ie", "between/ei", "between/ii", "between/ee"})
+@ParamReportLevelSpaceFactory(value = "", values = {
+    BetweenMatcher.BETWEEN_IE,
+    BetweenMatcher.BETWEEN_EI,
+    BetweenMatcher.BETWEEN_II,
+    BetweenMatcher.BETWEEN_EE
+})
 public class ContinuousSegmentsSpaceFactory implements ReportLevelValuesSpaceFactory {
 
     @Override

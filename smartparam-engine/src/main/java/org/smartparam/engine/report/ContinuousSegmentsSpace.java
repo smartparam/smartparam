@@ -15,7 +15,10 @@
  */
 package org.smartparam.engine.report;
 
-import org.smartparam.engine.report.space.ReportLevelValuesSpace;
+import org.smartparam.engine.report.tree.ReportingTreeLevelDescriptor;
+import org.smartparam.engine.report.tree.ReportingTreeNode;
+import org.smartparam.engine.report.tree.ReportingTreePath;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpace;
 import java.util.*;
 import org.smartparam.engine.matchers.type.Range;
 import org.smartparam.engine.matchers.type.RangeBoundary;
@@ -29,7 +32,7 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
     private final Set<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> segments = new TreeSet<ContinuousSpaceSegment<C, ReportingTreeNode<V>>>();
 
     @Override
-    public void unsafePut(Object key, ReportingTreeNode<V> node) {
+    public void uncheckedPut(Object key, ReportingTreeNode<V> node) {
         Range<C> range = asRange(key);
         segments.add(new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(range.boundaryFrom(), range.boundaryTo(), node));
     }
@@ -40,12 +43,12 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
     }
 
     @Override
-    public boolean insertPath(Object key, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor) {
+    public boolean insertPath(Object key, ReportingTreePath<V> path, ReportingTreeLevelDescriptor levelDescriptor) {
         Range<C> range = asRange(key);
         return insertPath(range.boundaryFrom(), range.boundaryTo(), path, levelDescriptor);
     }
 
-    private boolean insertPath(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor) {
+    private boolean insertPath(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreePath<V> path, ReportingTreeLevelDescriptor levelDescriptor) {
         List<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> refreshed = new ArrayList<ContinuousSpaceSegment<C, ReportingTreeNode<V>>>();
         boolean pathAdded = false;
 
@@ -77,14 +80,14 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
         return pathAdded;
     }
 
-    private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreeLevel levelDescriptor) {
+    private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreeLevelDescriptor levelDescriptor) {
         ReportingTreeNode<V> clone = toClone.cloneBranch(toClone.parent());
         clone.updateLevelValue(levelDescriptor.encode(new Range<C>(from, to)));
 
         return new ContinuousSpaceSegment<C, ReportingTreeNode<V>>(from, to, clone);
     }
 
-    private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor) {
+    private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreePath<V> path, ReportingTreeLevelDescriptor levelDescriptor) {
         ReportingTreeNode<V> clone = toClone.cloneBranch(toClone.parent());
         clone.updateLevelValue(levelDescriptor.encode(new Range<C>(from, to)));
         clone.insertPath(path);

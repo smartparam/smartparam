@@ -58,8 +58,8 @@ public class BetweenMatcherType<C extends Comparable<? super C>> implements Matc
     }
 
     @SuppressWarnings("unchecked")
-    private C decodeValue(String value, Type<?> type) {
-        return (C) simpleType.decode(value, type, null);
+    private Object decodeValue(String value, Type<?> type) {
+        return simpleType.decode(value, type, null);
     }
 
     @Override

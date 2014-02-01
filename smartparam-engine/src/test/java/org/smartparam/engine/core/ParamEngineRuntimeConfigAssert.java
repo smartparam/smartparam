@@ -76,7 +76,7 @@ public class ParamEngineRuntimeConfigAssert extends AbstractAssert<ParamEngineRu
     }
 
     public ParamEngineRuntimeConfigAssert hasMatcherDecoders() {
-        ParamEngineAssertions.assertThat(actual.getMatcherDecoderRepository().registeredItems()).isNotEmpty();
+        ParamEngineAssertions.assertThat(actual.getMatcherTypeRepository().registeredItems()).isNotEmpty();
         return this;
     }
 

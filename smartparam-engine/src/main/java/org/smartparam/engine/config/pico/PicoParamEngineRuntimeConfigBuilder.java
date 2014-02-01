@@ -26,7 +26,7 @@ import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.parameter.ParameterProvider;
-import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
 
 /**
  * Runtime config builder that extracts runtime information form parameter engine

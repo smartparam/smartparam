@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.report.query;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineFactory;
@@ -28,6 +26,7 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterTestBuilder;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.parameter.level.Level;
+import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.MatchAllMatcher;
 import org.smartparam.engine.matchers.type.Range;
 import org.smartparam.engine.report.skeleton.ReportLevel;
@@ -66,7 +65,7 @@ public class ParamQueryIntegrationTest {
             level().withName("first").withType("string").build(),
             level().withName("second").withType("string").build(),
             level().withName("third").withType("string").build(),
-            level().withName("ambigous").withMatcher("between/ie").withType("integer").build(),
+            level().withName("ambigous").withMatcher(BetweenMatcher.BETWEEN_IE).withType("integer").build(),
             level().withName("value").withType("string").build()
         };
         ParameterEntry[] entries = new ParameterEntry[]{

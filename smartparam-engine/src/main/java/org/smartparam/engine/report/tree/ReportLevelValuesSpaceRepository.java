@@ -13,25 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report.space;
+package org.smartparam.engine.report.tree;
 
-import org.smartparam.engine.report.ReportingTreeLevel;
-import org.smartparam.engine.report.ReportingTreeNode;
-import org.smartparam.engine.report.ReportingTreePath;
+import org.smartparam.engine.core.repository.Repository;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportLevelValuesSpace<V> {
+public interface ReportLevelValuesSpaceRepository extends Repository<ReportLevelValuesSpaceFactory> {
 
-    void unsafePut(Object key, ReportingTreeNode<V> node);
+    ReportLevelValuesSpaceFactory getSpaceFactory(String matcherCode);
 
-    boolean insertPath(Object key, ReportingTreePath<V> path, ReportingTreeLevel levelDescriptor);
-
-    Iterable<ReportingTreeNode<V>> values();
-
-    boolean empty();
-
-    ReportLevelValuesSpace<V> cloneSpace(ReportingTreeNode<V> newParent);
 }

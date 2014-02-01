@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
+
+package org.smartparam.engine.report.tree;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportValueChooser<V> {
+public interface ReportLevelValuesSpaceFactory {
 
-    V choose(V current, V incoming);
+    <V> ReportLevelValuesSpace<V> createSpace();
 
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
+package org.smartparam.engine.report.tree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +22,17 @@ import java.util.List;
  *
  * @author Adam Dubiel
  */
-public class ReportingTree<V> {
+public final class ReportingTree<V> {
 
     private static final int PRINT_DEFAULT_SIZE = 200;
 
     private final ReportingTreeNode<V> root;
 
-    private final List<ReportingTreeLevel> levelDescriptors;
+    private final List<ReportingTreeLevelDescriptor> levelDescriptors;
 
     private final ReportValueChooser<V> valueChooser;
 
-    public ReportingTree(List<ReportingTreeLevel> levelDescriptors, ReportValueChooser<V> valueChooser) {
+    public ReportingTree(List<ReportingTreeLevelDescriptor> levelDescriptors, ReportValueChooser<V> valueChooser) {
         this.levelDescriptors = levelDescriptors;
         this.valueChooser = valueChooser;
         root = createNode(null, "ROOT");
@@ -64,7 +64,7 @@ public class ReportingTree<V> {
         return rawCrops;
     }
 
-    final ReportingTreeNode<V> createNode(ReportingTreeNode<V> parent, String levelValue) {
+    ReportingTreeNode<V> createNode(ReportingTreeNode<V> parent, String levelValue) {
         int depth = parent == null ? 0 : parent.depth() + 1;
 
         if(leafLevel(depth)) {
@@ -80,7 +80,7 @@ public class ReportingTree<V> {
         return depth == height();
     }
 
-    ReportingTreeLevel descriptorFor(int levelIndex) {
+    ReportingTreeLevelDescriptor descriptorFor(int levelIndex) {
         if(leafLevel(levelIndex)) {
             throw new IllegalArgumentException("Trying to get descriptor for leaf level - this should never happen.");
         }

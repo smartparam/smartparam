@@ -27,7 +27,7 @@ import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
 
 /**
  * Snapshot of runtime configuration of ParamEngine, all collections are immutable.
@@ -52,7 +52,7 @@ public final class ParamEngineRuntimeConfig {
 
     private final MatcherRepository matcherRepository;
 
-    private final MatcherTypeRepository matcherDecoderRepository;
+    private final MatcherTypeRepository matcherTypeRepository;
 
     private final ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository;
 
@@ -71,7 +71,7 @@ public final class ParamEngineRuntimeConfig {
             Map<String, FunctionInvoker> invokers,
             Map<String, Type<?>> types,
             MatcherRepository matcherRepository,
-            MatcherTypeRepository matcherDecoderRepository,
+            MatcherTypeRepository matcherTypeRepository,
             ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository) {
         this.functionCache = functionCache;
         this.paramCache = paramCache;
@@ -82,7 +82,7 @@ public final class ParamEngineRuntimeConfig {
         this.matchers = Collections.unmodifiableMap(matcherRepository.registeredItems());
 
         this.matcherRepository = matcherRepository;
-        this.matcherDecoderRepository = matcherDecoderRepository;
+        this.matcherTypeRepository = matcherTypeRepository;
         this.reportLevelValuesSpaceRepository = reportLevelValuesSpaceRepository;
 
         this.paramRepositoriesNaming = new ParamRepositoriesNaming(paramRepositories);
@@ -100,8 +100,8 @@ public final class ParamEngineRuntimeConfig {
         return matcherRepository;
     }
 
-    public MatcherTypeRepository getMatcherDecoderRepository() {
-        return matcherDecoderRepository;
+    public MatcherTypeRepository getMatcherTypeRepository() {
+        return matcherTypeRepository;
     }
 
     public ReportLevelValuesSpaceRepository getReportLevelValuesSpaceRepository() {

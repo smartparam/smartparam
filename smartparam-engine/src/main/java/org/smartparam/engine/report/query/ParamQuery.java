@@ -23,7 +23,7 @@ import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.index.CustomizableIndexWalkerBuilder;
 import org.smartparam.engine.index.CustomizableIndexWalkerFactory;
 import org.smartparam.engine.report.FirstWinsValueChooser;
-import org.smartparam.engine.report.ReportValueChooser;
+import org.smartparam.engine.report.tree.ReportValueChooser;
 import org.smartparam.engine.report.ReportingLevelLeafValuesExtractor;
 
 /**

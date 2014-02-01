@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
+package org.smartparam.engine.report.tree;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.smartparam.engine.core.index.Star;
 
 /**
  *
@@ -57,7 +58,7 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
         ReportingTreeNode<V> child = tree().createNode(this, levelValue);
         children.put(levelValue, child);
 
-        if ("*".equals(levelValue)) {
+        if (Star.SYMBOL.equals(levelValue)) {
             dictionaryOnlyLevel = false;
         }
         child.allowAnyValues(forceAllowAnyValues);
@@ -68,12 +69,12 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
     @Override
     public void insertPath(ReportingTreePath<V> path) {
         if (leaf()) {
-            this.leafValue = chooseValue(leafValue, path.value());
+            chooseLeafValue(path.value());
             return;
         }
 
-        String valueToInsert = path.segmentAt(depth);
-        if ("*".equals(valueToInsert) && dictionaryOnlyLevel) {
+        String valueToInsert = path.segmentAt(depth());
+        if (Star.SYMBOL.equals(valueToInsert) && dictionaryOnlyLevel) {
             insertPathToAllChildren(path);
         } else {
             ReportingTreeNode<V> childNode = children.get(valueToInsert);

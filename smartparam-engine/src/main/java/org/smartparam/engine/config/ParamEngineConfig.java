@@ -53,7 +53,7 @@ import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.type.TypeRepository;
-import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
 import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
 /**

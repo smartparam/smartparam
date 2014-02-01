@@ -73,4 +73,11 @@ public class PreparedEntry {
     public String getLevel(int k) {
         return (k >= 0 && k < levels.length) ? levels[k] : null;
     }
+
+    @Override
+    public String toString() {
+        return "[PreparedEntry " + Arrays.toString(levels) + "]";
+    }
+
+
 }

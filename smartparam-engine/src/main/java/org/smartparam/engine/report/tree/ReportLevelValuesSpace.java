@@ -13,15 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.smartparam.engine.report.space;
+package org.smartparam.engine.report.tree;
 
 /**
  *
  * @author Adam Dubiel
  */
-public interface ReportLevelValuesSpaceFactory {
+public interface ReportLevelValuesSpace<V> {
 
-    <V> ReportLevelValuesSpace<V> createSpace();
+    void uncheckedPut(Object key, ReportingTreeNode<V> node);
 
+    boolean insertPath(Object key, ReportingTreePath<V> path, ReportingTreeLevelDescriptor levelDescriptor);
+
+    Iterable<ReportingTreeNode<V>> values();
+
+    boolean empty();
+
+    ReportLevelValuesSpace<V> cloneSpace(ReportingTreeNode<V> newParent);
 }

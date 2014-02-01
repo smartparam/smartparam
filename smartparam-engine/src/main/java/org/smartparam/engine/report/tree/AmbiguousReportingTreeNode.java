@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
+package org.smartparam.engine.report.tree;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.smartparam.engine.report.space.ReportLevelValuesSpace;
 import java.util.Map;
 import java.util.TreeMap;
+import org.smartparam.engine.core.index.Star;
 
 /**
  *
@@ -33,7 +33,7 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
 
     public AmbiguousReportingTreeNode(ReportingTree<V> tree, ReportingTreeNode<V> parent, String levelValue) {
         super(tree, parent, levelValue);
-        space = tree().descriptorFor(depth).createSpace();
+        space = levelDescriptor().createSpace();
     }
 
     private AmbiguousReportingTreeNode(AmbiguousReportingTreeNode<V> patternToClone, ReportingTreeNode<V> newParent, ReportLevelValuesSpace<V> spaceToClone) {
@@ -55,7 +55,7 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     protected Iterable<ReportingTreeNode<V>> matchingChildren() {
         List<ReportingTreeNode<V>> matchingNodes = new ArrayList<ReportingTreeNode<V>>();
         for (ReportingTreeNode<V> node : allChildren()) {
-            if (tree().descriptorFor(depth).matches(node.levelValue)) {
+            if (levelDescriptor().matches(node.levelValue())) {
                 matchingNodes.add(node);
             }
         }
@@ -65,7 +65,7 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     @Override
     public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
         ReportingTreeNode<V> child = tree().createNode(this, levelValue);
-        space.unsafePut(decodeLevelValue(levelValue), child);
+        space.uncheckedPut(decodeLevelValue(levelValue), child);
         children.put(levelValue, child);
 
         return child;
@@ -73,14 +73,13 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
 
     @Override
     public ReportingTreeNode<V> addAnyChild() {
-        return addDictionaryChild("*");
-
+        return addDictionaryChild(Star.SYMBOL);
     }
 
     @Override
     public void insertPath(ReportingTreePath<V> path) {
         if (leaf()) {
-            this.leafValue = chooseValue(leafValue, path.value());
+            chooseLeafValue(path.value());
             return;
         }
 
@@ -92,14 +91,13 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     private void plantNewBranch(Object key, ReportingTreePath<V> withPath) {
-        ReportingTreeNode<V> offspring = tree().createNode(this, levelValue);
+        ReportingTreeNode<V> offspring = tree().createNode(this, levelValue());
         offspring.insertPath(withPath);
-        space.unsafePut(key, offspring);
+        space.uncheckedPut(key, offspring);
     }
 
     @Override
     public ReportingTreeNode<V> cloneBranch(ReportingTreeNode<V> newParent) {
-        AmbiguousReportingTreeNode<V> offspringRoot = new AmbiguousReportingTreeNode<V>(this, newParent, this.space);
-        return offspringRoot;
+        return new AmbiguousReportingTreeNode<V>(this, newParent, this.space);
     }
 }

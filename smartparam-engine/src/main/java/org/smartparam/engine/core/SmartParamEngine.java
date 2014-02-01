@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.core;
 
-import org.smartparam.engine.core.output.DefaultParamValue;
 import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParameter;

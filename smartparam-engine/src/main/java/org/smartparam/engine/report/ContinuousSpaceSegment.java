@@ -115,16 +115,13 @@ public class ContinuousSpaceSegment<C extends Comparable<? super C>, V> implemen
             return false;
         }
         final ContinuousSpaceSegment<?, ?> other = (ContinuousSpaceSegment<?, ?>) obj;
-        if (this.segmentStart != other.segmentStart && (this.segmentStart == null || !this.segmentStart.equals(other.segmentStart))) {
+        if (this.segmentStart != other.segmentStart && !this.segmentStart.equals(other.segmentStart)) {
             return false;
         }
-        if (this.segmentEnd != other.segmentEnd && (this.segmentEnd == null || !this.segmentEnd.equals(other.segmentEnd))) {
+        if (this.segmentEnd != other.segmentEnd && !this.segmentEnd.equals(other.segmentEnd)) {
             return false;
         }
-        if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
-            return false;
-        }
-        return true;
+        return this.value == other.value || this.value.equals(other.value);
     }
 
     static enum IntersectionType {

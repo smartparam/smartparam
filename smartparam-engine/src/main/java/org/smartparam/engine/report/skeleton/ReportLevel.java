@@ -75,7 +75,6 @@ public class ReportLevel implements Iterable<ReportLevel> {
 
     public void printNode(StringBuilder sb, int depth) {
         String indent = Printer.repeat(' ', depth << 2);
-        boolean leaf = leaf();
 
         sb.append(indent).append("path : ").append(levelPath()).append(" dictionary: ").append(dictionaryOnly);
         sb.append(org.smartparam.engine.util.Formatter.NL);

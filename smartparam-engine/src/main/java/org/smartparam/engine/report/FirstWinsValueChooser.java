@@ -16,6 +16,8 @@
 
 package org.smartparam.engine.report;
 
+import org.smartparam.engine.report.tree.ReportValueChooser;
+
 /**
  *
  * @author Adam Dubiel

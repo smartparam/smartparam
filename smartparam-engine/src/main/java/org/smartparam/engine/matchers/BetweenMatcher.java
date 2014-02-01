@@ -31,7 +31,7 @@ import org.smartparam.engine.util.EngineUtil;
  * Between matcher has a set of default separators, that will be used to
  * separate values for beginning and end of range. These separators are (order matters):
  * <pre>
- * : - ,
+ * ~ : - ,
  * </pre>
  * First separator that was found in pattern string is used to split it.
  * Use {@link #setSeparators(java.lang.String) } to override defaults.
@@ -51,7 +51,7 @@ public class BetweenMatcher implements Matcher {
 
     public static final String BETWEEN_IE = "between/ie";
 
-    public static final String BETWEEN_EI = "between/ie";
+    public static final String BETWEEN_EI = "between/ei";
 
     public static final String BETWEEN_II = "between/ii";
 

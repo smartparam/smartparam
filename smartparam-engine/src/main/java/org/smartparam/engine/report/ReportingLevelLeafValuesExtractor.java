@@ -15,9 +15,16 @@
  */
 package org.smartparam.engine.report;
 
+import org.smartparam.engine.report.tree.ReportValueChooser;
+import org.smartparam.engine.report.tree.ReportingTreeLevelDescriptor;
+import org.smartparam.engine.report.tree.ReportingTreeNode;
+import org.smartparam.engine.report.tree.ReportingTreePath;
+import org.smartparam.engine.report.tree.ReportingTree;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.ParamEngineRuntimeConfig;
 import org.smartparam.engine.core.index.LevelNode;
@@ -28,7 +35,7 @@ import org.smartparam.engine.index.CustomizableLevelIndexWalker;
 import org.smartparam.engine.index.LevelLeafValuesExtractor;
 import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
-import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
 import org.smartparam.engine.util.ArraysUtil;
 
 /**
@@ -37,7 +44,9 @@ import org.smartparam.engine.util.ArraysUtil;
  */
 public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtractor<PreparedEntry> {
 
-    private final MatcherTypeRepository matcherDecoderRepository;
+    private static final Logger logger = LoggerFactory.getLogger(ReportingLevelLeafValuesExtractor.class);
+
+    private final MatcherTypeRepository matcherTypeRepository;
 
     private final ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository;
 
@@ -48,7 +57,7 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
     public ReportingLevelLeafValuesExtractor(ParamEngine paramEngine, ReportSkeleton reportSkeleton, ReportValueChooser<PreparedEntry> valueChooser) {
         ParamEngineRuntimeConfig runtimeConfig = paramEngine.runtimeConfiguration();
 
-        this.matcherDecoderRepository = runtimeConfig.getMatcherDecoderRepository();
+        this.matcherTypeRepository = runtimeConfig.getMatcherTypeRepository();
         this.reportLevelValuesSpaceRepository = runtimeConfig.getReportLevelValuesSpaceRepository();
 
         this.reportSkeleton = reportSkeleton;
@@ -63,27 +72,30 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
         int inputLevels = indexWalker.indexDepth();
 
         for (LevelNode<PreparedEntry> node : nodes) {
-            for(PreparedEntry entry : node.getLeafList()) {
+            for (PreparedEntry entry : node.getLeafList()) {
                 reportingTree.insertValue(Arrays.copyOf(entry.getLevels(), inputLevels), entry);
             }
+        }
+        if (logger.isTraceEnabled()) {
+            logger.trace("Reporting tree:\n{}", reportingTree.printTree());
         }
 
         return convertPathsToEntries(reportingTree.harvestLeavesValues());
     }
 
-    private List<ReportingTreeLevel> createLevelDescriptors(CustomizableLevelIndexWalker<PreparedEntry> indexWalker) {
-        List<ReportingTreeLevel> levelDescriptors = new ArrayList<ReportingTreeLevel>();
+    private List<ReportingTreeLevelDescriptor> createLevelDescriptors(CustomizableLevelIndexWalker<PreparedEntry> indexWalker) {
+        List<ReportingTreeLevelDescriptor> levelDescriptors = new ArrayList<ReportingTreeLevelDescriptor>();
 
         for (int levelIndex = 0; levelIndex < indexWalker.indexDepth(); ++levelIndex) {
             String childOriginalMatcherCode = indexWalker.originalMatcherCodeFor(levelIndex);
 
-            ReportingTreeLevel level = new ReportingTreeLevel(
+            ReportingTreeLevelDescriptor level = new ReportingTreeLevelDescriptor(
                     indexWalker.levelValueFor(levelIndex),
                     reportSkeleton.ambigousChildren(indexWalker.levelNameFor(levelIndex)),
                     indexWalker.originalMatcherFor(levelIndex),
                     indexWalker.matcherFor(levelIndex),
                     indexWalker.typeFor(levelIndex),
-                    matcherDecoderRepository.getMatcherType(childOriginalMatcherCode),
+                    matcherTypeRepository.getMatcherType(childOriginalMatcherCode),
                     reportLevelValuesSpaceRepository.getSpaceFactory(childOriginalMatcherCode)
             );
             levelDescriptors.add(level);

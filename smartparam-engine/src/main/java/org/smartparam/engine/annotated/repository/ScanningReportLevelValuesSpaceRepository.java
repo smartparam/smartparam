@@ -21,9 +21,8 @@ import org.smartparam.engine.annotated.annotations.ParamReportLevelSpaceFactory;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import org.smartparam.engine.core.repository.MapRepository;
-import org.smartparam.engine.report.space.ReportLevelValuesSpace;
-import org.smartparam.engine.report.space.ReportLevelValuesSpaceFactory;
-import org.smartparam.engine.report.space.ReportLevelValuesSpaceRepository;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceFactory;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
 
 /**
  *

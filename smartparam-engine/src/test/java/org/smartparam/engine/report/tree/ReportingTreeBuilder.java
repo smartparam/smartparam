@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
+package org.smartparam.engine.report.tree;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.type.BetweenMatcherType;
+import org.smartparam.engine.report.ContinuousSegmentsSpaceFactory;
+import org.smartparam.engine.report.FirstWinsValueChooser;
 import org.smartparam.engine.types.integer.IntegerType;
 
 /**
@@ -28,7 +30,7 @@ import org.smartparam.engine.types.integer.IntegerType;
  */
 public final class ReportingTreeBuilder {
 
-    private final List<ReportingTreeLevel> operations = new ArrayList<ReportingTreeLevel>();
+    private final List<ReportingTreeLevelDescriptor> operations = new ArrayList<ReportingTreeLevelDescriptor>();
 
     private ReportingTreeBuilder() {
     }
@@ -42,7 +44,7 @@ public final class ReportingTreeBuilder {
     }
 
     public ReportingTreeBuilder addAmbiguousIntegerLevel(String searchedValue, Matcher overridenMatcher) {
-        operations.add(new ReportingTreeLevel(searchedValue, true,
+        operations.add(new ReportingTreeLevelDescriptor(searchedValue, true,
                 new BetweenMatcher(true, false, "~"),
                 overridenMatcher,
                 new IntegerType(),
@@ -53,7 +55,7 @@ public final class ReportingTreeBuilder {
     }
 
     public ReportingTreeBuilder addExactLevel() {
-        operations.add(new ReportingTreeLevel("", false, null, null, null, null, null));
+        operations.add(new ReportingTreeLevelDescriptor("", false, null, null, null, null, null));
         return this;
     }
 

@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report;
+package org.smartparam.engine.report.tree;
 
-import org.smartparam.engine.report.space.ReportLevelValuesSpace;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.matcher.MatcherType;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.report.space.ReportLevelValuesSpaceFactory;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class ReportingTreeLevel {
+public class ReportingTreeLevelDescriptor {
 
     private final String searchedValue;
 
@@ -37,21 +35,21 @@ public class ReportingTreeLevel {
 
     private final Type<?> type;
 
-    private final MatcherType matcherDecoder;
+    private final MatcherType matcherType;
 
     private final ReportLevelValuesSpaceFactory ambiguousSpaceFactory;
 
-    public ReportingTreeLevel(String searchedValue, boolean ambiguous,
+    public ReportingTreeLevelDescriptor(String searchedValue, boolean ambiguous,
             Matcher originalMatcher,
             Matcher overridenMatcher,
-            Type<?> type, MatcherType<?> matcherDecoder,
+            Type<?> type, MatcherType<?> matcherType,
             ReportLevelValuesSpaceFactory ambiguousSpaceFactory) {
         this.searchedValue = searchedValue;
         this.ambiguous = ambiguous;
         this.originalMatcher = originalMatcher;
         this.overridenMatcher = overridenMatcher;
         this.type = type;
-        this.matcherDecoder = matcherDecoder;
+        this.matcherType = matcherType;
         this.ambiguousSpaceFactory = ambiguousSpaceFactory;
     }
 
@@ -61,12 +59,12 @@ public class ReportingTreeLevel {
 
     @SuppressWarnings("unchecked")
     public <T> T decode(String string) {
-        return (T) matcherDecoder.decode(string, type, originalMatcher);
+        return (T) matcherType.decode(string, type, originalMatcher);
     }
 
     @SuppressWarnings("unchecked")
     public <T> String encode(T object) {
-        return matcherDecoder.encode(object, type, originalMatcher);
+        return matcherType.encode(object, type, originalMatcher);
     }
 
     public <V> ReportLevelValuesSpace<V> createSpace() {

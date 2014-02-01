@@ -17,7 +17,6 @@ package org.smartparam.engine.core.output;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.type.ValueHolder;
