@@ -5,7 +5,7 @@ import org.polyjdbc.core.schema.SchemaManager;
 import org.polyjdbc.core.schema.SchemaManagerFactory;
 import org.polyjdbc.core.schema.model.Schema;
 import org.polyjdbc.core.util.TheCloser;
-import org.smartparam.coherence.jdbc.cache.JdbcConfig;
+import org.smartparam.coherence.jdbc.config.JdbcConfig;
 
 public class ParamVersionSchemaCreator {
 

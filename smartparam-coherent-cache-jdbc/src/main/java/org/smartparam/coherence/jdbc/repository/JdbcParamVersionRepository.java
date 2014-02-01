@@ -2,7 +2,7 @@ package org.smartparam.coherence.jdbc.repository;
 
 import org.polyjdbc.core.query.*;
 import org.polyjdbc.core.query.mapper.ObjectMapper;
-import org.smartparam.coherence.jdbc.cache.JdbcConfig;
+import org.smartparam.coherence.jdbc.config.JdbcConfig;
 import org.smartparam.engine.config.initialization.InitializableComponent;
 
 import java.sql.ResultSet;

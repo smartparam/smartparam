@@ -1,4 +1,4 @@
-package org.smartparam.coherence.jdbc.cache;
+package org.smartparam.coherence.jdbc.config;
 
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
@@ -8,6 +8,7 @@ import org.smartparam.engine.config.pico.PicoContainerUtil;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 
 import javax.sql.DataSource;
+import org.smartparam.coherence.jdbc.cache.JdbcCoherentParamCache;
 
 public class JdbcCoherentParamCacheFactory {
 

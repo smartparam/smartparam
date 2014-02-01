@@ -1,5 +1,7 @@
 package org.smartparam.coherence.jdbc.cache;
 
+import org.smartparam.coherence.jdbc.config.JdbcCoherentParamCacheFactory;
+import org.smartparam.coherence.jdbc.config.JdbcConfig;
 import org.smartparam.coherence.jdbc.DatabaseTest;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.testng.annotations.Test;

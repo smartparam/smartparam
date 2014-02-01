@@ -1,4 +1,4 @@
-package org.smartparam.coherence.jdbc.cache;
+package org.smartparam.coherence.jdbc.config;
 
 import org.polyjdbc.core.query.QueryRunnerFactory;
 import org.polyjdbc.core.query.SimpleQueryRunner;
