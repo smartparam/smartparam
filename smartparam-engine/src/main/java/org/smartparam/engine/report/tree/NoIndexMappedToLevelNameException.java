@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Adam Dubiel.
+ * Copyright 2014 Adam Dubiel, Przemek Hertel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.smartparam.engine.report.tree;
 
-package org.smartparam.engine.report;
-
-import org.smartparam.engine.report.tree.ReportValueChooser;
-import org.smartparam.engine.report.tree.ReportingTreeValueDescriptor;
+import org.smartparam.engine.core.exception.SmartParamException;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class FirstWinsValueChooser<V> implements ReportValueChooser<V> {
+@SuppressWarnings("serial")
+public class NoIndexMappedToLevelNameException extends SmartParamException {
 
-    @Override
-    public V choose(ReportingTreeValueDescriptor outputValueDescriptor, V current, V incoming) {
-        return current != null ? current : incoming;
+    NoIndexMappedToLevelNameException(String levelName) {
+        super("NO_INDEX_MAPPED_TO_LEVEL_NAME", "Could not find level index mapped to level " + levelName);
     }
 
 }

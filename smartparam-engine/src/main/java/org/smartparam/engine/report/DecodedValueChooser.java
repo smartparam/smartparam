@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.smartparam.engine.report;
 
 import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.report.tree.ReportValueChooser;
+import org.smartparam.engine.report.tree.ReportingTreeValueDescriptor;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class DecodedValueChooser implements ReportValueChooser<PreparedEntry> {
+public abstract class DecodedValueChooser implements ReportValueChooser<PreparedEntry> {
 
-    @Override
-    public PreparedEntry choose(PreparedEntry current, PreparedEntry incoming) {
-        return null;
+    @SuppressWarnings("unchecked")
+    protected <T> T decode(ReportingTreeValueDescriptor outputValueDescriptor, String levelName, PreparedEntry fromEntry) {
+        int levelIndex = outputValueDescriptor.indexOf(levelName);
+        String levelValue = fromEntry.getLevel(levelIndex);
+
+        return (T) outputValueDescriptor.type(levelName).decode(levelValue).getValue();
     }
-
 }

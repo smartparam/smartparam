@@ -40,7 +40,7 @@ public final class ReportingTreeBuilder {
     }
 
     public ReportingTree<String> build() {
-        return new ReportingTree<String>(operations, new FirstWinsValueChooser<String>());
+        return new ReportingTree<String>(operations, new ReportingTreeValueDescriptor(), new FirstWinsValueChooser<String>());
     }
 
     public ReportingTreeBuilder addAmbiguousIntegerLevel(String searchedValue, Matcher overridenMatcher) {

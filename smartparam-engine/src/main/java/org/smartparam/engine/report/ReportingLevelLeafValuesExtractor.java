@@ -37,6 +37,7 @@ import org.smartparam.engine.index.LevelLeafValuesExtractor;
 import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
 import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
+import org.smartparam.engine.report.tree.ReportingTreeValueDescriptor;
 import org.smartparam.engine.util.ArraysUtil;
 
 /**
@@ -67,7 +68,10 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
 
     @Override
     public List<PreparedEntry> extract(CustomizableLevelIndexWalker<PreparedEntry> indexWalker, List<LevelNode<PreparedEntry>> nodes) {
-        ReportingTree<PreparedEntry> reportingTree = new ReportingTree<PreparedEntry>(createLevelDescriptors(indexWalker), valueChooser);
+        ReportingTree<PreparedEntry> reportingTree = new ReportingTree<PreparedEntry>(
+                createLevelDescriptors(indexWalker),
+                createOutputLevelDescriptors(indexWalker),
+                valueChooser);
         createTreeLevels(reportingTree);
 
         int inputLevels = indexWalker.indexDepth();
@@ -104,6 +108,16 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
         }
 
         return levelDescriptors;
+    }
+
+    private ReportingTreeValueDescriptor createOutputLevelDescriptors(CustomizableLevelIndexWalker<PreparedEntry> indexWalker) {
+        ReportingTreeValueDescriptor valueDescriptor = new ReportingTreeValueDescriptor();
+
+        for (int levelIndex = indexWalker.indexDepth(); levelIndex < indexWalker.descriptorsCount(); ++levelIndex) {
+            IndexLevelDescriptor descriptor = indexWalker.descriptorFor(levelIndex);
+            valueDescriptor.add(levelIndex, descriptor.name(), descriptor.type());
+        }
+        return valueDescriptor;
     }
 
     private void createTreeLevels(ReportingTree<PreparedEntry> reportingTree) {

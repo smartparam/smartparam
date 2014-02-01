@@ -69,6 +69,10 @@ public class CustomizableLevelIndexWalker<T> implements LevelIndexWalker<T> {
         return index.getLevelCount();
     }
 
+    public int descriptorsCount() {
+        return overrides.descriptorsCount();
+    }
+
     private LevelNodeInspector<T> inspectorFor(int depth) {
         return overrides.greedy(depth) ? greedyNodeInspector : fastNodeInspector;
     }

@@ -30,9 +30,11 @@ import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.MatchAllMatcher;
 import org.smartparam.engine.matchers.type.Range;
+import org.smartparam.engine.report.DecodedValueChooser;
 import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
 import org.smartparam.engine.report.tree.ReportValueChooser;
+import org.smartparam.engine.report.tree.ReportingTreeValueDescriptor;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -153,7 +155,7 @@ public class ParamQueryIntegrationTest {
                 .fillingIn(skeleton)
                 .withGreedyLevels("ambigous")
                 .askingFor(new LevelValues("FIRST", "5"))
-//                .makingChoiceUsing(new HigherValueChooser())
+                .makingChoiceUsing(new HigherValueChooser())
                 .execute();
 
         // then
@@ -161,11 +163,21 @@ public class ParamQueryIntegrationTest {
         assertThat(paramValue.get()).isEqualTo(50L);
     }
 
-    private static class HigherValueChooser implements ReportValueChooser<PreparedEntry> {
+    private static class HigherValueChooser extends DecodedValueChooser {
 
         @Override
-        public PreparedEntry choose(PreparedEntry current, PreparedEntry incoming) {
-            return incoming;
+        public PreparedEntry choose(ReportingTreeValueDescriptor outputValueDescriptor, PreparedEntry current, PreparedEntry incoming) {
+            if(current == null) {
+                return incoming;
+            }
+            if(incoming == null) {
+                return current;
+            }
+
+            long currentValue = decode(outputValueDescriptor, "value", current);
+            long incomingValue = decode(outputValueDescriptor, "value", incoming);
+
+            return currentValue > incomingValue ? current : incoming;
         }
 
     }

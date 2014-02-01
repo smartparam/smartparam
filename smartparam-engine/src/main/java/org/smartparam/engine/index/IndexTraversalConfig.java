@@ -36,6 +36,10 @@ public class IndexTraversalConfig implements Iterable<IndexLevelDescriptor> {
     public IndexTraversalConfig() {
     }
 
+    public int descriptorsCount() {
+        return descriptors.size();
+    }
+
     public void addLevel(IndexLevelDescriptor descriptor) {
         this.levelNames.add(descriptor.name());
         descriptors.put(descriptor.name(), descriptor);

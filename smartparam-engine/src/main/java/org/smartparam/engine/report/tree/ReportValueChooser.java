@@ -21,6 +21,6 @@ package org.smartparam.engine.report.tree;
  */
 public interface ReportValueChooser<V> {
 
-    V choose(V current, V incoming);
+    V choose(ReportingTreeValueDescriptor outputValueDescriptor, V current, V incoming);
 
 }

@@ -102,7 +102,7 @@ public abstract class ReportingTreeNode<V> {
     }
 
     protected void chooseLeafValue(V incomingValue) {
-        this.leafValue = tree().valueChooser().choose(leafValue, incomingValue);
+        this.leafValue = tree().valueChooser().choose(tree.outputValueDescriptor(), leafValue, incomingValue);
     }
 
     protected Object decodeLevelValue(String levelValue) {

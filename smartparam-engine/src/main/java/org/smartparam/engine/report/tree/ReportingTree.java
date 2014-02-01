@@ -30,10 +30,15 @@ public final class ReportingTree<V> {
 
     private final List<ReportingTreeLevelDescriptor> levelDescriptors;
 
+    private final ReportingTreeValueDescriptor outputValueDescriptor;
+
     private final ReportValueChooser<V> valueChooser;
 
-    public ReportingTree(List<ReportingTreeLevelDescriptor> levelDescriptors, ReportValueChooser<V> valueChooser) {
+    public ReportingTree(List<ReportingTreeLevelDescriptor> levelDescriptors,
+            ReportingTreeValueDescriptor outputValueDescriptor,
+            ReportValueChooser<V> valueChooser) {
         this.levelDescriptors = levelDescriptors;
+        this.outputValueDescriptor = outputValueDescriptor;
         this.valueChooser = valueChooser;
         root = createNode(null, "ROOT");
     }
@@ -67,7 +72,7 @@ public final class ReportingTree<V> {
     ReportingTreeNode<V> createNode(ReportingTreeNode<V> parent, String levelValue) {
         int depth = parent == null ? 0 : parent.depth() + 1;
 
-        if(leafLevel(depth)) {
+        if (leafLevel(depth)) {
             return new SimpleReportingTreeNode<V>(this, parent, levelValue);
         }
 
@@ -81,7 +86,7 @@ public final class ReportingTree<V> {
     }
 
     ReportingTreeLevelDescriptor descriptorFor(int levelIndex) {
-        if(leafLevel(levelIndex)) {
+        if (leafLevel(levelIndex)) {
             throw new IllegalArgumentException("Trying to get descriptor for leaf level - this should never happen.");
         }
         return levelDescriptors.get(levelIndex);
@@ -93,6 +98,10 @@ public final class ReportingTree<V> {
 
     int height() {
         return levelDescriptors.size();
+    }
+
+    public ReportingTreeValueDescriptor outputValueDescriptor() {
+        return outputValueDescriptor;
     }
 
     public String printTree() {
