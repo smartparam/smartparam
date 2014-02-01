@@ -34,11 +34,19 @@ public class IndexTraversalOverridesTestBuilder {
         return new IndexTraversalOverridesTestBuilder();
     }
 
-    public IndexTraversalOverrides build() {
-        return new IndexTraversalOverrides(greedinessMatrix,
-                overridenMatchers == null ? new Matcher[greedinessMatrix.length] : overridenMatchers,
-                new String[greedinessMatrix.length],
-                new String[greedinessMatrix.length]);
+    public IndexTraversalConfig build() {
+        overridenMatchers = overridenMatchers == null ? new Matcher[greedinessMatrix.length] : overridenMatchers;
+
+        IndexTraversalConfig config = new IndexTraversalConfig();
+        for (int index = 0; index < greedinessMatrix.length; ++index) {
+            config.addLevel(new IndexLevelDescriptor("" + index,
+                    overridenMatchers[index],
+                    null,
+                    null,
+                    greedinessMatrix[index],
+                    null));
+        }
+        return config;
     }
 
     public IndexTraversalOverridesTestBuilder withGreediness(boolean... greediness) {

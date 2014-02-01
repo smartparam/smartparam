@@ -66,11 +66,16 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
                 refreshed.add(segment(from, to, segment.value(), path, levelDescriptor));
                 refreshed.add(segment(to, segment.segmentEnd(), segment.value(), levelDescriptor));
             } else if (intersection == ContinuousSpaceSegment.IntersectionType.BEFORE) {
-                refreshed.add(segment(from, segment.segmentStart(), segment.value(), levelDescriptor));
+                refreshed.add(segment(from, segment.segmentStart(), segment.value(), path, levelDescriptor));
                 refreshed.add(segment(segment.segmentStart(), to, segment.value(), path, levelDescriptor));
+                refreshed.add(segment(to, segment.segmentEnd(), segment.value(), levelDescriptor));
             } else if (intersection == ContinuousSpaceSegment.IntersectionType.AFTER) {
-                refreshed.add(segment(from, segment.segmentEnd(), segment.value(), levelDescriptor));
+                refreshed.add(segment(segment.segmentStart(), from, segment.value(), levelDescriptor));
+                refreshed.add(segment(from, segment.segmentEnd(), segment.value(), path, levelDescriptor));
                 refreshed.add(segment(segment.segmentEnd(), to, segment.value(), path, levelDescriptor));
+            } else if (intersection == ContinuousSpaceSegment.IntersectionType.CONTAINED) {
+                segment.value().insertPath(path);
+                refreshed.add(segment);
             }
         }
 

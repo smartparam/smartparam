@@ -26,11 +26,13 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.ParameterTestBuilder;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.parameter.level.Level;
+import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.matchers.BetweenMatcher;
 import org.smartparam.engine.matchers.MatchAllMatcher;
 import org.smartparam.engine.matchers.type.Range;
 import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
+import org.smartparam.engine.report.tree.ReportValueChooser;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -59,6 +61,7 @@ public class ParamQueryIntegrationTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void shouldFindDetailedValueWithModifiedRangeAfterPerformigQueryWithAmbiguousValueAtLastLevel() {
         // given
         Level[] levels = new Level[]{
@@ -115,4 +118,55 @@ public class ParamQueryIntegrationTest {
         assertThat(paramValue.detailedEntry().getAs("ambigous", Range.class)).isEqualTo(new Range(5L, 10L));
     }
 
+    @Test
+    public void shouldUseCustomValueChooserToDetermineWhichValueWillBeChosenWhenMoreThanOneIsDesignated() {
+        // given
+        Level[] levels = new Level[]{
+            level().withName("first").withType("string").build(),
+            level().withName("ambigous").withMatcher(BetweenMatcher.BETWEEN_IE).withType("integer").build(),
+            level().withName("value").withType("integer").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("FIRST", "0-10", "10").build(),
+            parameterEntry().withLevels("FIRST", "5-15", "6").build(),
+            parameterEntry().withLevels("FIRST", "*", "50").build()
+        };
+
+        Parameter parameter = ParameterTestBuilder.parameter()
+                .withName("test")
+                .withInputLevels(2)
+                .withEntries(entries)
+                .withLevels(levels).build();
+        when(repository.load("test")).thenReturn(parameter);
+
+        ReportSkeleton skeleton = ReportSkeleton.reportSkeleton();
+        skeleton.withLevel(
+                "FIRST", ReportLevel.level().withChild(
+                        ReportLevel.level()
+                )
+        );
+        skeleton.withAmbigousLevel("ambigous");
+
+        // when
+        DetailedParamValue paramValue = ParamQuery.select(paramEngine)
+                .fromParameter("test")
+                .fillingIn(skeleton)
+                .withGreedyLevels("ambigous")
+                .askingFor(new LevelValues("FIRST", "5"))
+//                .makingChoiceUsing(new HigherValueChooser())
+                .execute();
+
+        // then
+        assertThat(paramValue).hasSize(1);
+        assertThat(paramValue.get()).isEqualTo(50L);
+    }
+
+    private static class HigherValueChooser implements ReportValueChooser<PreparedEntry> {
+
+        @Override
+        public PreparedEntry choose(PreparedEntry current, PreparedEntry incoming) {
+            return incoming;
+        }
+
+    }
 }

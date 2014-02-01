@@ -32,6 +32,7 @@ import org.smartparam.engine.core.matcher.MatcherTypeRepository;
 import org.smartparam.engine.core.prepared.IdentifiablePreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.index.CustomizableLevelIndexWalker;
+import org.smartparam.engine.index.IndexLevelDescriptor;
 import org.smartparam.engine.index.LevelLeafValuesExtractor;
 import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
@@ -87,16 +88,17 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
         List<ReportingTreeLevelDescriptor> levelDescriptors = new ArrayList<ReportingTreeLevelDescriptor>();
 
         for (int levelIndex = 0; levelIndex < indexWalker.indexDepth(); ++levelIndex) {
-            String childOriginalMatcherCode = indexWalker.originalMatcherCodeFor(levelIndex);
+            IndexLevelDescriptor descriptor = indexWalker.descriptorFor(levelIndex);
+            String originalMatcherCode = descriptor.originalMatcherCode();
 
             ReportingTreeLevelDescriptor level = new ReportingTreeLevelDescriptor(
                     indexWalker.levelValueFor(levelIndex),
-                    reportSkeleton.ambigousChildren(indexWalker.levelNameFor(levelIndex)),
-                    indexWalker.originalMatcherFor(levelIndex),
-                    indexWalker.matcherFor(levelIndex),
-                    indexWalker.typeFor(levelIndex),
-                    matcherTypeRepository.getMatcherType(childOriginalMatcherCode),
-                    reportLevelValuesSpaceRepository.getSpaceFactory(childOriginalMatcherCode)
+                    reportSkeleton.ambigousChildren(descriptor.name()),
+                    descriptor.originalMatcher(),
+                    descriptor.effectiveMatcher(),
+                    descriptor.type(),
+                    matcherTypeRepository.getMatcherType(originalMatcherCode),
+                    reportLevelValuesSpaceRepository.getSpaceFactory(originalMatcherCode)
             );
             levelDescriptors.add(level);
         }

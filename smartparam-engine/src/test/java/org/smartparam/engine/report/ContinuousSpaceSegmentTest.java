@@ -110,6 +110,18 @@ public class ContinuousSpaceSegmentTest {
     }
 
     @Test
+    public void shouldReturnCONTAINEDIntersectionTypeWhenSegmentIsContainedWithingOtherSegment() {
+        // given
+        ContinuousSpaceSegment<Integer, String> segment = new ContinuousSpaceSegment<Integer, String>(10, 20, "A");
+
+        // when
+        ContinuousSpaceSegment.IntersectionType intersection = segment.intersects(0, 100);
+
+        // then
+        assertThat(intersection).isSameAs(ContinuousSpaceSegment.IntersectionType.CONTAINED);
+    }
+
+    @Test
     public void shouldReturnMinusOneWhenOtherSegmentIsLesserThanSegment() {
         // given
         ContinuousSpaceSegment<Integer, String> segment = new ContinuousSpaceSegment<Integer, String>(10, 20, "A");

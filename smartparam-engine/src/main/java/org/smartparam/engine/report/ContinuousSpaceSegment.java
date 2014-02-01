@@ -74,6 +74,9 @@ public class ContinuousSpaceSegment<C extends Comparable<? super C>, V> implemen
         } else if (containsFrom) {
             return IntersectionType.AFTER;
         }
+        else if(from.compareTo(segmentStart) <= 0 && to.compareTo(segmentEnd()) >= 0) {
+            return IntersectionType.CONTAINED;
+        }
         return IntersectionType.NONE;
     }
 
@@ -116,7 +119,7 @@ public class ContinuousSpaceSegment<C extends Comparable<? super C>, V> implemen
 
     static enum IntersectionType {
 
-        NONE, IDENTICAL, BEFORE, CONTAINS, AFTER
+        NONE, IDENTICAL, BEFORE, CONTAINS, CONTAINED, AFTER
 
     }
 }
