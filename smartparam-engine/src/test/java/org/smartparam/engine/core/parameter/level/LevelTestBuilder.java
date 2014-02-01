@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.core.parameter.level;
 
-import org.smartparam.engine.core.parameter.level.Level;
-
 /**
  *
  * @author Adam Dubiel

@@ -28,7 +28,7 @@ public class JdbcCoherentParamCacheFactory {
     public PicoContainer createContainer(JdbcCoherentParamCacheConfig config) {
         MutablePicoContainer container = PicoContainerUtil.createContainer();
         PicoContainerUtil.injectImplementations(container, JdbcParamVersionRepository.class,
-                                                config.getConfiguration(), config.getConfiguration().dialect(), config.getDataSource());
+                config.getConfiguration(), config.getConfiguration().dialect(), config.getDataSource());
         PicoContainerUtil.injectImplementations(container, config.getComponents());
 
         return container;

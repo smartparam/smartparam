@@ -11,11 +11,11 @@ import java.util.Map;
 
 public class JdbcCoherentParamCache implements CoherentParamCache, InitializableComponent {
 
-    private PreparedParamCache decoratedCache;
+    private final PreparedParamCache decoratedCache;
 
-    private JdbcParamVersionRepository versionRepository;
+    private final JdbcParamVersionRepository versionRepository;
 
-    private Map<String, Long> localVersions = new HashMap<String, Long>();
+    private final Map<String, Long> localVersions = new HashMap<String, Long>();
 
     public JdbcCoherentParamCache(PreparedParamCache decoratedCache, JdbcParamVersionRepository versionRepository) {
         this.decoratedCache = decoratedCache;
