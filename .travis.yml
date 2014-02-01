@@ -4,7 +4,6 @@ script: "mvn deploy --settings project-resources/ci-settings.xml"
 branches:
   only:
     - master
-    - smartparam-1.1.0
 
 env:
   global:
