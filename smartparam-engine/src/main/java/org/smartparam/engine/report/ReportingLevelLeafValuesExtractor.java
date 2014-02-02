@@ -102,7 +102,8 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
                     descriptor.effectiveMatcher(),
                     descriptor.type(),
                     matcherTypeRepository.getMatcherType(originalMatcherCode),
-                    reportLevelValuesSpaceRepository.getSpaceFactory(originalMatcherCode)
+                    reportLevelValuesSpaceRepository.getSpaceFactory(originalMatcherCode),
+                    reportSkeleton.ambiguousLevelSpaceSetValidator(descriptor.name())
             );
             levelDescriptors.add(level);
         }

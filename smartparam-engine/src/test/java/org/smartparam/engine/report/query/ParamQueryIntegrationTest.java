@@ -33,7 +33,6 @@ import org.smartparam.engine.matchers.type.Range;
 import org.smartparam.engine.report.DecodedValueChooser;
 import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
-import org.smartparam.engine.report.tree.ReportValueChooser;
 import org.smartparam.engine.report.tree.ReportingTreeValueDescriptor;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

@@ -54,15 +54,15 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
     }
 
     private boolean insertPath(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreePath<V> path, ReportingTreeLevelDescriptor levelDescriptor) {
-        RefreshedSegments<C, V> refreshed = new RefreshedSegments<C, V>();
+        RefreshedSegments<C, V> refreshed = new RefreshedSegments<C, V>(levelDescriptor);
         boolean pathAdded = false;
 
         for (ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment : segments) {
             ContinuousSpaceSegment.IntersectionType intersection = segment.intersects(from, to);
             pathAdded = pathAdded || intersection != ContinuousSpaceSegment.IntersectionType.NONE;
 
-            if(logger.isTraceEnabled()) {
-                logger.trace("enter insertPath({}): intersection of segment from {} to {} with {} is {}", path, from ,to, segment, intersection);
+            if (logger.isTraceEnabled()) {
+                logger.trace("enter insertPath({}): intersection of segment from {} to {} with {} is {}", path, from, to, segment, intersection);
             }
 
             if (intersection == ContinuousSpaceSegment.IntersectionType.NONE) {
@@ -94,24 +94,26 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
 
     private static class RefreshedSegments<C extends Comparable<? super C>, V> {
 
+        private final ReportingTreeLevelDescriptor levelDescriptor;
+
         private final List<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> refreshed = new ArrayList<ContinuousSpaceSegment<C, ReportingTreeNode<V>>>();
 
-        public void add(ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment) {
-            if (segment != null) {
+        RefreshedSegments(ReportingTreeLevelDescriptor levelDescriptor) {
+            this.levelDescriptor = levelDescriptor;
+        }
+
+        void add(ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment) {
+            if (!levelDescriptor.isSetEmpty(new Range<C>(segment.segmentStart(), segment.segmentEnd()))) {
                 refreshed.add(segment);
             }
         }
 
-        public List<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> all() {
+        List<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> all() {
             return refreshed;
         }
     }
 
     private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreeLevelDescriptor levelDescriptor) {
-        if (from.compareTo(to) == 0) {
-            return null;
-        }
-
         ReportingTreeNode<V> clone = toClone.cloneBranch(toClone.parent());
         clone.updateLevelValue(levelDescriptor.encode(new Range<C>(from, to)));
 
@@ -119,10 +121,6 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
     }
 
     private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreePath<V> path, ReportingTreeLevelDescriptor levelDescriptor) {
-        if (from.compareTo(to) == 0) {
-            return null;
-        }
-
         ReportingTreeNode<V> clone = toClone.cloneBranch(toClone.parent());
         clone.updateLevelValue(levelDescriptor.encode(new Range<C>(from, to)));
         clone.insertPath(path);

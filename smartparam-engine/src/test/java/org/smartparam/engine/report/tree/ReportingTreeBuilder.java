@@ -49,13 +49,14 @@ public final class ReportingTreeBuilder {
                 overridenMatcher,
                 new IntegerType(),
                 new BetweenMatcherType(),
-                new ContinuousSegmentsSpaceFactory()
+                new ContinuousSegmentsSpaceFactory(),
+                new DefaultSpaceSetValidator()
         ));
         return this;
     }
 
     public ReportingTreeBuilder addExactLevel() {
-        operations.add(new ReportingTreeLevelDescriptor("", false, null, null, null, null, null));
+        operations.add(new ReportingTreeLevelDescriptor("", false, null, null, null, null, null, null));
         return this;
     }
 

@@ -39,11 +39,14 @@ public class ReportingTreeLevelDescriptor {
 
     private final ReportLevelValuesSpaceFactory ambiguousSpaceFactory;
 
+    private final ReportLevelValuesSpaceSetValidator spaceSetValidator;
+
     public ReportingTreeLevelDescriptor(String searchedValue, boolean ambiguous,
             Matcher originalMatcher,
             Matcher overridenMatcher,
             Type<?> type, MatcherType<?> matcherType,
-            ReportLevelValuesSpaceFactory ambiguousSpaceFactory) {
+            ReportLevelValuesSpaceFactory ambiguousSpaceFactory,
+            ReportLevelValuesSpaceSetValidator<?> spaceSetValidator) {
         this.searchedValue = searchedValue;
         this.ambiguous = ambiguous;
         this.originalMatcher = originalMatcher;
@@ -51,6 +54,7 @@ public class ReportingTreeLevelDescriptor {
         this.type = type;
         this.matcherType = matcherType;
         this.ambiguousSpaceFactory = ambiguousSpaceFactory;
+        this.spaceSetValidator = spaceSetValidator;
     }
 
     boolean ambiguous() {
@@ -73,5 +77,10 @@ public class ReportingTreeLevelDescriptor {
 
     public boolean matches(String pattern) {
         return overridenMatcher.matches(searchedValue, pattern, type);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> boolean isSetEmpty(T set) {
+        return spaceSetValidator.isEmpty(set);
     }
 }
