@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.index.LevelNode;
 import org.smartparam.engine.core.index.LevelNodeInspector;
+import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
@@ -48,7 +49,9 @@ public class GreedyLevelNodeInspector<T> implements LevelNodeInspector<T> {
         }
 
         if (currentNode.getDefaultNode() != null) {
-            matchedNodes.addAll(indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1));
+            if (matcher == null || matcher.matches(levelValue, Star.SYMBOL, type)) {
+                matchedNodes.addAll(indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1));
+            }
         }
 
         return matchedNodes;
