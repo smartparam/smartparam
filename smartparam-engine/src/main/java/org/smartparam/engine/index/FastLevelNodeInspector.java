@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import org.smartparam.engine.core.index.LevelNode;
 import org.smartparam.engine.core.index.LevelNodeInspector;
+import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
@@ -58,7 +59,9 @@ public class FastLevelNodeInspector<T> implements LevelNodeInspector<T> {
         }
 
         if (matchedLeafs == null && currentNode.getDefaultNode() != null) {
-            matchedLeafs = indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1);
+            if (matcher == null || matcher.matches(levelValue, Star.SYMBOL, type)) {
+                matchedLeafs = indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1);
+            }
         }
 
         return matchedLeafs != null ? matchedLeafs : new ArrayList<LevelNode<T>>();
