@@ -49,7 +49,7 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
     }
 
     private boolean insertPath(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreePath<V> path, ReportingTreeLevelDescriptor levelDescriptor) {
-        List<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> refreshed = new ArrayList<ContinuousSpaceSegment<C, ReportingTreeNode<V>>>();
+        RefreshedSegments<C, V> refreshed = new RefreshedSegments<C, V>();
         boolean pathAdded = false;
 
         for (ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment : segments) {
@@ -80,12 +80,31 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
         }
 
         segments.clear();
-        segments.addAll(refreshed);
+        segments.addAll(refreshed.all());
 
         return pathAdded;
     }
 
+    private static class RefreshedSegments<C extends Comparable<? super C>, V> {
+
+        private final List<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> refreshed = new ArrayList<ContinuousSpaceSegment<C, ReportingTreeNode<V>>>();
+
+        public void add(ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment) {
+            if (segment != null) {
+                refreshed.add(segment);
+            }
+        }
+
+        public List<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> all() {
+            return refreshed;
+        }
+    }
+
     private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreeLevelDescriptor levelDescriptor) {
+        if (from.compareTo(to) == 0) {
+            return null;
+        }
+
         ReportingTreeNode<V> clone = toClone.cloneBranch(toClone.parent());
         clone.updateLevelValue(levelDescriptor.encode(new Range<C>(from, to)));
 
@@ -93,6 +112,10 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
     }
 
     private ContinuousSpaceSegment<C, ReportingTreeNode<V>> segment(RangeBoundary<C> from, RangeBoundary<C> to, ReportingTreeNode<V> toClone, ReportingTreePath<V> path, ReportingTreeLevelDescriptor levelDescriptor) {
+        if (from.compareTo(to) == 0) {
+            return null;
+        }
+
         ReportingTreeNode<V> clone = toClone.cloneBranch(toClone.parent());
         clone.updateLevelValue(levelDescriptor.encode(new Range<C>(from, to)));
         clone.insertPath(path);
