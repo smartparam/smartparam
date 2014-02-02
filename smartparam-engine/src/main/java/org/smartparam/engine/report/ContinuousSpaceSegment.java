@@ -117,6 +117,13 @@ public class ContinuousSpaceSegment<C extends Comparable<? super C>, V> implemen
                 && Objects.equals(value, other.value);
     }
 
+    @Override
+    public String toString() {
+        return "[SpaceSegment from: " + segmentStart + " to: " + segmentEnd + "]";
+    }
+
+
+
     static enum IntersectionType {
 
         NONE, IDENTICAL, BEFORE, CONTAINS, CONTAINED, AFTER

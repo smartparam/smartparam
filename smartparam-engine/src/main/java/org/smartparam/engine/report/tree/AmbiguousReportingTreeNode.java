@@ -83,15 +83,16 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
             return;
         }
 
-        Object incomingKey = levelDescriptor().decode(path.segmentAt(depth()));
+        String incomingKeyString = path.segmentAt(depth());
+        Object incomingKey = levelDescriptor().decode(incomingKeyString);
         boolean added = space.insertPath(incomingKey, path, levelDescriptor());
         if (!added) {
-            plantNewBranch(incomingKey, path);
+            plantNewBranch(incomingKey, incomingKeyString, path);
         }
     }
 
-    private void plantNewBranch(Object key, ReportingTreePath<V> withPath) {
-        ReportingTreeNode<V> offspring = tree().createNode(this, levelValue());
+    private void plantNewBranch(Object key, String incomingKeyString, ReportingTreePath<V> withPath) {
+        ReportingTreeNode<V> offspring = tree().createNode(this, incomingKeyString);
         offspring.insertPath(withPath);
         space.uncheckedPut(key, offspring);
     }

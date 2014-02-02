@@ -66,4 +66,9 @@ public class ReportingTreePath<T> {
     public String[] segmentsArray() {
         return segments.toArray(new String[segments.size()]);
     }
+
+    @Override
+    public String toString() {
+        return "[ReportingTreePath " + (value != null ? value : "null") + "]";
+    }
 }

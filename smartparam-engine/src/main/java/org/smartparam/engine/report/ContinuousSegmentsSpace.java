@@ -20,14 +20,19 @@ import org.smartparam.engine.report.tree.ReportingTreeNode;
 import org.smartparam.engine.report.tree.ReportingTreePath;
 import org.smartparam.engine.report.tree.ReportLevelValuesSpace;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.matchers.type.Range;
 import org.smartparam.engine.matchers.type.RangeBoundary;
 
 /**
+ * Should be initialized with infinity ( *-* ), else BEFORE/AFTER intersections will produce unexpected results.
  *
  * @author Adam Dubiel
  */
 public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> implements ReportLevelValuesSpace<V> {
+
+    private final Logger logger = LoggerFactory.getLogger(ContinuousSegmentsSpace.class);
 
     private final Set<ContinuousSpaceSegment<C, ReportingTreeNode<V>>> segments = new TreeSet<ContinuousSpaceSegment<C, ReportingTreeNode<V>>>();
 
@@ -56,6 +61,10 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
             ContinuousSpaceSegment.IntersectionType intersection = segment.intersects(from, to);
             pathAdded = pathAdded || intersection != ContinuousSpaceSegment.IntersectionType.NONE;
 
+            if(logger.isTraceEnabled()) {
+                logger.trace("enter insertPath({}): intersection of segment from {} to {} with {} is {}", path, from ,to, segment, intersection);
+            }
+
             if (intersection == ContinuousSpaceSegment.IntersectionType.NONE) {
                 refreshed.add(segment);
             } else if (intersection == ContinuousSpaceSegment.IntersectionType.IDENTICAL) {
@@ -66,13 +75,11 @@ public class ContinuousSegmentsSpace<C extends Comparable<? super C>, V> impleme
                 refreshed.add(segment(from, to, segment.value(), path, levelDescriptor));
                 refreshed.add(segment(to, segment.segmentEnd(), segment.value(), levelDescriptor));
             } else if (intersection == ContinuousSpaceSegment.IntersectionType.BEFORE) {
-                refreshed.add(segment(from, segment.segmentStart(), segment.value(), path, levelDescriptor));
                 refreshed.add(segment(segment.segmentStart(), to, segment.value(), path, levelDescriptor));
                 refreshed.add(segment(to, segment.segmentEnd(), segment.value(), levelDescriptor));
             } else if (intersection == ContinuousSpaceSegment.IntersectionType.AFTER) {
                 refreshed.add(segment(segment.segmentStart(), from, segment.value(), levelDescriptor));
                 refreshed.add(segment(from, segment.segmentEnd(), segment.value(), path, levelDescriptor));
-                refreshed.add(segment(segment.segmentEnd(), to, segment.value(), path, levelDescriptor));
             } else if (intersection == ContinuousSpaceSegment.IntersectionType.CONTAINED) {
                 segment.value().insertPath(path);
                 refreshed.add(segment);
