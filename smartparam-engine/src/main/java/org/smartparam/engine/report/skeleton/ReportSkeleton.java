@@ -16,8 +16,8 @@
 package org.smartparam.engine.report.skeleton;
 
 import java.util.*;
-import org.smartparam.engine.report.tree.DefaultSpaceSetValidator;
-import org.smartparam.engine.report.tree.ReportLevelValuesSpaceSetValidator;
+import org.smartparam.engine.report.tree.DefaultSetInspector;
+import org.smartparam.engine.report.tree.ReportLevelValuesSetInspector;
 
 /**
  *
@@ -29,7 +29,7 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
 
     private final ReportLevel rootLevel = new ReportLevel("ROOT");
 
-    private final Map<String, ReportLevelValuesSpaceSetValidator<?>> ambiguousLevels = new HashMap<String, ReportLevelValuesSpaceSetValidator<?>>();
+    private final Map<String, ReportLevelValuesSetInspector<?>> ambiguousLevels = new HashMap<String, ReportLevelValuesSetInspector<?>>();
 
     public ReportSkeleton() {
     }
@@ -39,11 +39,11 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
     }
 
     public ReportSkeleton withAmbigousLevel(String levelName) {
-        ambiguousLevels.put(levelName, new DefaultSpaceSetValidator());
+        ambiguousLevels.put(levelName, new DefaultSetInspector());
         return this;
     }
 
-    public ReportSkeleton withAmbigousLevel(String levelName, ReportLevelValuesSpaceSetValidator<?> validator) {
+    public ReportSkeleton withAmbigousLevel(String levelName, ReportLevelValuesSetInspector<?> validator) {
         ambiguousLevels.put(levelName, validator);
         return this;
     }
@@ -74,11 +74,11 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
         return builder.toString();
     }
 
-    public boolean ambigous(String levelName) {
+    public boolean ambiguous(String levelName) {
         return ambiguousLevels.containsKey(levelName);
     }
 
-    public ReportLevelValuesSpaceSetValidator<?> ambiguousLevelSpaceSetValidator(String levelName) {
+    public ReportLevelValuesSetInspector<?> ambiguousLevelSpaceSetValidator(String levelName) {
         return ambiguousLevels.get(levelName);
     }
 }

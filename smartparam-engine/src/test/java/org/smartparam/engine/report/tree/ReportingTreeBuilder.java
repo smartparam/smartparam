@@ -50,7 +50,7 @@ public final class ReportingTreeBuilder {
                 new IntegerType(),
                 new BetweenMatcherType(),
                 new ContinuousSegmentsSpaceFactory(),
-                new DefaultSpaceSetValidator()
+                new DefaultSetInspector()
         ));
         return this;
     }

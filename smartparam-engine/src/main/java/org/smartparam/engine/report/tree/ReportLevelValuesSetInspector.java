@@ -13,19 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.smartparam.engine.report.tree;
 
-import org.smartparam.engine.report.tree.ReportLevelValuesSpaceSetValidator;
+package org.smartparam.engine.report.tree;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class DefaultSpaceSetValidator implements ReportLevelValuesSpaceSetValidator<Object> {
+public interface ReportLevelValuesSetInspector<C> {
 
-    @Override
-    public boolean isEmpty(Object set) {
-        return false;
-    }
+    boolean isEmpty(C set);
 
 }

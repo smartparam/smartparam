@@ -97,7 +97,7 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
 
             ReportingTreeLevelDescriptor level = new ReportingTreeLevelDescriptor(
                     indexWalker.levelValueFor(levelIndex),
-                    reportSkeleton.ambigous(descriptor.name()),
+                    reportSkeleton.ambiguous(descriptor.name()),
                     descriptor.originalMatcher(),
                     descriptor.effectiveMatcher(),
                     descriptor.type(),
