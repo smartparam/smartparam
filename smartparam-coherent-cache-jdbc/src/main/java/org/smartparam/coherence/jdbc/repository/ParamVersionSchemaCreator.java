@@ -41,6 +41,7 @@ public class ParamVersionSchemaCreator {
                     .withAttribute().longAttr("id").withAdditionalModifiers("AUTO_INCREMENT").notNull().and()
                     .withAttribute().string("name").withMaxLength(200).notNull().unique().and()
                     .withAttribute().integer("version").notNull().and()
+                    .withAttribute().timestamp("last_update").notNull().and()
                     .primaryKey(configuration.primaryKeyPrefix() + configuration.entityName()).using("id").and()
                     .build();
             schema.addSequence(configuration.sequenceName()).build();
