@@ -22,6 +22,8 @@ import org.smartparam.engine.core.output.DetailedParamValue;
 import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.index.CustomizableIndexWalkerBuilder;
 import org.smartparam.engine.index.CustomizableIndexWalkerFactory;
+import org.smartparam.engine.index.LevelLeafValuesExtractor;
+import org.smartparam.engine.index.SimpleLevelLeafValuesExtractor;
 import org.smartparam.engine.report.FirstWinsValueChooser;
 import org.smartparam.engine.report.tree.ReportValueChooser;
 import org.smartparam.engine.report.ReportingLevelLeafValuesExtractor;
@@ -54,12 +56,10 @@ public final class ParamQuery {
     }
 
     public DetailedParamValue execute() {
-        if (reportSkeleton == null) {
-            reportSkeleton = ReportSkeleton.reportSkeleton();
-        }
+        LevelLeafValuesExtractor<PreparedEntry> leafValuesExtractor = reportSkeleton == null ?
+                new SimpleLevelLeafValuesExtractor<PreparedEntry>() : new ReportingLevelLeafValuesExtractor(paramEngine, reportSkeleton, valueChooser);
 
-        ReportingLevelLeafValuesExtractor valuesExtractor = new ReportingLevelLeafValuesExtractor(paramEngine, reportSkeleton, valueChooser);
-        walkerBuilder.withValuesExtractor(valuesExtractor);
+        walkerBuilder.withValuesExtractor(leafValuesExtractor);
         CustomizableIndexWalkerFactory factory = walkerBuilder.build();
 
         return paramEngine.getDetailed(parameterName, factory, context);
