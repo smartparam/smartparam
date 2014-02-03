@@ -2,11 +2,13 @@ package org.smartparam.coherence.jdbc.repository;
 
 import org.polyjdbc.core.query.*;
 import org.polyjdbc.core.query.mapper.ObjectMapper;
+import org.polyjdbc.core.type.Timestamp;
 import org.smartparam.coherence.jdbc.config.JdbcConfig;
 import org.smartparam.engine.config.initialization.InitializableComponent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,8 @@ public class JdbcParamVersionRepository implements ParamVersionRepository, Initi
             private void updateParamVersion(QueryRunner queryRunner, long newParamVersion) {
                 UpdateQuery query = QueryFactory.update(configuration.entityName()).where("name = :name")
                         .withArgument("name", paramName)
-                        .set("version", newParamVersion);
+                        .set("version", newParamVersion)
+                        .set("last_update", Timestamp.from(new Date()));
                 queryRunner.update(query);
             }
 
@@ -61,7 +64,8 @@ public class JdbcParamVersionRepository implements ParamVersionRepository, Initi
                 InsertQuery query = QueryFactory.insert().into(configuration.entityName())
                         .sequence("id", configuration.sequenceName())
                         .value("name", paramName)
-                        .value("version", 1);
+                        .value("version", 1)
+                        .value("last_update", Timestamp.from(new Date()));
                 queryRunner.insert(query);
                 return 1L;
             }

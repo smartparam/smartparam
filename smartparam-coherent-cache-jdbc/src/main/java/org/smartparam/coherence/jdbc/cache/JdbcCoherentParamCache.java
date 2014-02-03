@@ -1,5 +1,7 @@
 package org.smartparam.coherence.jdbc.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.coherence.jdbc.repository.JdbcParamVersionRepository;
 import org.smartparam.engine.config.initialization.InitializableComponent;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
@@ -10,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JdbcCoherentParamCache implements CoherentParamCache, InitializableComponent {
+
+    private static final Logger logger = LoggerFactory.getLogger(JdbcCoherentParamCache.class);
 
     private final PreparedParamCache decoratedCache;
 
@@ -43,6 +47,8 @@ public class JdbcCoherentParamCache implements CoherentParamCache, Initializable
     public void invalidate(String paramName) {
         decoratedCache.invalidate(paramName);
         Long newVersion = versionRepository.incrementVersion(paramName);
+        logger.debug("Invalidated {}. Local version was {}, new version is {}.",
+                     paramName, localVersions.get(paramName), newVersion);
         localVersions.put(paramName, newVersion);
     }
 
@@ -52,6 +58,8 @@ public class JdbcCoherentParamCache implements CoherentParamCache, Initializable
         for (String param : versions.keySet()) {
             if (!localVersions.containsKey(param) || localVersions.get(param) < versions.get(param)) {
                 invalidateWithoutNotifying(param);
+                logger.debug("Invalidated stale {}. Local version was {}, new version is {}.",
+                             param, localVersions.get(param), versions.get(param));
                 localVersions.put(param, versions.get(param));
             }
         }
