@@ -16,9 +16,9 @@
 package org.smartparam.engine.core.repository;
 
 import java.util.Map;
-import org.fest.assertions.api.Assertions;
-import static org.fest.assertions.api.Fail.*;
-import org.fest.assertions.api.MapAssert;
+import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Fail.*;
+import org.assertj.core.api.MapAssert;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 
 /**
@@ -36,7 +36,7 @@ public class RepositoryItemMapAssert<T> extends MapAssert<RepositoryObjectKey, T
     }
 
     public RepositoryItemMapAssert<T> containsRepositoryKey(RepositoryObjectKey key) {
-        if(!actual.containsKey(key)) {
+        if (!actual.containsKey(key)) {
             fail("expected entry with key: " + key.getKey() + " but none found");
         }
         return this;
@@ -47,11 +47,11 @@ public class RepositoryItemMapAssert<T> extends MapAssert<RepositoryObjectKey, T
     }
 
     public RepositoryItemMapAssert<T> containsRepositoryKeys(String... keys) {
-        if(keys.length != actual.size()) {
+        if (keys.length != actual.size()) {
             fail("expected " + keys.length + " items in map, instead found " + actual.size());
         }
 
-        for(RepositoryObjectKey repositoryKey : actual.keySet()) {
+        for (RepositoryObjectKey repositoryKey : actual.keySet()) {
             containsRepositoryKey(repositoryKey);
         }
 

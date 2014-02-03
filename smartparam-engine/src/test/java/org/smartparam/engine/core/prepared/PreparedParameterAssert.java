@@ -15,10 +15,8 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.prepared.PreparedLevelAssert;
-import org.fest.assertions.api.AbstractAssert;
-import org.fest.assertions.data.MapEntry;
-import org.smartparam.engine.core.prepared.PreparedParameter;
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.data.MapEntry;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
 /**

@@ -15,15 +15,16 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.prepared.PreparedLevel;
-import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.repository.RepositoryName;
 
 /**
  *
  * @author Adam Dubiel
  */
 public class PreparedParameterTestBuilder {
+
+    private RepositoryName from = RepositoryName.from("default-test-repo");
 
     private Parameter parameter;
 
@@ -37,7 +38,7 @@ public class PreparedParameterTestBuilder {
     }
 
     public PreparedParameter build() {
-        return new PreparedParameter(parameter, levels);
+        return new PreparedParameter(from, parameter, levels);
     }
 
     public PreparedParameterTestBuilder forParameter(Parameter parameter) {
@@ -47,6 +48,11 @@ public class PreparedParameterTestBuilder {
 
     public PreparedParameterTestBuilder withLevels(PreparedLevel... levels) {
         this.levels = levels;
+        return this;
+    }
+
+    public PreparedParameterTestBuilder from(String repositoryName) {
+        this.from = RepositoryName.from(repositoryName);
         return this;
     }
 }

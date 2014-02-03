@@ -160,7 +160,10 @@ public class AnnotatedObjectFactory {
      */
     private int extractOrder(Annotation annotation) {
         if (annotation.annotationType().isAnnotationPresent(Sortable.class)) {
-            return AnnotationHelper.extractValue(annotation, ORDER_METHOD_NAME);
+            // this is a JDK 6 workaround, please leave it here unless we're moving to JDK 7+
+            // JDK 6 can't figure out how to go from <T>s T to primitive int, needs <? extends Object>
+            Integer order = AnnotationHelper.extractValue(annotation, ORDER_METHOD_NAME);
+            return order;
         }
         return DEFAULT_ORDER_VALUE;
     }

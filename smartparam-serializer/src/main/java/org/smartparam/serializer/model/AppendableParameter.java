@@ -17,7 +17,7 @@ package org.smartparam.serializer.model;
 
 import java.util.Collection;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *

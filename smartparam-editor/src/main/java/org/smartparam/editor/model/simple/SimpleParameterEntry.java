@@ -16,7 +16,9 @@
 package org.smartparam.editor.model.simple;
 
 import java.util.Arrays;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -24,9 +26,15 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class SimpleParameterEntry implements ParameterEntry {
 
-    private String[] levels;
+    private static final String[] EMPTY_LEVELS = {};
+
+    private String[] levels = EMPTY_LEVELS;
 
     public SimpleParameterEntry() {
+    }
+
+    public SimpleParameterEntry(String... levels) {
+        this.levels = levels;
     }
 
     public SimpleParameterEntry(ParameterEntry entry) {
@@ -35,8 +43,14 @@ public class SimpleParameterEntry implements ParameterEntry {
         }
     }
 
+    @Override
+    public ParameterEntryKey getKey() {
+        return EmptyEntityKey.emptyKey();
+    }
+
+    @Override
     public String[] getLevels() {
-        return Arrays.copyOf(levels, levels.length);
+        return levels;
     }
 
     public void setLevels(String[] levels) {

@@ -15,9 +15,9 @@
  */
 package org.smartparam.engine.config.pico;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -25,35 +25,34 @@ import java.util.List;
  */
 public abstract class ComponentConfig {
 
-    private final List<Object> userComponents = new ArrayList<Object>();
+    private final Set<ComponentDefinition> userComponents = new HashSet<ComponentDefinition>();
 
-    private final List<Object> defaultComponents = new ArrayList<Object>();
+    private final Set<ComponentDefinition> defaultComponents = new HashSet<ComponentDefinition>();
 
-    private List<Object> components;
+    private Set<ComponentDefinition> components;
 
-    protected abstract void injectDefaults(List<Object> components);
+    protected abstract void injectDefaults(Set<ComponentDefinition> components);
 
-    private List<Object> createFinalComponents() {
-        List<Object> finalComponents = new ArrayList<Object>(defaultComponents);
-        finalComponents.addAll(userComponents);
+    private Set<ComponentDefinition> createFinalComponents() {
+        Set<ComponentDefinition> finalComponents = new HashSet<ComponentDefinition>(userComponents);
+        finalComponents.addAll(defaultComponents);
         return finalComponents;
     }
 
-    public List<Object> getComponents() {
+    public Set<ComponentDefinition> getComponents() {
         if (components == null) {
             injectDefaults(defaultComponents);
             components = createFinalComponents();
         }
 
-        return Collections.unmodifiableList(components);
+        return Collections.unmodifiableSet(components);
     }
 
-    public void addComponent(Object component) {
+    public void addComponent(ComponentDefinition component) {
         this.userComponents.add(component);
     }
 
-    public void setComponents(List<Object> components) {
-        this.userComponents.clear();
+    public void addAllComponents(Set<ComponentDefinition> components) {
         this.userComponents.addAll(components);
     }
 }

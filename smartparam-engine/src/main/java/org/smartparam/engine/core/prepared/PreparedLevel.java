@@ -38,6 +38,8 @@ public class PreparedLevel {
 
     private final boolean array;
 
+    private final String matcherName;
+
     private final Matcher matcher;
 
     private final Function levelCreator;
@@ -51,10 +53,11 @@ public class PreparedLevel {
      * @param matcher      level's matcher code
      * @param levelCreator function resolving actual level value
      */
-    public PreparedLevel(String name, boolean array, Type<?> type, Matcher matcher, Function levelCreator) {
+    public PreparedLevel(String name, boolean array, Type<?> type, String matcherName, Matcher matcher, Function levelCreator) {
         this.name = name;
         this.type = type;
         this.array = array;
+        this.matcherName = matcherName;
         this.matcher = matcher;
         this.levelCreator = levelCreator;
     }
@@ -65,6 +68,10 @@ public class PreparedLevel {
 
     public boolean isArray() {
         return array;
+    }
+
+    public String getMatcherName() {
+        return matcherName;
     }
 
     public Matcher getMatcher() {

@@ -22,7 +22,6 @@ import org.polyjdbc.core.schema.model.RelationBuilder;
 import org.polyjdbc.core.schema.model.Schema;
 import org.smartparam.repository.jdbc.config.DefaultJdbcConfig;
 import org.polyjdbc.core.util.TheCloser;
-import static org.smartparam.repository.jdbc.schema.SchemaNamePolicy.*;
 
 /**
  *
@@ -30,12 +29,12 @@ import static org.smartparam.repository.jdbc.schema.SchemaNamePolicy.*;
  */
 public class DefaultSchemaCreator implements SchemaCreator {
 
-    private final DefaultJdbcConfig configuration;
+    private final DefaultJdbcConfig config;
 
     private final SchemaManagerFactory schemaManagerFactory;
 
     public DefaultSchemaCreator(DefaultJdbcConfig configuration, SchemaManagerFactory schemaManagerFactory) {
-        this.configuration = configuration;
+        this.config = configuration;
         this.schemaManagerFactory = schemaManagerFactory;
     }
 
@@ -47,7 +46,7 @@ public class DefaultSchemaCreator implements SchemaCreator {
             schemaManager = schemaManagerFactory.createManager();
             schemaInspector = schemaManagerFactory.createInspector();
 
-            Schema schema = new Schema(configuration.dialect());
+            Schema schema = new Schema(config.dialect());
             createParameterRelation(schema, schemaInspector);
             createLevelRelation(schema, schemaInspector);
             createParameterEntryRelation(schema, schemaInspector);
@@ -59,7 +58,7 @@ public class DefaultSchemaCreator implements SchemaCreator {
     }
 
     protected void createParameterRelation(Schema schema, SchemaInspector schemaInspector) {
-        String relationName = configuration.parameterEntityName();
+        String relationName = config.parameterEntityName();
         if (!schemaInspector.relationExists(relationName)) {
             schema.addRelation(relationName)
                     .withAttribute().longAttr("id").withAdditionalModifiers("AUTO_INCREMENT").notNull().and()
@@ -67,15 +66,18 @@ public class DefaultSchemaCreator implements SchemaCreator {
                     .withAttribute().integer("input_levels").notNull().and()
                     .withAttribute().booleanAttr("cacheable").notNull().withDefaultValue(true).and()
                     .withAttribute().booleanAttr("nullable").notNull().withDefaultValue(false).and()
+                    .withAttribute().booleanAttr("identify_entries").notNull().withDefaultValue(false).and()
                     .withAttribute().character("array_separator").notNull().withDefaultValue(';').and()
                     .primaryKey(primaryKey(relationName)).using("id").and()
                     .build();
-            schema.addSequence(configuration.parameterSequenceName()).build();
+            schema.addIndex(index(relationName) + "_id").indexing("id").on(relationName).build();
+            schema.addIndex(index(relationName) + "_name").indexing("name").on(relationName).build();
+            schema.addSequence(config.parameterSequenceName()).build();
         }
     }
 
     protected void createLevelRelation(Schema schema, SchemaInspector schemaInspector) {
-        String relationName = configuration.levelEntityName();
+        String relationName = config.levelEntityName();
         if (!schemaInspector.relationExists(relationName)) {
             schema.addRelation(relationName)
                     .withAttribute().longAttr("id").withAdditionalModifiers("AUTO_INCREMENT").notNull().and()
@@ -87,29 +89,45 @@ public class DefaultSchemaCreator implements SchemaCreator {
                     .withAttribute().integer("order_no").notNull().and()
                     .withAttribute().longAttr(foreignKey("parameter")).notNull().and()
                     .primaryKey(primaryKey(relationName)).using("id").and()
-                    .foreignKey(foreignKey(configuration.parameterEntityName() + "_name")).references(configuration.parameterEntityName(), "id").on(foreignKey("parameter")).and()
+                    .foreignKey(foreignKey(relationName) + "_name").references(config.parameterEntityName(), "id").on(foreignKey("parameter")).and()
                     .build();
-            schema.addSequence(configuration.levelSequenceName()).build();
+            schema.addIndex(index(relationName) + "_id").indexing("id").on(relationName).build();
+            schema.addIndex(index(relationName) + "_parameter").indexing(foreignKey("parameter")).on(relationName).build();
+            schema.addSequence(config.levelSequenceName()).build();
         }
     }
 
     protected void createParameterEntryRelation(Schema schema, SchemaInspector schemaInspector) {
-        String relationName = configuration.parameterEntryEntityName();
+        String relationName = config.parameterEntryEntityName();
         if (!schemaInspector.relationExists(relationName)) {
             RelationBuilder builder = RelationBuilder.relation(schema, relationName);
             builder.withAttribute().longAttr("id").withAdditionalModifiers("AUTO_INCREMENT").notNull().and()
                     .withAttribute().longAttr(foreignKey("parameter")).notNull().and();
 
-            for (int levelIndex = 0; levelIndex < configuration.levelColumnCount(); ++levelIndex) {
+            for (int levelIndex = 0; levelIndex < config.levelColumnCount(); ++levelIndex) {
                 builder.string("level" + levelIndex).withMaxLength(255).and();
             }
 
             builder.primaryKey(primaryKey(relationName)).using("id").and()
-                    .foreignKey(foreignKey(configuration.parameterEntityName() + "name")).references(configuration.parameterEntityName(), "id").on(foreignKey("parameter")).and()
+                    .foreignKey(foreignKey(relationName) + "_parameter").references(config.parameterEntityName(), "id").on(foreignKey("parameter")).and()
                     .build();
 
-            schema.addSequence(configuration.parameterEntrySequenceName()).build();
+            schema.addIndex(index(relationName) + "_id").indexing("id").on(relationName).build();
+            schema.addIndex(index(relationName) + "_parameter").indexing(foreignKey("parameter")).on(relationName).build();
+            schema.addSequence(config.parameterEntrySequenceName()).build();
         }
+    }
+
+    private String primaryKey(String sufix) {
+        return config.foreignKeyPrefix() + sufix;
+    }
+
+    private String foreignKey(String sufix) {
+        return config.foreignKeyPrefix() + sufix;
+    }
+
+    private String index(String sufix) {
+        return config.indexPrefix() + sufix;
     }
 
     @Override
@@ -118,15 +136,15 @@ public class DefaultSchemaCreator implements SchemaCreator {
         try {
             schemaManager = schemaManagerFactory.createManager();
 
-            Schema schema = new Schema(configuration.dialect());
-            schema.addRelation(configuration.parameterEntityName()).build();
-            schema.addSequence(configuration.parameterSequenceName()).build();
+            Schema schema = new Schema(config.dialect());
+            schema.addRelation(config.parameterEntityName()).build();
+            schema.addSequence(config.parameterSequenceName()).build();
 
-            schema.addRelation(configuration.levelEntityName()).build();
-            schema.addSequence(configuration.levelSequenceName()).build();
+            schema.addRelation(config.levelEntityName()).build();
+            schema.addSequence(config.levelSequenceName()).build();
 
-            schema.addRelation(configuration.parameterEntryEntityName()).build();
-            schema.addSequence(configuration.parameterEntrySequenceName()).build();
+            schema.addRelation(config.parameterEntryEntityName()).build();
+            schema.addSequence(config.parameterEntrySequenceName()).build();
 
             schemaManager.drop(schema);
         } finally {

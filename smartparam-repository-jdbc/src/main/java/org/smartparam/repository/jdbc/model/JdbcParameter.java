@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.ParameterKey;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  * @author Przemek Hertel
@@ -29,7 +30,7 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public class JdbcParameter implements Parameter {
 
-    private final long id;
+    private final JdbcParameterKey key;
 
     private final String name;
 
@@ -43,16 +44,23 @@ public class JdbcParameter implements Parameter {
 
     private boolean cacheable = true;
 
+    private boolean identifyEntries;
+
     private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
     public JdbcParameter(long id, String name, int inputLevels) {
-        this.id = id;
+        this.key = new JdbcParameterKey(id);
         this.name = name;
         this.inputLevels = inputLevels;
     }
 
+    @Override
+    public ParameterKey getKey() {
+        return key;
+    }
+
     public long getId() {
-        return id;
+        return key.parameterId();
     }
 
     @Override
@@ -95,6 +103,11 @@ public class JdbcParameter implements Parameter {
     }
 
     @Override
+    public boolean isIdentifyEntries() {
+        return identifyEntries;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Parameter#").append(name);
@@ -126,6 +139,10 @@ public class JdbcParameter implements Parameter {
 
     public void setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
+    }
+
+    public void setIdentifyEntries(boolean identifyEntries) {
+        this.identifyEntries = identifyEntries;
     }
 
     public void setArraySeparator(char arraySeparator) {

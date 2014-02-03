@@ -15,7 +15,6 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.smartparam.engine.core.prepared.PreparedLevel;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.function.Function;
@@ -44,7 +43,7 @@ public class PreparedLevelTestBuilder {
     }
 
     public PreparedLevel build() {
-        return new PreparedLevel(name, array, type, matcher, levelCreator);
+        return new PreparedLevel(name, array, type, "matcher", matcher, levelCreator);
     }
 
     public PreparedLevelTestBuilder withName(String name) {

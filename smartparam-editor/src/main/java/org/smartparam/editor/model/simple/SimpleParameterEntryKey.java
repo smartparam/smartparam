@@ -15,7 +15,7 @@
  */
 package org.smartparam.editor.model.simple;
 
-import org.smartparam.editor.model.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  *
@@ -29,6 +29,7 @@ public class SimpleParameterEntryKey implements ParameterEntryKey {
         this.value = value;
     }
 
+    @Override
     public String value() {
         return value;
     }

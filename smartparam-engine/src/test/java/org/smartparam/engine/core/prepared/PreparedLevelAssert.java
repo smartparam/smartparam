@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import org.fest.assertions.api.AbstractAssert;
+import org.assertj.core.api.AbstractAssert;
 import org.smartparam.engine.core.prepared.PreparedLevel;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;

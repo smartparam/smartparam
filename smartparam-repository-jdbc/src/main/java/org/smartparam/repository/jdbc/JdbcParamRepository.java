@@ -26,28 +26,30 @@ import org.polyjdbc.core.query.QueryRunner;
 import org.polyjdbc.core.query.VoidTransactionWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.smartparam.editor.capabilities.RepositoryCapabilities;
+import org.smartparam.editor.core.capabilities.RepositoryCapabilities;
 import org.smartparam.engine.config.initialization.InitializableComponent;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
-import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryBatchLoader;
 import org.smartparam.engine.core.parameter.ParamBatchLoadingException;
-import org.smartparam.editor.editor.EditableParamRepository;
+import org.smartparam.editor.core.EditableParamRepository;
 import org.smartparam.engine.core.parameter.WritableParamRepository;
-import org.smartparam.editor.viewer.ParameterEntriesFilter;
-import org.smartparam.editor.viewer.ParameterFilter;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.editor.core.filters.ParameterEntriesFilter;
+import org.smartparam.editor.core.filters.ParameterFilter;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.editor.model.LevelKey;
-import org.smartparam.editor.model.ParameterEntryKey;
-import org.smartparam.editor.viewer.ViewableParamRepository;
-import org.smartparam.editor.viewer.ViewableRepositoryCapability;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.level.LevelKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.ParameterKey;
+import org.smartparam.editor.core.ViewableParamRepository;
+import org.smartparam.editor.core.ViewableRepositoryCapability;
 import org.smartparam.repository.jdbc.batch.JdbcParameterEntryBatchLoader;
 import org.smartparam.repository.jdbc.dao.JdbcRepository;
 import org.smartparam.repository.jdbc.exception.ParameterAlreadyExistsException;
 import org.smartparam.repository.jdbc.model.JdbcLevelKey;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 import org.smartparam.repository.jdbc.model.JdbcParameterEntryKey;
+import org.smartparam.repository.jdbc.model.JdbcParameterKey;
 import org.smartparam.repository.jdbc.schema.SchemaCreator;
 
 /**
@@ -212,14 +214,14 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
     }
 
     @Override
-    public void createParameter(final Parameter parameter) {
-        transactionRunner.run(new VoidTransactionWrapper() {
+    public ParameterKey createParameter(final Parameter parameter) {
+        return transactionRunner.run(new TransactionWrapper<ParameterKey>() {
             @Override
-            public void performVoid(QueryRunner queryRunner) {
+            public ParameterKey perform(QueryRunner queryRunner) {
                 if (dao.parameterExists(queryRunner, parameter.getName())) {
                     throw new ParameterAlreadyExistsException("Parameter with name " + parameter.getName() + " already exists in this repository.");
                 }
-                dao.createParameter(queryRunner, parameter);
+                return new JdbcParameterKey(dao.createParameter(queryRunner, parameter));
             }
         });
     }
@@ -281,6 +283,20 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
             @Override
             public void performVoid(QueryRunner queryRunner) {
                 dao.deleteLevel(queryRunner, parameterName, new JdbcLevelKey(levelKey).levelId());
+            }
+        });
+    }
+
+    @Override
+    public List<ParameterEntry> getParameterEntries(final String parameterName, final Iterable<ParameterEntryKey> parameterEntryKeys) {
+        return transactionRunner.run(new TransactionWrapper<List<ParameterEntry>>() {
+            @Override
+            public List<ParameterEntry> perform(QueryRunner queryRunner) {
+                List<Long> entryIds = new ArrayList<Long>();
+                for (ParameterEntryKey entryKey : parameterEntryKeys) {
+                    entryIds.add(new JdbcParameterEntryKey(entryKey).entryId());
+                }
+                return dao.getEntries(queryRunner, entryIds);
             }
         });
     }
@@ -354,6 +370,16 @@ public class JdbcParamRepository implements WritableParamRepository, EditablePar
                 }
 
                 dao.deleteParameterEntries(queryRunner, ids);
+            }
+        });
+    }
+
+    @Override
+    public void deleteEntries(final String parameterName) {
+        transactionRunner.run(new VoidTransactionWrapper() {
+            @Override
+            public void performVoid(QueryRunner queryRunner) {
+                dao.deleteParameterEntries(queryRunner, parameterName);
             }
         });
     }

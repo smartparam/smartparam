@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.core;
 
-import org.smartparam.engine.core.output.MultiValue;
-import org.smartparam.engine.core.output.ParamValueImpl;
 import org.smartparam.engine.core.output.ParamValue;
 import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParameter;
@@ -29,13 +27,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.core.context.ParamContext;
-import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.type.ValueHolder;
-import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.function.Function;
+import org.smartparam.engine.core.output.DetailedParamValue;
+import org.smartparam.engine.core.output.factory.DefaultParamValueFactory;
+import org.smartparam.engine.core.output.factory.DetailedParamValueFactory;
+import org.smartparam.engine.core.output.factory.ParamValueFactory;
 import org.smartparam.engine.core.prepared.InputValueNormalizer;
 import org.smartparam.engine.types.string.StringHolder;
-import org.smartparam.engine.util.EngineUtil;
 
 /**
  *
@@ -52,10 +51,22 @@ public class SmartParamEngine implements ParamEngine {
 
     private final FunctionManager functionManager;
 
-    public SmartParamEngine(ParamPreparer paramPreparer, FunctionManager functionManager, ParamEngineRuntimeConfigBuilder configBuilder) {
+    private final DefaultParamValueFactory defaultParamValueFactory;
+
+    private final DetailedParamValueFactory detailedParamValueFactory;
+
+    private final LevelIndexWalkerFactory fastIndexWalkerFactory = new FastLevelIndexWalkerFactory();
+
+    public SmartParamEngine(ParamEngineRuntimeConfigBuilder configBuilder,
+            ParamPreparer paramPreparer,
+            FunctionManager functionManager,
+            DefaultParamValueFactory defaultParamValueFactory,
+            DetailedParamValueFactory detailedParamValueFactory) {
+        this.configBuilder = configBuilder;
         this.paramPreparer = paramPreparer;
         this.functionManager = functionManager;
-        this.configBuilder = configBuilder;
+        this.defaultParamValueFactory = defaultParamValueFactory;
+        this.detailedParamValueFactory = detailedParamValueFactory;
     }
 
     @Override
@@ -64,59 +75,46 @@ public class SmartParamEngine implements ParamEngine {
     }
 
     @Override
-    public ParamValue get(String paramName, ParamContext ctx) {
+    public ParamValue get(String parameterName, ParamContext context) {
+        return get(parameterName, fastIndexWalkerFactory, context);
+    }
 
-        logger.debug("enter get[{}], ctx={}", paramName, ctx);
+    @Override
+    public ParamValue get(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamContext context) {
+        return get(parameterName, customWalkerFactory, defaultParamValueFactory, context);
+    }
+
+    @Override
+    public DetailedParamValue getDetailed(String parameterName, ParamContext context) {
+        return getDetailed(parameterName, fastIndexWalkerFactory, context);
+    }
+
+    @Override
+    public DetailedParamValue getDetailed(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamContext context) {
+        return (DetailedParamValue) get(parameterName, customWalkerFactory, detailedParamValueFactory, context);
+    }
+
+    private ParamValue get(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamValueFactory paramValueFactory, ParamContext context) {
+        logger.debug("enter get[{}], walker={}, ctx={}", parameterName, customWalkerFactory.getClass().getSimpleName(), context);
 
         // obtain prepared parameter
-        PreparedParameter param = getPreparedParameter(paramName);
+        PreparedParameter param = getPreparedParameter(parameterName);
 
         // find entries matching given context
-        PreparedEntry[] rows = findParameterEntries(param, ctx);
+        PreparedEntry[] rows = findParameterEntries(customWalkerFactory, param, context);
 
-        // todo ph think about it
         if (rows.length == 0) {
             if (param.isNullable()) {
-                logger.debug("leave get[{}], result=null", paramName);
-                return null;
+                logger.debug("leave get[{}], result=null", parameterName);
+                return paramValueFactory.empty();
             }
 
-            throw new ParameterValueNotFoundException(paramName, ctx);
+            throw new ParameterValueNotFoundException(parameterName, context);
         }
 
-        int inputLevelCount = param.getInputLevelsCount();
-        int oputputLevelCount = param.getLevelCount() - inputLevelCount;
+        ParamValue result = paramValueFactory.create(param, rows);
 
-        MultiValue[] row = new MultiValue[rows.length];
-
-        for (int rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-            PreparedEntry pe = rows[rowIndex];
-
-            PreparedLevel[] levels = param.getLevels();
-            Object[] vector = new Object[oputputLevelCount];
-
-            for (int columnIndex = 0; columnIndex < oputputLevelCount; ++columnIndex) {
-                String cellText = pe.getLevel(inputLevelCount + columnIndex + 1);
-                PreparedLevel level = levels[inputLevelCount + columnIndex];
-
-                Type<?> cellType = level.getType();
-                Object cellValue;
-
-                if (level.isArray()) {
-                    cellValue = evaluateStringAsArray(cellText, cellType, ',');
-                } else {
-                    cellValue = TypeDecoder.decode(cellType, cellText);
-                }
-
-                vector[columnIndex] = cellValue;
-            }
-
-            row[rowIndex] = new MultiValue(vector, param.getLevelNameMap());
-        }
-
-        ParamValue result = new ParamValueImpl(row);
-
-        logger.debug("leave get[{}], result={}", paramName, result);
+        logger.debug("leave get[{}], result={}", parameterName, result);
         return result;
     }
 
@@ -146,6 +144,7 @@ public class SmartParamEngine implements ParamEngine {
         return names;
     }
 
+    @Override
     public Object callEvaluatedFunction(String paramName, ParamContext ctx, Object... args) {
         ValueHolder holder = get(paramName, ctx).getHolder();
 
@@ -162,22 +161,7 @@ public class SmartParamEngine implements ParamEngine {
         return null;
     }
 
-    ValueHolder[] evaluateStringAsArray(String value, Type<?> type, char separator) {
-
-        if (EngineUtil.hasText(value)) {
-            String[] tokens = EngineUtil.split(value, separator);
-            ValueHolder[] array = type.newArray(tokens.length);
-            for (int i = 0; i < tokens.length; i++) {
-                array[i] = TypeDecoder.decode(type, tokens[i]);
-            }
-            return array;
-
-        } else {
-            return type.newArray(0);
-        }
-    }
-
-    void evaluateLevelValues(PreparedParameter param, ParamContext ctx) {
+    private void evaluateLevelValues(PreparedParameter param, ParamContext ctx) {
         logger.trace("evaluating level values");
 
         PreparedLevel[] levels = param.getLevels();
@@ -204,13 +188,23 @@ public class SmartParamEngine implements ParamEngine {
         ctx.setLevelValues(values);
     }
 
-    private PreparedEntry[] findParameterEntries(PreparedParameter param, String[] levelValues) {
+    private PreparedEntry[] findParameterEntries(LevelIndexWalkerFactory indexWalkerFactory, PreparedParameter param, ParamContext ctx) {
+        if (ctx.getLevelValues() == null) {
+            evaluateLevelValues(param, ctx);
+        }
+
+        validateLevelValues(ctx.getLevelValues(), param.getInputLevelsCount());
+
+        String[] normalizedInputValues = InputValueNormalizer.normalize(param, ctx.getLevelValues());
+        return findParameterEntries(indexWalkerFactory, param, normalizedInputValues);
+    }
+
+    private PreparedEntry[] findParameterEntries(LevelIndexWalkerFactory indexWalkerFactory, PreparedParameter param, String[] levelValues) {
 
         List<PreparedEntry> entries;
 
         if (param.isCacheable()) {
-            LevelIndex<PreparedEntry> index = param.getIndex();
-            entries = index.find(levelValues);
+            entries = indexWalkerFactory.create(param, levelValues).find();
         } else {
             entries = paramPreparer.findEntries(param.getName(), levelValues);
         }
@@ -222,18 +216,6 @@ public class SmartParamEngine implements ParamEngine {
         if (levelValues.length != parameterLevelCount) {
             throw new InvalidLevelValuesQuery(levelValues, parameterLevelCount);
         }
-    }
-
-    private PreparedEntry[] findParameterEntries(PreparedParameter param, ParamContext ctx) {
-
-        if (ctx.getLevelValues() == null) {
-            evaluateLevelValues(param, ctx);
-        }
-
-        validateLevelValues(ctx.getLevelValues(), param.getInputLevelsCount());
-
-        String[] normalizedInputValues = InputValueNormalizer.normalize(param, ctx.getLevelValues());
-        return findParameterEntries(param, normalizedInputValues);
     }
 
     private PreparedParameter getPreparedParameter(String paramName) {

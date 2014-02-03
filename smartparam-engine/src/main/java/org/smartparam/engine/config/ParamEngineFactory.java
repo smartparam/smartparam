@@ -27,7 +27,10 @@ import org.smartparam.engine.core.function.InvokerRepository;
 import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParameterProvider;
+import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
 /**
  * Creates ParamEngine instance using provided configuration. Use {@link ParamEngineConfigBuilder}
@@ -54,8 +57,9 @@ public class ParamEngineFactory {
     public ParamEngine createParamEngine(ParamEngineConfig config) {
         ComponentInitializerRunner initializerRunner = prepareInitializerRunner(config);
 
+        config.addComponent(component(ParamEngine.class, SmartParamEngine.class));
+
         MutablePicoContainer picoContainer = PicoContainerUtil.createContainer();
-        picoContainer.addComponent(SmartParamEngine.class);
         PicoContainerUtil.injectImplementations(picoContainer, config.getComponents());
         picoContainer.addComponent(new PicoParamEngineRuntimeConfigBuilder(picoContainer));
 
@@ -77,7 +81,9 @@ public class ParamEngineFactory {
     }
 
     private void initializeRepositories(PicoContainer container, ParamEngineConfig config, ComponentInitializerRunner initializerRunner) {
-        initializerRunner.runInitializersOnList(config.getParameterRepositories());
+        for(NamedParamRepository namedRepository : config.getParameterRepositories()) {
+            initializerRunner.runInitializers(namedRepository.repository());
+        }
         container.getComponent(ParameterProvider.class).registerAll(config.getParameterRepositories());
 
         initializerRunner.runInitializersOnList(config.getFunctionRepositories().values());
@@ -86,5 +92,6 @@ public class ParamEngineFactory {
         container.getComponent(InvokerRepository.class).registerAll(config.getFunctionInvokers());
         container.getComponent(TypeRepository.class).registerAll(config.getTypes());
         container.getComponent(MatcherRepository.class).registerAll(config.getMatchers());
+        container.getComponent(MatcherTypeRepository.class).registerAll(config.getMatcherTypes());
     }
 }

@@ -80,6 +80,7 @@ public class SpringParamEngineFactory implements FactoryBean<ParamEngine>, Appli
         this.packagesToScan.addAll(packagesToScan);
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext appContext) {
         this.appContext = appContext;
     }

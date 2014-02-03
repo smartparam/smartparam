@@ -24,7 +24,7 @@ import org.smartparam.engine.config.initialization.InitializableComponent;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.serializer.ParamDeserializer;
 import org.smartparam.serializer.StandardParamDeserializer;
 import org.smartparam.serializer.config.DefaultSerializationConfig;

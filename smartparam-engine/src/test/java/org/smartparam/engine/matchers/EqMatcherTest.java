@@ -17,7 +17,7 @@ package org.smartparam.engine.matchers;
 
 import org.testng.annotations.Test;
 import org.smartparam.engine.types.string.StringType;
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Przemek Hertel

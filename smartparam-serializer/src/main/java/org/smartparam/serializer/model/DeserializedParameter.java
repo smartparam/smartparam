@@ -21,9 +21,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.ParameterKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -43,7 +45,9 @@ public class DeserializedParameter implements AppendableParameter {
 
     private boolean nullable;
 
-    private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;;
+    private boolean identifyEntries;
+
+    private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
     public DeserializedParameter() {
     }
@@ -53,11 +57,17 @@ public class DeserializedParameter implements AppendableParameter {
         this.inputLevels = parameter.getInputLevels();
         this.cacheable = parameter.isCacheable();
         this.nullable = parameter.isNullable();
+        this.identifyEntries = parameter.isIdentifyEntries();
         this.arraySeparator = parameter.getArraySeparator();
 
         for (Level level : parameter.getLevels()) {
             this.levels.add(new DeserializedLevel(level));
         }
+    }
+
+    @Override
+    public ParameterKey getKey() {
+        return EmptyEntityKey.emptyKey();
     }
 
     @Override
@@ -93,6 +103,11 @@ public class DeserializedParameter implements AppendableParameter {
     @Override
     public boolean isNullable() {
         return nullable;
+    }
+
+    @Override
+    public boolean isIdentifyEntries() {
+        return identifyEntries;
     }
 
     @Override

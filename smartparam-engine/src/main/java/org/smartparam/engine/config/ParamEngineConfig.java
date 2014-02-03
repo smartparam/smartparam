@@ -22,7 +22,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
+import org.smartparam.engine.annotated.repository.*;
 import org.smartparam.engine.config.pico.ComponentConfig;
 import org.smartparam.engine.cache.MapFunctionCache;
 import org.smartparam.engine.cache.MapPreparedParamCache;
@@ -31,16 +33,28 @@ import org.smartparam.engine.core.prepared.BasicParamPreparer;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
-import org.smartparam.engine.core.parameter.ParamRepository;
-import org.smartparam.engine.annotated.repository.ScanningInvokerRepository;
-import org.smartparam.engine.annotated.repository.ScanningMatcherRepository;
-import org.smartparam.engine.annotated.repository.ScanningTypeRepository;
 import org.smartparam.engine.core.function.BasicFunctionManager;
-import org.smartparam.engine.annotated.repository.ScanningFunctionProvider;
+import org.smartparam.engine.config.pico.ComponentDefinition;
 import org.smartparam.engine.core.function.FunctionCache;
+import org.smartparam.engine.core.function.FunctionManager;
+import org.smartparam.engine.core.function.FunctionProvider;
+import org.smartparam.engine.core.function.InvokerRepository;
+import org.smartparam.engine.core.matcher.MatcherType;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
+import org.smartparam.engine.core.matcher.MatcherRepository;
+import org.smartparam.engine.core.output.entry.MapEntryFactory;
+import org.smartparam.engine.core.output.factory.DefaultParamValueFactory;
+import org.smartparam.engine.core.output.factory.DetailedParamValueFactory;
 import org.smartparam.engine.core.parameter.BasicParameterProvider;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
+import org.smartparam.engine.core.parameter.ParameterProvider;
+import org.smartparam.engine.core.prepared.LevelPreparer;
+import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.core.type.TypeRepository;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
+import static org.smartparam.engine.config.pico.ComponentDefinition.component;
 
 /**
  * Configuration to build ParamEngine instance - use {@link ParamEngineConfigBuilder}
@@ -50,7 +64,7 @@ import org.smartparam.engine.core.type.Type;
  */
 public class ParamEngineConfig extends ComponentConfig {
 
-    private final List<ParamRepository> parameterRepositories = new ArrayList<ParamRepository>();
+    private final List<NamedParamRepository> parameterRepositories = new ArrayList<NamedParamRepository>();
 
     private final Map<RepositoryObjectKey, FunctionRepository> functionRepositories = new HashMap<RepositoryObjectKey, FunctionRepository>();
 
@@ -59,6 +73,8 @@ public class ParamEngineConfig extends ComponentConfig {
     private final Map<String, Type<?>> types = new HashMap<String, Type<?>>();
 
     private final Map<String, Matcher> matchers = new HashMap<String, Matcher>();
+
+    private final Map<String, MatcherType<?>> matcherTypes = new HashMap<String, MatcherType<?>>();
 
     private PreparedParamCache parameterCache;
 
@@ -69,25 +85,34 @@ public class ParamEngineConfig extends ComponentConfig {
     private final List<ComponentInitializer> componentInitializers = new ArrayList<ComponentInitializer>();
 
     @Override
-    protected void injectDefaults(List<Object> components) {
-        components.add(BasicParamPreparer.class);
-        components.add(BasicLevelPreparer.class);
-        components.add(MapPreparedParamCache.class);
-        components.add(BasicFunctionManager.class);
-        components.add(ScanningFunctionProvider.class);
-        components.add(MapFunctionCache.class);
-        components.add(ScanningInvokerRepository.class);
-        components.add(BasicParameterProvider.class);
-        components.add(ScanningTypeRepository.class);
-        components.add(ScanningMatcherRepository.class);
+    protected void injectDefaults(Set<ComponentDefinition> components) {
+        components.add(component(ParamPreparer.class, BasicParamPreparer.class));
+        components.add(component(LevelPreparer.class, BasicLevelPreparer.class));
+        components.add(component(PreparedParamCache.class, MapPreparedParamCache.class));
+        components.add(component(FunctionManager.class, BasicFunctionManager.class));
+        components.add(component(FunctionProvider.class, ScanningFunctionProvider.class));
+        components.add(component(FunctionCache.class, MapFunctionCache.class));
+        components.add(component(InvokerRepository.class, ScanningInvokerRepository.class));
+        components.add(component(ParameterProvider.class, BasicParameterProvider.class));
+        components.add(component(TypeRepository.class, ScanningTypeRepository.class));
+        components.add(component(MatcherRepository.class, ScanningMatcherRepository.class));
+        components.add(component(MatcherTypeRepository.class, ScanningMatcherTypeRepository.class));
+        components.add(component(MapEntryFactory.class, MapEntryFactory.class));
+        components.add(component(DefaultParamValueFactory.class, DefaultParamValueFactory.class));
+        components.add(component(DetailedParamValueFactory.class, DetailedParamValueFactory.class));
+        components.add(component(ReportLevelValuesSpaceRepository.class, ScanningReportLevelValuesSpaceRepository.class));
     }
 
-    public List<ParamRepository> getParameterRepositories() {
+    public List<NamedParamRepository> getParameterRepositories() {
         return Collections.unmodifiableList(parameterRepositories);
     }
 
-    protected void addParameterRepositories(List<ParamRepository> parameterRepositories) {
+    protected void addParameterRepositories(List<NamedParamRepository> parameterRepositories) {
         this.parameterRepositories.addAll(parameterRepositories);
+    }
+
+    protected void addParameterRepository(NamedParamRepository parameterRepository) {
+        this.parameterRepositories.add(parameterRepository);
     }
 
     public Map<RepositoryObjectKey, FunctionRepository> getFunctionRepositories() {
@@ -122,13 +147,21 @@ public class ParamEngineConfig extends ComponentConfig {
         this.matchers.put(key, matcher);
     }
 
+    public Map<String, MatcherType<?>> getMatcherTypes() {
+        return Collections.unmodifiableMap(matcherTypes);
+    }
+
+    protected void addMatcherType(String key, MatcherType<?> matcherType) {
+        this.matcherTypes.put(key, matcherType);
+    }
+
     public FunctionCache getFunctionCache() {
         return functionCache;
     }
 
     protected void setFunctionCache(FunctionCache functionCache) {
         this.functionCache = functionCache;
-        addComponent(functionCache);
+        addComponent(component(FunctionCache.class, functionCache));
     }
 
     public PreparedParamCache getParameterCache() {
@@ -137,7 +170,7 @@ public class ParamEngineConfig extends ComponentConfig {
 
     protected void setParameterCache(PreparedParamCache parameterCache) {
         this.parameterCache = parameterCache;
-        addComponent(parameterCache);
+        addComponent(component(PreparedParamCache.class, parameterCache));
     }
 
     public List<ComponentInitializer> getComponentInitializers() {

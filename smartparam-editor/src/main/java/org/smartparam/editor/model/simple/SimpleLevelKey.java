@@ -15,7 +15,7 @@
  */
 package org.smartparam.editor.model.simple;
 
-import org.smartparam.editor.model.LevelKey;
+import org.smartparam.engine.core.parameter.level.LevelKey;
 
 /**
  *
@@ -29,6 +29,7 @@ public class SimpleLevelKey implements LevelKey {
         this.value = value;
     }
 
+    @Override
     public String value() {
         return value;
     }

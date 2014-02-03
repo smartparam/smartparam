@@ -20,7 +20,7 @@ import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.function.Function;
 
 /**
@@ -47,7 +47,7 @@ public class BasicLevelPreparer implements LevelPreparer {
         Matcher matcher = resolveMatcher(level.getMatcher(), level.getName());
         Function levelCreator = resolveLevelCreator(level.getLevelCreator());
 
-        return new PreparedLevel(level.getName(), level.isArray(), type, matcher, levelCreator);
+        return new PreparedLevel(level.getName(), level.isArray(), type, level.getMatcher(), matcher, levelCreator);
     }
 
     private Type<?> resolveType(String typeCode, String levelName) {

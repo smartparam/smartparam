@@ -18,12 +18,12 @@ package org.smartparam.repository.jdbc.batch;
 import java.util.Collection;
 import java.util.LinkedList;
 import org.smartparam.engine.core.parameter.ParamBatchLoadingException;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.repository.jdbc.dao.ParameterEntryDAO;
 import org.smartparam.repository.jdbc.DatabaseTest;
 import org.testng.annotations.Test;
 
-import static org.fest.assertions.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  *

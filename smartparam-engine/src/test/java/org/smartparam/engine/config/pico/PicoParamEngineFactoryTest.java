@@ -18,9 +18,12 @@ package org.smartparam.engine.config.pico;
 import org.smartparam.engine.config.ParamEngineFactory;
 import org.smartparam.engine.config.ParamEngineConfig;
 import org.smartparam.engine.core.ParamEngine;
-import org.smartparam.engine.core.matcher.Matcher;
+import org.smartparam.engine.core.ParamRepositoriesNaming;
+import org.smartparam.engine.core.function.FunctionCache;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
+import org.smartparam.engine.core.matcher.Matcher;
+import org.smartparam.engine.core.matcher.MatcherType;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.type.Type;
 import org.testng.annotations.BeforeMethod;
@@ -46,7 +49,7 @@ public class PicoParamEngineFactoryTest {
     @Test
     public void shouldCreateParamEngineInstanceWithDefaults() {
         // given
-        ParamEngineConfig config = paramEngineConfig().build();
+        ParamEngineConfig config = paramEngineConfig().withAnnotationScanDisabled().build();
 
         // when
         ParamEngine engine = paramEngineFactory.createParamEngine(config);
@@ -56,13 +59,28 @@ public class PicoParamEngineFactoryTest {
     }
 
     @Test
+    public void shouldCreateParamEngineInstanceWithAnnotationScanning() {
+        // given
+        ParamEngineConfig config = paramEngineConfig().build();
+
+        // when
+        ParamEngine engine = paramEngineFactory.createParamEngine(config);
+
+        // then
+        assertThat(engine.runtimeConfiguration()).hasFunctionRepositories().hasInvokers()
+                .hasMatchers().hasMatcherDecoders().hasTypes();
+    }
+
+    @Test
     public void shouldCreateParamEngineInstanceWithTypesInjectedIntoRepositories() {
         // given
         ParamEngineConfig config = paramEngineConfig()
+                .withAnnotationScanDisabled()
                 .withFunctionInvoker("test", mock(FunctionInvoker.class))
                 .withFunctionRepository("test", 1, mock(FunctionRepository.class))
                 .withParameterRepositories(mock(ParamRepository.class))
                 .withMatcher("test", mock(Matcher.class))
+                .withMatcherType("test", mock(MatcherType.class))
                 .withType("test", mock(Type.class))
                 .build();
 
@@ -71,6 +89,37 @@ public class PicoParamEngineFactoryTest {
 
         // then
         assertThat(engine.runtimeConfiguration()).hasFunctionRepositories().hasInvokers()
-                .hasMachers().hasParamRepositories().hasTypes();
+                .hasMatchers().hasMatcherDecoders().hasParamRepositories().hasTypes();
+    }
+
+    @Test
+    public void shouldAllowOnOverwritingDefaultImplementationsWithCustomBeans() {
+        // given
+        FunctionCache functionCache = mock(FunctionCache.class);
+        Class<? extends FunctionCache> cacheClass = functionCache.getClass();
+
+        ParamEngineConfig config = paramEngineConfig().withFunctionCache(functionCache).build();
+
+        // when
+        ParamEngine engine = paramEngineFactory.createParamEngine(config);
+
+        // then
+        assertThat(engine.runtimeConfiguration()).hasFunctionCache(cacheClass);
+    }
+
+    @Test
+    public void shouldRegisterParamRepositoriesUnderGivenNames() {
+        // given
+        ParamRepository repository = mock(ParamRepository.class);
+        ParamEngineConfig config = paramEngineConfig()
+                .withParameterRepository("test-repository", repository)
+                .build();
+
+        // when
+        ParamEngine engine = paramEngineFactory.createParamEngine(config);
+
+        // then
+        ParamRepositoriesNaming naming = engine.runtimeConfiguration().getParamRepositoriesNaming();
+        assertThat(naming.find("test-repository")).isSameAs(repository);
     }
 }

@@ -46,14 +46,11 @@ public class SpringParamEngineFactoryTest {
 
         // then
         assertThat(paramEngine.runtimeConfiguration()).hasFunctionRepositories().hasInvokers()
-                .hasMachers().hasTypes();
+                .hasMatchers().hasTypes();
     }
 
     @Test
     public void shouldCreateNewConfigObjectIfNoneSpecified() throws Exception {
-        // given
-        // noop
-
         // when
         ParamEngine paramEngine = springParamEngineFactory.getObject();
 

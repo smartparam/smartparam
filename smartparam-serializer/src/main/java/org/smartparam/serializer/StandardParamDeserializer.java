@@ -20,7 +20,7 @@ import java.io.BufferedReader;
 import org.smartparam.engine.core.parameter.ParamBatchLoadingException;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.serializer.metadata.ParameterMetadataDeserializer;
-import org.smartparam.engine.core.parameter.ParameterEntryBatchLoader;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryBatchLoader;
 import org.smartparam.serializer.model.AppendableParameter;
 import org.smartparam.serializer.entries.ParameterEntryDeserializer;
 import org.smartparam.serializer.exception.ParamSerializationException;

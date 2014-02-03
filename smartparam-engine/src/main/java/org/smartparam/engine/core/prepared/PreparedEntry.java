@@ -16,7 +16,7 @@
 package org.smartparam.engine.core.prepared;
 
 import java.util.Arrays;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  * PreparedEntry compiled form, without unnecessary information and with
@@ -33,6 +33,10 @@ public class PreparedEntry {
 
     public PreparedEntry(ParameterEntry parameterEntry) {
         this.levels = normalizeLevels(parameterEntry.getLevels());
+    }
+
+    public PreparedEntry(String[] levels) {
+        this.levels = normalizeLevels(levels);
     }
 
     public String[] getLevels() {
@@ -67,6 +71,13 @@ public class PreparedEntry {
     }
 
     public String getLevel(int k) {
-        return (k >= 1 && k <= levels.length) ? levels[k - 1] : null;
+        return (k >= 0 && k < levels.length) ? levels[k] : null;
     }
+
+    @Override
+    public String toString() {
+        return "[PreparedEntry " + Arrays.toString(levels) + "]";
+    }
+
+
 }

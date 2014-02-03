@@ -20,14 +20,14 @@ import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.type.TypeRepository;
 import org.smartparam.engine.core.function.FunctionProvider;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.function.Function;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static com.googlecode.catchexception.CatchException.*;
 import static org.mockito.Mockito.*;
 import static org.smartparam.engine.test.ParamEngineAssertions.*;
-import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
 
 /**
  *

@@ -17,9 +17,9 @@ package org.smartparam.engine.core.parameter;
 
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.repository.ListRepository;
+import org.smartparam.engine.core.repository.RepositoryName;
 
 /**
  *
@@ -27,25 +27,27 @@ import org.smartparam.engine.core.repository.ListRepository;
  */
 public class BasicParameterProvider implements ParameterProvider {
 
-    private final ListRepository<ParamRepository> innerRepository = new ListRepository<ParamRepository>(ParamRepository.class);
+    private final ListRepository<NamedParamRepository> innerRepository = new ListRepository<NamedParamRepository>(NamedParamRepository.class);
 
     @Override
-    public Parameter load(String parameterName) {
-        Parameter parameter = null;
-        for (ParamRepository repository : innerRepository.getItems()) {
-            parameter = repository.load(parameterName);
+    public ParameterFromRepository load(String parameterName) {
+        Parameter parameter;
+        RepositoryName name;
+        for (NamedParamRepository repository : innerRepository.getItems()) {
+            parameter = repository.repository().load(parameterName);
+            name = repository.name();
             if (parameter != null) {
-                break;
+                return new ParameterFromRepository(parameter, name);
             }
         }
-        return parameter;
+        return null;
     }
 
     @Override
     public Set<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
         Set<ParameterEntry> entries = null;
-        for (ParamRepository repository : innerRepository.getItems()) {
-            entries = repository.findEntries(parameterName, levelValues);
+        for (NamedParamRepository repository : innerRepository.getItems()) {
+            entries = repository.repository().findEntries(parameterName, levelValues);
             if (entries != null) {
                 break;
             }
@@ -54,17 +56,17 @@ public class BasicParameterProvider implements ParameterProvider {
     }
 
     @Override
-    public void register(ParamRepository repository) {
+    public void register(NamedParamRepository repository) {
         innerRepository.register(repository);
     }
 
     @Override
-    public List<ParamRepository> registeredItems() {
+    public List<NamedParamRepository> registeredItems() {
         return innerRepository.getItems();
     }
 
     @Override
-    public void registerAll(List<ParamRepository> repositories) {
+    public void registerAll(List<NamedParamRepository> repositories) {
         innerRepository.registerAll(repositories);
     }
 

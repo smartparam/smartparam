@@ -18,11 +18,11 @@ package org.smartparam.repository.jdbc.dao;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.editor.viewer.ParameterEntriesFilter;
-import org.smartparam.editor.viewer.ParameterFilter;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.editor.core.filters.ParameterEntriesFilter;
+import org.smartparam.editor.core.filters.ParameterFilter;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
 
 /**
@@ -31,7 +31,7 @@ import org.smartparam.repository.jdbc.model.JdbcParameter;
  */
 public interface JdbcRepository {
 
-    void createParameter(QueryRunner runner, Parameter parameter);
+    long createParameter(QueryRunner runner, Parameter parameter);
 
     boolean parameterExists(QueryRunner runner, String parameterName);
 
@@ -59,6 +59,8 @@ public interface JdbcRepository {
 
     void deleteLevel(QueryRunner queryRunner, String parameterName, long levelId);
 
+    List<ParameterEntry> getEntries(QueryRunner runner, List<Long> ids);
+
     List<ParameterEntry> listEntries(QueryRunner runner, String parameterName, ParameterEntriesFilter filter);
 
     long addParameterEntry(QueryRunner runner, String parameterName, ParameterEntry entry);
@@ -68,4 +70,6 @@ public interface JdbcRepository {
     void deleteParameterEntry(QueryRunner runner, long entryId);
 
     void deleteParameterEntries(QueryRunner runner, Iterable<Long> entriesIds);
+
+    void deleteParameterEntries(QueryRunner runner, String parameterName);
 }

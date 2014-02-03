@@ -16,6 +16,7 @@
 package org.smartparam.engine.annotated;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -36,7 +37,7 @@ public class PackageListTestBuilder {
     }
 
     public PackageList build() {
-        PackageList packageList = new PackageList(defaultPackage, packages);
+        PackageList packageList = new PackageList(Arrays.asList(defaultPackage), packages);
         return packageList;
     }
 

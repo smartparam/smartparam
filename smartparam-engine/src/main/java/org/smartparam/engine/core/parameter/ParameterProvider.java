@@ -15,13 +15,9 @@
  */
 package org.smartparam.engine.core.parameter;
 
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.parameter.ParamRepository;
-import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  *
@@ -29,13 +25,13 @@ import org.smartparam.engine.core.parameter.ParameterEntry;
  */
 public interface ParameterProvider {
 
-    Parameter load(String parameterName);
+    ParameterFromRepository load(String parameterName);
 
     Set<ParameterEntry> findEntries(String parameterName, String[] levelValues);
 
-    void register(ParamRepository repository);
+    void register(NamedParamRepository repository);
 
-    void registerAll(List<ParamRepository> repositories);
+    void registerAll(List<NamedParamRepository> repositories);
 
-    List<ParamRepository> registeredItems();
+    List<NamedParamRepository> registeredItems();
 }

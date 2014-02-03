@@ -17,7 +17,9 @@ package org.smartparam.serializer.model;
 
 import java.util.Arrays;
 import java.util.List;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -29,6 +31,11 @@ public class DeserializedParameterEntry implements ParameterEntry {
 
     public DeserializedParameterEntry(List<String> levels) {
         this.levels = levels.toArray(new String[levels.size()]);
+    }
+
+    @Override
+    public ParameterEntryKey getKey() {
+        return EmptyEntityKey.emptyKey();
     }
 
     @Override

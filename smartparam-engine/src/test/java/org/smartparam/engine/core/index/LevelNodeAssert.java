@@ -15,9 +15,12 @@
  */
 package org.smartparam.engine.core.index;
 
-import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.core.index.LevelNode;
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
+import org.assertj.core.data.MapEntry;
 import org.smartparam.engine.test.ParamEngineAssertions;
+
+import static org.assertj.core.data.MapEntry.entry;
 
 /**
  *
@@ -54,7 +57,7 @@ public class LevelNodeAssert extends AbstractAssert<LevelNodeAssert, LevelNode<?
     }
 
     public LevelNodeAssert hasDirectChild(String childLevelValue) {
-        actual.findNode(new String[]{childLevelValue}, 1);
+        Assertions.assertThat(actual.getChildren()).containsKey(childLevelValue);
         return this;
     }
 }

@@ -17,7 +17,6 @@ package org.smartparam.engine.core.index;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.Type;
 
@@ -29,9 +28,9 @@ public class LevelIndexTestBuilder {
 
     private int levels;
 
-    private List<Type<?>> indexTypes = new ArrayList<Type<?>>();
+    private Type<?>[] types = null;
 
-    private List<Matcher> levelMatchers = new ArrayList<Matcher>();
+    private Matcher[] matchers = null;
 
     private LevelIndexTestBuilder() {
     }
@@ -41,9 +40,6 @@ public class LevelIndexTestBuilder {
     }
 
     public <T> LevelIndex<T> build() {
-        Type<?>[] types = indexTypes.toArray(new Type<?>[indexTypes.size()]);
-        Matcher[] matchers = levelMatchers.toArray(new Matcher[levelMatchers.size()]);
-
         return new LevelIndex<T>(levels, types, matchers);
     }
 
@@ -52,13 +48,13 @@ public class LevelIndexTestBuilder {
         return this;
     }
 
-    public LevelIndexTestBuilder withMatcher(Matcher matcher) {
-        levelMatchers.add(matcher);
+    public LevelIndexTestBuilder withMatchers(Matcher... matchers) {
+        this.matchers = matchers;
         return this;
     }
 
-    public LevelIndexTestBuilder withType(Type<?> type) {
-        indexTypes.add(type);
+    public LevelIndexTestBuilder withTypes(Type... types) {
+        this.types = types;
         return this;
     }
 }

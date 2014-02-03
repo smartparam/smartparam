@@ -15,11 +15,8 @@
  */
 package org.smartparam.engine.core.parameter;
 
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import java.util.Set;
-import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
-import org.smartparam.engine.core.parameter.ParameterEntry;
 
 /**
  * Contract for every readonly parameter repository. ParamEngine instance can

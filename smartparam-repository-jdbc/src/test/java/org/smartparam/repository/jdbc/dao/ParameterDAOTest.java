@@ -18,8 +18,8 @@ package org.smartparam.repository.jdbc.dao;
 import java.util.List;
 import java.util.Set;
 import org.polyjdbc.core.query.QueryRunner;
-import org.smartparam.editor.viewer.ParameterFilter;
-import org.smartparam.editor.viewer.SortDirection;
+import org.smartparam.editor.core.filters.ParameterFilter;
+import org.smartparam.editor.core.filters.SortDirection;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.repository.jdbc.DatabaseTest;
 import org.smartparam.repository.jdbc.model.JdbcParameter;
@@ -40,7 +40,7 @@ public class ParameterDAOTest extends DatabaseTest {
         ParameterDAO parameterDAO = get(ParameterDAO.class);
         QueryRunner runner = queryRunner();
         Parameter parameter = parameter().withName("test").withInputLevels(5)
-                .nullable().noncacheable().withArraySeparator('*').build();
+                .nullable().noncacheable().identifyEntries().withArraySeparator('*').build();
 
         // when
         parameterDAO.insert(runner, parameter);
@@ -49,7 +49,8 @@ public class ParameterDAOTest extends DatabaseTest {
 
         // then
         assertThat(resultingParameter).isNotNull().hasName("test")
-                .hasInputLevels(5).hasArraySeparator('*').isNullable().isNotCacheable();
+                .hasInputLevels(5).hasArraySeparator('*').isNullable().isNotCacheable()
+                .identifyEntries();
     }
 
     public void shouldDeleteParameterFromDatabase() {

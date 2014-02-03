@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.smartparam.engine.core.parameter;
 
-import org.smartparam.engine.core.parameter.LevelAssert;
-import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.core.parameter.Parameter;
+import org.smartparam.engine.core.parameter.level.LevelAssert;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryAssert;
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
+import org.smartparam.engine.test.Iterables;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
 /**
@@ -37,6 +38,24 @@ public class ParameterAssert extends AbstractAssert<ParameterAssert, Parameter> 
 
     public LevelAssert level(int levelIndex) {
         return LevelAssert.assertThat(actual.getLevels().get(levelIndex));
+    }
+
+    public LevelAssert firstLevel() {
+        return level(0);
+    }
+
+    public ParameterEntryAssert onlyEntry() {
+        hasEntries(1);
+        return ParameterEntryAssert.assertThat(Iterables.onlyElement(actual.getEntries()));
+    }
+
+    public ParameterAssert namedLevelsInOrder(String... levelNames) {
+        int index = 0;
+        for (String levelName : levelNames) {
+            Assertions.assertThat(actual.getLevels().get(index).getName()).isEqualTo(levelName);
+            index++;
+        }
+        return this;
     }
 
     public ParameterAssert hasName(String name) {
@@ -64,6 +83,16 @@ public class ParameterAssert extends AbstractAssert<ParameterAssert, Parameter> 
         return this;
     }
 
+    public ParameterAssert identifyEntries() {
+        ParamEngineAssertions.assertThat(actual.isIdentifyEntries()).isTrue();
+        return this;
+    }
+
+    public ParameterAssert dontIdentifyEntries() {
+        ParamEngineAssertions.assertThat(actual.isIdentifyEntries()).isFalse();
+        return this;
+    }
+
     public ParameterAssert hasArraySeparator(char arraySeparator) {
         ParamEngineAssertions.assertThat(actual.getArraySeparator()).isEqualTo(arraySeparator);
         return this;
@@ -72,6 +101,10 @@ public class ParameterAssert extends AbstractAssert<ParameterAssert, Parameter> 
     public ParameterAssert hasInputLevels(int inputLevels) {
         ParamEngineAssertions.assertThat(actual.getInputLevels()).isEqualTo(inputLevels);
         return this;
+    }
+
+    public ParameterAssert hasNoLevels() {
+        return hasLevels(0);
     }
 
     public ParameterAssert hasLevels(int levelCount) {

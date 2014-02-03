@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.annotated.initialization;
 
+import java.util.List;
 import org.smartparam.engine.annotated.scanner.PackageTypeScanner;
 import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.annotated.scanner.TypeScanner;
@@ -56,7 +57,7 @@ public class TypeScannerInitializer implements ComponentInitializer {
         return packagesToScan;
     }
 
-    public String getDefaultPackage() {
-        return packagesToScan.getDefaultPackage();
+    public List<String> getDefaultPackages() {
+        return packagesToScan.getDefaultPackages();
     }
 }

@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import static org.mockito.Mockito.*;
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.serializer.ParamDeserializer;
 import org.testng.annotations.BeforeMethod;

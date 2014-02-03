@@ -20,9 +20,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.ParameterKey;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.identity.EmptyEntityKey;
 
 /**
  *
@@ -40,11 +42,11 @@ public class SimpleParameter implements Parameter {
 
     private char arraySeparator = Parameter.DEFAULT_ARRAY_SEPARATOR;
 
-    ;
-
     private boolean cacheable = true;
 
     private boolean nullable = false;
+
+    private boolean identifyEntries = false;
 
     public SimpleParameter() {
     }
@@ -56,9 +58,16 @@ public class SimpleParameter implements Parameter {
         this.nullable = parameter.isNullable();
         this.arraySeparator = parameter.getArraySeparator();
 
-        for (Level level : parameter.getLevels()) {
-            this.levels.add(new SimpleLevel(level));
+        if (parameter.getLevels() != null) {
+            for (Level level : parameter.getLevels()) {
+                this.levels.add(new SimpleLevel(level));
+            }
         }
+    }
+
+    @Override
+    public ParameterKey getKey() {
+        return EmptyEntityKey.emptyKey();
     }
 
     @Override
@@ -81,7 +90,9 @@ public class SimpleParameter implements Parameter {
     }
 
     public void setLevels(List<Level> levels) {
-        this.levels.addAll(levels);
+        if (levels != null) {
+            this.levels.addAll(levels);
+        }
     }
 
     public SimpleParameter withLevel(Level level) {
@@ -121,6 +132,11 @@ public class SimpleParameter implements Parameter {
         this.arraySeparator = arraySeparator;
     }
 
+    public SimpleParameter withArraySeparator(char arraySeparator) {
+        this.arraySeparator = arraySeparator;
+        return this;
+    }
+
     @Override
     public boolean isCacheable() {
         return cacheable;
@@ -130,6 +146,11 @@ public class SimpleParameter implements Parameter {
         this.cacheable = cacheable;
     }
 
+    public SimpleParameter notCacheable() {
+        this.cacheable = false;
+        return this;
+    }
+
     @Override
     public boolean isNullable() {
         return nullable;
@@ -137,6 +158,25 @@ public class SimpleParameter implements Parameter {
 
     public void setNullable(boolean nullable) {
         this.nullable = nullable;
+    }
+
+    public SimpleParameter nullable() {
+        this.nullable = true;
+        return this;
+    }
+
+    @Override
+    public boolean isIdentifyEntries() {
+        return identifyEntries;
+    }
+
+    public void setIdentifyEntries(boolean identifyEntries) {
+        this.identifyEntries = identifyEntries;
+    }
+
+    public SimpleParameter identifyEntries() {
+        this.identifyEntries = true;
+        return this;
     }
 
 }

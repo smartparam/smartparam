@@ -54,7 +54,7 @@ public class PackageTypeScanner implements TypeScanner {
 
     private PackageList createPackagesForDefaults(PackageList packagesToScan) {
         PackageList defaultPackages = new PackageList();
-        defaultPackages.add(packagesToScan.getDefaultPackage());
+        defaultPackages.addAll(packagesToScan.getDefaultPackages());
         return defaultPackages;
     }
 }

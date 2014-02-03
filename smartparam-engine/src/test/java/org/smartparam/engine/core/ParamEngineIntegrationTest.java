@@ -25,9 +25,9 @@ import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.matchers.BetweenMatcher;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.function.Function;
 import org.smartparam.engine.types.date.DateType;
 import org.smartparam.engine.types.integer.IntegerType;
@@ -40,16 +40,20 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import org.assertj.core.api.Assertions;
+import org.smartparam.engine.core.output.DetailedParamValue;
 
+import org.smartparam.engine.core.output.GettingKeyNotIdentifiableParameterException;
 import org.smartparam.engine.core.output.GettingWrongTypeException;
+import org.smartparam.engine.core.output.entry.MapEntry;
 import static com.googlecode.catchexception.CatchException.catchException;
 import static com.googlecode.catchexception.CatchException.caughtException;
 import static org.mockito.Mockito.*;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 import static org.smartparam.engine.functions.java.JavaFunctionTestBuilder.javaFunction;
-import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
-import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
-import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
 
 /**
  * @author Przemek Hertel
@@ -75,7 +79,7 @@ public class ParamEngineIntegrationTest {
                 .withType("string", new StringType())
                 .withType("integer", new IntegerType())
                 .withType("date", new DateType())
-                .withParameterRepositories(paramRepository)
+                .withParameterRepository("testRepository", paramRepository)
                 .withFunctionRepository("java", 1, functionRepository)
                 .withFunctionInvoker("java", functionInvoker)
                 .withMatcher("between", new BetweenMatcher())
@@ -104,6 +108,7 @@ public class ParamEngineIntegrationTest {
 
         // then
         assertThat(value).hasValue(11l);
+        assertThat(value.sourceRepository().value()).isEqualTo("testRepository");
     }
 
     @Test
@@ -147,7 +152,7 @@ public class ParamEngineIntegrationTest {
     }
 
     @Test
-    public void shouldAllowToReturnNullForNullableParameter() {
+    public void shouldReturnEmptyParamValueWhenNothingFoundAndParameterIsNullable() {
         // given
         Level[] levels = new Level[]{
             level().withType("string").build(),
@@ -165,7 +170,7 @@ public class ParamEngineIntegrationTest {
         ParamValue value = engine.get("parameter", "A", "C");
 
         // then
-        assertThat(value).isNull();
+        assertThat(value.isEmpty()).isTrue();
     }
 
     @Test
@@ -191,7 +196,7 @@ public class ParamEngineIntegrationTest {
     }
 
     @Test
-    public void shouldPreferConcreteVlueToDefaultValueWhenBothPossible() {
+    public void shouldPreferConcreteValueToDefaultValueWhenBothPossible() {
         // given
         Level[] levels = new Level[]{
             level().withType("string").build(),
@@ -236,6 +241,32 @@ public class ParamEngineIntegrationTest {
 
         // then
         assertThat(value).hasValue(42L);
+    }
+
+    @Test
+    public void shouldReturnDetailedValuesThatContainWholeParamEntries() {
+        // given
+        Level[] levels = new Level[]{
+            level().withName("level1").withType("string").build(),
+            level().withName("level2").withType("string").build(),
+            level().withName("level3").withType("string").build(),
+            level().withName("output").withType("integer").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("A", "B", "C", "11").build(),
+            parameterEntry().withLevels("C", "B", "D", "12").build(),};
+        Parameter parameter = parameter().withLevels(levels).withEntries(entries).withInputLevels(3).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        DetailedParamValue value = engine.getDetailed("parameter", LevelValues.from("A", "B", "C"));
+
+        // then
+        MapEntry details = value.detailedRow().entry();
+        assertThat(details.get("level1")).isEqualTo("A");
+        assertThat(details.get("level2")).isEqualTo("B");
+        assertThat(details.get("level3")).isEqualTo("C");
+        assertThat(details.get("output")).isEqualTo(11L);
     }
 
     @Test
@@ -381,6 +412,49 @@ public class ParamEngineIntegrationTest {
 
         // then
         assertThat(value).hasArray(0, "B", "C");
+    }
+
+    @Test
+    public void shouldReturnKeysForResultingParameterEntriesWhenIdentifiableParameterFlagIsSet() {
+        // given
+        Level[] levels = new Level[]{
+            level().withType("string").build(),
+            level().withType("string").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("A", "B").withKey("entry-key").build()
+        };
+        Parameter parameter = parameter().identifyEntries().withArraySeparator(',').withLevels(levels).withEntries(entries).withInputLevels(1).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        ParamValue value = engine.get("parameter", "A");
+
+        // then
+        assertThat(value.key().value()).isEqualTo("entry-key");
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTryingToRetrieveEntryKeyWhenIdentifiableParameterFlagIsNotSet() {
+        // given
+        Level[] levels = new Level[]{
+            level().withType("string").build(),
+            level().withType("string").build()
+        };
+        ParameterEntry[] entries = new ParameterEntry[]{
+            parameterEntry().withLevels("A", "B").build()
+        };
+        Parameter parameter = parameter().withArraySeparator(',').withLevels(levels).withEntries(entries).withInputLevels(1).build();
+        when(paramRepository.load("parameter")).thenReturn(parameter);
+
+        // when
+        ParamValue value = engine.get("parameter", "A");
+        try {
+            value.key();
+            Assertions.fail("Expected GettingKeyNotIdentifiableParameterException.");
+        } catch (GettingKeyNotIdentifiableParameterException exception) {
+            // then
+        }
     }
 
     @Test

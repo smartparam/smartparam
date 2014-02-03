@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Adam Dubiel, Przemek Hertel.
+ * Copyright 2014 Adam Dubiel.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,85 +51,5 @@ public class LevelNodeTest {
 
         // then
         assertThat(root).hasNoLeaves().hasDirectChild("A");
-    }
-
-    @Test
-    public void shouldFavourConcreteValuesOverDefaultWhenLookingForValue() {
-        // given
-        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
-        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
-        root.add(new String[]{"*"}, 11, 0);
-        root.add(new String[]{"A"}, 42, 0);
-
-        // when
-        LevelNode<Integer> node = root.findNode(new String[]{"A"}, 0);
-
-        // then
-        assertThat(node).leavesEqualTo(42);
-    }
-
-    @Test
-    public void shouldFallBackToDefaultValueIfNoneOtherFound() {
-        // given
-        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
-        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
-        root.add(new String[]{"*"}, 42, 0);
-        root.add(new String[]{"A"}, 11, 0);
-
-        // when
-        LevelNode<Integer> node = root.findNode(new String[]{"B"}, 0);
-
-        // then
-        assertThat(node).leavesEqualTo(42);
-    }
-
-    @Test
-    public void shouldReturnNullIfNothingFound() {
-        // given
-        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(1).build();
-        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
-        root.add(new String[]{"A"}, 10, 0);
-
-        // when
-        LevelNode<Integer> node = root.findNode(new String[]{"B"}, 0);
-
-        // then
-        assertThat(node).isNull();
-    }
-
-    @DataProvider(name = "findNodeSearchSet")
-    public Object[][] provideFindNodeSearchSets() {
-        return new Object[][]{
-            {new String[]{"A", "B", "C"}, 1},
-            {new String[]{"A", "B", "X"}, 9},
-            {new String[]{"A", "E", "D"}, 11},
-            {new String[]{"A", "X", "D"}, 12},
-            {new String[]{"A", "X", "X"}, 13},
-            {new String[]{"V", "Z", "Z"}, 21},
-            {new String[]{"V", "Z", "A"}, 22},
-            {new String[]{"V", "V", "V"}, 99}
-        };
-    }
-
-    @Test(dataProvider = "findNodeSearchSet")
-    public void shouldFindNodeFromTestSet(String[] levelValues, int expectedValue) {
-        // given
-        LevelIndex<Integer> levelindex = levelIndex().withLevelCount(3).build();
-        LevelNode<Integer> root = new LevelNode<Integer>(levelindex);
-
-        root.add(new String[]{"A", "B", "C"}, 1, 0);
-        root.add(new String[]{"A", "B", "*"}, 9, 0);
-        root.add(new String[]{"A", "E", "D"}, 11, 0);
-        root.add(new String[]{"A", "*", "D"}, 12, 0);
-        root.add(new String[]{"A", "*", "*"}, 13, 0);
-        root.add(new String[]{"*", "Z", "Z"}, 21, 0);
-        root.add(new String[]{"*", "Z", "*"}, 22, 0);
-        root.add(new String[]{"*", "*", "*"}, 99, 0);
-
-        // when
-        LevelNode<Integer> node = root.findNode(levelValues, 0);
-
-        // then
-        assertThat(node).leavesEqualTo(expectedValue);
     }
 }

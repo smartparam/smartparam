@@ -17,14 +17,14 @@ package org.smartparam.repository.jdbc;
 
 import java.util.Arrays;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.testng.annotations.Test;
 
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
-import static org.smartparam.engine.core.parameter.LevelTestBuilder.level;
-import static org.smartparam.engine.core.parameter.ParameterEntryTestBuilder.parameterEntry;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
+import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 
 /**

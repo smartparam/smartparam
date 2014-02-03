@@ -35,6 +35,7 @@ public class ParameterMapper implements ObjectMapper<JdbcParameter> {
 
         parameter.setCacheable(resultSet.getBoolean("cacheable"));
         parameter.setNullable(resultSet.getBoolean("nullable"));
+        parameter.setIdentifyEntries(resultSet.getBoolean("identify_entries"));
         parameter.setArraySeparator(JdbcConverter.toChar(resultSet.getString("array_separator")));
 
         return parameter;

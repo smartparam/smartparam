@@ -15,15 +15,12 @@
  */
 package org.smartparam.engine.core.index;
 
-import org.smartparam.engine.core.matcher.Matcher;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.util.Formatter;
+import org.smartparam.engine.util.Printer;
 
 /**
  *
@@ -32,6 +29,8 @@ import org.smartparam.engine.util.Formatter;
  * @author Przemek Hertel
  */
 public class LevelNode<T> {
+
+    private static final int TO_STRING_INITIAL_LENGTH = 100;
 
     private static final float CHILDREN_MAP_LOAD_FACTOR = 0.8f;
 
@@ -45,7 +44,7 @@ public class LevelNode<T> {
 
     private LevelNode<T> parent;
 
-    private LevelIndex<T> index;
+    private final LevelIndex<T> index;
 
     public LevelNode(LevelIndex<T> index) {
         this.index = index;
@@ -58,12 +57,12 @@ public class LevelNode<T> {
         this.leafList = null;
     }
 
-    public void add(List<String> levels, T leafValue, int depth) {
+    void add(List<String> levels, T leafValue, int depth) {
         String[] levelsArray = levels.toArray(new String[levels.size()]);
         add(levelsArray, leafValue, depth);
     }
 
-    public void add(String[] levels, T leafValue, int depth) {
+    void add(String[] levels, T leafValue, int depth) {
 
         if (!reachedLeafDepth(depth)) {
             String levelVal = levels[depth];
@@ -106,85 +105,32 @@ public class LevelNode<T> {
         }
     }
 
-    /**
-     * Finds leaf node and returns its value.
-     * Recurrent search algorithm:
-     * <pre>
-     * 1. find tree path that matches query values descending by one node
-     * 2. if none found, try default value if defined for this level
-     * </pre>
-     *
-     * @param levelValues query values
-     * @param depth       depth of current node
-     * @return value
-     */
-    public LevelNode<T> findNode(String[] levelValues, int depth) {
-
-        if (depth >= levelValues.length) {
-            // last node reached - final station
-            return this;
-        }
-
-        String levelVal = levelValues[depth];
-
-        Matcher matcher = index.getMatcher(depth);
-        Type<?> type = index.getType(depth);
-
-        LevelNode<T> matchedLeaf = null;
-
-        if (children != null) {
-            if (matcher == null) {
-                matchedLeaf = children.get(levelVal);
-                if (matchedLeaf != null) {
-                    LevelNode<T> leaf = matchedLeaf.findNode(levelValues, depth + 1);
-                    if (leaf != null) {
-                        return leaf;
-                    }
-                }
-            }
-
-            matchedLeaf = match(levelVal, matcher, type, levelValues, depth);
-        }
-
-        if (matchedLeaf == null && defaultNode != null) {
-            matchedLeaf = defaultNode.findNode(levelValues, depth + 1);
-        }
-
-        return matchedLeaf;
+    public boolean hasChildren() {
+        return (children != null && !children.isEmpty()) || defaultNode != null;
     }
 
-    private LevelNode<T> match(String val, Matcher matcher, Type<?> type, String[] levelValues, int depth) {
-        LevelNode<T> leaf = null;
-        Iterator<Map.Entry<String, LevelNode<T>>> childrenIterator = children.entrySet().iterator();
-
-        Map.Entry<String, LevelNode<T>> entry;
-        while (leaf == null && childrenIterator.hasNext()) {
-            entry = childrenIterator.next();
-            if (patternMatches(val, matcher, type, entry.getKey())) {
-                leaf = traverseChildNode(entry.getValue(), levelValues, depth);
-            }
-        }
-
-        return leaf;
+    public boolean isLeaf() {
+        return !hasChildren();
     }
 
-    private boolean patternMatches(String value, Matcher matcher, Type<?> type, String pattern) {
-        if (matcher == null) {
-            if (pattern == null) {
-                return value == null;
-            }
-            return pattern.equals(value);
-        } else {
-            return matcher.matches(value, pattern, type);
-        }
+    public Map<String, LevelNode<T>> getChildren() {
+        return children;
     }
 
-    private LevelNode<T> traverseChildNode(LevelNode<T> child, String[] levelValues, int depth) {
-        return child.findNode(levelValues, depth + 1);
+    public LevelNode<T> getDefaultNode() {
+        return defaultNode;
+    }
+
+    public List<T> getLeafList() {
+        return leafList;
+    }
+
+    public T getLeafValue() {
+        return leafList.get(0);
     }
 
     public void printNode(StringBuilder sb, int level) {
-        String indent = repeat(' ', level << 2);
+        String indent = Printer.repeat(' ', level << 2);
         boolean leaf = isLeaf();
 
         sb.append(indent).append("path : ").append(getLevelPath());
@@ -204,17 +150,9 @@ public class LevelNode<T> {
         }
     }
 
-    public boolean hasChildren() {
-        return (children != null && !children.isEmpty()) || defaultNode != null;
-    }
-
-    public boolean isLeaf() {
-        return !hasChildren();
-    }
-
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(TO_STRING_INITIAL_LENGTH);
         sb.append("LevelNode[");
         sb.append("level=").append(level);
         sb.append(", path=").append(getLevelPath());
@@ -227,38 +165,8 @@ public class LevelNode<T> {
         return sb.toString();
     }
 
-    private String repeat(char c, int count) {
-        char[] str = new char[count];
-        Arrays.fill(str, c);
-        return new String(str);
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public List<T> getLeafList() {
-        return leafList;
-    }
-
-    public T getLeafValue() {
-        return leafList.get(0);
-    }
-
-    LevelNode<T> getParent() {
-        return parent;
-    }
-
-    String getLevelPath() {
+    private String getLevelPath() {
         String lv = level != null ? level : "";
         return parent != null ? parent.getLevelPath() + "/" + lv : lv;
-    }
-
-    Map<String, LevelNode<T>> getChildren() {
-        return children;
-    }
-
-    LevelNode<T> getDefaultNode() {
-        return defaultNode;
     }
 }

@@ -15,8 +15,9 @@
  */
 package org.smartparam.engine.core;
 
-import org.fest.assertions.api.AbstractAssert;
-import org.smartparam.engine.core.ParamEngineRuntimeConfig;
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.test.ParamEngineAssertions;
 
@@ -36,6 +37,11 @@ public class ParamEngineRuntimeConfigAssert extends AbstractAssert<ParamEngineRu
 
     public ParamEngineRuntimeConfigAssert hasFunctionCache() {
         ParamEngineAssertions.assertThat(actual.getFunctionCache()).isNotNull();
+        return this;
+    }
+
+    public ParamEngineRuntimeConfigAssert hasFunctionCache(Class<?> ofClass) {
+        ParamEngineAssertions.assertThat(actual.getFunctionCache()).isInstanceOf(ofClass);
         return this;
     }
 
@@ -64,13 +70,23 @@ public class ParamEngineRuntimeConfigAssert extends AbstractAssert<ParamEngineRu
         return this;
     }
 
-    public ParamEngineRuntimeConfigAssert hasMachers() {
+    public ParamEngineRuntimeConfigAssert hasMatchers() {
         ParamEngineAssertions.assertThat(actual.getMatchers()).isNotEmpty();
         return this;
     }
 
+    public ParamEngineRuntimeConfigAssert hasMatcherDecoders() {
+        ParamEngineAssertions.assertThat(actual.getMatcherTypeRepository().registeredItems()).isNotEmpty();
+        return this;
+    }
+
     public ParamEngineRuntimeConfigAssert hasRepository(ParamRepository repository) {
-        ParamEngineAssertions.assertThat(actual.getParamRepositories()).contains(repository);
+        for(NamedParamRepository namedRepository : actual.getParamRepositories()) {
+            if(namedRepository.repository() == repository) {
+                return this;
+            }
+        }
+        Assertions.fail("Expected to find repository " + repository + " in registered repositories, but none found.");
         return this;
     }
 }

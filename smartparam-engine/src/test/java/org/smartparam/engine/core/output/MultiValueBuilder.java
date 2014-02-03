@@ -45,7 +45,7 @@ public final class MultiValueBuilder {
     }
 
     public MultiValue build() {
-        return new MultiValue(values.toArray(), indexMap);
+        return new DefaultMultiValue(values.toArray(), indexMap);
     }
 
     public MultiValueBuilder withNamedLevels(Map<String, Integer> indexMap) {

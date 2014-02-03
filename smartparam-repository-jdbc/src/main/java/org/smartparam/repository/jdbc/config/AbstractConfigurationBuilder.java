@@ -24,24 +24,24 @@ import org.polyjdbc.core.dialect.DialectRegistry;
  */
 public abstract class AbstractConfigurationBuilder<C extends DefaultJdbcConfig, B extends AbstractConfigurationBuilder<?, ?>> {
 
-    private final C configuration;
+    private final C config;
 
     protected AbstractConfigurationBuilder(C configuration) {
-        this.configuration = configuration;
+        this.config = configuration;
     }
 
     public C build() {
-        return configuration;
+        return config;
     }
 
     protected abstract B self();
 
     protected C configuration() {
-        return configuration;
+        return config;
     }
 
     public B withDialect(Dialect dialect) {
-        configuration.setDialect(dialect);
+        config.setDialect(dialect);
         return self();
     }
 
@@ -50,27 +50,42 @@ public abstract class AbstractConfigurationBuilder<C extends DefaultJdbcConfig, 
     }
 
     public B withParameterSufix(String parameterSufix) {
-        configuration.parameterSufix(parameterSufix);
+        config.parameterSufix(parameterSufix);
         return self();
     }
 
     public B withParameterEntrySufix(String parameterEntrySufix) {
-        configuration.parameterEntrySufix(parameterEntrySufix);
+        config.parameterEntrySufix(parameterEntrySufix);
         return self();
     }
 
     public B withLevelSufix(String levelEntitySufix) {
-        configuration.levelSufix(levelEntitySufix);
+        config.levelSufix(levelEntitySufix);
         return self();
     }
 
     public B withEntityPrefix(String entityPrefix) {
-        configuration.entityPrefix(entityPrefix);
+        config.entityPrefix(entityPrefix);
         return self();
     }
 
     public B withSequencePrefix(String sequencePrefix) {
-        configuration.sequencePrefix(sequencePrefix);
+        config.sequencePrefix(sequencePrefix);
+        return self();
+    }
+
+    public B withIndexPrefix(String indexPrefix) {
+        config.indexPrefix(indexPrefix);
+        return self();
+    }
+
+    public B withPrimaryKeyPrefix(String primaryKeyPrefix) {
+        config.primaryKeyPrefix(primaryKeyPrefix);
+        return self();
+    }
+
+    public B withForeignKeyPrefix(String foreignKeyPrefix) {
+        config.foreignKeyPrefix(foreignKeyPrefix);
         return self();
     }
 }

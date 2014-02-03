@@ -15,34 +15,27 @@
  */
 package org.smartparam.repository.jdbc.model;
 
-import org.smartparam.editor.model.AbstractEntityKey;
-import org.smartparam.editor.model.ParameterEntryKey;
-import static org.smartparam.repository.jdbc.model.JdbcLevelKey.SYMBOL;
+import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 
 /**
  *
  * @author Adam Dubiel
  */
-public class JdbcParameterEntryKey extends AbstractEntityKey implements ParameterEntryKey {
-
-    private final String value;
+public class JdbcParameterEntryKey implements ParameterEntryKey {
 
     private final long entryId;
 
     public JdbcParameterEntryKey(long entryId) {
-        this.value = format(SYMBOL, Long.toString(entryId));
         this.entryId = entryId;
     }
 
     public JdbcParameterEntryKey(ParameterEntryKey parameterEntryKey) {
-        String[] segments = parse(SYMBOL, parameterEntryKey.value());
-        value = parameterEntryKey.value();
-        entryId = Long.parseLong(segments[1]);
+        entryId = Long.parseLong(parameterEntryKey.value());
     }
 
     @Override
     public String value() {
-        return value;
+        return Long.toString(entryId);
     }
 
     public long entryId() {

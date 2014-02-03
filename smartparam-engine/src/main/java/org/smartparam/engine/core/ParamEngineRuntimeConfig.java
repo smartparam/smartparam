@@ -23,15 +23,20 @@ import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.function.FunctionInvoker;
 import org.smartparam.engine.core.function.FunctionRepository;
-import org.smartparam.engine.core.parameter.ParamRepository;
+import org.smartparam.engine.core.matcher.MatcherTypeRepository;
+import org.smartparam.engine.core.matcher.MatcherRepository;
+import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.type.Type;
+import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
 
 /**
- * Runtime configuration of ParamEngine, all collections are immutable.
+ * Snapshot of runtime configuration of ParamEngine, all collections are immutable.
+ * It is possible to act on exposed services, but remember that this is a snapshot, collections won't be updated. Another
+ * one needs to be created after any changes.
  *
  * @author Adam Dubiel
  */
-public class ParamEngineRuntimeConfig {
+public final class ParamEngineRuntimeConfig {
 
     private final FunctionCache functionCache;
 
@@ -45,7 +50,15 @@ public class ParamEngineRuntimeConfig {
 
     private final Map<String, FunctionRepository> functionRepositories;
 
-    private final List<ParamRepository> paramRepositories;
+    private final MatcherRepository matcherRepository;
+
+    private final MatcherTypeRepository matcherTypeRepository;
+
+    private final ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository;
+
+    private final List<NamedParamRepository> paramRepositories;
+
+    private final ParamRepositoriesNaming paramRepositoriesNaming;
 
     /**
      * Constructor for configuration object - all objects are read only and
@@ -54,17 +67,25 @@ public class ParamEngineRuntimeConfig {
     public ParamEngineRuntimeConfig(FunctionCache functionCache,
             PreparedParamCache paramCache,
             Map<String, FunctionRepository> functionRepositories,
-            List<ParamRepository> paramRepositories,
+            List<NamedParamRepository> paramRepositories,
             Map<String, FunctionInvoker> invokers,
             Map<String, Type<?>> types,
-            Map<String, Matcher> matchers) {
+            MatcherRepository matcherRepository,
+            MatcherTypeRepository matcherTypeRepository,
+            ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository) {
         this.functionCache = functionCache;
         this.paramCache = paramCache;
         this.functionRepositories = Collections.unmodifiableMap(functionRepositories);
         this.paramRepositories = Collections.unmodifiableList(paramRepositories);
         this.invokers = Collections.unmodifiableMap(invokers);
         this.types = Collections.unmodifiableMap(types);
-        this.matchers = Collections.unmodifiableMap(matchers);
+        this.matchers = Collections.unmodifiableMap(matcherRepository.registeredItems());
+
+        this.matcherRepository = matcherRepository;
+        this.matcherTypeRepository = matcherTypeRepository;
+        this.reportLevelValuesSpaceRepository = reportLevelValuesSpaceRepository;
+
+        this.paramRepositoriesNaming = new ParamRepositoriesNaming(paramRepositories);
     }
 
     public FunctionCache getFunctionCache() {
@@ -75,11 +96,23 @@ public class ParamEngineRuntimeConfig {
         return paramCache;
     }
 
+    public MatcherRepository getMatcherRepository() {
+        return matcherRepository;
+    }
+
+    public MatcherTypeRepository getMatcherTypeRepository() {
+        return matcherTypeRepository;
+    }
+
+    public ReportLevelValuesSpaceRepository getReportLevelValuesSpaceRepository() {
+        return reportLevelValuesSpaceRepository;
+    }
+
     public Map<String, FunctionRepository> getFunctionRepositories() {
         return functionRepositories;
     }
 
-    public List<ParamRepository> getParamRepositories() {
+    public List<NamedParamRepository> getParamRepositories() {
         return paramRepositories;
     }
 
@@ -93,5 +126,9 @@ public class ParamEngineRuntimeConfig {
 
     public Map<String, Type<?>> getTypes() {
         return types;
+    }
+
+    public ParamRepositoriesNaming getParamRepositoriesNaming() {
+        return paramRepositoriesNaming;
     }
 }

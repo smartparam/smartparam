@@ -17,6 +17,7 @@ package org.smartparam.engine.core.output;
 
 import java.util.*;
 
+import org.smartparam.engine.core.repository.RepositoryName;
 import static org.smartparam.engine.core.output.MultiValueBuilder.multiValue;
 
 /**
@@ -28,6 +29,8 @@ public final class ParamValueBuilder {
     private final List<MultiValue> rows = new ArrayList<MultiValue>();
 
     private final Map<String, Integer> indexMap = new HashMap<String, Integer>();
+
+    private RepositoryName sourceRepository = RepositoryName.from("default-test-repo");
 
     private ParamValueBuilder() {
     }
@@ -45,7 +48,7 @@ public final class ParamValueBuilder {
     }
 
     public ParamValue build() {
-        return new ParamValueImpl(rows.toArray(new MultiValue[rows.size()]));
+        return new DefaultParamValue(rows, sourceRepository);
     }
 
     public ParamValueBuilder withNamedLevels(String... levelNames) {
@@ -61,6 +64,11 @@ public final class ParamValueBuilder {
 
     public ParamValueBuilder withRow(Object... rowValues) {
         rows.add(multiValue().withNamedLevels(indexMap).withValues(rowValues).build());
+        return this;
+    }
+
+    public ParamValueBuilder from(String sourceRepositoryName) {
+        this.sourceRepository = RepositoryName.from(sourceRepositoryName);
         return this;
     }
 }

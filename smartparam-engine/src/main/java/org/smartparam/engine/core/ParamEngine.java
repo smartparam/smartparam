@@ -18,6 +18,7 @@ package org.smartparam.engine.core;
 import org.smartparam.engine.core.output.ParamValue;
 
 import org.smartparam.engine.core.context.ParamContext;
+import org.smartparam.engine.core.output.DetailedParamValue;
 
 /**
  * Single point of entry to get all parameters and call functions managed by
@@ -37,6 +38,17 @@ public interface ParamEngine {
      * @return resulting submatrix
      */
     ParamValue get(String parameterName, ParamContext context);
+
+    /**
+     * Returns submatrix of parameter rows just like {@link #get(java.lang.String, org.smartparam.engine.core.context.ParamContext) },
+     * but result also includes collection of all {@link org.smartparam.engine.core.output.entry.MapEntry} that
+     * contain submatrix rows raw data (input and output levels).
+     */
+    DetailedParamValue getDetailed(String parameterName, ParamContext context);
+
+    ParamValue get(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamContext context);
+
+    DetailedParamValue getDetailed(String parameterName, LevelIndexWalkerFactory customWalkerFactory, ParamContext context);
 
     /**
      * Return submatrix of parameter rows that match provided query values.

@@ -19,35 +19,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Klasa zawiera metody pomocnicze i narzedziowe wykorzystywane przez silnik.
- * <p>
- * Niektore metody maja swoje odpowiedniki w bibliotece standardowej
- * lub roznych bibliotekach narzedziowych, ale sa zaimplementowane
- * w sposob zwiekszajacy ich wydajnosc pod katem uzycia w silniku.
+ * Util class with common String operations optimized for ParamEngine.
+ *
+ * During ParamEngine performance tuning we decided, that writing own, single-purpose implementations of
+ * some commons methods can significantly speed up parameter evaluation.
  *
  * @author Przemek Hertel
  * @since 1.0.0
  */
-public abstract class EngineUtil {
+public final class EngineUtil {
+
+    private EngineUtil() {
+    }
 
     public static boolean hasText(String text) {
         return text != null && !text.trim().isEmpty();
     }
 
     /**
-     * Splituje podany string i zwraca tablice tokenow. Separatorem jest
-     * pojedynczy znak <tt>delim</tt>. Zwraca maksymalnie <tt>max</tt>
-     * tokenow nawet, jesli wejsciowy string zawiera wiecej tokenow.
-     * <p>
-     * Metoda jest ponad 4 razy szybsza od String.split()
-     * wywolanej dla 1-znakowego separatora.
+     * Split string using single-char separator into maximum of N tokens. This method stops after splitting string
+     * into maximum number of tokens, even if it could be split further. 4-times quicker than native String.split()
+     * method when called with single-char separator.
      *
-     * @see #split(String, char)
-     * @param str       wejsciowy string
-     * @param delim     znak traktowany jako separator
-     * @param maxTokens maksymalna liczba tokenow, wartosc -1 zwraca tablice wszystkich tokenow (bez ograniczen)
-     *
-     * @return tablica tokenow, nigdy nie zwraca nulla
+     * @param str input string
+     * @param delim separator
+     * @param maxTokens maximum number of tokens, 0 for unlimited
+     * @return token array or empty array, never null
      */
     public static String[] split(final String str, final char delim, final int maxTokens) {
         int max = maxTokens;
@@ -79,35 +76,20 @@ public abstract class EngineUtil {
     }
 
     /**
-     * Splituje podany string i zwraca tablice tokenow. Separatorem jest
-     * pojedynczy znak <tt>delim</tt>. Zwraca tablice z wszystkimi
-     * tokenami znalezionymi w wejsciowym stringu.
-     * <p>
-     * Metoda jest ponad 4 razy szybsza od String.split()
-     * wywolanej dla 1-znakowego separatora.
-     *
-     * @see #split(String, char, int)
-     * @param str   wejsciowy string
-     * @param delim znak traktowany jako separator
-     *
-     * @return tablica wszystkich tokenow, nigdy nie zwraca nulla
+     * Shorthand for {@link #split(java.lang.String, char, int) }, splits string into unlimited number of tokens.
      */
     public static String[] split(final String str, final char delim) {
         return split(str, delim, 0);
     }
 
     /**
-     * Dzieli string na dokladnie 2 tokeny.
-     * Separatorem jest pierwsze wystapienie znaku <tt>delim</tt>.
-     * <p>
-     * Metoda jest 6 razy szybsza od {@link #split(java.lang.String, char, int))
-     * i okolo 24 razy szybsza od String.split.
-     * Ma zastosowanie w typowych hotspotach.
+     * Special case implementation of split that always splits given String into 2-element array using given separator.
+     * This method always returns 2-element array, if string could not be split second element is empty string. If passed
+     * string is null, both elements in resulting array are empty strings.
      *
-     * @param str   string, ktory zostanie podzielony na dokladnie 2 tokeny
-     * @param delim znak, ktory bedzie separatorem
+     * It is 6 time faster than {@link #split(java.lang.String, char, int) } and ~24 times faster than native
+     * {@link String#split(java.lang.String) }.
      *
-     * @return 2 elementowa tablica tokenow, nigdy nie zwraca nulla
      */
     public static String[] split2(final String str, final char delim) {
         String[] result = {"", ""};

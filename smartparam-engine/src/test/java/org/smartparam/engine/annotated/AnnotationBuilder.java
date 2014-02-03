@@ -31,7 +31,7 @@ public class AnnotationBuilder {
 
     private String[] values = new String[] {};
 
-    private List<ObjectInstance> instanceDescriptors = new ArrayList<ObjectInstance>();
+    private final List<ObjectInstance> instanceDescriptors = new ArrayList<ObjectInstance>();
 
     private int order;
 

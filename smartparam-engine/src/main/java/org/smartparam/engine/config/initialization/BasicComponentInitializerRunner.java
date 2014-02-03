@@ -43,6 +43,7 @@ public class BasicComponentInitializerRunner implements ComponentInitializerRunn
         }
     }
 
+    @Override
     public void registerInitializers(Collection<ComponentInitializer> intializers) {
         initializers.addAll(intializers);
     }

@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.core;
 
-import org.smartparam.engine.core.ParamEngineRuntimeConfig;
-
 /**
  * Traverses SmartParamEngine service tree and returns runtime configuration of
  * engine in form of immutable object.

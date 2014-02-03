@@ -17,8 +17,8 @@ package org.smartparam.serializer.test.assertions;
 
 import java.io.IOException;
 import java.io.Reader;
-import org.fest.assertions.api.AbstractAssert;
-import org.fest.assertions.api.Assertions;
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
 
 /**
  *

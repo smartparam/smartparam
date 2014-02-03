@@ -26,9 +26,10 @@ import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.type.Type;
-import org.smartparam.engine.core.parameter.Level;
+import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
-import org.smartparam.engine.core.parameter.ParameterEntry;
+import org.smartparam.engine.core.parameter.ParameterFromRepository;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  *
@@ -54,7 +55,7 @@ public class BasicParamPreparer implements ParamPreparer {
         PreparedParameter preparedParameter = cache.get(paramName);
 
         if (preparedParameter == null) {
-            Parameter parameter = parameterProvider.load(paramName);
+            ParameterFromRepository parameter = parameterProvider.load(paramName);
             if (parameter == null) {
                 return null;
             }
@@ -66,7 +67,9 @@ public class BasicParamPreparer implements ParamPreparer {
         return preparedParameter;
     }
 
-    private PreparedParameter prepare(Parameter parameter) {
+    private PreparedParameter prepare(ParameterFromRepository parameterFromRepository) {
+        Parameter parameter = parameterFromRepository.parameter();
+
         int levelCount = getLevelCount(parameter);
         PreparedLevel[] levels = new PreparedLevel[levelCount];
         Type<?>[] types = new Type<?>[levelCount];
@@ -81,7 +84,7 @@ public class BasicParamPreparer implements ParamPreparer {
             matchers[currentLevelIndex] = preparedLevel.getMatcher();
         }
 
-        PreparedParameter preparedParameter = new PreparedParameter(parameter, levels);
+        PreparedParameter preparedParameter = new PreparedParameter(parameterFromRepository.repositoryName(), parameter, levels);
         preparedParameter.setLevelNameMap(buildLevelNameToIndexMap(preparedParameter));
 
         if (parameter.isCacheable()) {
@@ -111,7 +114,7 @@ public class BasicParamPreparer implements ParamPreparer {
                 }
             }
 
-            index.add(keys, prepareEntry(parameterEntry));
+            index.add(keys, prepareEntry(parameterEntry, parameter.isIdentifyEntries()));
         }
 
         return index;
@@ -148,8 +151,8 @@ public class BasicParamPreparer implements ParamPreparer {
         return Arrays.copyOf(parameterEntry.getLevels(), levelCount);
     }
 
-    private PreparedEntry prepareEntry(ParameterEntry parameterEntry) {
-        return new PreparedEntry(parameterEntry);
+    private PreparedEntry prepareEntry(ParameterEntry parameterEntry, boolean identifyEntries) {
+        return identifyEntries ? new IdentifiablePreparedEntry(parameterEntry) : new PreparedEntry(parameterEntry);
     }
 
     @Override
@@ -158,7 +161,8 @@ public class BasicParamPreparer implements ParamPreparer {
 
         List<PreparedEntry> result = new ArrayList<PreparedEntry>(entries.size());
         for (ParameterEntry pe : entries) {
-            result.add(prepareEntry(pe));
+            // no cache, everything can be identifiable
+            result.add(prepareEntry(pe, true));
         }
 
         return result;

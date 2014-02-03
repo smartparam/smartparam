@@ -15,12 +15,7 @@
  */
 package org.smartparam.engine.annotated;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Encapsulates list of packages to scan, can be iterated. Order is retained.
@@ -30,28 +25,35 @@ import java.util.List;
  */
 public class PackageList implements Iterable<String> {
 
-    private static final String DEFAULT_PACKAGE = "org.smartparam.engine";
+    private static final String[] DEFAULT_PACKAGES = {
+        "org.smartparam.engine.matchers",
+        "org.smartparam.engine.types",
+        "org.smartparam.engine.functions",
+        "org.smartparam.engine.report",
+        "org.smartparam.engine.annotated.repository"};
 
-    private String defaultPackage = DEFAULT_PACKAGE;
+    private final List<String> defaultPackages = new ArrayList<String>();
 
     /**
      * Internal representation of package list.
      */
-    private final List<String> packages = new LinkedList<String>();
+    private final List<String> packages = new ArrayList<String>();
 
     public PackageList() {
+        this.defaultPackages.addAll(Arrays.asList(DEFAULT_PACKAGES));
     }
 
-    public PackageList(String defaultPackage) {
-        this.defaultPackage = defaultPackage;
+    public PackageList(String... defaultPackages) {
+        this.defaultPackages.addAll(Arrays.asList(defaultPackages));
     }
 
-    public PackageList(String defaultPackage, List<String> packages) {
-        this.defaultPackage = defaultPackage;
+    public PackageList(List<String> defaultPackages, List<String> packages) {
+        this.defaultPackages.addAll(defaultPackages);
         this.packages.addAll(packages);
     }
 
     public PackageList(List<String> packages) {
+        this.defaultPackages.addAll(Arrays.asList(DEFAULT_PACKAGES));
         this.packages.addAll(packages);
     }
 
@@ -67,12 +69,13 @@ public class PackageList implements Iterable<String> {
         this.packages.addAll(packages);
     }
 
-    public String getDefaultPackage() {
-        return defaultPackage;
+    public List<String> getDefaultPackages() {
+        return Collections.unmodifiableList(defaultPackages);
     }
 
-    public void setDefaultPackage(String defaultPackage) {
-        this.defaultPackage = defaultPackage;
+    public void setDefaultPackages(String... defaultPackages) {
+        this.defaultPackages.clear();
+        this.defaultPackages.addAll(Arrays.asList(defaultPackages));
     }
 
     /**

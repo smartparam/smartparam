@@ -18,7 +18,7 @@ package org.smartparam.engine.core.cache;
 import org.smartparam.engine.cache.MapCache;
 import org.testng.annotations.Test;
 
-import static org.fest.assertions.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author Przemek Hertel

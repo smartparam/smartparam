@@ -15,7 +15,7 @@
  */
 package org.smartparam.engine.config.pico;
 
-import java.util.List;
+import java.util.Set;
 import org.picocontainer.DefaultPicoContainer;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
@@ -33,15 +33,21 @@ public final class PicoContainerUtil {
         return new DefaultPicoContainer(new Caching());
     }
 
+    public static MutablePicoContainer createContainer(ComponentConfig components) {
+        MutablePicoContainer container = new DefaultPicoContainer(new Caching());
+        injectImplementations(container, components.getComponents());
+        return container;
+    }
+
     public static void injectImplementations(MutablePicoContainer container, Object... implementations) {
         for (Object object : implementations) {
             container.addComponent(object);
         }
     }
 
-    public static void injectImplementations(MutablePicoContainer container, List<Object> implementations) {
-        for (Object object : implementations) {
-            container.addComponent(object);
+    public static void injectImplementations(MutablePicoContainer container, Set<ComponentDefinition> components) {
+        for (ComponentDefinition component : components) {
+            container.addComponent(component.interfaceType(), component.classOrImplementation());
         }
     }
 }

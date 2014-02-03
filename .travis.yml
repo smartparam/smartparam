@@ -4,7 +4,8 @@ script: "mvn deploy --settings project-resources/ci-settings.xml"
 branches:
   only:
     - master
+    - smartparam-1.1.0
 
 env:
   global:
-    - secure: "DiV3B72QMY4u3zrL6LMcHfs6DkUvsv0xM7EzGq8cBjRrRQB9iDSWU+yzGgaAuDD9Lywiod2fW5xRDFwovBtpFTR4mrINHsLx6swLMdHsJpfu8FtkEH6ugx3/tAROQwNreWmzfMb8YB8pLxOUHX0xxbrjchhlPkIVWl3cni5LfEc="
+    - secure: "f8ZO3bh7xLJtq1rPUAWJ3a1/gjj3YObohUDUOXvRkWdK6f8OKJMzokDrxcBeP0f3tSB7CdvrOl2FO4rdd2UcV4cS5noXGkmjwFW5I8X4FhevyUGzbEaz6GFM0r3UwzWzOBNTotZ8lM4SwpabAkNTvppLUE1/UDTzWVrsO/BWGF8=" 

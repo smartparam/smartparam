@@ -16,6 +16,7 @@
 package org.smartparam.engine.matchers;
 
 import org.smartparam.engine.annotated.annotations.ParamMatcher;
+import org.smartparam.engine.core.index.Star;
 import org.smartparam.engine.core.matcher.Matcher;
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.core.type.Type;
@@ -24,11 +25,14 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Adam Dubiel
  */
-@ParamMatcher("equals/type")
+@ParamMatcher(TypeMatcher.TYPE)
 public class TypeMatcher implements Matcher {
 
+    public static final String TYPE = "equals/type";
+
+    @Override
     public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {
-        if ("*".equals(pattern)) {
+        if (Star.SYMBOL.equals(pattern)) {
             return true;
         }
 

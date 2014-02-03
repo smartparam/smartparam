@@ -26,8 +26,10 @@ import org.smartparam.engine.core.type.Type;
  *
  * @author Przemek Hertel
  */
-@ParamMatcher("equals/string")
+@ParamMatcher(StringMatcher.STRING)
 public class StringMatcher implements Matcher {
+
+    public static final String STRING = "equals/string";
 
     private boolean caseSensitive = false;
 
@@ -40,7 +42,7 @@ public class StringMatcher implements Matcher {
 
     @Override
     public <T extends ValueHolder> boolean matches(String value, String pattern, Type<T> type) {
-        if(value != null) {
+        if (value != null) {
             return caseSensitive ? value.equals(pattern) : value.equalsIgnoreCase(pattern);
         }
         return false;

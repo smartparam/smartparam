@@ -19,6 +19,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.smartparam.engine.core.exception.SmartParamException;
 
@@ -68,7 +69,7 @@ public final class ReflectionsConstructorUtil {
 
     public static <T> T createObject(Class<T> objectClass, Class<?>[] constructorArgsClasses, Object[] constructorArgs) {
         try {
-            Constructor<T> constructor = objectClass.getConstructor(constructorArgsClasses);
+            Constructor<T> constructor = objectClass.getDeclaredConstructor(constructorArgsClasses);
             constructor.setAccessible(true);
             return createObject(constructor, constructorArgs);
         } catch (IllegalArgumentException illegalArgumentException) {
@@ -101,7 +102,7 @@ public final class ReflectionsConstructorUtil {
 
     private static void throwExceptionForObjectConstruction(Exception exception, Class<?> objectClass, Object[] construtorArgs) {
         throw new InnerReflectiveOperationException(exception,
-                String.format("no String[%d] constructor found for class %s", construtorArgs.length, objectClass.getCanonicalName()));
+                String.format("no %s constructor found for class %s", Arrays.toString(construtorArgs), objectClass.getCanonicalName()));
     }
 
     private static void throwExceptionForObjectConstruction(Exception exception, Constructor<?> constructor, Object[] construtorArgs) {
