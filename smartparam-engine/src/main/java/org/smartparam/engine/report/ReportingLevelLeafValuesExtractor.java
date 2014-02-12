@@ -48,6 +48,8 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
 
     private static final Logger logger = LoggerFactory.getLogger(ReportingLevelLeafValuesExtractor.class);
 
+    private final SkeletonToTreeConverter skeletonToTreeConverter = new SkeletonToTreeConverter();
+
     private final MatcherTypeRepository matcherTypeRepository;
 
     private final ReportLevelValuesSpaceRepository reportLevelValuesSpaceRepository;
@@ -72,7 +74,7 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
                 createLevelDescriptors(indexWalker),
                 createOutputLevelDescriptors(indexWalker),
                 valueChooser);
-        createTreeLevels(reportingTree);
+        skeletonToTreeConverter.createTreeLevels(reportingTree, reportSkeleton);
 
         int inputLevels = indexWalker.indexDepth();
 
@@ -119,27 +121,6 @@ public class ReportingLevelLeafValuesExtractor implements LevelLeafValuesExtract
             valueDescriptor.add(levelIndex, descriptor.name(), descriptor.type());
         }
         return valueDescriptor;
-    }
-
-    private void createTreeLevels(ReportingTree<PreparedEntry> reportingTree) {
-        ReportingTreeNode<PreparedEntry> currentNode = reportingTree.root();
-        createLevelSkeleton(currentNode, reportSkeleton.root());
-    }
-
-    private void createLevelSkeleton(ReportingTreeNode<PreparedEntry> currentNode, ReportLevel currentSkeletonLevel) {
-        if (currentSkeletonLevel.leaf()) {
-            return;
-        }
-
-        ReportingTreeNode<PreparedEntry> childNode;
-        for (ReportLevel childSkeletonLevel : currentSkeletonLevel) {
-            if (currentSkeletonLevel.onlyDictionaryValues()) {
-                childNode = currentNode.addDictionaryChild(childSkeletonLevel.value());
-            } else {
-                childNode = currentNode.addAnyChild();
-            }
-            createLevelSkeleton(childNode, childSkeletonLevel);
-        }
     }
 
     private List<PreparedEntry> convertPathsToEntries(List<ReportingTreePath<PreparedEntry>> paths) {
