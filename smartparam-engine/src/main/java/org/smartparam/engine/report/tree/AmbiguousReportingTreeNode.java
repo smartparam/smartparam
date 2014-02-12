@@ -47,6 +47,11 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
+    protected boolean dictionaryOnly() {
+        return false;
+    }
+
+    @Override
     protected Iterable<ReportingTreeNode<V>> allChildren() {
         return space.values();
     }

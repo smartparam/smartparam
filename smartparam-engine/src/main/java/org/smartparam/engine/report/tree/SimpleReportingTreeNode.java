@@ -45,6 +45,11 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
+    protected boolean dictionaryOnly() {
+        return dictionaryOnlyLevel;
+    }
+
+    @Override
     public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
         return addChild(levelValue, false);
     }
@@ -61,7 +66,7 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
         if (Star.SYMBOL.equals(levelValue)) {
             dictionaryOnlyLevel = false;
         }
-        child.allowAnyValues(forceAllowAnyValues);
+//        this.allowAnyValues(forceAllowAnyValues);
 
         return child;
     }

@@ -73,6 +73,8 @@ public abstract class ReportingTreeNode<V> {
 
     protected abstract void allowAnyValues(boolean state);
 
+    protected abstract boolean dictionaryOnly();
+
     protected ReportingTreeLevelDescriptor levelDescriptor() {
         return levelDescriptor;
     }
@@ -131,7 +133,7 @@ public abstract class ReportingTreeNode<V> {
 
                 ReportingTreeNode<V> ascendParent = parent;
                 while (ascendParent != null) {
-                    if(ascendParent.parent != null) {
+                    if (ascendParent.parent != null) {
                         path.pushSegment(ascendParent.levelValue);
                     }
                     ascendParent = ascendParent.parent();
@@ -152,14 +154,15 @@ public abstract class ReportingTreeNode<V> {
 
     @Override
     public String toString() {
-        return "[ReportingTreeNode depth: " + depth + " path: " + levelPath() + " value: " + leafValue + "]";
+        return "[ReportingTreeNode depth: " + depth + " path: " + levelPath() + " dictionary: " + dictionaryOnly() + " value: " + leafValue + "]";
     }
 
     public void printNode(StringBuilder sb) {
         String indent = Printer.repeat(' ', depth << 2);
         boolean leaf = leaf();
 
-        sb.append(indent).append("path : ").append(levelPath());
+        sb.append(indent).append("path : ").append(levelPath())
+                .append("  dictionary: ").append(dictionaryOnly());
         if (leaf) {
             sb.append("   (leaf=").append(leafValue).append(')');
         }

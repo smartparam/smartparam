@@ -168,7 +168,7 @@ public class ReportingTreeTest {
                 .addDictionaryChild("A-A");
 
         // when
-        tree.insertValue(new String[]{"B", "B-B"}, "ANYTHING");
+        tree.insertValue(new String[]{"B", "A-A"}, "ANYTHING");
         logger.debug(tree.printTree());
 
         // then

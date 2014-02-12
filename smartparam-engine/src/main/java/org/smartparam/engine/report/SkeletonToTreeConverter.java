@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.report;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
 import org.smartparam.engine.report.tree.ReportingTree;
@@ -25,6 +27,8 @@ import org.smartparam.engine.report.tree.ReportingTreeNode;
  * @author Adam Dubiel
  */
 class SkeletonToTreeConverter {
+
+    private static final Logger logger = LoggerFactory.getLogger(SkeletonToTreeConverter.class);
 
     void createTreeLevels(ReportingTree<?> tree, ReportSkeleton skeleton) {
         ReportingTreeNode<?> currentNode = tree.root();
@@ -40,8 +44,10 @@ class SkeletonToTreeConverter {
         for (ReportLevel childSkeletonLevel : currentSkeletonLevel) {
             if (currentSkeletonLevel.onlyDictionaryValues()) {
                 childNode = currentNode.addDictionaryChild(childSkeletonLevel.value());
+                logger.info("created node {} from dictionary skeleton {} ", childNode, childSkeletonLevel);
             } else {
                 childNode = currentNode.addAnyChild();
+                logger.info("created node {} from skeleton {} ", childNode, childSkeletonLevel);
             }
             createLevelSkeleton(childNode, childSkeletonLevel);
         }
