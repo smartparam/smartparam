@@ -49,6 +49,7 @@ public class QueuingParameterRequestResolver implements ParameterRequestQueue {
 
     private PreparedParameter resolvePromise(String parameterName, Future<PreparedParameter> promise) {
         try {
+            currentRequests.remove(parameterName);
             return promise.get();
         } catch (InterruptedException interruptedException) {
             throw new ParameterRequestException(parameterName, interruptedException);

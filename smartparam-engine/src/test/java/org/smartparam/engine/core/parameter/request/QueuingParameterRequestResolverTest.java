@@ -37,7 +37,8 @@ public class QueuingParameterRequestResolverTest {
     }
 
     @Test(
-            description = "Concurrent test should be run with integration tests or when sth changes in tested class", enabled = false,
+            enabled = false,
+            description = "Concurrent test should be run with integration tests or when sth changes in tested class",
             invocationCount = 10, threadPoolSize = 2
     )
     public void shouldWaitForFirstRequestToResolveBeforeCallingAnotherForSameParameter() {
@@ -57,7 +58,7 @@ public class QueuingParameterRequestResolverTest {
             synchronized (this) {
                 try {
                     invocations++;
-                    this.wait(100);
+                    this.wait(1000);
                 } catch (InterruptedException ex) {
                     // ignore please
                 }
