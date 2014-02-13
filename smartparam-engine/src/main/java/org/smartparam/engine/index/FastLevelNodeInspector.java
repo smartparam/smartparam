@@ -58,10 +58,9 @@ public class FastLevelNodeInspector<T> implements LevelNodeInspector<T> {
             matchedLeafs = match(currentNode, levelValue, matcher, type, currentDepth);
         }
 
-        if (matchedLeafs == null && currentNode.getDefaultNode() != null) {
-            if (matcher == null || matcher.matches(levelValue, Star.SYMBOL, type)) {
-                matchedLeafs = indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1);
-            }
+        if (matchedLeafs == null && currentNode.getDefaultNode() != null
+                && (matcher == null || matcher.matches(levelValue, Star.SYMBOL, type))) {
+            matchedLeafs = indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1);
         }
 
         return matchedLeafs != null ? matchedLeafs : new ArrayList<LevelNode<T>>();

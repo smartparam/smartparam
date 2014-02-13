@@ -48,10 +48,9 @@ public class GreedyLevelNodeInspector<T> implements LevelNodeInspector<T> {
             matchedNodes.addAll(match(currentNode, levelValue, matcher, type, currentDepth));
         }
 
-        if (currentNode.getDefaultNode() != null) {
-            if (matcher == null || matcher.matches(levelValue, Star.SYMBOL, type)) {
-                matchedNodes.addAll(indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1));
-            }
+        boolean hasDefaultNode = currentNode.getDefaultNode() != null;
+        if (hasDefaultNode && (matcher == null || matcher.matches(levelValue, Star.SYMBOL, type))) {
+            matchedNodes.addAll(indexCrawler.inspect(currentNode.getDefaultNode(), currentDepth + 1));
         }
 
         return matchedNodes;
