@@ -18,6 +18,9 @@ package org.smartparam.repository.fs;
 import org.smartparam.repository.fs.resolver.ResourceResolver;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import org.smartparam.engine.config.initialization.InitializableComponentNotInitialized;
+import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
@@ -25,6 +28,7 @@ import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.serializer.ParamDeserializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import static com.googlecode.catchexception.CatchException.*;
 
 /**
  *
@@ -80,11 +84,66 @@ public class AbstractFSParamRepositoryTest {
         assertThat(parameter).isNull();
     }
 
+    @Test
+    public void shouldListAllParameters() {
+        // given
+        Map<String, String> resources = new HashMap<String, String>();
+        resources.put("A", "A");
+        resources.put("B", "B");
+
+        when(resourceResolver.findParameterResources()).thenReturn(resources);
+
+        AbstractFSParamRepository paramRepository = new TestFSParamRepository(resourceResolver);
+        paramRepository.initialize();
+
+        // when
+        Set<String> parameters = paramRepository.listParameters();
+
+        // then
+        assertThat(parameters).hasSize(2).containsOnly("A", "B");
+    }
+
+    @Test
+    public void shouldThrowInitializationExceptionWhenLoadingParameterWithoutInitialization() {
+        // given
+        ParamRepository paramRepository = new TestFSParamRepository(resourceResolver);
+
+        // when
+        catchException(paramRepository).load("");
+
+        // then
+        assertThat(caughtException()).isInstanceOf(InitializableComponentNotInitialized.class);
+    }
+
+    @Test
+    public void shouldThrowInitializationExceptionWhenLoadingParameterListWithoutInitialization() {
+        // given
+        ParamRepository paramRepository = new TestFSParamRepository(resourceResolver);
+
+        // when
+        catchException(paramRepository).listParameters();
+
+        // then
+        assertThat(caughtException()).isInstanceOf(InitializableComponentNotInitialized.class);
+    }
+
+    @Test
+    public void shouldThrowInitializationExceptionWhenBatchLoadingParameterWithoutInitialization() {
+        // given
+        ParamRepository paramRepository = new TestFSParamRepository(resourceResolver);
+
+        // when
+        catchException(paramRepository).batchLoad("");
+
+        // then
+        assertThat(caughtException()).isInstanceOf(InitializableComponentNotInitialized.class);
+    }
+
     private final class TestFSParamRepository extends AbstractFSParamRepository {
 
-        private ResourceResolver resourceResolver;
+        private final ResourceResolver resourceResolver;
 
-        public TestFSParamRepository(ResourceResolver resourceResolver) {
+        TestFSParamRepository(ResourceResolver resourceResolver) {
             super("TEST", "TEST");
             this.resourceResolver = resourceResolver;
         }

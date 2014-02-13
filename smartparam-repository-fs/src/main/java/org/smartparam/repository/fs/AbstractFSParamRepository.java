@@ -21,6 +21,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.smartparam.engine.config.initialization.InitializableComponent;
+import org.smartparam.engine.config.initialization.InitializableComponentNotInitialized;
 import org.smartparam.engine.core.parameter.ParameterBatchLoader;
 import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
@@ -37,6 +38,8 @@ import org.smartparam.serializer.ParamSerializerFactory;
 public abstract class AbstractFSParamRepository implements ParamRepository, InitializableComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractFSParamRepository.class);
+
+    private boolean initialized;
 
     private String basePath;
 
@@ -60,6 +63,7 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
 
     @Override
     public void initialize() {
+        initialized = true;
         if (deserializer == null) {
             logger.debug("no custom deserializer provided, using {}", StandardParamDeserializer.class.getSimpleName());
             this.deserializer = ParamSerializerFactory.paramDeserializer(new DefaultSerializationConfig());
@@ -75,6 +79,8 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
 
     @Override
     public Parameter load(String parameterName) {
+        checkIfInitialized();
+
         String parameterResourceName = parameters.get(parameterName);
         if (parameterResourceName != null) {
             return resourceResolver.loadParameterFromResource(parameterResourceName);
@@ -84,6 +90,8 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
 
     @Override
     public ParameterBatchLoader batchLoad(String parameterName) {
+        checkIfInitialized();
+
         String parameterResourceName = parameters.get(parameterName);
         if (parameterResourceName != null) {
             return resourceResolver.batchLoadParameterFromResource(parameterResourceName);
@@ -93,12 +101,22 @@ public abstract class AbstractFSParamRepository implements ParamRepository, Init
 
     @Override
     public Set<ParameterEntry> findEntries(String parameterName, String[] levelValues) {
+        checkIfInitialized();
+
         logger.info("trying to load parameter {}, but {} does not support non-cacheable parameters", parameterName, getClass().getSimpleName());
         return null;
     }
 
     @Override
     public Set<String> listParameters() {
+        checkIfInitialized();
+
         return parameters.keySet();
+    }
+
+    private void checkIfInitialized() {
+        if (!initialized) {
+            throw new InitializableComponentNotInitialized(this.getClass());
+        }
     }
 }
