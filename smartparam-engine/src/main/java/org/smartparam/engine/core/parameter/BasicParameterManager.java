@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
+import org.smartparam.engine.core.parameter.request.ParameterRequest;
+import org.smartparam.engine.core.parameter.request.ParameterRequestQueue;
 import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
@@ -36,24 +38,44 @@ public class BasicParameterManager implements ParameterManager {
 
     private final PreparedParamCache cache;
 
-    public BasicParameterManager(ParamPreparer preparer, ParameterProvider parameterProvider, PreparedParamCache cache) {
+    private final ParameterRequestQueue requestQueue;
+
+    private final ParameterRequest request;
+
+    public BasicParameterManager(ParamPreparer preparer,
+            ParameterProvider parameterProvider,
+            PreparedParamCache cache,
+            ParameterRequestQueue requestQueue) {
         this.preparer = preparer;
         this.parameterProvider = parameterProvider;
         this.cache = cache;
+        this.requestQueue = requestQueue;
+
+        request = createRequest();
+    }
+
+    private ParameterRequest createRequest() {
+        return new ParameterRequest() {
+            @Override
+            public PreparedParameter loadAndPrepare(String parameterName) {
+                ParameterFromRepository parameter = parameterProvider.load(parameterName);
+                if (parameter == null) {
+                    return null;
+                }
+
+                PreparedParameter preparedParameter = preparer.prepare(parameter);
+                cache.put(parameterName, preparedParameter);
+                return preparedParameter;
+            }
+        };
     }
 
     @Override
-    public PreparedParameter getPreparedParameter(String parameterName) {
+    public PreparedParameter getPreparedParameter(final String parameterName) {
         PreparedParameter preparedParameter = cache.get(parameterName);
 
         if (preparedParameter == null) {
-            ParameterFromRepository parameter = parameterProvider.load(parameterName);
-            if (parameter == null) {
-                return null;
-            }
-
-            preparedParameter = preparer.prepare(parameter);
-            cache.put(parameterName, preparedParameter);
+            requestQueue.resolve(parameterName, request);
         }
 
         return preparedParameter;
