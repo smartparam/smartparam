@@ -45,8 +45,10 @@ import org.smartparam.engine.core.matcher.MatcherRepository;
 import org.smartparam.engine.core.output.entry.MapEntryFactory;
 import org.smartparam.engine.core.output.factory.DefaultParamValueFactory;
 import org.smartparam.engine.core.output.factory.DetailedParamValueFactory;
+import org.smartparam.engine.core.parameter.BasicParameterManager;
 import org.smartparam.engine.core.parameter.BasicParameterProvider;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
+import org.smartparam.engine.core.parameter.ParameterManager;
 import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.prepared.LevelPreparer;
 import org.smartparam.engine.core.prepared.ParamPreparer;
@@ -86,6 +88,7 @@ public class ParamEngineConfig extends ComponentConfig {
 
     @Override
     protected void injectDefaults(Set<ComponentDefinition> components) {
+        components.add(component(ParameterManager.class, BasicParameterManager.class));
         components.add(component(ParamPreparer.class, BasicParamPreparer.class));
         components.add(component(LevelPreparer.class, BasicLevelPreparer.class));
         components.add(component(PreparedParamCache.class, MapPreparedParamCache.class));
