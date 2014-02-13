@@ -17,6 +17,7 @@ package org.smartparam.engine.report;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
 import org.smartparam.engine.report.tree.ReportingTree;
 import org.testng.annotations.Test;
@@ -47,7 +48,7 @@ public class SkeletonToTreeConverterTest {
                         )
                 );
 
-        logger.info("\n{}", skeleton.toString());
+        logger.debug(skeleton.toString());
 
         // when
         skeletonToTreeConverter.createTreeLevels(tree, skeleton);
@@ -55,5 +56,34 @@ public class SkeletonToTreeConverterTest {
 
         // then
         assertThat(tree).hasDepth(4).levelAt(1).isDictionaryLevel();
+    }
+
+    @Test
+    public void shouldCreateLevelsInsideReportingTreeWhenMultipleDictionaryLevelsStack() {
+        // given
+        ReportingTree<String> tree = reportingTree().withOnlyExactLevels(4).build();
+
+        // ROOT/FIRST/SECOND_A/*/*
+        ReportSkeleton skeleton = ReportSkeleton.reportSkeleton();
+        skeleton.withLevel(
+                "FIRST", ReportLevel.level().withChild(
+                        "SECOND_A", ReportLevel.level().withChild(
+                                ReportLevel.level().withChild(
+                                        ReportLevel.level()
+                                )
+                        )
+                )
+        );
+        logger.debug(skeleton.toString());
+
+        // when
+        skeletonToTreeConverter.createTreeLevels(tree, skeleton);
+        logger.info(tree.printTree());
+
+        // then
+        assertThat(tree).hasDepth(4)
+                .levelAt(0).isDictionaryLevel()
+                .levelAt(1).isDictionaryLevel()
+                .levelAt(2).isNotDictionaryLevel();
     }
 }

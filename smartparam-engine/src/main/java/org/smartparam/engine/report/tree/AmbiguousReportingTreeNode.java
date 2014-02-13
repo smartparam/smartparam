@@ -17,8 +17,6 @@ package org.smartparam.engine.report.tree;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import org.smartparam.engine.core.index.Star;
 
 /**
@@ -28,8 +26,6 @@ import org.smartparam.engine.core.index.Star;
 public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
 
     private final ReportLevelValuesSpace<V> space;
-
-    private final Map<Object, ReportingTreeNode<V>> children = new TreeMap<Object, ReportingTreeNode<V>>();
 
     public AmbiguousReportingTreeNode(ReportingTree<V> tree, ReportingTreeNode<V> parent, String levelValue) {
         super(tree, parent, levelValue);
@@ -42,8 +38,8 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
-    protected void allowAnyValues(boolean state) {
-        // noop - non-dictionary only by default and can't be changed
+    public AmbiguousReportingTreeNode<V> allowAnyValues() {
+        return this;
     }
 
     @Override
@@ -68,17 +64,16 @@ public class AmbiguousReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
-    public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
+    public ReportingTreeNode<V> child(String levelValue) {
         ReportingTreeNode<V> child = tree().createNode(this, levelValue);
         space.uncheckedPut(decodeLevelValue(levelValue), child);
-        children.put(levelValue, child);
 
         return child;
     }
 
     @Override
-    public ReportingTreeNode<V> addAnyChild() {
-        return addDictionaryChild(Star.SYMBOL);
+    public ReportingTreeNode<V> childStar() {
+        return child(Star.SYMBOL).allowAnyValues();
     }
 
     @Override

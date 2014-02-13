@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.report.tree;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.Assertions;
 import org.smartparam.engine.test.Iterables;
@@ -40,6 +42,27 @@ public class ReportingTreeAssert extends AbstractAssert<ReportingTreeAssert, Rep
         return this;
     }
 
+    public ReportingTreeAssert hasLeaves(int count) {
+        Assertions.assertThat(actual.harvestLeavesValues()).hasSize(count);
+        return this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public ReportingTreeAssert containsValues(Object... leavesValues) {
+        List<ReportingTreePath<?>> leaves = (List<ReportingTreePath<?>>) actual.harvestLeavesValues();
+        List<Object> rawValues = new ArrayList<Object>();
+        for (ReportingTreePath<?> leaf : leaves) {
+            rawValues.add(leaf.value());
+        }
+        Assertions.assertThat(rawValues).containsOnly(leavesValues);
+        return this;
+    }
+
+    public ReportingTreeAssert hasNoLeaves() {
+        Assertions.assertThat(actual.harvestLeavesValues()).isEmpty();
+        return this;
+    }
+
     public ReportingTreeAssert levelAt(int depth) {
         ReportingTreeNode<?> currentNode = actual.root();
         for (int index = 0; index < depth; ++index) {
@@ -51,6 +74,11 @@ public class ReportingTreeAssert extends AbstractAssert<ReportingTreeAssert, Rep
 
     public ReportingTreeAssert isDictionaryLevel() {
         Assertions.assertThat(currentLevel.dictionaryOnly()).overridingErrorMessage("Expected level %s to be a dictionary level.", currentLevel).isTrue();
+        return this;
+    }
+
+    public ReportingTreeAssert isNotDictionaryLevel() {
+        Assertions.assertThat(currentLevel.dictionaryOnly()).overridingErrorMessage("Expected level %s not to be a dictionary level.", currentLevel).isFalse();
         return this;
     }
 }

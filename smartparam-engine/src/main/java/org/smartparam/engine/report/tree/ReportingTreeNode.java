@@ -63,15 +63,15 @@ public abstract class ReportingTreeNode<V> {
         this.leafValue = patternToClone.leafValue;
     }
 
-    public abstract ReportingTreeNode<V> addDictionaryChild(String levelValue);
+    public abstract ReportingTreeNode<V> child(String levelValue);
 
-    public abstract ReportingTreeNode<V> addAnyChild();
+    public abstract ReportingTreeNode<V> childStar();
 
     public abstract void insertPath(ReportingTreePath<V> path);
 
     public abstract ReportingTreeNode<V> cloneBranch(ReportingTreeNode<V> newParent);
 
-    protected abstract void allowAnyValues(boolean state);
+    public abstract ReportingTreeNode<V> allowAnyValues();
 
     protected abstract boolean dictionaryOnly();
 

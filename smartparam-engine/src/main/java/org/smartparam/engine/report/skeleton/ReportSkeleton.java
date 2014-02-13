@@ -69,7 +69,7 @@ public class ReportSkeleton implements Iterable<ReportLevel> {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(TO_STRING_LENGTH);
+        StringBuilder builder = new StringBuilder(TO_STRING_LENGTH).append("\n");
         rootLevel.printNode(builder, 0);
         return builder.toString();
     }

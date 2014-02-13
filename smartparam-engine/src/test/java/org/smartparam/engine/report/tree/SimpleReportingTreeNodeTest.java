@@ -34,10 +34,10 @@ public class SimpleReportingTreeNodeTest {
     public void shouldCopyWholeSubtreeIncludingClonedNodeWhenCopyingBranch() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        ReportingTreeNode<String> firstLevel = tree.root().addDictionaryChild("A");
-        firstLevel.addDictionaryChild("A-A").parent()
-                .addDictionaryChild("A-B").parent()
-                .addDictionaryChild("*");
+        ReportingTreeNode<String> firstLevel = tree.root().child("A");
+        firstLevel.child("A-A").parent()
+                .child("A-B").parent()
+                .child("*");
         tree.insertValue(new String[]{"A", "A-A"}, "VALUE_A");
         tree.insertValue(new String[]{"A", "A-B"}, "VALUE_B");
         tree.insertValue(new String[]{"A", "*"}, "VALUE_ANY");
@@ -57,7 +57,7 @@ public class SimpleReportingTreeNodeTest {
     public void shouldNotChangeParentOfClonedBranchWheNCloningRootNode() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(1).build();
-        tree.root().addDictionaryChild("A");
+        tree.root().child("A");
         tree.insertValue(new String[]{"A"}, "VALUE_A");
 
         ReportingTreeNode<String> newParent = new SimpleReportingTreeNode<String>(tree, null, "NEW_PARENT");

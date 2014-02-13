@@ -106,7 +106,7 @@ public final class ReportingTree<V> {
 
     public String printTree() {
         StringBuilder builder = new StringBuilder(PRINT_DEFAULT_SIZE);
-        builder.append("ReportingTree ");
+        builder.append("ReportingTree: \n");
         root.printNode(builder);
         return builder.toString();
     }

@@ -40,8 +40,9 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
-    protected void allowAnyValues(boolean state) {
-        this.dictionaryOnlyLevel = !state;
+    public SimpleReportingTreeNode<V> allowAnyValues() {
+        this.dictionaryOnlyLevel = false;
+        return this;
     }
 
     @Override
@@ -50,27 +51,39 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
     }
 
     @Override
-    public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
-        return addChild(levelValue, false);
-    }
-
-    @Override
-    public ReportingTreeNode<V> addAnyChild() {
-        return addChild("*", true);
-    }
-
-    private ReportingTreeNode<V> addChild(String levelValue, boolean forceAllowAnyValues) {
+    public ReportingTreeNode<V> child(String levelValue) {
         ReportingTreeNode<V> child = tree().createNode(this, levelValue);
         children.put(levelValue, child);
-
-        if (Star.SYMBOL.equals(levelValue)) {
-            dictionaryOnlyLevel = false;
-        }
-//        this.allowAnyValues(forceAllowAnyValues);
 
         return child;
     }
 
+    @Override
+    public ReportingTreeNode<V> childStar() {
+        return child(Star.SYMBOL).allowAnyValues();
+    }
+
+//    @Override
+//    public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
+//        return addChild(levelValue, false);
+//    }
+//
+//    @Override
+//    public ReportingTreeNode<V> addAnyChild() {
+//        return addChild("*", true);
+//    }
+//
+//    private ReportingTreeNode<V> addChild(String levelValue, boolean forceAllowAnyValues) {
+//        ReportingTreeNode<V> child = tree().createNode(this, levelValue);
+//        children.put(levelValue, child);
+//
+//        if (Star.SYMBOL.equals(levelValue)) {
+//            dictionaryOnlyLevel = false;
+//        }
+////        this.allowAnyValues(forceAllowAnyValues);
+//
+//        return child;
+//    }
     @Override
     public void insertPath(ReportingTreePath<V> path) {
         if (leaf()) {
@@ -84,7 +97,7 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
         } else {
             ReportingTreeNode<V> childNode = children.get(valueToInsert);
             if (childNode == null && !dictionaryOnlyLevel) {
-                childNode = addChild(valueToInsert, true);
+                childNode = child(valueToInsert).allowAnyValues();
             }
             if (childNode != null) {
                 childNode.insertPath(path);

@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.smartparam.engine.matchers.MatchAllMatcher;
 import org.testng.annotations.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.smartparam.engine.report.tree.ReportingTreeAssert.assertThat;
 import static org.smartparam.engine.report.tree.ReportingTreeBuilder.reportingTree;
 
 /**
@@ -36,46 +36,47 @@ public class ReportingTreeTest {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(3).build();
         tree.root()
-                .addDictionaryChild("SECOND_LEVEL")
-                .addDictionaryChild("THIRD_LEVEL")
-                .addDictionaryChild("FOURTH_LEVEL");
+                .child("SECOND_LEVEL")
+                .child("THIRD_LEVEL")
+                .child("FOURTH_LEVEL");
 
         // when
         tree.insertValue(new String[]{"SECOND_LEVEL", "THIRD_LEVEL", "FOURTH_LEVEL"}, "VALUE");
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsExactly("VALUE");
+        assertThat(tree).hasDepth(3).containsValues("VALUE");
     }
 
     @Test
     public void shouldSilentlyIgnoreWhenTryingToAddValueOutOfDictionaryToDictionaryOnlyLevel() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root().addDictionaryChild("SECOND_LEVEL");
+        tree.root()
+                .child("SECOND_LEVEL");
 
         // when
         tree.insertValue(new String[]{"INVALID_VALUE"}, "VALUE");
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).isEmpty();
+        assertThat(tree).hasNoLeaves();
     }
 
     @Test
     public void shouldInsertValueWithAnyPathValuesIntoFreeFormTree() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root()
-                .addAnyChild()
-                .addAnyChild();
+        tree.root().allowAnyValues()
+                .childStar()
+                .childStar();
 
         // when
-        tree.insertValue(new String[]{"SOMETHING", "ANYTHING"}, "VALUE");
         logger.debug(tree.printTree());
+        tree.insertValue(new String[]{"SOMETHING", "ANYTHING"}, "VALUE");
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsExactly("VALUE");
+        assertThat(tree).containsValues("VALUE");
     }
 
     @Test
@@ -83,15 +84,15 @@ public class ReportingTreeTest {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
         tree.root()
-                .addDictionaryChild("SECOND_LEVEL")
-                .addAnyChild();
+                .child("SECOND_LEVEL").allowAnyValues()
+                .childStar();
 
         // when
         tree.insertValue(new String[]{"SECOND_LEVEL", "ANYTHING"}, "VALUE");
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsExactly("VALUE");
+        assertThat(tree).containsValues("VALUE");
     }
 
     @Test
@@ -99,18 +100,18 @@ public class ReportingTreeTest {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(4).build();
         tree.root()
-                .addDictionaryChild("A")
-                .addDictionaryChild("A-A")
-                .addDictionaryChild("A-A-A")
-                .addDictionaryChild("*").parent()
+                .child("A")
+                .child("A-A")
+                .child("A-A-A").allowAnyValues()
+                .childStar().parent()
                 .parent()
-                .addDictionaryChild("A-A-B")
-                .addDictionaryChild("*").parent()
+                .child("A-A-B").allowAnyValues()
+                .childStar().parent()
                 .parent()
                 .parent()
-                .addDictionaryChild("A-B")
-                .addDictionaryChild("A-B-A")
-                .addDictionaryChild("*");
+                .child("A-B")
+                .child("A-B-A").allowAnyValues()
+                .childStar();
 
         // when
         tree.insertValue(new String[]{"A", "A-A", "A-A-A", "C"}, "VALUE_1");
@@ -119,7 +120,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(3).containsOnly("VALUE_1", "VALUE_2", "VALUE_3");
+        assertThat(tree).containsValues("VALUE_1", "VALUE_2", "VALUE_3");
     }
 
     @Test
@@ -127,17 +128,17 @@ public class ReportingTreeTest {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
         tree.root()
-                .addDictionaryChild("A")
-                .addDictionaryChild("A-A").parent()
-                .addDictionaryChild("A-B").parent()
-                .addDictionaryChild("A-C");
+                .child("A")
+                .child("A-A").parent()
+                .child("A-B").parent()
+                .child("A-C");
 
         // when
         tree.insertValue(new String[]{"A", "*"}, "VIRAL");
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(3).containsOnly("VIRAL");
+        assertThat(tree).hasLeaves(3).containsValues("VIRAL");
     }
 
     @Test
@@ -145,34 +146,34 @@ public class ReportingTreeTest {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(3).build();
         tree.root()
-                .addDictionaryChild("A")
-                .addDictionaryChild("A-A")
-                .addDictionaryChild("A-A-A").parent().parent()
-                .addDictionaryChild("A-B")
-                .addDictionaryChild("A-B-A");
+                .child("A")
+                .child("A-A")
+                .child("A-A-A").parent().parent()
+                .child("A-B")
+                .child("A-B-A");
 
         // when
         tree.insertValue(new String[]{"A", "*", "A-A-A"}, "CONTAINED_VIRAL");
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsOnly("CONTAINED_VIRAL");
+        assertThat(tree).hasLeaves(1).containsValues("CONTAINED_VIRAL");
     }
 
     @Test
     public void shouldInsertAnyPathIntoLevelAcceptingDefaults() {
         // given
         ReportingTree<String> tree = reportingTree().withOnlyExactLevels(2).build();
-        tree.root()
-                .addAnyChild()
-                .addDictionaryChild("A-A");
+        tree.root().allowAnyValues()
+                .childStar()
+                .child("A-A");
 
         // when
         tree.insertValue(new String[]{"B", "A-A"}, "ANYTHING");
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(1).containsOnly("ANYTHING");
+        assertThat(tree).containsValues("ANYTHING");
     }
 
     @Test
@@ -183,9 +184,10 @@ public class ReportingTreeTest {
                 .addExactLevel()
                 .addAmbiguousIntegerLevel("4", new MatchAllMatcher())
                 .build();
-        tree.root().addDictionaryChild("A")
-                .addDictionaryChild("A-A")
-                .addAnyChild();
+        tree.root()
+                .child("A")
+                .child("A-A")
+                .childStar();
 
         // when
         tree.insertValue(new String[]{"A", "A-A", "0~10"}, "VALUE: 0-10");
@@ -193,7 +195,7 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(3).containsOnly("VALUE: 0-10");
+        assertThat(tree).hasLeaves(3).containsValues("VALUE: 0-10");
     }
 
     @Test
@@ -204,9 +206,9 @@ public class ReportingTreeTest {
                 .addAmbiguousIntegerLevel("4", new MatchAllMatcher())
                 .addExactLevel()
                 .build();
-        tree.root().addDictionaryChild("A")
-                .addAnyChild()
-                .addDictionaryChild("A-A");
+        tree.root().child("A")
+                .childStar()
+                .child("A-A");
 
         // when
         tree.insertValue(new String[]{"A", "0~10", "A-A"}, "VALUE: A-A");
@@ -214,6 +216,6 @@ public class ReportingTreeTest {
         logger.debug(tree.printTree());
 
         // then
-        assertThat(tree.harvestRawLeavesValues()).hasSize(3).containsOnly("VALUE: A-A");
+        assertThat(tree).hasLeaves(3).containsValues("VALUE: A-A");
     }
 }

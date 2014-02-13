@@ -15,6 +15,8 @@
  */
 package org.smartparam.engine.core.context;
 
+import java.util.Arrays;
+
 /**
  * Simple parameter evaluation context that uses values provided directly by
  * user. Under the hood, {@link DefaultContext#setLevelValues(java.lang.Object[]) }
@@ -32,4 +34,11 @@ public class LevelValues extends BaseParamContext {
     public static LevelValues from(Object... values) {
         return new LevelValues(values);
     }
+
+    @Override
+    public String toString() {
+        return Arrays.toString(getLevelValues());
+    }
+
+
 }

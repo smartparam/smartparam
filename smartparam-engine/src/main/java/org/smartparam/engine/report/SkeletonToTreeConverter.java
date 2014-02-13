@@ -33,22 +33,24 @@ class SkeletonToTreeConverter {
     void createTreeLevels(ReportingTree<?> tree, ReportSkeleton skeleton) {
         ReportingTreeNode<?> currentNode = tree.root();
         createLevelSkeleton(currentNode, skeleton.root());
+
+        if (logger.isTraceEnabled()) {
+            logger.trace(skeleton.toString());
+        }
     }
 
     private void createLevelSkeleton(ReportingTreeNode<?> currentNode, ReportLevel currentSkeletonLevel) {
+        if (!currentSkeletonLevel.onlyDictionaryValues()) {
+            currentNode.allowAnyValues();
+        }
+
         if (currentSkeletonLevel.leaf()) {
             return;
         }
 
         ReportingTreeNode<?> childNode;
         for (ReportLevel childSkeletonLevel : currentSkeletonLevel) {
-            if (currentSkeletonLevel.onlyDictionaryValues()) {
-                childNode = currentNode.addDictionaryChild(childSkeletonLevel.value());
-                logger.info("created node {} from dictionary skeleton {} ", childNode, childSkeletonLevel);
-            } else {
-                childNode = currentNode.addAnyChild();
-                logger.info("created node {} from skeleton {} ", childNode, childSkeletonLevel);
-            }
+            childNode = currentNode.child(childSkeletonLevel.value());
             createLevelSkeleton(childNode, childSkeletonLevel);
         }
     }

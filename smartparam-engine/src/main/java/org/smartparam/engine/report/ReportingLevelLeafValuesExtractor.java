@@ -17,7 +17,6 @@ package org.smartparam.engine.report;
 
 import org.smartparam.engine.report.tree.ReportValueChooser;
 import org.smartparam.engine.report.tree.ReportingTreeLevelDescriptor;
-import org.smartparam.engine.report.tree.ReportingTreeNode;
 import org.smartparam.engine.report.tree.ReportingTreePath;
 import org.smartparam.engine.report.tree.ReportingTree;
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ import org.smartparam.engine.core.prepared.PreparedEntry;
 import org.smartparam.engine.index.CustomizableLevelIndexWalker;
 import org.smartparam.engine.index.IndexLevelDescriptor;
 import org.smartparam.engine.index.LevelLeafValuesExtractor;
-import org.smartparam.engine.report.skeleton.ReportLevel;
 import org.smartparam.engine.report.skeleton.ReportSkeleton;
 import org.smartparam.engine.report.tree.ReportLevelValuesSpaceRepository;
 import org.smartparam.engine.report.tree.ReportingTreeValueDescriptor;
