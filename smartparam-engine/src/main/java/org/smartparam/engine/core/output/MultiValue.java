@@ -192,6 +192,26 @@ public interface MultiValue {
     Long[] getLongArray(String name);
 
     /**
+     * Return value of column at given position as boolean.
+     */
+    Boolean getBoolean(int position);
+
+    /**
+     * Return value of column with given name as boolean.
+     */
+    Boolean getBoolean(String name);
+
+    /**
+     * Return value of column at given position as boolean array.
+     */
+    Boolean[] getBooleanArray(int position);
+
+    /**
+     * Return value of column under given name as array of booleans.
+     */
+    Boolean[] getBooleanArray(String name);
+
+    /**
      * Return value of column at given position as string.
      */
     String getString(int position);

@@ -20,11 +20,14 @@ import java.util.Date;
 import org.smartparam.engine.core.exception.SmartParamException;
 import static org.testng.AssertJUnit.*;
 import org.smartparam.engine.core.type.ValueHolder;
+import org.smartparam.engine.types.bool.BooleanHolder;
 import org.smartparam.engine.types.date.DateHolder;
 import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.number.NumberHolder;
 import org.smartparam.engine.types.string.StringHolder;
 import org.testng.annotations.Test;
+import static com.googlecode.catchexception.CatchException.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Przemek Hertel
@@ -32,184 +35,109 @@ import org.testng.annotations.Test;
 public class DefaultMultiValueTest {
 
     @Test
-    public void testGetValue() {
+    public void shouldReturnValueHolderFromGivenIndex() {
+        // given
+        ValueHolder holder = new StringHolder("v");
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-        // zaleznosci
-        ValueHolder h1 = new StringHolder("a");
-        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
-        ValueHolder h3 = new IntegerHolder(100L);
-
-        // dane testowe
-        Object[] values = {h1, h2, h3};
-
-        // testowany obiekt
-        MultiValue mv = new DefaultMultiValue(values);
-
-        // oczekiwane wartosci
-        assertSame(h1, mv.getHolder(0));
-        assertSame(h2, mv.getHolder(1));
-        assertSame(h3, mv.getHolder(2));
+        // when then
+        assertThat(mv.getHolder(0)).isSameAs(holder);
     }
 
     @Test
-    public void testGetValue__exception() {
+    public void shouldThrowAnExceptionWhenAskingForValueFromNonexistentIndex() {
+        // given
+        MultiValue mv = new DefaultMultiValue(new Object[]{});
 
-        // zaleznosci
-        ValueHolder h1 = new StringHolder("a");
-        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
+        // when
+        catchException(mv).get(0);
 
-        // dane testowe
-        Object[] values = {new ValueHolder[]{h1, h2}};       // 1 element typu AbstractHolder[]
-
-        // testowany obiekt
-        MultiValue mv = new DefaultMultiValue(values);
-
-        // indeksy, z ktorych nie mozna pobrac wartosci AbstractHolder
-        int[] indices = {0, 1, 2};
-
-        // test
-        for (int i = 0; i < indices.length; i++) {
-            int k = indices[i];
-
-            try {
-                mv.getHolder(k);
-                fail();
-            } catch (SmartParamException e) {
-                // success
-            }
-        }
+        // then
+        assertThat(caughtException()).isInstanceOf(InvalidValueIndexException.class);
     }
 
     @Test
-    public void testGetString() {
+    public void shouldReturnStringValueFromGivenIndex() {
+        // given
+        ValueHolder holder = new StringHolder("v");
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-        // zaleznosci
-        ValueHolder h1 = new StringHolder("a");
-        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
-        ValueHolder h3 = new IntegerHolder(9L);
-
-        // testowany obiekt
-        MultiValue mv = new DefaultMultiValue(new Object[]{h1, h2, h3});
-
-        // oczekiwane wartosci
-        assertEquals("a", mv.getString(0));
-        assertEquals("1", mv.getString(1));
-        assertEquals("9", mv.getString(2));
+        // when then
+        assertThat(mv.getString(0)).isEqualTo("v");
     }
 
     @Test
-    public void testGetBigDecimal() {
+    public void shouldReturnBigDecimalValueFromGivenIndex() {
+        // given
+        ValueHolder holder = new NumberHolder(BigDecimal.TEN);
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-        // zaleznosci
-        ValueHolder h1 = new NumberHolder(BigDecimal.ONE);
-        ValueHolder h2 = new NumberHolder(BigDecimal.TEN);
-
-        // testowany obiekt
-        MultiValue mv = new DefaultMultiValue(new Object[]{h1, h2});
-
-        // oczekiwane wartosci
-        assertEquals(BigDecimal.ONE, mv.getBigDecimal(0));
-        assertEquals(BigDecimal.TEN, mv.getBigDecimal(1));
+        // when then
+        assertThat(mv.getBigDecimal(0)).isEqualTo(BigDecimal.TEN);
     }
 
     @Test
-    public void testGetDate() {
+    public void shouldReturnDateValueFromGivenIndex() {
+        // given
+        Date date = new Date();
+        ValueHolder holder = new DateHolder(date);
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-        // zaleznosci
-        Date d1 = new Date();
-        Date d2 = new Date();
-        ValueHolder h1 = new DateHolder(d1);
-        ValueHolder h2 = new DateHolder(d2);
-
-        // testowany obiekt
-        MultiValue mv = new DefaultMultiValue(new Object[]{h1, h2});
-
-        // oczekiwane wartosci
-        assertEquals(d1, mv.getDate(0));
-        assertEquals(d2, mv.getDate(1));
+        // when then
+        assertThat(mv.getDate(0)).isEqualTo(date);
     }
 
     @Test
-    public void testGetInteger() {
+    public void shouldReturnLongValueFromGivenIndex() {
+        // given
+        ValueHolder holder = new IntegerHolder(12L);
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-        // zaleznosci
-        ValueHolder h1 = new IntegerHolder(123L);
-
-        // testowany obiekt
-        MultiValue mv = new DefaultMultiValue(new Object[]{h1});
-
-        // oczekiwane wartosci
-        assertEquals(new Integer(123), mv.getInteger(0));
+        // when then
+        assertThat(mv.getLong(0)).isEqualTo(12L);
     }
 
     @Test
-    public void testGetLong() {
+    public void shouldReturnIntegerValueFromGivenIndex() {
+        // given
+        ValueHolder holder = new IntegerHolder(12L);
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-        // zaleznosci
-        ValueHolder h1 = new IntegerHolder(123L);
-
-        // testowany obiekt
-        MultiValue mv = new DefaultMultiValue(new Object[]{h1});
-
-        // oczekiwane wartosci
-        assertEquals(new Long(123), mv.getLong(0));
+        // when then
+        assertThat(mv.getInteger(0)).isEqualTo(12);
     }
 
     @Test
-    public void testGetEnum() {
+    public void shouldReturnBooleanValueFromGivenIndex() {
+        // given
+        ValueHolder holder = new BooleanHolder(true);
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-        // przypadki testowe
-        ValueHolder[] tests = {
-            new StringHolder("A3"),
-            new StringHolder("A4"),
-            new StringHolder(null)
-        };
-
-        // oczekiwane wyniki
-        LetterType[] expected = {
-            LetterType.A3,
-            LetterType.A4,
-            null
-        };
-
-        // testy
-        for (int i = 0; i < tests.length; i++) {
-            ValueHolder h = tests[i];
-            LetterType expectedResult = expected[i];
-
-            MultiValue mv = new DefaultMultiValue(new Object[]{h});
-
-            // test
-            LetterType result = mv.getEnum(0, LetterType.class);
-
-            // weryfikacja
-            assertEquals(expectedResult, result);
-        }
+        // when then
+        assertThat(mv.getBoolean(0)).isTrue();
     }
 
     @Test
-    public void testGetEnum__illegalArgument() {
+    public void shouldReturnEnumValueFromGivenIndex() {
+        // given
+        ValueHolder holder = new StringHolder("A3");
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-        // przypadki testowe
-        ValueHolder[] tests = {
-            new StringHolder("A9"),
-            new StringHolder("")
-        };
+        // when then
+        assertThat(mv.getEnum(0, LetterType.class)).isEqualTo(LetterType.A3);
+    }
 
-        // testy
-        for (int i = 0; i < tests.length; i++) {
-            ValueHolder h = tests[i];
-            MultiValue mv = new DefaultMultiValue(new Object[]{h});
+    @Test
+    public void shouldThrowGettingWrongTypeExceptionWhenTryingToGetEnumFromillegalValue() {
+        // given
+        ValueHolder holder = new StringHolder("ILLEGAL");
+        MultiValue mv = new DefaultMultiValue(new Object[]{holder});
 
-            // test
-            try {
-                mv.getEnum(0, LetterType.class);
-                fail();
+        // when
+        catchException(mv).getEnum(0, LetterType.class);
 
-            } catch (GettingWrongTypeException e) {
-                // success
-            }
-        }
+        // when then
+        assertThat(caughtException()).isInstanceOf(GettingWrongTypeException.class);
     }
 
     @Test

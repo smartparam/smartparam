@@ -115,6 +115,11 @@ public class DefaultMultiValue implements MultiValue {
     }
 
     @Override
+    public Boolean getBoolean(int position) {
+        return getHolder(position).getBoolean();
+    }
+
+    @Override
     public ValueHolder getHolder(String name) {
         return getHolder(index(name));
     }
@@ -154,6 +159,12 @@ public class DefaultMultiValue implements MultiValue {
     public Long getLong(String name) {
         return getLong(index(name));
     }
+
+    @Override
+    public Boolean getBoolean(String name) {
+        return getBoolean(index(name));
+    }
+
 
     private int index(String name) {
         if (indexMap != null) {
@@ -264,6 +275,16 @@ public class DefaultMultiValue implements MultiValue {
     }
 
     @Override
+    public Boolean[] getBooleanArray(int position) {
+        ValueHolder[] array = getArray(position);
+        Boolean[] result = new Boolean[array.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = array[i].getBoolean();
+        }
+        return result;
+    }
+
+    @Override
     public BigDecimal[] getBigDecimalArray(int position) {
         ValueHolder[] array = getArray(position);
         BigDecimal[] result = new BigDecimal[array.length];
@@ -301,6 +322,11 @@ public class DefaultMultiValue implements MultiValue {
     @Override
     public Long[] getLongArray(String name) {
         return getLongArray(index(name));
+    }
+
+    @Override
+    public Boolean[] getBooleanArray(String name) {
+        return getBooleanArray(index(name));
     }
 
     private Object getAbstractHolder(int position) {

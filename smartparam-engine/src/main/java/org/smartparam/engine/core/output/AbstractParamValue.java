@@ -159,6 +159,11 @@ abstract class AbstractParamValue implements ParamValue {
     }
 
     @Override
+    public Boolean getBoolean(String name) {
+        return row().getBoolean(name);
+    }
+
+    @Override
     public <T extends Enum<T>> T getEnum(String name, Class<T> enumClass) {
         return row().getEnum(name, enumClass);
     }
@@ -201,6 +206,11 @@ abstract class AbstractParamValue implements ParamValue {
     @Override
     public Long getLong() {
         return row().getLong(0);
+    }
+
+    @Override
+    public Boolean getBoolean() {
+        return row().getBoolean(0);
     }
 
     @Override

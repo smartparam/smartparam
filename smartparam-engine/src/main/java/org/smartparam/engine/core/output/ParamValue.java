@@ -156,6 +156,11 @@ public interface ParamValue extends Iterable<MultiValue> {
     Long getLong(String name);
 
     /**
+     * Get Boolean from first row and column with given name.
+     */
+    Boolean getBoolean(String name);
+
+    /**
      * Get enum of given class from first row and column with given name.
      */
     <T extends Enum<T>> T getEnum(String name, Class<T> enumClass);
@@ -202,6 +207,11 @@ public interface ParamValue extends Iterable<MultiValue> {
      * Return value from first column of first row as Long.
      */
     Long getLong();
+
+    /**
+     * Return value from first column of first row as Boolean.
+     */
+    Boolean getBoolean();
 
     /**
      * Return value from first column of first row as enum.
