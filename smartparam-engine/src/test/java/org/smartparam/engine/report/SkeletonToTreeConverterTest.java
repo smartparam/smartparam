@@ -52,7 +52,6 @@ public class SkeletonToTreeConverterTest {
 
         // when
         skeletonToTreeConverter.createTreeLevels(tree, skeleton);
-        logger.info(tree.printTree());
 
         // then
         assertThat(tree).hasDepth(4).levelAt(1).isDictionaryLevel();
@@ -78,7 +77,6 @@ public class SkeletonToTreeConverterTest {
 
         // when
         skeletonToTreeConverter.createTreeLevels(tree, skeleton);
-        logger.info(tree.printTree());
 
         // then
         assertThat(tree).hasDepth(4)

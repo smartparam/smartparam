@@ -63,27 +63,6 @@ public class SimpleReportingTreeNode<V> extends ReportingTreeNode<V> {
         return child(Star.SYMBOL).allowAnyValues();
     }
 
-//    @Override
-//    public ReportingTreeNode<V> addDictionaryChild(String levelValue) {
-//        return addChild(levelValue, false);
-//    }
-//
-//    @Override
-//    public ReportingTreeNode<V> addAnyChild() {
-//        return addChild("*", true);
-//    }
-//
-//    private ReportingTreeNode<V> addChild(String levelValue, boolean forceAllowAnyValues) {
-//        ReportingTreeNode<V> child = tree().createNode(this, levelValue);
-//        children.put(levelValue, child);
-//
-//        if (Star.SYMBOL.equals(levelValue)) {
-//            dictionaryOnlyLevel = false;
-//        }
-////        this.allowAnyValues(forceAllowAnyValues);
-//
-//        return child;
-//    }
     @Override
     public void insertPath(ReportingTreePath<V> path) {
         if (leaf()) {
