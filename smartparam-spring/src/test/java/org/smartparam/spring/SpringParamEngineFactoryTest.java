@@ -16,11 +16,11 @@
 package org.smartparam.spring;
 
 import java.util.Arrays;
-import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mockito;
 import org.smartparam.engine.core.ParamEngine;
 import org.smartparam.engine.core.parameter.ParamRepository;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import static org.smartparam.engine.core.ParamEngineRuntimeConfigAssert.assertThat;
 
 /**
@@ -31,7 +31,7 @@ public class SpringParamEngineFactoryTest {
 
     private SpringParamEngineFactory springParamEngineFactory;
 
-    @Before
+    @BeforeMethod
     public void initialize() {
         springParamEngineFactory = new SpringParamEngineFactory();
     }

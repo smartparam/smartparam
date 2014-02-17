@@ -20,6 +20,7 @@ import org.smartparam.engine.config.ParamEngineConfigBuilder;
 import org.smartparam.engine.config.ParamEngineModule;
 import org.smartparam.spring.function.SpringFunctionInvoker;
 import org.smartparam.spring.function.SpringFunctionRepository;
+import org.smartparam.spring.type.SpringBeanType;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -34,9 +35,12 @@ public class SpringModule implements ParamEngineModule {
         this.applicationContext = applicationContext;
     }
 
+    @Override
     public void registerSelf(ParamEngineConfigBuilder configBuilder) {
-        configBuilder.withFunctionInvoker(SpringFunctionRepository.FUNCTION_TYPE, new SpringFunctionInvoker(applicationContext))
-                .withFunctionRepository(SpringFunctionRepository.FUNCTION_TYPE, ParamFunctionRepository.DEFAULT_ORDER, new SpringFunctionRepository());
+        configBuilder
+                .withFunctionInvoker(SpringFunctionRepository.FUNCTION_TYPE, new SpringFunctionInvoker(applicationContext))
+                .withFunctionRepository(SpringFunctionRepository.FUNCTION_TYPE, ParamFunctionRepository.DEFAULT_ORDER, new SpringFunctionRepository())
+                .withType(SpringBeanType.BEAN_TYPE, new SpringBeanType(applicationContext));
     }
 
 }
