@@ -66,6 +66,19 @@ public class SimpleJdbcRepositoryTest extends DatabaseTest {
     }
 
     @Test
+    public void shouldReturnNullWhenParameterNotFound() {
+        SimpleJdbcRepository repository = get(SimpleJdbcRepository.class);
+        QueryRunner runner = queryRunner();
+
+        // when
+        Parameter metadata = repository.getParameterMetadata(runner, "unknownParameter");
+        runner.close();
+
+        // then
+        assertThat(metadata).isNull();
+    }
+
+    @Test
     public void shouldInsertNewParameterWithLevelsAndEntries() {
         // given
         Level[] levels = new Level[]{

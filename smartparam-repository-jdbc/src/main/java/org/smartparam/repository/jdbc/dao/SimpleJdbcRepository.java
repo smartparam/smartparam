@@ -72,16 +72,20 @@ public class SimpleJdbcRepository implements JdbcRepository {
     @Override
     public JdbcParameter getParameter(QueryRunner runner, String parameterName) {
         JdbcParameter parameter = getParameterMetadata(runner, parameterName);
-        Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameterName);
-        parameter.setEntries(entries);
+        if (parameter != null) {
+            Set<ParameterEntry> entries = parameterEntryDAO.getParameterEntries(runner, parameterName);
+            parameter.setEntries(entries);
+        }
         return parameter;
     }
 
     @Override
     public JdbcParameter getParameterMetadata(QueryRunner runner, String parameterName) {
         JdbcParameter parameter = parameterDAO.getParameter(runner, parameterName);
-        List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameter.getId()));
-        parameter.setLevels(levels);
+        if (parameter != null) {
+            List<Level> levels = new ArrayList<Level>(levelDAO.getLevels(runner, parameter.getId()));
+            parameter.setLevels(levels);
+        }
 
         return parameter;
     }
