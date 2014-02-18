@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.core.parameter;
 
+import org.smartparam.engine.core.parameter.request.SimpleParameterRequestQueue;
 import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.prepared.PreparedParameter;
@@ -51,7 +52,7 @@ public class BasicParameterManagerTest {
         paramProvider = mock(ParameterProvider.class);
         cache = mock(PreparedParamCache.class);
 
-        manager = new BasicParameterManager(preparer, paramProvider, cache);
+        manager = new BasicParameterManager(preparer, paramProvider, cache, new SimpleParameterRequestQueue());
     }
 
     @Test
@@ -68,6 +69,21 @@ public class BasicParameterManagerTest {
         // then
         verify(cache, times(2)).get("param");
         verify(cache, times(1)).put(eq("param"), any(PreparedParameter.class));
+    }
+
+    @Test
+    public void shouldReturnPreparedParameter() {
+        // given
+        Parameter parameter = parameter().withEntries().build();
+        when(cache.get("param")).thenReturn(null);
+        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
+        when(preparer.prepare(any(ParameterFromRepository.class))).thenReturn(preparedParameter().forParameter(parameter).build());
+
+        // when
+        PreparedParameter preparedParameter = manager.getPreparedParameter("param");
+
+        // then
+        assertThat(preparedParameter).isNotNull();
     }
 
     @Test

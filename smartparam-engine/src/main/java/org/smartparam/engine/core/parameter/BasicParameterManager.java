@@ -75,7 +75,7 @@ public class BasicParameterManager implements ParameterManager {
         PreparedParameter preparedParameter = cache.get(parameterName);
 
         if (preparedParameter == null) {
-            requestQueue.resolve(parameterName, request);
+            preparedParameter = requestQueue.resolve(parameterName, request);
         }
 
         return preparedParameter;
