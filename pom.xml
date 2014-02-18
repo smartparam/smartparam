@@ -4,7 +4,7 @@
 
     <groupId>org.smartparam</groupId>
     <artifactId>smartparam-parent</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
 
     <packaging>pom</packaging>
 
@@ -35,7 +35,7 @@
         <url>https://github.com/smartparam</url>
         <connection>scm:git:git@github.com:smartparam/smartparam.git</connection>
         <developerConnection>scm:git:git@github.com:smartparam/smartparam.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>smartparam-1.1.1</tag>
     </scm>
 
     <properties>
