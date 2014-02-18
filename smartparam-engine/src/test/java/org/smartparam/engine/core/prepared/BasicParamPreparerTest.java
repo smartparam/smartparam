@@ -19,39 +19,32 @@ import org.testng.annotations.BeforeMethod;
 
 import org.smartparam.engine.core.parameter.Parameter;
 import static org.mockito.Mockito.*;
-import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.index.FastLevelIndexWalker;
+import org.smartparam.engine.core.parameter.ParameterFromRepository;
+import org.smartparam.engine.core.repository.RepositoryName;
 import org.testng.annotations.Test;
-import static org.smartparam.engine.core.parameter.ParameterFromRepositoryBuilder.repositoryParameter;
 import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
 import static org.smartparam.engine.core.parameter.entry.ParameterEntryTestBuilder.parameterEntry;
 import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
 import static org.smartparam.engine.core.prepared.PreparedLevelTestBuilder.preparedLevel;
 import static org.smartparam.engine.test.ParamEngineAssertions.*;
-import static org.smartparam.engine.core.prepared.PreparedParameterTestBuilder.preparedParameter;
 
 /**
  * @author Przemek Hertel
  */
 public class BasicParamPreparerTest {
 
-    private PreparedParamCache cache;
-
     private BasicParamPreparer paramPreparer;
-
-    private ParameterProvider paramProvider;
 
     private LevelPreparer levelPreparer;
 
     @BeforeMethod
     public void initialize() {
         levelPreparer = mock(LevelPreparer.class);
-        paramProvider = mock(ParameterProvider.class);
-        cache = mock(PreparedParamCache.class);
 
-        paramPreparer = new BasicParamPreparer(paramProvider, levelPreparer, cache);
+        paramPreparer = new BasicParamPreparer(levelPreparer);
     }
 
     @Test
@@ -63,11 +56,10 @@ public class BasicParamPreparerTest {
         };
         Parameter parameter = parameter().withName("param").withInputLevels(1).withArraySeparator('^')
                 .withEntries().withLevels(levels).build();
-        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
         when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
 
         // when
-        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+        PreparedParameter preparedParameter = paramPreparer.prepare(new ParameterFromRepository(parameter, RepositoryName.from("test")));
 
         // then
         assertThat(preparedParameter).hasName("param").hasInputLevels(1).hasArraySeparator('^').hasIndex()
@@ -85,11 +77,10 @@ public class BasicParamPreparerTest {
         };
         Parameter parameter = parameter().withName("param").withInputLevels(0)
                 .withLevels(levels).withEntries(entries).build();
-        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
         when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
 
         // when
-        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+        PreparedParameter preparedParameter = paramPreparer.prepare(new ParameterFromRepository(parameter, RepositoryName.from("test")));
 
         // then
         FastLevelIndexWalker<PreparedEntry> walker = new FastLevelIndexWalker<PreparedEntry>(preparedParameter.getIndex());
@@ -107,11 +98,10 @@ public class BasicParamPreparerTest {
         };
         Parameter parameter = parameter().withName("param").identifyEntries().withInputLevels(0)
                 .withLevels(levels).withEntries(entries).build();
-        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
         when(levelPreparer.prepare(any(Level.class))).thenReturn(preparedLevel().build()).thenReturn(preparedLevel().withName("outputLevel").build());
 
         // when
-        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+        PreparedParameter preparedParameter = paramPreparer.prepare(new ParameterFromRepository(parameter, RepositoryName.from("test")));
 
         // then
         FastLevelIndexWalker<PreparedEntry> walker = new FastLevelIndexWalker<PreparedEntry>(preparedParameter.getIndex());
@@ -122,40 +112,11 @@ public class BasicParamPreparerTest {
     public void shouldNotBuildIndexForNoncacheableParameter() {
         // given
         Parameter parameter = parameter().withName("param").withInputLevels(1).noncacheable().withEntries().withLevels().build();
-        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
 
         // when
-        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
+        PreparedParameter preparedParameter = paramPreparer.prepare(new ParameterFromRepository(parameter, RepositoryName.from("test")));
 
         // then
         assertThat(preparedParameter).hasName("param").hasNoIndex();
-    }
-
-    @Test
-    public void shouldPrepareParameterOnlyOnceAndUseCacheInConsequentTries() {
-        // given
-        Parameter parameter = parameter().withEntries().build();
-        when(cache.get("param")).thenReturn(null).thenReturn(preparedParameter().forParameter(parameter).build());
-        when(paramProvider.load("param")).thenReturn(repositoryParameter(parameter).build());
-
-        // when
-        paramPreparer.getPreparedParameter("param");
-        paramPreparer.getPreparedParameter("param");
-
-        // then
-        verify(cache, times(2)).get("param");
-        verify(cache, times(1)).put(eq("param"), any(PreparedParameter.class));
-    }
-
-    @Test
-    public void shouldReturnNullWhenParameterNotFound() {
-        // given
-        when(paramProvider.load("param")).thenReturn(null);
-
-        // when
-        PreparedParameter preparedParameter = paramPreparer.getPreparedParameter("param");
-
-        // then
-        assertThat(preparedParameter).isNull();
     }
 }

@@ -15,16 +15,13 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import java.util.Set;
 import org.smartparam.engine.core.index.LevelIndex;
 import org.smartparam.engine.core.matcher.Matcher;
-import org.smartparam.engine.core.parameter.ParameterProvider;
 import org.smartparam.engine.core.type.Type;
 import org.smartparam.engine.core.parameter.level.Level;
 import org.smartparam.engine.core.parameter.Parameter;
@@ -38,36 +35,14 @@ import org.smartparam.engine.core.parameter.entry.ParameterEntry;
  */
 public class BasicParamPreparer implements ParamPreparer {
 
-    private final ParameterProvider parameterProvider;
-
     private final LevelPreparer levelPreparer;
 
-    private final PreparedParamCache cache;
-
-    public BasicParamPreparer(ParameterProvider parameterProvider, LevelPreparer levelPreparer, PreparedParamCache cache) {
-        this.parameterProvider = parameterProvider;
+    public BasicParamPreparer(LevelPreparer levelPreparer) {
         this.levelPreparer = levelPreparer;
-        this.cache = cache;
     }
 
     @Override
-    public PreparedParameter getPreparedParameter(String paramName) {
-        PreparedParameter preparedParameter = cache.get(paramName);
-
-        if (preparedParameter == null) {
-            ParameterFromRepository parameter = parameterProvider.load(paramName);
-            if (parameter == null) {
-                return null;
-            }
-
-            preparedParameter = prepare(parameter);
-            cache.put(paramName, preparedParameter);
-        }
-
-        return preparedParameter;
-    }
-
-    private PreparedParameter prepare(ParameterFromRepository parameterFromRepository) {
+    public PreparedParameter prepare(ParameterFromRepository parameterFromRepository) {
         Parameter parameter = parameterFromRepository.parameter();
 
         int levelCount = getLevelCount(parameter);
@@ -151,20 +126,12 @@ public class BasicParamPreparer implements ParamPreparer {
         return Arrays.copyOf(parameterEntry.getLevels(), levelCount);
     }
 
-    private PreparedEntry prepareEntry(ParameterEntry parameterEntry, boolean identifyEntries) {
-        return identifyEntries ? new IdentifiablePreparedEntry(parameterEntry) : new PreparedEntry(parameterEntry);
+    @Override
+    public PreparedEntry prepareIdentifiableEntry(ParameterEntry parameterEntry) {
+        return new IdentifiablePreparedEntry(parameterEntry);
     }
 
-    @Override
-    public List<PreparedEntry> findEntries(String paramName, String[] levelValues) {
-        Set<ParameterEntry> entries = parameterProvider.findEntries(paramName, levelValues);
-
-        List<PreparedEntry> result = new ArrayList<PreparedEntry>(entries.size());
-        for (ParameterEntry pe : entries) {
-            // no cache, everything can be identifiable
-            result.add(prepareEntry(pe, true));
-        }
-
-        return result;
+    private PreparedEntry prepareEntry(ParameterEntry parameterEntry, boolean identifyEntries) {
+        return identifyEntries ? new IdentifiablePreparedEntry(parameterEntry) : new PreparedEntry(parameterEntry);
     }
 }

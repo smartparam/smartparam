@@ -16,7 +16,6 @@
 package org.smartparam.engine.core;
 
 import org.smartparam.engine.core.output.ParamValue;
-import org.smartparam.engine.core.prepared.ParamPreparer;
 import org.smartparam.engine.core.prepared.PreparedParameter;
 import org.smartparam.engine.core.prepared.PreparedLevel;
 import org.smartparam.engine.core.prepared.PreparedEntry;
@@ -33,6 +32,7 @@ import org.smartparam.engine.core.output.DetailedParamValue;
 import org.smartparam.engine.core.output.factory.DefaultParamValueFactory;
 import org.smartparam.engine.core.output.factory.DetailedParamValueFactory;
 import org.smartparam.engine.core.output.factory.ParamValueFactory;
+import org.smartparam.engine.core.parameter.ParameterManager;
 import org.smartparam.engine.core.prepared.InputValueNormalizer;
 import org.smartparam.engine.types.string.StringHolder;
 
@@ -47,7 +47,7 @@ public class SmartParamEngine implements ParamEngine {
 
     private final ParamEngineRuntimeConfigBuilder configBuilder;
 
-    private final ParamPreparer paramPreparer;
+    private final ParameterManager parameterManager;
 
     private final FunctionManager functionManager;
 
@@ -58,12 +58,12 @@ public class SmartParamEngine implements ParamEngine {
     private final LevelIndexWalkerFactory fastIndexWalkerFactory = new FastLevelIndexWalkerFactory();
 
     public SmartParamEngine(ParamEngineRuntimeConfigBuilder configBuilder,
-            ParamPreparer paramPreparer,
+            ParameterManager parameterManager,
             FunctionManager functionManager,
             DefaultParamValueFactory defaultParamValueFactory,
             DetailedParamValueFactory detailedParamValueFactory) {
         this.configBuilder = configBuilder;
-        this.paramPreparer = paramPreparer;
+        this.parameterManager = parameterManager;
         this.functionManager = functionManager;
         this.defaultParamValueFactory = defaultParamValueFactory;
         this.detailedParamValueFactory = detailedParamValueFactory;
@@ -206,7 +206,7 @@ public class SmartParamEngine implements ParamEngine {
         if (param.isCacheable()) {
             entries = indexWalkerFactory.create(param, levelValues).find();
         } else {
-            entries = paramPreparer.findEntries(param.getName(), levelValues);
+            entries = parameterManager.findEntries(param.getName(), levelValues);
         }
 
         return entries != null ? entries.toArray(new PreparedEntry[entries.size()]) : new PreparedEntry[0];
@@ -219,7 +219,7 @@ public class SmartParamEngine implements ParamEngine {
     }
 
     private PreparedParameter getPreparedParameter(String paramName) {
-        PreparedParameter param = paramPreparer.getPreparedParameter(paramName);
+        PreparedParameter param = parameterManager.getPreparedParameter(paramName);
         logger.trace("prepared parameter: {}", param);
 
         if (param == null) {

@@ -15,7 +15,8 @@
  */
 package org.smartparam.engine.core.prepared;
 
-import java.util.List;
+import org.smartparam.engine.core.parameter.ParameterFromRepository;
+import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 
 /**
  * Interface for services building complete, in-memory representation of
@@ -29,22 +30,7 @@ import java.util.List;
  */
 public interface ParamPreparer {
 
-    /**
-     * Returns prepared parameter for <tt>paramName</tt> parameter. If there is
-     * no such parameter it must return null.
-     *
-     * @param paramName parameter name
-     * @return complete representation of parameter (metadata + matrix) or null
-     */
-    PreparedParameter getPreparedParameter(String paramName);
+    PreparedParameter prepare(ParameterFromRepository parameterFromRepository);
 
-    /**
-     * Returns list of parameter rows that match given level values. TODO:
-     * create ParamFinder for this purpose?
-     *
-     * @param paramName parameter name
-     * @param levelValues list of values to match at each level
-     * @return list of matching prepared entries (or empty list)
-     */
-    List<PreparedEntry> findEntries(String paramName, String[] levelValues);
+    PreparedEntry prepareIdentifiableEntry(ParameterEntry parameterEntry);
 }

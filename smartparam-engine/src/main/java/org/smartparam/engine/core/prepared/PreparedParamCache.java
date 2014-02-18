@@ -18,47 +18,36 @@ package org.smartparam.engine.core.prepared;
 import java.util.Collection;
 
 /**
- * Kontrakt zapewniajacy cache'owanie przygotowanych parametrow ({@link PreparedParameter}).
- * Silnik parametryczny pobiera obiekty PreparedParameter na podstawie nazwy.
- * Do tego celu wykorzystuje implementacje tego wlasnie interfejsu.
- * <p>
+ * Cache for prepared parameters ({@link  PreparedParameter}).
  *
- * Implementacja cache'a musi byc <b>thread-safe</b>.
+ * Implementation must be thread safe!
  *
  * @author Przemek Hertel
- * @since 1.0.0
  */
 public interface PreparedParamCache {
 
     /**
-     * Wstawia parametr <tt>pp</tt> pod kluczem <tt>paramName</tt>.
-     *
-     * @param paramName unikalna nazwa parametru
-     * @param pp        przygotowany parametr
+     * Put parameter under given key.
      */
     void put(String paramName, PreparedParameter pp);
 
     /**
-     * Zwraca parametr o nazwie <tt>paramName</tt> lub <tt>null</tt>,
-     * jesli nie ma w cache'u takiego parametru.
-     *
-     * @param paramName nazwa parametru
-     *
-     * @return parametr pobrany z cache'a
+     * Returns parameter from cache or null if none found.
      */
     PreparedParameter get(String paramName);
 
     /**
-     * Usuwa z cache'a parametr o nazwie <tt>paramName</tt>.
-     *
-     * @param paramName nazwa parametru
+     * Evicts parameter from cache.
      */
     void invalidate(String paramName);
 
     /**
-     * Usuwa z cache'a wszystkie parametry.
+     * Evicts all parameters from cache.
      */
     void invalidate();
 
+    /**
+     * Return collection of all parameters stored in cache.
+     */
     Collection<String> cachedParameterNames();
 }

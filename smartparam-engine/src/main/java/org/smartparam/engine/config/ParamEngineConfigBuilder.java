@@ -18,6 +18,7 @@ package org.smartparam.engine.config;
 import org.smartparam.engine.config.initialization.ComponentInitializer;
 import org.smartparam.engine.config.initialization.ComponentInitializerRunner;
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
 import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.annotated.initialization.MethodScannerInitializer;
@@ -31,6 +32,8 @@ import org.smartparam.engine.core.function.FunctionRepository;
 import org.smartparam.engine.core.matcher.MatcherType;
 import org.smartparam.engine.core.parameter.NamedParamRepository;
 import org.smartparam.engine.core.parameter.ParamRepository;
+import org.smartparam.engine.core.parameter.request.QueuingParameterRequestResolver;
+import org.smartparam.engine.core.parameter.request.ParameterRequestQueue;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
 import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.type.Type;
@@ -231,6 +234,15 @@ public final class ParamEngineConfigBuilder {
      */
     public ParamEngineConfigBuilder withParameterCache(PreparedParamCache parameterCache) {
         paramEngineConfig.setParameterCache(parameterCache);
+        return this;
+    }
+
+    /**
+     * Use {@link QueuingParameterRequestResolver} to queue concurrent requests for the same parameter
+     * before it is cached. Useful for systems that serve under heavy traffic and allow on parameter editing.
+     */
+    public ParamEngineConfigBuilder withParameterRequestsQueue(ExecutorService service) {
+        withComponent(ParameterRequestQueue.class, new QueuingParameterRequestResolver(service));
         return this;
     }
 
