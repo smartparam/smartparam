@@ -24,6 +24,7 @@ import org.smartparam.engine.core.repository.RepositoryName;
 import org.smartparam.engine.core.parameter.level.LevelKey;
 import org.smartparam.engine.core.parameter.entry.ParameterEntryKey;
 import org.smartparam.editor.core.entry.ParameterEntryMapConverter;
+import org.smartparam.editor.core.filters.SortDirection;
 import org.smartparam.editor.model.simple.SimpleLevel;
 import org.smartparam.editor.model.simple.SimpleLevelKey;
 import org.smartparam.editor.model.simple.SimpleParameter;
@@ -40,9 +41,12 @@ import org.smartparam.engine.core.parameter.ParamRepository;
 import org.smartparam.engine.core.parameter.Parameter;
 import org.smartparam.engine.core.parameter.entry.ParameterEntry;
 import org.smartparam.engine.core.prepared.PreparedParamCache;
+import org.smartparam.engine.types.string.StringType;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import static org.mockito.Mockito.*;
+import static org.smartparam.engine.core.parameter.ParameterTestBuilder.parameter;
+import static org.smartparam.engine.core.parameter.level.LevelTestBuilder.level;
 import static org.smartparam.engine.test.ParamEngineAssertions.assertThat;
 
 /**
@@ -91,7 +95,9 @@ public class BasicParamEditorTest {
                 .withParameterRepository("fake1", editableRepository1)
                 .withParameterRepository(viewableRepository)
                 .withParameterRepository("fake2", editableRepository2)
-                .withAnnotationScanDisabled().build();
+                .withAnnotationScanDisabled()
+                .withType("string", new StringType())
+                .build();
         ParamEngine paramEngine = ParamEngineFactory.paramEngine(config);
 
         // when
@@ -254,5 +260,22 @@ public class BasicParamEditorTest {
         // then
         verify(editableRepository).deleteEntries("parameter", entryKeys);
         verify(cache).invalidate("parameter");
+    }
+
+    @Test
+    public void shouldNormalizeGivenMapEntry() {
+        // given
+        Parameter parameter = parameter()
+                .withLevels(level().withName("level").withType("string").build())
+                .build();
+
+        MapEntry denormalized = new MapEntry();
+        denormalized.put("level", SortDirection.ASC);
+
+        // when
+        MapEntry normalized = paramEditor.normalize(parameter, denormalized);
+
+        // then
+        assertThat(normalized.get("level")).isEqualTo("ASC");
     }
 }

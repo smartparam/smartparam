@@ -45,8 +45,7 @@ public class BasicParamEditor implements ParamEditor {
 
     private final ParameterEntryMapConverter converter;
 
-    public BasicParamEditor(ParamEngine paramEngine,
-            ParameterEntryMapConverter entryMapConverter) {
+    public BasicParamEditor(ParamEngine paramEngine, ParameterEntryMapConverter entryMapConverter) {
         ParamEngineRuntimeConfig runtimeConfig = paramEngine.runtimeConfiguration();
 
         repositories = new RepositoryStore<EditableParamRepository>(runtimeConfig.getParamRepositories(), EditableParamRepository.class);
@@ -175,5 +174,10 @@ public class BasicParamEditor implements ParamEditor {
             entries.add(converter.asEntry(metadata, entryMap));
         }
         return entries;
+    }
+
+    @Override
+    public MapEntry normalize(Parameter metadata, MapEntry denormalizedEntry) {
+        return converter.asMap(metadata, converter.asEntry(metadata, denormalizedEntry));
     }
 }
