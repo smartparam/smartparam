@@ -107,4 +107,9 @@ public interface ParamEditor {
      * Normalize given denormalized MapEntry. Returned normalized MapEntry is same as entry saved&read from repository.
      */
     MapEntry normalize(Parameter metadata, MapEntry denormalizedEntry);
+
+    /**
+     * Normalize all entries.
+     */
+    List<MapEntry> normalize(Parameter metadata, Iterable<MapEntry> denormalizedEntries);
 }

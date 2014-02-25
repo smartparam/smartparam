@@ -180,4 +180,13 @@ public class BasicParamEditor implements ParamEditor {
     public MapEntry normalize(Parameter metadata, MapEntry denormalizedEntry) {
         return converter.asMap(metadata, converter.asEntry(metadata, denormalizedEntry));
     }
+
+    @Override
+    public List<MapEntry> normalize(Parameter metadata, Iterable<MapEntry> denormalizedEntries) {
+        List<MapEntry> normalizedEntires = new ArrayList<MapEntry>();
+        for (MapEntry denormalizedEntry : denormalizedEntries) {
+            normalizedEntires.add(normalize(metadata, denormalizedEntry));
+        }
+        return normalizedEntires;
+    }
 }
