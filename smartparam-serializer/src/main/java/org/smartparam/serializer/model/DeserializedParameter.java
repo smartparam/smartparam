@@ -16,6 +16,7 @@
 package org.smartparam.serializer.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -78,6 +79,10 @@ public class DeserializedParameter implements AppendableParameter {
     @Override
     public List<Level> getLevels() {
         return Collections.unmodifiableList(levels);
+    }
+
+    public void normalizeLevels() {
+        levels.removeAll(Collections.singletonList(null));
     }
 
     @Override

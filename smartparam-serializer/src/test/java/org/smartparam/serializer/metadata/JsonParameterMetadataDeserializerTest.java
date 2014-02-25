@@ -67,6 +67,18 @@ public class JsonParameterMetadataDeserializerTest {
     }
 
     @Test
+    public void shouldBeLiberalAboutDanglingCommas() throws ParamSerializationException {
+        // given
+        String json = "{ levels: [ {name: 'level'}, ] }";
+
+        // when
+        Parameter parameter = deserializer.deserialize(StringStreamUtil.reader(json));
+
+        // then
+        assertThat(parameter).isNotNull().hasLevels(1);
+    }
+
+    @Test
     public void shouldDeserializeOnlyFirstJSONObject() throws Exception {
         // given
         String json = "{ name: \"parameter\" }\n"

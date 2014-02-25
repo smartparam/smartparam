@@ -48,6 +48,9 @@ public class JsonParameterMetadataDeserializer implements ParameterMetadataDeser
             throw new ParamSerializationException("Unable to read config part from stream.", exception);
         }
 
-        return gson.fromJson(jsonConfig, DeserializedParameter.class);
+        DeserializedParameter parameter = gson.fromJson(jsonConfig, DeserializedParameter.class);
+        parameter.normalizeLevels();
+
+        return parameter;
     }
 }
