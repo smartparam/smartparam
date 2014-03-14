@@ -15,7 +15,9 @@
  */
 package org.smartparam.engine.functions.java;
 
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,8 +37,14 @@ public class JavaMethodInvoker {
             if (makeAccessible) {
                 method.setAccessible(true);
             }
-            return method.invoke(instance, args);
-        } catch (Exception exception) {
+
+            if (instance instanceof Proxy) {
+                InvocationHandler handler = Proxy.getInvocationHandler(instance);
+                return handler.invoke(instance, method, args);
+            } else {
+                return method.invoke(instance, args);
+            }
+        } catch (Throwable exception) {
             logger.error("", exception);
             throw new JavaFunctionInvocationException(exception, instance, method);
         }
