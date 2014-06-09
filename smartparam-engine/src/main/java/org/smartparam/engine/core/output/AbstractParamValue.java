@@ -219,6 +219,76 @@ abstract class AbstractParamValue implements ParamValue {
     }
 
     @Override
+    public ValueHolder[] getArray() {
+        return row().getArray(0);
+    }
+
+    @Override
+    public String[] getStringArray() {
+        return row().getStringArray(0);
+    }
+
+    @Override
+    public BigDecimal[] getBigDecimalArray() {
+        return row().getBigDecimalArray(0);
+    }
+
+    @Override
+    public Date[] getDateArray() {
+        return row().getDateArray(0);
+    }
+
+    @Override
+    public Integer[] getIntegerArray() {
+        return row().getIntegerArray(0);
+    }
+
+    @Override
+    public Long[] getLongArray() {
+        return row().getLongArray(0);
+    }
+
+    @Override
+    public Boolean[] getBooleanArray() {
+        return row().getBooleanArray(0);
+    }
+
+    @Override
+    public ValueHolder[] getArray(String name) {
+        return row().getArray(name);
+    }
+
+    @Override
+    public String[] getStringArray(String name) {
+        return row().getStringArray(name);
+    }
+
+    @Override
+    public BigDecimal[] getBigDecimalArray(String name) {
+        return row().getBigDecimalArray(name);
+    }
+
+    @Override
+    public Date[] getDateArray(String name) {
+        return row().getDateArray(name);
+    }
+
+    @Override
+    public Integer[] getIntegerArray(String name) {
+        return row().getIntegerArray(name);
+    }
+
+    @Override
+    public Long[] getLongArray(String name) {
+        return row().getLongArray(name);
+    }
+
+    @Override
+    public Boolean[] getBooleanArray(String name) {
+        return row().getBooleanArray(name);
+    }
+
+    @Override
     public int size() {
         return rawRows().size();
     }

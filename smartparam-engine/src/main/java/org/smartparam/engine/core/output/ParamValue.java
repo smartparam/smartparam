@@ -219,6 +219,76 @@ public interface ParamValue extends Iterable<MultiValue> {
     <T extends Enum<T>> T getEnum(Class<T> enumClass);
 
     /**
+     * Return value from first column of first row as array of raw values.
+     */
+    ValueHolder[] getArray();
+
+    /**
+     * Return value from first column of first row as array of strings.
+     */
+    String[] getStringArray();
+
+    /**
+     * Return value from first column of first row as array of big decimals.
+     */
+    BigDecimal[] getBigDecimalArray();
+
+    /**
+     * Return value from first column of first row as array of dates.
+     */
+    Date[] getDateArray();
+
+    /**
+     * Return value from first column of first row as array of integers.
+     */
+    Integer[] getIntegerArray();
+
+    /**
+     * Return value from first column of first row as array of longs.
+     */
+    Long[] getLongArray();
+
+    /**
+     * Return value from first column of first row as array of booleans.
+     */
+    Boolean[] getBooleanArray();
+
+    /**
+     * Return value from first row and column with given name as array of raw values.
+     */
+    ValueHolder[] getArray(String name);
+
+    /**
+     * Return value from first row and column with given name as array of strings.
+     */
+    String[] getStringArray(String name);
+
+    /**
+     * Return value from first row and column with given name as array of big decimals.
+     */
+    BigDecimal[] getBigDecimalArray(String name);
+
+    /**
+     * Return value from first row and column with given name as array of dates.
+     */
+    Date[] getDateArray(String name);
+
+    /**
+     * Return value from first row and column with given name as array of integers.
+     */
+    Integer[] getIntegerArray(String name);
+
+    /**
+     * Return value from first row and column with given name as array of longs.
+     */
+    Long[] getLongArray(String name);
+
+    /**
+     * Return value from first row and column with given name as array of booleans.
+     */
+    Boolean[] getBooleanArray(String name);
+
+    /**
      *
      * @return number of rows
      */

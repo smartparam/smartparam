@@ -17,8 +17,9 @@ package org.smartparam.engine.core.output;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import org.smartparam.engine.core.exception.SmartParamException;
+
 import static org.testng.AssertJUnit.*;
+
 import org.smartparam.engine.core.type.ValueHolder;
 import org.smartparam.engine.types.bool.BooleanHolder;
 import org.smartparam.engine.types.date.DateHolder;
@@ -26,6 +27,7 @@ import org.smartparam.engine.types.integer.IntegerHolder;
 import org.smartparam.engine.types.number.NumberHolder;
 import org.smartparam.engine.types.string.StringHolder;
 import org.testng.annotations.Test;
+
 import static com.googlecode.catchexception.CatchException.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -141,49 +143,26 @@ public class DefaultMultiValueTest {
     }
 
     @Test
-    public void testGetArray() {
+    public void shouldReturnArrayOfValueHoldersWhenArrayIsStoredInCell() {
+        // given
+        ValueHolder[] values = {new IntegerHolder(100L), new IntegerHolder(200L)};
+        MultiValue mv = new DefaultMultiValue(new Object[]{values});
 
-        // zaleznosci
-        ValueHolder h1 = new IntegerHolder(100L);
-        ValueHolder h2 = new IntegerHolder(200L);
-
-        // 1 element
-        ValueHolder[] e1 = {h1, h2};
-
-        // testowany obiekt
-        MultiValue mv = new DefaultMultiValue(new Object[]{e1});       // 1 poziom typu tablicowego
-
-        // oczekiwane wartosci
-        assertArrayEquals(new ValueHolder[]{h1, h2}, mv.getArray(0));
+        // when then
+        assertThat(values).isEqualTo(new ValueHolder[]{new IntegerHolder(100L), new IntegerHolder(200L)});
     }
 
     @Test
-    public void testGetArray__exception() {
-
-        // zaleznosci
-        ValueHolder h1 = new StringHolder("a");
-        ValueHolder h2 = new NumberHolder(BigDecimal.ONE);
-
-        // dane testowe
-        Object[] values = {h1, h2};       // nie ma elementow tablicowych
-
-        // testowany obiekt
+    public void shouldThrowGettingWrongTypeExceptionWhenTryingToGetArrayFromNonArrayCell() {
+        // given
+        Object[] values = {new StringHolder("a"), new NumberHolder(BigDecimal.ONE)};
         MultiValue mv = new DefaultMultiValue(values);
 
-        // indeksy, z ktorych nie mozna pobrac wartosci AbstractHolder
-        int[] indices = {0, 1, 2, 3};
+        // when
+        catchException(mv).getArray(0);
 
-        // test
-        for (int i = 0; i < indices.length; i++) {
-            int k = indices[i];
-
-            try {
-                mv.getArray(k);
-                fail();
-            } catch (SmartParamException e) {
-                // success
-            }
-        }
+        // then
+        assertThat(caughtException()).isInstanceOf(GettingWrongTypeException.class);
     }
 
     @Test
