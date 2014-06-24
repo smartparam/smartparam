@@ -19,11 +19,11 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.kielo.annotationscanner.ReflectionsConstructorUtil;
 import org.smartparam.engine.annotated.annotations.ObjectInstance;
 import org.smartparam.engine.annotated.annotations.Sortable;
 import org.smartparam.engine.annotated.RepositoryObjectKey;
 import org.smartparam.engine.util.reflection.AnnotationHelper;
-import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
 
 /**
  *

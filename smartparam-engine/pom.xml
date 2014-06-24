@@ -33,8 +33,9 @@
 
         <!-- Utils -->
         <dependency>
-            <groupId>eu.infomas</groupId>
-            <artifactId>annotation-detector</artifactId>
+            <groupId>org.kielo.annotationscanner</groupId>
+            <artifactId>annotationscanner</artifactId>
+            <version>0.1.0</version>
         </dependency>
 
         <!-- TEST -->

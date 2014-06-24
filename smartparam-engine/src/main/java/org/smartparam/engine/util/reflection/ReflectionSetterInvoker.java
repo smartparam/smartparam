@@ -15,6 +15,7 @@
  */
 package org.smartparam.engine.util.reflection;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -44,8 +45,25 @@ public class ReflectionSetterInvoker {
         if(setter == null) {
             return false;
         }
-        ReflectionsHelper.invokerSetter(setter, setterHostObject, forArg);
+        invokerSetter(setter, setterHostObject, forArg);
         return true;
+    }
+    
+    public static void invokerSetter(Method setter, Object setterHostObject, Object argument) {
+        try {
+            setter.invoke(setterHostObject, argument);
+        } catch (IllegalAccessException illegalAccessException) {
+            throwExceptionForSetterInvocation(illegalAccessException, setter, setterHostObject, argument);
+        } catch (IllegalArgumentException illeagalArgumentException) {
+            throwExceptionForSetterInvocation(illeagalArgumentException, setter, setterHostObject, argument);
+        } catch (InvocationTargetException illegalTargetException) {
+            throwExceptionForSetterInvocation(illegalTargetException, setter, setterHostObject, argument);
+        }
+    }
+
+    private static void throwExceptionForSetterInvocation(Exception exception, Method setter, Object setterHostObject, Object argument) {
+        throw new InnerReflectiveOperationException(exception,
+                String.format("Could not invoke setter %s on object %s using %s as argument", setter.getName(), setterHostObject.getClass().getSimpleName(), argument.getClass().getSimpleName()));
     }
 
     /**

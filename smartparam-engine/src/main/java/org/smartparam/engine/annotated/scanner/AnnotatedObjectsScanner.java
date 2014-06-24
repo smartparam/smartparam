@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.kielo.annotationscanner.ReflectionsConstructorUtil;
+import org.kielo.annotationscanner.ReflectionsScanner;
 import org.smartparam.engine.annotated.PackageList;
-import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
-import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
 /**
  * Annotation scanner util supporting SmartParam* annotations. It not only scans

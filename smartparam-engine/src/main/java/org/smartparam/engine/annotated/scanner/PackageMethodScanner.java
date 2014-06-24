@@ -19,9 +19,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import org.kielo.annotationscanner.ReflectionsScanner;
 import org.smartparam.engine.annotated.PackageList;
 import org.smartparam.engine.util.reflection.AnnotationHelper;
-import org.smartparam.engine.util.reflection.ReflectionsScanner;
 
 /**
  *

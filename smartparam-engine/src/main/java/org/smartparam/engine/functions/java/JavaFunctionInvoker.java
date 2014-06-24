@@ -19,10 +19,10 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.kielo.annotationscanner.ReflectionsConstructorUtil;
 import org.smartparam.engine.annotated.annotations.ParamFunctionInvoker;
 import org.smartparam.engine.core.function.Function;
 import org.smartparam.engine.core.function.FunctionInvoker;
-import org.smartparam.engine.util.reflection.ReflectionsConstructorUtil;
 
 /**
  *
