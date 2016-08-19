@@ -1,0 +1,8 @@
+dependencies {
+    compile project(':smartparam-engine')
+
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.2.3'
+    compile group: 'net.sf.supercsv', name: 'super-csv', version: '2.1.0'
+
+    testCompile project(':smartparam-engine').sourceSets.test.output
+}

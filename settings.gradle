@@ -1,0 +1,12 @@
+rootProject.name = 'smartparam'
+
+include 'smartparam-engine',
+	'smartparam-editor',
+	'smartparam-repository-fs',
+	'smartparam-repository-jdbc',
+	'smartparam-repository-memory',
+	'smartparam-serializer',
+	'smartparam-spring',
+	'smartparam-test',
+	'smartparam-transferer',
+	'smartparam-coherent-cache-jdbc'

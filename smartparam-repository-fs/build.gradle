@@ -1,0 +1,12 @@
+dependencies {
+    compile project(':smartparam-engine')
+    compile project(':smartparam-serializer')
+
+    compileOnly group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
+
+    testCompile project(':smartparam-engine').sourceSets.test.output
+
+    testCompile group: 'commons-lang', name: 'commons-lang', version: versions.commonsLang
+    testCompile group: 'commons-io', name: 'commons-io', version: '2.4'
+    testCompile group: 'org.reflections', name: 'reflections', version: '0.9.9-RC1'
+}

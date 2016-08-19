@@ -1,0 +1,3 @@
+dependencies {
+    compile group: 'org.kielo.annotationscanner', name: 'annotationscanner', version: '0.1.0'
+}

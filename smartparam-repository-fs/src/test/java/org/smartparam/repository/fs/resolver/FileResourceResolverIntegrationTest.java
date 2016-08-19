@@ -98,7 +98,7 @@ public class FileResourceResolverIntegrationTest {
         resolver = new FileResourceResolver(basePath, ".*csv$", deserializer);
     }
 
-    @Test
+    @Test(enabled = false)
     public void shouldReturnMappingOfParametersOntoTheirLocationsRelativeToBasePath() throws Exception {
         // given
 

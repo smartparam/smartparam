@@ -1,0 +1,10 @@
+dependencies {
+    compile project(':smartparam-engine')
+
+    compileOnly group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
+
+    testCompile project(':smartparam-engine').sourceSets.test.output
+
+    testCompile group: 'org.springframework', name: 'spring-context', version: '4.3.2.RELEASE'
+    testCompile group: 'org.springframework', name: 'spring-test', version: '4.3.2.RELEASE'
+}
