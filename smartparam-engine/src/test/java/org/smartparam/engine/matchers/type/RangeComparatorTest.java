@@ -15,8 +15,6 @@
  */
 package org.smartparam.engine.matchers.type;
 
-import org.smartparam.engine.matchers.type.RangeComparator;
-import org.smartparam.engine.matchers.type.Range;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;

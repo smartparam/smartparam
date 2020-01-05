@@ -1,20 +1,10 @@
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'io.codearte.gradle.nexus', name: 'gradle-nexus-staging-plugin', version: '0.5.1'
-        classpath group: 'com.bmuschko', name: 'gradle-nexus-plugin', version: '2.3.1'
-    }
-}
 
 plugins {
-    id 'java'
-    id 'pl.allegro.tech.build.axion-release' version '1.4.0'
+    id 'java-library'
+    id 'pl.allegro.tech.build.axion-release' version '1.10.3'
+    id "io.codearte.nexus-staging" version "0.21.2"
+    id "com.bmuschko.nexus" version "2.3.1" apply false
 }
-
-apply plugin: 'io.codearte.nexus-staging'
 
 scmVersion {
     tag {
@@ -24,7 +14,7 @@ scmVersion {
 }
 
 allprojects {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
 
     group = 'org.smartparam'
     version = scmVersion.version
@@ -101,11 +91,6 @@ subprojects {
         }
     }
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.0'
-}
-
 
 nexusStaging {
     packageGroup = 'org.smartparam'
