@@ -7,6 +7,9 @@ script:
   - ./gradlew check
   - ./gradlew uploadArchives -PnexusUsername=smartparam -PnexusPassword=$NEXUS_PASSWORD
 
+jdk:
+  - openjdk8
+
 branches:
   only:
     - master
